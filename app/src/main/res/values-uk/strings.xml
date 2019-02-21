@@ -117,4 +117,8 @@
     <string name="continue_question">Продовжити?</string>
     <string name="cant_remove_default_server">Не можна видалити сервера за замовчуванням</string>
     <string name="restart_required_msg">Перезавантажте додаток, щоб налаштування мови вступили в дію</string>
+    <string name="filter_all">All</string>
+    <string name="filter_normal">Normal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
 </resources>

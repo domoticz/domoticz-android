@@ -27,10 +27,10 @@
     <string name="security_arm_home">Armar casa</string>
     <string name="security_arm_away">Armar fuera</string>
     <string name="security_wrong_code">Introducido código incorrecto!</string>
-    <string name="security_no_rights">You do not have the rights for this action!</string>
+    <string name="security_no_rights">Usted no tiene derechos para esta acción!</string>
     <string name="security_generic_error">No se pudo cambiar el estado de la seguridad</string>
     <string name="security_wrong_password_fingerprint">Contraseña incorrecta. ¡La contraseña de tu cuenta domoticz es la alternativa por si falla tu huella dactilar...!</string>
     <string name="show_password">Mostrar contraseña</string>
-    <string name="fingerprint_make_sure">We need to make sure its you</string>
-    <string name="fingerprint_dialog_description">Touch your finger on the fingerprint sensor to authorise your account.</string>
+    <string name="fingerprint_make_sure">Tenemos que asegurarnos de que es usted</string>
+    <string name="fingerprint_dialog_description">Toque con el dedo el sensor de huellas para autorizar su cuenta.</string>
 </resources>

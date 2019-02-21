@@ -117,4 +117,8 @@
     <string name="continue_question">האם להמשיך?</string>
     <string name="cant_remove_default_server">אין אפשרות להסיר שרת המשמש כברירת מחדל</string>
     <string name="restart_required_msg">כדי להחיל את שינוי הגדרות השפה נדרשת הפעלה מחדש</string>
+    <string name="filter_all">All</string>
+    <string name="filter_normal">Normal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
 </resources>

@@ -117,4 +117,8 @@
     <string name="continue_question">Nastaviti?</string>
     <string name="cant_remove_default_server">Ne možete ukloniti zadani server</string>
     <string name="restart_required_msg">Za postavljanje odabranog jezika, program je potrebno ponovo pokrenuti</string>
+    <string name="filter_all">All</string>
+    <string name="filter_normal">Normal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
 </resources>

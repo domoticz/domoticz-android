@@ -83,12 +83,14 @@
 
                 <TextView
                     android:id="@+id/logs_datetime"
-                    style="@style/row_body2"
+                    style="@style/row_body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/logs_message"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"/>
+                    android:textSize="8sp"
+                    android:layout_below="@id/logs_message"
+                    android:layout_marginBottom="5dp"
+                    android:textStyle="italic"
+                    android:text="@string/signal_level"/>
             </RelativeLayout>
 
             <com.google.android.material.button.MaterialButton

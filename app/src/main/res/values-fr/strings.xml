@@ -33,8 +33,8 @@
     <string name="button_state_off">Off</string>
     <string name="button_state_closed">Fermé</string>
     <string name="button_state_open">Ouvert</string>
-    <string name="button_state_lock">Lock</string>
-    <string name="button_state_unlock">Unlock</string>
+    <string name="button_state_lock">Verrouiller</string>
+    <string name="button_state_unlock">Déverrouiller</string>
     <string name="button_status_log">Log</string>
     <string name="button_status_day">Jour</string>
     <string name="button_status_week">Semaine</string>
@@ -45,8 +45,8 @@
     <string name="button_color">Couleur</string>
     <string name="button_arm">Armer</string>
     <string name="button_disarm">Désarmer</string>
-    <string name="button_state_full_light">Full light</string>
-    <string name="button_state_night">Night light</string>
+    <string name="button_state_full_light">Lumière complète</string>
+    <string name="button_state_night">Lumière de nuit</string>
     <string name="last_update">Dernière activité</string>
     <string name="signal_level">Niveau du signal</string>
     <string name="battery_level">Niveau de batterie</string>
@@ -54,7 +54,7 @@
     <string name="hardware">Matériel</string>
     <string name="temperature">Température</string>
     <string name="status">Statut</string>
-    <string name="switch_rgb_wwcolor">RGB color or warm white</string>
+    <string name="switch_rgb_wwcolor">Couleur RVB ou blanc chaud</string>
     <string name="set_point">Définir un point</string>
     <string name="set_point_min">Configurez la valeur mini</string>
     <string name="set_point_min_description">Température minimum configurable sur votre thermostat</string>
@@ -92,8 +92,8 @@
     <string name="something_deleted">%1$s supprimé</string>
     <string name="switch_on">Allumer</string>
     <string name="switch_off">Éteindre</string>
-    <string name="switch_night">Turning switch to night light</string>
-    <string name="switch_full">Turning switch to full light</string>
+    <string name="switch_night">Basculer vers la lumière de la nuit</string>
+    <string name="switch_full">Basculer vers la lumière de jour</string>
     <string name="blind_up">Ouvrir les stores</string>
     <string name="blind_down">Fermer les stores</string>
     <string name="blind_stop">Arrêter les stores</string>
@@ -117,4 +117,8 @@
     <string name="continue_question">Continuer ?</string>
     <string name="cant_remove_default_server">Impossible de supprimer le serveur par défaut</string>
     <string name="restart_required_msg">Un redémarrage est nécessaire pour que les paramètres de langue soient pris en compte</string>
+    <string name="filter_all">All</string>
+    <string name="filter_normal">Normal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
 </resources>

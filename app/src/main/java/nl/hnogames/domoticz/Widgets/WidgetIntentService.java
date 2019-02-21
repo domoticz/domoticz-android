@@ -116,8 +116,8 @@ public class WidgetIntentService extends Service {
             return true;
 
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
-                (mExtendedStatusInfo.getSwitchType() == null ||
-                        UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
+            (mExtendedStatusInfo.getSwitchType() == null ||
+                UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
             switch (mExtendedStatusInfo.getType()) {
                 case DomoticzValues.Scene.Type.GROUP:
                     return true;
@@ -141,14 +141,13 @@ public class WidgetIntentService extends Service {
                         return true;
             }
         }
-
         return false;
     }
 
     private boolean isPushOnSwitch(DevicesInfo mExtendedStatusInfo) {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
-                (mExtendedStatusInfo.getSwitchType() == null ||
-                        UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
+            (mExtendedStatusInfo.getSwitchType() == null ||
+                UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
             switch (mExtendedStatusInfo.getType()) {
                 case DomoticzValues.Scene.Type.SCENE:
                     return true;
@@ -167,8 +166,8 @@ public class WidgetIntentService extends Service {
 
     private boolean isPushOffSwitch(DevicesInfo mExtendedStatusInfo) {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
-                (mExtendedStatusInfo.getSwitchType() == null ||
-                        UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
+            (mExtendedStatusInfo.getSwitchType() == null ||
+                UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
             return false;
         } else
             switch (mExtendedStatusInfo.getSwitchTypeVal()) {
@@ -188,7 +187,6 @@ public class WidgetIntentService extends Service {
     }
 
     private void processSwitch(final Context context, int idx) {
-
         final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         boolean isScene = mSharedPrefs.getWidgetisScene(widgetID);
         if (smallWidget)
@@ -343,9 +341,14 @@ public class WidgetIntentService extends Service {
 
             int jsonValue = 0;
             if (clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                    clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
-                if (checked) jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                else {
+                clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                if (checked) {
+                    jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                    if (!UsefulBits.isEmpty(value)) {
+                        jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                        jsonValue = 0;
+                    }
+                } else {
                     jsonAction = DomoticzValues.Device.Switch.Action.ON;
                     if (!UsefulBits.isEmpty(value)) {
                         jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
@@ -359,7 +362,13 @@ public class WidgetIntentService extends Service {
                         jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
                         jsonValue = getSelectorValue(clickedSwitch, value);
                     }
-                } else jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                } else {
+                    jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                    if (!UsefulBits.isEmpty(value)) {
+                        jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                        jsonValue = 0;
+                    }
+                }
             }
 
             mDomoticz.setAction(clickedSwitch.getIdx(), jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {

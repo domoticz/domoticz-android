@@ -56,10 +56,10 @@ public class SerializableManager {
      */
     public static void saveSerializable(Context context, Object objectToSave, String fileName) {
         File SettingsFile = new File(Environment.getExternalStorageDirectory(),
-                "/Domoticz/DomoticzSettings.txt");
+            "/Domoticz/DomoticzSettings.txt");
 
         final String sPath = SettingsFile.getPath().
-                substring(0, SettingsFile.getPath().lastIndexOf("/"));
+            substring(0, SettingsFile.getPath().lastIndexOf("/"));
 
         //noinspection unused
         boolean mkdirsResultIsOk = new File(sPath + "/").mkdirs();
@@ -85,10 +85,10 @@ public class SerializableManager {
         Object objectToReturn = null;
 
         File SettingsFile = new File(Environment.getExternalStorageDirectory(),
-                "/Domoticz/DomoticzSettings.txt");
+            "/Domoticz/DomoticzSettings.txt");
 
         final String sPath = SettingsFile.getPath().
-                substring(0, SettingsFile.getPath().lastIndexOf("/"));
+            substring(0, SettingsFile.getPath().lastIndexOf("/"));
 
         //noinspection unused
         boolean mkdirsResultIsOk = new File(sPath + "/").mkdirs();

@@ -117,4 +117,8 @@
     <string name="continue_question">Pokračovat?</string>
     <string name="cant_remove_default_server">Nelze odstranit výchozí server</string>
     <string name="restart_required_msg">Po nastavení jazyka je vyžadováno restartování aplikace</string>
+    <string name="filter_all">All</string>
+    <string name="filter_normal">Normal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
 </resources>

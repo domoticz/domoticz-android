@@ -42,6 +42,7 @@
     <string name="category_startup_security">Security</string>
     <string name="category_account">Accounts</string>
     <string name="category_QRCode">QR код</string>
+    <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Speech</string>
     <string name="category_Reset">Reset</string>
     <!--        Generic settings       -->
@@ -111,6 +112,8 @@
     <string name="qrcode_settings">Настройка на QR кодовете</string>
     <string name="enable_qrcode">Разреши QR кодовете</string>
     <string name="qrcode_enable_settings">Enable QR Codes functionality</string>
+    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
     <string name="security_settings">Setup Security</string>
     <string name="enable_security">Enable fingerprint protection on startup</string>
     <string name="disable_security">Disable fingerprint protection on startup</string>
@@ -169,6 +172,7 @@
     <string name="error_atLeastOneItemInDrawer">You need at least one item in the drawer</string>
     <!--        Server update category       -->
     <string name="title_activity_update">Update server</string>
+    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"Could not check for updates: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"Could not get Domoticz server configuration: %1$s"</string>
     <string name="update_available_enhanced">Server update available: %1$s to version: %2$s</string>

@@ -117,4 +117,8 @@
     <string name="continue_question">Fortfahren?</string>
     <string name="cant_remove_default_server">Standard-Server kann nicht entfernt werden</string>
     <string name="restart_required_msg">Für die Spracheinstellungen werden um eine Anwendung zu bewirken ist Neustart erforderlich</string>
+    <string name="filter_all">All</string>
+    <string name="filter_normal">Normal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
 </resources>

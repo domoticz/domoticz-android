@@ -26,7 +26,6 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -106,7 +105,7 @@ public class UpdateActivity extends AppCompatAssistActivity {
         mDomoticz.getServerVersion(new VersionReceiver() {
             @Override
             public void onReceiveVersion(VersionInfo serverVersion) {
-                if(serverVersion == null)
+                if (serverVersion == null)
                     return;
                 if (serverUtil.getActiveServer() != null &&
                     serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null) {
@@ -206,45 +205,41 @@ public class UpdateActivity extends AppCompatAssistActivity {
         };
         mCountDownTimer.start();
 
-        if (mSharedPrefs.isDebugEnabled() || serverUtil.getActiveServer().getServerUpdateInfo(this) .isUpdateAvailable()) {
+        if (mSharedPrefs.isDebugEnabled() || serverUtil.getActiveServer().getServerUpdateInfo(this).isUpdateAvailable()) {
             mDomoticz.getDownloadUpdate(new DownloadUpdateServerReceiver() {
                 @Override
                 public void onDownloadStarted(boolean updateSuccess) {
-                    if(updateSuccess) {
+                    if (updateSuccess) {
                         showSnackbar("Downloading the new update for the server");
                         mDomoticz.getUpdateDownloadReady(new UpdateDownloadReadyReceiver() {
                             @Override
                             public void onUpdateDownloadReady(boolean downloadOk) {
-                                if (downloadOk) {
-                                    showSnackbar("Download finished, starting to update Domoticz");
-                                    mDomoticz.updateDomoticzServer(new UpdateDomoticzServerReceiver() {
-                                        @Override
-                                        public void onUpdateFinish(boolean updateSuccess) {
-                                            if(updateSuccess)
-                                                showSnackbar("Your system is updating at this moment");
-                                            else {
-                                                showSnackbar(getString(R.string.update_not_started_unknown_error));
-                                                dialog.cancel();
-                                                showMessageUpdateFailed();
-                                                refreshData();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onError(Exception error) {
+                                showSnackbar("Download finished, starting to update Domoticz");
+                                mDomoticz.updateDomoticzServer(new UpdateDomoticzServerReceiver() {
+                                    @Override
+                                    public void onUpdateFinish(boolean updateSuccess) {
+                                        if (updateSuccess)
+                                            showSnackbar("Your system is updating at this moment");
+                                        else {
                                             showSnackbar(getString(R.string.update_not_started_unknown_error));
                                             dialog.cancel();
                                             showMessageUpdateFailed();
                                             refreshData();
                                         }
-                                    });
-                                }
-                                else {
-                                    showSnackbar(getString(R.string.update_not_started_unknown_error));
-                                    dialog.cancel();
-                                    showMessageUpdateFailed();
-                                    refreshData();
-                                }
+                                    }
+
+                                    @Override
+                                    public void onError(Exception error) {
+                                        if (error.getMessage().contains("Time"))
+                                            showSnackbar("Your system is updating at this moment");
+                                        else {
+                                            showSnackbar("Could not update the domoticz server via the script " + error.getMessage());
+                                            dialog.cancel();
+                                            showMessageUpdateFailed();
+                                            refreshData();
+                                        }
+                                    }
+                                });
                             }
 
                             @Override
@@ -255,8 +250,7 @@ public class UpdateActivity extends AppCompatAssistActivity {
                                 refreshData();
                             }
                         });
-                    }
-                    else {
+                    } else {
                         showSnackbar(getString(R.string.update_not_started_unknown_error));
                         dialog.cancel();
                         showMessageUpdateFailed();
@@ -266,7 +260,7 @@ public class UpdateActivity extends AppCompatAssistActivity {
 
                 @Override
                 public void onError(Exception error) {
-                    showSnackbar(getString(R.string.update_not_started_unknown_error));
+                    showSnackbar("Could not download the update " + error.getMessage());
                     dialog.cancel();
                     showMessageUpdateFailed();
                     refreshData();
@@ -367,7 +361,7 @@ public class UpdateActivity extends AppCompatAssistActivity {
     private void showSnackbar(String message) {
         CoordinatorLayout fragmentCoordinatorLayout = findViewById(R.id.coordinatorLayout);
         if (fragmentCoordinatorLayout != null) {
-            UsefulBits.showSnackbar(this, fragmentCoordinatorLayout, message, Snackbar.LENGTH_SHORT);
+            UsefulBits.showSnackbar(this, fragmentCoordinatorLayout, message, Snackbar.LENGTH_LONG);
         }
     }
 

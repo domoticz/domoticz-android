@@ -42,6 +42,7 @@
     <string name="category_startup_security">Güvenlik</string>
     <string name="category_account">Hesap</string>
     <string name="category_QRCode">QR kodu</string>
+    <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Konuşma</string>
     <string name="category_Reset">Sıfırla</string>
     <!--        Generic settings       -->
@@ -111,6 +112,8 @@
     <string name="qrcode_settings">QR kodları kurulumu</string>
     <string name="enable_qrcode">QR kodları etkinleştir</string>
     <string name="qrcode_enable_settings">QR kodları işlevini etkinleştir</string>
+    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
     <string name="security_settings">Kurulum güvenliği</string>
     <string name="enable_security">Enable fingerprint protection on startup</string>
     <string name="disable_security">Disable fingerprint protection on startup</string>
@@ -169,6 +172,7 @@
     <string name="error_atLeastOneItemInDrawer">Çekmece içerisinde en az bir öğeye ihtiyacınız var.</string>
     <!--        Server update category       -->
     <string name="title_activity_update">Sunucuyu Güncelle</string>
+    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"Güncelleştirmeler kontrol edilemedi: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"Domoticz sunucu yapılandırması alınamadı: %1$s"</string>
     <string name="update_available_enhanced">Server güncelleştirmesi kullanılabilir: %1$s sürüm: %2$s</string>

@@ -84,6 +84,7 @@ import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Containers.SpeechInfo;
 import nl.hnogames.domoticz.Fragments.Cameras;
+import nl.hnogames.domoticz.Fragments.Logs;
 import nl.hnogames.domoticz.Fragments.MainPager;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
@@ -484,9 +485,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     if (inputJSONAction < 0) {
                         if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
                             mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
-                            if (!mDevicesInfo.getStatusBoolean())
+                            if (!mDevicesInfo.getStatusBoolean()) {
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                            else {
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = 0;
+                                }
+                            } else {
                                 jsonAction = DomoticzValues.Device.Switch.Action.ON;
                                 if (!UsefulBits.isEmpty(value)) {
                                     jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
@@ -500,15 +505,24 @@ public class MainActivity extends AppCompatPermissionsActivity {
                                     jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
                                     jsonValue = getSelectorValue(mDevicesInfo, value);
                                 }
-                            } else
+                            } else {
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = 0;
+                                }
+                            }
                         }
                     } else {
                         if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
                             mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
-                            if (inputJSONAction == 1)
+                            if (inputJSONAction == 1) {
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                            else {
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = 0;
+                                }
+                            } else {
                                 jsonAction = DomoticzValues.Device.Switch.Action.ON;
                                 if (!UsefulBits.isEmpty(value)) {
                                     jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
@@ -522,8 +536,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
                                     jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
                                     jsonValue = getSelectorValue(mDevicesInfo, value);
                                 }
-                            } else
+                            } else {
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                                if (!UsefulBits.isEmpty(value)) {
+                                    jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
+                                    jsonValue = 0;
+                                }
+                            }
                         }
                     }
 
@@ -1079,7 +1098,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                             .getUpdateRevisionNumber() :
                         version[0];
 
-                    if(!serverVersion.getVersion().equals(updateVersion) && serverVersion.isHaveUpdate()) {
+                    if (!serverVersion.getVersion().equals(updateVersion) && serverVersion.isHaveUpdate()) {
                         String message = String.format(getString(R.string.update_available_enhanced), serverVersion.getVersion(), updateVersion);
                         if (mSharedPrefs.checkForUpdatesEnabled() && !mSharedPrefs.getLastUpdateShown().equals(updateVersion)) {
                             if (mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).getSystemName().equalsIgnoreCase("linux")) {
@@ -1099,7 +1118,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
             @Override
             @DebugLog
-            public void onError(Exception error) {}
+            public void onError(Exception error) {
+            }
         });
     }
 
@@ -1116,7 +1136,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 else
                     getMenuInflater().inflate(R.menu.menu_camera, menu);
             } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment) || (f instanceof RefreshFragment)) {
-                if ((f instanceof MainPager) || (f instanceof Scenes) || (f instanceof Switches))
+                if ((f instanceof MainPager) || (f instanceof Scenes) || (f instanceof Switches) || (f instanceof Logs))
                     getMenuInflater().inflate(R.menu.menu_main_sort, menu);
                 else
                     getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -1287,9 +1307,14 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     invalidateOptionsMenu();//set pause button
                     return true;
                 case R.id.action_sort:
-                    SortDialog infoDialog = new SortDialog(
-                        this,
-                        R.layout.dialog_switch_logs);
+                    SortDialog infoDialog = (latestFragment instanceof Logs) ?
+                        new SortDialog(
+                            this,
+                            R.layout.dialog_switch_logs,
+                            new String[]{getString(R.string.filter_all), getString(R.string.filter_normal), getString(R.string.filter_status), getString(R.string.filter_error)}) :
+                        new SortDialog(
+                            this,
+                            R.layout.dialog_switch_logs, null);
                     infoDialog.onDismissListener(new SortDialog.DismissListener() {
                         @Override
                         @DebugLog

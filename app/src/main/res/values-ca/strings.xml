@@ -117,4 +117,8 @@
     <string name="continue_question">Voleu continuar?</string>
     <string name="cant_remove_default_server">No es pot treure el servidor per defecte</string>
     <string name="restart_required_msg">Cal reiniciar l\'aplicació per fer efectius els canvis en la configuració d\'idioma</string>
+    <string name="filter_all">All</string>
+    <string name="filter_normal">Normal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
 </resources>

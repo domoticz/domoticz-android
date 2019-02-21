@@ -60,9 +60,9 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.legacy.app.ActivityCompat;
 import hugo.weaving.DebugLog;
+import nl.hnogames.domoticz.BluetoothSettingsActivity;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.GeoSettingsActivity;
-import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.NFCSettingsActivity;
 import nl.hnogames.domoticz.QRCodeSettingsActivity;
 import nl.hnogames.domoticz.R;
@@ -79,7 +79,6 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
-import nl.hnogames.domoticzapi.Containers.ServerInfo;
 import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticzapi.Containers.VersionInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -177,9 +176,11 @@ public class Preference extends PreferenceFragment {
         android.preference.SwitchPreference WidgetsEnablePreference = (android.preference.SwitchPreference) findPreference("enableWidgets");
         android.preference.Preference NFCPreference = findPreference("nfc_settings");
         android.preference.Preference QRCodePreference = findPreference("qrcode_settings");
+        android.preference.Preference BluetoothPreference = findPreference("bluetooth_settings");
         android.preference.Preference SpeechPreference = findPreference("speech_settings");
         android.preference.SwitchPreference EnableNFCPreference = (android.preference.SwitchPreference) findPreference("enableNFC");
         android.preference.SwitchPreference EnableQRCodePreference = (android.preference.SwitchPreference) findPreference("enableQRCode");
+        android.preference.SwitchPreference EnableBluetoothPreference = (android.preference.SwitchPreference) findPreference("enableBluetooth");
         android.preference.SwitchPreference EnableSpeechPreference = (android.preference.SwitchPreference) findPreference("enableSpeech");
         android.preference.SwitchPreference EnableTalkBackPreference = (android.preference.SwitchPreference) findPreference("talkBack");
         MultiSelectListPreference drawerItems = (MultiSelectListPreference) findPreference("show_nav_items");
@@ -227,7 +228,8 @@ public class Preference extends PreferenceFragment {
 
                 @Override
                 @DebugLog
-                public void onError(Exception error) {}
+                public void onError(Exception error) {
+                }
             }, mServerUtil.getActiveServer().getConfigInfo(mContext));
         } else {
             setupDefaultValues();
@@ -328,7 +330,7 @@ public class Preference extends PreferenceFragment {
         fetchServerConfig.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
-                UsefulBits.getServerConfigForActiveServer(mContext,  new ConfigReceiver() {
+                UsefulBits.getServerConfigForActiveServer(mContext, new ConfigReceiver() {
                     @Override
                     public void onReceiveConfig(ConfigInfo settings) {
                         showSnackbar(mContext.getString(R.string.fetched_server_config_success));
@@ -405,6 +407,17 @@ public class Preference extends PreferenceFragment {
             }
         });
 
+        EnableBluetoothPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_bluetooth));
+                    return false;
+                }
+                return true;
+            }
+        });
+
         EnableQRCodePreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
@@ -467,6 +480,20 @@ public class Preference extends PreferenceFragment {
             }
         });
 
+        BluetoothPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_bluetooth));
+                    return false;
+                } else {
+                    Intent intent = new Intent(mContext, BluetoothSettingsActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+            }
+        });
+
         SpeechPreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
@@ -490,24 +517,24 @@ public class Preference extends PreferenceFragment {
                 } else {
                     if ((boolean) newValue) {
                         new MaterialDialog.Builder(mContext)
-                                .title(R.string.wizard_widgets)
-                                .content(R.string.widget_warning)
-                                .positiveText(R.string.ok)
-                                .negativeText(R.string.cancel)
-                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        mSharedPrefs.SetWidgetsEnabled(true);
-                                        ((SettingsActivity) getActivity()).reloadSettings();
-                                    }
-                                })
-                                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        mSharedPrefs.SetWidgetsEnabled(false);
-                                    }
-                                })
-                                .show();
+                            .title(R.string.wizard_widgets)
+                            .content(R.string.widget_warning)
+                            .positiveText(R.string.ok)
+                            .negativeText(R.string.cancel)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    mSharedPrefs.SetWidgetsEnabled(true);
+                                    ((SettingsActivity) getActivity()).reloadSettings();
+                                }
+                            })
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    mSharedPrefs.SetWidgetsEnabled(false);
+                                }
+                            })
+                            .show();
                         return false;
                     } else {
                         return true;
@@ -557,9 +584,9 @@ public class Preference extends PreferenceFragment {
                 if (logs != null && logs.size() > 0) {
                     Collections.reverse(logs);
                     new MaterialDialog.Builder(mContext)
-                            .title(mContext.getString(R.string.notification_show_title))
-                            .items((CharSequence[]) logs.toArray(new String[0]))
-                            .show();
+                        .title(mContext.getString(R.string.notification_show_title))
+                        .items((CharSequence[]) logs.toArray(new String[0]))
+                        .show();
                 } else
                     UsefulBits.showSimpleToast(mContext, getString(R.string.notification_show_nothing), Toast.LENGTH_LONG);
                 return true;
@@ -590,19 +617,19 @@ public class Preference extends PreferenceFragment {
             public boolean onPreferenceClick(android.preference.Preference preference) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     new MaterialDialog.Builder(mContext)
-                            .title(R.string.category_Reset)
-                            .content(R.string.are_you_sure_clear_settings)
-                            .positiveText(R.string.ok)
-                            .negativeText(R.string.cancel)
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @SuppressLint("NewApi")
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    ((ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE))
-                                            .clearApplicationUserData();
-                                }
-                            })
-                            .show();
+                        .title(R.string.category_Reset)
+                        .content(R.string.are_you_sure_clear_settings)
+                        .positiveText(R.string.ok)
+                        .negativeText(R.string.cancel)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @SuppressLint("NewApi")
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                ((ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE))
+                                    .clearApplicationUserData();
+                            }
+                        })
+                        .show();
                 } else {
                     startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
                 }
@@ -638,18 +665,18 @@ public class Preference extends PreferenceFragment {
                             return false;
                         } else {
                             new MaterialDialog.Builder(mContext)
-                                    .title(R.string.category_startup_security)
-                                    .content(R.string.fingerprint_sure)
-                                    .positiveText(R.string.ok)
-                                    .negativeText(R.string.cancel)
-                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                        @Override
-                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                            mSharedPrefs.setStartupSecurityEnabled(true);
-                                            ((SettingsActivity) getActivity()).reloadSettings();
-                                        }
-                                    })
-                                    .show();
+                                .title(R.string.category_startup_security)
+                                .content(R.string.fingerprint_sure)
+                                .positiveText(R.string.ok)
+                                .negativeText(R.string.cancel)
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        mSharedPrefs.setStartupSecurityEnabled(true);
+                                        ((SettingsActivity) getActivity()).reloadSettings();
+                                    }
+                                })
+                                .show();
 
                             return false;
                         }
@@ -668,8 +695,8 @@ public class Preference extends PreferenceFragment {
             return false;
         }
         if (ActivityCompat.checkSelfPermission(mContext,
-                Manifest.permission.USE_BIOMETRIC) !=
-                PackageManager.PERMISSION_GRANTED) {
+            Manifest.permission.USE_BIOMETRIC) !=
+            PackageManager.PERMISSION_GRANTED) {
             return false;
         }
         if (packageManager.hasSystemFeature(PackageManager.FEATURE_FINGERPRINT))
@@ -721,20 +748,20 @@ public class Preference extends PreferenceFragment {
 
     private void showRestartMessage() {
         new MaterialDialog.Builder(mContext)
-                .title(R.string.restart_required_title)
-                .content(mContext.getString(R.string.restart_required_msg)
-                        + UsefulBits.newLine()
-                        + UsefulBits.newLine()
-                        + mContext.getString(R.string.restart_now))
-                .positiveText(R.string.yes)
-                .negativeText(R.string.no)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        UsefulBits.restartApplication(getActivity());
-                    }
-                })
-                .show();
+            .title(R.string.restart_required_title)
+            .content(mContext.getString(R.string.restart_required_msg)
+                + UsefulBits.newLine()
+                + UsefulBits.newLine()
+                + mContext.getString(R.string.restart_now))
+            .positiveText(R.string.yes)
+            .negativeText(R.string.no)
+            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    UsefulBits.restartApplication(getActivity());
+                }
+            })
+            .show();
     }
 
     private void handleInfoAndAbout() {
@@ -767,29 +794,29 @@ public class Preference extends PreferenceFragment {
 
     private void handleImportExportButtons() {
         SettingsFile = new File(Environment.getExternalStorageDirectory(),
-                "/Domoticz/DomoticzSettings.txt");
+            "/Domoticz/DomoticzSettings.txt");
 
         final String sPath = SettingsFile.getPath().
-                substring(0, SettingsFile.getPath().lastIndexOf("/"));
+            substring(0, SettingsFile.getPath().lastIndexOf("/"));
         //noinspection unused
         boolean mkdirsResultIsOk = new File(sPath + "/").mkdirs();
 
         android.preference.Preference exportButton = findPreference("export_settings");
         exportButton.setOnPreferenceClickListener(
-                new android.preference.Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(android.preference.Preference preference) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (!PermissionsUtil.canAccessStorage(mContext)) {
-                                permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
-                            } else
-                                exportSettings();
+            new android.preference.Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(android.preference.Preference preference) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (!PermissionsUtil.canAccessStorage(mContext)) {
+                            permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                         } else
                             exportSettings();
+                    } else
+                        exportSettings();
 
-                        return false;
-                    }
-                });
+                    return false;
+                }
+            });
         android.preference.Preference importButton = findPreference("import_settings");
         importButton.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
@@ -829,9 +856,9 @@ public class Preference extends PreferenceFragment {
         PackageInfo pInfo = null;
         try {
             pInfo = mContext
-                    .getPackageManager()
-                    .getPackageInfo(mContext
-                            .getPackageName(), 0);
+                .getPackageManager()
+                .getPackageInfo(mContext
+                    .getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -890,7 +917,8 @@ public class Preference extends PreferenceFragment {
                         getString(R.string.error_couldNotCheckForUpdates),
                         mDomoticz.getErrorMessage(error));
                     showSnackbar(message);
-                }catch(Exception ignored){}
+                } catch (Exception ignored) {
+                }
             }
         });
     }
@@ -908,14 +936,14 @@ public class Preference extends PreferenceFragment {
                 public void run() {
                     if (getView() != null) {
                         Snackbar.make(getView(), category + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
-                                .setAction(R.string.upgrade, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        UsefulBits.openPremiumAppStore(mContext);
-                                    }
-                                })
-                                .setActionTextColor(ContextCompat.getColor(mContext, R.color.material_blue_600))
-                                .show();
+                            .setAction(R.string.upgrade, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    UsefulBits.openPremiumAppStore(mContext);
+                                }
+                            })
+                            .setActionTextColor(ContextCompat.getColor(mContext, R.color.material_blue_600))
+                            .show();
                     }
                 }
             }, (300));

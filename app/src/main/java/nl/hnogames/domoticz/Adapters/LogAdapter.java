@@ -76,7 +76,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.logs_row_default, parent, false);
+            .inflate(R.layout.logs_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             if ((view.findViewById(R.id.card_global_wrapper)) != null)
@@ -92,31 +92,37 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder
 
     @Override
     public void onBindViewHolder(final DataObjectHolder holder, int position) {
-
         if (filteredData != null && filteredData.size() > 0) {
             final LogInfo mLogInfo = filteredData.get(position);
             String dateTime = "";
             String message = "";
+            String name = "";
 
-            if (mLogInfo.getMessage().indexOf("  ") >= 0) {
+            if (mLogInfo.getMessage().contains("  ")) {
                 dateTime = mLogInfo.getMessage().substring(0, mLogInfo.getMessage().indexOf("  ")).trim();
                 message = mLogInfo.getMessage().substring(mLogInfo.getMessage().indexOf("  ") + 1).trim();
             } else
                 message = mLogInfo.getMessage();
             if (message.indexOf(":") > 0) {
-                holder.name.setText(message.substring(0, message.indexOf(":")).trim());
-                holder.message.setText(message.substring(message.indexOf(":") + 1).trim());
+                name = (message.substring(0, message.indexOf(":")).trim());
+                message = (message.substring(message.indexOf(":") + 1).trim());
             } else {
                 if (message.startsWith("(")) {
-                    holder.name.setText(message.substring(0, message.indexOf(")")).replace("(", "").trim());
-                    holder.message.setText(message.substring(message.indexOf(")") + 1).trim());
+                    name = (message.substring(0, message.indexOf(")")).replace("(", "").trim());
+                    message = (message.substring(message.indexOf(")") + 1).trim());
                 } else
-                    holder.name.setText(message);
+                    name = (message);
             }
-
             holder.datetime.setText(dateTime);
+            holder.name.setText(name);
+            holder.message.setText(message);
 
-            Picasso.get().load(R.drawable.text).into(holder.iconRow);
+            if (mLogInfo.getLevel() == 4)
+                Picasso.get().load(R.drawable.demand).into(holder.iconRow);
+            else if (mLogInfo.getLevel() == 2)
+                Picasso.get().load(R.drawable.siren).into(holder.iconRow);
+            else
+                Picasso.get().load(R.drawable.text).into(holder.iconRow);
         }
     }
 
@@ -131,7 +137,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder
 
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener {
+        implements View.OnClickListener {
         TextView name;
         TextView datetime;
         TextView message;

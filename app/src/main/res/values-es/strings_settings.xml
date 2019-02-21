@@ -42,17 +42,18 @@
     <string name="category_startup_security">Seguridad</string>
     <string name="category_account">Cuentas</string>
     <string name="category_QRCode">Código QR</string>
+    <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Discurso</string>
     <string name="category_Reset">Restablecer</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Pantalla de inicio</string>
     <string name="enable_items">Activar/desactivar elementos</string>
     <!--        Generic sorting settings       -->
-    <string name="sort_server_title">Sorting</string>
-    <string name="sort_server_on">Sort devices like sorted on the server</string>
-    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
-    <string name="sort_lock_server_title">Lock</string>
-    <string name="sort_lock_custom_on">Lock the current custom sorting (disable drag/drop)</string>
+    <string name="sort_server_title">Clasificación</string>
+    <string name="sort_server_on">Clasificación de los tipos de dispositivos en el servidor</string>
+    <string name="sort_custom_on">Clasificación, arrastrar y soltar los dispositivos para ordenarlos</string>
+    <string name="sort_lock_server_title">Bloquear</string>
+    <string name="sort_lock_custom_on">Bloquear la clasificación actual (desactivar arrastrar y colocar)</string>
     <string name="sort_dashboardLikeServer_off">Ordenar alfabéticamente el tablero</string>
     <string name="extra_data_title">Datos adicionales en el tablero</string>
     <string name="show_extra_data_on">Mostrar datos adicionales en el tablero</string>
@@ -111,6 +112,8 @@
     <string name="qrcode_settings">Configuración de códigos QR</string>
     <string name="enable_qrcode">Habilitar códigos QR</string>
     <string name="qrcode_enable_settings">Habilitar la funcionalidad de Código QR</string>
+    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
     <string name="security_settings">Configuración de Seguridad</string>
     <string name="enable_security">Habilitar la protección por huella dactilar al inicio</string>
     <string name="disable_security">Desactivar la protección por huella dactilar en el inicio</string>
@@ -169,6 +172,7 @@
     <string name="error_atLeastOneItemInDrawer">Usted necesita al menos un artículo en el cajón</string>
     <!--        Server update category       -->
     <string name="title_activity_update">Actualizar servidor</string>
+    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"No se puede buscar actualizaciones: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"No se pudo obtener la configuración del servidor de Domoticz: %1$s"</string>
     <string name="update_available_enhanced">Hay una actualización del servidor disponible: %1$s a la versión: %2$s</string>

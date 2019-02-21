@@ -42,6 +42,7 @@
     <string name="category_startup_security">Безопасность</string>
     <string name="category_account">Учётные записи</string>
     <string name="category_QRCode">QR-код</string>
+    <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Голосовое управление</string>
     <string name="category_Reset">Сброс</string>
     <!--        Generic settings       -->
@@ -111,6 +112,8 @@
     <string name="qrcode_settings">Настройка кодов QR</string>
     <string name="enable_qrcode">Включить QR коды</string>
     <string name="qrcode_enable_settings">Включение функции QR-кодов</string>
+    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
     <string name="security_settings">Настройка безопасности</string>
     <string name="enable_security">Ввод отпечатков пальцев на старте</string>
     <string name="disable_security">Отключить ввод отпечатков пальцев на старте</string>
@@ -169,6 +172,7 @@
     <string name="error_atLeastOneItemInDrawer">Необходимо выбрать хотя бы один элемент</string>
     <!--        Server update category       -->
     <string name="title_activity_update">Обновить сервер</string>
+    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"Невозможно проверить наличие обновлений: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"Не удалось получить конфигурацию сервера Domoticz: %1$s"</string>
     <string name="update_available_enhanced">Доступно обновление сервера: %1$s до версии: %2$s</string>
