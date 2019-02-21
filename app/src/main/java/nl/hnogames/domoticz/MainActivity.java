@@ -23,6 +23,7 @@ package nl.hnogames.domoticz;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -89,6 +90,7 @@ import nl.hnogames.domoticz.Fragments.MainPager;
 import nl.hnogames.domoticz.Fragments.Scenes;
 import nl.hnogames.domoticz.Fragments.Switches;
 import nl.hnogames.domoticz.Fragments.TemperatureMainPager;
+import nl.hnogames.domoticz.Fragments.UserVariables;
 import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SortDialog;
 import nl.hnogames.domoticz.Utils.GCMUtils;
@@ -146,8 +148,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private boolean listeningSpeechRecognition = false;
     private boolean fromVoiceWidget = false;
     private boolean fromQRCodeWidget = false;
-    private boolean validateOnce = true;
-    private int validateCount = 0;
     private PermissionHelper permissionHelper;
     private boolean fromShortcut = false;
     private ConfigInfo mConfigInfo;
@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
             mSharedPrefs.setFirstStart(false);
         } else {
             new GeoUtils(this, this).AddGeofences();
-            buildScreen();
+            initScreen();
         }
     }
 
@@ -244,7 +244,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                validateOnce = false;
             }
 
             @Override
@@ -317,7 +316,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     @DebugLog
-    public void buildScreen() {
+    public void initScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             applyLanguage();
             TextView usingTabletLayout = findViewById(R.id.tabletLayout);
@@ -341,38 +340,18 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 if (domoticz == null)
                     domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
 
-                mConfigInfo = mServerUtil.getActiveServer().getConfigInfo(this);
+                //mConfigInfo = mServerUtil.getActiveServer().getConfigInfo(this);
                 if (!fromVoiceWidget && !fromQRCodeWidget) {
                     setupMobileDevice();
                     setScheduledTasks();
 
                     WidgetUtils.RefreshWidgets(this);
                     UsefulBits.checkDownloadedLanguage(this, mServerUtil, false, false);
-                    drawNavigationMenu(mConfigInfo);
-
-                    UsefulBits.getServerConfigForActiveServer(this, new ConfigReceiver() {
-                        @Override
-                        @DebugLog
-                        public void onReceiveConfig(ConfigInfo settings) {
-                            mConfigInfo = settings;
-                            drawNavigationMenu(mConfigInfo);
-                            checkDomoticzServerUpdate(mConfigInfo);
-                            if (!fromShortcut)
-                                addFragment();
-                        }
-
-                        @Override
-                        @DebugLog
-                        public void onError(Exception error) {
-                            if (!fromShortcut)
-                                addFragment();
-                        }
-                    }, mConfigInfo);
+                    new MainActivity.GetCachedDataTask().execute();
                 } else {
                     if (!fromShortcut) addFragment();
                 }
                 if (mSharedPrefs.isStartupSecurityEnabled()) {
-                    validateCount = 0;
                     biometricPrompt.authenticate(promptInfo);
                 }
             }
@@ -381,6 +360,48 @@ public class MainActivity extends AppCompatPermissionsActivity {
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
+    }
+
+    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
+        protected Boolean doInBackground(Boolean... geto) {
+                try {
+                    MainActivity.this.mConfigInfo = (ConfigInfo) SerializableManager.readSerializedObject(MainActivity.this, "ConfigInfo");
+                    mServerUtil.getActiveServer().setConfigInfo(MainActivity.this, MainActivity.this.mConfigInfo);
+                } catch (Exception ex) {}
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            if (MainActivity.this.mConfigInfo != null)
+                buildscreen(); //build screen from cache
+
+            UsefulBits.getServerConfigForActiveServer(MainActivity.this, new ConfigReceiver() {
+                @Override
+                @DebugLog
+                public void onReceiveConfig(ConfigInfo settings) {
+                    if((MainActivity.this.mConfigInfo == null || settings == null) || MainActivity.this.mConfigInfo.toString().equals(settings.toString())) {
+                        MainActivity.this.mConfigInfo = settings;
+                        SerializableManager.saveSerializable(MainActivity.this, settings, "ConfigInfo");
+                        buildscreen();
+                    }
+                }
+
+                @Override
+                @DebugLog
+                public void onError(Exception error) {
+                    if (!fromShortcut)
+                        addFragment();
+                }
+            }, mConfigInfo);
+        }
+    }
+
+    public void buildscreen()
+    {
+        drawNavigationMenu(mConfigInfo);
+        checkDomoticzServerUpdate(mConfigInfo);
+        if (!fromShortcut)
+            addFragment();
     }
 
     /* Called when the second activity's finishes */
@@ -397,7 +418,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                             setTheme(R.style.AppThemeDarkMain);
                         else
                             setTheme(R.style.AppThemeMain);
-                        buildScreen();
+                        initScreen();
                     }
                     SerializableManager.cleanAllSerializableObjects(this);
                     break;
@@ -872,7 +893,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                                                 if (md5Pass.equals(user.getPassword())) {
                                                     domoticz.LogOff();
                                                     domoticz.setUserCredentials(user.getUsername(), password);
-                                                    buildScreen();
+                                                    initScreen();
                                                 } else {
                                                     UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                                                     drawNavigationMenu(finalConfig);

@@ -21,6 +21,8 @@
 
 package nl.hnogames.domoticzapi.Containers;
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -246,5 +248,29 @@ public class ConfigInfo implements Serializable {
 
     public void setShowUpdatedEffect(boolean showUpdatedEffect) {
         ShowUpdatedEffect = showUpdatedEffect;
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigInfo{" +
+            "DegreeDaysBaseTemperature='" + DegreeDaysBaseTemperature + '\'' +
+            "FiveMinuteHistoryDays='" + FiveMinuteHistoryDays + '\'' +
+            "Latitude='" + Latitude + '\'' +
+            "Longitude='" + Longitude + '\'' +
+            "TempScale='" + TempScale + '\'' +
+            "TempSign='" + TempSign + '\'' +
+            "WindScale='" + WindScale + '\'' +
+            "WindSign='" + WindSign + '\'' +
+            "mUsers='" + new Gson().toJson(mUsers) + '\'' +
+            "EnableTabCustom='" + EnableTabCustom + '\'' +
+            "EnableTabDashboard='" + EnableTabDashboard + '\'' +
+            "EnableTabFloorplans='" + EnableTabFloorplans + '\'' +
+            "EnableTabLights='" + EnableTabLights + '\'' +
+            "EnableTabProxy='" + EnableTabProxy + '\'' +
+            "EnableTabScenes='" + EnableTabScenes + '\'' +
+            "EnableTabTemp='" + EnableTabTemp + '\'' +
+            "EnableTabWeather='" + EnableTabWeather + '\'' +
+            "ShowUpdatedEffect='" + ShowUpdatedEffect + '\'' +
+            '}';
     }
 }
