@@ -379,7 +379,9 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 @Override
                 @DebugLog
                 public void onReceiveConfig(ConfigInfo settings) {
-                    if((MainActivity.this.mConfigInfo == null || settings == null) || MainActivity.this.mConfigInfo.toString().equals(settings.toString())) {
+                    String oldConfig = MainActivity.this.mConfigInfo.toString();
+                    String newConfig = settings.toString();
+                    if(MainActivity.this.mConfigInfo == null || !oldConfig.equals(newConfig)) {
                         MainActivity.this.mConfigInfo = settings;
                         SerializableManager.saveSerializable(MainActivity.this, settings, "ConfigInfo");
                         buildscreen();
@@ -399,9 +401,9 @@ public class MainActivity extends AppCompatPermissionsActivity {
     public void buildscreen()
     {
         drawNavigationMenu(mConfigInfo);
-        checkDomoticzServerUpdate(mConfigInfo);
         if (!fromShortcut)
             addFragment();
+        checkDomoticzServerUpdate(mConfigInfo);
     }
 
     /* Called when the second activity's finishes */

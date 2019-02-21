@@ -250,8 +250,15 @@ public class ConfigInfo implements Serializable {
         ShowUpdatedEffect = showUpdatedEffect;
     }
 
+
     @Override
     public String toString() {
+        int userCount = mUsers != null ? mUsers.size() : 0;
+        String userInfo = "UserInfos{";
+        for (UserInfo u: mUsers)
+            userInfo +=  u.toString();
+        userInfo+= '}';
+
         return "ConfigInfo{" +
             "DegreeDaysBaseTemperature='" + DegreeDaysBaseTemperature + '\'' +
             "FiveMinuteHistoryDays='" + FiveMinuteHistoryDays + '\'' +
@@ -261,12 +268,9 @@ public class ConfigInfo implements Serializable {
             "TempSign='" + TempSign + '\'' +
             "WindScale='" + WindScale + '\'' +
             "WindSign='" + WindSign + '\'' +
-            "mUsers='" + new Gson().toJson(mUsers) + '\'' +
-            "EnableTabCustom='" + EnableTabCustom + '\'' +
-            "EnableTabDashboard='" + EnableTabDashboard + '\'' +
-            "EnableTabFloorplans='" + EnableTabFloorplans + '\'' +
+                "UserCount='" + userCount + '\'' +
+                "UserInfo='" + userInfo + '\'' +
             "EnableTabLights='" + EnableTabLights + '\'' +
-            "EnableTabProxy='" + EnableTabProxy + '\'' +
             "EnableTabScenes='" + EnableTabScenes + '\'' +
             "EnableTabTemp='" + EnableTabTemp + '\'' +
             "EnableTabWeather='" + EnableTabWeather + '\'' +
