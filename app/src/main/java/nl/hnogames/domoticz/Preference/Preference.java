@@ -866,9 +866,13 @@ public class Preference extends PreferenceFragment {
         if (pInfo != null) appVersionStr = pInfo.versionName;
 
         final android.preference.Preference appVersion = findPreference("version");
-        appVersion.setSummary(appVersionStr);
+        if(appVersion != null && !UsefulBits.isEmpty(appVersionStr))
+            appVersion.setSummary(appVersionStr);
 
         final android.preference.Preference domoticzVersion = findPreference("version_domoticz");
+        if(domoticzVersion == null)
+            return;
+
         mDomoticz.getServerVersion(new VersionReceiver() {
             @Override
             @DebugLog

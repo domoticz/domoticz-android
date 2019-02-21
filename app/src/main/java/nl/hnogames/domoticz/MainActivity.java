@@ -379,9 +379,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 @Override
                 @DebugLog
                 public void onReceiveConfig(ConfigInfo settings) {
-                    String oldConfig = MainActivity.this.mConfigInfo.toString();
-                    String newConfig = settings.toString();
-                    if(MainActivity.this.mConfigInfo == null || !oldConfig.equals(newConfig)) {
+                    if(MainActivity.this.mConfigInfo == null || settings == null || !MainActivity.this.mConfigInfo.toString().equals(settings.toString())) {
                         MainActivity.this.mConfigInfo = settings;
                         SerializableManager.saveSerializable(MainActivity.this, settings, "ConfigInfo");
                         buildscreen();
