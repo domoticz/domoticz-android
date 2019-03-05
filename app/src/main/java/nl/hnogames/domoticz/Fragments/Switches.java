@@ -882,17 +882,20 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         if (clickedSwitch.getIdx() > 0) {
             int jsonAction;
             int jsonUrl = DomoticzValues.Json.Url.Set.SWITCHES;
-            if (clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
-                if (checked)
-                    jsonAction = DomoticzValues.Device.Switch.Action.OFF;
-                else jsonAction =
-                    DomoticzValues.Device.Switch.Action.ON;
-            } else {
-                if (checked)
-                    jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                else jsonAction =
-                    DomoticzValues.Device.Switch.Action.OFF;
+            if (clickedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP) || clickedSwitch.getType().equals(DomoticzValues.Scene.Type.SCENE)) {
+                jsonUrl = DomoticzValues.Json.Url.Set.SCENES;
+                if (checked) jsonAction = DomoticzValues.Scene.Action.ON;
+                else jsonAction = DomoticzValues.Scene.Action.OFF;
+            }
+            else if (clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
+                    clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
+                    clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) {
+                if (checked) jsonAction = DomoticzValues.Device.Switch.Action.OFF;
+                else jsonAction = DomoticzValues.Device.Switch.Action.ON;
+            }
+            else {
+                if (checked) jsonAction = DomoticzValues.Device.Switch.Action.ON;
+                else jsonAction = DomoticzValues.Device.Switch.Action.OFF;
             }
 
             mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, password, new setCommandReceiver() {

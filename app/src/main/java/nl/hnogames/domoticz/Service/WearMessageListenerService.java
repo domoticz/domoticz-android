@@ -244,7 +244,8 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
         boolean checked = !toggledDevice.getStatusBoolean();
         if (toggledDevice.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-            toggledDevice.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+            toggledDevice.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
+                toggledDevice.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) {
             if (checked) jsonAction = DomoticzValues.Device.Switch.Action.OFF;
             else jsonAction = DomoticzValues.Device.Switch.Action.ON;
         } else {

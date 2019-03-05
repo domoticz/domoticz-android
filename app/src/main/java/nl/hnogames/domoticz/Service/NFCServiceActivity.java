@@ -99,7 +99,8 @@ public class NFCServiceActivity extends AppCompatActivity {
 
                 if (!isSceneOrGroup) {
                     if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) {
                         if (!mDevicesInfo.getStatusBoolean()) {
                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                             if (!UsefulBits.isEmpty(value)) {
