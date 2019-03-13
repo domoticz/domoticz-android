@@ -109,6 +109,12 @@
             android:summaryOff="@string/show_dashboard_list_on"
             android:summaryOn="@string/show_dashboard_list_off"
             android:title="@string/dashboard_list_title"/>
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="dashboardShowClock"
+            android:summaryOff="@string/show_dashboard_clock"
+            android:summaryOn="@string/show_dashboard_clock"
+            android:title="@string/dashboard_clock"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_wear">

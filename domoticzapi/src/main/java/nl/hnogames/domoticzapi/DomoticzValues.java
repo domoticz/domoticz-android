@@ -301,6 +301,7 @@ public class DomoticzValues {
                 int IMAGE = 41;
                 int CHECKLOGIN = 42;
                 int UPDATE_DOWNLOAD_UPDATE = 43;
+                int SUNRISE = 44;
             }
 
             @SuppressWarnings("SpellCheckingInspection")
@@ -503,6 +504,7 @@ public class DomoticzValues {
 
         @SuppressWarnings("SpellCheckingInspection")
         interface System {
+            String SUNRISE = "/json.htm?type=command&param=getSunRiseSet";
             String UPDATE = "/json.htm?type=command&param=checkforupdate&forced=true";
             String USERVARIABLES = "/json.htm?type=command&param=getuservariables";
             String EVENTS = "/json.htm?type=events&param=list";

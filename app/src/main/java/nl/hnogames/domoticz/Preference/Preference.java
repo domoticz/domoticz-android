@@ -192,6 +192,7 @@ public class Preference extends PreferenceFragment {
         NotificationsMultiSelectListPreference notificationsMultiSelectListPreference = (NotificationsMultiSelectListPreference) findPreference("suppressNotifications");
         NotificationsMultiSelectListPreference alarmMultiSelectListPreference = (NotificationsMultiSelectListPreference) findPreference("alarmNotifications");
         android.preference.SwitchPreference ThemePreference = (android.preference.SwitchPreference) findPreference("darkTheme");
+        android.preference.SwitchPreference ClockPreference = (android.preference.SwitchPreference) findPreference("dashboardShowClock");
         android.preference.Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
         android.preference.SwitchPreference FingerPrintPreference = (android.preference.SwitchPreference) findPreference("enableSecurity");
         android.preference.PreferenceScreen notificationScreen = (android.preference.PreferenceScreen) findPreference("notificationscreen");
@@ -291,6 +292,17 @@ public class Preference extends PreferenceFragment {
                     ((SettingsActivity) getActivity()).reloadSettings();
                     return true;
                 }
+            }
+        });
+
+        ClockPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_clock));
+                    return false;
+                }
+                return true;
             }
         });
 
