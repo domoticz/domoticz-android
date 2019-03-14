@@ -38,6 +38,7 @@
     <string name="category_debug">Felsökning</string>
     <string name="category_export">Exportera/importera inställningar</string>
     <string name="category_theme">Tema</string>
+    <string name="category_clock">Clock</string>
     <string name="category_nfc">NFC-anslutningar</string>
     <string name="category_startup_security">Säkerhet</string>
     <string name="category_account">Konton</string>
@@ -70,6 +71,8 @@
     <string name="dashboard_list_title">Skrivbordsrutnät</string>
     <string name="show_dashboard_list_on">Visa skrivbordet som lista</string>
     <string name="show_dashboard_list_off">Visa skrivbordet som rutnät</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear-anpassade objekt</string>
     <string name="custom_wear_select">Välj Wear-brytare</string>

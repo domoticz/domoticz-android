@@ -38,6 +38,7 @@
     <string name="category_debug">Depuração</string>
     <string name="category_export">Configurações de importação/exportação</string>
     <string name="category_theme">Aparência</string>
+    <string name="category_clock">Clock</string>
     <string name="category_nfc">Conexões de NFC</string>
     <string name="category_startup_security">Segurança</string>
     <string name="category_account">Contas</string>
@@ -70,6 +71,8 @@
     <string name="dashboard_list_title">Grelha do painel de entrada</string>
     <string name="show_dashboard_list_on">Mostrar painel de entrada como lista</string>
     <string name="show_dashboard_list_off">Mostrar painel de entrada com grelha</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Itens personalizados no android Wear</string>
     <string name="custom_wear_select">Selecionar Interruptores</string>

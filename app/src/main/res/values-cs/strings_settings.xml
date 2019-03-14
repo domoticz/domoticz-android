@@ -38,6 +38,7 @@
     <string name="category_debug">Ladění</string>
     <string name="category_export">Export/Import nastavení</string>
     <string name="category_theme">Téma</string>
+    <string name="category_clock">Clock</string>
     <string name="category_nfc">NFC připojení</string>
     <string name="category_startup_security">Zabezpečení</string>
     <string name="category_account">Účty</string>
@@ -70,6 +71,8 @@
     <string name="dashboard_list_title">Mřížka řídícího panelu</string>
     <string name="show_dashboard_list_on">Zobrazit řídící panel jako seznam</string>
     <string name="show_dashboard_list_off">Zobrazit řídící panel jako mřížku</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Vlastní položky Android Wear</string>
     <string name="custom_wear_select">Zvolte Wear přepínače</string>

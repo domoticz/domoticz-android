@@ -52,6 +52,10 @@
     <string name="button_state_full_light">Full light</string>
     <string name="button_state_night">Night light</string>
 
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="now">Now</string>
+
     <string name="last_update">Last seen</string>
     <string name="signal_level">Signal level</string>
     <string name="battery_level">Battery level</string>

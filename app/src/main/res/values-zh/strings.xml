@@ -47,6 +47,9 @@
     <string name="button_disarm">保全撤防</string>
     <string name="button_state_full_light">Full light</string>
     <string name="button_state_night">Night light</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="now">Now</string>
     <string name="last_update">最後上線</string>
     <string name="signal_level">訊號等級</string>
     <string name="battery_level">電池電量</string>

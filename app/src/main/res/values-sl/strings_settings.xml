@@ -38,6 +38,7 @@
     <string name="category_debug">Razhroščevanje</string>
     <string name="category_export">Izvozi/uvozi nastavitve</string>
     <string name="category_theme">Tema</string>
+    <string name="category_clock">Clock</string>
     <string name="category_nfc">NFC povezave</string>
     <string name="category_startup_security">Varnost</string>
     <string name="category_account">Računi</string>
@@ -70,6 +71,8 @@
     <string name="dashboard_list_title">Mreža na nadzorni plošči</string>
     <string name="show_dashboard_list_on">Pokaži nadzorno ploščo kot seznam</string>
     <string name="show_dashboard_list_off">Pokaži nadzorno ploščo kot mrežo</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear pripomočki po meri</string>
     <string name="custom_wear_select">Izberi Android Wear stikala</string>

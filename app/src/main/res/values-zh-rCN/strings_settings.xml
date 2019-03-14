@@ -38,6 +38,7 @@
     <string name="category_debug">调试</string>
     <string name="category_export">导入/导出设置</string>
     <string name="category_theme">主题</string>
+    <string name="category_clock">Clock</string>
     <string name="category_nfc">NFC连接</string>
     <string name="category_startup_security">安全</string>
     <string name="category_account">账户</string>
@@ -70,6 +71,8 @@
     <string name="dashboard_list_title">仪表盘网格</string>
     <string name="show_dashboard_list_on">仪表盘按列表显示</string>
     <string name="show_dashboard_list_off">仪表盘按网格显示</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear手表自定义项目</string>
     <string name="custom_wear_select">选择手表开关</string>

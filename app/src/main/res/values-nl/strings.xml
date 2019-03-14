@@ -47,6 +47,9 @@
     <string name="button_disarm">Deactiveer</string>
     <string name="button_state_full_light">Vol aan</string>
     <string name="button_state_night">Nachtverlichting</string>
+    <string name="sunrise">Zonsopkomst</string>
+    <string name="sunset">Zonsondergang</string>
+    <string name="now">Nu</string>
     <string name="last_update">Laatst gezien</string>
     <string name="signal_level">Signaalsterkte</string>
     <string name="battery_level">Batterijniveau</string>

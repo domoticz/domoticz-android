@@ -38,6 +38,7 @@
     <string name="category_debug">Fejlfinding</string>
     <string name="category_export">Eksporter/Importer indstillinger</string>
     <string name="category_theme">Tema</string>
+    <string name="category_clock">Clock</string>
     <string name="category_nfc">NFC forbindelser</string>
     <string name="category_startup_security">Security</string>
     <string name="category_account">Accounts</string>
@@ -70,6 +71,8 @@
     <string name="dashboard_list_title">Betjeningspanels gitter</string>
     <string name="show_dashboard_list_on">Vis betjeningspanel som liste</string>
     <string name="show_dashboard_list_off">Vis betjeningspanel som gitter</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android wear brugerdefinerede elementer</string>
     <string name="custom_wear_select">Vælg wear switche</string>

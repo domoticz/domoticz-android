@@ -47,6 +47,9 @@
     <string name="button_disarm">Désarmer</string>
     <string name="button_state_full_light">Lumière complète</string>
     <string name="button_state_night">Lumière de nuit</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="now">Now</string>
     <string name="last_update">Dernière activité</string>
     <string name="signal_level">Niveau du signal</string>
     <string name="battery_level">Niveau de batterie</string>
@@ -117,8 +120,8 @@
     <string name="continue_question">Continuer ?</string>
     <string name="cant_remove_default_server">Impossible de supprimer le serveur par défaut</string>
     <string name="restart_required_msg">Un redémarrage est nécessaire pour que les paramètres de langue soient pris en compte</string>
-    <string name="filter_all">All</string>
+    <string name="filter_all">Tous</string>
     <string name="filter_normal">Normal</string>
-    <string name="filter_status">Status</string>
-    <string name="filter_error">Error</string>
+    <string name="filter_status">Statut</string>
+    <string name="filter_error">Erreur</string>
 </resources>

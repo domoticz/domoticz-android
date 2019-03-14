@@ -38,6 +38,7 @@
     <string name="category_debug">Отладка</string>
     <string name="category_export">Экспорт/импорт параметров</string>
     <string name="category_theme">Оформление</string>
+    <string name="category_clock">Clock</string>
     <string name="category_nfc">NFC соединения</string>
     <string name="category_startup_security">Безопасность</string>
     <string name="category_account">Учётные записи</string>
@@ -70,6 +71,8 @@
     <string name="dashboard_list_title">Сетка панели</string>
     <string name="show_dashboard_list_on">Показать панель как список</string>
     <string name="show_dashboard_list_off">Показать панель как сетку</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear элементы</string>
     <string name="custom_wear_select">Выбрать Wear переключатель</string>

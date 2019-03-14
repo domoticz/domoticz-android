@@ -38,6 +38,7 @@
     <string name="category_debug">Отстраняване на грешки</string>
     <string name="category_export">Настройки на изнасяне и внасяне</string>
     <string name="category_theme">Тема</string>
+    <string name="category_clock">Clock</string>
     <string name="category_nfc">NFC връзки</string>
     <string name="category_startup_security">Security</string>
     <string name="category_account">Accounts</string>
@@ -70,6 +71,8 @@
     <string name="dashboard_list_title">Dashboard Grid</string>
     <string name="show_dashboard_list_on">Show dashboard as list</string>
     <string name="show_dashboard_list_off">Show dashboard as grid</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear custom items</string>
     <string name="custom_wear_select">Select Wear switches</string>

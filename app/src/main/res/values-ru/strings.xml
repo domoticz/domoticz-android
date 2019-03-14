@@ -47,6 +47,9 @@
     <string name="button_disarm">Выключить</string>
     <string name="button_state_full_light">Full light</string>
     <string name="button_state_night">Night light</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="now">Now</string>
     <string name="last_update">Последнее посещение</string>
     <string name="signal_level">Уровень сигнала</string>
     <string name="battery_level">Уровень батареи</string>

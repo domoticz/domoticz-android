@@ -47,6 +47,9 @@
     <string name="button_disarm">Desarmar</string>
     <string name="button_state_full_light">Full light</string>
     <string name="button_state_night">Night light</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="now">Now</string>
     <string name="last_update">Visto pela última vez</string>
     <string name="signal_level">Nível de sinal</string>
     <string name="battery_level">Nível de bateria</string>

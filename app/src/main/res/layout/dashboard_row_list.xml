@@ -94,7 +94,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:paddingLeft="0dp"
-                        android:text="Sunrise"/>
+                        android:text="@string/sunrise"/>
 
                     <rm.com.clocks.ClockImageView
                         android:id="@+id/sunrise"
@@ -138,7 +138,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="0dp"
                         android:gravity="center_horizontal"
-                        android:text="Now"/>
+                        android:text="@string/now"/>
 
                     <rm.com.clocks.ClockImageView
                         android:id="@+id/clock"
@@ -182,7 +182,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:paddingLeft="0dp"
-                        android:text="Sunset"/>
+                        android:text="@string/sunset"/>
 
                     <rm.com.clocks.ClockImageView
                         android:id="@+id/sunset"

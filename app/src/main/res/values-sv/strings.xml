@@ -47,6 +47,9 @@
     <string name="button_disarm">Avaktivera</string>
     <string name="button_state_full_light">Fullt ljus</string>
     <string name="button_state_night">Nattljus</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="now">Now</string>
     <string name="last_update">Senast sedd</string>
     <string name="signal_level">Signalstyrka</string>
     <string name="battery_level">Batterinivå</string>

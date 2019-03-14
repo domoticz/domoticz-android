@@ -38,6 +38,7 @@
     <string name="category_debug">Debugowanie</string>
     <string name="category_export">Eksport/Import ustawień</string>
     <string name="category_theme">Motyw</string>
+    <string name="category_clock">Clock</string>
     <string name="category_nfc">Połączenia NFC</string>
     <string name="category_startup_security">Zabezpieczenia</string>
     <string name="category_account">Konta</string>
@@ -70,6 +71,8 @@
     <string name="dashboard_list_title">Siatka pulpitu</string>
     <string name="show_dashboard_list_on">Pokaż pulpit jako listę</string>
     <string name="show_dashboard_list_off">Pokaż pulpit jako siatkę</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear własne pozycje</string>
     <string name="custom_wear_select">Wybierz przełączniki Wear</string>

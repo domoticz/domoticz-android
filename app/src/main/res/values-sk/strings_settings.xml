@@ -38,6 +38,7 @@
     <string name="category_debug">Ladenie chýb</string>
     <string name="category_export">Exportovať/importovať nastavenia</string>
     <string name="category_theme">Vzhľad</string>
+    <string name="category_clock">Clock</string>
     <string name="category_nfc">NFC pripojenie</string>
     <string name="category_startup_security">Bezpečnosť</string>
     <string name="category_account">Účty</string>
@@ -70,6 +71,8 @@
     <string name="dashboard_list_title">Zobrazenie hlavného panela</string>
     <string name="show_dashboard_list_on">Zobraziť hlavný panel ako zoznam</string>
     <string name="show_dashboard_list_off">Zobraziť hlavný panel ako mriežku</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Položky pre Android Wear</string>
     <string name="custom_wear_select">Vybrať prepínače pre Android Wear</string>

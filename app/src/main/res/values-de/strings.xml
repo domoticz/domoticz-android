@@ -33,8 +33,8 @@
     <string name="button_state_off">Aus</string>
     <string name="button_state_closed">Geschlossen</string>
     <string name="button_state_open">Offen</string>
-    <string name="button_state_lock">Lock</string>
-    <string name="button_state_unlock">Unlock</string>
+    <string name="button_state_lock">Sperren</string>
+    <string name="button_state_unlock">Entsperren</string>
     <string name="button_status_log">Protokoll</string>
     <string name="button_status_day">Tag</string>
     <string name="button_status_week">Woche</string>
@@ -45,8 +45,11 @@
     <string name="button_color">Farbe</string>
     <string name="button_arm">Scharfstellen</string>
     <string name="button_disarm">Entschärfen</string>
-    <string name="button_state_full_light">Full light</string>
-    <string name="button_state_night">Night light</string>
+    <string name="button_state_full_light">Volles Licht</string>
+    <string name="button_state_night">Nachtlicht</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="now">Now</string>
     <string name="last_update">Zuletzt gesehen</string>
     <string name="signal_level">Signalpegel</string>
     <string name="battery_level">Batteriezustand</string>
@@ -54,7 +57,7 @@
     <string name="hardware">Hardware</string>
     <string name="temperature">Temperatur</string>
     <string name="status">Status</string>
-    <string name="switch_rgb_wwcolor">RGB color or warm white</string>
+    <string name="switch_rgb_wwcolor">RGB Farbe oder warmes weiß</string>
     <string name="set_point">Sollwert</string>
     <string name="set_point_min">Set point min value</string>
     <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>
@@ -117,8 +120,8 @@
     <string name="continue_question">Fortfahren?</string>
     <string name="cant_remove_default_server">Standard-Server kann nicht entfernt werden</string>
     <string name="restart_required_msg">Für die Spracheinstellungen werden um eine Anwendung zu bewirken ist Neustart erforderlich</string>
-    <string name="filter_all">All</string>
+    <string name="filter_all">Alle</string>
     <string name="filter_normal">Normal</string>
     <string name="filter_status">Status</string>
-    <string name="filter_error">Error</string>
+    <string name="filter_error">Fehler</string>
 </resources>

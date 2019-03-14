@@ -47,6 +47,9 @@
     <string name="button_disarm">ניטרול</string>
     <string name="button_state_full_light">Full light</string>
     <string name="button_state_night">Night light</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="now">Now</string>
     <string name="last_update">נראה לאחרונה</string>
     <string name="signal_level">עוצמת אות</string>
     <string name="battery_level">רמת סוללה</string>

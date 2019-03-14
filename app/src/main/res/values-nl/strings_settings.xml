@@ -38,6 +38,7 @@
     <string name="category_debug">Foutopsporing</string>
     <string name="category_export">Instellingen beheren</string>
     <string name="category_theme">Thema</string>
+    <string name="category_clock">Klok</string>
     <string name="category_nfc">NFC verbindingen</string>
     <string name="category_startup_security">Beveiliging</string>
     <string name="category_account">Accounts</string>
@@ -70,6 +71,8 @@
     <string name="dashboard_list_title">Dashboard indeling</string>
     <string name="show_dashboard_list_on">Dashboard weergeven als lijst</string>
     <string name="show_dashboard_list_off">Dashboard weergeven als raster</string>
+    <string name="dashboard_clock">Klok</string>
+    <string name="show_dashboard_clock">Een klok weergeven op het dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Aangepaste lijst</string>
     <string name="custom_wear_select">Selecteer schakelaars</string>

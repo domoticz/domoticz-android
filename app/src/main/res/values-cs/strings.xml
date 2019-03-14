@@ -47,6 +47,9 @@
     <string name="button_disarm">Zajištěný</string>
     <string name="button_state_full_light">Plné světlo</string>
     <string name="button_state_night">Noční světlo</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="now">Now</string>
     <string name="last_update">Naposledy viděný</string>
     <string name="signal_level">Úroveň signálu</string>
     <string name="battery_level">Stav baterie</string>

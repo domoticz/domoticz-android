@@ -38,6 +38,7 @@
     <string name="category_debug">Debuggage</string>
     <string name="category_export">Export/Import des paramètres</string>
     <string name="category_theme">Thème</string>
+    <string name="category_clock">Clock</string>
     <string name="category_nfc">Associations NFC</string>
     <string name="category_startup_security">Sécurité </string>
     <string name="category_account">Comptes</string>
@@ -70,6 +71,8 @@
     <string name="dashboard_list_title">Tableau de bord | Grille</string>
     <string name="show_dashboard_list_on">Voir la tableau de bord en tant que liste</string>
     <string name="show_dashboard_list_off">Voir la tableau de bord comme une grille</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Activer Android Wear</string>
     <string name="custom_wear_select">Interrupteurs Wear</string>
