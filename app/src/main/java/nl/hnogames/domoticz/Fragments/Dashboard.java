@@ -63,10 +63,12 @@ import nl.hnogames.domoticz.Utils.SerializableManager;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Containers.SunRiseInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.SunRiseReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
@@ -172,10 +174,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             if (extendedStatusSwitches != null && extendedStatusSwitches.size() > 0) {
                 state = gridView.getLayoutManager().onSaveInstanceState();
             }
-
             if (mSwipeRefreshLayout != null)
                 mSwipeRefreshLayout.setRefreshing(true);
-
             new GetCachedDataTask().execute();
         } catch (Exception ex) {
         }
@@ -185,7 +185,6 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         extendedStatusSwitches = new ArrayList<>();
         for (DevicesInfo switchInfo : devicesInfos) {
             successHandling(switchInfo.toString(), false);
-
             if (this.planID <= 0) {
                 if (switchInfo.getFavoriteBoolean()) {//only favorites
                     extendedStatusSwitches.add(switchInfo);     // Add to array
@@ -196,68 +195,104 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         }
         if (extendedStatusSwitches.size() <= 0) {
             setMessage(mContext.getString(R.string.no_data_on_domoticz));
-        } else
-            createListView(extendedStatusSwitches);
-    }
+        } else {
+            final ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
+            final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
+            final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();
 
-    // add dynamic list view
-    private void createListView(ArrayList<DevicesInfo> switches) {
-        if (switches == null)
-            return;
+            for (DevicesInfo mExtendedStatusInfo : extendedStatusSwitches) {
+                String name = mExtendedStatusInfo.getName();
+                int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
+                String switchType = mExtendedStatusInfo.getSwitchType();
 
-        if (getView() != null) {
-            try {
-                ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
-                final List<Integer> appSupportedSwitchesValues = mDomoticz.getSupportedSwitchesValues();
-                final List<String> appSupportedSwitchesNames = mDomoticz.getSupportedSwitchesNames();
-
-                for (DevicesInfo mExtendedStatusInfo : switches) {
-                    String name = mExtendedStatusInfo.getName();
-                    int switchTypeVal = mExtendedStatusInfo.getSwitchTypeVal();
-                    String switchType = mExtendedStatusInfo.getSwitchType();
-
-                    if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
-                        (appSupportedSwitchesValues.contains(switchTypeVal) && appSupportedSwitchesNames.contains(switchType)) ||
-                        UsefulBits.isEmpty(switchType)) {
-                        if (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) {
-                            supportedSwitches.add(mExtendedStatusInfo);
-                        } else {
-                            if (mContext != null) {
-                                UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.filter_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT);
-                                if (getActivity() instanceof MainActivity)
-                                    ((MainActivity) getActivity()).Talk(mContext.getString(R.string.filter_on) + ": " + super.getSort());
-                                if ((super.getSort().equals(mContext.getString(R.string.filterOn_on)) && mExtendedStatusInfo.getStatusBoolean()) &&
-                                    mDomoticz.isOnOffSwitch(mExtendedStatusInfo)) {
-                                    supportedSwitches.add(mExtendedStatusInfo);
-                                }
-                                if ((super.getSort().equals(mContext.getString(R.string.filterOn_off)) && !mExtendedStatusInfo.getStatusBoolean()) &&
-                                    mDomoticz.isOnOffSwitch(mExtendedStatusInfo)) {
-                                    supportedSwitches.add(mExtendedStatusInfo);
-                                }
-                                if (super.getSort().equals(mContext.getString(R.string.filterOn_static)) &&
-                                    !mDomoticz.isOnOffSwitch(mExtendedStatusInfo)) {
-                                    supportedSwitches.add(mExtendedStatusInfo);
-                                }
+                if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
+                    (appSupportedSwitchesValues.contains(switchTypeVal) && appSupportedSwitchesNames.contains(switchType)) ||
+                    UsefulBits.isEmpty(switchType)) {
+                    if (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) {
+                        supportedSwitches.add(mExtendedStatusInfo);
+                    } else {
+                        if (mContext != null) {
+                            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.filter_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT);
+                            if (getActivity() instanceof MainActivity)
+                                ((MainActivity) getActivity()).Talk(mContext.getString(R.string.filter_on) + ": " + super.getSort());
+                            if ((super.getSort().equals(mContext.getString(R.string.filterOn_on)) && mExtendedStatusInfo.getStatusBoolean()) &&
+                                mDomoticz.isOnOffSwitch(mExtendedStatusInfo)) {
+                                supportedSwitches.add(mExtendedStatusInfo);
+                            }
+                            if ((super.getSort().equals(mContext.getString(R.string.filterOn_off)) && !mExtendedStatusInfo.getStatusBoolean()) &&
+                                mDomoticz.isOnOffSwitch(mExtendedStatusInfo)) {
+                                supportedSwitches.add(mExtendedStatusInfo);
+                            }
+                            if (super.getSort().equals(mContext.getString(R.string.filterOn_static)) &&
+                                !mDomoticz.isOnOffSwitch(mExtendedStatusInfo)) {
+                                supportedSwitches.add(mExtendedStatusInfo);
                             }
                         }
                     }
                 }
+            }
+            if(mSharedPrefs.addClockToDashboard())
+            {
+                mDomoticz.getSunRise(new SunRiseReceiver() {
+                    @Override
+                    public void onReceive(SunRiseInfo mSunRiseInfo) {
+                        createListView(AddClockDevice(mSunRiseInfo, supportedSwitches), mSunRiseInfo);
+                    }
 
+                    @Override
+                    public void onError(Exception error) {
+                        createListView(supportedSwitches, null);
+                    }
+                });
+            }
+            else
+                createListView(supportedSwitches, null);
+        }
+    }
+
+    private  ArrayList<DevicesInfo> AddClockDevice(SunRiseInfo mSunRiseInfo, ArrayList<DevicesInfo> supportedSwitches) {
+        if(mSunRiseInfo != null) {
+            boolean alreadySpecified = false;
+            for (DevicesInfo d:supportedSwitches ) {
+                if(d.getType().equals("sunrise"))
+                    alreadySpecified = true;
+            }
+            if(!alreadySpecified) {
+                DevicesInfo sunrise = new DevicesInfo();
+                sunrise.setIdx(-9999);
+                sunrise.setName("Clock");
+                sunrise.setType("sunrise");
+                sunrise.setDescription("Clock");
+                sunrise.setFavoriteBoolean(true);
+                sunrise.setIsProtected(false);
+                sunrise.setStatusBoolean(false);
+                supportedSwitches.add(0, sunrise);
+            }
+        }
+        return supportedSwitches;
+    }
+
+    // add dynamic list view
+    private void createListView(ArrayList<DevicesInfo> switches, SunRiseInfo sunrise) {
+        if (switches == null)
+            return;
+        if (getView() != null) {
+            try {
                 final switchesClickListener listener = this;
                 if (adapter == null) {
                     if (this.planID <= 0) {
-                        adapter = new DashboardAdapter(mContext, getServerUtil(), supportedSwitches, listener, !mSharedPrefs.showDashboardAsList());
+                        adapter = new DashboardAdapter(mContext, getServerUtil(), switches, listener, !mSharedPrefs.showDashboardAsList(), sunrise);
                     } else {
                         gridView.setHasFixedSize(true);
                         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
                         gridView.setLayoutManager(mLayoutManager);
-                        adapter = new DashboardAdapter(mContext, getServerUtil(), supportedSwitches, listener, true);
+                        adapter = new DashboardAdapter(mContext, getServerUtil(), switches, listener, true, sunrise);
                     }
                     alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                     gridView.setAdapter(adapter);
 
                 } else {
-                    adapter.setData(supportedSwitches);
+                    adapter.setData(switches);
                     adapter.notifyDataSetChanged();
                     alphaSlideIn.notifyDataSetChanged();
                 }

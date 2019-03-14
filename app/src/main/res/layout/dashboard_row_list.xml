@@ -67,7 +67,152 @@
                 android:paddingRight="5dp"
                 android:src="@drawable/clock48"/>
 
+
             <LinearLayout
+                android:id="@+id/clockLayoutWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/sunriseLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/row_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:paddingLeft="0dp"
+                        android:text="Sunrise"/>
+
+                    <rm.com.clocks.ClockImageView
+                        android:id="@+id/sunrise"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:foregroundGravity="center"
+                        app:clockColor="@color/orange_button"
+                        app:frameWidth="thin"
+                        app:hours="16"
+                        app:indeterminateSpeed="2"
+                        app:minutes="20"
+                        app:pointerWidth="thin"
+                        app:timeSetDuration="400"
+                        />
+
+                    <TextView
+                        android:id="@+id/sunriseText"
+                        style="@style/row_body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="0dp"
+                        android:gravity="center_horizontal"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/clockLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/row_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="0dp"
+                        android:gravity="center_horizontal"
+                        android:text="Now"/>
+
+                    <rm.com.clocks.ClockImageView
+                        android:id="@+id/clock"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:foregroundGravity="center"
+                        android:gravity="center"
+                        app:clockColor="@color/orange_button"
+                        app:frameWidth="thin"
+                        app:hours="16"
+                        app:indeterminateSpeed="2"
+                        app:minutes="20"
+                        app:pointerWidth="thin"
+                        app:timeSetDuration="400"
+                        />
+
+                    <TextView
+                        android:id="@+id/clockText"
+                        style="@style/row_body1"
+                        android:layout_width="wrap_content"
+                        android:paddingLeft="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/sunsetLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        style="@style/row_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:paddingLeft="0dp"
+                        android:text="Sunset"/>
+
+                    <rm.com.clocks.ClockImageView
+                        android:id="@+id/sunset"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:foregroundGravity="center"
+                        app:clockColor="@color/orange_button"
+                        app:frameWidth="thin"
+                        app:hours="16"
+                        app:indeterminateSpeed="2"
+                        app:minutes="20"
+                        app:pointerWidth="thin"
+                        app:timeSetDuration="400"
+                        />
+
+                    <TextView
+                        android:id="@+id/sunsetText"
+                        style="@style/row_body1"
+                        android:layout_width="wrap_content"
+                        android:paddingLeft="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -117,11 +262,11 @@
                                 style="@style/row_body1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="8sp"
                                 android:layout_below="@id/switch_battery_level"
                                 android:layout_marginBottom="5dp"
-                                android:textStyle="italic"
-                                android:text="@string/signal_level"/>
+                                android:text="@string/signal_level"
+                                android:textSize="8sp"
+                                android:textStyle="italic"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -135,12 +280,12 @@
                             android:orientation="vertical">
 
                             <com.google.android.material.switchmaterial.SwitchMaterial
-                                app:useMaterialThemeColors="false"
                                 android:id="@+id/switch_button"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"/>
+                                android:layout_centerVertical="true"
+                                app:useMaterialThemeColors="false"/>
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/set_button"
@@ -259,11 +404,11 @@
                                     android:textSize="10dp"/>
 
                                 <com.google.android.material.switchmaterial.SwitchMaterial
-app:useMaterialThemeColors="false"
                                     android:id="@+id/switch_dimmer_switch"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="right"/>
+                                    android:layout_gravity="right"
+                                    app:useMaterialThemeColors="false"/>
                             </LinearLayout>
 
                             <com.google.android.material.button.MaterialButton
