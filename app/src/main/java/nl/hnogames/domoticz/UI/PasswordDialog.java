@@ -58,37 +58,37 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
         mSharedPrefs = new SharedPrefUtil(c);
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_password, true)
-            .positiveText(android.R.string.ok)
-            .cancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    if (dismissListener != null)
-                        dismissListener.onCancel();
-                }
-            })
-            .dismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    if (dismissListener != null)
-                        dismissListener.onDismiss(null);
-                }
-            })
-            .negativeText(android.R.string.cancel)
-            .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(MaterialDialog dialog, DialogAction which) {
-                    if (dismissListener != null)
-                        dismissListener.onDismiss(editPassword.getText().toString());
-                }
-            })
-            .onNegative(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(MaterialDialog dialog, DialogAction which) {
-                    if (dismissListener != null)
-                        dismissListener.onCancel();
-                }
-            });
+                .positiveText(android.R.string.ok)
+                .cancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        if (dismissListener != null)
+                            dismissListener.onCancel();
+                    }
+                })
+                .dismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        if (dismissListener != null)
+                            dismissListener.onDismiss(null);
+                    }
+                })
+                .negativeText(android.R.string.cancel)
+                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                        if (dismissListener != null)
+                            dismissListener.onDismiss(editPassword.getText().toString());
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                        if (dismissListener != null)
+                            dismissListener.onCancel();
+                    }
+                });
         mdb.dismissListener(this);
     }
 

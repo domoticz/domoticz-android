@@ -9,7 +9,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Containers.BluetoothInfo;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
@@ -50,7 +49,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
 
         if (connectedDevice != null && connectedDevice.isEnabled()) {
             handleSwitch(context, connectedDevice.getSwitchIdx(), connectedDevice.getSwitchPassword(), (BluetoothDevice.ACTION_ACL_CONNECTED.equals(intent.getAction())),
-                connectedDevice.getValue(), connectedDevice.isSceneOrGroup());
+                    connectedDevice.getValue(), connectedDevice.isSceneOrGroup());
             Toast.makeText(context, context.getString(R.string.bluetooth) + " " + connectedDevice.getName(), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, context.getString(R.string.bluetooth_disabled), Toast.LENGTH_SHORT).show();
@@ -63,7 +62,8 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
 
         domoticz.getDevice(new DevicesReceiver() {
             @Override
-            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {}
+            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+            }
 
             @Override
             public void onReceiveDevice(DevicesInfo mDevicesInfo) {
@@ -86,7 +86,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
                         if (!UsefulBits.isEmpty(value)) {
                             jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
                             jsonValue = 0;
-                            if(mDevicesInfo.getStatus() != value)//before turning stuff off check if the value is still the same as the on value (else something else took over)
+                            if (mDevicesInfo.getStatus() != value)//before turning stuff off check if the value is still the same as the on value (else something else took over)
                                 return;
                         }
                     }
@@ -98,10 +98,9 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                         else
                             jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                    }
-                    else if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON )
+                    } else if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON)
                         jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                    else if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON )
+                    else if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON)
                         jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                 } else {
                     jsonUrl = DomoticzValues.Json.Url.Set.SCENES;
@@ -119,12 +118,14 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
                     }
 
                     @Override
-                    public void onError(Exception error) {}
+                    public void onError(Exception error) {
+                    }
                 });
             }
 
             @Override
-            public void onError(Exception error) {}
+            public void onError(Exception error) {
+            }
 
         }, idx, isSceneOrGroup);
     }

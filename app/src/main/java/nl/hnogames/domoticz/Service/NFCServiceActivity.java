@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.Service;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -99,7 +98,7 @@ public class NFCServiceActivity extends AppCompatActivity {
 
                 if (!isSceneOrGroup) {
                     if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
                             mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) {
                         if (!mDevicesInfo.getStatusBoolean()) {
                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;

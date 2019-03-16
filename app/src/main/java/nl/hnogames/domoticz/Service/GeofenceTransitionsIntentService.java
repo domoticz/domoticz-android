@@ -13,7 +13,6 @@ import com.google.android.gms.location.GeofencingEvent;
 import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
-import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Containers.LocationInfo;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.NotificationUtil;
@@ -73,16 +72,16 @@ public class GeofenceTransitionsIntentService extends Service {
                 if (Geofence.GEOFENCE_TRANSITION_ENTER == transitionType || Geofence.GEOFENCE_TRANSITION_DWELL == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound =
-                            mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                                mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
                         Log.d(TAG, "Triggered entering a geofence location: "
-                            + locationFound.getName());
+                                + locationFound.getName());
 
                         if (mSharedPrefs.isGeofenceNotificationsEnabled()) {
                             notificationTitle = String.format(
-                                context.getString(R.string.geofence_location_entering), locationFound.getName());
+                                    context.getString(R.string.geofence_location_entering), locationFound.getName());
                             notificationDescription = context.getString(R.string.geofence_location_entering_text);
                             NotificationUtil.sendSimpleNotification(notificationTitle,
-                                notificationDescription, 0, context);
+                                    notificationDescription, 0, context);
                         }
                         if (locationFound.getSwitchIdx() > 0)
                             handleSwitch(context, locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), true, locationFound.getValue(), locationFound.isSceneOrGroup());
@@ -90,17 +89,17 @@ public class GeofenceTransitionsIntentService extends Service {
                 } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound
-                            = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                                = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
                         Log.d(TAG, "Triggered leaving a geofence location: "
-                            + locationFound.getName());
+                                + locationFound.getName());
 
                         if (mSharedPrefs.isGeofenceNotificationsEnabled()) {
                             notificationTitle = String.format(
-                                context.getString(R.string.geofence_location_leaving),
-                                locationFound.getName());
+                                    context.getString(R.string.geofence_location_leaving),
+                                    locationFound.getName());
                             notificationDescription = context.getString(R.string.geofence_location_leaving_text);
                             NotificationUtil.sendSimpleNotification(notificationTitle,
-                                notificationDescription, 0, context);
+                                    notificationDescription, 0, context);
                         }
                         if (locationFound.getSwitchIdx() > 0)
                             handleSwitch(context, locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), false, locationFound.getValue(), locationFound.isSceneOrGroup());
@@ -118,7 +117,8 @@ public class GeofenceTransitionsIntentService extends Service {
 
         domoticz.getDevice(new DevicesReceiver() {
             @Override
-            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {}
+            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+            }
 
             @Override
             public void onReceiveDevice(DevicesInfo mDevicesInfo) {
@@ -141,7 +141,7 @@ public class GeofenceTransitionsIntentService extends Service {
                         if (!UsefulBits.isEmpty(value)) {
                             jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
                             jsonValue = 0;
-                            if(mDevicesInfo.getStatus() != value)//before turning stuff off check if the value is still the same as the on value (else something else took over)
+                            if (mDevicesInfo.getStatus() != value)//before turning stuff off check if the value is still the same as the on value (else something else took over)
                                 return;
                         }
                     }
@@ -153,10 +153,9 @@ public class GeofenceTransitionsIntentService extends Service {
                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                         else
                             jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                    }
-                    else if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON )
+                    } else if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON)
                         jsonAction = DomoticzValues.Device.Switch.Action.ON;
-                    else if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON )
+                    else if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON)
                         jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                 } else {
                     jsonUrl = DomoticzValues.Json.Url.Set.SCENES;
@@ -174,12 +173,14 @@ public class GeofenceTransitionsIntentService extends Service {
                     }
 
                     @Override
-                    public void onError(Exception error) {}
+                    public void onError(Exception error) {
+                    }
                 });
             }
 
             @Override
-            public void onError(Exception error) {}
+            public void onError(Exception error) {
+            }
 
         }, idx, isSceneOrGroup);
     }
