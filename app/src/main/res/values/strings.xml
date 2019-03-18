@@ -56,6 +56,13 @@
     <string name="sunset">Sunset</string>
     <string name="now">Now</string>
 
+    <string name="astrTwilightStart">Astronomical twilight start</string>
+    <string name="astrTwilightEnd">Astronomical twilight end</string>
+    <string name="civTwilightStart">Civil twilight start</string>
+    <string name="civTwilightEnd">Civil twilight end</string>
+    <string name="nautTwilightStart">Nautical twilight start</string>
+    <string name="nautTwilightEnd">Nautical twilight end</string>
+
     <string name="last_update">Last seen</string>
     <string name="signal_level">Signal level</string>
     <string name="battery_level">Battery level</string>

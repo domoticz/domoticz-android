@@ -67,11 +67,10 @@
                 android:paddingRight="5dp"
                 android:src="@drawable/clock48"/>
 
-
             <LinearLayout
                 android:id="@+id/clockLayoutWrapper"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="120dp"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -211,13 +210,8 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
                 <RelativeLayout
+                    android:id="@+id/details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -438,7 +432,6 @@
                         android:layout_gravity="bottom"
                         android:paddingTop="15dp"/>
                 </RelativeLayout>
-            </LinearLayout>
         </LinearLayout>
 
         <include layout="@layout/log_timer_button_row_default"/>

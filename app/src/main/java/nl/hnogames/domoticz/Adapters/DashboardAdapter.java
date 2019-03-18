@@ -35,6 +35,7 @@ import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Space;
 import android.widget.Spinner;
@@ -1793,8 +1794,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.switch_battery_level.setVisibility(View.GONE);
                 if (holder.details != null)
                     holder.details.setVisibility(View.GONE);
-                if (holder.infoIcon != null)
-                    holder.infoIcon.setVisibility(View.GONE);
                 if (holder.iconRow != null)
                     holder.iconRow.setVisibility(View.GONE);
                 break;
@@ -1942,7 +1941,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         ImageView iconRow, iconMode;
         SeekBar dimmer;
         Spinner spSelector;
-        LinearLayout extraPanel, details, clockLayoutWrapper;
+        LinearLayout extraPanel, clockLayoutWrapper;
+        RelativeLayout details;
         PieView pieView;
         ImageView infoIcon;
         ClockImageView clock, sunrise, sunset;
@@ -1953,7 +1953,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             super(itemView);
 
             extraPanel = itemView.findViewById(R.id.extra_panel);
-            clockLayoutWrapper = itemView.findViewById(R.id.clockLayoutWrapper);
             details = itemView.findViewById(R.id.details);
             pieView = itemView.findViewById(R.id.pieView);
             buttonOn = itemView.findViewById(R.id.on_button);
@@ -1976,6 +1975,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             buttonDown = itemView.findViewById(R.id.switch_button_down);
             buttonSet = itemView.findViewById(R.id.set_button);
 
+            clockLayoutWrapper = itemView.findViewById(R.id.clockLayoutWrapper);
             clockText = itemView.findViewById(R.id.clockText);
             sunriseText = itemView.findViewById(R.id.sunriseText);
             sunsetText = itemView.findViewById(R.id.sunsetText);

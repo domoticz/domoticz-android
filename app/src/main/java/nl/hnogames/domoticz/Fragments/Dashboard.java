@@ -57,6 +57,7 @@ import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.RGBWWColorPickerDialog;
 import nl.hnogames.domoticz.UI.ScheduledTemperatureDialog;
 import nl.hnogames.domoticz.UI.SecurityPanelDialog;
+import nl.hnogames.domoticz.UI.SunriseInfoDialog;
 import nl.hnogames.domoticz.UI.TemperatureDialog;
 import nl.hnogames.domoticz.UI.WWColorPickerDialog;
 import nl.hnogames.domoticz.Utils.SerializableManager;
@@ -331,34 +332,48 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         }
     }
 
-    private void showInfoDialog(final DevicesInfo mSwitch) {
-        DeviceInfoDialog infoDialog = new DeviceInfoDialog(
-            mContext,
-            mDomoticz,
-            mSwitch,
-            R.layout.dialog_switch_info);
-        infoDialog.setIdx(String.valueOf(mSwitch.getIdx()));
-        try {
-            if (mSwitch != null && !UsefulBits.isEmpty(mSwitch.getSubType()))
-                infoDialog.setColorLight(mSwitch.getSubType().startsWith(DomoticzValues.Device.SubType.Name.RGB) || mSwitch.getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW));
-        } catch (Exception ex) {
-        }
-        infoDialog.setLastUpdate(mSwitch.getLastUpdate());
-        infoDialog.setSignalLevel(String.valueOf(mSwitch.getSignalLevel()));
-        infoDialog.setBatteryLevel(String.valueOf(mSwitch.getBatteryLevel()));
-        infoDialog.setIsFavorite(mSwitch.getFavoriteBoolean());
-        infoDialog.show();
-
-        infoDialog.onDismissListener(new DeviceInfoDialog.DismissListener() {
-            @Override
-            @DebugLog
-            public void onDismiss(boolean isChanged, boolean isFavorite) {
-                if (isChanged) {
-                    changeFavorite(mSwitch, isFavorite);
-                    processDashboard();
-                }
+    private void showInfoDialog(final DevicesInfo mSwitch, int idx) {
+        if (mSwitch != null) {
+            DeviceInfoDialog infoDialog = new DeviceInfoDialog(
+                mContext,
+                mDomoticz,
+                mSwitch,
+                R.layout.dialog_switch_info);
+            infoDialog.setIdx(String.valueOf(mSwitch.getIdx()));
+            try {
+                if (mSwitch != null && !UsefulBits.isEmpty(mSwitch.getSubType()))
+                    infoDialog.setColorLight(mSwitch.getSubType().startsWith(DomoticzValues.Device.SubType.Name.RGB) || mSwitch.getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW));
+            } catch (Exception ex) {
             }
-        });
+            infoDialog.setLastUpdate(mSwitch.getLastUpdate());
+            infoDialog.setSignalLevel(String.valueOf(mSwitch.getSignalLevel()));
+            infoDialog.setBatteryLevel(String.valueOf(mSwitch.getBatteryLevel()));
+            infoDialog.setIsFavorite(mSwitch.getFavoriteBoolean());
+            infoDialog.show();
+            infoDialog.onDismissListener(new DeviceInfoDialog.DismissListener() {
+                @Override
+                @DebugLog
+                public void onDismiss(boolean isChanged, boolean isFavorite) {
+                    if (isChanged) {
+                        changeFavorite(mSwitch, isFavorite);
+                        processDashboard();
+                    }
+                }
+            });
+        }
+        else if(idx == -9999)
+        {
+            mDomoticz.getSunRise(new SunRiseReceiver() {
+                @Override
+                public void onReceive(SunRiseInfo mSunRiseInfo) {
+                    (new SunriseInfoDialog(mContext, mSunRiseInfo)).show();
+                }
+
+                @Override
+                public void onError(Exception error) {
+                }
+            });
+        }
     }
 
     private void changeFavorite(final DevicesInfo mSwitch, final boolean isFavorite) {
@@ -1154,7 +1169,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     @Override
     @DebugLog
     public boolean onItemLongClicked(int idx) {
-        showInfoDialog(getDevice(idx));
+        showInfoDialog(getDevice(idx), idx);
         return true;
     }
 
