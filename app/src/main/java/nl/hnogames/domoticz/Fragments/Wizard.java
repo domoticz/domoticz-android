@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,6 +70,7 @@ public class Wizard extends Fragment {
     private final String FINISH = "FINISH";
     private final String SPEECH = "SPEECH";
     private final String AUTO = "AUTO";
+    private final String LANGUAGE = "LANGUAGE";
 
     private final String TAG = Wizard.class.getSimpleName();
     private final int iSettingsResultCode = 995;
@@ -136,6 +138,7 @@ public class Wizard extends Fragment {
         if (!mSharedPrefs.isCardCompleted(BLUETOOTH)) cardsToGenerate.add(BLUETOOTH);
         if (!mSharedPrefs.isCardCompleted(SPEECH)) cardsToGenerate.add(SPEECH);
         if (!mSharedPrefs.isCardCompleted(AUTO)) cardsToGenerate.add(AUTO);
+        if (!mSharedPrefs.isCardCompleted(LANGUAGE)) cardsToGenerate.add(LANGUAGE);
 
         if (cardsToGenerate.size() <= 0) cardsToGenerate.add(FINISH);
         List<Card> cards = generateCards(cardsToGenerate);
@@ -474,6 +477,41 @@ public class Wizard extends Fragment {
                                 }))
                         .endConfig()
                         .build());
+            }
+            if (card.equalsIgnoreCase(LANGUAGE)) {
+                cards.add(new Card.Builder(context)
+                    .setTag(LANGUAGE)
+                    .setDismissible()
+                    .withProvider(new CardProvider())
+                    .setLayout(R.layout.material_basic_buttons_card)
+                    .setBackgroundColor(otherColor)
+                    .setTitle(context.getString(R.string.category_help))
+                    .setTitleColor(titleColorOther)
+                    .setDescription(context.getString(R.string.translate_description))
+                    .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .setText(context.getString(R.string.ok))
+                        .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                        .setListener(new OnActionClickListener() {
+                            @Override
+                            @DebugLog
+                            public void onActionClicked(View view, Card card) {
+                                Intent i = new Intent(Intent.ACTION_VIEW);
+                                i.setData(Uri.parse("https://crowdin.com/project/domoticz-for-android"));
+                                startActivity(i);
+                            }
+                        }))
+                    .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .setText(context.getString(R.string.wizard_button_done))
+                        .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                        .setListener(new OnActionClickListener() {
+                            @Override
+                            @DebugLog
+                            public void onActionClicked(View view, Card card) {
+                                card.dismiss();
+                            }
+                        }))
+                    .endConfig()
+                    .build());
             }
             if (card.equalsIgnoreCase(NOTIFICATIONS)) {
                 cards.add(new Card.Builder(context)
