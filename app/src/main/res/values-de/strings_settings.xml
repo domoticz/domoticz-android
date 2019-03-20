@@ -46,6 +46,7 @@
     <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Sprachkommando</string>
     <string name="category_Reset">Zurücksetzen</string>
+    <string name="category_help">Contribute</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Startbildschirm</string>
     <string name="enable_items">Menüpunkte einschalten/ausschalten</string>
@@ -117,6 +118,8 @@
     <string name="qrcode_enable_settings">QR-Codes Funktionalität aktivieren</string>
     <string name="bluetooth_settings">Bluetooth Geräte einrichten</string>
     <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
+    <string name="translate_title">Translations</string>
     <string name="security_settings">Sicherheits-Einstellungen</string>
     <string name="enable_security">Fingerabdruck-Schutz beim Start aktivieren</string>
     <string name="disable_security">Fingerabdruck-Schutz beim Start deaktivieren</string>

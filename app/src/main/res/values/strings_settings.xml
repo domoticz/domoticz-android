@@ -49,6 +49,8 @@
     <string name="category_Speech">Speech</string>
     <string name="category_Reset">Reset</string>
 
+    <string name="category_help">Contribute</string>
+
     <!--        Generic settings       -->
     <string name="startup_screen">Startup screen</string>
     <string name="enable_items">Enable/Disable Items</string>
@@ -131,6 +133,9 @@
     <string name="qrcode_enable_settings">Enable QR Codes functionality</string>
     <string name="bluetooth_settings">Setup Bluetooth devices</string>
     <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+
+    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
+    <string name="translate_title">Translations</string>
 
     <string name="security_settings">Setup Security</string>
     <string name="enable_security">Enable fingerprint protection on startup</string>

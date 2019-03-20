@@ -46,6 +46,7 @@
     <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Tale</string>
     <string name="category_Reset">Reset</string>
+    <string name="category_help">Contribute</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Startside</string>
     <string name="enable_items">Aktivere/deaktivere elementer</string>
@@ -117,6 +118,8 @@
     <string name="qrcode_enable_settings">Aktivere funksjonaliteten for QR-koder</string>
     <string name="bluetooth_settings">Setup Bluetooth devices</string>
     <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
+    <string name="translate_title">Translations</string>
     <string name="security_settings">Konfigurere sikkerhet</string>
     <string name="enable_security">Aktivere fingeravtrykksbeskyttelse ved oppstart</string>
     <string name="disable_security">Deaktivere fingeravtrykksbeskyttelse ved oppstart</string>

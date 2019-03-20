@@ -46,6 +46,7 @@
     <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Puhe</string>
     <string name="category_Reset">Palauta asetukset</string>
+    <string name="category_help">Contribute</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Aloitusnäyttö</string>
     <string name="enable_items">Ota käyttöön/poista kohteita</string>
@@ -117,6 +118,8 @@
     <string name="qrcode_enable_settings">Kytke QR-koodien toiminnallisuudet päälle</string>
     <string name="bluetooth_settings">Setup Bluetooth devices</string>
     <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
+    <string name="translate_title">Translations</string>
     <string name="security_settings">Asetusten suojaus</string>
     <string name="enable_security">Ota sormenjälkitunnistus käynnistyksessä käyttöön</string>
     <string name="disable_security">Kytke sormenjälkitunnistus pois käynnistyksessä</string>

@@ -89,9 +89,9 @@
             android:title="@string/sort_server_title"/>
         <SwitchPreference
             android:defaultValue="false"
+            android:dependency="sortCustom"
             android:key="lockSortCustom"
             android:summaryOff="@string/sort_lock_custom_on"
-            android:dependency="sortCustom"
             android:summaryOn="@string/sort_lock_custom_on"
             android:title="@string/sort_lock_server_title"/>
     </PreferenceCategory>
@@ -230,17 +230,27 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_language">
-        <ListPreference
-            android:entries="@array/domoticz_language_entries"
-            android:entryValues="@array/domoticz_language_entryValues"
-            android:key="displayLanguage"
-            android:title="@string/category_language"/>
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="talkBack"
-            android:summaryOff="@string/set_talk_back_on"
-            android:summaryOn="@string/set_talk_back_off"
-            android:title="@string/category_talk_back"/>
+        <PreferenceScreen android:title="@string/category_language">
+            <PreferenceCategory android:title="@string/category_language">
+                <ListPreference
+                    android:entries="@array/domoticz_language_entries"
+                    android:entryValues="@array/domoticz_language_entryValues"
+                    android:key="displayLanguage"
+                    android:title="@string/category_language"/>
+                <SwitchPreference
+                    android:defaultValue="false"
+                    android:key="talkBack"
+                    android:summaryOff="@string/set_talk_back_on"
+                    android:summaryOn="@string/set_talk_back_off"
+                    android:title="@string/category_talk_back"/>
+            </PreferenceCategory>
+            <PreferenceCategory android:title="@string/category_help">
+                <Preference
+                    android:key="translate"
+                    android:summary="@string/translate_description"
+                    android:title="@string/translate_title"/>
+            </PreferenceCategory>
+        </PreferenceScreen>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_theme">

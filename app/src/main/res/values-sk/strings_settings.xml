@@ -46,6 +46,7 @@
     <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Reč</string>
     <string name="category_Reset">Reset</string>
+    <string name="category_help">Contribute</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Úvodná obrazovka</string>
     <string name="enable_items">Povolenie alebo zakázanie položiek</string>
@@ -117,6 +118,8 @@
     <string name="qrcode_enable_settings">Povoliť funkcie QR kódov</string>
     <string name="bluetooth_settings">Setup Bluetooth devices</string>
     <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
+    <string name="translate_title">Translations</string>
     <string name="security_settings">Nastavenie zabezpečenia</string>
     <string name="enable_security">Zapnúť ochranu odtlačkov prstov na štarte</string>
     <string name="disable_security">Vypnúť ochranu odtlačkov prstov na štarte</string>

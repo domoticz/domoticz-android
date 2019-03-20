@@ -50,6 +50,12 @@
     <string name="sunrise">Sunrise</string>
     <string name="sunset">Sunset</string>
     <string name="now">Now</string>
+    <string name="astrTwilightStart">Astronomical twilight start</string>
+    <string name="astrTwilightEnd">Astronomical twilight end</string>
+    <string name="civTwilightStart">Civil twilight start</string>
+    <string name="civTwilightEnd">Civil twilight end</string>
+    <string name="nautTwilightStart">Nautical twilight start</string>
+    <string name="nautTwilightEnd">Nautical twilight end</string>
     <string name="last_update">最後上線</string>
     <string name="signal_level">訊號等級</string>
     <string name="battery_level">電池電量</string>

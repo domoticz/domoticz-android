@@ -46,6 +46,7 @@
     <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Ameslay</string>
     <string name="category_Reset">Ales awennez</string>
+    <string name="category_help">Contribute</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Agdil n waskar</string>
     <string name="enable_items">Sermed/Ssens iferdisen</string>
@@ -117,6 +118,8 @@
     <string name="qrcode_enable_settings">Rmed tangalin n tamseɣnat  n QR</string>
     <string name="bluetooth_settings">Setup Bluetooth devices</string>
     <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
+    <string name="translate_title">Translations</string>
     <string name="security_settings">Taɣlist n userkeb</string>
     <string name="enable_security">Rmed amesten n tarkit n talfaft deg wasekkar</string>
     <string name="disable_security">Ssens amesten n tarkit n talfaft mara tesekkar-eḍ</string>
