@@ -38,6 +38,7 @@
     <string name="category_debug">Foutopsporing</string>
     <string name="category_export">Instellingen beheren</string>
     <string name="category_theme">Thema</string>
+    <string name="category_clock">Klok</string>
     <string name="category_nfc">NFC verbindingen</string>
     <string name="category_startup_security">Beveiliging</string>
     <string name="category_account">Accounts</string>
@@ -45,6 +46,7 @@
     <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Spraak</string>
     <string name="category_Reset">Opnieuw instellen</string>
+    <string name="category_help">Help mee</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Beginscherm</string>
     <string name="enable_items">Items in-/ uitschakelen</string>
@@ -70,6 +72,8 @@
     <string name="dashboard_list_title">Dashboard indeling</string>
     <string name="show_dashboard_list_on">Dashboard weergeven als lijst</string>
     <string name="show_dashboard_list_off">Dashboard weergeven als raster</string>
+    <string name="dashboard_clock">Klok</string>
+    <string name="show_dashboard_clock">Een klok weergeven op het dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Aangepaste lijst</string>
     <string name="custom_wear_select">Selecteer schakelaars</string>
@@ -114,6 +118,8 @@
     <string name="qrcode_enable_settings">QR-Code scanner inschakelen</string>
     <string name="bluetooth_settings">Stel bluetooth apparaten in</string>
     <string name="enable_bluetooth">Inschakelen van de bluetooth functionaliteit</string>
+    <string name="translate_description">U kunt onze vertalingen beter maken, of zelfs nieuwe talen toe voegen aan deze applicatie via ons Crowdin project</string>
+    <string name="translate_title">Vertalingen</string>
     <string name="security_settings">Beveiligingsinstellingen</string>
     <string name="enable_security">Vingerafdruk nodig bij opstarten van de app</string>
     <string name="disable_security">Vingerafdruk controle uitschakelen</string>

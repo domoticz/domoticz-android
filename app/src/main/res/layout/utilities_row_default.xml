@@ -99,11 +99,11 @@
                     style="@style/row_body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="8sp"
                     android:layout_below="@id/utilities_hardware"
                     android:layout_marginBottom="5dp"
-                    android:textStyle="italic"
-                    android:text="@string/data"/>
+                    android:text="@string/data"
+                    android:textSize="8sp"
+                    android:textStyle="italic"/>
             </LinearLayout>
 
             <LinearLayout

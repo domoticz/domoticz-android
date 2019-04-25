@@ -27,13 +27,13 @@
               android:orientation="vertical">
 
     <com.google.android.material.switchmaterial.SwitchMaterial
-app:useMaterialThemeColors="false"
         android:id="@+id/rgbSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:checked="true"
-        android:text="@string/switch_rgb_wwcolor"/>
+        android:text="@string/switch_rgb_wwcolor"
+        app:useMaterialThemeColors="false"/>
 
     <com.skydoves.colorpickerview.ColorPickerView
         android:id="@+id/colorPickerView"

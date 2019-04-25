@@ -83,15 +83,15 @@
                 android:id="@+id/switch_signal_level"
                 style="@style/row_body1"
                 android:layout_width="wrap_content"
-                android:layout_gravity="end"
-                android:textSize="8sp"
-                android:layout_marginTop="5dp"
-                android:layout_margin="3dp"
-                android:textStyle="italic"
-                android:gravity="end"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:text="@string/signal_level"/>
+                android:layout_gravity="end"
+                android:layout_margin="3dp"
+                android:layout_marginTop="5dp"
+                android:gravity="end"
+                android:text="@string/signal_level"
+                android:textSize="8sp"
+                android:textStyle="italic"/>
 
         </RelativeLayout>
     </LinearLayout>

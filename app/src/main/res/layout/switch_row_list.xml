@@ -118,11 +118,11 @@
                                 style="@style/row_body1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="8sp"
                                 android:layout_below="@id/switch_battery_level"
                                 android:layout_marginBottom="5dp"
-                                android:textStyle="italic"
-                                android:text="@string/signal_level"/>
+                                android:text="@string/signal_level"
+                                android:textSize="8sp"
+                                android:textStyle="italic"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -136,12 +136,12 @@
                             android:orientation="vertical">
 
                             <com.google.android.material.switchmaterial.SwitchMaterial
-app:useMaterialThemeColors="false"
                                 android:id="@+id/switch_button"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"/>
+                                android:layout_centerVertical="true"
+                                app:useMaterialThemeColors="false"/>
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/set_button"
@@ -263,11 +263,11 @@ app:useMaterialThemeColors="false"
                                     android:textSize="10dp"/>
 
                                 <com.google.android.material.switchmaterial.SwitchMaterial
-app:useMaterialThemeColors="false"
                                     android:id="@+id/switch_dimmer_switch"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="right"/>
+                                    android:layout_gravity="right"
+                                    app:useMaterialThemeColors="false"/>
                             </LinearLayout>
 
                             <com.google.android.material.button.MaterialButton

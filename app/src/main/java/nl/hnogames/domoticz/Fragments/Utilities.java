@@ -64,7 +64,7 @@ import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
-    UtilityClickListener {
+        UtilityClickListener {
 
     private ArrayList<UtilitiesInfo> mUtilitiesInfos;
     private double thermostatSetPointValue;
@@ -113,11 +113,11 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         try {
             if (adapter != null) {
                 if (UsefulBits.isEmpty(text) &&
-                    (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+                        (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                        mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                     if (mItemTouchHelper == null) {
                         mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                            false));
+                                false));
                     }
                     mItemTouchHelper.attachToRecyclerView(gridView);
                 } else {
@@ -168,10 +168,10 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             }
             if (mItemTouchHelper == null) {
                 mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                    false));
+                        false));
             }
             if ((UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-                mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                 mItemTouchHelper.attachToRecyclerView(gridView);
             } else {
                 if (mItemTouchHelper != null)
@@ -194,9 +194,9 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
 
     private void showInfoDialog(final UtilitiesInfo mUtilitiesInfo) {
         UtilitiesInfoDialog infoDialog = new UtilitiesInfoDialog(
-            mContext,
-            mUtilitiesInfo,
-            R.layout.dialog_utilities_info);
+                mContext,
+                mUtilitiesInfo,
+                R.layout.dialog_utilities_info);
         infoDialog.setIdx(String.valueOf(mUtilitiesInfo.getIdx()));
         infoDialog.setLastUpdate(mUtilitiesInfo.getLastUpdate());
         infoDialog.setIsFavorite(mUtilitiesInfo.getFavoriteBoolean());
@@ -240,24 +240,24 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         else jsonAction = DomoticzValues.Device.Favorite.OFF;
 
         mDomoticz.setAction(mUtilitiesInfo.getIdx(),
-            jsonUrl,
-            jsonAction,
-            0,
-            null,
-            new setCommandReceiver() {
-                @Override
-                @DebugLog
-                public void onReceiveResult(String result) {
-                    successHandling(result, false);
-                    mUtilitiesInfo.setFavoriteBoolean(isFavorite);
-                }
+                jsonUrl,
+                jsonAction,
+                0,
+                null,
+                new setCommandReceiver() {
+                    @Override
+                    @DebugLog
+                    public void onReceiveResult(String result) {
+                        successHandling(result, false);
+                        mUtilitiesInfo.setFavoriteBoolean(isFavorite);
+                    }
 
-                @Override
-                @DebugLog
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            });
+                    @Override
+                    @DebugLog
+                    public void onError(Exception error) {
+                        errorHandling(error);
+                    }
+                });
     }
 
     /**
@@ -326,20 +326,20 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     public void onLogClick(final UtilitiesInfo utility, final String range) {
         int steps = 2;
         String graphType = utility.getSubType()
-            .replace("Electric", "counter")
-            .replace("kWh", "counter")
-            .replace("Gas", "counter")
-            .replace("Energy", "counter")
-            .replace("Voltcraft", "counter")
-            .replace("Voltage", "counter")
-            .replace("SetPoint", "temp")
-            .replace("Lux", "counter")
-            .replace("BWR102", "counter")
-            .replace("Sound Level", "counter")
-            .replace("Managed Counter", "counter")
-            .replace("Pressure", "counter")
-            .replace("Custom Sensor", "Percentage")
-            .replace("YouLess counter", "counter");
+                .replace("Electric", "counter")
+                .replace("kWh", "counter")
+                .replace("Gas", "counter")
+                .replace("Energy", "counter")
+                .replace("Voltcraft", "counter")
+                .replace("Voltage", "counter")
+                .replace("SetPoint", "temp")
+                .replace("Lux", "counter")
+                .replace("BWR102", "counter")
+                .replace("Sound Level", "counter")
+                .replace("Managed Counter", "counter")
+                .replace("Pressure", "counter")
+                .replace("Custom Sensor", "Percentage")
+                .replace("YouLess counter", "counter");
 
         if (graphType.toLowerCase().contains("counter"))
             graphType = "counter";
@@ -371,8 +371,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         final UtilitiesInfo tempUtil = getUtility(idx);
 
         TemperatureDialog tempDialog = new TemperatureDialog(
-            mContext,
-            tempUtil.getSetPoint());
+                mContext,
+                tempUtil.getSetPoint());
 
         tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
             @Override
@@ -383,7 +383,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                     if (tempUtil != null) {
                         if (tempUtil.isProtected()) {
                             PasswordDialog passwordDialog = new PasswordDialog(
-                                mContext, mDomoticz);
+                                    mContext, mDomoticz);
                             passwordDialog.show();
                             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                 @Override
@@ -430,30 +430,30 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             action = DomoticzValues.Device.Thermostat.Action.MIN;
 
         mDomoticz.setAction(tempUtil.getIdx(),
-            jsonUrl,
-            action,
-            newSetPoint,
-            password,
-            new setCommandReceiver() {
-                @Override
-                @DebugLog
-                public void onReceiveResult(String result) {
-                    if (result.contains("WRONG CODE")) {
-                        UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
-                        if (getActivity() instanceof MainActivity)
-                            ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                    } else {
-                        updateThermostatSetPointValue(tempUtil.getIdx(), thermostatSetPointValue);
-                        successHandling(result, false);
+                jsonUrl,
+                action,
+                newSetPoint,
+                password,
+                new setCommandReceiver() {
+                    @Override
+                    @DebugLog
+                    public void onReceiveResult(String result) {
+                        if (result.contains("WRONG CODE")) {
+                            UsefulBits.showSnackbar(mContext, coordinatorLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                            if (getActivity() instanceof MainActivity)
+                                ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                        } else {
+                            updateThermostatSetPointValue(tempUtil.getIdx(), thermostatSetPointValue);
+                            successHandling(result, false);
+                        }
                     }
-                }
 
-                @Override
-                @DebugLog
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            });
+                    @Override
+                    @DebugLog
+                    public void onError(Exception error) {
+                        errorHandling(error);
+                    }
+                });
     }
 
 
@@ -523,9 +523,9 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             Toast.makeText(mContext, "No logs found.", Toast.LENGTH_LONG).show();
         } else {
             SwitchLogInfoDialog infoDialog = new SwitchLogInfoDialog(
-                mContext,
-                switchLogs,
-                R.layout.dialog_switch_logs);
+                    mContext,
+                    switchLogs,
+                    R.layout.dialog_switch_logs);
             infoDialog.show();
         }
     }

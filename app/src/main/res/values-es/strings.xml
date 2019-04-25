@@ -23,11 +23,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="premium_category">¡Actualiza a premium!</string>
-    <string name="premium_title">¡Obtén la versión premium!</string>
+    <string name="premium_title">¡Consigue la versión premium!</string>
     <string name="premium_feature">es una característica premium, ¡por favor compra la versión de pago para apoyar a los desarrolladores!</string>
     <string name="drawer_open">Abrir el menú</string>
     <string name="drawer_close">Cerrar el menú</string>
-    <string name="msg_please_wait">Por favor, espera&#8230;</string>
+    <string name="msg_please_wait">Espera por favor&#8230;</string>
     <string name="changelog">Registro de cambios</string>
     <string name="button_state_on">Encendido</string>
     <string name="button_state_off">Apagado</string>
@@ -47,6 +47,15 @@
     <string name="button_disarm">Desarmar</string>
     <string name="button_state_full_light">Plena luz</string>
     <string name="button_state_night">Luz nocturna</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="now">Now</string>
+    <string name="astrTwilightStart">Astronomical twilight start</string>
+    <string name="astrTwilightEnd">Astronomical twilight end</string>
+    <string name="civTwilightStart">Civil twilight start</string>
+    <string name="civTwilightEnd">Civil twilight end</string>
+    <string name="nautTwilightStart">Nautical twilight start</string>
+    <string name="nautTwilightEnd">Nautical twilight end</string>
     <string name="last_update">Visto por última vez</string>
     <string name="signal_level">Nivel de señal</string>
     <string name="battery_level">Nivel de batería</string>
@@ -117,8 +126,8 @@
     <string name="continue_question">¿Continuar?</string>
     <string name="cant_remove_default_server">No se puede eliminar el servidor por defecto</string>
     <string name="restart_required_msg">Es necesario reiniciar para aplicar la configuración de idioma</string>
-    <string name="filter_all">All</string>
+    <string name="filter_all">Todo</string>
     <string name="filter_normal">Normal</string>
-    <string name="filter_status">Status</string>
+    <string name="filter_status">Estado</string>
     <string name="filter_error">Error</string>
 </resources>

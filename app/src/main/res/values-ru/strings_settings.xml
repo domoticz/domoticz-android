@@ -38,6 +38,7 @@
     <string name="category_debug">Отладка</string>
     <string name="category_export">Экспорт/импорт параметров</string>
     <string name="category_theme">Оформление</string>
+    <string name="category_clock">Clock</string>
     <string name="category_nfc">NFC соединения</string>
     <string name="category_startup_security">Безопасность</string>
     <string name="category_account">Учётные записи</string>
@@ -45,6 +46,7 @@
     <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Голосовое управление</string>
     <string name="category_Reset">Сброс</string>
+    <string name="category_help">Contribute</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Экран запуска</string>
     <string name="enable_items">Включить/отключить элементы</string>
@@ -70,6 +72,8 @@
     <string name="dashboard_list_title">Сетка панели</string>
     <string name="show_dashboard_list_on">Показать панель как список</string>
     <string name="show_dashboard_list_off">Показать панель как сетку</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear элементы</string>
     <string name="custom_wear_select">Выбрать Wear переключатель</string>
@@ -114,6 +118,8 @@
     <string name="qrcode_enable_settings">Включение функции QR-кодов</string>
     <string name="bluetooth_settings">Setup Bluetooth devices</string>
     <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
+    <string name="translate_title">Translations</string>
     <string name="security_settings">Настройка безопасности</string>
     <string name="enable_security">Ввод отпечатков пальцев на старте</string>
     <string name="disable_security">Отключить ввод отпечатков пальцев на старте</string>

@@ -169,6 +169,7 @@ public class Preference extends PreferenceFragment {
         android.preference.Preference NotificationLogged = findPreference("notification_show_logs");
         android.preference.Preference fetchServerConfig = findPreference("server_force_fetch_config");
         android.preference.Preference resetApplication = findPreference("reset_settings");
+        android.preference.Preference translateApplication = findPreference("translate");
         android.preference.ListPreference displayLanguage = (ListPreference) findPreference("displayLanguage");
         final android.preference.Preference registrationId = findPreference("notification_registration_id");
         android.preference.Preference GeoSettings = findPreference("geo_settings");
@@ -192,6 +193,7 @@ public class Preference extends PreferenceFragment {
         NotificationsMultiSelectListPreference notificationsMultiSelectListPreference = (NotificationsMultiSelectListPreference) findPreference("suppressNotifications");
         NotificationsMultiSelectListPreference alarmMultiSelectListPreference = (NotificationsMultiSelectListPreference) findPreference("alarmNotifications");
         android.preference.SwitchPreference ThemePreference = (android.preference.SwitchPreference) findPreference("darkTheme");
+        android.preference.SwitchPreference ClockPreference = (android.preference.SwitchPreference) findPreference("dashboardShowClock");
         android.preference.Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
         android.preference.SwitchPreference FingerPrintPreference = (android.preference.SwitchPreference) findPreference("enableSecurity");
         android.preference.PreferenceScreen notificationScreen = (android.preference.PreferenceScreen) findPreference("notificationscreen");
@@ -291,6 +293,17 @@ public class Preference extends PreferenceFragment {
                     ((SettingsActivity) getActivity()).reloadSettings();
                     return true;
                 }
+            }
+        });
+
+        ClockPreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_clock));
+                    return false;
+                }
+                return true;
             }
         });
 
@@ -612,6 +625,16 @@ public class Preference extends PreferenceFragment {
             });
         }
 
+        translateApplication.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(android.preference.Preference preference) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://crowdin.com/project/domoticz-for-android"));
+                startActivity(i);
+                return true;
+            }
+        });
+
         resetApplication.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(android.preference.Preference preference) {
@@ -866,9 +889,13 @@ public class Preference extends PreferenceFragment {
         if (pInfo != null) appVersionStr = pInfo.versionName;
 
         final android.preference.Preference appVersion = findPreference("version");
-        appVersion.setSummary(appVersionStr);
+        if(appVersion != null && !UsefulBits.isEmpty(appVersionStr))
+            appVersion.setSummary(appVersionStr);
 
         final android.preference.Preference domoticzVersion = findPreference("version_domoticz");
+        if(domoticzVersion == null)
+            return;
+
         mDomoticz.getServerVersion(new VersionReceiver() {
             @Override
             @DebugLog

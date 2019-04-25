@@ -217,7 +217,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
 
         if (mItemTouchHelper == null) {
             mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(mAdapter, true, false,
-                false));
+                    false));
         }
         if (mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
             mItemTouchHelper.attachToRecyclerView(mRecyclerView);
@@ -247,7 +247,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             }
         }
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
-            getActivity().getString(R.string.permission_desc_storage), neededPermission);
+                getActivity().getString(R.string.permission_desc_storage), neededPermission);
         if (!alert.isShowing()) {
             alert.show();
         }

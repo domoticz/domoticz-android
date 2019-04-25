@@ -25,13 +25,13 @@
               android:id="@+id/extra_panel"
               android:layout_width="wrap_content"
               android:layout_height="30dp"
-              android:gravity="center_vertical"
               android:layout_gravity="center_vertical"
               android:layout_marginLeft="10dp"
               android:layout_marginTop="10dp"
               android:layout_marginRight="10dp"
               android:layout_marginBottom="10dp"
               android:animateLayoutChanges="true"
+              android:gravity="center_vertical"
               android:orientation="horizontal"
               android:visibility="gone"
               tools:visibility="visible">
@@ -40,18 +40,18 @@
         android:id="@+id/hsv"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
         android:layout_gravity="center_vertical"
         android:fillViewport="true"
+        android:gravity="center_vertical"
         android:measureAllChildren="false"
         android:scrollbars="none">
 
         <LinearLayout
             android:id="@+id/innerLay"
             android:layout_width="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <com.like.LikeButton
@@ -68,10 +68,10 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/log_button"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="-5dp"
-                android:layout_marginBottom="-5dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="-5dp"
+                android:layout_marginBottom="-5dp"
                 android:text="@string/button_status_log"/>
         </LinearLayout>
     </HorizontalScrollView>

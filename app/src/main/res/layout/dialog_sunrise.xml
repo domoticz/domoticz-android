@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2015 Domoticz - Mark Heinis
+  ~
+  ~  Licensed to the Apache Software Foundation (ASF) under one
+  ~  or more contributor license agreements.  See the NOTICE file
+  ~  distributed with this work for additional information
+  ~  regarding copyright ownership.  The ASF licenses this file
+  ~  to you under the Apache License, Version 2.0 (the
+  ~  "License"); you may not use this file except in compliance
+  ~  with the License.  You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an
+  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~  KIND, either express or implied.  See the License for the
+  ~  specific language governing permissions and limitations
+  ~  under the License.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/row_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingLeft="0dp"
+            android:text="@string/now"/>
+
+        <LinearLayout
+            android:id="@+id/clockLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <rm.com.clocks.ClockImageView
+                android:id="@+id/clock"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                app:clockColor="@color/orange_button"
+                app:frameWidth="thin"
+                app:hours="16"
+                app:indeterminateSpeed="2"
+                app:minutes="20"
+                app:pointerWidth="thin"
+                app:timeSetDuration="400"
+                />
+
+            <TextView
+                android:id="@+id/clockText"
+                style="@style/row_body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingLeft="0dp"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/row_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingLeft="0dp"
+            android:text="@string/sunrise"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <rm.com.clocks.ClockImageView
+                android:id="@+id/sunrise"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                app:clockColor="@color/orange_button"
+                app:frameWidth="thin"
+                app:hours="16"
+                app:indeterminateSpeed="2"
+                app:minutes="20"
+                app:pointerWidth="thin"
+                app:timeSetDuration="400"
+                />
+
+            <TextView
+                android:id="@+id/sunriseText"
+                style="@style/row_body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingLeft="0dp"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            style="@style/row_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingLeft="0dp"
+            android:text="@string/sunset"/>
+
+        <LinearLayout
+            android:id="@+id/sunsetLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <rm.com.clocks.ClockImageView
+                android:id="@+id/sunset"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                app:clockColor="@color/orange_button"
+                app:frameWidth="thin"
+                app:hours="16"
+                app:indeterminateSpeed="2"
+                app:minutes="20"
+                app:pointerWidth="thin"
+                app:timeSetDuration="400"
+                />
+
+            <TextView
+                android:id="@+id/sunsetText"
+                style="@style/row_body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingLeft="0dp"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            style="@style/row_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingLeft="0dp"
+            android:text="@string/astrTwilightStart"/>
+
+        <LinearLayout
+            android:id="@+id/astrTwilightStartLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <rm.com.clocks.ClockImageView
+                android:id="@+id/astrTwilightStart"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                app:clockColor="@color/orange_button"
+                app:frameWidth="thin"
+                app:hours="16"
+                app:indeterminateSpeed="2"
+                app:minutes="20"
+                app:pointerWidth="thin"
+                app:timeSetDuration="400"
+                />
+
+            <TextView
+                android:id="@+id/astrTwilightStartText"
+                style="@style/row_body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingLeft="0dp"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            style="@style/row_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingLeft="0dp"
+            android:text="@string/astrTwilightEnd"/>
+
+        <LinearLayout
+            android:id="@+id/astrTwilightEndLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <rm.com.clocks.ClockImageView
+                android:id="@+id/astrTwilightEnd"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                app:clockColor="@color/orange_button"
+                app:frameWidth="thin"
+                app:hours="16"
+                app:indeterminateSpeed="2"
+                app:minutes="20"
+                app:pointerWidth="thin"
+                app:timeSetDuration="400"
+                />
+
+            <TextView
+                android:id="@+id/astrTwilightEndText"
+                style="@style/row_body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingLeft="0dp"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/row_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingLeft="0dp"
+            android:text="@string/civTwilightStart"/>
+
+        <LinearLayout
+            android:id="@+id/civTwilightStartLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <rm.com.clocks.ClockImageView
+                android:id="@+id/civTwilightStart"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                app:clockColor="@color/orange_button"
+                app:frameWidth="thin"
+                app:hours="16"
+                app:indeterminateSpeed="2"
+                app:minutes="20"
+                app:pointerWidth="thin"
+                app:timeSetDuration="400"
+                />
+
+            <TextView
+                android:id="@+id/civTwilightStartText"
+                style="@style/row_body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingLeft="0dp"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/row_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingLeft="0dp"
+            android:text="@string/civTwilightEnd"/>
+
+        <LinearLayout
+            android:id="@+id/civTwilightEndLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <rm.com.clocks.ClockImageView
+                android:id="@+id/civTwilightEnd"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                app:clockColor="@color/orange_button"
+                app:frameWidth="thin"
+                app:hours="16"
+                app:indeterminateSpeed="2"
+                app:minutes="20"
+                app:pointerWidth="thin"
+                app:timeSetDuration="400"
+                />
+
+            <TextView
+                android:id="@+id/civTwilightEndText"
+                style="@style/row_body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingLeft="0dp"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/row_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingLeft="0dp"
+            android:text="@string/nautTwilightStart"/>
+
+        <LinearLayout
+            android:id="@+id/nautTwilightStartLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <rm.com.clocks.ClockImageView
+                android:id="@+id/nautTwilightStart"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                app:clockColor="@color/orange_button"
+                app:frameWidth="thin"
+                app:hours="16"
+                app:indeterminateSpeed="2"
+                app:minutes="20"
+                app:pointerWidth="thin"
+                app:timeSetDuration="400"
+                />
+
+            <TextView
+                android:id="@+id/nautTwilightStartText"
+                style="@style/row_body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingLeft="0dp"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/row_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingLeft="0dp"
+            android:text="@string/nautTwilightEnd"/>
+
+        <LinearLayout
+            android:id="@+id/nautTwilightEndLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <rm.com.clocks.ClockImageView
+                android:id="@+id/nautTwilightEnd"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                app:clockColor="@color/orange_button"
+                app:frameWidth="thin"
+                app:hours="16"
+                app:indeterminateSpeed="2"
+                app:minutes="20"
+                app:pointerWidth="thin"
+                app:timeSetDuration="400"
+                />
+
+            <TextView
+                android:id="@+id/nautTwilightEndText"
+                style="@style/row_body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingLeft="0dp"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

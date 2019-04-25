@@ -161,29 +161,29 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha04'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.biometric:biometric:1.0.0-alpha03'
-    implementation 'com.google.android.material:material:1.1.0-alpha02'
+    implementation 'androidx.biometric:biometric:1.0.0-alpha04'
+    implementation 'com.google.android.material:material:1.1.0-alpha05'
 
-    implementation "com.google.firebase:firebase-core:16.0.6"
+    implementation "com.google.firebase:firebase-core:16.0.8"
     implementation "com.google.firebase:firebase-crash:16.2.1"
-    implementation "com.google.firebase:firebase-perf:16.2.3"
-    implementation "com.google.firebase:firebase-messaging:17.3.4"
-    implementation "com.google.firebase:firebase-ads:17.1.2"
+    implementation "com.google.firebase:firebase-perf:16.2.5"
+    implementation "com.google.firebase:firebase-messaging:17.6.0"
+    implementation "com.google.firebase:firebase-ads:17.2.0"
     implementation "com.crashlytics.sdk.android:crashlytics:2.9.8"
 
     implementation 'com.google.android.ads.consent:consent-library:1.0.7'
 
-    implementation "com.google.android.gms:play-services-analytics:16.0.6"
+    implementation "com.google.android.gms:play-services-analytics:16.0.8"
     implementation "com.google.android.gms:play-services-wearable:16.0.1"
-    implementation "com.google.android.gms:play-services-maps:16.0.0"
-    implementation "com.google.android.gms:play-services-gcm:16.0.0"
+    implementation "com.google.android.gms:play-services-maps:16.1.0"
+    implementation "com.google.android.gms:play-services-gcm:16.1.0"
     implementation "com.google.android.gms:play-services-location:16.0.0"
     implementation "com.google.android.gms:play-services-places:16.0.0"
-    implementation "com.google.android.gms:play-services-ads:17.1.2"
+    implementation "com.google.android.gms:play-services-ads:17.2.0"
     implementation "com.github.nisrulz:recyclerviewhelper:27.1.1"
 
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
@@ -193,8 +193,9 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
 
+    implementation 'com.github.alxrm:animated-clock-icon:1.0.2'
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'com.google.code.gson:gson:2.8.4'
+    implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.android.volley:volley:1.1.0'
     implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
 
@@ -216,7 +217,7 @@ dependencies {
     }
 
     implementation 'com.github.matthiasrobbers:shortbread:1.0.2'
-    annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
+    annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.0.2'
     implementation 'com.schibstedspain.android:leku:3.3.0'
     implementation 'com.github.k0shk0sh:PermissionHelper:1.1.0'
     implementation 'com.github.zagum:SpeechRecognitionView:1.0.2'
