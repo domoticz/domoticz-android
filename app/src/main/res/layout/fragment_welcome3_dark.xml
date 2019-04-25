@@ -20,9 +20,9 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/welcome_top_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
@@ -183,12 +183,12 @@
             android:textColor="@color/white"/>
 
         <com.google.android.material.switchmaterial.SwitchMaterial
-app:useMaterialThemeColors="false"
             android:id="@+id/localServer_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:checked="false"/>
+            android:checked="false"
+            app:useMaterialThemeColors="false"/>
 
         <LinearLayout
             android:id="@+id/local_server_settings"

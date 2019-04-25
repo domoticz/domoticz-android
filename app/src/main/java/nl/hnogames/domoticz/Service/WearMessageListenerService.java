@@ -71,7 +71,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
                     NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(mApiClient).await();
                     for (Node node : nodes.getNodes()) {
                         MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
-                            mApiClient, node.getId(), path, text.getBytes()).await();
+                                mApiClient, node.getId(), path, text.getBytes()).await();
 
                         if (result.getStatus().isSuccess()) {
                             Log.v("WEAR", "Message: {" + "my object" + "} sent to: " + node.getDisplayName());
@@ -132,7 +132,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
                         default:
                             throw new NullPointerException(
-                                "Toggle event received from wear device for unsupported switch type: " + selectedSwitch.getSwitchTypeVal());
+                                    "Toggle event received from wear device for unsupported switch type: " + selectedSwitch.getSwitchTypeVal());
                     }
                     //now send latest status
                     getSwitches();
@@ -182,7 +182,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
                 String name = mDevicesInfo.getName();
 
                 if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) &&
-                    mDevicesInfo.getFavoriteBoolean()) {//only dashboard switches..
+                        mDevicesInfo.getFavoriteBoolean()) {//only dashboard switches..
                     supportedSwitches.add(mDevicesInfo);
                 }
             }
@@ -221,9 +221,9 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
     private void initGoogleApiClient() {
         mApiClient = new GoogleApiClient.Builder(this)
-            .addApi(Wearable.API)
-            .addConnectionCallbacks(this)
-            .build();
+                .addApi(Wearable.API)
+                .addConnectionCallbacks(this)
+                .build();
 
         mApiClient.connect();
     }
@@ -244,7 +244,8 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
         boolean checked = !toggledDevice.getStatusBoolean();
         if (toggledDevice.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-            toggledDevice.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                toggledDevice.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
+                toggledDevice.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) {
             if (checked) jsonAction = DomoticzValues.Device.Switch.Action.OFF;
             else jsonAction = DomoticzValues.Device.Switch.Action.ON;
         } else {

@@ -111,16 +111,17 @@
                             android:layout_width="175dp"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
+
                             <TextView
                                 android:id="@+id/temperature_data2"
                                 style="@style/row_body1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="8sp"
                                 android:layout_below="@id/temperature_data"
                                 android:layout_marginBottom="5dp"
-                                android:textStyle="italic"
-                                android:text="@string/temperature"/>
+                                android:text="@string/temperature"
+                                android:textSize="8sp"
+                                android:textStyle="italic"/>
 
                             <ImageView
                                 android:id="@+id/mode_icon"

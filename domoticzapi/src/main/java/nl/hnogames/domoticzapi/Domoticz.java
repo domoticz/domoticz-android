@@ -64,6 +64,7 @@ import nl.hnogames.domoticzapi.Interfaces.PlansReceiver;
 import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SettingsReceiver;
 import nl.hnogames.domoticzapi.Interfaces.StatusReceiver;
+import nl.hnogames.domoticzapi.Interfaces.SunRiseReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SwitchTimerReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SwitchesReceiver;
@@ -95,6 +96,7 @@ import nl.hnogames.domoticzapi.Parsers.PlanParser;
 import nl.hnogames.domoticzapi.Parsers.ScenesParser;
 import nl.hnogames.domoticzapi.Parsers.SettingsParser;
 import nl.hnogames.domoticzapi.Parsers.StatusInfoParser;
+import nl.hnogames.domoticzapi.Parsers.SunRiseParser;
 import nl.hnogames.domoticzapi.Parsers.SwitchLogParser;
 import nl.hnogames.domoticzapi.Parsers.SwitchTimerParser;
 import nl.hnogames.domoticzapi.Parsers.SwitchesParser;
@@ -430,6 +432,20 @@ public class Domoticz {
     }
 
     /**
+     * Get the sunrise info from the server
+     *
+     * @param receiver to get the callback on
+     */
+    public void getSunRise(SunRiseReceiver receiver) {
+        SunRiseParser parser = new SunRiseParser(receiver);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SUNRISE);
+        RequestUtil.makeJsonGetRequest(parser,
+            getUserCredentials(Authentication.USERNAME),
+            getUserCredentials(Authentication.PASSWORD),
+            url, getSessionUtil(), true, 3, queue);
+    }
+
+    /**
      * Get's version of the Domoticz server
      *
      * @param receiver to get the callback on
@@ -438,9 +454,9 @@ public class Domoticz {
         VersionParser parser = new VersionParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.VERSION);
         RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, getSessionUtil(), true, 3, queue);
+            getUserCredentials(Authentication.USERNAME),
+            getUserCredentials(Authentication.PASSWORD),
+            url, getSessionUtil(), true, 3, queue);
     }
 
     public String getSnapshotUrl(CameraInfo camera) {

@@ -38,6 +38,7 @@
     <string name="category_debug">Depuração</string>
     <string name="category_export">Configurações de importação/exportação</string>
     <string name="category_theme">Aparência</string>
+    <string name="category_clock">Clock</string>
     <string name="category_nfc">Conexões de NFC</string>
     <string name="category_startup_security">Segurança</string>
     <string name="category_account">Contas</string>
@@ -45,6 +46,7 @@
     <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Comando de voz</string>
     <string name="category_Reset">Reset</string>
+    <string name="category_help">Contribute</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Ecrã Inicial</string>
     <string name="enable_items">Habilitar/Desabilitar itens</string>
@@ -70,6 +72,8 @@
     <string name="dashboard_list_title">Grelha do painel de entrada</string>
     <string name="show_dashboard_list_on">Mostrar painel de entrada como lista</string>
     <string name="show_dashboard_list_off">Mostrar painel de entrada com grelha</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Itens personalizados no android Wear</string>
     <string name="custom_wear_select">Selecionar Interruptores</string>
@@ -114,6 +118,8 @@
     <string name="qrcode_enable_settings">Habilitar a funcionalidade de códigos QR</string>
     <string name="bluetooth_settings">Setup Bluetooth devices</string>
     <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
+    <string name="translate_title">Translations</string>
     <string name="security_settings">Configuração de segurança</string>
     <string name="enable_security">Ativar a proteção de impressão digital ao iniciar</string>
     <string name="disable_security">Desativar a proteção de impressão digital ao iniciar</string>

@@ -38,6 +38,7 @@
     <string name="category_debug">Felsökning</string>
     <string name="category_export">Exportera/importera inställningar</string>
     <string name="category_theme">Tema</string>
+    <string name="category_clock">Clock</string>
     <string name="category_nfc">NFC-anslutningar</string>
     <string name="category_startup_security">Säkerhet</string>
     <string name="category_account">Konton</string>
@@ -45,6 +46,7 @@
     <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Röst</string>
     <string name="category_Reset">Återställ</string>
+    <string name="category_help">Contribute</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Startskärm</string>
     <string name="enable_items">Aktivera/inaktivera objekt</string>
@@ -70,6 +72,8 @@
     <string name="dashboard_list_title">Skrivbordsrutnät</string>
     <string name="show_dashboard_list_on">Visa skrivbordet som lista</string>
     <string name="show_dashboard_list_off">Visa skrivbordet som rutnät</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear-anpassade objekt</string>
     <string name="custom_wear_select">Välj Wear-brytare</string>
@@ -114,6 +118,8 @@
     <string name="qrcode_enable_settings">Aktivera QR-kodsfunktionen</string>
     <string name="bluetooth_settings">Setup Bluetooth devices</string>
     <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
+    <string name="translate_title">Translations</string>
     <string name="security_settings">Konfigurera säkerhet</string>
     <string name="enable_security">Aktivera fingeravtryckskydd vid start</string>
     <string name="disable_security">Inaktivera fingeravtryck skydd vid start</string>

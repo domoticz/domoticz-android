@@ -387,6 +387,10 @@ public class DomoticzUrls {
                 url = DomoticzValues.Url.System.SETSECURITY;
                 break;
 
+            case DomoticzValues.Json.Url.Request.SUNRISE:
+                url = DomoticzValues.Url.System.SUNRISE;
+                break;
+
             case DomoticzValues.Json.Url.Request.UPDATE:
                 url = DomoticzValues.Url.System.UPDATE;
                 break;

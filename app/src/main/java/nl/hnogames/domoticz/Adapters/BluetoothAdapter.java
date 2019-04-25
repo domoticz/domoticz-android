@@ -124,7 +124,7 @@ public class BluetoothAdapter extends BaseAdapter {
             holder.switch_idx.setText(context.getString(R.string.connectedSwitch) + ": " + mBluetoothInfo.getSwitchIdx());
         } else {
             holder.switch_idx.setText(context.getString(R.string.connectedSwitch)
-                + ": " + context.getString(R.string.not_available));
+                    + ": " + context.getString(R.string.not_available));
         }
 
         if (!UsefulBits.isEmpty(mBluetoothInfo.getValue()))

@@ -38,6 +38,7 @@
     <string name="category_debug">Debugging</string>
     <string name="category_export">Export/Import Settings</string>
     <string name="category_theme">Theme</string>
+    <string name="category_clock">Clock</string>
     <string name="category_nfc">NFC Connections</string>
     <string name="category_startup_security">Security</string>
     <string name="category_account">Accounts</string>
@@ -45,6 +46,7 @@
     <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Speech</string>
     <string name="category_Reset">Reset</string>
+    <string name="category_help">Contribute</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Startup screen</string>
     <string name="enable_items">Enable/Disable Items</string>
@@ -70,6 +72,8 @@
     <string name="dashboard_list_title">Dashboard Grid</string>
     <string name="show_dashboard_list_on">Show dashboard as list</string>
     <string name="show_dashboard_list_off">Show dashboard as grid</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear custom items</string>
     <string name="custom_wear_select">Select Wear switches</string>
@@ -114,6 +118,8 @@
     <string name="qrcode_enable_settings">Enable QR Codes functionality</string>
     <string name="bluetooth_settings">Setup Bluetooth devices</string>
     <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
+    <string name="translate_title">Translations</string>
     <string name="security_settings">Setup Security</string>
     <string name="enable_security">Enable fingerprint protection on startup</string>
     <string name="disable_security">Disable fingerprint protection on startup</string>

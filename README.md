@@ -1,3 +1,7 @@
+[![Crowdin](https://d322cqt584bo4o.cloudfront.net/domoticz-for-android/localized.svg)](https://crowdin.com/project/domoticz-for-android)
+
+
+
 # Domoticz for Android
 This is a Android app for Domoticz and is available for download in the Play Store.
 

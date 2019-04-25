@@ -39,8 +39,8 @@
     <string name="monthly_weekday">Monatlich (Wochentag)</string>
     <string name="yearly">Jährlich</string>
     <string name="yearly_weekday">Jährlich (Wochentag)</string>
-    <string name="before_sun_at_south">Before Sun at South</string>
-    <string name="after_sun_at_south">After Sun at South</string>
+    <string name="before_sun_at_south">Vor der Sonne im Süden</string>
+    <string name="after_sun_at_south">Nach der Sonne im Süden</string>
     <string name="before_civil_twilight_start">Before Civil Twilight Start</string>
     <string name="after_civil_twilight_start">After Civil Twilight Start</string>
     <string name="before_civil_twilight_end">Before Civil Twilight End</string>

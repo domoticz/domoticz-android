@@ -38,6 +38,7 @@
     <string name="category_debug">Ladění</string>
     <string name="category_export">Export/Import nastavení</string>
     <string name="category_theme">Téma</string>
+    <string name="category_clock">Clock</string>
     <string name="category_nfc">NFC připojení</string>
     <string name="category_startup_security">Zabezpečení</string>
     <string name="category_account">Účty</string>
@@ -45,6 +46,7 @@
     <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Řeč</string>
     <string name="category_Reset">Obnovit</string>
+    <string name="category_help">Contribute</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Úvodní obrazovka</string>
     <string name="enable_items">Povolit/zakázat položky</string>
@@ -70,6 +72,8 @@
     <string name="dashboard_list_title">Mřížka řídícího panelu</string>
     <string name="show_dashboard_list_on">Zobrazit řídící panel jako seznam</string>
     <string name="show_dashboard_list_off">Zobrazit řídící panel jako mřížku</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Vlastní položky Android Wear</string>
     <string name="custom_wear_select">Zvolte Wear přepínače</string>
@@ -114,6 +118,8 @@
     <string name="qrcode_enable_settings">Povolit funkce QR kódů</string>
     <string name="bluetooth_settings">Setup Bluetooth devices</string>
     <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
+    <string name="translate_title">Translations</string>
     <string name="security_settings">Nastavení zabezpečení</string>
     <string name="enable_security">Povolit ochranu otisk při startu</string>
     <string name="disable_security">Zakázat ochranu otiskem prstu po startu</string>

@@ -38,6 +38,7 @@
     <string name="category_debug">Debugging</string>
     <string name="category_export">Einstellungen importieren/exportieren</string>
     <string name="category_theme">Designs</string>
+    <string name="category_clock">Clock</string>
     <string name="category_nfc">NFC-Verbindungen</string>
     <string name="category_startup_security">Sicherheit</string>
     <string name="category_account">Konten</string>
@@ -45,11 +46,12 @@
     <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Sprachkommando</string>
     <string name="category_Reset">Zurücksetzen</string>
+    <string name="category_help">Contribute</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Startbildschirm</string>
     <string name="enable_items">Menüpunkte einschalten/ausschalten</string>
     <!--        Generic sorting settings       -->
-    <string name="sort_server_title">Sorting</string>
+    <string name="sort_server_title">Sortierung</string>
     <string name="sort_server_on">Sort devices like sorted on the server</string>
     <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
     <string name="sort_lock_server_title">Lock</string>
@@ -70,6 +72,8 @@
     <string name="dashboard_list_title">Dashboard-Raster</string>
     <string name="show_dashboard_list_on">Dashboard als Liste anzeigen</string>
     <string name="show_dashboard_list_off">Dashboard als Raster anzeigen</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear benutzerdefinierte Elemente</string>
     <string name="custom_wear_select">Wähle Wear Schalter</string>
@@ -112,8 +116,10 @@
     <string name="qrcode_settings">Einrichten von QR-Codes</string>
     <string name="enable_qrcode">QR-Codes aktivieren</string>
     <string name="qrcode_enable_settings">QR-Codes Funktionalität aktivieren</string>
-    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="bluetooth_settings">Bluetooth Geräte einrichten</string>
     <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
+    <string name="translate_title">Translations</string>
     <string name="security_settings">Sicherheits-Einstellungen</string>
     <string name="enable_security">Fingerabdruck-Schutz beim Start aktivieren</string>
     <string name="disable_security">Fingerabdruck-Schutz beim Start deaktivieren</string>

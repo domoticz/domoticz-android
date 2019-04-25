@@ -53,196 +53,348 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <ImageView
+                    android:id="@+id/widget_info_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|start"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/outline_info_black_18"
+                    android:tint="@color/md_grey_300"/>
+
+                <ImageView
+                    android:id="@+id/rowIcon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:contentDescription="@string/error_image_description"
+                    android:src="@drawable/clock48"/>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:id="@+id/textwrapper"
+                        android:id="@+id/clockLayoutWrapper"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:id="@+id/sunriseLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <TextView
+                                style="@style/row_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:paddingLeft="0dp"
+                                android:text="@string/sunrise"/>
+
+                            <rm.com.clocks.ClockImageView
+                                android:id="@+id/sunrise"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_gravity="center"
+                                android:foregroundGravity="center"
+                                android:gravity="center"
+                                app:clockColor="@color/orange_button"
+                                app:frameWidth="thin"
+                                app:hours="16"
+                                app:indeterminateSpeed="2"
+                                app:minutes="20"
+                                app:pointerWidth="thin"
+                                app:timeSetDuration="400"
+                                />
+
+                            <TextView
+                                android:id="@+id/sunriseText"
+                                style="@style/row_body1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:paddingLeft="0dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/clockLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <TextView
+                                style="@style/row_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:paddingLeft="0dp"
+                                android:text="@string/now"/>
+
+                            <rm.com.clocks.ClockImageView
+                                android:id="@+id/clock"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_gravity="center"
+                                android:foregroundGravity="center"
+                                android:gravity="center"
+                                app:clockColor="@color/orange_button"
+                                app:frameWidth="thin"
+                                app:hours="16"
+                                app:indeterminateSpeed="2"
+                                app:minutes="20"
+                                app:pointerWidth="thin"
+                                app:timeSetDuration="400"
+                                />
+
+                            <TextView
+                                android:id="@+id/clockText"
+                                style="@style/row_body1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:paddingLeft="0dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/sunsetLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <TextView
+                                style="@style/row_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:paddingLeft="0dp"
+                                android:text="@string/sunset"/>
+
+                            <rm.com.clocks.ClockImageView
+                                android:id="@+id/sunset"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_gravity="center"
+                                android:foregroundGravity="center"
+                                android:gravity="center"
+                                app:clockColor="@color/orange_button"
+                                app:frameWidth="thin"
+                                app:hours="16"
+                                app:indeterminateSpeed="2"
+                                app:minutes="20"
+                                app:pointerWidth="thin"
+                                app:timeSetDuration="400"
+                                />
+
+                            <TextView
+                                android:id="@+id/sunsetText"
+                                style="@style/row_body1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:paddingLeft="0dp"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/details"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:gravity="center_horizontal"
                         android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/widget_info_icon"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:id="@+id/textwrapper"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="top|start"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="5dp"
-                            android:src="@drawable/outline_info_black_18"
-                            android:tint="@color/md_grey_300"/>
-
-                        <ImageView
-                            android:id="@+id/rowIcon"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_gravity="center_horizontal"
-                            android:contentDescription="@string/error_image_description"
-                            android:src="@drawable/clock48"/>
-
-                        <TextView
-                            android:id="@+id/switch_name"
-                            style="@style/row_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
+                            android:layout_centerHorizontal="true"
                             android:gravity="center_horizontal"
-                            android:maxLines="2"
-                            android:paddingBottom="7dp"/>
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/switch_battery_level"
-                            style="@style/row_body1"
+                            <TextView
+                                android:id="@+id/switch_name"
+                                style="@style/row_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:gravity="center_horizontal"
+                                android:maxLines="2"
+                                android:paddingBottom="7dp"/>
+
+                            <TextView
+                                android:id="@+id/switch_battery_level"
+                                style="@style/row_body1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="-10dp"
+                                android:gravity="center_horizontal"
+                                android:text="@string/battery_level"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout4ttt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="-10dp"
-                            android:layout_gravity="center_horizontal"
+                            android:layout_below="@+id/textwrapper"
+                            android:layout_centerHorizontal="true"
                             android:gravity="center_horizontal"
-                            android:text="@string/battery_level"/>
-                    </LinearLayout>
+                            android:orientation="horizontal"
+                            android:paddingBottom="5dp">
 
-                    <LinearLayout
-                        android:id="@+id/linearLayout4ttt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textwrapper"
-                        android:layout_centerHorizontal="true"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal"
-                        android:paddingBottom="5dp">
+                            <az.plainpie.PieView
+                                android:id="@+id/pieView"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_marginTop="7dp"
+                                plainpie:inner_pie_padding="5"
+                                plainpie:inner_text_visibility="true"
+                                plainpie:percentage="50"
+                                plainpie:percentage_size="8"/>
 
-                        <az.plainpie.PieView
-                            android:id="@+id/pieView"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_marginTop="7dp"
-                            plainpie:inner_pie_padding="5"
-                            plainpie:inner_text_visibility="true"
-                            plainpie:percentage="50"
-                            plainpie:percentage_size="8"/>
+                            <com.google.android.material.switchmaterial.SwitchMaterial
+                                android:id="@+id/switch_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                app:useMaterialThemeColors="false"/>
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
-                            app:useMaterialThemeColors="false"
-                            android:id="@+id/switch_button"
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/on_button"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:text="@string/button_state_on"
+                                android:textSize="10dp"/>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/off_button"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="7dp"
+                                android:layout_weight="1"
+                                android:text="@string/button_state_off"
+                                android:textSize="10dp"/>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/set_button"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                android:layout_width="56dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_gravity="right"
+                                android:text="@string/set_temperature"
+                                android:textSize="10dp"/>
+
+                            <ImageView
+                                android:id="@+id/switch_button_up"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_margin="7dp"
+                                android:layout_marginTop="10dp"
+                                android:src="@drawable/baseline_keyboard_arrow_up_black_24"
+                                android:tint="@color/primary"/>
+
+                            <ImageView
+                                android:id="@+id/switch_button_stop"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_margin="7dp"
+                                android:layout_marginTop="10dp"
+                                android:src="@drawable/baseline_stop_black_24"
+                                android:tint="@color/primary"/>
+
+                            <ImageView
+                                android:id="@+id/switch_button_down"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_margin="7dp"
+                                android:layout_marginTop="10dp"
+                                android:src="@drawable/baseline_keyboard_arrow_down_black_24"
+                                android:tint="@color/primary"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout444"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"/>
+                            android:layout_below="@+id/linearLayout4ttt"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:paddingBottom="10dp">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/on_button"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                            android:layout_width="60dp"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:text="@string/button_state_on"
-                            android:textSize="10dp"/>
+                            <TextView
+                                android:id="@+id/switch_dimmer_level"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"/>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/off_button"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                            android:layout_width="60dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="7dp"
-                            android:layout_weight="1"
-                            android:text="@string/button_state_off"
-                            android:textSize="10dp"/>
+                            <SeekBar
+                                android:id="@+id/switch_dimmer"
+                                android:layout_width="129dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:minWidth="150dp"/>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/set_button"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                            android:layout_width="56dp"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_gravity="right"
-                            android:text="@string/set_temperature"
-                            android:textSize="10dp"/>
+                            <Spinner
+                                android:id="@+id/spSelector"
+                                android:layout_width="129dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:minWidth="150dp"/>
 
-                        <ImageView
-                            android:id="@+id/switch_button_up"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_margin="7dp"
-                            android:layout_marginTop="10dp"
-                            android:src="@drawable/baseline_keyboard_arrow_up_black_24"
-                            android:tint="@color/primary"/>
+                            <com.google.android.material.switchmaterial.SwitchMaterial
+                                android:id="@+id/switch_dimmer_switch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                app:useMaterialThemeColors="false"/>
 
-                        <ImageView
-                            android:id="@+id/switch_button_stop"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_margin="7dp"
-                            android:layout_marginTop="10dp"
-                            android:src="@drawable/baseline_stop_black_24"
-                            android:tint="@color/primary"/>
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/color_button"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_gravity="right"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:text="@string/button_color"
+                                android:textSize="10dp"/>
+                        </LinearLayout>
 
-                        <ImageView
-                            android:id="@+id/switch_button_down"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_margin="7dp"
-                            android:layout_marginTop="10dp"
-                            android:src="@drawable/baseline_keyboard_arrow_down_black_24"
-                            android:tint="@color/primary"/>
-                    </LinearLayout>
+                    </RelativeLayout>
 
-                    <LinearLayout
-                        android:id="@+id/linearLayout444"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/linearLayout4ttt"
-                        android:layout_centerHorizontal="true"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical"
-                        android:paddingBottom="10dp">
-
-                        <TextView
-                            android:id="@+id/switch_dimmer_level"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"/>
-
-                        <SeekBar
-                            android:id="@+id/switch_dimmer"
-                            android:layout_width="129dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:minWidth="150dp"/>
-
-                        <Spinner
-                            android:id="@+id/spSelector"
-                            android:layout_width="129dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:minWidth="150dp"/>
-
-                        <com.google.android.material.switchmaterial.SwitchMaterial
-                            app:useMaterialThemeColors="false"
-                            android:id="@+id/switch_dimmer_switch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"/>
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/color_button"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_gravity="right"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:text="@string/button_color"
-                            android:textSize="10dp"/>
-                    </LinearLayout>
                 </RelativeLayout>
 
                 <TextView
@@ -251,12 +403,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:textSize="8sp"
-                    android:layout_marginTop="5dp"
                     android:layout_margin="3dp"
-                    android:textStyle="italic"
+                    android:layout_marginTop="5dp"
                     android:gravity="end"
-                    android:text="@string/signal_level"/>
+                    android:text="@string/signal_level"
+                    android:textSize="8sp"
+                    android:textStyle="italic"/>
             </LinearLayout>
         </LinearLayout>
 
