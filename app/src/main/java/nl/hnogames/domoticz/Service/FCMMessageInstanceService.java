@@ -9,6 +9,7 @@ import java.net.URLDecoder;
 import java.util.Map;
 
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.GCMUtils;
 import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
@@ -63,5 +64,12 @@ public class FCMMessageInstanceService extends FirebaseMessagingService {
             }
         }
         return str;
+    }
+
+    @Override
+    public void onNewToken(String token) {
+        super.onNewToken(token);
+        Log.d("GCM", "Refreshed token: " + token);
+        GCMUtils.sendRegistrationIdToBackend(this, token);
     }
 }

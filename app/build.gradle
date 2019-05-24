@@ -161,19 +161,19 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha05'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha04'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha05'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.biometric:biometric:1.0.0-alpha04'
-    implementation 'com.google.android.material:material:1.1.0-alpha05'
+    implementation 'com.google.android.material:material:1.1.0-alpha06'
 
-    implementation "com.google.firebase:firebase-core:16.0.8"
+    implementation "com.google.firebase:firebase-core:16.0.9"
     implementation "com.google.firebase:firebase-crash:16.2.1"
-    implementation "com.google.firebase:firebase-perf:16.2.5"
-    implementation "com.google.firebase:firebase-messaging:17.6.0"
-    implementation "com.google.firebase:firebase-ads:17.2.0"
-    implementation "com.crashlytics.sdk.android:crashlytics:2.9.8"
+    implementation "com.google.firebase:firebase-perf:17.0.0"
+    implementation "com.google.firebase:firebase-messaging:18.0.0"
+    implementation "com.google.firebase:firebase-ads:17.2.1"
+    implementation "com.crashlytics.sdk.android:crashlytics:2.10.1"
 
     implementation 'com.google.android.ads.consent:consent-library:1.0.7'
 
@@ -182,8 +182,8 @@ dependencies {
     implementation "com.google.android.gms:play-services-maps:16.1.0"
     implementation "com.google.android.gms:play-services-gcm:16.1.0"
     implementation "com.google.android.gms:play-services-location:16.0.0"
-    implementation "com.google.android.gms:play-services-places:16.0.0"
-    implementation "com.google.android.gms:play-services-ads:17.2.0"
+    implementation "com.google.android.gms:play-services-places:16.1.0"
+    implementation "com.google.android.gms:play-services-ads:17.2.1"
     implementation "com.github.nisrulz:recyclerviewhelper:27.1.1"
 
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
