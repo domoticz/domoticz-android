@@ -119,12 +119,29 @@ public class DevicesInfo implements Comparable, Serializable {
             Chill = row.getString("Chill");
         if (row.has("Speed"))
             Speed = row.getString("Speed");
-        if (row.has("DewPoint"))
-            DewPoint = row.getLong("DewPoint");
-        if (row.has("Temp"))
-            Temp = row.getLong("Temp");
-        if (row.has("Barometer"))
-            Barometer = row.getInt("Barometer");
+
+        if (row.has("DewPoint")) {
+            try {
+                DewPoint = row.getLong("DewPoint");
+            } catch (Exception ex) {
+                DewPoint = 0;
+            }
+        }
+        if (row.has("Temp")) {
+            try {
+                Temp = row.getLong("Temp");
+            } catch (Exception ex) {
+                Temp = 0;
+            }
+        }
+        if (row.has("Barometer")) {
+            try {
+                Barometer = row.getInt("Barometer");
+            } catch (Exception ex) {
+                Barometer = 0;
+            }
+        }
+
         if (row.has("Description"))
             Description = row.getString("Description");
 
