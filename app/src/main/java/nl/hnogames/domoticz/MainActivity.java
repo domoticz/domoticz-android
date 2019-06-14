@@ -1594,6 +1594,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 stopCameraTimer();
                 invalidateOptionsMenu();
             }
+            showViews();
         }
     }
 
