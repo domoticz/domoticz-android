@@ -805,7 +805,9 @@ public class MainActivity extends AppCompatPermissionsActivity {
         if (config == null)
             config = mServerUtil.getActiveServer().getConfigInfo(this);
 
-        ProfileDrawerItem loggedinAccount = new ProfileDrawerItem().withName("Logged in").withEmail(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME))
+        ProfileDrawerItem loggedinAccount = new ProfileDrawerItem()
+            .withName("Logged in")
+            .withEmail(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME))
             .withIcon(R.mipmap.ic_launcher);
         if (mSharedPrefs.darkThemeEnabled()) {
             loggedinAccount.withSelectedColorRes(R.color.primary);
@@ -820,6 +822,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
             .withHeaderBackground(R.drawable.darkheader)
             .addProfiles(loggedinAccount)
             .withOnlyMainProfileImageVisible(true)
+            .withTextColorRes(R.color.white)
             .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                 @Override
                 @DebugLog
