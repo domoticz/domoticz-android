@@ -113,11 +113,11 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         try {
             if (adapter != null) {
                 if (UsefulBits.isEmpty(text) &&
-                        (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-                        mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+                    (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
+                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                     if (mItemTouchHelper == null) {
                         mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                                false));
+                            false));
                     }
                     mItemTouchHelper.attachToRecyclerView(gridView);
                 } else {
@@ -168,10 +168,10 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
             }
             if (mItemTouchHelper == null) {
                 mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                        false));
+                    false));
             }
             if ((UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
-                    mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
+                mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                 mItemTouchHelper.attachToRecyclerView(gridView);
             } else {
                 if (mItemTouchHelper != null)
@@ -193,9 +193,9 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
 
     private void showInfoDialog(final TemperatureInfo mTemperatureInfo) {
         TemperatureInfoDialog infoDialog = new TemperatureInfoDialog(
-                mContext,
-                mTemperatureInfo,
-                R.layout.dialog_utilities_info);
+            mContext,
+            mTemperatureInfo,
+            R.layout.dialog_utilities_info);
         infoDialog.setIdx(String.valueOf(mTemperatureInfo.getIdx()));
         infoDialog.setLastUpdate(mTemperatureInfo.getLastUpdate());
         infoDialog.setIsFavorite(mTemperatureInfo.getFavoriteBoolean());
@@ -321,13 +321,13 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         TemperatureDialog tempDialog;
         if (evohomeZone) {
             tempDialog = new ScheduledTemperatureDialog(
-                    mContext,
-                    t.getSetPoint(),
-                    !"auto".equalsIgnoreCase(t.getStatus()));
+                mContext,
+                t.getSetPoint(),
+                !"auto".equalsIgnoreCase(t.getStatus()));
         } else {
             tempDialog = new TemperatureDialog(
-                    mContext,
-                    t.getSetPoint());
+                mContext,
+                t.getSetPoint());
         }
 
         tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
@@ -335,18 +335,18 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
             @DebugLog
             public void onDialogAction(double newSetPoint, DialogAction dialogAction) {
                 if (dialogAction == DialogAction.POSITIVE) {
-                    addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+                    addDebugText("Set idx " + idx + " to " + newSetPoint);
 
-                    String params = "&setpoint=" + String.valueOf(newSetPoint) +
-                            "&mode=" + PERMANENT_OVERRIDE;
+                    String params = "&setpoint=" + newSetPoint +
+                        "&mode=" + PERMANENT_OVERRIDE;
 
                     // add query parameters
                     mDomoticz.setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
                 } else if (dialogAction == DialogAction.NEUTRAL && evohomeZone) {
                     addDebugText("Set idx " + idx + " to Auto");
 
-                    String params = "&setpoint=" + String.valueOf(newSetPoint) +
-                            "&mode=" + AUTO;
+                    String params = "&setpoint=" + newSetPoint +
+                        "&mode=" + AUTO;
 
                     // add query parameters
                     mDomoticz.setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
@@ -368,7 +368,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     @Override
     @DebugLog
     public void onItemClicked(View v, int position) {
-        LinearLayout extra_panel = (LinearLayout) v.findViewById(R.id.extra_panel);
+        LinearLayout extra_panel = v.findViewById(R.id.extra_panel);
         if (extra_panel != null) {
             if (extra_panel.getVisibility() == View.VISIBLE) {
                 extra_panel.startAnimation(animHide);

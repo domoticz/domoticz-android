@@ -232,8 +232,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     }
                 }
             }
-            if(mSharedPrefs.addClockToDashboard())
-            {
+            if (mSharedPrefs.addClockToDashboard()) {
                 mDomoticz.getSunRise(new SunRiseReceiver() {
                     @Override
                     public void onReceive(SunRiseInfo mSunRiseInfo) {
@@ -245,20 +244,19 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         createListView(supportedSwitches, null);
                     }
                 });
-            }
-            else
+            } else
                 createListView(supportedSwitches, null);
         }
     }
 
-    private  ArrayList<DevicesInfo> AddClockDevice(SunRiseInfo mSunRiseInfo, ArrayList<DevicesInfo> supportedSwitches) {
-        if(mSunRiseInfo != null) {
+    private ArrayList<DevicesInfo> AddClockDevice(SunRiseInfo mSunRiseInfo, ArrayList<DevicesInfo> supportedSwitches) {
+        if (mSunRiseInfo != null) {
             boolean alreadySpecified = false;
-            for (DevicesInfo d:supportedSwitches ) {
-                if(d.getType().equals("sunrise"))
+            for (DevicesInfo d : supportedSwitches) {
+                if (d.getType().equals("sunrise"))
                     alreadySpecified = true;
             }
-            if(!alreadySpecified) {
+            if (!alreadySpecified) {
                 DevicesInfo sunrise = new DevicesInfo();
                 sunrise.setIdx(-9999);
                 sunrise.setName("Clock");
@@ -360,9 +358,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     }
                 }
             });
-        }
-        else if(idx == -9999)
-        {
+        } else if (idx == -9999) {
             mDomoticz.getSunRise(new SunRiseReceiver() {
                 @Override
                 public void onReceive(SunRiseInfo mSunRiseInfo) {
@@ -483,14 +479,12 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 jsonUrl = DomoticzValues.Json.Url.Set.SCENES;
                 if (checked) jsonAction = DomoticzValues.Scene.Action.ON;
                 else jsonAction = DomoticzValues.Scene.Action.OFF;
-            }
-            else if (clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
+            } else if (clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
                 clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
-                    clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) {
+                clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) {
                 if (checked) jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                 else jsonAction = DomoticzValues.Device.Switch.Action.ON;
-            }
-            else {
+            } else {
                 if (checked) jsonAction = DomoticzValues.Device.Switch.Action.ON;
                 else jsonAction = DomoticzValues.Device.Switch.Action.OFF;
             }
@@ -917,7 +911,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 @Override
                 @DebugLog
                 public void onDialogAction(final double newSetPoint, DialogAction dialogAction) {
-                    addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+                    addDebugText("Set idx " + idx + " to " + newSetPoint);
                     if (dialogAction == DialogAction.POSITIVE) {
                         if (tempUtil.isProtected()) {
                             PasswordDialog passwordDialog = new PasswordDialog(
@@ -1044,9 +1038,9 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 @DebugLog
                 public void onDialogAction(double newSetPoint, DialogAction dialogAction) {
                     if (dialogAction == DialogAction.POSITIVE) {
-                        addDebugText("Set idx " + idx + " to " + String.valueOf(newSetPoint));
+                        addDebugText("Set idx " + idx + " to " + newSetPoint);
 
-                        String params = "&setpoint=" + String.valueOf(newSetPoint) +
+                        String params = "&setpoint=" + newSetPoint +
                             "&mode=" + PERMANENT_OVERRIDE;
 
                         // add query parameters
@@ -1054,7 +1048,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     } else if (dialogAction == DialogAction.NEUTRAL && evohomeZone) {
                         addDebugText("Set idx " + idx + " to Auto");
 
-                        String params = "&setpoint=" + String.valueOf(newSetPoint) +
+                        String params = "&setpoint=" + newSetPoint +
                             "&mode=" + AUTO;
 
                         // add query parameters
@@ -1227,7 +1221,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             return;
 
         addDebugText("onBlindClick");
-        addDebugText("Set idx " + idx + " to " + String.valueOf(jsonAction));
+        addDebugText("Set idx " + idx + " to " + jsonAction);
         final DevicesInfo clickedSwitch = getDevice(idx);
         if (clickedSwitch.isProtected()) {
             PasswordDialog passwordDialog = new PasswordDialog(

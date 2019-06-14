@@ -103,18 +103,47 @@ public class DevicesInfo implements Comparable, Serializable {
             level = 0;
         }
 
-        if (row.has("Rain")) Rain = row.getString("Rain");
-        if (row.has("RainRate")) RainRate = row.getString("RainRate");
-        if (row.has("ForecastStr")) ForecastStr = row.getString("ForecastStr");
-        if (row.has("HumidityStatus")) HumidityStatus = row.getString("HumidityStatus");
-        if (row.has("Direction")) Direction = row.getString("Direction");
-        if (row.has("DirectionStr")) DirectionStr = row.getString("DirectionStr");
-        if (row.has("Chill")) Chill = row.getString("Chill");
-        if (row.has("Speed")) Speed = row.getString("Speed");
-        if (row.has("DewPoint")) DewPoint = row.getLong("DewPoint");
-        if (row.has("Temp")) Temp = row.getLong("Temp");
-        if (row.has("Barometer")) Barometer = row.getInt("Barometer");
-        if (row.has("Description")) Description = row.getString("Description");
+        if (row.has("Rain"))
+            Rain = row.getString("Rain");
+        if (row.has("RainRate"))
+            RainRate = row.getString("RainRate");
+        if (row.has("ForecastStr"))
+            ForecastStr = row.getString("ForecastStr");
+        if (row.has("HumidityStatus"))
+            HumidityStatus = row.getString("HumidityStatus");
+        if (row.has("Direction"))
+            Direction = row.getString("Direction");
+        if (row.has("DirectionStr"))
+            DirectionStr = row.getString("DirectionStr");
+        if (row.has("Chill"))
+            Chill = row.getString("Chill");
+        if (row.has("Speed"))
+            Speed = row.getString("Speed");
+
+        if (row.has("DewPoint")) {
+            try {
+                DewPoint = row.getLong("DewPoint");
+            } catch (Exception ex) {
+                DewPoint = 0;
+            }
+        }
+        if (row.has("Temp")) {
+            try {
+                Temp = row.getLong("Temp");
+            } catch (Exception ex) {
+                Temp = 0;
+            }
+        }
+        if (row.has("Barometer")) {
+            try {
+                Barometer = row.getInt("Barometer");
+            } catch (Exception ex) {
+                Barometer = 0;
+            }
+        }
+
+        if (row.has("Description"))
+            Description = row.getString("Description");
 
         try {
             if (row.has("MaxDimLevel"))

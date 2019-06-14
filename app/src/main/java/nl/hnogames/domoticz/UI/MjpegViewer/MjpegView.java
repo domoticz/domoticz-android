@@ -20,7 +20,6 @@ import java.net.URL;
 public class MjpegView extends SurfaceView implements SurfaceHolder.Callback {
     public final static int SIZE_FIT = 1;
 
-    ;
     public final static int SIZE_FULL = 2;
     private SurfaceHolder mHolder;
     private MjpegViewThread thread = null;
@@ -42,7 +41,7 @@ public class MjpegView extends SurfaceView implements SurfaceHolder.Callback {
         Log.d("State : ", "Set Thread");
         if (thread == null) {
             thread = new MjpegViewThread(mHolder, this);
-            thread.displayMode = this.SIZE_FIT;
+            thread.displayMode = SIZE_FIT;
             thread.mCallback = new MjpegCallback() {
                 @Override
                 public void onStateChange(int s) {

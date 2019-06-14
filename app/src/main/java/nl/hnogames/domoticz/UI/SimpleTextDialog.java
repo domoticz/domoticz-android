@@ -49,8 +49,8 @@ public class SimpleTextDialog {
 
         //noinspection ConstantConditions
         mdb.customView(R.layout.dialog_text, wrapInScrollView)
-                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-                .positiveText(android.R.string.ok);
+            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+            .positiveText(android.R.string.ok);
     }
 
     public void setTitle(String title) {
@@ -74,7 +74,7 @@ public class SimpleTextDialog {
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
 
-        TextView dialogText = (TextView) view.findViewById(R.id.textDialog_text);
+        TextView dialogText = view.findViewById(R.id.textDialog_text);
         dialogText.setText(text);
         md.show();
     }

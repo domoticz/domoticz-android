@@ -122,7 +122,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.utilities_row_default, parent, false);
+            .inflate(R.layout.utilities_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             if ((view.findViewById(R.id.card_global_wrapper)) != null)
@@ -151,7 +151,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             final double setPoint = mUtilitiesInfo.getSetPoint();
 
             if ((mUtilitiesInfo.getType() != null && DomoticzValues.Device.Utility.Type.THERMOSTAT.equalsIgnoreCase(mUtilitiesInfo.getType())) ||
-                    (mUtilitiesInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mUtilitiesInfo.getSubType()))) {
+                (mUtilitiesInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mUtilitiesInfo.getSubType()))) {
                 setButtons(holder, Buttons.THERMOSTAT);
                 CreateThermostatRow(holder, mUtilitiesInfo, setPoint);
             } else {
@@ -271,7 +271,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         if (mUtilitiesInfo.getCounterToday() != null && mUtilitiesInfo.getCounterToday().length() > 0)
             holder.data.append(" " + context.getString(R.string.today) + ": " + mUtilitiesInfo.getCounterToday());
         if (mUtilitiesInfo.getCounter() != null && mUtilitiesInfo.getCounter().length() > 0 &&
-                !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
+            !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
             holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounter());
 
         holder.dayButton.setId(mUtilitiesInfo.getIdx());
@@ -386,13 +386,13 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         });
 
         if (mUtilitiesInfo.getSubType()
-                .replace("Electric", "counter")
-                .replace("kWh", "counter")
-                .replace("Gas", "counter")
-                .replace("Energy", "counter")
-                .replace("Voltcraft", "counter")
-                .replace("SetPoint", "temp")
-                .replace("YouLess counter", "counter").contains("counter"))
+            .replace("Electric", "counter")
+            .replace("kWh", "counter")
+            .replace("Gas", "counter")
+            .replace("Energy", "counter")
+            .replace("Voltcraft", "counter")
+            .replace("SetPoint", "temp")
+            .replace("YouLess counter", "counter").contains("counter"))
             holder.weekButton.setVisibility(View.VISIBLE);
 
         holder.yearButton.setId(mUtilitiesInfo.getIdx());
@@ -407,7 +407,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         });
         holder.name.setText(mUtilitiesInfo.getName());
         holder.data.setText(mUtilitiesInfo.getLastUpdate());
-        holder.hardware.setText(context.getString(R.string.set_point) + ": " + String.valueOf(setPoint));
+        holder.hardware.setText(context.getString(R.string.set_point) + ": " + setPoint);
         Picasso.get().load(DomoticzIcons.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
     }
 
