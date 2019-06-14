@@ -49,8 +49,8 @@ public class SwitchLogInfoDialog implements DialogInterface.OnDismissListener {
         this.mContext = c;
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
-                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-                .positiveText(android.R.string.ok);
+            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+            .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }
 
@@ -62,11 +62,11 @@ public class SwitchLogInfoDialog implements DialogInterface.OnDismissListener {
         mdb.title("Log");
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
-        ListView listView = (ListView) view.findViewById(R.id.list);
+        ListView listView = view.findViewById(R.id.list);
 
         String[] listData = processLogs();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext,
-                android.R.layout.simple_list_item_1, android.R.id.text1, listData);
+            android.R.layout.simple_list_item_1, android.R.id.text1, listData);
         listView.setAdapter(adapter);
 
         md.show();

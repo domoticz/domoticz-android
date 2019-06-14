@@ -65,7 +65,9 @@ public class TemperatureInfo implements Comparable, Serializable {
         try {
             if (row.has("Temp"))
                 Temp = row.getDouble("Temp");
-        }catch(Exception ex){}
+        }catch(Exception ex){
+            Temp = 0;
+        }
 
         if (row.has("LastUpdate"))
             LastUpdate = row.getString("LastUpdate");
@@ -75,8 +77,15 @@ public class TemperatureInfo implements Comparable, Serializable {
             TypeImg = row.getString("TypeImg");
         if (row.has("DirectionStr"))
             Direction = row.getString("DirectionStr");
-        if (row.has("SetPoint"))
-            setPoint = row.getDouble("SetPoint");
+
+        if (row.has("SetPoint")) {
+            try {
+                setPoint = row.getDouble("SetPoint");
+            } catch (Exception ex) {
+                setPoint = 0;
+            }
+        }
+
         if (row.has("Name"))
             Name = row.getString("Name");
         if (row.has("Description"))

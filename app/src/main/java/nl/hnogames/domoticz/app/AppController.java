@@ -76,7 +76,7 @@ public class AppController extends MultiDexApplication {
 
                 HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
                 HttpsURLConnection.setDefaultHostnameVerifier(
-                        mtm.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
+                    mtm.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
             } catch (KeyManagementException e) {
                 e.printStackTrace();
             } catch (NoSuchAlgorithmException e) {
@@ -91,8 +91,8 @@ public class AppController extends MultiDexApplication {
         req.setTag(TAG);
 
         RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeout,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
 
         req.setRetryPolicy(retryPolicy);
         getRequestQueue().add(req);

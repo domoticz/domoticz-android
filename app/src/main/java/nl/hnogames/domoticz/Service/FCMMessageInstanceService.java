@@ -9,6 +9,7 @@ import java.net.URLDecoder;
 import java.util.Map;
 
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.Utils.GCMUtils;
 import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 
@@ -41,7 +42,7 @@ public class FCMMessageInstanceService extends FirebaseMessagingService {
             }
 
             if (!UsefulBits.isEmpty(subject) && !UsefulBits.isEmpty(body) &&
-                    !body.equals(subject)) {
+                !body.equals(subject)) {
 
                 String deviceid = decode(data.containsKey("deviceid") ? data.get("deviceid").toString() : "");
                 if (!UsefulBits.isEmpty(deviceid) && isDigitsOnly(deviceid) && Integer.valueOf(deviceid) > 0)
@@ -63,5 +64,12 @@ public class FCMMessageInstanceService extends FirebaseMessagingService {
             }
         }
         return str;
+    }
+
+    @Override
+    public void onNewToken(String token) {
+        super.onNewToken(token);
+        Log.d("GCM", "Refreshed token: " + token);
+        GCMUtils.sendRegistrationIdToBackend(this, token);
     }
 }

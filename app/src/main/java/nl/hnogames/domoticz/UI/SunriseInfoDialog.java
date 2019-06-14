@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.UI;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -58,8 +57,8 @@ public class SunriseInfoDialog {
 
         //noinspection ConstantConditions
         mdb.customView(R.layout.dialog_sunrise, wrapInScrollView)
-                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-                .positiveText(android.R.string.ok);
+            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+            .positiveText(android.R.string.ok);
     }
 
     public void show() {
@@ -76,40 +75,40 @@ public class SunriseInfoDialog {
     private void SetData() {
         String s1 = info.getSunrise();
         sunrise.setHours(Integer.valueOf(s1.substring(0, s1.indexOf(":"))));
-        sunrise.setMinutes(Integer.valueOf(s1.substring(s1.indexOf(":")+1)));
+        sunrise.setMinutes(Integer.valueOf(s1.substring(s1.indexOf(":") + 1)));
 
         String s2 = info.getSunset();
         sunset.setHours(Integer.valueOf(s2.substring(0, s2.indexOf(":"))));
-        sunset.setMinutes(Integer.valueOf(s2.substring(s2.indexOf(":")+1)));
+        sunset.setMinutes(Integer.valueOf(s2.substring(s2.indexOf(":") + 1)));
 
         String s3 = info.getAstrTwilightStart();
         astrTwilightStart.setHours(Integer.valueOf(s3.substring(0, s3.indexOf(":"))));
-        astrTwilightStart.setMinutes(Integer.valueOf(s3.substring(s3.indexOf(":")+1)));
+        astrTwilightStart.setMinutes(Integer.valueOf(s3.substring(s3.indexOf(":") + 1)));
 
         String s4 = info.getAstrTwilightEnd();
         astrTwilightEnd.setHours(Integer.valueOf(s4.substring(0, s4.indexOf(":"))));
-        astrTwilightEnd.setMinutes(Integer.valueOf(s4.substring(s4.indexOf(":")+1)));
+        astrTwilightEnd.setMinutes(Integer.valueOf(s4.substring(s4.indexOf(":") + 1)));
 
         String s5 = info.getCivTwilightStart();
         civTwilightStart.setHours(Integer.valueOf(s5.substring(0, s5.indexOf(":"))));
-        civTwilightStart.setMinutes(Integer.valueOf(s5.substring(s5.indexOf(":")+1)));
+        civTwilightStart.setMinutes(Integer.valueOf(s5.substring(s5.indexOf(":") + 1)));
 
         String s6 = info.getCivTwilightEnd();
         civTwilightEnd.setHours(Integer.valueOf(s6.substring(0, s6.indexOf(":"))));
-        civTwilightEnd.setMinutes(Integer.valueOf(s6.substring(s6.indexOf(":")+1)));
+        civTwilightEnd.setMinutes(Integer.valueOf(s6.substring(s6.indexOf(":") + 1)));
 
         String s7 = info.getNautTwilightStart();
         nautTwilightStart.setHours(Integer.valueOf(s7.substring(0, s7.indexOf(":"))));
-        nautTwilightStart.setMinutes(Integer.valueOf(s7.substring(s7.indexOf(":")+1)));
+        nautTwilightStart.setMinutes(Integer.valueOf(s7.substring(s7.indexOf(":") + 1)));
 
         String s8 = info.getNautTwilightEnd();
         nautTwilightEnd.setHours(Integer.valueOf(s8.substring(0, s8.indexOf(":"))));
-        nautTwilightEnd.setMinutes(Integer.valueOf(s8.substring(s8.indexOf(":")+1)));
+        nautTwilightEnd.setMinutes(Integer.valueOf(s8.substring(s8.indexOf(":") + 1)));
 
         String current = info.getServerTime();
-        current = current.substring((current.indexOf(":")-2), (current.indexOf(":")+3));
+        current = current.substring((current.indexOf(":") - 2), (current.indexOf(":") + 3));
         clock.setHours(Integer.valueOf(current.substring(0, current.indexOf(":"))));
-        clock.setMinutes(Integer.valueOf(current.substring(current.indexOf(":")+1)));
+        clock.setMinutes(Integer.valueOf(current.substring(current.indexOf(":") + 1)));
 
         clockText.setText(current);
         sunriseText.setText(s1);
