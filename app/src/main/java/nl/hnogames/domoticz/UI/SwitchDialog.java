@@ -56,8 +56,8 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
 
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
-                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-                .negativeText(android.R.string.cancel);
+            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+            .negativeText(android.R.string.cancel);
         mdb.dismissListener(this);
     }
 
@@ -69,10 +69,10 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
         mdb.title("Connect Switch");
         final MaterialDialog md = mdb.build();
         View view = md.getCustomView();
-        ListView listView = (ListView) view.findViewById(R.id.list);
+        ListView listView = view.findViewById(R.id.list);
         String[] listData = processSwitches();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext,
-                android.R.layout.simple_list_item_1, android.R.id.text1, listData);
+            android.R.layout.simple_list_item_1, android.R.id.text1, listData);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {

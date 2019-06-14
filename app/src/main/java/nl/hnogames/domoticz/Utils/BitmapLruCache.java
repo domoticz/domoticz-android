@@ -28,8 +28,8 @@ import com.android.volley.toolbox.ImageLoader;
 import androidx.collection.LruCache;
 
 public class BitmapLruCache
-        extends LruCache<String, Bitmap>
-        implements ImageLoader.ImageCache {
+    extends LruCache<String, Bitmap>
+    implements ImageLoader.ImageCache {
 
     public BitmapLruCache() {
         this(getDefaultLruCacheSize());

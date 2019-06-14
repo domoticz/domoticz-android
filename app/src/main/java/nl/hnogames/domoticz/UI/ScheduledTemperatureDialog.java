@@ -31,7 +31,7 @@ public class ScheduledTemperatureDialog extends TemperatureDialog {
 
         if (canCancel) {
             getMaterialDialogBuilder()
-                    .neutralText(R.string.follow_schedule);
+                .neutralText(R.string.follow_schedule);
         }
     }
 }

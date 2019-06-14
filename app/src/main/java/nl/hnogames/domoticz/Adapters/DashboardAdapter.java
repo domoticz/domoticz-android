@@ -37,7 +37,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.Space;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -225,8 +224,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if (mDeviceInfo.getType() != null && mDeviceInfo.getType().equals("sunrise")) {
                 setButtons(holder, Buttons.CLOCK);
                 setClockRowData(mDeviceInfo, holder);
-            }
-            else if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
+            } else if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
                 setButtons(holder, Buttons.BUTTON_ON);
                 setThermostatRowData(mDeviceInfo, holder);
             } else {
@@ -410,7 +408,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if (holder.switch_battery_level != null) {
                 text = context.getString(R.string.status)
                     + ": "
-                    + String.valueOf(mDeviceInfo.getData());
+                    + mDeviceInfo.getData();
                 holder.switch_battery_level.setText(text);
                 if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0) {
                     try {
@@ -494,7 +492,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.iconRow.setAlpha(0.5f);
             else
                 holder.iconRow.setAlpha(1f);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             Log.e("ADAPTER", ex.getMessage());
         }
     }
@@ -516,7 +514,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
-            String.valueOf(mDeviceInfo.getData());
+            mDeviceInfo.getData();
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
@@ -573,7 +571,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
         if (holder.switch_battery_level != null) {
             text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getData());
+                mDeviceInfo.getData();
             holder.switch_battery_level.setText(text);
         }
 
@@ -652,7 +650,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
 
         text = context.getString(R.string.status) + ": " +
-            String.valueOf(mDeviceInfo.getData());
+            mDeviceInfo.getData();
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
@@ -739,7 +737,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if (holder.switch_battery_level != null) {
             String setPointText =
-                context.getString(R.string.set_point) + ": " + String.valueOf(setPoint);
+                context.getString(R.string.set_point) + ": " + setPoint;
             holder.switch_battery_level.setText(setPointText);
         }
 
@@ -759,20 +757,19 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
      * @param holder      Holder to use
      */
     private void setClockRowData(DevicesInfo mDeviceInfo, DataObjectHolder holder) {
-        if(this.sunriseInfo != null)
-        {
+        if (this.sunriseInfo != null) {
             String sunrise = sunriseInfo.getSunrise();
             holder.sunrise.setHours(Integer.valueOf(sunrise.substring(0, sunrise.indexOf(":"))));
-            holder.sunrise.setMinutes(Integer.valueOf(sunrise.substring(sunrise.indexOf(":")+1)));
+            holder.sunrise.setMinutes(Integer.valueOf(sunrise.substring(sunrise.indexOf(":") + 1)));
 
             String sunset = sunriseInfo.getSunset();
             holder.sunset.setHours(Integer.valueOf(sunset.substring(0, sunset.indexOf(":"))));
-            holder.sunset.setMinutes(Integer.valueOf(sunset.substring(sunset.indexOf(":")+1)));
+            holder.sunset.setMinutes(Integer.valueOf(sunset.substring(sunset.indexOf(":") + 1)));
 
             String current = sunriseInfo.getServerTime();
-            current = current.substring((current.indexOf(":")-2), (current.indexOf(":")+3));
+            current = current.substring((current.indexOf(":") - 2), (current.indexOf(":") + 3));
             holder.clock.setHours(Integer.valueOf(current.substring(0, current.indexOf(":"))));
-            holder.clock.setMinutes(Integer.valueOf(current.substring(current.indexOf(":")+1)));
+            holder.clock.setMinutes(Integer.valueOf(current.substring(current.indexOf(":") + 1)));
 
             holder.clockText.setText(current);
             holder.sunriseText.setText(sunrise);
@@ -810,7 +807,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if (holder.switch_battery_level != null) {
                 String batteryLevelText = context.getString(R.string.temperature)
                     + ": "
-                    + String.valueOf(temperature)
+                    + temperature
                     + " " + sign;
                 holder.switch_battery_level.setText(batteryLevelText);
             }
@@ -818,8 +815,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if (holder.signal_level != null) {
                 String signalText = context.getString(R.string.set_point)
                     + ": "
-                    + String.valueOf(mDeviceInfo.getSetPoint()
-                    + " " + sign);
+                    + mDeviceInfo.getSetPoint()
+                    + " " + sign;
                 holder.signal_level.setText(signalText);
             }
         }
@@ -912,7 +909,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.signal_level.setText(text);
         }
         if (holder.switch_battery_level != null) {
-            text = context.getString(R.string.status) + ": " + String.valueOf(mDevicesInfo.getData());
+            text = context.getString(R.string.status) + ": " + mDevicesInfo.getData();
             holder.switch_battery_level.setText(text);
         }
 
@@ -921,7 +918,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.buttonOn.setVisibility(View.GONE);
             } else {
                 holder.buttonOn.setId(mDevicesInfo.getIdx());
-                String status = String.valueOf(mDevicesInfo.getData().toLowerCase());
+                String status = mDevicesInfo.getData().toLowerCase();
                 if (statusOpen.contains(status)) {
                     holder.buttonOn.setText(context.getString(R.string.button_state_open));
                 } else if (statusClosed.contains(status)) {
@@ -975,7 +972,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.signal_level.setText(text);
 
         text = context.getString(R.string.status) + ": " +
-            String.valueOf(mDeviceInfo.getData());
+            mDeviceInfo.getData();
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
@@ -1060,7 +1057,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if (holder.switch_battery_level != null) {
             text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getData());
+                mDeviceInfo.getData();
             holder.switch_battery_level.setText(text);
         }
 
@@ -1142,7 +1139,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if (holder.switch_battery_level != null) {
             text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getStatus());
+                mDeviceInfo.getStatus();
             holder.switch_battery_level.setText(text);
         }
 
@@ -1217,7 +1214,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if (holder.switch_battery_level != null) {
             text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getStatus());
+                mDeviceInfo.getStatus();
             holder.switch_battery_level.setText(text);
         }
 
@@ -1274,7 +1271,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 String percentage = calculateDimPercentage(seekBar.getMax(), progress);
-                TextView switch_dimmer_level = (TextView) seekBar.getRootView()
+                TextView switch_dimmer_level = seekBar.getRootView()
                     .findViewById(mDeviceInfo.getIdx() + ID_TEXTVIEW);
 
                 if (switch_dimmer_level != null)
@@ -1364,7 +1361,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if (holder.switch_battery_level != null) {
             text = context.getString(R.string.status) + ": " +
-                String.valueOf(mDeviceInfo.getStatus());
+                mDeviceInfo.getStatus();
             holder.switch_battery_level.setText(text);
         }
 
@@ -1754,9 +1751,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (!mSharedPrefs.showExtraData()) {
             holder.signal_level.setVisibility(View.GONE);
             holder.switch_battery_level.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             holder.signal_level.setVisibility(View.VISIBLE);
             holder.switch_battery_level.setVisibility(View.VISIBLE);
         }

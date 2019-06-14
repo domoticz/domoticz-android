@@ -48,15 +48,15 @@ public class NotificationInfoDialog {
 
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_switch_timer, true)
-                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-                .positiveText(android.R.string.ok);
+            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+            .positiveText(android.R.string.ok);
     }
 
     public void show() {
         mdb.title(R.string.category_notification);
         MaterialDialog md = mdb.build();
         View view = md.getCustomView();
-        ListView listView = (ListView) view.findViewById(R.id.list);
+        ListView listView = view.findViewById(R.id.list);
         NotificationsAdapter adapter = new NotificationsAdapter(mContext, info);
         listView.setAdapter(adapter);
 
