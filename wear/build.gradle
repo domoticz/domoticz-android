@@ -72,7 +72,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.google.android.support:wearable:2.4.0'
     implementation 'com.google.android.gms:play-services-wearable:16.0.1'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha05'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha06'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.picasso:picasso:2.5.2'
 }

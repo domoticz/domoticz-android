@@ -37,13 +37,12 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.text.ParseException;
@@ -162,18 +161,18 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         chart.setHighlightPerDragEnabled(true);
 
         if (range.equals("day")) {
-            xAxis.setValueFormatter(new IAxisValueFormatter() {
+            xAxis.setValueFormatter(new ValueFormatter(){
                 @Override
-                public String getFormattedValue(float value, AxisBase axis) {
+                public String getFormattedValue(float value) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTimeInMillis((long) value);
                     return String.format(Locale.getDefault(), "%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + String.format(Locale.getDefault(), "%02d", calendar.get(Calendar.MINUTE));
                 }
             });
         } else {
-            xAxis.setValueFormatter(new IAxisValueFormatter() {
+            xAxis.setValueFormatter(new ValueFormatter(){
                 @Override
-                public String getFormattedValue(float value, AxisBase axis) {
+                public String getFormattedValue(float value) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTimeInMillis((long) value);
 
@@ -199,7 +198,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         return root;
     }
 
-    public void getGraphs() {
+    private void getGraphs() {
         chart.setVisibility(View.GONE);
         new Thread() {
             @Override
