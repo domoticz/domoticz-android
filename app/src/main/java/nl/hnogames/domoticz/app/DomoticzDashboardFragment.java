@@ -30,6 +30,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,6 +38,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -44,6 +46,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -58,6 +61,7 @@ import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.UI.Backdrop.BackdropContainer;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
@@ -80,10 +84,11 @@ public class DomoticzDashboardFragment extends Fragment {
     private boolean debug;
     private ViewGroup root;
     private String sort = "";
-
+    private BackdropContainer backdropContainer;
     private int scrolledDistance = 0;
     private int SCROLL_THRESHOLD = 600;
     private boolean controlsVisible = true;
+    private MaterialButton collapseSortButton, sortAll, sortOn, sortOff, sortStatic;
 
     public DomoticzDashboardFragment() {
     }
@@ -111,6 +116,8 @@ public class DomoticzDashboardFragment extends Fragment {
 
     @DebugLog
     public void hideViews() {
+        if(backdropShown)
+            return;
         if (getActivity() instanceof MainActivity)
             ((MainActivity) getActivity()).hideViews();
         controlsVisible = false;
@@ -167,6 +174,7 @@ public class DomoticzDashboardFragment extends Fragment {
 
     public void sortFragment(String sort) {
         this.sort = sort;
+        collapseSortButton.setText(sort);
         refreshFragment();
     }
 
@@ -178,6 +186,67 @@ public class DomoticzDashboardFragment extends Fragment {
         setGridViewLayout();
         coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
+
+        collapseSortButton = root.findViewById(R.id.btnSortCollapse);
+        collapseSortButton.setVisibility(View.VISIBLE);
+        if(collapseSortButton!=null) {
+            collapseSortButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toggleBackDrop();
+                }
+            });
+        }
+
+        sortStatic = root.findViewById(R.id.btnSortStatic);
+        if(sortStatic!=null) {
+            sortStatic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sortFragment(String.valueOf(sortStatic.getText()));
+                    toggleBackDrop();
+                }
+            });
+        }
+
+        sortOn = root.findViewById(R.id.btnSortOn);
+        if(sortOn!=null) {
+            sortOn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sortFragment(String.valueOf(sortOn.getText()));
+                    toggleBackDrop();
+                }
+            });
+        }
+
+        sortOff = root.findViewById(R.id.btnSortOff);
+        if(sortOff!=null) {
+            sortOff.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sortFragment(String.valueOf(sortOff.getText()));
+                    toggleBackDrop();
+                }
+            });
+        }
+
+        sortAll = root.findViewById(R.id.btnSortAll);
+        if(sortAll!=null) {
+            sortAll.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sortFragment(String.valueOf(sortAll.getText()));
+                    toggleBackDrop();
+                }
+            });
+        }
+
+        backdropContainer = root.findViewById(R.id.backdropcontainer);
+        backdropContainer
+            .dropInterpolator(new LinearInterpolator())
+            .dropHeight(this.getResources().getDimensionPixelSize(R.dimen.sneek_height))
+            .build();
 
         //setting up our OnScrollListener
         gridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -317,6 +386,24 @@ public class DomoticzDashboardFragment extends Fragment {
         } else {
             if (gridView != null)
                 gridView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private boolean backdropShown = false;
+    public void toggleBackDrop() {
+        if (!backdropShown) {
+            if (backdropContainer != null) {
+                showViews();
+                backdropContainer.showBackview();
+                backdropShown=true;
+                collapseSortButton.setIconResource(R.drawable.baseline_keyboard_arrow_up_black_18);
+            }
+        } else {
+            if (backdropContainer != null) {
+                backdropContainer.closeBackview();
+                backdropShown=false;
+                collapseSortButton.setIconResource(R.drawable.baseline_keyboard_arrow_down_black_18);
+            }
         }
     }
 

@@ -21,101 +21,193 @@
   -->
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                     xmlns:app="http://schemas.android.com/apk/res-auto"
                                                      xmlns:tools="http://schemas.android.com/tools"
                                                      android:id="@+id/coordinatorLayout"
                                                      android:layout_width="fill_parent"
-                                                     android:layout_height="fill_parent">
+                                                     android:layout_height="fill_parent"
+                                                     android:background="@color/primary">
 
-    <LinearLayout
+    <nl.hnogames.domoticz.UI.Backdrop.BackdropContainer
+        android:id="@+id/backdropcontainer"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical">
+        app:closeIcon="@drawable/baseline_close_white_24"
+        app:duration="150"
+        app:menuIcon="@drawable/ic_sort">
 
         <LinearLayout
-            android:id="@+id/debugLayout"
-            style="@style/debug_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <TextView
-                android:id="@+id/debugTitle"
-                style="@style/debug_title"
-                android:layout_width="wrap_content"
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:textSize="10dp"
+                android:id="@+id/btnSortAll"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/debug_textview_title"/>
+                android:layout_gravity="center_vertical"
+                android:text="@string/filterOn_all"
+                android:textColor="@color/white"/>
 
-            <TextView
-                android:id="@+id/debugText"
-                style="@style/debug_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha="0.1"
+                android:background="@color/white"/>
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:textSize="10dp"
+                android:id="@+id/btnSortOn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/filterOn_on"
+                android:textColor="@color/white"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha="0.1"
+                android:background="@color/white"/>
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:textSize="10dp"
+                android:id="@+id/btnSortOff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/filterOn_off"
+                android:textColor="@color/white"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha="0.1"
+                android:background="@color/white"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSortStatic"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:textSize="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/filterOn_static"
+                android:textColor="@color/white"/>
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/errorLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="120dp"
-            android:visibility="gone">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            app:cardBackgroundColor="@color/background_grey"
+            app:cardCornerRadius="15dp">
 
-            <ImageView
-                android:id="@+id/errorImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:contentDescription="@string/error_image_description"
-                android:src="@drawable/sad_smiley"/>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/errorTextOops"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/errorImage"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="50dp"
-                android:text="@string/oops"
-                android:textSize="@dimen/text_size_large"/>
+                <LinearLayout
+                    android:id="@+id/debugLayout"
+                    style="@style/debug_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/errorTextWrong"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/errorTextOops"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="25dp"
-                android:text="@string/something_went_wrong"
-                android:textSize="@dimen/text_size_medium"/>
+                    <TextView
+                        android:id="@+id/debugTitle"
+                        style="@style/debug_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/debug_textview_title"/>
 
-            <TextView
-                android:id="@+id/errorTextMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/errorTextWrong"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:textColor="@color/light_gray"
-                android:textSize="@dimen/text_size_small"
-                tools:text="Error: No network connection available"/>
+                    <TextView
+                        android:id="@+id/debugText"
+                        style="@style/debug_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
 
-        </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/errorLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="120dp"
+                    android:visibility="gone">
 
+                    <ImageView
+                        android:id="@+id/errorImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:contentDescription="@string/error_image_description"
+                        android:src="@drawable/sad_smiley"/>
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/errorTextOops"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/errorImage"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="50dp"
+                        android:text="@string/oops"
+                        android:textSize="@dimen/text_size_large"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/my_recycler_view"
-                style="@style/background_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:scrollbars="vertical"/>
+                    <TextView
+                        android:id="@+id/errorTextWrong"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/errorTextOops"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="25dp"
+                        android:text="@string/something_went_wrong"
+                        android:textSize="@dimen/text_size_medium"/>
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                    <TextView
+                        android:id="@+id/errorTextMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/errorTextWrong"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/light_gray"
+                        android:textSize="@dimen/text_size_small"
+                        tools:text="Error: No network connection available"/>
+                </RelativeLayout>
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSortCollapse"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:textSize="10dp"
+                    android:layout_margin="0dp"
+                    app:icon="@drawable/baseline_keyboard_arrow_down_black_18"
+                    app:iconGravity="end"
+                    android:text="@string/filterOn_all"/>
 
-    </LinearLayout>
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swipe_refresh_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/my_recycler_view"
+                        style="@style/background_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:scrollbars="vertical"/>
+
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </nl.hnogames.domoticz.UI.Backdrop.BackdropContainer>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

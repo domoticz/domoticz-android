@@ -40,4 +40,6 @@
 
     <dimen name="row_space">4.0sp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="sneek_height">0dp</dimen>
+    
 </resources>
