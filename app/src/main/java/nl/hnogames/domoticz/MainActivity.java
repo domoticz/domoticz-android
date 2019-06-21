@@ -85,6 +85,7 @@ import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Containers.QRCodeInfo;
 import nl.hnogames.domoticz.Containers.SpeechInfo;
 import nl.hnogames.domoticz.Fragments.Cameras;
+import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Fragments.Logs;
 import nl.hnogames.domoticz.Fragments.MainPager;
 import nl.hnogames.domoticz.Fragments.Scenes;
@@ -1123,7 +1124,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 else
                     getMenuInflater().inflate(R.menu.menu_camera, menu);
             } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment) || (f instanceof RefreshFragment)) {
-                if ((f instanceof MainPager) || (f instanceof Scenes) || (f instanceof Switches) || (f instanceof Logs))
+                if ((f instanceof Dashboard) || (f instanceof Scenes) || (f instanceof Switches) || (f instanceof Logs))
                     getMenuInflater().inflate(R.menu.menu_main_sort, menu);
                 else
                     getMenuInflater().inflate(R.menu.menu_main, menu);
