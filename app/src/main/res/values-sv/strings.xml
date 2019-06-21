@@ -47,15 +47,15 @@
     <string name="button_disarm">Avaktivera</string>
     <string name="button_state_full_light">Fullt ljus</string>
     <string name="button_state_night">Nattljus</string>
-    <string name="sunrise">Sunrise</string>
-    <string name="sunset">Sunset</string>
-    <string name="now">Now</string>
-    <string name="astrTwilightStart">Astronomical twilight start</string>
-    <string name="astrTwilightEnd">Astronomical twilight end</string>
+    <string name="sunrise">Soluppgång</string>
+    <string name="sunset">Solnedgång</string>
+    <string name="now">Nu</string>
+    <string name="astrTwilightStart">Astronomisk skymning börjar</string>
+    <string name="astrTwilightEnd">Astronomisk skymningen slutar</string>
     <string name="civTwilightStart">Civil twilight start</string>
     <string name="civTwilightEnd">Civil twilight end</string>
-    <string name="nautTwilightStart">Nautical twilight start</string>
-    <string name="nautTwilightEnd">Nautical twilight end</string>
+    <string name="nautTwilightStart">Nautisk skymning börjar</string>
+    <string name="nautTwilightEnd">Nautisk skymning slutar</string>
     <string name="last_update">Senast sedd</string>
     <string name="signal_level">Signalstyrka</string>
     <string name="battery_level">Batterinivå</string>
@@ -126,8 +126,8 @@
     <string name="continue_question">Vill du fortsätta?</string>
     <string name="cant_remove_default_server">Kan inte ta bort standardserver</string>
     <string name="restart_required_msg">För att verkställa språkändring krävs det att programmet startas om</string>
-    <string name="filter_all">All</string>
+    <string name="filter_all">Alla</string>
     <string name="filter_normal">Normal</string>
     <string name="filter_status">Status</string>
-    <string name="filter_error">Error</string>
+    <string name="filter_error">Fel</string>
 </resources>

@@ -21,18 +21,18 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="pick_device_title">Válassz egy eszközt</string>
-  <string name="choose_switch">Válassz egy eszközt</string>
-  <string name="failed_to_get_securitypanel">Nem találtam biztonsági panelt a kapcsolóid között</string>
-  <string name="failed_to_get_switches">Az eszközök lekérdezése sikertelen</string>
-  <string name="failed_toggle_switch">A kapcsolás sikertelen</string>
-  <string name="switch_toggled">"Eszköz váltása"</string>
-  <string name="text_loading">Betöltés...</string>
-  <string name="text_go">Mehet</string>
-  <string name="widget_background">Háttér</string>
-  <string name="widget_dark">Sötét</string>
-  <string name="widget_light">Világos</string>
-  <string name="widget_transparent_dark">Sötét átlátszó</string>
-  <string name="widget_transparent_light">Világos átlásztó</string>
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="pick_device_title">Válassz egy eszközt</string>
+    <string name="choose_switch">Válassz egy eszközt</string>
+    <string name="failed_to_get_securitypanel">Nem találtam biztonsági panelt a kapcsolóid között</string>
+    <string name="failed_to_get_switches">Az eszközök lekérdezése sikertelen</string>
+    <string name="failed_toggle_switch">A kapcsolás sikertelen</string>
+    <string name="switch_toggled">"Eszköz váltása"</string>
+    <string name="text_loading">Betöltés...</string>
+    <string name="text_go">Mehet</string>
+    <string name="widget_background">Háttér</string>
+    <string name="widget_dark">Sötét</string>
+    <string name="widget_light">Világos</string>
+    <string name="widget_transparent_dark">Sötét átlátszó</string>
+    <string name="widget_transparent_light">Világos átlásztó</string>
 </resources>

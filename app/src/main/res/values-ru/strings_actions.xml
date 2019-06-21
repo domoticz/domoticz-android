@@ -28,6 +28,6 @@
     <string name="action_camera_play">Старт</string>
     <string name="action_camera_pause">Пауза</string>
     <string name="action_qrcode_scan">Отсканировать QR-код</string>
-    <string name="action_bluetooth_show">Show paired devices</string>
+    <string name="action_bluetooth_show">Показать подключенные устройства</string>
     <string name="action_speech">Распознавание речи</string>
 </resources>

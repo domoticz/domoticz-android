@@ -47,11 +47,11 @@
     <string name="button_disarm">Rozbrój</string>
     <string name="button_state_full_light">Pełne oświetlenie</string>
     <string name="button_state_night">Lampka nocna</string>
-    <string name="sunrise">Sunrise</string>
-    <string name="sunset">Sunset</string>
-    <string name="now">Now</string>
-    <string name="astrTwilightStart">Astronomical twilight start</string>
-    <string name="astrTwilightEnd">Astronomical twilight end</string>
+    <string name="sunrise">Wschód słońca</string>
+    <string name="sunset">Zachód słońca</string>
+    <string name="now">Teraz</string>
+    <string name="astrTwilightStart">Początek astronomicznego zmierzchu</string>
+    <string name="astrTwilightEnd">Koniec astronomicznego zmierzchu</string>
     <string name="civTwilightStart">Civil twilight start</string>
     <string name="civTwilightEnd">Civil twilight end</string>
     <string name="nautTwilightStart">Nautical twilight start</string>
@@ -126,8 +126,8 @@
     <string name="continue_question">Kontynuować?</string>
     <string name="cant_remove_default_server">Nie można usunąć domyślnego serwera</string>
     <string name="restart_required_msg">Aby zmiany ustawień języka zadziałały wymagane jest ponowne uruchomienie aplikacji</string>
-    <string name="filter_all">All</string>
-    <string name="filter_normal">Normal</string>
+    <string name="filter_all">Wszystkie</string>
+    <string name="filter_normal">Normalny</string>
     <string name="filter_status">Status</string>
-    <string name="filter_error">Error</string>
+    <string name="filter_error">Błąd</string>
 </resources>

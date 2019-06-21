@@ -21,8 +21,8 @@
   ~  under the License.
   -->
 <resources>
-    <string name="bluetooth_not_supported">Bluetooth is not supported on this device</string>
-    <string name="bluetooth_register">Connect a bluetooth device</string>
+    <string name="bluetooth_not_supported">A Bluetooth nem támogatott ezen az eszközön</string>
+    <string name="bluetooth_register">Csatlakozás Bluetooth-eszközhöz</string>
     <string name="bluetooth_found">New bluetooth device found</string>
     <string name="bluetooth_edit">Edit bluetooth device</string>
     <string name="bluetooth_name">Give this bluetooth device a proper name. </string>

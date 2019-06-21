@@ -47,15 +47,15 @@
     <string name="button_disarm">Zajištěný</string>
     <string name="button_state_full_light">Plné světlo</string>
     <string name="button_state_night">Noční světlo</string>
-    <string name="sunrise">Sunrise</string>
-    <string name="sunset">Sunset</string>
-    <string name="now">Now</string>
-    <string name="astrTwilightStart">Astronomical twilight start</string>
-    <string name="astrTwilightEnd">Astronomical twilight end</string>
-    <string name="civTwilightStart">Civil twilight start</string>
-    <string name="civTwilightEnd">Civil twilight end</string>
-    <string name="nautTwilightStart">Nautical twilight start</string>
-    <string name="nautTwilightEnd">Nautical twilight end</string>
+    <string name="sunrise">Východ slunce</string>
+    <string name="sunset">Západ slunce</string>
+    <string name="now">Nyní</string>
+    <string name="astrTwilightStart">Počátek astronomického soumraku</string>
+    <string name="astrTwilightEnd">Konec astronomického soumraku</string>
+    <string name="civTwilightStart">Počátek občanského soumraku</string>
+    <string name="civTwilightEnd">Konec občanského soumraku</string>
+    <string name="nautTwilightStart">Počátek námořního soumraku</string>
+    <string name="nautTwilightEnd">Konec námořního soumraku</string>
     <string name="last_update">Naposledy viděný</string>
     <string name="signal_level">Úroveň signálu</string>
     <string name="battery_level">Stav baterie</string>
@@ -126,8 +126,8 @@
     <string name="continue_question">Pokračovat?</string>
     <string name="cant_remove_default_server">Nelze odstranit výchozí server</string>
     <string name="restart_required_msg">Po nastavení jazyka je vyžadováno restartování aplikace</string>
-    <string name="filter_all">All</string>
-    <string name="filter_normal">Normal</string>
-    <string name="filter_status">Status</string>
-    <string name="filter_error">Error</string>
+    <string name="filter_all">Vše</string>
+    <string name="filter_normal">Normální</string>
+    <string name="filter_status">Stav</string>
+    <string name="filter_error">Chyba</string>
 </resources>

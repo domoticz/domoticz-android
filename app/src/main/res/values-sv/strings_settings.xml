@@ -38,7 +38,7 @@
     <string name="category_debug">Felsökning</string>
     <string name="category_export">Exportera/importera inställningar</string>
     <string name="category_theme">Tema</string>
-    <string name="category_clock">Clock</string>
+    <string name="category_clock">Klocka</string>
     <string name="category_nfc">NFC-anslutningar</string>
     <string name="category_startup_security">Säkerhet</string>
     <string name="category_account">Konton</string>
@@ -46,16 +46,16 @@
     <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Röst</string>
     <string name="category_Reset">Återställ</string>
-    <string name="category_help">Contribute</string>
+    <string name="category_help">Bidra</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Startskärm</string>
     <string name="enable_items">Aktivera/inaktivera objekt</string>
     <!--        Generic sorting settings       -->
-    <string name="sort_server_title">Sorting</string>
-    <string name="sort_server_on">Sort devices like sorted on the server</string>
-    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
-    <string name="sort_lock_server_title">Lock</string>
-    <string name="sort_lock_custom_on">Lock the current custom sorting (disable drag/drop)</string>
+    <string name="sort_server_title">Sortering</string>
+    <string name="sort_server_on">Sortera enheter som på servern</string>
+    <string name="sort_custom_on">Anpassad sortering, dra och släppa enheter att sortera dem</string>
+    <string name="sort_lock_server_title">Lås</string>
+    <string name="sort_lock_custom_on">Lås den anpassade sorteringen (inaktivera dra och släpp)</string>
     <string name="sort_dashboardLikeServer_off">Sortera skrivbordet i bokstavsordning</string>
     <string name="extra_data_title">Utökad information på skrivbordet</string>
     <string name="show_extra_data_on">Visa utökad information på skrivbordet</string>
@@ -72,8 +72,8 @@
     <string name="dashboard_list_title">Skrivbordsrutnät</string>
     <string name="show_dashboard_list_on">Visa skrivbordet som lista</string>
     <string name="show_dashboard_list_off">Visa skrivbordet som rutnät</string>
-    <string name="dashboard_clock">Clock</string>
-    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
+    <string name="dashboard_clock">Klocka</string>
+    <string name="show_dashboard_clock">Visa klocka på instrumentpanelen</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear-anpassade objekt</string>
     <string name="custom_wear_select">Välj Wear-brytare</string>
@@ -116,10 +116,10 @@
     <string name="qrcode_settings">Ställ in QR-koder</string>
     <string name="enable_qrcode">Aktivera QR-koder</string>
     <string name="qrcode_enable_settings">Aktivera QR-kodsfunktionen</string>
-    <string name="bluetooth_settings">Setup Bluetooth devices</string>
-    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
-    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
-    <string name="translate_title">Translations</string>
+    <string name="bluetooth_settings">Konfigurera Bluetooth-enheter</string>
+    <string name="enable_bluetooth">Aktivera Bluetooth-funktion</string>
+    <string name="translate_description">Du kan hjälpa till och göra våra översättningar bättre och även lägga till nya språk till denna app via vårt Crowdin projekt</string>
+    <string name="translate_title">Översättningar</string>
     <string name="security_settings">Konfigurera säkerhet</string>
     <string name="enable_security">Aktivera fingeravtryckskydd vid start</string>
     <string name="disable_security">Inaktivera fingeravtryck skydd vid start</string>
@@ -178,7 +178,7 @@
     <string name="error_atLeastOneItemInDrawer">Du behöver minst en sak i menyn</string>
     <!--        Server update category       -->
     <string name="title_activity_update">Uppdatera servern</string>
-    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
+    <string name="error_couldNotCheckForVersion">"Kunde inte kontrollera för version: %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"Kunde inte kontrollera uppdateringar: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"Kunde inte hämta Domoticz serverkonfiguration: %1$s"</string>
     <string name="update_available_enhanced">Serveruppdatering tillgänglig: %1$s version: %2$s</string>
