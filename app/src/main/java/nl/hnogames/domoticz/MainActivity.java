@@ -445,7 +445,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     public void showViews() {
-        toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
+        //toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
         toolbar.setVisibility(View.VISIBLE);
     }
 

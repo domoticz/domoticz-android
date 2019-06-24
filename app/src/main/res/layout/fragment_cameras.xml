@@ -43,7 +43,7 @@
             android:padding="16dp">
 
             <com.google.android.material.button.MaterialButton
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:textSize="10dp"
                 android:id="@+id/btnSortAll"
                 android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:background="@color/white"/>
 
             <com.google.android.material.button.MaterialButton
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:textSize="10dp"
                 android:id="@+id/btnSortOn"
                 android:layout_width="match_parent"
@@ -75,7 +75,7 @@
                 android:background="@color/white"/>
 
             <com.google.android.material.button.MaterialButton
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:textSize="10dp"
                 android:id="@+id/btnSortOff"
                 android:layout_width="match_parent"
@@ -92,7 +92,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSortStatic"
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:textSize="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
