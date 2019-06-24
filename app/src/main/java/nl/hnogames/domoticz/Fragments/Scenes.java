@@ -25,7 +25,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
@@ -90,6 +92,15 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         initAnimation();
         if (getActionBar() != null)
             getActionBar().setTitle(getString(R.string.title_scenes));
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        collapseSortButton.setVisibility(View.VISIBLE);
+        return view;
     }
 
     @Override

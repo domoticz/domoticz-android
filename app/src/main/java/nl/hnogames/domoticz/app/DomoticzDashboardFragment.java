@@ -46,7 +46,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -84,11 +83,12 @@ public class DomoticzDashboardFragment extends Fragment {
     private boolean debug;
     private ViewGroup root;
     private String sort = "";
-    private BackdropContainer backdropContainer;
     private int scrolledDistance = 0;
     private int SCROLL_THRESHOLD = 600;
     private boolean controlsVisible = true;
-    private MaterialButton collapseSortButton, sortAll, sortOn, sortOff, sortStatic;
+
+    public BackdropContainer backdropContainer;
+    public MaterialButton collapseSortButton, sortAll, sortOn, sortOff, sortStatic;
 
     public DomoticzDashboardFragment() {
     }
