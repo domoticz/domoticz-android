@@ -176,6 +176,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 (row.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
             if ((row.findViewById(R.id.row_global_wrapper)) != null)
                 (row.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
+
             if ((row.findViewById(R.id.on_button)) != null)
                 ((MaterialButton) row.findViewById(R.id.on_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
             if ((row.findViewById(R.id.off_button)) != null)

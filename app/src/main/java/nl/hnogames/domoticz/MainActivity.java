@@ -203,9 +203,10 @@ public class MainActivity extends AppCompatPermissionsActivity {
         }
 
         toolbar = findViewById(R.id.toolbar);
-        if (mSharedPrefs.darkThemeEnabled())
+        if (mSharedPrefs.darkThemeEnabled()) {
             toolbar.setBackgroundColor(getResources().getColor(R.color.secondary));
-
+            toolbar.setPopupTheme(R.style.ThemeOverlay_AppCompat_Dark);
+        }
         setSupportActionBar(toolbar);
 
         boolean resolvableError = UsefulBits.checkPlayServicesAvailable(this);

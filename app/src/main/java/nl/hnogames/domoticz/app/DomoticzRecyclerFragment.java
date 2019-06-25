@@ -23,6 +23,7 @@ package nl.hnogames.domoticz.app;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -111,9 +112,22 @@ public class DomoticzRecyclerFragment extends Fragment {
                 ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(getResources().getDrawable(R.drawable.sad_smiley_dark));
             if (bottomLayoutWrapper != null)
                 bottomLayoutWrapper.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
-            if (collapseSortButton != null)
-                collapseSortButton.setTextColor(ContextCompat.getColor(getContext(), R.color.primary));
+            if (collapseSortButton != null) {
+                int[][] states = new int[][] {
+                        new int[] { android.R.attr.state_enabled}, // enabled
+                        new int[] {-android.R.attr.state_enabled}, // disabled
+                        new int[] {-android.R.attr.state_checked}, // unchecked
+                        new int[] { android.R.attr.state_pressed}  // pressed
+                };
 
+                int[] colors = new int[] {
+                        R.color.primary, R.color.primary, R.color.primary, R.color.primary
+                };
+
+                ColorStateList newStates = new ColorStateList(states, colors);
+                collapseSortButton.setTextColor(ContextCompat.getColor(getContext(), R.color.primary));
+                collapseSortButton.setIconTint(newStates);
+            }
             mSwipeRefreshLayout.setColorSchemeResources(
                     R.color.secondary,
                     R.color.secondary_dark,
