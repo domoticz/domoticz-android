@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -77,6 +78,9 @@ public class DomoticzDashboardFragment extends Fragment {
     public Domoticz mDomoticz;
     public SharedPrefUtil mSharedPrefs;
     public PhoneConnectionUtil mPhoneConnectionUtil;
+    public BackdropContainer backdropContainer;
+    public MaterialCardView bottomLayoutWrapper;
+    public MaterialButton collapseSortButton, sortAll, sortOn, sortOff, sortStatic;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private TextView debugText;
@@ -86,9 +90,7 @@ public class DomoticzDashboardFragment extends Fragment {
     private int scrolledDistance = 0;
     private int SCROLL_THRESHOLD = 600;
     private boolean controlsVisible = true;
-
-    public BackdropContainer backdropContainer;
-    public MaterialButton collapseSortButton, sortAll, sortOn, sortOff, sortStatic;
+    private boolean backdropShown = false;
 
     public DomoticzDashboardFragment() {
     }
@@ -106,17 +108,21 @@ public class DomoticzDashboardFragment extends Fragment {
                 (root.findViewById(R.id.coordinatorLayout)).setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
             if (root.findViewById(R.id.errorImage) != null)
                 ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.sad_smiley_dark));
+            if (bottomLayoutWrapper != null)
+                bottomLayoutWrapper.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
+            if (collapseSortButton != null)
+                collapseSortButton.setTextColor(ContextCompat.getColor(getContext(), R.color.primary));
 
             mSwipeRefreshLayout.setColorSchemeResources(
-                R.color.secondary,
-                R.color.secondary_dark,
-                R.color.background_dark);
+                    R.color.secondary,
+                    R.color.secondary_dark,
+                    R.color.background_dark);
         }
     }
 
     @DebugLog
     public void hideViews() {
-        if(backdropShown)
+        if (backdropShown)
             return;
         if (getActivity() instanceof MainActivity)
             ((MainActivity) getActivity()).hideViews();
@@ -186,10 +192,10 @@ public class DomoticzDashboardFragment extends Fragment {
         setGridViewLayout();
         coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
-
+        bottomLayoutWrapper = root.findViewById(R.id.bottomLayoutWrapper);
         collapseSortButton = root.findViewById(R.id.btnSortCollapse);
         collapseSortButton.setVisibility(View.VISIBLE);
-        if(collapseSortButton!=null) {
+        if (collapseSortButton != null) {
             collapseSortButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -199,7 +205,7 @@ public class DomoticzDashboardFragment extends Fragment {
         }
 
         sortStatic = root.findViewById(R.id.btnSortStatic);
-        if(sortStatic!=null) {
+        if (sortStatic != null) {
             sortStatic.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -210,7 +216,7 @@ public class DomoticzDashboardFragment extends Fragment {
         }
 
         sortOn = root.findViewById(R.id.btnSortOn);
-        if(sortOn!=null) {
+        if (sortOn != null) {
             sortOn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -221,7 +227,7 @@ public class DomoticzDashboardFragment extends Fragment {
         }
 
         sortOff = root.findViewById(R.id.btnSortOff);
-        if(sortOff!=null) {
+        if (sortOff != null) {
             sortOff.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -232,7 +238,7 @@ public class DomoticzDashboardFragment extends Fragment {
         }
 
         sortAll = root.findViewById(R.id.btnSortAll);
-        if(sortAll!=null) {
+        if (sortAll != null) {
             sortAll.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -244,9 +250,9 @@ public class DomoticzDashboardFragment extends Fragment {
 
         backdropContainer = root.findViewById(R.id.backdropcontainer);
         backdropContainer
-            .dropInterpolator(new LinearInterpolator())
-            .dropHeight(this.getResources().getDimensionPixelSize(R.dimen.sneek_height))
-            .build();
+                .dropInterpolator(new LinearInterpolator())
+                .dropHeight(this.getResources().getDimensionPixelSize(R.dimen.sneek_height))
+                .build();
 
         //setting up our OnScrollListener
         gridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -375,7 +381,7 @@ public class DomoticzDashboardFragment extends Fragment {
             listener = (DomoticzFragmentListener) fragment;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                fragment.toString() + " must implement DomoticzFragmentListener");
+                    fragment.toString() + " must implement DomoticzFragmentListener");
         }
     }
 
@@ -389,19 +395,18 @@ public class DomoticzDashboardFragment extends Fragment {
         }
     }
 
-    private boolean backdropShown = false;
     public void toggleBackDrop() {
         if (!backdropShown) {
             if (backdropContainer != null) {
                 showViews();
                 backdropContainer.showBackview();
-                backdropShown=true;
+                backdropShown = true;
                 collapseSortButton.setIconResource(R.drawable.baseline_keyboard_arrow_up_black_18);
             }
         } else {
             if (backdropContainer != null) {
                 backdropContainer.closeBackview();
-                backdropShown=false;
+                backdropShown = false;
                 collapseSortButton.setIconResource(R.drawable.baseline_keyboard_arrow_down_black_18);
             }
         }
@@ -507,7 +512,7 @@ public class DomoticzDashboardFragment extends Fragment {
                         debugText.setText(temp);
                     }
                 } else throw new RuntimeException(
-                    "Layout should have a TextView defined with the ID \"debugText\"");
+                        "Layout should have a TextView defined with the ID \"debugText\"");
             }
         }
     }
@@ -521,7 +526,7 @@ public class DomoticzDashboardFragment extends Fragment {
             TextView errorTextMessage = root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-            "Layout should have a RelativeLayout defined with the ID of errorLayout");
+                "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     public void setMessage(String message) {
@@ -540,14 +545,14 @@ public class DomoticzDashboardFragment extends Fragment {
             TextView errorTextMessage = root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-            "Layout should have a RelativeLayout defined with the ID of errorLayout");
+                "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     private void hideListView() {
         if (gridView != null) {
             gridView.setVisibility(View.GONE);
         } else throw new RuntimeException(
-            "Layout should have a ListView defined with the ID of listView");
+                "Layout should have a ListView defined with the ID of listView");
     }
 
     private void showDebugLayout() {

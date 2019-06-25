@@ -43,14 +43,14 @@
             android:padding="16dp">
 
             <com.google.android.material.button.MaterialButton
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:textSize="10dp"
                 android:id="@+id/btnSortAll"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/filterOn_all"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="10dp"/>
 
             <View
                 android:layout_width="match_parent"
@@ -59,14 +59,14 @@
                 android:background="@color/white"/>
 
             <com.google.android.material.button.MaterialButton
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:textSize="10dp"
                 android:id="@+id/btnSortOn"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/filterOn_on"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="10dp"/>
 
             <View
                 android:layout_width="match_parent"
@@ -75,14 +75,14 @@
                 android:background="@color/white"/>
 
             <com.google.android.material.button.MaterialButton
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:textSize="10dp"
                 android:id="@+id/btnSortOff"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/filterOn_off"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="10dp"/>
 
             <View
                 android:layout_width="match_parent"
@@ -93,15 +93,16 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSortStatic"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:textSize="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/filterOn_static"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="10dp"/>
         </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bottomLayoutWrapper"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             app:cardBackgroundColor="@color/background_grey"
@@ -183,19 +184,18 @@
                     android:id="@+id/btnSortCollapse"
                     style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                     android:layout_width="match_parent"
-                    android:visibility="gone"
                     android:layout_height="wrap_content"
-                    android:textSize="10dp"
                     android:layout_margin="0dp"
+                    android:text="@string/filterOn_all"
+                    android:textSize="10dp"
+                    android:visibility="gone"
                     app:icon="@drawable/baseline_keyboard_arrow_down_black_18"
-                    app:iconGravity="end"
-                    android:text="@string/filterOn_all"/>
+                    app:iconGravity="end"/>
 
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/swipe_refresh_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/my_recycler_view"
                         style="@style/background_recyclerview"
@@ -203,7 +203,6 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:scrollbars="vertical"/>
-
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             </LinearLayout>

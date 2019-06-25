@@ -1,12 +1,10 @@
 package nl.hnogames.domoticz.UI.Backdrop;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,9 +61,9 @@ public class BackdropContainer extends FrameLayout implements BackdropActions {
     public void build() {
         if (checkTotalview()) {
             toolbarIconClick = new ToolbarIconClick(context, getChildAt(1), getBackview(), mMenuicon,
-                mCloseicon, height, interpolator, duration);
-            if(toolbar != null) {
-                 toolbar.setNavigationOnClickListener(toolbarIconClick);
+                    mCloseicon, height, interpolator, duration);
+            if (toolbar != null) {
+                toolbar.setNavigationOnClickListener(toolbarIconClick);
             }
         } else {
             throw new ArrayIndexOutOfBoundsException("Backdrop should contain only two child");
@@ -79,10 +77,7 @@ public class BackdropContainer extends FrameLayout implements BackdropActions {
     }
 
     boolean checkTotalview() {
-        if (getChildCount() > 2) {
-            return false;
-        }
-        return true;
+        return getChildCount() <= 2;
     }
 
     View getFrontview() {

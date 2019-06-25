@@ -37,34 +37,34 @@ public class PermissionsUtil {
 
     //these permissions are needed for Wifi scanning
     public static final String[] INITIAL_LOCATION_PERMS = {
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
     };
     //these permissions are needed for storing camera images
     public static final String[] INITIAL_STORAGE_PERMS = {
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
     //these permissions are needed for getting device id
     public static final String[] INITIAL_DEVICE_PERMS = {
-        Manifest.permission.READ_PHONE_STATE
+            Manifest.permission.READ_PHONE_STATE
     };
     //these permissions are needed for scanning qrcodes
     public static final String[] INITIAL_CAMERA_PERMS = {
-        Manifest.permission.CAMERA
+            Manifest.permission.CAMERA
     };
     //these permissions are needed for bluetooth
     public static final String[] INITIAL_BLUETOOTH_PERMS = {
-        Manifest.permission.BLUETOOTH,
-        Manifest.permission.BLUETOOTH_ADMIN
+            Manifest.permission.BLUETOOTH,
+            Manifest.permission.BLUETOOTH_ADMIN
     };
     //these permissions are needed for recording audio
     public static final String[] INITIAL_AUDIO_PERMS = {
-        Manifest.permission.RECORD_AUDIO
+            Manifest.permission.RECORD_AUDIO
     };
     //these permissions are needed for fingerprint
     public static final String[] INITIAL_FINGERPRINT_PERMS = {
-        Manifest.permission.USE_FINGERPRINT
+            Manifest.permission.USE_FINGERPRINT
     };
 
     //This range is from 0 to 255!!
@@ -110,7 +110,7 @@ public class PermissionsUtil {
     private static boolean hasPermission(String permission, Context context) {
         // Using ContextCompat.checkSelfPermission will work on all API versions
         return (PackageManager.PERMISSION_GRANTED
-            == ContextCompat.checkSelfPermission(context, permission));
+                == ContextCompat.checkSelfPermission(context, permission));
     }
 
     public static AlertDialog getAlertDialog(Context context, final PermissionFragmentHelper permissionFragmentHelper, String title, String description, final String[] permissions) {
@@ -123,8 +123,8 @@ public class PermissionsUtil {
 
     public static AlertDialog getAlertDialog(Context context, final PermissionFragmentHelper permissionFragmentHelper, String title, String description, final String[] permissions, DialogInterface.OnClickListener oncancel) {
         AlertDialog builder = new AlertDialog.Builder(context)
-            .setTitle(title)
-            .create();
+                .setTitle(title)
+                .create();
         builder.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.request_again), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -142,8 +142,8 @@ public class PermissionsUtil {
 
     public static AlertDialog getAlertDialog(Context context, final PermissionFragmentHelper permissionFragmentHelper, String title, String description, final String permission) {
         AlertDialog builder = new AlertDialog.Builder(context)
-            .setTitle(title)
-            .create();
+                .setTitle(title)
+                .create();
         builder.setButton(DialogInterface.BUTTON_POSITIVE, "Request", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -165,8 +165,8 @@ public class PermissionsUtil {
 
     public static AlertDialog getAlertDialog(Context context, final PermissionHelper permissionFragmentHelper, String title, String description, final String[] permissions, DialogInterface.OnClickListener oncancel) {
         AlertDialog builder = new AlertDialog.Builder(context)
-            .setTitle(title)
-            .create();
+                .setTitle(title)
+                .create();
         builder.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.request_again), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -184,8 +184,8 @@ public class PermissionsUtil {
 
     public static AlertDialog getAlertDialog(Context context, final PermissionHelper permissionFragmentHelper, String title, String description, final String permission) {
         AlertDialog builder = new AlertDialog.Builder(context)
-            .setTitle(title)
-            .create();
+                .setTitle(title)
+                .create();
         builder.setButton(DialogInterface.BUTTON_POSITIVE, "Request", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

@@ -61,7 +61,7 @@ public class ToolbarIconClick implements View.OnClickListener {
         updateIcon(v);
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(frontlayer, "translationY",
-            dropped ? translate : 0);
+                dropped ? translate : 0);
         animatorSet.play(objectAnimator);
         objectAnimator.setDuration(anim_duration);
         objectAnimator.setInterpolator(interpolator);
@@ -69,7 +69,7 @@ public class ToolbarIconClick implements View.OnClickListener {
     }
 
     private void updateIcon(View v) {
-        if (toolbaricon!= null && hambergerIcon != null && closeIcon != null) {
+        if (toolbaricon != null && hambergerIcon != null && closeIcon != null) {
             if (dropped) {
                 toolbaricon.setImageDrawable(closeIcon);
             } else {
