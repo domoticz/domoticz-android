@@ -42,63 +42,138 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSortAll"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/lySortDevices"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/filterOn_all"
-                android:textColor="@color/white"
-                android:textSize="10dp"/>
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:alpha="0.1"
-                android:background="@color/white"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSortAll"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/filterOn_all"
+                    android:textColor="@color/white"
+                    android:textSize="10dp"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSortOn"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="match_parent"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.1"
+                    android:background="@color/white"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSortOn"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/filterOn_on"
+                    android:textColor="@color/white"
+                    android:textSize="10dp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.1"
+                    android:background="@color/white"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSortOff"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/filterOn_off"
+                    android:textColor="@color/white"
+                    android:textSize="10dp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.1"
+                    android:background="@color/white"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSortStatic"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/filterOn_static"
+                    android:textColor="@color/white"
+                    android:textSize="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lySortLogs"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/filterOn_on"
-                android:textColor="@color/white"
-                android:textSize="10dp"/>
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:alpha="0.1"
-                android:background="@color/white"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSortLogsAll"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/filter_all"
+                    android:textColor="@color/white"
+                    android:textSize="10dp"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSortOff"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/filterOn_off"
-                android:textColor="@color/white"
-                android:textSize="10dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.1"
+                    android:background="@color/white"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:alpha="0.1"
-                android:background="@color/white"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSortLogsNormal"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/filter_normal"
+                    android:textColor="@color/white"
+                    android:textSize="10dp"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSortStatic"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/filterOn_static"
-                android:textColor="@color/white"
-                android:textSize="10dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.1"
+                    android:background="@color/white"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSortLogsStatus"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/filter_status"
+                    android:textColor="@color/white"
+                    android:textSize="10dp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.1"
+                    android:background="@color/white"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSortLogsError"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/filter_error"
+                    android:textColor="@color/white"
+                    android:textSize="10dp"/>
+            </LinearLayout>
+
         </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
@@ -196,6 +271,7 @@
                     android:id="@+id/swipe_refresh_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/my_recycler_view"
                         style="@style/background_recyclerview"

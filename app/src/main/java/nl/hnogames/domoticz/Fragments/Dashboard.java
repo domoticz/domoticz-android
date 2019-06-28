@@ -28,7 +28,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -106,6 +108,16 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         mContext = context;
         if (getActionBar() != null)
             getActionBar().setTitle(getString(R.string.title_dashboard));
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        collapseSortButton.setVisibility(View.VISIBLE);
+        lySortDevices.setVisibility(View.VISIBLE);
+        return view;
     }
 
     @Override

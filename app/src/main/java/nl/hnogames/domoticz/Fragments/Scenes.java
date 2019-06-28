@@ -100,6 +100,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                              Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         collapseSortButton.setVisibility(View.VISIBLE);
+        lySortDevices.setVisibility(View.VISIBLE);
         return view;
     }
 

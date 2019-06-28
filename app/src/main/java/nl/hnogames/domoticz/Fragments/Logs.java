@@ -24,6 +24,9 @@ package nl.hnogames.domoticz.Fragments;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
@@ -66,6 +69,17 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
         onAttachFragment(this);
         mContext = context;
         SetTitle(getString(R.string.title_logs));
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        collapseSortButton.setText(getString(R.string.filter_all));
+        collapseSortButton.setVisibility(View.VISIBLE);
+        lySortLogs.setVisibility(View.VISIBLE);
+        return view;
     }
 
     public void SetTitle(String title) {

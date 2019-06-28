@@ -80,9 +80,12 @@ public class DomoticzRecyclerFragment extends Fragment {
     public Domoticz mDomoticz;
     public SharedPrefUtil mSharedPrefs;
     public PhoneConnectionUtil mPhoneConnectionUtil;
+
+    public LinearLayout lySortDevices, lySortLogs;
     public BackdropContainer backdropContainer;
     public MaterialCardView bottomLayoutWrapper;
-    public MaterialButton collapseSortButton, sortAll, sortOn, sortOff, sortStatic;
+    public MaterialButton collapseSortButton, sortAll, sortOn, sortOff, sortStatic, sortLogsAll, sortLogsNormal, sortLogsError, sortLogsStatus;
+
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private TextView debugText;
@@ -193,6 +196,7 @@ public class DomoticzRecyclerFragment extends Fragment {
 
     public void sortFragment(String sort) {
         this.sort = sort;
+        collapseSortButton.setText(sort);
         refreshFragment();
     }
 
@@ -204,6 +208,16 @@ public class DomoticzRecyclerFragment extends Fragment {
         coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
 
+        View.OnClickListener onSortClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortFragment(String.valueOf(((MaterialButton)v).getText()));
+                toggleBackDrop();
+            }
+        };
+
+        lySortDevices = root.findViewById(R.id.lySortDevices);
+        lySortLogs = root.findViewById(R.id.lySortLogs);
         bottomLayoutWrapper = root.findViewById(R.id.bottomLayoutWrapper);
         collapseSortButton = root.findViewById(R.id.btnSortCollapse);
         if (collapseSortButton != null) {
@@ -216,48 +230,29 @@ public class DomoticzRecyclerFragment extends Fragment {
         }
 
         sortStatic = root.findViewById(R.id.btnSortStatic);
-        if (sortStatic != null) {
-            sortStatic.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sortFragment(String.valueOf(sortStatic.getText()));
-                    toggleBackDrop();
-                }
-            });
-        }
-
+        if (sortStatic != null)
+            sortStatic.setOnClickListener(onSortClick);
         sortOn = root.findViewById(R.id.btnSortOn);
-        if (sortOn != null) {
-            sortOn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sortFragment(String.valueOf(sortOn.getText()));
-                    toggleBackDrop();
-                }
-            });
-        }
-
+        if (sortOn != null)
+            sortOn.setOnClickListener(onSortClick);
         sortOff = root.findViewById(R.id.btnSortOff);
-        if (sortOff != null) {
-            sortOff.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sortFragment(String.valueOf(sortOff.getText()));
-                    toggleBackDrop();
-                }
-            });
-        }
-
+        if (sortOff != null)
+            sortOff.setOnClickListener(onSortClick);
         sortAll = root.findViewById(R.id.btnSortAll);
-        if (sortAll != null) {
-            sortAll.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sortFragment(String.valueOf(sortAll.getText()));
-                    toggleBackDrop();
-                }
-            });
-        }
+        if (sortAll != null)
+            sortAll.setOnClickListener(onSortClick);
+        sortLogsAll = root.findViewById(R.id.btnSortLogsAll);
+        if (sortLogsAll != null)
+            sortLogsAll.setOnClickListener(onSortClick);
+        sortLogsError = root.findViewById(R.id.btnSortLogsError);
+        if (sortLogsError != null)
+            sortLogsError.setOnClickListener(onSortClick);
+        sortLogsNormal = root.findViewById(R.id.btnSortLogsNormal);
+        if (sortLogsNormal != null)
+            sortLogsNormal.setOnClickListener(onSortClick);
+        sortLogsStatus = root.findViewById(R.id.btnSortLogsStatus);
+        if (sortLogsStatus != null)
+            sortLogsStatus.setOnClickListener(onSortClick);
 
         backdropContainer = root.findViewById(R.id.backdropcontainer);
         backdropContainer

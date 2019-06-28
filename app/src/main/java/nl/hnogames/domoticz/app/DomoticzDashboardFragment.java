@@ -80,6 +80,7 @@ public class DomoticzDashboardFragment extends Fragment {
     public Domoticz mDomoticz;
     public SharedPrefUtil mSharedPrefs;
     public PhoneConnectionUtil mPhoneConnectionUtil;
+    public LinearLayout lySortDevices;
     public BackdropContainer backdropContainer;
     public MaterialCardView bottomLayoutWrapper;
     public MaterialButton collapseSortButton, sortAll, sortOn, sortOff, sortStatic;
@@ -208,6 +209,7 @@ public class DomoticzDashboardFragment extends Fragment {
         coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
         bottomLayoutWrapper = root.findViewById(R.id.bottomLayoutWrapper);
+        lySortDevices = root.findViewById(R.id.lySortDevices);
         collapseSortButton = root.findViewById(R.id.btnSortCollapse);
         collapseSortButton.setVisibility(View.VISIBLE);
         if (collapseSortButton != null) {

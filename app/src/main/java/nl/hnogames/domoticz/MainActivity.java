@@ -1122,9 +1122,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 else
                     getMenuInflater().inflate(R.menu.menu_camera, menu);
             } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment) || (f instanceof RefreshFragment)) {
-                if (f instanceof Logs)
-                    getMenuInflater().inflate(R.menu.menu_main_sort, menu);
-                else
                     getMenuInflater().inflate(R.menu.menu_main, menu);
 
                 MenuItem searchMenuItem = menu.findItem(R.id.search);
