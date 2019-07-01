@@ -191,8 +191,6 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
             if (getSort().equals(getString(R.string.filter_error)))
                 LogLevel = DomoticzValues.Log.LOGLEVEL.ERROR;
 
-            SetTitle(LogLevel != DomoticzValues.Log.LOGLEVEL.ALL ? getString(R.string.title_logs) + " (" + getSort() + ")" : getString(R.string.title_logs));
-
             mDomoticz.getLogs(new LogsReceiver() {
                 @Override
                 @DebugLog
