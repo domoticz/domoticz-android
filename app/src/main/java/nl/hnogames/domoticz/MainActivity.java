@@ -364,7 +364,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
         drawNavigationMenu(mConfigInfo);
         if (!fromShortcut)
             addFragment();
-        checkDomoticzServerUpdate(mConfigInfo);
     }
 
     /* Called when the second activity's finishes */
@@ -1021,92 +1020,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
             item.withSelectedIconColorRes(R.color.white);
         }
         return item;
-    }
-
-    private void showSnackBarToUpdateServer(String message) {
-        CoordinatorLayout layout = getFragmentCoordinatorLayout();
-        if (layout != null) {
-            UsefulBits.showSnackbarWithAction(this, layout, message, Snackbar.LENGTH_SHORT, null, new View.OnClickListener() {
-                @Override
-                @DebugLog
-                public void onClick(View v) {
-                    startActivity(new Intent(MainActivity.this, UpdateActivity.class));
-                }
-            }, this.getString(R.string.update_server));
-        }
-    }
-
-    private void checkDomoticzServerUpdate(final ConfigInfo config) {
-        if (config == null)
-            return;
-        domoticz.getUpdate(new UpdateVersionReceiver() {
-            @Override
-            @DebugLog
-            public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
-                if (mServerUtil != null &&
-                        mServerUtil.getActiveServer() != null) {
-                    mServerUtil.getActiveServer().setServerUpdateInfo(MainActivity.this, serverUpdateInfo);
-                    mServerUtil.saveDomoticzServers(true);
-                    checkCurrentServerVersion(config);
-                }
-            }
-
-            @Override
-            @DebugLog
-            public void onError(Exception error) {
-                if (mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null)
-                    mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).setCurrentServerVersion("");
-                mServerUtil.saveDomoticzServers(true);
-            }
-        });
-    }
-
-    private void checkCurrentServerVersion(final ConfigInfo mConfigInfo) {
-        if (domoticz == null || mConfigInfo == null)
-            return;
-        domoticz.getServerVersion(new VersionReceiver() {
-            @Override
-            @DebugLog
-            public void onReceiveVersion(VersionInfo serverVersion) {
-                if (serverVersion != null) {
-                    if (mServerUtil.getActiveServer() != null &&
-                            mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null) {
-                        mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).setCurrentServerVersion(serverVersion.getVersion());
-                    }
-
-                    String[] version
-                            = serverVersion.getVersion().split("\\.");
-                    String updateVersion = (mServerUtil.getActiveServer() != null &&
-                            mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null) ?
-                            version[0] + "."
-                                    + mServerUtil.getActiveServer()
-                                    .getServerUpdateInfo(MainActivity.this)
-                                    .getUpdateRevisionNumber() :
-                            version[0];
-
-                    if (!serverVersion.getVersion().equals(updateVersion) && serverVersion.isHaveUpdate()) {
-                        String message = String.format(getString(R.string.update_available_enhanced), serverVersion.getVersion(), updateVersion);
-                        if (mSharedPrefs.checkForUpdatesEnabled() && !mSharedPrefs.getLastUpdateShown().equals(updateVersion)) {
-                            if (mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).getSystemName().equalsIgnoreCase("linux")) {
-                                // Great! We can remote/auto update Linux systems
-                                showSnackBarToUpdateServer(message);
-                            } else {
-                                // No remote/auto updating available for other systems (like Windows, Synology)
-                                showSnackbar(getString(R.string.server_update_available));
-                            }
-                            mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).setUpdateAvailable(true);
-                            mSharedPrefs.setLastUpdateShown(updateVersion);
-                        }
-                        mServerUtil.saveDomoticzServers(true);
-                    }
-                }
-            }
-
-            @Override
-            @DebugLog
-            public void onError(Exception error) {
-            }
-        });
     }
 
     @Override

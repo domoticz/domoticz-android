@@ -155,9 +155,9 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_SWITCH_BUTTONS, false);
     }
 
-    public boolean checkForUpdatesEnabled() {
-        return prefs.getBoolean(PREF_CHECK_UPDATES, false);
-    }
+   // public boolean checkForUpdatesEnabled() {
+   //     return prefs.getBoolean(PREF_CHECK_UPDATES, false);
+   // }
 
     public boolean IsWidgetsEnabled() {
         return prefs.getBoolean(PREF_WIDGET_ENABLED, false);
@@ -869,27 +869,27 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_ENABLE_Bluetooth, false);
     }
 
-    public boolean isServerUpdateAvailable() {
-        return prefs.getBoolean(PREF_UPDATE_SERVER_AVAILABLE, false);
-    }
+    //public boolean isServerUpdateAvailable() {
+    //    return prefs.getBoolean(PREF_UPDATE_SERVER_AVAILABLE, false);
+    //}
 
-    public String getPreviousVersionNumber() {
-        return prefs.getString(PREF_LAST_VERSION, "");
-    }
+    //public String getPreviousVersionNumber() {
+    //    return prefs.getString(PREF_LAST_VERSION, "");
+    //}
 
-    public void setVersionNumber(String version) {
-        editor.putString(PREF_LAST_VERSION, version);
-        editor.commit();
-    }
+    //public void setVersionNumber(String version) {
+    //    editor.putString(PREF_LAST_VERSION, version);
+    //    editor.commit();
+    //}
 
-    public String getLastUpdateShown() {
-        return prefs.getString(PREF_UPDATE_SERVER_SHOWN, "");
-    }
+    //public String getLastUpdateShown() {
+    //    return prefs.getString(PREF_UPDATE_SERVER_SHOWN, "");
+    //}
 
-    public void setLastUpdateShown(String revisionNb) {
-        editor.putString(PREF_UPDATE_SERVER_SHOWN, revisionNb);
-        editor.commit();
-    }
+    //public void setLastUpdateShown(String revisionNb) {
+    //   editor.putString(PREF_UPDATE_SERVER_SHOWN, revisionNb);
+    //   editor.commit();
+    //}
 
     public boolean isGeofenceEnabled() {
         return prefs.getBoolean(PREF_GEOFENCE_ENABLED, false);
@@ -1111,12 +1111,6 @@ public class SharedPrefUtil {
         try {
             boolean isServerUpdateAvailableValue = false;
             ServerUpdateInfo mServerUpdateInfo = new ServerUtil(mContext).getActiveServer().getServerUpdateInfo(mContext);
-
-            // Before saving to file set server update available preference to false
-            if (isServerUpdateAvailable()) {
-                isServerUpdateAvailableValue = true;
-                mServerUpdateInfo.setUpdateAvailable(false);
-            }
 
             Map<String, ?> oAllPrefs = this.prefs.getAll();
             HashMap<String, Object> oSavePrefs = new HashMap<String, Object>();

@@ -27,7 +27,6 @@ import android.app.ActivityManager;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.net.Uri;
@@ -71,7 +70,6 @@ import nl.hnogames.domoticz.ServerSettingsActivity;
 import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.SpeechSettingsActivity;
 import nl.hnogames.domoticz.UI.SimpleTextDialog;
-import nl.hnogames.domoticz.UpdateActivity;
 import nl.hnogames.domoticz.Utils.DeviceUtils;
 import nl.hnogames.domoticz.Utils.NotificationUtil;
 import nl.hnogames.domoticz.Utils.PermissionsUtil;
@@ -79,12 +77,9 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
-import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
-import nl.hnogames.domoticzapi.Containers.VersionInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
-import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 import static android.content.Context.KEYGUARD_SERVICE;
@@ -124,7 +119,6 @@ public class Preference extends PreferenceFragment {
 
         setPreferences();
         setStartUpScreenDefaultValue();
-        setVersionInfo();
         handleImportExportButtons();
         handleInfoAndAbout();
     }
@@ -872,82 +866,6 @@ public class Preference extends PreferenceFragment {
             showSnackbar(mContext.getString(R.string.settings_exported));
         else
             showSnackbar(mContext.getString(R.string.settings_export_failed));
-    }
-
-    private void setVersionInfo() {
-        final ServerUtil serverUtil = new ServerUtil(mContext);
-        PackageInfo pInfo = null;
-        try {
-            pInfo = mContext
-                    .getPackageManager()
-                    .getPackageInfo(mContext
-                            .getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        String appVersionStr = mContext.getString(R.string.unknown);
-        if (pInfo != null) appVersionStr = pInfo.versionName;
-
-        final android.preference.Preference appVersion = findPreference("version");
-        if (appVersion != null && !UsefulBits.isEmpty(appVersionStr))
-            appVersion.setSummary(appVersionStr);
-
-        final android.preference.Preference domoticzVersion = findPreference("version_domoticz");
-        if (domoticzVersion == null)
-            return;
-
-        mDomoticz.getServerVersion(new VersionReceiver() {
-            @Override
-            @DebugLog
-            public void onReceiveVersion(VersionInfo serverVersion) {
-                if (serverVersion != null) {
-                    try {
-                        ServerUpdateInfo updateInfo = null;
-                        if (serverUtil.getActiveServer() != null)
-                            updateInfo = serverUtil.getActiveServer().getServerUpdateInfo(mContext);
-
-                        if (updateInfo != null) {
-                            String message = serverVersion.getVersion();
-                            if (updateInfo.isUpdateAvailable() || mSharedPrefs.isDebugEnabled()) {
-                                String version = updateInfo.getUpdateRevisionNumber();
-                                message = String.format(getString(R.string.update_available_enhanced),
-                                        serverVersion.getVersion(),
-                                        version);
-                                if (updateInfo.getSystemName() != null &&
-                                        updateInfo.getSystemName().equalsIgnoreCase("linux")) {
-                                    message += UsefulBits.newLine() + mContext.getString(R.string.click_to_update_server);
-                                    domoticzVersion.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
-                                        @Override
-                                        public boolean onPreferenceClick(android.preference.Preference preference) {
-                                            Intent intent = new Intent(mContext, UpdateActivity.class);
-                                            startActivity(intent);
-                                            return false;
-                                        }
-                                    });
-                                }
-                            }
-                            domoticzVersion.setSummary(message);
-                        }
-                    } catch (Exception ex) {
-                        String ex_message = mDomoticz.getErrorMessage(ex);
-                        if (!UsefulBits.isEmpty(ex_message))
-                            Log.e(TAG, mDomoticz.getErrorMessage(ex));
-                    }
-                }
-            }
-
-            @Override
-            @DebugLog
-            public void onError(Exception error) {
-                try {
-                    String message = String.format(
-                            getString(R.string.error_couldNotCheckForUpdates),
-                            mDomoticz.getErrorMessage(error));
-                    showSnackbar(message);
-                } catch (Exception ignored) {
-                }
-            }
-        });
     }
 
     private void setStartUpScreenDefaultValue() {
