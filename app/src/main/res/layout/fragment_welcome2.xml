@@ -58,6 +58,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/import_settings"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/demo_settings"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/use_demo_setup"/>
     </LinearLayout>
 
     <TextView

@@ -130,4 +130,5 @@
     <string name="filter_normal">Нормальный</string>
     <string name="filter_status">Статус</string>
     <string name="filter_error">Ошибка</string>
+    <string name="use_demo_setup">Use demo setup</string>
 </resources>

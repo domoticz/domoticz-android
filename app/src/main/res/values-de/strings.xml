@@ -130,4 +130,5 @@
     <string name="filter_normal">Normal</string>
     <string name="filter_status">Status</string>
     <string name="filter_error">Fehler</string>
+    <string name="use_demo_setup">Use demo setup</string>
 </resources>

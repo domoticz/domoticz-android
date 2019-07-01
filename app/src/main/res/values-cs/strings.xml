@@ -130,4 +130,5 @@
     <string name="filter_normal">Normální</string>
     <string name="filter_status">Stav</string>
     <string name="filter_error">Chyba</string>
+    <string name="use_demo_setup">Use demo setup</string>
 </resources>

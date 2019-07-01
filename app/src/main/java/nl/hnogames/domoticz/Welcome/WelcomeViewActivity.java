@@ -24,24 +24,28 @@ package nl.hnogames.domoticz.Welcome;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.github.paolorotolo.appintro.AppIntro2;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import com.github.paolorotolo.appintro.model.SliderPage;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class WelcomeViewActivity extends AppIntro2 {
     private static final int WELCOME_WIZARD = 1;
     private int p = 0;
+    private SharedPrefUtil mSharedPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
+        mSharedPrefs = new SharedPrefUtil(this);
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
@@ -54,11 +58,27 @@ public class WelcomeViewActivity extends AppIntro2 {
         sliderPage.setDescription(getString(R.string.welcome_info_domoticz));
         sliderPage.setImageDrawable(R.drawable.domoticz);
         sliderPage.setBgColor(R.color.black);
-        addSlide(AppIntroFragment.newInstance(sliderPage));
 
+        addSlide(AppIntroFragment.newInstance(sliderPage));
         addSlide(WelcomePage2.newInstance());
         addSlide(WelcomePage3.newInstance(WELCOME_WIZARD));
         addSlide(WelcomePage4.newInstance());
+    }
+
+    public void setDemoAccount()
+    {
+        ServerUtil mServerUtil = new ServerUtil(this);
+        mServerUtil.getActiveServer().setRemoteServerUsername("admin");
+        mServerUtil.getActiveServer().setRemoteServerPassword("D@m@t1czCl0ud");
+        mServerUtil.getActiveServer().setRemoteServerUrl("gandalf.domoticz.com");
+        mServerUtil.getActiveServer().setRemoteServerPort("1883");
+        mServerUtil.getActiveServer().setRemoteServerDirectory("");
+        mServerUtil.getActiveServer().setRemoteServerSecure(true);
+        mServerUtil.getActiveServer().setLocalSameAddressAsRemote();
+        mServerUtil.getActiveServer().setIsLocalServerAddressDifferent(false);
+        mServerUtil.saveDomoticzServers(true);
+        mSharedPrefs.setWelcomeWizardSuccess(true);
+        endWelcomeWizard();
     }
 
     @Override

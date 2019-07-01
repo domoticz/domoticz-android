@@ -130,4 +130,5 @@
     <string name="filter_normal">Normál</string>
     <string name="filter_status">Állapot</string>
     <string name="filter_error">Hiba</string>
+    <string name="use_demo_setup">Use demo setup</string>
 </resources>
