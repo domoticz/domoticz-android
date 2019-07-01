@@ -27,6 +27,7 @@ import android.app.ActivityManager;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.net.Uri;
@@ -121,6 +122,7 @@ public class Preference extends PreferenceFragment {
         setStartUpScreenDefaultValue();
         handleImportExportButtons();
         handleInfoAndAbout();
+        GetVersion();
     }
 
     private void setupDefaultValues() {
@@ -702,6 +704,23 @@ public class Preference extends PreferenceFragment {
                 return false;
             }
         });
+    }
+
+    private void GetVersion() {
+        android.preference.Preference appVersion = findPreference("version");
+        PackageInfo pInfo = null;
+        try {
+            pInfo = mContext
+                .getPackageManager()
+                .getPackageInfo(mContext
+                    .getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String appVersionStr = mContext.getString(R.string.unknown);
+        if (pInfo != null) appVersionStr = pInfo.versionName;
+        if (appVersion != null && !UsefulBits.isEmpty(appVersionStr))
+            appVersion.setSummary(appVersionStr);
     }
 
     private Boolean checkBiometricSupport() {
