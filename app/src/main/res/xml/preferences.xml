@@ -63,6 +63,11 @@
             android:summaryOff="@string/always_auto_refresh_off"
             android:summaryOn="@string/always_auto_refresh_on"
             android:title="@string/always_auto_refresh"/>
+        <nl.hnogames.domoticz.Preference.EditTextIntegerPreference
+            android:key="autorefreshTimer"
+            android:dependency="autorefresh"
+            android:summary="@string/set_auto_refresh_time"
+            android:title="@string/auto_refresh_time"/>
     </PreferenceCategory>
 
     <PreferenceScreen

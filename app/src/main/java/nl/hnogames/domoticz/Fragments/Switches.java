@@ -213,7 +213,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                             supportedSwitches.add(mDevicesInfo);
                         } else {
                             if (mContext != null) {
-                               // UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.filter_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT);
+                                // UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.filter_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT);
                                 if (getActivity() instanceof MainActivity)
                                     ((MainActivity) getActivity()).Talk(mContext.getString(R.string.filter_on) + ": " + super.getSort());
                                 if ((super.getSort().equals(mContext.getString(R.string.filterOn_on)) && mDevicesInfo.getStatusBoolean()) &&

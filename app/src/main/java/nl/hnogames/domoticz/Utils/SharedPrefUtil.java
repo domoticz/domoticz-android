@@ -74,6 +74,7 @@ public class SharedPrefUtil {
     private static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
     private static final String PREF_ALWAYS_ON = "alwayson";
     private static final String PREF_AUTO_REFRESH = "autorefresh";
+    private static final String PREF_AUTO_REFRESH_TIMER = "autorefreshTimer";
     private static final String PREF_NOTIFICATION_VIBRATE = "notification_vibrate";
     private static final String PREF_NOTIFICATION_SOUND = "notification_sound";
     private static final String PREF_DISPLAY_LANGUAGE = "displayLanguage";
@@ -155,9 +156,9 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_SWITCH_BUTTONS, false);
     }
 
-   // public boolean checkForUpdatesEnabled() {
-   //     return prefs.getBoolean(PREF_CHECK_UPDATES, false);
-   // }
+    // public boolean checkForUpdatesEnabled() {
+    //     return prefs.getBoolean(PREF_CHECK_UPDATES, false);
+    // }
 
     public boolean IsWidgetsEnabled() {
         return prefs.getBoolean(PREF_WIDGET_ENABLED, false);
@@ -203,6 +204,10 @@ public class SharedPrefUtil {
 
     public boolean getAutoRefresh() {
         return prefs.getBoolean(PREF_AUTO_REFRESH, false);
+    }
+
+    public int getAutoRefreshTimer() {
+        return prefs.getInt(PREF_AUTO_REFRESH_TIMER, 5);
     }
 
     public int getAlarmTimer() {

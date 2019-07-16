@@ -167,10 +167,6 @@ public class SeekArc extends View {
          * that occurred programmatically.
          *
          * @param seekArc  The SeekArc whose progress has changed
-         * @param progress The current progress level. This will be in the range
-         *                 0..max where max was set by
-         *                 {@link ProgressArc#setMax(int)}. (The default value for
-         *                 max is 100.)
          * @param fromUser True if the progress change was initiated by the user.
          */
         void onProgressChanged(SeekArc seekArc, int progress, boolean fromUser);
@@ -558,7 +554,6 @@ public class SeekArc extends View {
      * stops a touch gesture within the SeekArc.
      *
      * @param l The seek bar notification listener
-     * @see SeekArc.OnSeekBarChangeListener
      */
     public void setOnSeekArcChangeListener(OnSeekArcChangeListener l) {
         mOnSeekArcChangeListener = l;

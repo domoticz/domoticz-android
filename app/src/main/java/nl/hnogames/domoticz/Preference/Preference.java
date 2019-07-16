@@ -711,9 +711,9 @@ public class Preference extends PreferenceFragment {
         PackageInfo pInfo = null;
         try {
             pInfo = mContext
-                .getPackageManager()
-                .getPackageInfo(mContext
-                    .getPackageName(), 0);
+                    .getPackageManager()
+                    .getPackageInfo(mContext
+                            .getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

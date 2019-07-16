@@ -131,4 +131,6 @@
     <string name="filter_status">Status</string>
     <string name="filter_error">Fel</string>
     <string name="use_demo_setup">Use demo setup</string>
+    <string name="auto_refresh_time">Refresh timer</string>
+    <string name="set_auto_refresh_time">Set a specific timer for the auto refresh in seconds.</string>
 </resources>

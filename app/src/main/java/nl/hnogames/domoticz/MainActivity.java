@@ -443,7 +443,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     public void showViews() {
-         toolbar.setVisibility(View.VISIBLE);
+        toolbar.setVisibility(View.VISIBLE);
     }
 
     private void handleSwitch(final int idx, final String password, final int inputJSONAction, final String value, final boolean isSceneOrGroup) {
@@ -746,7 +746,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                         }
                     });
                 }
-            }, 0, 5000);//schedule in 5 seconds
+            }, 0, (mSharedPrefs.getAutoRefreshTimer() * 1000));
         }
     }
 
@@ -1035,7 +1035,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 else
                     getMenuInflater().inflate(R.menu.menu_camera, menu);
             } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment) || (f instanceof RefreshFragment)) {
-                    getMenuInflater().inflate(R.menu.menu_main, menu);
+                getMenuInflater().inflate(R.menu.menu_main, menu);
 
                 MenuItem searchMenuItem = menu.findItem(R.id.search);
                 searchViewAction = (SearchView) MenuItemCompat.getActionView(searchMenuItem);

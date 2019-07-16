@@ -83,7 +83,7 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
         demoSetup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((WelcomeViewActivity)getActivity()).setDemoAccount();
+                ((WelcomeViewActivity) getActivity()).setDemoAccount();
             }
         });
 

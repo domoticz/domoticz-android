@@ -114,14 +114,14 @@ public class DomoticzDashboardFragment extends Fragment {
             if (bottomLayoutWrapper != null)
                 bottomLayoutWrapper.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
             if (collapseSortButton != null) {
-                int[][] states = new int[][] {
-                        new int[] { android.R.attr.state_enabled}, // enabled
-                        new int[] {-android.R.attr.state_enabled}, // disabled
-                        new int[] {-android.R.attr.state_checked}, // unchecked
-                        new int[] { android.R.attr.state_pressed}  // pressed
+                int[][] states = new int[][]{
+                        new int[]{android.R.attr.state_enabled}, // enabled
+                        new int[]{-android.R.attr.state_enabled}, // disabled
+                        new int[]{-android.R.attr.state_checked}, // unchecked
+                        new int[]{android.R.attr.state_pressed}  // pressed
                 };
 
-                int[] colors = new int[] {
+                int[] colors = new int[]{
                         R.color.primary, R.color.primary, R.color.primary, R.color.primary
                 };
 
