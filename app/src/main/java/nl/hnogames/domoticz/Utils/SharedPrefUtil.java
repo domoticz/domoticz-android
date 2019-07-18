@@ -207,7 +207,17 @@ public class SharedPrefUtil {
     }
 
     public int getAutoRefreshTimer() {
-        return prefs.getInt(PREF_AUTO_REFRESH_TIMER, 5);
+        try {
+            int value = Integer.valueOf(prefs.getString(PREF_AUTO_REFRESH_TIMER, "5"));
+            if (value == -1) {
+                editor.putString(PREF_AUTO_REFRESH_TIMER, "5").apply();
+                return 5;
+            }
+            return value;
+        } catch (Exception ex) {
+            editor.putString(PREF_AUTO_REFRESH_TIMER, "5").apply();
+            return 5;
+        }
     }
 
     public int getAlarmTimer() {

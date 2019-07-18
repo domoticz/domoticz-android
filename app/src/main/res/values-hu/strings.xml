@@ -50,12 +50,12 @@
     <string name="sunrise">Napkelte</string>
     <string name="sunset">Naplemente</string>
     <string name="now">Most</string>
-    <string name="astrTwilightStart">Astronomical twilight start</string>
-    <string name="astrTwilightEnd">Astronomical twilight end</string>
-    <string name="civTwilightStart">Civil twilight start</string>
-    <string name="civTwilightEnd">Civil twilight end</string>
-    <string name="nautTwilightStart">Nautical twilight start</string>
-    <string name="nautTwilightEnd">Nautical twilight end</string>
+    <string name="astrTwilightStart">Csillagászati szürkület kezdete</string>
+    <string name="astrTwilightEnd">Csillagászati szürkület vége</string>
+    <string name="civTwilightStart">Polgári szürkület kezdete</string>
+    <string name="civTwilightEnd">Polgári szürkület vége</string>
+    <string name="nautTwilightStart">Tengerészeti szürkület kezdete</string>
+    <string name="nautTwilightEnd">Tengerészeti szürkület vége</string>
     <string name="last_update">Utolsó érzékelés</string>
     <string name="signal_level">Jelerősség</string>
     <string name="battery_level">Akku töltöttségi szint</string>
@@ -130,7 +130,7 @@
     <string name="filter_normal">Normál</string>
     <string name="filter_status">Állapot</string>
     <string name="filter_error">Hiba</string>
-    <string name="use_demo_setup">Use demo setup</string>
-    <string name="auto_refresh_time">Refresh timer</string>
+    <string name="use_demo_setup">Demó beállítások</string>
+    <string name="auto_refresh_time">Időzítő frissítése</string>
     <string name="set_auto_refresh_time">Set a specific timer for the auto refresh in seconds.</string>
 </resources>

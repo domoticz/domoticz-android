@@ -64,8 +64,8 @@
     <string name="always_on_on">Блокировка экрана всегда ВКЛ</string>
     <string name="always_on_off">Не блокировать экран всегда ВКЛ</string>
     <string name="always_auto_refresh">Авто-обновление</string>
-    <string name="always_auto_refresh_on">Обновлять состояние устройства каждые 5 секунд</string>
-    <string name="always_auto_refresh_off">Не обновлять состояние устройства каждые 5 секунд</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
     <string name="switch_buttons_title">Переключатели</string>
     <string name="switch_buttons_on">Показать выключатели с вкл/выкл переключателем</string>
     <string name="switch_buttons_off">Показать выключатели с Вкл/Выкл кнопкой</string>

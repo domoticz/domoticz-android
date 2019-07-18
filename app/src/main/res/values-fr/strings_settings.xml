@@ -64,8 +64,8 @@
     <string name="always_on_on">Toujours verrouiller l\'écran</string>
     <string name="always_on_off">Ne jamais verrouiller l\'écran</string>
     <string name="always_auto_refresh">Rafraîchir Automatiquement</string>
-    <string name="always_auto_refresh_on">Actualiser l\'état de l\'appareil toutes les 5 secondes</string>
-    <string name="always_auto_refresh_off">Ne pas rafraîchir l\'état de l\'appareil toutes les 5 secondes</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
     <string name="switch_buttons_title">Interrupteurs</string>
     <string name="switch_buttons_on">Afficher les interrupteurs avec les interrupteurs On / Off</string>
     <string name="switch_buttons_off">Afficher les interrupteurs avec les boutons On / Off</string>

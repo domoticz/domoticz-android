@@ -64,8 +64,8 @@
     <string name="always_on_on">Vždy zamknúť obrazovku</string>
     <string name="always_on_off">Nezamykať obrazovku</string>
     <string name="always_auto_refresh">Auto Refresh</string>
-    <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
-    <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
     <string name="switch_buttons_title">Prepínače</string>
     <string name="switch_buttons_on">Zobraziť prepínače s on/off prepínačom</string>
     <string name="switch_buttons_off">Zobraziť prepínače s on/off tlačidlom</string>

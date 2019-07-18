@@ -23,14 +23,14 @@
 <resources>
     <string name="bluetooth_not_supported">A Bluetooth nem támogatott ezen az eszközön</string>
     <string name="bluetooth_register">Csatlakozás Bluetooth-eszközhöz</string>
-    <string name="bluetooth_found">New bluetooth device found</string>
-    <string name="bluetooth_edit">Edit bluetooth device</string>
-    <string name="bluetooth_name">Give this bluetooth device a proper name. </string>
-    <string name="bluetooth_desc">Check the list of paired bluetooth devices. </string>
-    <string name="bluetooth_exists">Bluetooth already configured on Domoticz. </string>
-    <string name="bluetooth_turned_off">Bluetooth needs to be turned on in your device settings. </string>
-    <string name="bluetooth_saved">Saved a new bluetooth device connection. </string>
+    <string name="bluetooth_found">Új Bluetooth eszköz érhető el</string>
+    <string name="bluetooth_edit">Bluetooth eszköz szerkesztése</string>
+    <string name="bluetooth_name">Bluetooth eszköz elnevezése. </string>
+    <string name="bluetooth_desc">Párosított Bluetooth eszközök listája. </string>
+    <string name="bluetooth_exists">A Bluetooth eszköz már konfigurálva lett korábban a Domoticzban. </string>
+    <string name="bluetooth_turned_off">Be kell kapcsolni a Bluetooth-t a telefon beállításaiban. </string>
+    <string name="bluetooth_saved">Új Bluetooth kapcsolat mentve. </string>
     <string name="bluetooth">Bluetooth</string>
-    <string name="bluetooth_disabled">Bluetooth automation disabled, please setup via settings.</string>
-    <string name="noSwitchSelected_explanation_bluetooth">For a bluetooth device to automate something in Domoticz, a switch should be linked to an bluetooth</string>
+    <string name="bluetooth_disabled">Bluetooth automatika ki van kapcsolva. Bekapcsolás a beállításoknál.</string>
+    <string name="noSwitchSelected_explanation_bluetooth">A Bluetooth automatizálás használatához kapcsolót kell rendelni hozzá a Domoticzban</string>
 </resources>

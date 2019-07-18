@@ -64,8 +64,8 @@
     <string name="always_on_on">Bildschirmsperre immer An</string>
     <string name="always_on_off">Bildschirmsperre immer Aus</string>
     <string name="always_auto_refresh">Automatische Aktualisierung</string>
-    <string name="always_auto_refresh_on">Gerätezustand alle 5 Sekunden aktualisieren</string>
-    <string name="always_auto_refresh_off">Gerätezustand nicht alle 5 Sekunden aktualisieren</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
     <string name="switch_buttons_title">Schalter</string>
     <string name="switch_buttons_on">Zeige Schalter mit Ein-/Ausschalter</string>
     <string name="switch_buttons_off">Zeige Schalter mit Ein-/Aus Taste</string>
