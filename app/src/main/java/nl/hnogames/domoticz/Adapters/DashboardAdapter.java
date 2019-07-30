@@ -317,8 +317,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     break;
 
                 case DomoticzValues.Device.Type.Value.DIMMER:
-                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
-                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
                     if (mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.RGB) ||
                             mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW)) {
                         if (mSharedPrefs.showSwitchesAsButtons()) {
@@ -339,6 +337,18 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     }
                     break;
 
+                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
+                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
+                    if (DomoticzValues.canHandleStopButton(mDeviceInfo)) {
+                        setButtons(holder, Buttons.BLINDS_DIMMER);
+                        setBlindsRowData(mDeviceInfo, holder);
+                    }
+                    else{
+                        setButtons(holder, Buttons.BLINDS_DIMMER_NOSTOP);
+                        setBlindsRowData(mDeviceInfo, holder);
+                    }
+                    break;
+
                 case DomoticzValues.Device.Type.Value.SELECTOR:
                     if (mSharedPrefs.showSwitchesAsButtons()) {
                         setButtons(holder, Buttons.SELECTOR_BUTTONS);
@@ -353,11 +363,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 case DomoticzValues.Device.Type.Value.BLINDINVERTED:
                     if (DomoticzValues.canHandleStopButton(mDeviceInfo)) {
                         setButtons(holder, Buttons.BLINDS);
-                        setBlindsRowData(mDeviceInfo, holder);
                     } else {
-                        setButtons(holder, Buttons.BUTTONS);
-                        setOnOffButtonRowData(mDeviceInfo, holder);
+                        setButtons(holder, Buttons.BLINDS_NOSTOP);
                     }
+                    setBlindsRowData(mDeviceInfo, holder);
                     break;
 
                 case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
@@ -1037,24 +1046,21 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
      * @param mDeviceInfo Device info
      * @param holder      Holder to use
      */
-    private void setBlindsRowData(DevicesInfo mDeviceInfo,
+    private void setBlindsRowData(final DevicesInfo mDeviceInfo,
                                   DataObjectHolder holder) {
 
         String text;
-
         holder.isProtected = mDeviceInfo.isProtected();
-
         holder.switch_name.setText(mDeviceInfo.getName());
 
-        if (holder.switch_status != null) {
+        if (holder.signal_level != null) {
             text = context.getString(R.string.last_update)
                     + ": "
                     + UsefulBits.getFormattedDate(
                     context,
                     mDeviceInfo.getLastUpdateDateTime().getTime());
-            holder.switch_status.setText(text);
+            holder.signal_level.setText(text);
         }
-
 
         if (holder.switch_battery_level != null) {
             text = context.getString(R.string.status) + ": " +
@@ -1068,7 +1074,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             public void onClick(View view) {
                 for (DevicesInfo e : data) {
                     if (e.getIdx() == view.getId()) {
-                        if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED)
+                        if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED)
                             handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
                         else
                             handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
@@ -1095,7 +1101,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             public void onClick(View view) {
                 for (DevicesInfo e : data) {
                     if (e.getIdx() == view.getId()) {
-                        if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED)
+                        if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED)
                             handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
                         else
                             handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
@@ -1103,6 +1109,38 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 }
             }
         });
+
+        if(holder.dimmer.getVisibility() == View.VISIBLE) {
+            holder.dimmer.setProgress(mDeviceInfo.getLevel());
+            holder.dimmer.setMax(mDeviceInfo.getMaxDimLevel());
+            holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    String percentage = calculateDimPercentage(seekBar.getMax(), progress);
+                    TextView switch_dimmer_level = seekBar.getRootView()
+                            .findViewById(mDeviceInfo.getIdx() + ID_TEXTVIEW);
+                    if (switch_dimmer_level != null)
+                        switch_dimmer_level.setText(percentage);
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    previousDimmerValue = seekBar.getProgress();
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    int progress = seekBar.getProgress();
+                    handleDimmerChange(mDeviceInfo.getIdx(), progress + 1, false);
+                    mDeviceInfo.setLevel(progress);
+                }
+            });
+
+            holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
+            String percentage = calculateDimPercentage(
+                    mDeviceInfo.getMaxDimLevel(), mDeviceInfo.getLevel());
+            holder.switch_dimmer_level.setText(percentage);
+        }
 
         Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
@@ -1442,7 +1480,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             }
         });
 
-        if (!mDeviceInfo.getStatusBoolean()) {
+        if (!mDeviceInfo.getStatusBoolean() && !(holder.buttonDown.getVisibility() == View.VISIBLE)) {
             holder.switch_dimmer_level.setVisibility(View.GONE);
             holder.dimmer.setVisibility(View.GONE);
             if (isRGB)
@@ -1800,7 +1838,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             case Buttons.BUTTONS:
                 if (holder.buttonOn != null)
                     holder.buttonOn.setVisibility(View.VISIBLE);
-
                 if (holder.buttonOff != null)
                     holder.buttonOff.setVisibility(View.VISIBLE);
                 break;
@@ -1827,12 +1864,42 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.buttonUp.setVisibility(View.VISIBLE);
                 if (holder.buttonStop != null)
                     holder.buttonStop.setVisibility(View.VISIBLE);
+                if (holder.switch_dimmer_level != null)
+                    holder.switch_dimmer_level.setVisibility(View.GONE);
+                if (holder.dimmer != null)
+                    holder.dimmer.setVisibility(View.GONE);
                 break;
             case Buttons.BLINDS_NOSTOP:
                 if (holder.buttonDown != null)
                     holder.buttonDown.setVisibility(View.VISIBLE);
                 if (holder.buttonUp != null)
                     holder.buttonUp.setVisibility(View.VISIBLE);
+                if (holder.switch_dimmer_level != null)
+                    holder.switch_dimmer_level.setVisibility(View.GONE);
+                if (holder.dimmer != null)
+                    holder.dimmer.setVisibility(View.GONE);
+                break;
+            case Buttons.BLINDS_DIMMER:
+                if (holder.buttonDown != null)
+                    holder.buttonDown.setVisibility(View.VISIBLE);
+                if (holder.buttonUp != null)
+                    holder.buttonUp.setVisibility(View.VISIBLE);
+                if (holder.buttonStop != null)
+                    holder.buttonStop.setVisibility(View.VISIBLE);
+                if (holder.switch_dimmer_level != null)
+                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+                if (holder.dimmer != null)
+                    holder.dimmer.setVisibility(View.VISIBLE);
+                break;
+            case Buttons.BLINDS_DIMMER_NOSTOP:
+                if (holder.buttonDown != null)
+                    holder.buttonDown.setVisibility(View.VISIBLE);
+                if (holder.buttonUp != null)
+                    holder.buttonUp.setVisibility(View.VISIBLE);
+                if (holder.switch_dimmer_level != null)
+                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
+                if (holder.dimmer != null)
+                    holder.dimmer.setVisibility(View.VISIBLE);
                 break;
             case Buttons.DIMMER_RGB:
                 if (holder.buttonDown != null)
@@ -1912,11 +1979,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         int SET = 2;
         int BUTTONS = 3;
         int BLINDS = 4;
+        int BLINDS_NOSTOP = 9;
+        int BLINDS_DIMMER = 15;
+        int BLINDS_DIMMER_NOSTOP = 16;
         int DIMMER = 5;
         int DIMMER_RGB = 6;
         int BUTTON_ON = 7;
         int BUTTON_OFF = 8;
-        int BLINDS_NOSTOP = 9;
         int MODAL = 10;
         int DIMMER_BUTTONS = 11;
         int SELECTOR = 12;
