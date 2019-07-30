@@ -24,18 +24,28 @@ package nl.hnogames.domoticz;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.Fragments.Dashboard;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
+import nl.hnogames.domoticz.app.DomoticzCardFragment;
+import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.app.RefreshFragment;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class PlanActivity extends AppCompatAssistActivity {
-
     private ServerUtil mServerUtil;
+    private Timer autoRefreshTimer = null;
+    private Dashboard dash;
+    private SharedPrefUtil mSharedPrefs;
 
     @DebugLog
     public ConfigInfo getConfig() {
@@ -44,9 +54,28 @@ public class PlanActivity extends AppCompatAssistActivity {
                 null;
     }
 
+    private void setupAutoRefresh() {
+        if (mSharedPrefs.getAutoRefresh() && autoRefreshTimer == null) {
+            autoRefreshTimer = new Timer("autorefresh", true);
+            autoRefreshTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                @DebugLog
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        @DebugLog
+                        public void run() {
+                            dash.refreshFragment();
+                        }
+                    });
+                }
+            }, 0, (mSharedPrefs.getAutoRefreshTimer() * 1000));
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
+        mSharedPrefs = new SharedPrefUtil(this);
         if (mSharedPrefs.darkThemeEnabled())
             setTheme(R.style.AppThemeDark);
         else
@@ -55,6 +84,7 @@ public class PlanActivity extends AppCompatAssistActivity {
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             //noinspection SpellCheckingInspection
@@ -63,7 +93,7 @@ public class PlanActivity extends AppCompatAssistActivity {
             int selectedPlanID = bundle.getInt("PLANID");
             this.setTitle(selectedPlan);
 
-            Dashboard dash = new Dashboard();
+            dash = new Dashboard();
             dash.selectedPlan(selectedPlanID, selectedPlan);
             if (getSupportActionBar() != null)
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -71,7 +101,16 @@ public class PlanActivity extends AppCompatAssistActivity {
             FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
             tx.replace(android.R.id.content, dash);
             tx.commit();
+            setupAutoRefresh();
         } else this.finish();
+    }
+
+    private void stopAutoRefreshTimer() {
+        if (autoRefreshTimer != null) {
+            autoRefreshTimer.cancel();
+            autoRefreshTimer.purge();
+            autoRefreshTimer = null;
+        }
     }
 
     public ServerUtil getServerUtil() {
@@ -88,5 +127,33 @@ public class PlanActivity extends AppCompatAssistActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    @DebugLog
+    public void onDestroy() {
+        stopAutoRefreshTimer();
+        super.onDestroy();
+    }
+
+    @Override
+    @DebugLog
+    public void onPause() {
+        stopAutoRefreshTimer();
+        super.onPause();
+    }
+
+    @Override
+    @DebugLog
+    public void onBackPressed() {
+        stopAutoRefreshTimer();
+        this.finish();
+    }
+
+    @Override
+    @DebugLog
+    public void onResume() {
+        super.onResume();
+        setupAutoRefresh();
     }
 }
