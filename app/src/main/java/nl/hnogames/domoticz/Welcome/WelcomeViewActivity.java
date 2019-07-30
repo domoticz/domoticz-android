@@ -24,12 +24,10 @@ package nl.hnogames.domoticz.Welcome;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.github.paolorotolo.appintro.AppIntro2;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import com.github.paolorotolo.appintro.model.SliderPage;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;

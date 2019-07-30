@@ -342,8 +342,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     if (DomoticzValues.canHandleStopButton(mDeviceInfo)) {
                         setButtons(holder, Buttons.BLINDS_DIMMER);
                         setBlindsRowData(mDeviceInfo, holder);
-                    }
-                    else{
+                    } else {
                         setButtons(holder, Buttons.BLINDS_DIMMER_NOSTOP);
                         setBlindsRowData(mDeviceInfo, holder);
                     }
@@ -1110,7 +1109,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             }
         });
 
-        if(holder.dimmer.getVisibility() == View.VISIBLE) {
+        if (holder.dimmer.getVisibility() == View.VISIBLE) {
             holder.dimmer.setProgress(mDeviceInfo.getLevel());
             holder.dimmer.setMax(mDeviceInfo.getMaxDimLevel());
             holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
