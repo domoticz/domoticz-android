@@ -359,9 +359,44 @@ public class SharedPrefUtil {
         return prefs.getBoolean("SMALLWIDGETSCENE" + widgetID, false);
     }
 
+    public void deleteSmallTempWidget(int widgetID, boolean isScene) {
+        editor.remove("SMALLTEMPWIDGET" + widgetID);
+        editor.remove("SMALLTEMPWIDGETIDX" + widgetID);
+        editor.remove("SMALLTEMPWIDGETPASSWORD" + widgetID);
+        editor.remove("SMALLTEMPWIDGETLAYOUT" + widgetID);
+        editor.remove("SMALLTEMPWIDGETVALUE" + widgetID);
+        editor.remove("SMALLTEMPWIDGETSCENE" + widgetID);
+        editor.commit();
+    }
+
+    public void setSmallTempWidgetIDX(int widgetID, int idx, boolean isScene, String password, String value, int layout) {
+        editor.putInt("SMALLTEMPWIDGET" + widgetID, idx).apply();
+        editor.putBoolean("SMALLTEMPWIDGETSCENE" + widgetID, isScene).apply();
+        editor.putString("SMALLTEMPWIDGETPASSWORD" + widgetID, password).apply();
+        editor.putString("SMALLTEMPWIDGETVALUE" + widgetID, value).apply();
+        editor.putInt("SMALLTEMPWIDGETLAYOUT" + widgetID, layout).apply();
+        editor.commit();
+    }
+
+    public int getSmallTempWidgetIDX(int widgetID) {
+        return prefs.getInt("SMALLTEMPWIDGET" + widgetID, INVALID_IDX);
+    }
+
+    public String getSmallTempWidgetPassword(int widgetID) {
+        return prefs.getString("SMALLTEMPWIDGETPASSWORD" + widgetID, null);
+    }
+
+    public int getSmallTempWidgetLayout(int widgetID) {
+        return prefs.getInt("SMALLTEMPWIDGETLAYOUT" + widgetID, -1);
+    }
+
+    public String getSmallTempWidgetValue(int widgetID) {
+        return prefs.getString("SMALLTEMPWIDGETVALUE" + widgetID, null);
+    }
+
     public void deleteSecurityWidget(int widgetID) {
         editor.remove("WIDGETSECURITY" + widgetID);
-        editor.remove("SMALLWIDGETIDX" + widgetID);
+        editor.remove("WIDGETSECURITYIDX" + widgetID);
         editor.remove("WIDGETSECURITYPIN" + widgetID);
         editor.remove("WIDGETSECURITYPINLAYOUT" + widgetID);
         editor.remove("WIDGETSECURITYVALUE" + widgetID);
