@@ -72,16 +72,16 @@ public class GeofenceTransitionsIntentService extends Service {
                 if (Geofence.GEOFENCE_TRANSITION_ENTER == transitionType || Geofence.GEOFENCE_TRANSITION_DWELL == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound =
-                            mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                                mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
                         Log.d(TAG, "Triggered entering a geofence location: "
-                            + locationFound.getName());
+                                + locationFound.getName());
 
                         if (mSharedPrefs.isGeofenceNotificationsEnabled()) {
                             notificationTitle = String.format(
-                                context.getString(R.string.geofence_location_entering), locationFound.getName());
+                                    context.getString(R.string.geofence_location_entering), locationFound.getName());
                             notificationDescription = context.getString(R.string.geofence_location_entering_text);
                             NotificationUtil.sendSimpleNotification(notificationTitle,
-                                notificationDescription, 0, context);
+                                    notificationDescription, 0, context);
                         }
                         if (locationFound.getSwitchIdx() > 0)
                             handleSwitch(context, locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), true, locationFound.getValue(), locationFound.isSceneOrGroup());
@@ -89,17 +89,17 @@ public class GeofenceTransitionsIntentService extends Service {
                 } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound
-                            = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                                = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
                         Log.d(TAG, "Triggered leaving a geofence location: "
-                            + locationFound.getName());
+                                + locationFound.getName());
 
                         if (mSharedPrefs.isGeofenceNotificationsEnabled()) {
                             notificationTitle = String.format(
-                                context.getString(R.string.geofence_location_leaving),
-                                locationFound.getName());
+                                    context.getString(R.string.geofence_location_leaving),
+                                    locationFound.getName());
                             notificationDescription = context.getString(R.string.geofence_location_leaving_text);
                             NotificationUtil.sendSimpleNotification(notificationTitle,
-                                notificationDescription, 0, context);
+                                    notificationDescription, 0, context);
                         }
                         if (locationFound.getSwitchIdx() > 0)
                             handleSwitch(context, locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), false, locationFound.getValue(), locationFound.isSceneOrGroup());
@@ -147,8 +147,8 @@ public class GeofenceTransitionsIntentService extends Service {
                     }
 
                     if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
-                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) {
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) {
                         if (checked)
                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                         else

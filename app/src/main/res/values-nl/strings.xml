@@ -130,4 +130,7 @@
     <string name="filter_normal">Normaal</string>
     <string name="filter_status">Status</string>
     <string name="filter_error">Error</string>
+    <string name="use_demo_setup">Gebruik demo-instellingen</string>
+    <string name="auto_refresh_time">Timer</string>
+    <string name="set_auto_refresh_time">Stel een specifieke timer in voor het automatisch verversen van je scherm (in seconden).</string>
 </resources>

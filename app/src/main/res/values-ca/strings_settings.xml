@@ -64,8 +64,8 @@
     <string name="always_on_on">Bloqueja pantalla sempre Actiu</string>
     <string name="always_on_off">No Bloquegis pantalla sempre Actiu</string>
     <string name="always_auto_refresh">Auto-actualitza</string>
-    <string name="always_auto_refresh_on">Actualitza l\'estat del dispositiu cada 5 segons</string>
-    <string name="always_auto_refresh_off">No actualitzis l\'estat del dispositiu cada 5 segons</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
     <string name="switch_buttons_title">Interruptors</string>
     <string name="switch_buttons_on">Mostra interruptors com a interruptor encès/apagat</string>
     <string name="switch_buttons_off">Mostra interruptors com a botò encès/apagat</string>

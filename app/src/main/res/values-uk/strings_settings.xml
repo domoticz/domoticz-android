@@ -64,8 +64,8 @@
     <string name="always_on_on">Блокування екрану коли ввімкнено \"Завжди включений\"</string>
     <string name="always_on_off">Не блокувати екран коли ввімкнено \"Завжди включений\"</string>
     <string name="always_auto_refresh">Auto Refresh</string>
-    <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
-    <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
     <string name="switch_buttons_title">Перемикачі</string>
     <string name="switch_buttons_on">Показати комутатори зі перемикач вкл/викл</string>
     <string name="switch_buttons_off">Показати комутатори зі кнопки включення/вимикання</string>

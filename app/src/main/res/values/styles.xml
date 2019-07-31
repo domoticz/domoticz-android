@@ -48,6 +48,10 @@
         <item name="colorPrimaryDark">@color/secondary_dark</item>
         <item name="colorAccent">@color/primary</item>
 
+        <!-- override the menu item text colors -->
+        <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="actionMenuTextColor">@color/white</item>
+
         <!-- MaterialDrawer specific values -->
         <item name="material_drawer_background">@color/card_background_dark</item>
         <item name="material_drawer_primary_text">@color/material_drawer_dark_primary_text</item>

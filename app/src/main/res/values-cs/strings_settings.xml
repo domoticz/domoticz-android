@@ -38,7 +38,7 @@
     <string name="category_debug">Ladění</string>
     <string name="category_export">Export/Import nastavení</string>
     <string name="category_theme">Téma</string>
-    <string name="category_clock">Clock</string>
+    <string name="category_clock">Hodiny</string>
     <string name="category_nfc">NFC připojení</string>
     <string name="category_startup_security">Zabezpečení</string>
     <string name="category_account">Účty</string>
@@ -46,17 +46,17 @@
     <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Řeč</string>
     <string name="category_Reset">Obnovit</string>
-    <string name="category_help">Contribute</string>
+    <string name="category_help">Zapojte se</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Úvodní obrazovka</string>
     <string name="enable_items">Povolit/zakázat položky</string>
     <!--        Generic sorting settings       -->
-    <string name="sort_server_title">Sorting</string>
-    <string name="sort_server_on">Sort devices like sorted on the server</string>
-    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
-    <string name="sort_lock_server_title">Lock</string>
-    <string name="sort_lock_custom_on">Lock the current custom sorting (disable drag/drop)</string>
-    <string name="sort_dashboardLikeServer_off">Třídit panel podle abecedy</string>
+    <string name="sort_server_title">Řazení</string>
+    <string name="sort_server_on">Řadit zařízení, jako jsou seřazeny na serveru</string>
+    <string name="sort_custom_on">Vlastní řazení, přetáhněte zařízení pro jejich seřazení</string>
+    <string name="sort_lock_server_title">Zamknout</string>
+    <string name="sort_lock_custom_on">Uzamknout současné vlastní řazení (zakázat přetažení)</string>
+    <string name="sort_dashboardLikeServer_off">Seřadit panel podle abecedy</string>
     <string name="extra_data_title">Extra data na panelu</string>
     <string name="show_extra_data_on">Zobrazit extra data na panelu</string>
     <string name="show_extra_data_off">Skrýt extra data na panelu</string>
@@ -64,20 +64,20 @@
     <string name="always_on_on">Vždy uzamknout obrazovku</string>
     <string name="always_on_off">Nikdy nezamykat obrazovku</string>
     <string name="always_auto_refresh">Obnovovat automaticky</string>
-    <string name="always_auto_refresh_on">Obnovovat stav zařízení každých 5 sekund</string>
-    <string name="always_auto_refresh_off">Neobnovovat stav zařízení každých 5 sekund</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
     <string name="switch_buttons_title">Přepínače</string>
-    <string name="switch_buttons_on">Zobrazit přepínače s zap/vyp přepínačem</string>
-    <string name="switch_buttons_off">Zobrazit přepínače se zap/vyp tlačítkem</string>
+    <string name="switch_buttons_on">Zobrazit přepínače se zap/vyp přepínačem</string>
+    <string name="switch_buttons_off">Zobrazit přepínače se zap/vyp tlačítky</string>
     <string name="dashboard_list_title">Mřížka řídícího panelu</string>
     <string name="show_dashboard_list_on">Zobrazit řídící panel jako seznam</string>
     <string name="show_dashboard_list_off">Zobrazit řídící panel jako mřížku</string>
-    <string name="dashboard_clock">Clock</string>
-    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
+    <string name="dashboard_clock">Hodiny</string>
+    <string name="show_dashboard_clock">Zobrazit hodiny na panelu</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Vlastní položky Android Wear</string>
     <string name="custom_wear_select">Zvolte Wear přepínače</string>
-    <string name="custom_wear_select_desc">Vyberte přepínače, které chcete vidět na vašem Android Wear zařízení</string>
+    <string name="custom_wear_select_desc">Vyberte přepínače, které chcete zobrazit na svém Android Wear zařízení</string>
     <string name="wear_custom_on">Zapnout vlastní položky Android Wear</string>
     <string name="wear_custom_off">Zakázat vlastní položky Android Wear</string>
     <!--        Auto settings       -->
@@ -116,10 +116,10 @@
     <string name="qrcode_settings">Nastavení QR kódů</string>
     <string name="enable_qrcode">Povolit QR kódy</string>
     <string name="qrcode_enable_settings">Povolit funkce QR kódů</string>
-    <string name="bluetooth_settings">Setup Bluetooth devices</string>
-    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
-    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
-    <string name="translate_title">Translations</string>
+    <string name="bluetooth_settings">Nastavit Bluetooth zařízení</string>
+    <string name="enable_bluetooth">Povolit funkce Bluetooth</string>
+    <string name="translate_description">Můžete pomoci zdokonalit naše překlady a také přidávat nové jazykové mutace prostřednictvím našeho projektu na Crowdin</string>
+    <string name="translate_title">Překlady</string>
     <string name="security_settings">Nastavení zabezpečení</string>
     <string name="enable_security">Povolit ochranu otisk při startu</string>
     <string name="disable_security">Zakázat ochranu otiskem prstu po startu</string>
@@ -178,7 +178,7 @@
     <string name="error_atLeastOneItemInDrawer">Musíte mít alespoň jednu položku</string>
     <!--        Server update category       -->
     <string name="title_activity_update">Aktualizace serveru</string>
-    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
+    <string name="error_couldNotCheckForVersion">"Nepodařilo se zkontrolovat verzi: %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"Nepodařilo se zkontrolovat aktualizace: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"Nepodařilo se získat konfiguraci ze serveru Domoticz: %1$s"</string>
     <string name="update_available_enhanced">Aktualizace serveru je k dispozici: %1$s na verzi: %2$s</string>

@@ -64,8 +64,8 @@
     <string name="always_on_on">Asekkweṛ yal-ass agdil deg</string>
     <string name="always_on_off">Ur sekkweṛ ara agdil yal-ass seg</string>
     <string name="always_auto_refresh">Auto Refresh</string>
-    <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
-    <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
     <string name="switch_buttons_title">Isenfalen</string>
     <string name="switch_buttons_on">Beqqeḍ isenfalen s usnegzi askar/aḥbas </string>
     <string name="switch_buttons_off">Beqqeḍ isnegziyen s taqefalt askar/aḥbas </string>
