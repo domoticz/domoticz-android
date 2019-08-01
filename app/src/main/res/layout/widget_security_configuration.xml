@@ -26,7 +26,9 @@
               android:foreground="?android:attr/selectableItemBackground"
               android:minHeight="?android:attr/listPreferredItemHeight"
               android:orientation="vertical">
-
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical">
     <TextView
         android:id="@+id/title"
         style="@style/row_name_small"
@@ -78,5 +80,6 @@
         android:background="@drawable/button_status"
         android:text="@string/ok"
         android:textSize="12dp"/>
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

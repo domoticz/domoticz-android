@@ -153,7 +153,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                                     public void onClick(View v) {
                                         UsefulBits.openPremiumAppStore(WidgetConfigurationActivity.this);
                                     }
-                                }, getString(R.string.premium_category));
+                                }, getString(R.string.upgrade));
                                 return;
                             }
 

@@ -111,7 +111,7 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             UsefulBits.openPremiumAppStore(SecurityWidgetConfigurationActivity.this);
                         }
-                    }, getString(R.string.premium_category));
+                    }, getString(R.string.upgrade));
                     return;
                 }
 
@@ -166,16 +166,6 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
             }
         });
 
-        if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-            Toast.makeText(this, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
-            this.finish();
-        }
-
-        if (!mSharedPrefs.IsWidgetsEnabled()) {
-            Toast.makeText(this, getString(R.string.wizard_widgets) + " " + getString(R.string.widget_disabled), Toast.LENGTH_LONG).show();
-            this.finish();
-        }
-
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             getSupportActionBar().setHomeButtonEnabled(false);
@@ -189,7 +179,6 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
             mSharedPrefs.setFirstStart(false);
         } else {
             initListViews();
-
         }
     }
 

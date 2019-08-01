@@ -169,7 +169,7 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
                                     public void onClick(View v) {
                                         startActivityForResult(new Intent(SmallWidgetConfigurationActivity.this, SettingsActivity.class), 888);
                                     }
-                                }, getString(R.string.action_settings));
+                                }, getString(R.string.upgrade));
                                 return;
                             }
 

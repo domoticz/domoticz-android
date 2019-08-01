@@ -396,9 +396,8 @@ public class SharedPrefUtil {
 
     public void deleteSecurityWidget(int widgetID) {
         editor.remove("WIDGETSECURITY" + widgetID);
-        editor.remove("WIDGETSECURITYIDX" + widgetID);
         editor.remove("WIDGETSECURITYPIN" + widgetID);
-        editor.remove("WIDGETSECURITYPINLAYOUT" + widgetID);
+        editor.remove("WIDGETSECURITYLAYOUT" + widgetID);
         editor.remove("WIDGETSECURITYVALUE" + widgetID);
         editor.commit();
     }
@@ -407,7 +406,7 @@ public class SharedPrefUtil {
         editor.putInt("WIDGETSECURITY" + widgetID, idx).apply();
         editor.putString("WIDGETSECURITYVALUE" + widgetID, value).apply();
         editor.putString("WIDGETSECURITYPIN" + widgetID, pin).apply();
-        editor.putInt("WIDGETSECURITYPINLAYOUT" + widgetID, layout).apply();
+        editor.putInt("WIDGETSECURITYLAYOUT" + widgetID, layout).apply();
         editor.commit();
     }
 
@@ -416,7 +415,7 @@ public class SharedPrefUtil {
     }
 
     public int getSecurityWidgetLayout(int widgetID) {
-        return prefs.getInt("WIDGETSECURITYPINLAYOUT" + widgetID, -1);
+        return prefs.getInt("WIDGETSECURITYLAYOUT" + widgetID, -1);
     }
 
     public String getSecurityWidgetValue(int widgetID) {
@@ -1166,7 +1165,7 @@ public class SharedPrefUtil {
             HashMap<String, Object> oSavePrefs = new HashMap<String, Object>();
             for (Map.Entry<String, ?> entry : oAllPrefs.entrySet()) {
                 //Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
-                if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET")|| entry.getKey().startsWith("SMALLTEMPWIDGET"))
+                if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET")|| entry.getKey().startsWith("SMALLTEMPWIDGET")|| entry.getKey().startsWith("WIDGETSECURITY"))
                     Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
                 else if (entry.getKey().equals("receivedNotifications") || entry.getKey().equals("receivedNotificationsLog"))
                     Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
@@ -1224,7 +1223,7 @@ public class SharedPrefUtil {
                 Object v = entry.getValue();
                 String key = entry.getKey();
                 if (v != null && !UsefulBits.isEmpty(key)) {
-                    if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET")|| entry.getKey().startsWith("SMALLTEMPWIDGET"))
+                    if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET")|| entry.getKey().startsWith("SMALLTEMPWIDGET")|| entry.getKey().startsWith("WIDGETSECURITY"))
                         Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
                     else if (entry.getKey().equals("receivedNotifications") || entry.getKey().equals("receivedNotificationsLog"))
                         Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());

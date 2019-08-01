@@ -143,14 +143,14 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
 
         public void updateAppWidget(final AppWidgetManager appWidgetManager,
                                     final int appWidgetId) {
-            final int idx = mSharedPrefs.getSecurityWidgetIDX(appWidgetId);
+            if (mSharedPrefs == null)
+                mSharedPrefs = new SharedPrefUtil(this.getApplicationContext());
+             final int idx = mSharedPrefs.getSecurityWidgetIDX(appWidgetId);
             if (appWidgetId == INVALID_APPWIDGET_ID || idx == INVALID_IDX) {
                 Log.i("WIDGET", "I am invalid");
                 return;
             }
 
-            if (mSharedPrefs == null)
-                mSharedPrefs = new SharedPrefUtil(this.getApplicationContext());
             if (domoticz == null)
                 domoticz = new Domoticz(this.getApplicationContext(), AppController.getInstance().getRequestQueue());
             final String password = mSharedPrefs.getSecurityWidgetPin(appWidgetId);
