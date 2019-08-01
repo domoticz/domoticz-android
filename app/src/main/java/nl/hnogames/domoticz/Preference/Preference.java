@@ -872,8 +872,7 @@ public class Preference extends PreferenceFragment {
 
     private void importSettings() {
         Log.v(TAG_IMPORT, "Importing settings from: " + SettingsFile.getPath());
-        mSharedPrefs.loadSharedPreferencesFromFile(SettingsFile);
-        if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
+        if (mSharedPrefs.loadSharedPreferencesFromFile(SettingsFile))
             showSnackbar(mContext.getString(R.string.settings_imported));
         else
             showSnackbar(mContext.getString(R.string.settings_import_failed));

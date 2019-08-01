@@ -1166,7 +1166,7 @@ public class SharedPrefUtil {
             HashMap<String, Object> oSavePrefs = new HashMap<String, Object>();
             for (Map.Entry<String, ?> entry : oAllPrefs.entrySet()) {
                 //Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
-                if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET"))
+                if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET")|| entry.getKey().startsWith("SMALLTEMPWIDGET"))
                     Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
                 else if (entry.getKey().equals("receivedNotifications") || entry.getKey().equals("receivedNotificationsLog"))
                     Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
@@ -1224,7 +1224,7 @@ public class SharedPrefUtil {
                 Object v = entry.getValue();
                 String key = entry.getKey();
                 if (v != null && !UsefulBits.isEmpty(key)) {
-                    if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET"))
+                    if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET")|| entry.getKey().startsWith("SMALLTEMPWIDGET"))
                         Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
                     else if (entry.getKey().equals("receivedNotifications") || entry.getKey().equals("receivedNotificationsLog"))
                         Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
