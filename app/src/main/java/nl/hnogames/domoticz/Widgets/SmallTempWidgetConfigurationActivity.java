@@ -39,9 +39,7 @@ import java.util.ArrayList;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuItemCompat;
-import nl.hnogames.domoticz.Adapters.TemperatureAdapter;
 import nl.hnogames.domoticz.Adapters.TemperatureWidgetAdapter;
-import nl.hnogames.domoticz.Adapters.WidgetsAdapter;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.UI.PasswordDialog;
@@ -49,11 +47,8 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 import nl.hnogames.domoticz.app.AppController;
-import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 import nl.hnogames.domoticzapi.Domoticz;
-import nl.hnogames.domoticzapi.DomoticzValues;
-import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.TemperatureReceiver;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
@@ -135,7 +130,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
                 public void onReceiveTemperatures(ArrayList<TemperatureInfo> mDevicesInfo) {
                     ArrayList<TemperatureInfo> mNewDevicesInfo = new ArrayList<TemperatureInfo>();
                     for (TemperatureInfo d : mDevicesInfo)
-                            mNewDevicesInfo.add(d);
+                        mNewDevicesInfo.add(d);
 
                     ListView listView = findViewById(R.id.list);
                     adapter = new TemperatureWidgetAdapter(SmallTempWidgetConfigurationActivity.this, domoticz, domoticz.getServerUtil(), mNewDevicesInfo);
@@ -158,8 +153,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
                                     public void onCancel() {
                                     }
                                 });
-                            }
-                            else{
+                            } else {
                                 getBackground(mDeviceInfo, null, null);
                             }
                         }
@@ -197,17 +191,17 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
 
     private void getBackground(final TemperatureInfo mSelectedTemperatureInfo, final String password, final String value) {
         new MaterialDialog.Builder(this)
-                .title(this.getString(R.string.widget_background))
-                .items(new String[]{this.getString(R.string.widget_dark), this.getString(R.string.widget_light), this.getString(R.string.widget_transparent_dark), this.getString(R.string.widget_transparent_light)})
-                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        showAppWidget(mSelectedTemperatureInfo, password, value, getWidgetLayout(String.valueOf(text)));
-                        return true;
-                    }
-                })
-                .positiveText(R.string.ok)
-                .show();
+            .title(this.getString(R.string.widget_background))
+            .items(new String[]{this.getString(R.string.widget_dark), this.getString(R.string.widget_light), this.getString(R.string.widget_transparent_dark), this.getString(R.string.widget_transparent_light)})
+            .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                @Override
+                public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                    showAppWidget(mSelectedTemperatureInfo, password, value, getWidgetLayout(String.valueOf(text)));
+                    return true;
+                }
+            })
+            .positiveText(R.string.ok)
+            .show();
     }
 
     private void showAppWidget(TemperatureInfo mSelectedSwitch, String password, String value, int layoutId) {
@@ -217,18 +211,18 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
         int idx = mSelectedSwitch.getIdx();
         if (extras != null) {
             mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
-                    INVALID_APPWIDGET_ID);
+                INVALID_APPWIDGET_ID);
 
             if (UsefulBits.isEmpty(mSelectedSwitch.getType())) {
                 Log.i(TAG, "Widget without a type saved");
                 mSharedPrefs.setSmallTempWidgetIDX(mAppWidgetId, idx, false, password, value, layoutId);
             } else {
-                    Log.i(TAG, "Widget saved " + mSelectedSwitch.getType());
-                    mSharedPrefs.setSmallTempWidgetIDX(mAppWidgetId, idx, false, password, value, layoutId);
+                Log.i(TAG, "Widget saved " + mSelectedSwitch.getType());
+                mSharedPrefs.setSmallTempWidgetIDX(mAppWidgetId, idx, false, password, value, layoutId);
             }
 
             Intent startService = new Intent(SmallTempWidgetConfigurationActivity.this,
-                    WidgetProviderSmallTemp.UpdateWidgetService.class);
+                WidgetProviderSmallTemp.UpdateWidgetService.class);
             startService.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
             startService.setAction("FROM CONFIGURATION ACTIVITY");
             startService(startService);
@@ -256,7 +250,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_search, menu);
         MenuItem searchMenuItem = menu.findItem(R.id.search);
         searchViewAction = (SearchView) MenuItemCompat
-                .getActionView(searchMenuItem);
+            .getActionView(searchMenuItem);
         searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

@@ -21,7 +21,6 @@
 
 package nl.hnogames.domoticz.Widgets;
 
-import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -31,10 +30,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.View;
 import android.widget.RemoteViews;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -45,12 +41,9 @@ import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
-import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
-import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -63,7 +56,7 @@ public class WidgetProviderSmallTemp extends AppWidgetProvider {
         super.onDeleted(context, appWidgetIds);
         for (int widgetId : appWidgetIds) {
             SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
-            mSharedPrefs.deleteSmallWidget(widgetId, mSharedPrefs.getWidgetisScene(widgetId));
+            mSharedPrefs.deleteSmallTempWidget(widgetId);
         }
     }
 
@@ -92,7 +85,6 @@ public class WidgetProviderSmallTemp extends AppWidgetProvider {
     }
 
     public static class UpdateWidgetService extends Service {
-        private static final int WITHBUTTON = 1;
         private RemoteViews views;
         private Domoticz domoticz;
         private SharedPrefUtil mSharedPrefs;

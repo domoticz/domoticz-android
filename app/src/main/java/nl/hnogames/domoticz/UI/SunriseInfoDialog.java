@@ -57,8 +57,8 @@ public class SunriseInfoDialog {
 
         //noinspection ConstantConditions
         mdb.customView(R.layout.dialog_sunrise, wrapInScrollView)
-                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-                .positiveText(android.R.string.ok);
+            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+            .positiveText(android.R.string.ok);
     }
 
     public void show() {

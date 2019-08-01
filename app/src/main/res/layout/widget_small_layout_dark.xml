@@ -1,39 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout android:id="@+id/row_global_wrapper"
-                  android:layout_width="fill_parent"
-                  android:layout_height="fill_parent"
-                  android:background="@drawable/appwidget_dark_bg_clickable"
-                  android:orientation="horizontal"
-                  xmlns:android="http://schemas.android.com/apk/res/android" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/row_global_wrapper"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="@drawable/appwidget_dark_bg_clickable"
+              android:orientation="horizontal">
 
-        <RelativeLayout  android:gravity="center" android:layout_gravity="center" android:layout_weight="1"  android:layout_width="wrap_content" android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center">
 
-            <ImageView
-                android:id="@+id/rowIcon"
-                android:layout_width="50dp"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/defaultimage"
-                android:layout_height="50dp" />
+        <ImageView
+            android:id="@+id/rowIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/defaultimage"/>
 
-            <TextView
-                android:id="@+id/title"
-                style="@style/row_name_micro"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rowIcon"
-                android:layout_centerHorizontal="true"
-                android:textColor="@color/white"
-                android:clickable="false"/>
+        <TextView
+            android:id="@+id/title"
+            style="@style/row_name_micro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rowIcon"
+            android:layout_centerHorizontal="true"
+            android:clickable="false"
+            android:textColor="@color/white"/>
 
-            <TextView
-                android:id="@+id/desc"
-                style="@style/row_body1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/title"
-                android:textColor="@color/white"
-                android:layout_centerHorizontal="true"
-                android:clickable="false"/>
+        <TextView
+            android:id="@+id/desc"
+            style="@style/row_body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_centerHorizontal="true"
+            android:clickable="false"
+            android:textColor="@color/white"/>
 
-        </RelativeLayout>
-    </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>
