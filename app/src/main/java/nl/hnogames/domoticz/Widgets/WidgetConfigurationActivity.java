@@ -33,15 +33,18 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.MenuItemCompat;
 import nl.hnogames.domoticz.Adapters.WidgetsAdapter;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
@@ -69,6 +72,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
     private Domoticz domoticz;
     private WidgetsAdapter adapter;
     private SearchView searchViewAction;
+    public CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,16 +85,8 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.widget_configuration);
         setResult(RESULT_CANCELED);
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
-        if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-            Toast.makeText(this, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Toast.LENGTH_LONG).show();
-            this.finish();
-        }
-
-        if (!mSharedPrefs.IsWidgetsEnabled()) {
-            Toast.makeText(this, getString(R.string.wizard_widgets) + " " + getString(R.string.widget_disabled), Toast.LENGTH_LONG).show();
-            this.finish();
-        }
         domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         this.setTitle(getString(R.string.pick_device_title));
         if (getSupportActionBar() != null) {
@@ -124,6 +120,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                     break;
             }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void initListViews() {
@@ -150,6 +147,26 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                                UsefulBits.showSnackbarWithAction(WidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG, null, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        UsefulBits.openPremiumAppStore(WidgetConfigurationActivity.this);
+                                    }
+                                }, getString(R.string.premium_category));
+                                return;
+                            }
+
+                            if (!mSharedPrefs.IsWidgetsEnabled()) {
+                                UsefulBits.showSnackbarWithAction(WidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.widget_disabled), Snackbar.LENGTH_LONG, null, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        startActivityForResult(new Intent(WidgetConfigurationActivity.this, SettingsActivity.class), 888);
+                                    }
+                                }, getString(R.string.action_settings));
+                                return;
+                            }
+
                             final DevicesInfo mDeviceInfo = (DevicesInfo) adapter.getItem(position);
                             if (mDeviceInfo.isProtected()) {
                                 PasswordDialog passwordDialog = new PasswordDialog(

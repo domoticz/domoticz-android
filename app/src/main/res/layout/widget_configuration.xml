@@ -20,10 +20,10 @@
   ~  under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@+id/coordinatorLayout" xmlns:android="http://schemas.android.com/apk/res/android"
+
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-
               android:foreground="?android:attr/selectableItemBackground"
               android:minHeight="?android:attr/listPreferredItemHeight"
               android:orientation="vertical">
@@ -33,4 +33,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

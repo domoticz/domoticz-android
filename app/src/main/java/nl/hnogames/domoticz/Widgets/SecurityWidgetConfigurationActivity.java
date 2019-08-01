@@ -33,13 +33,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
@@ -69,6 +72,7 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
 
     private SettingsInfo mSettings;
     private DevicesInfo sSecurityPanel;
+    public CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +86,7 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
         setContentView(R.layout.widget_security_configuration);
         setResult(RESULT_CANCELED);
 
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
         if (domoticz == null)
             domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
 
@@ -100,6 +105,26 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
         btnConfig.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    UsefulBits.showSnackbarWithAction(SecurityWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG, null, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            UsefulBits.openPremiumAppStore(SecurityWidgetConfigurationActivity.this);
+                        }
+                    }, getString(R.string.premium_category));
+                    return;
+                }
+
+                if (!mSharedPrefs.IsWidgetsEnabled()) {
+                    UsefulBits.showSnackbarWithAction(SecurityWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.widget_disabled), Snackbar.LENGTH_LONG, null, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivityForResult(new Intent(SecurityWidgetConfigurationActivity.this, SettingsActivity.class), 888);
+                        }
+                    }, getString(R.string.action_settings));
+                    return;
+                }
+
                 InputMethodManager imm =
                     (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(editPin.getWindowToken(), 0);
@@ -221,6 +246,7 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
                     break;
             }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void initListViews() {
