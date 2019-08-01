@@ -82,6 +82,10 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
     private SwitchMaterial geoNotificationSwitch;
     private int editedLocationID = -1;
 
+    private static final String LATITUDE = "latitude";
+    private static final String LONGITUDE = "longitude";
+    private static final String LOCATION_ADDRESS = "location_address";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
@@ -386,7 +390,7 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
         final int editedID = editedLocationID; //Store the edited value locally, and delete the global value
         editedLocationID = -1;
         if (resultCode == RESULT_OK) {
-            final LatLng latLng = new LatLng(data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0), data.getDoubleExtra(LocationPickerActivity.LONGITUDE, 0));
+            final LatLng latLng = new LatLng(data.getDoubleExtra(LATITUDE, 0), data.getDoubleExtra(LONGITUDE, 0));
             String prefillEditedName = null;
 
             if (editedID != -1) {
@@ -400,7 +404,7 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                     editedLocationID = -1;
             }
 
-            String name = data.getStringExtra(LocationPickerActivity.LOCATION_ADDRESS);
+            String name = data.getStringExtra(LOCATION_ADDRESS);
             if (nl.hnogames.domoticzapi.Utils.UsefulBits.isEmpty(name)) {
                 new MaterialDialog.Builder(this)
                     .title(R.string.title_edit_location)
@@ -415,9 +419,10 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                         }
                     }).show();
             } else
-                showRadiusEditor(editedLocationID, name, latLng);
+                showRadiusEditor(editedID, name, latLng);
         } else if (resultCode != RESULT_CANCELED)
             permissionHelper.onActivityForResult(requestCode);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void showRadiusEditor(final int editedLocationID, String name, LatLng latlng) {
@@ -461,6 +466,7 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                     } else {
                         mSharedPrefs.addLocation(finalLocation);
                         locations = mSharedPrefs.getLocations();
+                        adapter.data = locations;
                         GeoUtils.geofencesAlreadyRegistered = false;
                         oGeoUtils.AddGeofences();
                     }
@@ -471,8 +477,8 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
 
     private void showEditLocationDialog(LocationInfo location) {
         Intent intent = new Intent(getApplicationContext(), LocationPickerActivity.class);
-        intent.putExtra(LocationPickerActivity.LATITUDE, location.getLocation().latitude);
-        intent.putExtra(LocationPickerActivity.LONGITUDE, location.getLocation().longitude);
+        intent.putExtra(LATITUDE, location.getLocation().latitude);
+        intent.putExtra(LONGITUDE, location.getLocation().longitude);
         editedLocationID = location.getID();
         startActivityForResult(intent, 2);
     }
