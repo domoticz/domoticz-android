@@ -34,6 +34,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
@@ -165,7 +167,27 @@ public class WidgetProviderSmallTemp extends AppWidgetProvider {
                                 + " " + sign;
                         }
                         views.setTextViewText(R.id.title, text);
-                        views.setImageViewResource(R.id.rowIcon, R.drawable.sunny);
+                        views.setTextViewText(R.id.desc, s.getName());
+
+                        int icon;
+                        if ((!UsefulBits.isEmpty(sign) && sign.equals("C") && s.getTemperature() < 0) ||
+                            (!UsefulBits.isEmpty(sign) && sign.equals("F") && s.getTemperature() < 30)) {
+                            icon = (DomoticzIcons.getDrawableIcon(s.getTypeImg(),
+                                s.getType(),
+                                null,
+                                domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null && s.getTemperature() > domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getDegreeDaysBaseTemperature(),
+                                true,
+                                "Freezing"));
+                        } else {
+                            icon = (DomoticzIcons.getDrawableIcon(s.getTypeImg(),
+                                s.getType(),
+                                null,
+                                domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null && s.getTemperature() > domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getDegreeDaysBaseTemperature(),
+                                false,
+                                null));
+                        }
+
+                        views.setImageViewResource(R.id.rowIcon, icon);
                         appWidgetManager.updateAppWidget(appWidgetId, views);
                     }
                 }
