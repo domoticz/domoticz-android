@@ -180,32 +180,34 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
         }
 
         protected void onPostExecute(Boolean result) {
-            if (cacheLogs != null)
-                createListView(cacheLogs);
+            if (isAdded()) {
+                if (cacheLogs != null)
+                    createListView(cacheLogs);
 
-            int LogLevel = DomoticzValues.Log.LOGLEVEL.ALL; //Default
-            if (getSort().equals(getString(R.string.filter_normal)))
-                LogLevel = DomoticzValues.Log.LOGLEVEL.NORMAL;
-            if (getSort().equals(getString(R.string.filter_status)))
-                LogLevel = DomoticzValues.Log.LOGLEVEL.STATUS;
-            if (getSort().equals(getString(R.string.filter_error)))
-                LogLevel = DomoticzValues.Log.LOGLEVEL.ERROR;
+                int LogLevel = DomoticzValues.Log.LOGLEVEL.ALL; //Default
+                if (getSort().equals(getString(R.string.filter_normal)))
+                    LogLevel = DomoticzValues.Log.LOGLEVEL.NORMAL;
+                if (getSort().equals(getString(R.string.filter_status)))
+                    LogLevel = DomoticzValues.Log.LOGLEVEL.STATUS;
+                if (getSort().equals(getString(R.string.filter_error)))
+                    LogLevel = DomoticzValues.Log.LOGLEVEL.ERROR;
 
-            mDomoticz.getLogs(new LogsReceiver() {
-                @Override
-                @DebugLog
-                public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {
-                    successHandling(mLogInfos.toString(), false);
-                    SerializableManager.saveSerializable(mContext, mLogInfos, "Logs");
-                    createListView(mLogInfos);
-                }
+                mDomoticz.getLogs(new LogsReceiver() {
+                    @Override
+                    @DebugLog
+                    public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {
+                        successHandling(mLogInfos.toString(), false);
+                        SerializableManager.saveSerializable(mContext, mLogInfos, "Logs");
+                        createListView(mLogInfos);
+                    }
 
-                @Override
-                @DebugLog
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            }, LogLevel);
+                    @Override
+                    @DebugLog
+                    public void onError(Exception error) {
+                        errorHandling(error);
+                    }
+                }, LogLevel);
+            }
         }
     }
 }
