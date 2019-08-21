@@ -215,7 +215,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                     holder.pieView.setPercentage(Float.valueOf(temp + ""));
                     holder.pieView.setInnerText(mTemperatureInfo.getTemperature() + " " + sign);
 
-                    if(mSharedPrefs.getAutoRefresh()) {
+                    if(!mSharedPrefs.getAutoRefresh()) {
                         PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
                         animation.setDuration(2000);
                         holder.pieView.startAnimation(animation);

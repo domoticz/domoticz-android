@@ -474,7 +474,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     else
                         holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
 
-                    if(mSharedPrefs.getAutoRefresh()) {
+                    if(!mSharedPrefs.getAutoRefresh()) {
                         PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
                         animation.setDuration(2000);
                         holder.pieView.startAnimation(animation);
@@ -865,7 +865,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.pieView.setPercentageBackgroundColor(R.color.md_red_600);
             }
 
-            if(mSharedPrefs.getAutoRefresh()) {
+            if(!mSharedPrefs.getAutoRefresh()) {
                 PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
                 animation.setDuration(2000);
                 holder.pieView.startAnimation(animation);
