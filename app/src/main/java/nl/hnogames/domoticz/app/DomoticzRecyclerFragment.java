@@ -96,6 +96,8 @@ public class DomoticzRecyclerFragment extends Fragment {
     private int SCROLL_THRESHOLD = 600;
     private boolean controlsVisible = true;
     private boolean backdropShown = false;
+    boolean isTablet = false;
+    boolean isPortrait = false;
 
     public DomoticzRecyclerFragment() {
     }
@@ -117,14 +119,14 @@ public class DomoticzRecyclerFragment extends Fragment {
                 bottomLayoutWrapper.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
             if (collapseSortButton != null) {
                 int[][] states = new int[][]{
-                        new int[]{android.R.attr.state_enabled}, // enabled
-                        new int[]{-android.R.attr.state_enabled}, // disabled
-                        new int[]{-android.R.attr.state_checked}, // unchecked
-                        new int[]{android.R.attr.state_pressed}  // pressed
+                    new int[]{android.R.attr.state_enabled}, // enabled
+                    new int[]{-android.R.attr.state_enabled}, // disabled
+                    new int[]{-android.R.attr.state_checked}, // unchecked
+                    new int[]{android.R.attr.state_pressed}  // pressed
                 };
 
                 int[] colors = new int[]{
-                        R.color.primary, R.color.primary, R.color.primary, R.color.primary
+                    R.color.primary, R.color.primary, R.color.primary, R.color.primary
                 };
 
                 ColorStateList newStates = new ColorStateList(states, colors);
@@ -132,9 +134,9 @@ public class DomoticzRecyclerFragment extends Fragment {
                 collapseSortButton.setIconTint(newStates);
             }
             mSwipeRefreshLayout.setColorSchemeResources(
-                    R.color.secondary,
-                    R.color.secondary_dark,
-                    R.color.background_dark);
+                R.color.secondary,
+                R.color.secondary_dark,
+                R.color.background_dark);
         }
     }
 
@@ -167,6 +169,10 @@ public class DomoticzRecyclerFragment extends Fragment {
 
     @DebugLog
     public void hideViews() {
+        if(isTablet)
+            return;
+        if (backdropShown)
+            return;
         if (getActivity() instanceof MainActivity)
             ((MainActivity) getActivity()).hideViews();
         controlsVisible = false;
@@ -175,11 +181,14 @@ public class DomoticzRecyclerFragment extends Fragment {
 
     @DebugLog
     public void showViews() {
+        if(isTablet)
+            return;
         if (getActivity() instanceof MainActivity)
             ((MainActivity) getActivity()).showViews();
         controlsVisible = true;
         scrolledDistance = 0;
     }
+
 
     public String getSort() {
         return sort;
@@ -256,9 +265,9 @@ public class DomoticzRecyclerFragment extends Fragment {
 
         backdropContainer = root.findViewById(R.id.backdropcontainer);
         backdropContainer
-                .dropInterpolator(new LinearInterpolator())
-                .dropHeight(this.getResources().getDimensionPixelSize(R.dimen.sneek_height))
-                .build();
+            .dropInterpolator(new LinearInterpolator())
+            .dropHeight(this.getResources().getDimensionPixelSize(R.dimen.sneek_height))
+            .build();
 
         //setting up our OnScrollListener
         gridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -300,14 +309,11 @@ public class DomoticzRecyclerFragment extends Fragment {
 
     public void setGridViewLayout() {
         try {
-            boolean isTablet = false;
-            boolean isPortrait = false;
-
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
                 isPortrait = true;
             if (getActivity() instanceof MainActivity) {
                 isTablet = !
-                        ((MainActivity) getActivity()).onPhone;
+                    ((MainActivity) getActivity()).onPhone;
             }
             gridView.setHasFixedSize(true);
 
@@ -367,7 +373,7 @@ public class DomoticzRecyclerFragment extends Fragment {
             listener = (DomoticzFragmentListener) fragment;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                    fragment.toString() + " must implement DomoticzFragmentListener");
+                fragment.toString() + " must implement DomoticzFragmentListener");
         }
     }
 
@@ -489,7 +495,7 @@ public class DomoticzRecyclerFragment extends Fragment {
                         debugText.setText(temp);
                     }
                 } else throw new RuntimeException(
-                        "Layout should have a TextView defined with the ID \"debugText\"");
+                    "Layout should have a TextView defined with the ID \"debugText\"");
             }
         }
     }
@@ -503,7 +509,7 @@ public class DomoticzRecyclerFragment extends Fragment {
             TextView errorTextMessage = root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-                "Layout should have a RelativeLayout defined with the ID of errorLayout");
+            "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     public void setMessage(String message) {
@@ -522,14 +528,14 @@ public class DomoticzRecyclerFragment extends Fragment {
             TextView errorTextMessage = root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-                "Layout should have a RelativeLayout defined with the ID of errorLayout");
+            "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     private void hideListView() {
         if (gridView != null) {
             gridView.setVisibility(View.GONE);
         } else throw new RuntimeException(
-                "Layout should have a ListView defined with the ID of listView");
+            "Layout should have a ListView defined with the ID of listView");
     }
 
     private void showDebugLayout() {

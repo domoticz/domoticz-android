@@ -45,8 +45,8 @@ public class PlanActivity extends AppCompatAssistActivity {
     @DebugLog
     public ConfigInfo getConfig() {
         return mServerUtil != null && mServerUtil.getActiveServer() != null ?
-                mServerUtil.getActiveServer().getConfigInfo(this) :
-                null;
+            mServerUtil.getActiveServer().getConfigInfo(this) :
+            null;
     }
 
     private void setupAutoRefresh() {

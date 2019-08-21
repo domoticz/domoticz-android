@@ -89,48 +89,47 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
-    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="com.android.vending.CHECK_LICENSE"/>
 
-	<uses-permission
-    android:name="android.permission.RECEIVE_SMS"
-    tools:node="remove" />
-<uses-permission
-    android:name="android.permission.READ_SMS"
-    tools:node="remove" />
-<uses-permission
-    android:name="android.permission.SEND_SMS"
-    tools:node="remove" />
-<uses-permission
-    android:name="android.permission.WRITE_SMS"
-    tools:node="remove" />
-<uses-permission
-    android:name="android.permission.RECEIVE_WAP_PUSH"
-    tools:node="remove" />
-<uses-permission
-    android:name="android.permission.RECEIVE_MMS"
-    tools:node="remove" />
-<uses-permission
-    android:name="android.permission.READ_CALL_LOG"
-    tools:node="remove" />
-<uses-permission
-    android:name="android.permission.WRITE_CALL_LOG"
-    tools:node="remove" />
-<uses-permission
-    android:name="android.permission.PROCESS_OUTGOING_CALLS"
-    tools:node="remove" />
-	
+    <uses-permission
+        android:name="android.permission.RECEIVE_SMS"
+        tools:node="remove"/>
+    <uses-permission
+        android:name="android.permission.READ_SMS"
+        tools:node="remove"/>
+    <uses-permission
+        android:name="android.permission.SEND_SMS"
+        tools:node="remove"/>
+    <uses-permission
+        android:name="android.permission.WRITE_SMS"
+        tools:node="remove"/>
+    <uses-permission
+        android:name="android.permission.RECEIVE_WAP_PUSH"
+        tools:node="remove"/>
+    <uses-permission
+        android:name="android.permission.RECEIVE_MMS"
+        tools:node="remove"/>
+    <uses-permission
+        android:name="android.permission.READ_CALL_LOG"
+        tools:node="remove"/>
+    <uses-permission
+        android:name="android.permission.WRITE_CALL_LOG"
+        tools:node="remove"/>
+    <uses-permission
+        android:name="android.permission.PROCESS_OUTGOING_CALLS"
+        tools:node="remove"/>
+
     <application
         android:name=".app.AppController"
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name_domoticz"
-        android:theme="@style/AppThemeMain"
         android:usesCleartextTraffic="true"
+        android:theme="@style/AppThemeMain"
         tools:replace="android:icon, android:label, android:theme, android:name">
 
-        <activity android:name=".Service.NFCServiceActivity">
+        <activity android:name=".Service$NFCServiceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -155,8 +154,8 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
-                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
+                <action android:name="android.bluetooth.device.action.ACL_CONNECTED"/>
+                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED"/>
             </intent-filter>
         </receiver>
 
@@ -288,6 +287,33 @@
         </service>
 
         <service android:name=".Widgets.SecurityWidgetProvider$UpdateSecurityWidgetService"/>
+
+        <receiver android:name=".Widgets.WidgetProviderSmallTemp">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/smalltempwidgetprovider"/>
+        </receiver>
+
+        <activity
+            android:name=".Widgets.SmallTempWidgetConfigurationActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="Domoticz Widget Config">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
+
+        <service android:name=".Widgets.WidgetProviderSmallTemp$UpdateWidgetService"/>
 
         <receiver android:name=".Service.BootUpReceiver">
             <intent-filter>
