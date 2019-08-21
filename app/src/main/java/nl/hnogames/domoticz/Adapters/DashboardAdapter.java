@@ -473,9 +473,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                         holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_blue_600));
                     else
                         holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
-                    PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
-                    animation.setDuration(2000);
-                    holder.pieView.startAnimation(animation);
+
+                    if(mSharedPrefs.getAutoRefresh()) {
+                        PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
+                        animation.setDuration(2000);
+                        holder.pieView.startAnimation(animation);
+                    }
                     if (!mSharedPrefs.showExtraData())
                         holder.switch_battery_level.setVisibility(View.GONE);
                 } else
@@ -862,9 +865,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.pieView.setPercentageBackgroundColor(R.color.md_red_600);
             }
 
-            PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
-            animation.setDuration(2000);
-            holder.pieView.startAnimation(animation);
+            if(mSharedPrefs.getAutoRefresh()) {
+                PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
+                animation.setDuration(2000);
+                holder.pieView.startAnimation(animation);
+            }
         }
 
         if (holder.iconMode != null) {
