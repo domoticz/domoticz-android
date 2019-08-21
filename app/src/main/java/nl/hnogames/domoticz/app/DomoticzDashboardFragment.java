@@ -93,6 +93,8 @@ public class DomoticzDashboardFragment extends Fragment {
     private int SCROLL_THRESHOLD = 600;
     private boolean controlsVisible = true;
     private boolean backdropShown = false;
+    boolean isTablet = false;
+    boolean isPortrait = false;
 
     public DomoticzDashboardFragment() {
     }
@@ -137,6 +139,8 @@ public class DomoticzDashboardFragment extends Fragment {
 
     @DebugLog
     public void hideViews() {
+        if(isTablet)
+            return;
         if (backdropShown)
             return;
         if (getActivity() instanceof MainActivity)
@@ -147,6 +151,8 @@ public class DomoticzDashboardFragment extends Fragment {
 
     @DebugLog
     public void showViews() {
+        if(isTablet)
+            return;
         if (getActivity() instanceof MainActivity)
             ((MainActivity) getActivity()).showViews();
         controlsVisible = true;
@@ -309,10 +315,7 @@ public class DomoticzDashboardFragment extends Fragment {
     }
 
     public void setGridViewLayout() {
-
         try {
-            boolean isTablet = false;
-            boolean isPortrait = false;
 
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
                 isPortrait = true;

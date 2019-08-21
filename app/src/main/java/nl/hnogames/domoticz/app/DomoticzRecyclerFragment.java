@@ -96,6 +96,8 @@ public class DomoticzRecyclerFragment extends Fragment {
     private int SCROLL_THRESHOLD = 600;
     private boolean controlsVisible = true;
     private boolean backdropShown = false;
+    boolean isTablet = false;
+    boolean isPortrait = false;
 
     public DomoticzRecyclerFragment() {
     }
@@ -167,6 +169,10 @@ public class DomoticzRecyclerFragment extends Fragment {
 
     @DebugLog
     public void hideViews() {
+        if(isTablet)
+            return;
+        if (backdropShown)
+            return;
         if (getActivity() instanceof MainActivity)
             ((MainActivity) getActivity()).hideViews();
         controlsVisible = false;
@@ -175,11 +181,14 @@ public class DomoticzRecyclerFragment extends Fragment {
 
     @DebugLog
     public void showViews() {
+        if(isTablet)
+            return;
         if (getActivity() instanceof MainActivity)
             ((MainActivity) getActivity()).showViews();
         controlsVisible = true;
         scrolledDistance = 0;
     }
+
 
     public String getSort() {
         return sort;
@@ -300,9 +309,6 @@ public class DomoticzRecyclerFragment extends Fragment {
 
     public void setGridViewLayout() {
         try {
-            boolean isTablet = false;
-            boolean isPortrait = false;
-
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
                 isPortrait = true;
             if (getActivity() instanceof MainActivity) {
