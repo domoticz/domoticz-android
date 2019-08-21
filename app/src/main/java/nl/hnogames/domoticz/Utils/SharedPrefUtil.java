@@ -74,6 +74,7 @@ public class SharedPrefUtil {
     private static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
     private static final String PREF_ALWAYS_ON = "alwayson";
     private static final String PREF_AUTO_REFRESH = "autorefresh";
+    private static final String PREF_AUTO_REFRESH_TIMER = "autorefreshTimer";
     private static final String PREF_NOTIFICATION_VIBRATE = "notification_vibrate";
     private static final String PREF_NOTIFICATION_SOUND = "notification_sound";
     private static final String PREF_DISPLAY_LANGUAGE = "displayLanguage";
@@ -155,9 +156,9 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_SWITCH_BUTTONS, false);
     }
 
-    public boolean checkForUpdatesEnabled() {
-        return prefs.getBoolean(PREF_CHECK_UPDATES, false);
-    }
+    // public boolean checkForUpdatesEnabled() {
+    //     return prefs.getBoolean(PREF_CHECK_UPDATES, false);
+    // }
 
     public boolean IsWidgetsEnabled() {
         return prefs.getBoolean(PREF_WIDGET_ENABLED, false);
@@ -203,6 +204,20 @@ public class SharedPrefUtil {
 
     public boolean getAutoRefresh() {
         return prefs.getBoolean(PREF_AUTO_REFRESH, false);
+    }
+
+    public int getAutoRefreshTimer() {
+        try {
+            int value = Integer.valueOf(prefs.getString(PREF_AUTO_REFRESH_TIMER, "5"));
+            if (value == -1) {
+                editor.putString(PREF_AUTO_REFRESH_TIMER, "5").apply();
+                return 5;
+            }
+            return value;
+        } catch (Exception ex) {
+            editor.putString(PREF_AUTO_REFRESH_TIMER, "5").apply();
+            return 5;
+        }
     }
 
     public int getAlarmTimer() {
@@ -344,11 +359,45 @@ public class SharedPrefUtil {
         return prefs.getBoolean("SMALLWIDGETSCENE" + widgetID, false);
     }
 
+    public void deleteSmallTempWidget(int widgetID) {
+        editor.remove("SMALLTEMPWIDGET" + widgetID);
+        editor.remove("SMALLTEMPWIDGETIDX" + widgetID);
+        editor.remove("SMALLTEMPWIDGETPASSWORD" + widgetID);
+        editor.remove("SMALLTEMPWIDGETLAYOUT" + widgetID);
+        editor.remove("SMALLTEMPWIDGETVALUE" + widgetID);
+        editor.remove("SMALLTEMPWIDGETSCENE" + widgetID);
+        editor.commit();
+    }
+
+    public void setSmallTempWidgetIDX(int widgetID, int idx, boolean isScene, String password, String value, int layout) {
+        editor.putInt("SMALLTEMPWIDGET" + widgetID, idx).apply();
+        editor.putBoolean("SMALLTEMPWIDGETSCENE" + widgetID, isScene).apply();
+        editor.putString("SMALLTEMPWIDGETPASSWORD" + widgetID, password).apply();
+        editor.putString("SMALLTEMPWIDGETVALUE" + widgetID, value).apply();
+        editor.putInt("SMALLTEMPWIDGETLAYOUT" + widgetID, layout).apply();
+        editor.commit();
+    }
+
+    public int getSmallTempWidgetIDX(int widgetID) {
+        return prefs.getInt("SMALLTEMPWIDGET" + widgetID, INVALID_IDX);
+    }
+
+    public String getSmallTempWidgetPassword(int widgetID) {
+        return prefs.getString("SMALLTEMPWIDGETPASSWORD" + widgetID, null);
+    }
+
+    public int getSmallTempWidgetLayout(int widgetID) {
+        return prefs.getInt("SMALLTEMPWIDGETLAYOUT" + widgetID, -1);
+    }
+
+    public String getSmallTempWidgetValue(int widgetID) {
+        return prefs.getString("SMALLTEMPWIDGETVALUE" + widgetID, null);
+    }
+
     public void deleteSecurityWidget(int widgetID) {
         editor.remove("WIDGETSECURITY" + widgetID);
-        editor.remove("SMALLWIDGETIDX" + widgetID);
         editor.remove("WIDGETSECURITYPIN" + widgetID);
-        editor.remove("WIDGETSECURITYPINLAYOUT" + widgetID);
+        editor.remove("WIDGETSECURITYLAYOUT" + widgetID);
         editor.remove("WIDGETSECURITYVALUE" + widgetID);
         editor.commit();
     }
@@ -357,7 +406,7 @@ public class SharedPrefUtil {
         editor.putInt("WIDGETSECURITY" + widgetID, idx).apply();
         editor.putString("WIDGETSECURITYVALUE" + widgetID, value).apply();
         editor.putString("WIDGETSECURITYPIN" + widgetID, pin).apply();
-        editor.putInt("WIDGETSECURITYPINLAYOUT" + widgetID, layout).apply();
+        editor.putInt("WIDGETSECURITYLAYOUT" + widgetID, layout).apply();
         editor.commit();
     }
 
@@ -366,7 +415,7 @@ public class SharedPrefUtil {
     }
 
     public int getSecurityWidgetLayout(int widgetID) {
-        return prefs.getInt("WIDGETSECURITYPINLAYOUT" + widgetID, -1);
+        return prefs.getInt("WIDGETSECURITYLAYOUT" + widgetID, -1);
     }
 
     public String getSecurityWidgetValue(int widgetID) {
@@ -869,27 +918,27 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_ENABLE_Bluetooth, false);
     }
 
-    public boolean isServerUpdateAvailable() {
-        return prefs.getBoolean(PREF_UPDATE_SERVER_AVAILABLE, false);
-    }
+    //public boolean isServerUpdateAvailable() {
+    //    return prefs.getBoolean(PREF_UPDATE_SERVER_AVAILABLE, false);
+    //}
 
-    public String getPreviousVersionNumber() {
-        return prefs.getString(PREF_LAST_VERSION, "");
-    }
+    //public String getPreviousVersionNumber() {
+    //    return prefs.getString(PREF_LAST_VERSION, "");
+    //}
 
-    public void setVersionNumber(String version) {
-        editor.putString(PREF_LAST_VERSION, version);
-        editor.commit();
-    }
+    //public void setVersionNumber(String version) {
+    //    editor.putString(PREF_LAST_VERSION, version);
+    //    editor.commit();
+    //}
 
-    public String getLastUpdateShown() {
-        return prefs.getString(PREF_UPDATE_SERVER_SHOWN, "");
-    }
+    //public String getLastUpdateShown() {
+    //    return prefs.getString(PREF_UPDATE_SERVER_SHOWN, "");
+    //}
 
-    public void setLastUpdateShown(String revisionNb) {
-        editor.putString(PREF_UPDATE_SERVER_SHOWN, revisionNb);
-        editor.commit();
-    }
+    //public void setLastUpdateShown(String revisionNb) {
+    //   editor.putString(PREF_UPDATE_SERVER_SHOWN, revisionNb);
+    //   editor.commit();
+    //}
 
     public boolean isGeofenceEnabled() {
         return prefs.getBoolean(PREF_GEOFENCE_ENABLED, false);
@@ -1112,17 +1161,11 @@ public class SharedPrefUtil {
             boolean isServerUpdateAvailableValue = false;
             ServerUpdateInfo mServerUpdateInfo = new ServerUtil(mContext).getActiveServer().getServerUpdateInfo(mContext);
 
-            // Before saving to file set server update available preference to false
-            if (isServerUpdateAvailable()) {
-                isServerUpdateAvailableValue = true;
-                mServerUpdateInfo.setUpdateAvailable(false);
-            }
-
             Map<String, ?> oAllPrefs = this.prefs.getAll();
             HashMap<String, Object> oSavePrefs = new HashMap<String, Object>();
             for (Map.Entry<String, ?> entry : oAllPrefs.entrySet()) {
                 //Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
-                if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET"))
+                if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET")|| entry.getKey().startsWith("SMALLTEMPWIDGET")|| entry.getKey().startsWith("WIDGETSECURITY"))
                     Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
                 else if (entry.getKey().equals("receivedNotifications") || entry.getKey().equals("receivedNotificationsLog"))
                     Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
@@ -1180,7 +1223,7 @@ public class SharedPrefUtil {
                 Object v = entry.getValue();
                 String key = entry.getKey();
                 if (v != null && !UsefulBits.isEmpty(key)) {
-                    if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET"))
+                    if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET")|| entry.getKey().startsWith("SMALLTEMPWIDGET")|| entry.getKey().startsWith("WIDGETSECURITY"))
                         Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
                     else if (entry.getKey().equals("receivedNotifications") || entry.getKey().equals("receivedNotificationsLog"))
                         Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());

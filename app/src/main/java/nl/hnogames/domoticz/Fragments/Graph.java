@@ -161,7 +161,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         chart.setHighlightPerDragEnabled(true);
 
         if (range.equals("day")) {
-            xAxis.setValueFormatter(new ValueFormatter(){
+            xAxis.setValueFormatter(new ValueFormatter() {
                 @Override
                 public String getFormattedValue(float value) {
                     Calendar calendar = Calendar.getInstance();
@@ -170,7 +170,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 }
             });
         } else {
-            xAxis.setValueFormatter(new ValueFormatter(){
+            xAxis.setValueFormatter(new ValueFormatter() {
                 @Override
                 public String getFormattedValue(float value) {
                     Calendar calendar = Calendar.getInstance();

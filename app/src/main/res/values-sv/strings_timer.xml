@@ -39,8 +39,8 @@
     <string name="monthly_weekday">Månadsvis (Veckodag)</string>
     <string name="yearly">Årligen</string>
     <string name="yearly_weekday">Årligen (Veckodag)</string>
-    <string name="before_sun_at_south">Before Sun at South</string>
-    <string name="after_sun_at_south">After Sun at South</string>
+    <string name="before_sun_at_south">Före solnedgång i syd</string>
+    <string name="after_sun_at_south">Efter solnedgång i syd</string>
     <string name="before_civil_twilight_start">Before Civil Twilight Start</string>
     <string name="after_civil_twilight_start">After Civil Twilight Start</string>
     <string name="before_civil_twilight_end">Before Civil Twilight End</string>
@@ -58,9 +58,9 @@
     <string name="timer_weekend">Helg</string>
     <string name="timer_other">Annan</string>
     <string name="timers">Timers</string>
-    <string name="first">First</string>
-    <string name="second">Second</string>
-    <string name="third">Third</string>
-    <string name="fourth">Fourth</string>
-    <string name="last">Last</string>
+    <string name="first">Första</string>
+    <string name="second">Andra</string>
+    <string name="third">Tredje</string>
+    <string name="fourth">Fjärde</string>
+    <string name="last">Sista</string>
 </resources>

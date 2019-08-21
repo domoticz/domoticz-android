@@ -28,7 +28,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -106,6 +108,16 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         mContext = context;
         if (getActionBar() != null)
             getActionBar().setTitle(getString(R.string.title_dashboard));
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        collapseSortButton.setVisibility(View.VISIBLE);
+        lySortDevices.setVisibility(View.VISIBLE);
+        return view;
     }
 
     @Override
@@ -213,7 +225,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         supportedSwitches.add(mExtendedStatusInfo);
                     } else {
                         if (mContext != null) {
-                            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.filter_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT);
+                            //UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.filter_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT);
                             if (getActivity() instanceof MainActivity)
                                 ((MainActivity) getActivity()).Talk(mContext.getString(R.string.filter_on) + ": " + super.getSort());
                             if ((super.getSort().equals(mContext.getString(R.string.filterOn_on)) && mExtendedStatusInfo.getStatusBoolean()) &&
@@ -232,7 +244,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     }
                 }
             }
-            if (mSharedPrefs.addClockToDashboard()) {
+            if (mSharedPrefs.addClockToDashboard() && (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) && planID <= 0) {
                 mDomoticz.getSunRise(new SunRiseReceiver() {
                     @Override
                     public void onReceive(SunRiseInfo mSunRiseInfo) {

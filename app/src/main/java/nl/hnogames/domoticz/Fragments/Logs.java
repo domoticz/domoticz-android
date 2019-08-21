@@ -24,6 +24,9 @@ package nl.hnogames.domoticz.Fragments;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
@@ -66,6 +69,17 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
         onAttachFragment(this);
         mContext = context;
         SetTitle(getString(R.string.title_logs));
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        collapseSortButton.setText(getString(R.string.filter_all));
+        collapseSortButton.setVisibility(View.VISIBLE);
+        lySortLogs.setVisibility(View.VISIBLE);
+        return view;
     }
 
     public void SetTitle(String title) {
@@ -166,34 +180,34 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
         }
 
         protected void onPostExecute(Boolean result) {
-            if (cacheLogs != null)
-                createListView(cacheLogs);
+            if (isAdded()) {
+                if (cacheLogs != null)
+                    createListView(cacheLogs);
 
-            int LogLevel = DomoticzValues.Log.LOGLEVEL.ALL; //Default
-            if (getSort().equals(getString(R.string.filter_normal)))
-                LogLevel = DomoticzValues.Log.LOGLEVEL.NORMAL;
-            if (getSort().equals(getString(R.string.filter_status)))
-                LogLevel = DomoticzValues.Log.LOGLEVEL.STATUS;
-            if (getSort().equals(getString(R.string.filter_error)))
-                LogLevel = DomoticzValues.Log.LOGLEVEL.ERROR;
+                int LogLevel = DomoticzValues.Log.LOGLEVEL.ALL; //Default
+                if (getSort().equals(getString(R.string.filter_normal)))
+                    LogLevel = DomoticzValues.Log.LOGLEVEL.NORMAL;
+                if (getSort().equals(getString(R.string.filter_status)))
+                    LogLevel = DomoticzValues.Log.LOGLEVEL.STATUS;
+                if (getSort().equals(getString(R.string.filter_error)))
+                    LogLevel = DomoticzValues.Log.LOGLEVEL.ERROR;
 
-            SetTitle(LogLevel != DomoticzValues.Log.LOGLEVEL.ALL ? getString(R.string.title_logs) + " (" + getSort() + ")" : getString(R.string.title_logs));
+                mDomoticz.getLogs(new LogsReceiver() {
+                    @Override
+                    @DebugLog
+                    public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {
+                        successHandling(mLogInfos.toString(), false);
+                        SerializableManager.saveSerializable(mContext, mLogInfos, "Logs");
+                        createListView(mLogInfos);
+                    }
 
-            mDomoticz.getLogs(new LogsReceiver() {
-                @Override
-                @DebugLog
-                public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {
-                    successHandling(mLogInfos.toString(), false);
-                    SerializableManager.saveSerializable(mContext, mLogInfos, "Logs");
-                    createListView(mLogInfos);
-                }
-
-                @Override
-                @DebugLog
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            }, LogLevel);
+                    @Override
+                    @DebugLog
+                    public void onError(Exception error) {
+                        errorHandling(error);
+                    }
+                }, LogLevel);
+            }
         }
     }
 }

@@ -64,8 +64,8 @@
     <string name="always_on_on">Zaključavanje zaslona na uvijek Uključeno</string>
     <string name="always_on_off">Nemoj zaključati zaslon na uvijek uključeno</string>
     <string name="always_auto_refresh">Automatsko osvježavanje</string>
-    <string name="always_auto_refresh_on">Osvježi stanje uređaja svakih 5 sekundi</string>
-    <string name="always_auto_refresh_off">Ne osvježavaj stanje uređaja svakih 5 sekundi</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
     <string name="switch_buttons_title">Prekidači</string>
     <string name="switch_buttons_on">Prikaži prekidače sa uključi/isključi prekidačima</string>
     <string name="switch_buttons_off">Prikaži prekidače sa uključi/isključi dugmadima</string>

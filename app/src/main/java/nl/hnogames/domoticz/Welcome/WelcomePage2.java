@@ -29,11 +29,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
+import com.google.android.material.button.MaterialButton;
 
 import java.io.File;
 import java.util.Arrays;
@@ -61,7 +61,8 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
         SettingsFile = new File(Environment.getExternalStorageDirectory(), "/Domoticz/DomoticzSettings.txt");
 
         permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
-        Button importButton = v.findViewById(R.id.import_settings);
+        MaterialButton importButton = v.findViewById(R.id.import_settings);
+        MaterialButton demoSetup = v.findViewById(R.id.demo_settings);
         importButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,6 +78,14 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
                 }
             }
         });
+
+        demoSetup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((WelcomeViewActivity) getActivity()).setDemoAccount();
+            }
+        });
+
         if (!SettingsFile.exists()) {
             importButton.setVisibility(View.GONE);
         }

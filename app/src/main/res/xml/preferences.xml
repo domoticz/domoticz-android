@@ -63,6 +63,11 @@
             android:summaryOff="@string/always_auto_refresh_off"
             android:summaryOn="@string/always_auto_refresh_on"
             android:title="@string/always_auto_refresh"/>
+        <nl.hnogames.domoticz.Preference.EditTextIntegerPreference
+            android:key="autorefreshTimer"
+            android:dependency="autorefresh"
+            android:summary="@string/set_auto_refresh_time"
+            android:title="@string/auto_refresh_time"/>
     </PreferenceCategory>
 
     <PreferenceScreen
@@ -363,17 +368,6 @@
                     android:key="version"
                     android:summary="Version 1.0.2"
                     android:title="@string/info_version"/>
-                <SwitchPreference
-                    android:defaultValue="false"
-                    android:key="checkForSystemUpdates"
-                    android:summaryOff="@string/check_for_update"
-                    android:summaryOn="@string/check_for_update"
-                    android:title="@string/check_for_update_title"/>
-                <Preference
-                    android:dependency="checkForSystemUpdates"
-                    android:key="version_domoticz"
-                    android:summary="Version 1.0.2"
-                    android:title="@string/info_domoticz_version"/>
             </PreferenceCategory>
 
             <PreferenceCategory android:title="@string/category_export">

@@ -58,9 +58,9 @@
     <string name="timer_weekend">Weekend</string>
     <string name="timer_other">Inne</string>
     <string name="timers">Plany czasu</string>
-    <string name="first">First</string>
-    <string name="second">Second</string>
-    <string name="third">Third</string>
-    <string name="fourth">Fourth</string>
-    <string name="last">Last</string>
+    <string name="first">Pierwszy</string>
+    <string name="second">Drugi</string>
+    <string name="third">Trzeci</string>
+    <string name="fourth">Czwarty</string>
+    <string name="last">Ostatni</string>
 </resources>

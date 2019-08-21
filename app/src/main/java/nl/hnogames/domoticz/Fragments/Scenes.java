@@ -25,7 +25,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
@@ -90,6 +92,16 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         initAnimation();
         if (getActionBar() != null)
             getActionBar().setTitle(getString(R.string.title_scenes));
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        collapseSortButton.setVisibility(View.VISIBLE);
+        lySortDevices.setVisibility(View.VISIBLE);
+        return view;
     }
 
     @Override
@@ -172,7 +184,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                     supportedScenes.add(s);
                 } else {
                     if (mContext != null) {
-                        UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.filter_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT);
+                        //UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.filter_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT);
                         if (getActivity() instanceof MainActivity)
                             ((MainActivity) getActivity()).Talk(R.string.filter_on);
                         if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && s.getStatusInBoolean()) && mDomoticz.isOnOffScene(s))

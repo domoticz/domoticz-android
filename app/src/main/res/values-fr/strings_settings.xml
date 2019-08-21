@@ -38,7 +38,7 @@
     <string name="category_debug">Debuggage</string>
     <string name="category_export">Export/Import des paramètres</string>
     <string name="category_theme">Thème</string>
-    <string name="category_clock">Clock</string>
+    <string name="category_clock">Horloge</string>
     <string name="category_nfc">Associations NFC</string>
     <string name="category_startup_security">Sécurité </string>
     <string name="category_account">Comptes</string>
@@ -46,7 +46,7 @@
     <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Commande vocale.</string>
     <string name="category_Reset">Ràz</string>
-    <string name="category_help">Contribute</string>
+    <string name="category_help">Contribuer</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Écran d\'accueil</string>
     <string name="enable_items">Activer/Désactiver des éléments</string>
@@ -64,16 +64,16 @@
     <string name="always_on_on">Toujours verrouiller l\'écran</string>
     <string name="always_on_off">Ne jamais verrouiller l\'écran</string>
     <string name="always_auto_refresh">Rafraîchir Automatiquement</string>
-    <string name="always_auto_refresh_on">Actualiser l\'état de l\'appareil toutes les 5 secondes</string>
-    <string name="always_auto_refresh_off">Ne pas rafraîchir l\'état de l\'appareil toutes les 5 secondes</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
     <string name="switch_buttons_title">Interrupteurs</string>
     <string name="switch_buttons_on">Afficher les interrupteurs avec les interrupteurs On / Off</string>
     <string name="switch_buttons_off">Afficher les interrupteurs avec les boutons On / Off</string>
     <string name="dashboard_list_title">Tableau de bord | Grille</string>
     <string name="show_dashboard_list_on">Voir la tableau de bord en tant que liste</string>
     <string name="show_dashboard_list_off">Voir la tableau de bord comme une grille</string>
-    <string name="dashboard_clock">Clock</string>
-    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
+    <string name="dashboard_clock">Horloge</string>
+    <string name="show_dashboard_clock">Afficher une horloge sur le tableau de bord</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Activer Android Wear</string>
     <string name="custom_wear_select">Interrupteurs Wear</string>
@@ -116,10 +116,10 @@
     <string name="qrcode_settings">Configuration des QR Code</string>
     <string name="enable_qrcode">Activer les QR Code</string>
     <string name="qrcode_enable_settings">Activer la fonctionnalité de QR Code</string>
-    <string name="bluetooth_settings">Setup Bluetooth devices</string>
-    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
-    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
-    <string name="translate_title">Translations</string>
+    <string name="bluetooth_settings">Configurer les périphériques Bluetooth</string>
+    <string name="enable_bluetooth">Activez la fonctionnalité Bluetooth</string>
+    <string name="translate_description">Vous pouvez aider à améliorer nos traductions, et même ajouter de nouvelles langues à cette application via notre projet Crowdin</string>
+    <string name="translate_title">Traductions</string>
     <string name="security_settings">Configurer la sécurité</string>
     <string name="enable_security">Activer la protection par empreinte digitale au démarrage</string>
     <string name="disable_security">Désactiver la protection d’empreintes digitales au démarrage</string>
@@ -178,7 +178,7 @@
     <string name="error_atLeastOneItemInDrawer">Vous avez besoin d\'au moins un item.</string>
     <!--        Server update category       -->
     <string name="title_activity_update">Mettre à jour le serveur</string>
-    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
+    <string name="error_couldNotCheckForVersion">"Impossible de vérifier la version : %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"Impossible de mettre à jour: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"Impossible d'obtenir la configuration du serveur Domoticz: %1$s"</string>
     <string name="update_available_enhanced">Mise à jour du serveur disponible : %1$s version : %2$s</string>

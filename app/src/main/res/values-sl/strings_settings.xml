@@ -64,8 +64,8 @@
     <string name="always_on_on">Prečevanje zaklepanja zaslona</string>
     <string name="always_on_off">Izklop preprečevanja zaklepanja</string>
     <string name="always_auto_refresh">Samodejna osvežitev</string>
-    <string name="always_auto_refresh_on">Osveži stanje naprave vsakih 5 min</string>
-    <string name="always_auto_refresh_off">Ne osvežuj stanja naprave vsakih 5 min</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
     <string name="switch_buttons_title">Stikala</string>
     <string name="switch_buttons_on">Pokaži stikala z on/off stikali</string>
     <string name="switch_buttons_off">Pokaži stikala z on/off gumbi</string>

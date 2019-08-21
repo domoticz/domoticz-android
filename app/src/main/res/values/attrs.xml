@@ -35,5 +35,9 @@
         <attr name="dynamicEntryValuesProvider"/>
     </declare-styleable>
 
-
+    <declare-styleable name="BackdropContainer">
+        <attr name="menuIcon" format="reference"/>
+        <attr name="closeIcon" format="reference"/>
+        <attr name="duration" format="integer"/>
+    </declare-styleable>
 </resources>

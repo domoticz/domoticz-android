@@ -30,7 +30,7 @@
     <color name="accent">@color/button_dark_status</color>
 
     <color name="background_dark">#2A292F</color>
-    <color name="card_background_dark">#2A292F</color>
+    <color name="card_background_dark">#34333A</color>
     <color name="button_dark">#284B6B</color>
     <color name="button_dark_status">#284B6B</color>
 

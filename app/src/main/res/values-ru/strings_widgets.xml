@@ -21,18 +21,18 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="pick_device_title">Выбрать устройство</string>
-  <string name="choose_switch">Выбрать устройство</string>
-  <string name="failed_to_get_securitypanel">Не найдена панель безопасности</string>
-  <string name="failed_to_get_switches">Не удалось получить устройства</string>
-  <string name="failed_toggle_switch">Не удалось переключить устройство</string>
-  <string name="switch_toggled">"Переключить устройство"</string>
-  <string name="text_loading">Загрузка...</string>
-  <string name="text_go">ПЕРЕЙТИ</string>
-  <string name="widget_background">Фон</string>
-  <string name="widget_dark">Темно</string>
-  <string name="widget_light">Светло</string>
-  <string name="widget_transparent_dark">Темный прозрачный</string>
-  <string name="widget_transparent_light">Светлый прозрачный</string>
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="pick_device_title">Выбрать устройство</string>
+    <string name="choose_switch">Выбрать устройство</string>
+    <string name="failed_to_get_securitypanel">Не найдена панель безопасности</string>
+    <string name="failed_to_get_switches">Не удалось получить устройства</string>
+    <string name="failed_toggle_switch">Не удалось переключить устройство</string>
+    <string name="switch_toggled">"Переключить устройство"</string>
+    <string name="text_loading">Загрузка...</string>
+    <string name="text_go">ПЕРЕЙТИ</string>
+    <string name="widget_background">Фон</string>
+    <string name="widget_dark">Темно</string>
+    <string name="widget_light">Светло</string>
+    <string name="widget_transparent_dark">Темный прозрачный</string>
+    <string name="widget_transparent_light">Светлый прозрачный</string>
 </resources>

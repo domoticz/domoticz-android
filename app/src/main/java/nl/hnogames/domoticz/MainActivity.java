@@ -87,8 +87,6 @@ import nl.hnogames.domoticz.Containers.SpeechInfo;
 import nl.hnogames.domoticz.Fragments.Cameras;
 import nl.hnogames.domoticz.Fragments.Logs;
 import nl.hnogames.domoticz.Fragments.MainPager;
-import nl.hnogames.domoticz.Fragments.Scenes;
-import nl.hnogames.domoticz.Fragments.Switches;
 import nl.hnogames.domoticz.Fragments.TemperatureMainPager;
 import nl.hnogames.domoticz.UI.PasswordDialog;
 import nl.hnogames.domoticz.UI.SortDialog;
@@ -110,15 +108,11 @@ import nl.hnogames.domoticz.app.RefreshFragment;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
-import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
-import nl.hnogames.domoticzapi.Containers.VersionInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
-import nl.hnogames.domoticzapi.Interfaces.UpdateVersionReceiver;
-import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 import shortbread.Shortcut;
@@ -205,9 +199,10 @@ public class MainActivity extends AppCompatPermissionsActivity {
         }
 
         toolbar = findViewById(R.id.toolbar);
-        if (mSharedPrefs.darkThemeEnabled())
+        if (mSharedPrefs.darkThemeEnabled()) {
             toolbar.setBackgroundColor(getResources().getColor(R.color.secondary));
-
+            toolbar.setPopupTheme(R.style.ThemeOverlay_AppCompat_Dark);
+        }
         setSupportActionBar(toolbar);
 
         boolean resolvableError = UsefulBits.checkPlayServicesAvailable(this);
@@ -365,7 +360,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
         drawNavigationMenu(mConfigInfo);
         if (!fromShortcut)
             addFragment();
-        checkDomoticzServerUpdate(mConfigInfo);
     }
 
     /* Called when the second activity's finishes */
@@ -441,10 +435,10 @@ public class MainActivity extends AppCompatPermissionsActivity {
     public void hideViews() {
         toolbar.animate().translationY(-toolbar.getHeight()).setInterpolator(new AccelerateInterpolator(2));
         toolbar.setVisibility(View.GONE);
+        toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
     }
 
     public void showViews() {
-        toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
         toolbar.setVisibility(View.VISIBLE);
     }
 
@@ -748,7 +742,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                         }
                     });
                 }
-            }, 0, 5000);//schedule in 5 seconds
+            }, 0, (mSharedPrefs.getAutoRefreshTimer() * 1000));
         }
     }
 
@@ -1024,92 +1018,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
         return item;
     }
 
-    private void showSnackBarToUpdateServer(String message) {
-        CoordinatorLayout layout = getFragmentCoordinatorLayout();
-        if (layout != null) {
-            UsefulBits.showSnackbarWithAction(this, layout, message, Snackbar.LENGTH_SHORT, null, new View.OnClickListener() {
-                @Override
-                @DebugLog
-                public void onClick(View v) {
-                    startActivity(new Intent(MainActivity.this, UpdateActivity.class));
-                }
-            }, this.getString(R.string.update_server));
-        }
-    }
-
-    private void checkDomoticzServerUpdate(final ConfigInfo config) {
-        if (config == null)
-            return;
-        domoticz.getUpdate(new UpdateVersionReceiver() {
-            @Override
-            @DebugLog
-            public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
-                if (mServerUtil != null &&
-                    mServerUtil.getActiveServer() != null) {
-                    mServerUtil.getActiveServer().setServerUpdateInfo(MainActivity.this, serverUpdateInfo);
-                    mServerUtil.saveDomoticzServers(true);
-                    checkCurrentServerVersion(config);
-                }
-            }
-
-            @Override
-            @DebugLog
-            public void onError(Exception error) {
-                if (mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null)
-                    mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).setCurrentServerVersion("");
-                mServerUtil.saveDomoticzServers(true);
-            }
-        });
-    }
-
-    private void checkCurrentServerVersion(final ConfigInfo mConfigInfo) {
-        if (domoticz == null || mConfigInfo == null)
-            return;
-        domoticz.getServerVersion(new VersionReceiver() {
-            @Override
-            @DebugLog
-            public void onReceiveVersion(VersionInfo serverVersion) {
-                if (serverVersion != null) {
-                    if (mServerUtil.getActiveServer() != null &&
-                        mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null) {
-                        mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).setCurrentServerVersion(serverVersion.getVersion());
-                    }
-
-                    String[] version
-                        = serverVersion.getVersion().split("\\.");
-                    String updateVersion = (mServerUtil.getActiveServer() != null &&
-                        mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this) != null) ?
-                        version[0] + "."
-                            + mServerUtil.getActiveServer()
-                            .getServerUpdateInfo(MainActivity.this)
-                            .getUpdateRevisionNumber() :
-                        version[0];
-
-                    if (!serverVersion.getVersion().equals(updateVersion) && serverVersion.isHaveUpdate()) {
-                        String message = String.format(getString(R.string.update_available_enhanced), serverVersion.getVersion(), updateVersion);
-                        if (mSharedPrefs.checkForUpdatesEnabled() && !mSharedPrefs.getLastUpdateShown().equals(updateVersion)) {
-                            if (mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).getSystemName().equalsIgnoreCase("linux")) {
-                                // Great! We can remote/auto update Linux systems
-                                showSnackBarToUpdateServer(message);
-                            } else {
-                                // No remote/auto updating available for other systems (like Windows, Synology)
-                                showSnackbar(getString(R.string.server_update_available));
-                            }
-                            mServerUtil.getActiveServer().getServerUpdateInfo(MainActivity.this).setUpdateAvailable(true);
-                            mSharedPrefs.setLastUpdateShown(updateVersion);
-                        }
-                        mServerUtil.saveDomoticzServers(true);
-                    }
-                }
-            }
-
-            @Override
-            @DebugLog
-            public void onError(Exception error) {
-            }
-        });
-    }
-
     @Override
     @DebugLog
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -1123,10 +1031,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 else
                     getMenuInflater().inflate(R.menu.menu_camera, menu);
             } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment) || (f instanceof RefreshFragment)) {
-                if ((f instanceof MainPager) || (f instanceof Scenes) || (f instanceof Switches) || (f instanceof Logs))
-                    getMenuInflater().inflate(R.menu.menu_main_sort, menu);
-                else
-                    getMenuInflater().inflate(R.menu.menu_main, menu);
+                getMenuInflater().inflate(R.menu.menu_main, menu);
 
                 MenuItem searchMenuItem = menu.findItem(R.id.search);
                 searchViewAction = (SearchView) MenuItemCompat.getActionView(searchMenuItem);

@@ -29,7 +29,7 @@
     <string name="category_wear">Android Wear</string>
     <string name="category_auto">Android Auto</string>
     <string name="category_server">Сервер</string>
-    <string name="category_geofencing">Geofencing</string>
+    <string name="category_geofencing">Местоположение</string>
     <string name="category_info">Информация</string>
     <string name="category_advanced">Дополнительные опции</string>
     <string name="category_language">Язык</string>
@@ -38,7 +38,7 @@
     <string name="category_debug">Отладка</string>
     <string name="category_export">Экспорт/импорт параметров</string>
     <string name="category_theme">Оформление</string>
-    <string name="category_clock">Clock</string>
+    <string name="category_clock">Часы</string>
     <string name="category_nfc">NFC соединения</string>
     <string name="category_startup_security">Безопасность</string>
     <string name="category_account">Учётные записи</string>
@@ -46,16 +46,16 @@
     <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Голосовое управление</string>
     <string name="category_Reset">Сброс</string>
-    <string name="category_help">Contribute</string>
+    <string name="category_help">Сотрудничество</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Экран запуска</string>
     <string name="enable_items">Включить/отключить элементы</string>
     <!--        Generic sorting settings       -->
-    <string name="sort_server_title">Sorting</string>
-    <string name="sort_server_on">Sort devices like sorted on the server</string>
-    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
-    <string name="sort_lock_server_title">Lock</string>
-    <string name="sort_lock_custom_on">Lock the current custom sorting (disable drag/drop)</string>
+    <string name="sort_server_title">Сортировка</string>
+    <string name="sort_server_on">Сортировка устройств как на сервере</string>
+    <string name="sort_custom_on">Ручная сортировка, перемещайте для построения собственного списка</string>
+    <string name="sort_lock_server_title">Заблокировать</string>
+    <string name="sort_lock_custom_on">Заблокировать ручную сортировку (выключить перемещение)</string>
     <string name="sort_dashboardLikeServer_off">Сортировать панель в алфавитном порядке</string>
     <string name="extra_data_title">Дополнительные данные на панели мониторинга</string>
     <string name="show_extra_data_on">Показать дополнительные данные на панели мониторинга</string>
@@ -64,16 +64,16 @@
     <string name="always_on_on">Блокировка экрана всегда ВКЛ</string>
     <string name="always_on_off">Не блокировать экран всегда ВКЛ</string>
     <string name="always_auto_refresh">Авто-обновление</string>
-    <string name="always_auto_refresh_on">Обновлять состояние устройства каждые 5 секунд</string>
-    <string name="always_auto_refresh_off">Не обновлять состояние устройства каждые 5 секунд</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
     <string name="switch_buttons_title">Переключатели</string>
     <string name="switch_buttons_on">Показать выключатели с вкл/выкл переключателем</string>
     <string name="switch_buttons_off">Показать выключатели с Вкл/Выкл кнопкой</string>
     <string name="dashboard_list_title">Сетка панели</string>
     <string name="show_dashboard_list_on">Показать панель как список</string>
     <string name="show_dashboard_list_off">Показать панель как сетку</string>
-    <string name="dashboard_clock">Clock</string>
-    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
+    <string name="dashboard_clock">Часы</string>
+    <string name="show_dashboard_clock">Показывать часы на панели устройств</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear элементы</string>
     <string name="custom_wear_select">Выбрать Wear переключатель</string>
@@ -116,10 +116,10 @@
     <string name="qrcode_settings">Настройка кодов QR</string>
     <string name="enable_qrcode">Включить QR коды</string>
     <string name="qrcode_enable_settings">Включение функции QR-кодов</string>
-    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="bluetooth_settings">Настройка Bluetooth устройств</string>
     <string name="enable_bluetooth">Enable Bluetooth functionality</string>
-    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
-    <string name="translate_title">Translations</string>
+    <string name="translate_description">Вы можете помочь улучшить перевод и добавить новые Языки в приложение с помощью Crowdin project</string>
+    <string name="translate_title">Переводы</string>
     <string name="security_settings">Настройка безопасности</string>
     <string name="enable_security">Ввод отпечатков пальцев на старте</string>
     <string name="disable_security">Отключить ввод отпечатков пальцев на старте</string>
@@ -178,7 +178,7 @@
     <string name="error_atLeastOneItemInDrawer">Необходимо выбрать хотя бы один элемент</string>
     <!--        Server update category       -->
     <string name="title_activity_update">Обновить сервер</string>
-    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
+    <string name="error_couldNotCheckForVersion">"Невозможно проверить версию: %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"Невозможно проверить наличие обновлений: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"Не удалось получить конфигурацию сервера Domoticz: %1$s"</string>
     <string name="update_available_enhanced">Доступно обновление сервера: %1$s до версии: %2$s</string>

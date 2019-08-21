@@ -64,8 +64,8 @@
     <string name="always_on_on">Hold skærmen tændt</string>
     <string name="always_on_off">Hold ikke skærmen tændt</string>
     <string name="always_auto_refresh">Auto Refresh</string>
-    <string name="always_auto_refresh_on">Refresh the device state every 5 seconds</string>
-    <string name="always_auto_refresh_off">Don\'t refresh the device state every 5 seconds</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
     <string name="switch_buttons_title">Switche</string>
     <string name="switch_buttons_on">Vis switche med tænd/sluk-knap</string>
     <string name="switch_buttons_off">Vis switche med tænd/sluk-knapper</string>
