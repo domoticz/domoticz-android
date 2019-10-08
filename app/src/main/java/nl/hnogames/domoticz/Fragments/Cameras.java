@@ -327,7 +327,28 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
 
                 @Override
                 public void onError(Exception error) {
-                    errorHandling(error, coordinatorLayout);
+                    mDomoticz.checkLogin_oldMethod(new LoginReceiver() {
+                        @Override
+                        public void OnReceive(LoginInfo mLoginInfo) {
+                            mDomoticz.getCameras(new CameraReceiver() {
+                                @Override
+                                public void OnReceiveCameras(ArrayList<CameraInfo> Cameras) {
+                                    successHandling(Cameras.toString(), false);
+                                    SerializableManager.saveSerializable(context, Cameras, "Cameras");
+                                    createListView(Cameras);
+                                }
+
+                                @Override
+                                public void onError(Exception error) {
+                                    errorHandling(error, coordinatorLayout);
+                                }
+                            });
+                        }
+                        @Override
+                        public void onError(Exception error) {
+                            errorHandling(error, coordinatorLayout);
+                        }
+                    });
                 }
             });
         }
