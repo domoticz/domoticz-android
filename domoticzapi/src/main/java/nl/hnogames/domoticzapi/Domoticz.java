@@ -523,7 +523,7 @@ public class Domoticz {
         String username = UsefulBits.encodeBase64(getUserCredentials(Authentication.USERNAME));
         String password = UsefulBits.getMd5String(getUserCredentials(Authentication.PASSWORD));
         LoginParser parser = new LoginParser(loginReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CHECKLOGIN);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NEWCHECKLOGIN);
         Log.v(TAG, "Url: " + url);
 
         try {
