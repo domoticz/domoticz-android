@@ -530,11 +530,9 @@ public class Domoticz {
             Map<String,String> params = new HashMap<>();
             params.put("username", URLEncoder.encode(username, "UTF-8"));
             params.put("password", URLEncoder.encode(password, "UTF-8"));
-            params.put("rememberme", "true");
 
             RequestUtil.makeJsonPostRequest(parser,
-                    getUserCredentials(Authentication.USERNAME),
-                    getUserCredentials(Authentication.PASSWORD),
+                    null, null,
                     url, null, params, mSessionUtil, true, 3, queue);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

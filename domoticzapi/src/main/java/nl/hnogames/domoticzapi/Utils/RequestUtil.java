@@ -39,6 +39,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
@@ -385,21 +386,21 @@ public class RequestUtil {
                                           final int retryCounter,
                                           final RequestQueue queue) {
 
-        JsonObjectRequest jsonObjReq =
-                new JsonObjectRequest(Request.Method.POST, url, request,
-                        new Response.Listener<JSONObject>() {
-
+        StringRequest jsonObjReq =
+                new StringRequest(Request.Method.POST, url,
+                        new Response.Listener<String>() {
                             @Override
-                            public void onResponse(JSONObject response) {
+                            public void onResponse(String jsonObject) {
                                 String jsonString;
 
                                 try {
+                                    JSONObject response = new JSONObject(jsonObject);
                                     jsonString = response.getString(DomoticzValues.Json.Field.STATUS);
                                     if (jsonString.equals(DomoticzValues.Json.Field.ERROR)) {
                                         jsonErrorHandling(response, null, parser);
                                     } else {
                                         if (parser != null)
-                                            parser.parseResult(jsonString);
+                                            parser.parseResult(jsonObject);
                                     }
                                 } catch (JSONException e) {
 
@@ -431,7 +432,7 @@ public class RequestUtil {
                     }
                 }) {
                     @Override
-                    protected Map<String,String> getParams(){
+                    protected Map<String, String> getParams() {
                         return params;
                     }
 
@@ -452,7 +453,7 @@ public class RequestUtil {
                     }
 
                     @Override
-                    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                    protected Response<String> parseNetworkResponse(NetworkResponse response) {
                         // since we don't know which of the two underlying network vehicles
                         // will Volley use, we have to handle and store session cookies manually
                         sessionUtil.checkSessionCookie(response.headers);
@@ -535,11 +536,12 @@ public class RequestUtil {
         if (headerMap == null)
             headerMap = new HashMap<>();
 
-        String credentials = username + ":" + password;
-        String base64EncodedCredentials =
-            Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-        headerMap.put("Authorization", "Basic " + base64EncodedCredentials);
-
+        if(!UsefulBits.isEmpty(username)) {
+            String credentials = username + ":" + password;
+            String base64EncodedCredentials =
+                    Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+            headerMap.put("Authorization", "Basic " + base64EncodedCredentials);
+        }
         return headerMap;
     }
 
