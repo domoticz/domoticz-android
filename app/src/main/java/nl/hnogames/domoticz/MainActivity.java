@@ -911,10 +911,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
                             searchViewAction.setQuery("", false);
                             searchViewAction.clearFocus();
                         }
-
                         if (drawerItem.getTag() != null && String.valueOf(drawerItem.getTag()).equals("Settings")) {
-                            stopCameraTimer();
-                            startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), iSettingsResultCode);
+                            OpenSettings();
                         } else if (drawerItem.getTag() != null) {
                             changeFragment(String.valueOf(drawerItem.getTag()));
                             stopCameraTimer();
@@ -927,8 +925,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 }
             })
             .build();
-
         drawer.addStickyFooterItem(createSecondaryDrawerItem(this.getString(R.string.action_settings), "gmd_settings", "Settings"));
+    }
+
+    public void OpenSettings()
+    {
+        stopCameraTimer();
+        startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), iSettingsResultCode);
     }
 
     private List<IDrawerItem> getDrawerItems() {

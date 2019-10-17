@@ -82,7 +82,7 @@ public class DomoticzDashboardFragment extends Fragment {
     public LinearLayout lySortDevices;
     public BackdropContainer backdropContainer;
     public MaterialCardView bottomLayoutWrapper;
-    public MaterialButton collapseSortButton, sortAll, sortOn, sortOff, sortStatic;
+    public MaterialButton collapseSortButton, sortAll, sortOn, sortOff, sortStatic, btnCheckSettings;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private TextView debugText;
@@ -233,6 +233,18 @@ public class DomoticzDashboardFragment extends Fragment {
                 public void onClick(View v) {
                     sortFragment(String.valueOf(sortStatic.getText()));
                     toggleBackDrop();
+                }
+            });
+        }
+
+        btnCheckSettings = root.findViewById(R.id.btnCheckSettings);
+        if (btnCheckSettings != null) {
+            btnCheckSettings.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (getActivity() instanceof MainActivity) {
+                        ((MainActivity) getActivity()).OpenSettings();
+                    }
                 }
             });
         }

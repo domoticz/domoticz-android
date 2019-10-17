@@ -253,6 +253,17 @@
                         android:textColor="@color/light_gray"
                         android:textSize="@dimen/text_size_small"
                         tools:text="Error: No network connection available"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCheckSettings"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/errorTextMessage"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/action_settings"
+                        android:textColor="@color/white"
+                        android:textSize="10dp"/>
                 </RelativeLayout>
 
                 <com.google.android.material.button.MaterialButton

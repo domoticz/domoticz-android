@@ -32,6 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -65,6 +66,7 @@ public class DomoticzCardFragment extends Fragment {
     private TextView debugText;
     private boolean debug;
     private ViewGroup root;
+    public MaterialButton btnCheckSettings;
 
     public DomoticzCardFragment() {
     }
@@ -107,6 +109,18 @@ public class DomoticzCardFragment extends Fragment {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_cameras, null);
         coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
+
+        btnCheckSettings = root.findViewById(R.id.btnCheckSettings);
+        if (btnCheckSettings != null) {
+            btnCheckSettings.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (getActivity() instanceof MainActivity) {
+                        ((MainActivity) getActivity()).OpenSettings();
+                    }
+                }
+            });
+        }
         setTheme();
         return root;
     }

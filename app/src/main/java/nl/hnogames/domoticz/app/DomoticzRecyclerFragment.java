@@ -98,6 +98,7 @@ public class DomoticzRecyclerFragment extends Fragment {
     private boolean backdropShown = false;
     boolean isTablet = false;
     boolean isPortrait = false;
+    public MaterialButton btnCheckSettings;
 
     public DomoticzRecyclerFragment() {
     }
@@ -234,6 +235,18 @@ public class DomoticzRecyclerFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     toggleBackDrop();
+                }
+            });
+        }
+
+        btnCheckSettings = root.findViewById(R.id.btnCheckSettings);
+        if (btnCheckSettings != null) {
+            btnCheckSettings.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (getActivity() instanceof MainActivity) {
+                        ((MainActivity) getActivity()).OpenSettings();
+                    }
                 }
             });
         }
