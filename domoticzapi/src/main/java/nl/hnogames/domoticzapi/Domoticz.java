@@ -366,7 +366,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, false, 1, queue);
+                url, mSessionUtil, false, 0, queue);
     }
 
 
@@ -850,7 +850,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+                url, mSessionUtil, true, 2, queue);
     }
 
     public void getConfig(ConfigReceiver receiver) {
@@ -860,7 +860,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+                url, mSessionUtil, true, 2, queue);
     }
 
     public void getLanguageStringsFromServer(String language, LanguageReceiver receiver) {
@@ -871,7 +871,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+                url, mSessionUtil, true, 2, queue);
     }
 
     public void getTemperatures(TemperatureReceiver receiver) {

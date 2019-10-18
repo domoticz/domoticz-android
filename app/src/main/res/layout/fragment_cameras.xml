@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -21,12 +20,12 @@
   -->
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                     xmlns:tools="http://schemas.android.com/tools"
-                                                     android:id="@+id/coordinatorLayout"
-                                                     android:layout_width="fill_parent"
-                                                     android:layout_height="fill_parent"
-                                                     android:background="@color/primary">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/primary">
 
     <nl.hnogames.domoticz.UI.Backdrop.BackdropContainer
         android:id="@+id/backdropcontainer"
@@ -57,13 +56,13 @@
                     android:layout_gravity="center_vertical"
                     android:text="@string/filterOn_all"
                     android:textColor="@color/white"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:alpha="0.1"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSortOn"
@@ -73,13 +72,13 @@
                     android:layout_gravity="center_vertical"
                     android:text="@string/filterOn_on"
                     android:textColor="@color/white"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:alpha="0.1"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSortOff"
@@ -89,13 +88,13 @@
                     android:layout_gravity="center_vertical"
                     android:text="@string/filterOn_off"
                     android:textColor="@color/white"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:alpha="0.1"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSortStatic"
@@ -105,7 +104,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="@string/filterOn_static"
                     android:textColor="@color/white"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -123,13 +122,13 @@
                     android:layout_gravity="center_vertical"
                     android:text="@string/filter_all"
                     android:textColor="@color/white"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:alpha="0.1"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSortLogsNormal"
@@ -139,13 +138,13 @@
                     android:layout_gravity="center_vertical"
                     android:text="@string/filter_normal"
                     android:textColor="@color/white"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:alpha="0.1"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSortLogsStatus"
@@ -155,13 +154,13 @@
                     android:layout_gravity="center_vertical"
                     android:text="@string/filter_status"
                     android:textColor="@color/white"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:alpha="0.1"
-                    android:background="@color/white"/>
+                    android:background="@color/white" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSortLogsError"
@@ -171,7 +170,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="@string/filter_error"
                     android:textColor="@color/white"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -199,71 +198,81 @@
                         style="@style/debug_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/debug_textview_title"/>
+                        android:text="@string/debug_textview_title" />
 
                     <TextView
                         android:id="@+id/debugText"
                         style="@style/debug_text"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <RelativeLayout
                     android:id="@+id/errorLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="120dp"
+                    android:paddingTop="30dp"
                     android:visibility="gone">
 
-                    <ImageView
-                        android:id="@+id/errorImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:contentDescription="@string/error_image_description"
-                        android:src="@drawable/sad_smiley"/>
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/errorTextOops"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/errorImage"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="50dp"
-                        android:text="@string/oops"
-                        android:textSize="@dimen/text_size_large"/>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/errorTextWrong"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/errorTextOops"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="25dp"
-                        android:text="@string/something_went_wrong"
-                        android:textSize="@dimen/text_size_medium"/>
+                            <ImageView
+                                android:id="@+id/errorImage"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:layout_centerHorizontal="true"
+                                android:contentDescription="@string/error_image_description"
+                                android:src="@drawable/sad_smiley" />
 
-                    <TextView
-                        android:id="@+id/errorTextMessage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/errorTextWrong"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/light_gray"
-                        android:textSize="@dimen/text_size_small"
-                        tools:text="Error: No network connection available"/>
+                            <TextView
+                                android:id="@+id/errorTextOops"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/errorImage"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="20dp"
+                                android:text="@string/oops"
+                                android:textSize="@dimen/text_size_large" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnCheckSettings"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/errorTextMessage"
-                        android:layout_centerHorizontal="true"
-                        android:text="@string/action_settings"
-                        android:textColor="@color/white"
-                        android:textSize="10dp"/>
+                            <TextView
+                                android:id="@+id/errorTextWrong"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/errorTextOops"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="15dp"
+                                android:text="@string/something_went_wrong"
+                                android:textSize="@dimen/text_size_medium" />
+
+                            <TextView
+                                android:id="@+id/errorTextMessage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/errorTextWrong"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="5dp"
+                                android:textColor="@color/light_gray"
+                                android:textSize="@dimen/text_size_small"
+                                tools:text="Error: No network connection available" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnCheckSettings"
+                                style="@style/Widget.MaterialComponents.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/errorTextMessage"
+                                android:layout_centerHorizontal="true"
+                                android:text="@string/check_settings"
+                                android:textColor="@color/white"
+                                android:textSize="10dp" />
+                        </RelativeLayout>
+                    </ScrollView>
                 </RelativeLayout>
 
                 <com.google.android.material.button.MaterialButton
@@ -276,7 +285,7 @@
                     android:textSize="10dp"
                     android:visibility="gone"
                     app:icon="@drawable/baseline_keyboard_arrow_down_black_18"
-                    app:iconGravity="end"/>
+                    app:iconGravity="end" />
 
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/swipe_refresh_layout"
@@ -289,7 +298,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:scrollbars="vertical"/>
+                        android:scrollbars="vertical" />
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             </LinearLayout>

@@ -199,7 +199,7 @@ public class Wizard extends Fragment {
                             @Override
                             @DebugLog
                             public void onActionClicked(View view, Card card) {
-                                ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Switches");
+                                ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Switches", true);
                             }
                         }))
                     .addAction(R.id.right_text_button, new TextViewAction(context)
@@ -596,7 +596,7 @@ public class Wizard extends Fragment {
                             @Override
                             @DebugLog
                             public void onActionClicked(View view, Card card) {
-                                ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Utilities");
+                                ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Utilities", true);
                             }
                         }))
                     .addAction(R.id.right_text_button, new TextViewAction(context)
@@ -629,7 +629,7 @@ public class Wizard extends Fragment {
                             @Override
                             @DebugLog
                             public void onActionClicked(View view, Card card) {
-                                ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Switches");
+                                ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Switches", true);
                             }
                         }))
                     .addAction(R.id.right_text_button, new TextViewAction(context)
@@ -699,7 +699,7 @@ public class Wizard extends Fragment {
                                 mSharedPrefs.removeWizard();
                                 ((MainActivity) getActivity()).drawNavigationMenu(null);
                                 ((MainActivity) getActivity()).removeFragmentStack("nl.hnogames.domoticz.Fragments.Wizard");
-                                ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
+                                ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Dashboard", true);
                             }
                         }))
                     .addAction(R.id.right_text_button, new TextViewAction(context)
@@ -712,7 +712,7 @@ public class Wizard extends Fragment {
                                 mSharedPrefs.removeWizard();
                                 ((MainActivity) getActivity()).drawNavigationMenu(null);
                                 ((MainActivity) getActivity()).removeFragmentStack("nl.hnogames.domoticz.Fragments.Wizard");
-                                ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
+                                ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Dashboard", true);
                             }
                         }))
                     .endConfig()

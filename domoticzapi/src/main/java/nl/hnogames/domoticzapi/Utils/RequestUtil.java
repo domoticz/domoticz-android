@@ -57,82 +57,6 @@ import nl.hnogames.domoticzapi.Interfaces.JSONParserInterface;
 public class RequestUtil {
 
     private static final String TAG = RequestUtil.class.getSimpleName();
-    public static void makeJsonVersionRequest(@Nullable final JSONParserInterface parser,
-                                              final String username,
-                                              final String password,
-                                              final String url,
-                                              final SessionUtil sessionUtil,
-                                              final boolean usePreviousSession,
-                                              final int retryCounter,
-                                              final RequestQueue queue) {
-        JsonObjectRequest jsonObjReq =
-            new JsonObjectRequest(Request.Method.GET,
-                url, null, new Response.Listener<JSONObject>() {
-
-                @Override
-                public void onResponse(JSONObject response) {
-
-                    String jsonString;
-
-                    try {
-                        jsonString = response.getString(DomoticzValues.Json.Field.VERSION);
-                        if (parser != null)
-                            parser.parseResult(jsonString);
-                    } catch (JSONException e) {
-                        jsonErrorHandling(response, e, parser);
-                    }
-                }
-            }, new Response.ErrorListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    int counter = retryCounter - 1;
-                    if (counter <= 0) {
-                        errorHandling(volleyError);
-                        Log.d(TAG, "No retries left");
-                        if (parser != null) parser.onError(volleyError);
-                    } else {
-                        //try again without session id
-                        Log.d(TAG, "Trying again without session ID. Retries left: "
-                            + String.valueOf(counter));
-                        makeJsonVersionRequest(parser,
-                            username,
-                            password,
-                            url,
-                            sessionUtil,
-                            false,
-                            counter,
-                            queue);
-                    }
-                }
-            }) {
-
-                @Override
-                // HTTP basic authentication
-                // Taken from: http://blog.lemberg.co.uk/volley-part-1-quickstart
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> headers = super.getHeaders();
-
-                    if (headers == null
-                        || headers.equals(Collections.emptyMap())) {
-                        headers = new HashMap<>();
-                    }
-
-                    if (usePreviousSession)
-                        sessionUtil.addSessionCookie(headers);
-                    return createBasicAuthHeader(username, password, headers);
-                }
-
-                @Override
-                protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                    sessionUtil.checkSessionCookie(response.headers);           //save cookie
-                    return super.parseNetworkResponse(response);
-                }
-            };
-
-        // Adding request to request queue
-        addToRequestQueue(jsonObjReq, queue);
-    }
 
     public static void makeJsonGetRequest(@Nullable final JSONParserInterface parser,
                                           final String username,
@@ -592,9 +516,8 @@ public class RequestUtil {
     private static int socketTimeout = 5000;
     public static <T> void addToRequestQueue(Request<T> req, RequestQueue queue) {
         req.setTag(TAG);
-
         RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeout,
-            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+            0,
             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
 
         req.setRetryPolicy(retryPolicy);
