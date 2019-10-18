@@ -268,9 +268,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/errorTextMessage"
                                 android:layout_centerHorizontal="true"
-                                android:text="@string/check_settings"
-                                android:textColor="@color/white"
-                                android:textSize="10dp" />
+                                android:text="@string/check_settings" />
                         </RelativeLayout>
                     </ScrollView>
                 </RelativeLayout>
