@@ -300,6 +300,7 @@ public class DomoticzValues {
                 int UPDATEVAR = 40;
                 int IMAGE = 41;
                 int CHECKLOGIN = 42;
+                int NEWCHECKLOGIN = 45;
                 int UPDATE_DOWNLOAD_UPDATE = 43;
                 int SUNRISE = 44;
             }
@@ -495,6 +496,7 @@ public class DomoticzValues {
         interface Security {
             String GET = "/json.htm?type=command&param=getsecstatus";
             String CHECKLOGIN = "/json.htm?type=command&param=logincheck";
+            String NEWCHECKLOGIN = "/logincheck";
         }
 
         @SuppressWarnings({"unused", "SpellCheckingInspection"})

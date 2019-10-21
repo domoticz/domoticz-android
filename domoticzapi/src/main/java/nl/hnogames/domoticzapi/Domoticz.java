@@ -366,7 +366,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, false, 1, queue);
+                url, mSessionUtil, false, 0, queue);
     }
 
 
@@ -522,6 +522,26 @@ public class Domoticz {
     public void checkLogin(LoginReceiver loginReceiver) {
         String username = UsefulBits.encodeBase64(getUserCredentials(Authentication.USERNAME));
         String password = UsefulBits.getMd5String(getUserCredentials(Authentication.PASSWORD));
+        LoginParser parser = new LoginParser(loginReceiver);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NEWCHECKLOGIN);
+        Log.v(TAG, "Url: " + url);
+
+        try {
+            Map<String,String> params = new HashMap<>();
+            params.put("username", URLEncoder.encode(username, "UTF-8"));
+            params.put("password", URLEncoder.encode(password, "UTF-8"));
+
+            RequestUtil.makeJsonPostRequest(parser,
+                    null, null,
+                    url, null, params, mSessionUtil, true, 3, queue);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void checkLogin_oldMethod(LoginReceiver loginReceiver) {
+        String username = UsefulBits.encodeBase64(getUserCredentials(Authentication.USERNAME));
+        String password = UsefulBits.getMd5String(getUserCredentials(Authentication.PASSWORD));
 
         LoginParser parser = new LoginParser(loginReceiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CHECKLOGIN);
@@ -535,9 +555,9 @@ public class Domoticz {
 
         Log.v(TAG, "Url: " + url);
         RequestUtil.makeJsonGetRequest(parser,
-            getUserCredentials(Authentication.USERNAME),
-            getUserCredentials(Authentication.PASSWORD),
-            url, mSessionUtil, true, 3, queue);
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, true, 3, queue);
     }
 
     public void getSwitches(SwitchesReceiver switchesReceiver) {
@@ -830,7 +850,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+                url, mSessionUtil, true, 2, queue);
     }
 
     public void getConfig(ConfigReceiver receiver) {
@@ -840,7 +860,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+                url, mSessionUtil, true, 2, queue);
     }
 
     public void getLanguageStringsFromServer(String language, LanguageReceiver receiver) {
@@ -851,7 +871,7 @@ public class Domoticz {
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+                url, mSessionUtil, true, 2, queue);
     }
 
     public void getTemperatures(TemperatureReceiver receiver) {

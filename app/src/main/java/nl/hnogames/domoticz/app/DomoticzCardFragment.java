@@ -32,6 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -65,6 +66,7 @@ public class DomoticzCardFragment extends Fragment {
     private TextView debugText;
     private boolean debug;
     private ViewGroup root;
+    public MaterialButton btnCheckSettings;
 
     public DomoticzCardFragment() {
     }
@@ -82,8 +84,12 @@ public class DomoticzCardFragment extends Fragment {
                 (root.findViewById(R.id.debugLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
             if ((root.findViewById(R.id.coordinatorLayout)) != null)
                 (root.findViewById(R.id.coordinatorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
+            if ((root.findViewById(R.id.errorLayout)) != null)
+                (root.findViewById(R.id.errorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
             if (root.findViewById(R.id.errorImage) != null)
                 ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(getResources().getDrawable(R.drawable.sad_smiley_dark));
+            if ((root.findViewById(R.id.btnCheckSettings)) != null)
+                ((MaterialButton)root.findViewById(R.id.btnCheckSettings)).setTextColor(getResources().getColor(R.color.white));
             if (mSwipeRefreshLayout != null)
                 mSwipeRefreshLayout.setColorSchemeResources(
                     R.color.secondary,
@@ -107,6 +113,18 @@ public class DomoticzCardFragment extends Fragment {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_cameras, null);
         coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
+
+        btnCheckSettings = root.findViewById(R.id.btnCheckSettings);
+        if (btnCheckSettings != null) {
+            btnCheckSettings.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (getActivity() instanceof MainActivity) {
+                        ((MainActivity) getActivity()).OpenSettings();
+                    }
+                }
+            });
+        }
         setTheme();
         return root;
     }
@@ -249,6 +267,9 @@ public class DomoticzCardFragment extends Fragment {
         RelativeLayout errorLayout = root.findViewById(R.id.errorLayout);
         if (errorLayout != null) {
             errorLayout.setVisibility(View.VISIBLE);
+
+            MaterialButton settingsButton = root.findViewById(R.id.btnCheckSettings);
+            settingsButton.setVisibility(View.GONE);
 
             ImageView errorImage = root.findViewById(R.id.errorImage);
             errorImage.setImageResource(R.drawable.empty);

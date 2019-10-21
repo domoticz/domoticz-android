@@ -115,6 +115,7 @@ import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
+import nl.hnogames.domoticzapi.Utils.SessionUtil;
 import shortbread.Shortcut;
 
 @DebugLog
@@ -146,6 +147,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private ConfigInfo mConfigInfo;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
+    public Exception configException;
 
     @DebugLog
     public ServerUtil getServerUtil() {
@@ -163,6 +165,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        configException = null;
         if (Build.VERSION.SDK_INT >= 24) {
             try {
                 Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
@@ -321,6 +324,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
             appRate();
             initTalkBack();
 
+            ShowLoading();
+
             mServerUtil = new ServerUtil(this);
             if (mServerUtil.getActiveServer() != null && UsefulBits.isEmpty(mServerUtil.getActiveServer().getRemoteServerUrl())) {
                 Toast.makeText(this, "Incorrect settings detected, please reconfigure this app.", Toast.LENGTH_LONG).show();
@@ -336,14 +341,30 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
                 //mConfigInfo = mServerUtil.getActiveServer().getConfigInfo(this);
                 if (!fromVoiceWidget && !fromQRCodeWidget) {
-                    setupMobileDevice();
-                    setScheduledTasks();
+                    UsefulBits.getServerConfigForActiveServer(MainActivity.this, new ConfigReceiver() {
+                        @Override
+                        @DebugLog
+                        public void onReceiveConfig(ConfigInfo settings) {
+                            if (MainActivity.this.mConfigInfo == null || settings == null || !MainActivity.this.mConfigInfo.toString().equals(settings.toString())) {
+                                MainActivity.this.mConfigInfo = settings;
+                                SerializableManager.saveSerializable(MainActivity.this, settings, "ConfigInfo");
 
-                    WidgetUtils.RefreshWidgets(this);
-                    UsefulBits.checkDownloadedLanguage(this, mServerUtil, false, false);
-                    new MainActivity.GetCachedDataTask().execute();
-                } else {
-                    if (!fromShortcut) addFragment();
+                                setupMobileDevice();
+                                setScheduledTasks();
+
+                                WidgetUtils.RefreshWidgets(MainActivity.this);
+                                buildscreen();
+                            }
+                        }
+
+                        @Override
+                        @DebugLog
+                        public void onError(Exception error) {
+                            configException = error;
+                            if (!fromShortcut)
+                                addFragment(true);
+                        }
+                    }, mConfigInfo);
                 }
                 if (mSharedPrefs.isStartupSecurityEnabled()) {
                     biometricPrompt.authenticate(promptInfo);
@@ -356,10 +377,15 @@ public class MainActivity extends AppCompatPermissionsActivity {
         }
     }
 
+    public void ShowLoading()
+    {
+        changeFragment("nl.hnogames.domoticz.Fragments.Loading", false);
+    }
+
     public void buildscreen() {
         drawNavigationMenu(mConfigInfo);
         if (!fromShortcut)
-            addFragment();
+            addFragment(false);
     }
 
     /* Called when the second activity's finishes */
@@ -618,6 +644,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     @DebugLog
+    public void clearFragmentStack() {
+        if (stackFragments != null) {
+            stackFragments.clear();
+        }
+    }
+
+    @DebugLog
     public void addFragmentStack(String fragment) {
         int screenIndex = mSharedPrefs.getStartupScreenIndex();
         if (fragment.equals(getResources().getStringArray(R.array.drawer_fragments)[screenIndex])) {
@@ -661,59 +694,34 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     @DebugLog
-    public void changeFragment(String fragment) {
-        //if (!isFinishing()) {
+    public void changeFragment(String fragment, boolean keepInStack) {
         try {
             FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
             latestFragment = Fragment.instantiate(MainActivity.this, fragment);
             tx.replace(R.id.main, latestFragment);
             tx.commitAllowingStateLoss();
-            addFragmentStack(fragment);
+            if(keepInStack)
+                addFragmentStack(fragment);
             saveScreenToAnalytics(fragment);
+            invalidateOptionsMenu();
         } catch (Exception e) {
             Log.e("Fragment", e.getMessage());
         }
-        //}
     }
 
-    private void addFragment() {
-        if (!isFinishing()) {
-            try {
-                int screenIndex = mSharedPrefs.getStartupScreenIndex();
-                FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-                latestFragment = Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
-                if (screenIndex == 1 && latestFragment instanceof MainPager) {
-                    String screen = mSharedPrefs.getStartupScreen();
-                    int i = 0;
-                    if (screen.equalsIgnoreCase(getString(R.string.title_switches))) {
-                        i = 1;
-                    } else if (screen.equalsIgnoreCase(getString(R.string.title_scenes))) {
-                        i = 2;
-                    }
-                    ((MainPager) latestFragment).SetStartupScreen(i);
+    private void addFragment(boolean exception) {
+        if(!exception) {
+            if (!isFinishing()) {
+                try {
+                    changeFragment(getResources().getStringArray(R.array.drawer_fragments)[mSharedPrefs.getStartupScreenIndex()], true);
+                } catch (Exception ignored) {
+                    //get default screen (dashboard)
+                    changeFragment(getResources().getStringArray(R.array.drawer_fragments)[1], true);
                 }
-                if (screenIndex == 2 && latestFragment instanceof TemperatureMainPager) {
-                    String screen = mSharedPrefs.getStartupScreen();
-                    int i = 0;
-                    if (screen.equalsIgnoreCase(getString(R.string.title_weather))) {
-                        i = 1;
-                    }
-                    ((TemperatureMainPager) latestFragment).SetStartupScreen(i);
-                }
-
-                tx.replace(R.id.main, latestFragment);
-                tx.commitAllowingStateLoss();
-                addFragmentStack(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
-                saveScreenToAnalytics(getResources().getStringArray(R.array.drawer_fragments)[screenIndex]);
-            } catch (Exception ignored) {
-                //get default screen (dashboard)
-                FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-                latestFragment = Fragment.instantiate(MainActivity.this, getResources().getStringArray(R.array.drawer_fragments)[1]);
-                tx.replace(R.id.main, latestFragment);
-                tx.commitAllowingStateLoss();
-                addFragmentStack(getResources().getStringArray(R.array.drawer_fragments)[0]);
-                saveScreenToAnalytics(getResources().getStringArray(R.array.drawer_fragments)[0]);
             }
+        }
+        else{
+            changeFragment("nl.hnogames.domoticz.Fragments.Error", false);
         }
     }
 
@@ -911,12 +919,10 @@ public class MainActivity extends AppCompatPermissionsActivity {
                             searchViewAction.setQuery("", false);
                             searchViewAction.clearFocus();
                         }
-
                         if (drawerItem.getTag() != null && String.valueOf(drawerItem.getTag()).equals("Settings")) {
-                            stopCameraTimer();
-                            startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), iSettingsResultCode);
+                            OpenSettings();
                         } else if (drawerItem.getTag() != null) {
-                            changeFragment(String.valueOf(drawerItem.getTag()));
+                            changeFragment(String.valueOf(drawerItem.getTag()), true);
                             stopCameraTimer();
                             invalidateOptionsMenu();
                             if (onPhone)
@@ -927,8 +933,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 }
             })
             .build();
-
         drawer.addStickyFooterItem(createSecondaryDrawerItem(this.getString(R.string.action_settings), "gmd_settings", "Settings"));
+    }
+
+    public void OpenSettings()
+    {
+        stopCameraTimer();
+        startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), iSettingsResultCode);
     }
 
     private List<IDrawerItem> getDrawerItems() {
@@ -1025,7 +1036,9 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
         MenuItem speechMenuItem;
         if (!fromVoiceWidget && !fromQRCodeWidget) {
-            if ((f instanceof Cameras)) {
+            if ((f instanceof nl.hnogames.domoticz.Fragments.Error)) {
+                    getMenuInflater().inflate(R.menu.menu_error, menu);
+            } else if ((f instanceof Cameras)) {
                 if (cameraRefreshTimer != null)
                     getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
                 else
@@ -1363,6 +1376,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                                 String message = String.format(getString(R.string.switch_to_server), s.getServerName());
                                 showSnackbar(message);
                                 mServerUtil.setActiveServer(s);
+                                domoticz.getSessionUtil().clearSessionCookie();
                                 MainActivity.this.recreate();
                             }
                         }
@@ -1495,7 +1509,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 } else {
                     String currentFragment = stackFragments.get(stackFragments.size() - 1);
                     String previousFragment = stackFragments.get(stackFragments.size() - 2);
-                    changeFragment(previousFragment);
+                    changeFragment(previousFragment, true);
                     stackFragments.remove(currentFragment);
                 }
 
@@ -1537,59 +1551,24 @@ public class MainActivity extends AppCompatPermissionsActivity {
     @Shortcut(id = "open_dashboard", icon = R.drawable.generic, shortLabelRes = R.string.title_dashboard, rank = 5, activity = MainActivity.class)
     public void OpenDashBoard() {
         fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.Fragments.Dashboard");
+        changeFragment("nl.hnogames.domoticz.Fragments.Dashboard", false);
     }
 
     @Shortcut(id = "open_switches", icon = R.drawable.dimmer, shortLabelRes = R.string.title_switches, rank = 4, activity = MainActivity.class)
     public void OpenSwitch() {
         fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.Fragments.Switches");
+        changeFragment("nl.hnogames.domoticz.Fragments.Switches", false);
     }
 
     @Shortcut(id = "open_utilities", icon = R.drawable.harddisk, shortLabelRes = R.string.title_utilities, rank = 3, activity = MainActivity.class)
     public void OpenUtilities() {
         fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.Fragments.Utilities");
+        changeFragment("nl.hnogames.domoticz.Fragments.Utilities", false);
     }
 
     @Shortcut(id = "open_temperature", icon = R.drawable.temperature, shortLabelRes = R.string.title_temperature, rank = 2, activity = MainActivity.class)
     public void OpenTemperature() {
         fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.Fragments.Temperature");
-    }
-
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        protected Boolean doInBackground(Boolean... geto) {
-            try {
-                MainActivity.this.mConfigInfo = (ConfigInfo) SerializableManager.readSerializedObject(MainActivity.this, "ConfigInfo");
-                mServerUtil.getActiveServer().setConfigInfo(MainActivity.this, MainActivity.this.mConfigInfo);
-            } catch (Exception ex) {
-            }
-            return true;
-        }
-
-        protected void onPostExecute(Boolean result) {
-            if (MainActivity.this.mConfigInfo != null)
-                buildscreen(); //build screen from cache
-
-            UsefulBits.getServerConfigForActiveServer(MainActivity.this, new ConfigReceiver() {
-                @Override
-                @DebugLog
-                public void onReceiveConfig(ConfigInfo settings) {
-                    if (MainActivity.this.mConfigInfo == null || settings == null || !MainActivity.this.mConfigInfo.toString().equals(settings.toString())) {
-                        MainActivity.this.mConfigInfo = settings;
-                        SerializableManager.saveSerializable(MainActivity.this, settings, "ConfigInfo");
-                        buildscreen();
-                    }
-                }
-
-                @Override
-                @DebugLog
-                public void onError(Exception error) {
-                    if (!fromShortcut)
-                        addFragment();
-                }
-            }, mConfigInfo);
-        }
+        changeFragment("nl.hnogames.domoticz.Fragments.Temperature", false);
     }
 }
