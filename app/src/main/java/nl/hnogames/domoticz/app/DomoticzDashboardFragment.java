@@ -102,7 +102,6 @@ public class DomoticzDashboardFragment extends Fragment {
     public void setTheme() {
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getActivity());
-
         if (mSharedPrefs.darkThemeEnabled()) {
             if (gridView != null)
                 gridView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
