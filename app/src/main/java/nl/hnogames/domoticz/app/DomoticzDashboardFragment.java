@@ -82,7 +82,7 @@ public class DomoticzDashboardFragment extends Fragment {
     public LinearLayout lySortDevices;
     public BackdropContainer backdropContainer;
     public MaterialCardView bottomLayoutWrapper;
-    public MaterialButton collapseSortButton, sortAll, sortOn, sortOff, sortStatic;
+    public MaterialButton collapseSortButton, sortAll, sortOn, sortOff, sortStatic, btnCheckSettings;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private TextView debugText;
@@ -102,7 +102,6 @@ public class DomoticzDashboardFragment extends Fragment {
     public void setTheme() {
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getActivity());
-
         if (mSharedPrefs.darkThemeEnabled()) {
             if (gridView != null)
                 gridView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
@@ -112,6 +111,10 @@ public class DomoticzDashboardFragment extends Fragment {
                 (root.findViewById(R.id.coordinatorLayout)).setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
             if (root.findViewById(R.id.errorImage) != null)
                 ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.sad_smiley_dark));
+            if ((root.findViewById(R.id.btnCheckSettings)) != null)
+                ((MaterialButton)root.findViewById(R.id.btnCheckSettings)).setTextColor(getResources().getColor(R.color.white));
+            if ((root.findViewById(R.id.errorLayout)) != null)
+                (root.findViewById(R.id.errorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
             if (bottomLayoutWrapper != null)
                 bottomLayoutWrapper.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
             if (collapseSortButton != null) {
@@ -233,6 +236,18 @@ public class DomoticzDashboardFragment extends Fragment {
                 public void onClick(View v) {
                     sortFragment(String.valueOf(sortStatic.getText()));
                     toggleBackDrop();
+                }
+            });
+        }
+
+        btnCheckSettings = root.findViewById(R.id.btnCheckSettings);
+        if (btnCheckSettings != null) {
+            btnCheckSettings.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (getActivity() instanceof MainActivity) {
+                        ((MainActivity) getActivity()).OpenSettings();
+                    }
                 }
             });
         }
@@ -552,6 +567,9 @@ public class DomoticzDashboardFragment extends Fragment {
         RelativeLayout errorLayout = root.findViewById(R.id.errorLayout);
         if (errorLayout != null) {
             errorLayout.setVisibility(View.VISIBLE);
+
+            MaterialButton settingsButton = root.findViewById(R.id.btnCheckSettings);
+            settingsButton.setVisibility(View.GONE);
 
             ImageView errorImage = root.findViewById(R.id.errorImage);
             errorImage.setImageResource(R.drawable.empty);

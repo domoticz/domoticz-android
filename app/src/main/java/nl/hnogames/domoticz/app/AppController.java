@@ -23,6 +23,7 @@ package nl.hnogames.domoticz.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -32,12 +33,16 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.security.ProviderInstaller;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 import javax.net.ssl.X509TrustManager;
 
 import androidx.multidex.MultiDex;
@@ -66,20 +71,27 @@ public class AppController extends MultiDexApplication {
 
     @SuppressWarnings("TryWithIdenticalCatches")
     public RequestQueue getRequestQueue() {
+        SSLContext sc;
+
         if (mRequestQueue == null) {
             Context context = getApplicationContext();
             try {
                 Log.d(TAG, "Initializing SSL");
-                SSLContext sc = SSLContext.getInstance("TLS");
                 MemorizingTrustManager mtm = new MemorizingTrustManager(context);
-                sc.init(null, new X509TrustManager[]{mtm}, new java.security.SecureRandom());
-
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    sc = SSLContext.getInstance("TLS");
+                    sc.init(null, new X509TrustManager[]{mtm}, new java.security.SecureRandom());
+                } else {
+                    ProviderInstaller.installIfNeeded(getApplicationContext());
+                    sc = SSLContext.getInstance("TLSv1.2");
+                    sc.init(null, null, null);
+                    sc.createSSLEngine();
+                }
                 HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
                 HttpsURLConnection.setDefaultHostnameVerifier(
                     mtm.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
-            } catch (KeyManagementException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
+            } catch (KeyManagementException | NoSuchAlgorithmException |
+                    GooglePlayServicesNotAvailableException | GooglePlayServicesRepairableException e) {
                 e.printStackTrace();
             }
             mRequestQueue = Volley.newRequestQueue(context);

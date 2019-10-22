@@ -22,8 +22,8 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
 
     def versionPropsFile = file('version.properties')
 
@@ -55,10 +55,8 @@ android {
             versionCode version_Code
             versionName "${versionMajor}.${versionMinor}.${versionPatch}"
             minSdkVersion 16
-            targetSdkVersion 28
+            targetSdkVersion 29
         }
-    } else {
-        throw new GradleException("Could not read version.properties!")
     }
 
     buildTypes {
@@ -76,7 +74,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
 
-    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
