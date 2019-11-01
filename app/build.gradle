@@ -88,7 +88,7 @@ android {
             resValue "string", "ADMOB_ADS_KEY", "$System.env.ADMOBADSKEY"
 
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
-            resValue "string", "googleapikey", "$System.env.GOOGLEAPIKEY"
+            resValue "string", "google_maps_key", "$System.env.GOOGLEAPIKEY"
             resValue "string", "app_name_domoticz", 'Domoticz Lite'
             buildConfigField "boolean", "LITE_VERSION", "true"
             buildConfigField "boolean", "PAID_OOTT", "false"
@@ -106,7 +106,7 @@ android {
             resValue "string", "ADMOB_ADS_KEY", "$System.env.ADMOBADSKEY"
 
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
-            resValue "string", "googleapikey", "$System.env.GOOGLEAPIKEY"
+            resValue "string", "google_maps_key", "$System.env.GOOGLEAPIKEY"
             resValue "string", "app_name_domoticz", 'Domoticz'
             buildConfigField "boolean", "LITE_VERSION", "false"
             buildConfigField "boolean", "PAID_OOTT", "false"
@@ -124,7 +124,7 @@ android {
             resValue "string", "ADMOB_ADS_KEY", "$System.env.ADMOBADSKEY"
 
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
-            resValue "string", "googleapikey", "$System.env.GOOGLEAPIKEY"
+            resValue "string", "google_maps_key", "$System.env.GOOGLEAPIKEY"
 
             resValue "string", "app_name_domoticz", 'OOTT'
             buildConfigField "boolean", "LITE_VERSION", "false"
