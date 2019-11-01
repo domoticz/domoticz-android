@@ -25,9 +25,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import nl.hnogames.domoticz.Preference.Preference;
-import nl.hnogames.domoticz.Utils.SharedPrefUtil;
-import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.preference.Preference;
+import nl.hnogames.domoticz.utils.SharedPrefUtil;
+import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 
 public class SettingsActivity extends AppCompatPermissionsActivity {

@@ -24,8 +24,8 @@ package nl.hnogames.domoticz;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import nl.hnogames.domoticz.Fragments.Camera;
-import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.fragments.Camera;
+import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 
 public class CameraActivity extends AppCompatAssistActivity {

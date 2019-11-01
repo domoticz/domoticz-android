@@ -50,13 +50,13 @@ import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import hugo.weaving.DebugLog;
-import nl.hnogames.domoticz.Containers.BluetoothInfo;
-import nl.hnogames.domoticz.Interfaces.BluetoothClickListener;
-import nl.hnogames.domoticz.UI.SwitchDialog;
-import nl.hnogames.domoticz.Utils.DeviceUtils;
-import nl.hnogames.domoticz.Utils.PermissionsUtil;
-import nl.hnogames.domoticz.Utils.SharedPrefUtil;
-import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.containers.BluetoothInfo;
+import nl.hnogames.domoticz.interfaces.BluetoothClickListener;
+import nl.hnogames.domoticz.ui.SwitchDialog;
+import nl.hnogames.domoticz.utils.DeviceUtils;
+import nl.hnogames.domoticz.utils.PermissionsUtil;
+import nl.hnogames.domoticz.utils.SharedPrefUtil;
+import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
@@ -71,7 +71,7 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
     private Domoticz domoticz;
     private CoordinatorLayout coordinatorLayout;
     private ArrayList<BluetoothInfo> BluetoothList;
-    private nl.hnogames.domoticz.Adapters.BluetoothAdapter adapter;
+    private nl.hnogames.domoticz.adapters.BluetoothAdapter adapter;
     private PermissionHelper permissionHelper;
     private BluetoothAdapter mBluetoothAdapter;
 
@@ -97,7 +97,7 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
 
         domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         BluetoothList = mSharedPrefs.getBluetoothList();
-        adapter = new nl.hnogames.domoticz.Adapters.BluetoothAdapter(this, BluetoothList, this);
+        adapter = new nl.hnogames.domoticz.adapters.BluetoothAdapter(this, BluetoothList, this);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         createListView();

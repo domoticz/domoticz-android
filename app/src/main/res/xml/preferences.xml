@@ -63,7 +63,7 @@
             android:summaryOff="@string/always_auto_refresh_off"
             android:summaryOn="@string/always_auto_refresh_on"
             android:title="@string/always_auto_refresh"/>
-        <nl.hnogames.domoticz.Preference.EditTextIntegerPreference
+        <nl.hnogames.domoticz.preference.EditTextIntegerPreference
             android:key="autorefreshTimer"
             android:dependency="autorefresh"
             android:summary="@string/set_auto_refresh_time"
@@ -74,11 +74,11 @@
         android:key="defaultValues"
         android:title="@string/default_values">
         <PreferenceCategory android:title="@string/temperature">
-            <nl.hnogames.domoticz.Preference.EditTextIntegerPreference
+            <nl.hnogames.domoticz.preference.EditTextIntegerPreference
                 android:key="tempMinValue"
                 android:summary="@string/set_point_min_description"
                 android:title="@string/set_point_min"/>
-            <nl.hnogames.domoticz.Preference.EditTextIntegerPreference
+            <nl.hnogames.domoticz.preference.EditTextIntegerPreference
                 android:key="tempMaxValue"
                 android:summary="@string/set_point_max_description"
                 android:title="@string/set_point_max"/>
@@ -129,7 +129,7 @@
             android:summaryOff="@string/wear_custom_off"
             android:summaryOn="@string/wear_custom_on"
             android:title="@string/enable_wear_select"/>
-        <nl.hnogames.domoticz.Preference.WearMultiSelectListPreference
+        <nl.hnogames.domoticz.preference.WearMultiSelectListPreference
             android:defaultValue="@array/empty_array"
             android:dependency="enableWearItems"
             android:dialogTitle="@string/custom_wear_select"
@@ -282,7 +282,7 @@
                 android:key="noticiationSettings"
                 android:title="@string/action_settings"/>
 
-            <nl.hnogames.domoticz.Preference.NotificationsMultiSelectListPreference
+            <nl.hnogames.domoticz.preference.NotificationsMultiSelectListPreference
                 android:defaultValue="@array/empty_array"
                 android:dependency="enableNotifications"
                 android:dialogTitle="@string/suppress_notifications_select"
@@ -322,7 +322,7 @@
             </PreferenceCategory>
 
             <PreferenceCategory android:title="@string/alarm">
-                <nl.hnogames.domoticz.Preference.NotificationsMultiSelectListPreference
+                <nl.hnogames.domoticz.preference.NotificationsMultiSelectListPreference
                     android:defaultValue="@array/empty_array"
                     android:dependency="enableNotifications"
                     android:dialogTitle="@string/alarm_notifications_select"
@@ -333,7 +333,7 @@
                     android:title="@string/alarm_notifications_title"
                     customPreference:selectAllValuesByDefault="false"/>
 
-                <nl.hnogames.domoticz.Preference.EditTextIntegerPreference
+                <nl.hnogames.domoticz.preference.EditTextIntegerPreference
                     android:defaultValue="5"
                     android:dependency="enableNotifications"
                     android:key="alarmNotificationTimer"

@@ -27,7 +27,7 @@
     android:layout_height="fill_parent"
     android:background="@color/primary">
 
-    <nl.hnogames.domoticz.UI.Backdrop.BackdropContainer
+    <nl.hnogames.domoticz.ui.Backdrop.BackdropContainer
         android:id="@+id/backdropcontainer"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -301,6 +301,6 @@
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
-    </nl.hnogames.domoticz.UI.Backdrop.BackdropContainer>
+    </nl.hnogames.domoticz.ui.Backdrop.BackdropContainer>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

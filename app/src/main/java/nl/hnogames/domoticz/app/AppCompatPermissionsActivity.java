@@ -33,7 +33,7 @@ import java.util.Arrays;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.PermissionsUtil;
+import nl.hnogames.domoticz.utils.PermissionsUtil;
 
 public class AppCompatPermissionsActivity extends AppCompatAssistActivity implements OnPermissionCallback {
     private PermissionHelper permissionHelper;

@@ -29,9 +29,9 @@ import java.util.TimerTask;
 
 import androidx.fragment.app.FragmentTransaction;
 import hugo.weaving.DebugLog;
-import nl.hnogames.domoticz.Fragments.Dashboard;
-import nl.hnogames.domoticz.Utils.SharedPrefUtil;
-import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.fragments.Dashboard;
+import nl.hnogames.domoticz.utils.SharedPrefUtil;
+import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;

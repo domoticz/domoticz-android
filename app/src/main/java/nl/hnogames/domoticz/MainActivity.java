@@ -23,7 +23,6 @@ package nl.hnogames.domoticz;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -82,23 +81,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import hotchemi.android.rate.AppRate;
 import hugo.weaving.DebugLog;
-import nl.hnogames.domoticz.Containers.QRCodeInfo;
-import nl.hnogames.domoticz.Containers.SpeechInfo;
-import nl.hnogames.domoticz.Fragments.Cameras;
-import nl.hnogames.domoticz.Fragments.Logs;
-import nl.hnogames.domoticz.Fragments.MainPager;
-import nl.hnogames.domoticz.Fragments.TemperatureMainPager;
-import nl.hnogames.domoticz.UI.PasswordDialog;
-import nl.hnogames.domoticz.UI.SortDialog;
-import nl.hnogames.domoticz.Utils.GCMUtils;
-import nl.hnogames.domoticz.Utils.GeoUtils;
-import nl.hnogames.domoticz.Utils.PermissionsUtil;
-import nl.hnogames.domoticz.Utils.SerializableManager;
-import nl.hnogames.domoticz.Utils.SharedPrefUtil;
-import nl.hnogames.domoticz.Utils.TalkBackUtil;
-import nl.hnogames.domoticz.Utils.UsefulBits;
-import nl.hnogames.domoticz.Utils.WidgetUtils;
-import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
+import nl.hnogames.domoticz.containers.QRCodeInfo;
+import nl.hnogames.domoticz.containers.SpeechInfo;
+import nl.hnogames.domoticz.fragments.Cameras;
+import nl.hnogames.domoticz.fragments.Logs;
+import nl.hnogames.domoticz.ui.PasswordDialog;
+import nl.hnogames.domoticz.ui.SortDialog;
+import nl.hnogames.domoticz.utils.GCMUtils;
+import nl.hnogames.domoticz.utils.GeoUtils;
+import nl.hnogames.domoticz.utils.PermissionsUtil;
+import nl.hnogames.domoticz.utils.SerializableManager;
+import nl.hnogames.domoticz.utils.SharedPrefUtil;
+import nl.hnogames.domoticz.utils.TalkBackUtil;
+import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticz.utils.WidgetUtils;
+import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
@@ -115,7 +112,6 @@ import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
-import nl.hnogames.domoticzapi.Utils.SessionUtil;
 import shortbread.Shortcut;
 
 @DebugLog
@@ -379,7 +375,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
     public void ShowLoading()
     {
-        changeFragment("nl.hnogames.domoticz.Fragments.Loading", false);
+        changeFragment("nl.hnogames.domoticz.fragments.Loading", false);
     }
 
     public void buildscreen() {
@@ -721,7 +717,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
             }
         }
         else{
-            changeFragment("nl.hnogames.domoticz.Fragments.Error", false);
+            changeFragment("nl.hnogames.domoticz.fragments.Error", false);
         }
     }
 
@@ -960,39 +956,39 @@ public class MainActivity extends AppCompatPermissionsActivity {
         }
 
         for (int i = 0; i < drawerActions.length; i++)
-            if (fragments[i].contains("Fragments.Wizard"))
+            if (fragments[i].contains("fragments.Wizard"))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         if (drawerItems.size() > 0)
             drawerItems.add(new DividerDrawerItem());
 
         for (int i = 0; i < drawerActions.length; i++)
-            if (fragments[i].contains("Fragments.Dashboard") ||
-                (fragments[i].contains("Fragments.Switch") && (mConfigInfo != null && mConfigInfo.isEnableTabLights())) ||
-                (fragments[i].contains("Fragments.Scene") && (mConfigInfo != null && mConfigInfo.isEnableTabScenes())))
+            if (fragments[i].contains("fragments.Dashboard") ||
+                (fragments[i].contains("fragments.Switch") && (mConfigInfo != null && mConfigInfo.isEnableTabLights())) ||
+                (fragments[i].contains("fragments.Scene") && (mConfigInfo != null && mConfigInfo.isEnableTabScenes())))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         drawerItems.add(new DividerDrawerItem());
 
         for (int i = 0; i < drawerActions.length; i++)
-            if ((fragments[i].contains("Fragments.Temperature") && (mConfigInfo != null && mConfigInfo.isEnableTabTemp())) ||
-                (fragments[i].contains("Fragments.Weather") && (mConfigInfo != null && mConfigInfo.isEnableTabWeather())))
+            if ((fragments[i].contains("fragments.Temperature") && (mConfigInfo != null && mConfigInfo.isEnableTabTemp())) ||
+                (fragments[i].contains("fragments.Weather") && (mConfigInfo != null && mConfigInfo.isEnableTabWeather())))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         drawerItems.add(new DividerDrawerItem());
 
         for (int i = 0; i < drawerActions.length; i++) {
-            if ((fragments[i].contains("Fragments.Plans")) ||
-                (fragments[i].contains("Fragments.Utilities") && (mConfigInfo != null && mConfigInfo.isEnableTabUtility())))
+            if ((fragments[i].contains("fragments.Plans")) ||
+                (fragments[i].contains("fragments.Utilities") && (mConfigInfo != null && mConfigInfo.isEnableTabUtility())))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         }
 
         try {
             if (user != null && user.getRights() >= 2) {
                 for (int i = 0; i < drawerActions.length; i++) {
-                    if (fragments[i].contains("Fragments.Camera"))
+                    if (fragments[i].contains("fragments.Camera"))
                         drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
                 }
                 drawerItems.add(new DividerDrawerItem());
                 for (int i = 0; i < drawerActions.length; i++)
-                    if (fragments[i].contains("Fragments.Logs") || fragments[i].contains("Fragments.Events") || fragments[i].contains("Fragments.UserVariables"))
+                    if (fragments[i].contains("fragments.Logs") || fragments[i].contains("fragments.Events") || fragments[i].contains("fragments.UserVariables"))
                         drawerItems.add(createSecondaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
             }
         } catch (Exception ex) {
@@ -1036,7 +1032,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
         MenuItem speechMenuItem;
         if (!fromVoiceWidget && !fromQRCodeWidget) {
-            if ((f instanceof nl.hnogames.domoticz.Fragments.Error)) {
+            if ((f instanceof nl.hnogames.domoticz.fragments.Error)) {
                     getMenuInflater().inflate(R.menu.menu_error, menu);
             } else if ((f instanceof Cameras)) {
                 if (cameraRefreshTimer != null)
@@ -1551,24 +1547,24 @@ public class MainActivity extends AppCompatPermissionsActivity {
     @Shortcut(id = "open_dashboard", icon = R.drawable.generic, shortLabelRes = R.string.title_dashboard, rank = 5, activity = MainActivity.class)
     public void OpenDashBoard() {
         fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.Fragments.Dashboard", false);
+        changeFragment("nl.hnogames.domoticz.fragments.Dashboard", false);
     }
 
     @Shortcut(id = "open_switches", icon = R.drawable.dimmer, shortLabelRes = R.string.title_switches, rank = 4, activity = MainActivity.class)
     public void OpenSwitch() {
         fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.Fragments.Switches", false);
+        changeFragment("nl.hnogames.domoticz.fragments.Switches", false);
     }
 
     @Shortcut(id = "open_utilities", icon = R.drawable.harddisk, shortLabelRes = R.string.title_utilities, rank = 3, activity = MainActivity.class)
     public void OpenUtilities() {
         fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.Fragments.Utilities", false);
+        changeFragment("nl.hnogames.domoticz.fragments.Utilities", false);
     }
 
     @Shortcut(id = "open_temperature", icon = R.drawable.temperature, shortLabelRes = R.string.title_temperature, rank = 2, activity = MainActivity.class)
     public void OpenTemperature() {
         fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.Fragments.Temperature", false);
+        changeFragment("nl.hnogames.domoticz.fragments.Temperature", false);
     }
 }
