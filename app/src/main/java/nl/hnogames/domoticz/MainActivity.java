@@ -452,6 +452,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
             this.finish();
 
         permissionHelper.onActivityForResult(requestCode);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void hideViews() {
