@@ -359,7 +359,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     @DebugLog
     public void onThermostatClick(final int idx) {
         UserInfo user = getCurrentUser(mContext, mDomoticz);
-        if (user != null && user.getRights() <= 1) {
+        if (user != null && user.getRights() <= 0) {
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
@@ -405,14 +405,12 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 }
             }
         });
-
         tempDialog.show();
     }
 
     public void setThermostatAction(final UtilitiesInfo tempUtil,
                                     double newSetPoint,
                                     String password) {
-
         UserInfo user = getCurrentUser(mContext, mDomoticz);
         if (user != null && user.getRights() <= 0) {
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);

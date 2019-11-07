@@ -293,7 +293,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         final int idx = t.getIdx();
 
         UserInfo user = getCurrentUser(mContext, mDomoticz);
-        if (user != null && user.getRights() <= 1) {
+        if (user != null && user.getRights() <= 0) {
             UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
