@@ -12,7 +12,9 @@ import com.google.android.gms.location.GeofencingEvent;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.JobIntentService;
 import nl.hnogames.domoticz.containers.LocationInfo;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.NotificationUtil;
@@ -26,25 +28,20 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
-public class GeofenceTransitionsIntentService extends Service {
+public class GeofenceTransitionsIntentService extends JobIntentService{
     private final String TAG = "GEOFENCE";
     private Context context;
     private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
+    private static final int JOB_ID = 502;
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+    public static void enqueueWork(Context context, Intent intent) {
+        enqueueWork(context, GeofenceTransitionsIntentService.class, JOB_ID, intent);
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    protected void onHandleWork(@NonNull Intent intent) {
         this.context = getApplicationContext();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this, "Geofence"));
-        }
-
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(context);
 
@@ -55,9 +52,6 @@ public class GeofenceTransitionsIntentService extends Service {
             Log.d(TAG, "Received geofence event.");
             handleEnterExit(geoFenceEvent);
         }
-
-        stopSelf();
-        return START_NOT_STICKY;
     }
 
     private void handleEnterExit(GeofencingEvent geoFenceEvent) {

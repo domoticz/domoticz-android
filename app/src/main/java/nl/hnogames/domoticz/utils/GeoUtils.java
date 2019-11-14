@@ -38,6 +38,7 @@ import com.google.android.gms.location.LocationServices;
 import java.util.List;
 
 import androidx.core.app.ActivityCompat;
+import nl.hnogames.domoticz.service.GeofenceBroadcastReceiver;
 import nl.hnogames.domoticz.service.GeofenceTransitionsIntentService;
 
 public class GeoUtils {
@@ -100,13 +101,11 @@ public class GeoUtils {
         if (mGeofencePendingIntent != null) {
             return mGeofencePendingIntent;
         }
-
-        Intent intent = new Intent(mContext, GeofenceTransitionsIntentService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return PendingIntent.getForegroundService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        } else {
-            return PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        }
+        Intent intent = new Intent(mContext, GeofenceBroadcastReceiver.class);
+        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when
+        // calling addGeofences() and removeGeofences().
+        mGeofencePendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return mGeofencePendingIntent;
     }
 
     /**
@@ -115,7 +114,7 @@ public class GeoUtils {
      */
     private GeofencingRequest getGeofencingRequest(List<Geofence> mGeofenceList) {
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_DWELL);
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
         builder.addGeofences(mGeofenceList);
         return builder.build();
     }
