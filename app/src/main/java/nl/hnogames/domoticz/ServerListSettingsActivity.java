@@ -37,10 +37,10 @@ import java.util.ArrayList;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
-import nl.hnogames.domoticz.Adapters.ServerAdapter;
-import nl.hnogames.domoticz.Interfaces.ServerClickListener;
-import nl.hnogames.domoticz.Utils.SharedPrefUtil;
-import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.adapters.ServerAdapter;
+import nl.hnogames.domoticz.interfaces.ServerClickListener;
+import nl.hnogames.domoticz.utils.SharedPrefUtil;
+import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
 import nl.hnogames.domoticzapi.Domoticz;

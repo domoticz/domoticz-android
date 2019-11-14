@@ -222,7 +222,7 @@
                 android:textColor="@color/default_text_color_light"
                 android:textSize="@dimen/text_size_large"/>
 
-            <nl.hnogames.domoticz.UI.MultiSelectionSpinner
+            <nl.hnogames.domoticz.ui.MultiSelectionSpinner
                 android:id="@+id/local_wifi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

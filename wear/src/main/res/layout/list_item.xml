@@ -19,7 +19,7 @@
   ~  under the License.
   -->
 
-<nl.hnogames.domoticz.UI.WearableListItemLayout
+<nl.hnogames.domoticz.ui.WearableListItemLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:gravity="center_vertical"
     android:layout_width="match_parent"
@@ -64,4 +64,4 @@
             android:textSize="12sp"/>
     </LinearLayout>
 
-</nl.hnogames.domoticz.UI.WearableListItemLayout>
+</nl.hnogames.domoticz.ui.WearableListItemLayout>

@@ -24,9 +24,9 @@ package nl.hnogames.domoticz;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import nl.hnogames.domoticz.Fragments.Graph;
-import nl.hnogames.domoticz.Utils.SharedPrefUtil;
-import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.fragments.Graph;
+import nl.hnogames.domoticz.utils.SharedPrefUtil;
+import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 
 public class GraphActivity extends AppCompatAssistActivity {

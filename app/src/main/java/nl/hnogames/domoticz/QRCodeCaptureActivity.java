@@ -31,7 +31,7 @@ import android.view.View;
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
-import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 
 

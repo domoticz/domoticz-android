@@ -35,10 +35,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import nl.hnogames.domoticz.Containers.DevicesInfo;
+import nl.hnogames.domoticz.containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.Utils.WearUsefulBits;
+import nl.hnogames.domoticz.utils.WearUsefulBits;
 
 public class ListAdapter extends WearableListView.Adapter {
     private final Context mContext;

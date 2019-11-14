@@ -27,7 +27,7 @@
               android:keepScreenOn="true"
               android:orientation="vertical">
 
-    <nl.hnogames.domoticz.UI.camera.CameraSourcePreview
+    <nl.hnogames.domoticz.ui.camera.CameraSourcePreview
         android:id="@+id/preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -36,6 +36,6 @@
             android:id="@+id/graphicOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-    </nl.hnogames.domoticz.UI.camera.CameraSourcePreview>
+    </nl.hnogames.domoticz.ui.camera.CameraSourcePreview>
 
 </LinearLayout>

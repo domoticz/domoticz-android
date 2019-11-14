@@ -29,10 +29,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NavUtils;
 import androidx.fragment.app.Fragment;
-import nl.hnogames.domoticz.Utils.SharedPrefUtil;
-import nl.hnogames.domoticz.Utils.UsefulBits;
-import nl.hnogames.domoticz.Welcome.SetupServerSettings;
-import nl.hnogames.domoticz.Welcome.WelcomePage3;
+import nl.hnogames.domoticz.utils.SharedPrefUtil;
+import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticz.welcome.SetupServerSettings;
+import nl.hnogames.domoticz.welcome.WelcomePage3;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 
 public class ServerSettingsActivity extends AppCompatAssistActivity {

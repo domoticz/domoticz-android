@@ -40,7 +40,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapter.ListAdapter;
-import nl.hnogames.domoticz.Containers.DevicesInfo;
+import nl.hnogames.domoticz.containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.app.DomoticzActivity;
 
