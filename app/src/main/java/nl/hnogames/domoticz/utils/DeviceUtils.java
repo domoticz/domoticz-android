@@ -21,7 +21,10 @@
 
 package nl.hnogames.domoticz.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
 import java.util.UUID;
@@ -96,18 +99,24 @@ public class DeviceUtils {
      * @param context
      * @return UUID (unique device id)
      */
+    @SuppressLint({"HardwareIds", "MissingPermission"})
     public static String getUniqueID(Context context) {
-        if (PermissionsUtil.canAccessDeviceState(context)) {
-            final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // We cant use the TelephonyManager anymore for getting a device id
+            return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        } else {
+            if (PermissionsUtil.canAccessDeviceState(context)) {
+                final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
-            final String tmDevice, tmSerial, androidId;
-            tmDevice = "" + tm.getDeviceId();
-            tmSerial = "" + tm.getSimSerialNumber();
-            androidId = "" + android.provider.Settings.Secure.getString(context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+                final String tmDevice, tmSerial, androidId;
+                tmDevice = "" + tm.getDeviceId();
+                tmSerial = "" + tm.getSimSerialNumber();
+                androidId = "" + Settings.Secure.getString(context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
 
-            UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
-            return deviceUuid.toString();
-        } else
-            return null;
+                UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
+                return deviceUuid.toString();
+            } else
+                return null;
+        }
     }
 }
