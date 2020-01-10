@@ -61,7 +61,7 @@ public class ToolbarIconClick implements View.OnClickListener {
         updateIcon(v);
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(frontlayer, "translationY",
-            dropped ? translate : 0);
+                dropped ? translate : 0);
         animatorSet.play(objectAnimator);
         objectAnimator.setDuration(anim_duration);
         objectAnimator.setInterpolator(interpolator);

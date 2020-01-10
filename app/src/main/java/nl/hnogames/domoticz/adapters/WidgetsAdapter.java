@@ -32,13 +32,14 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
@@ -139,11 +140,11 @@ public class WidgetsAdapter extends BaseAdapter implements Filterable {
 
         try {
             String text = context.getString(R.string.last_update) + ": " +
-                mDeviceInfo.getLastUpdate().substring(mDeviceInfo.getLastUpdate().indexOf(" ") + 1);
+                    mDeviceInfo.getLastUpdate().substring(mDeviceInfo.getLastUpdate().indexOf(" ") + 1);
             if (holder.signal_level != null)
                 holder.signal_level.setText(text);
             text = context.getString(R.string.data) + ": " +
-                mDeviceInfo.getData();
+                    mDeviceInfo.getData();
             if (holder.switch_battery_level != null)
                 holder.switch_battery_level.setText(text);
             if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0)
@@ -151,7 +152,7 @@ public class WidgetsAdapter extends BaseAdapter implements Filterable {
             if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0)
                 holder.switch_battery_level.append(" " + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
             if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&
-                !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
+                    !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
                 holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
         } catch (Exception ex) {
             holder.switch_battery_level.setText("");
@@ -164,11 +165,11 @@ public class WidgetsAdapter extends BaseAdapter implements Filterable {
             Picasso.get().load(R.drawable.qrcode).into(holder.iconRow);
         } else {
             Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
-                mDeviceInfo.getType(),
-                mDeviceInfo.getSubType(),
-                mDeviceInfo.getStatusBoolean(),
-                mDeviceInfo.getUseCustomImage(),
-                mDeviceInfo.getImage())).into(holder.iconRow);
+                    mDeviceInfo.getType(),
+                    mDeviceInfo.getSubType(),
+                    mDeviceInfo.getStatusBoolean(),
+                    mDeviceInfo.getUseCustomImage(),
+                    mDeviceInfo.getImage())).into(holder.iconRow);
         }
 
         holder.iconRow.setAlpha(1f);

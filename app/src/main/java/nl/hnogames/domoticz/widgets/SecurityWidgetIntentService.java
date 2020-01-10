@@ -30,11 +30,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.WidgetUtils;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
@@ -87,18 +88,18 @@ public class SecurityWidgetIntentService extends Service {
             public void onReceiveResult(String result) {
                 if (action == DomoticzValues.Security.Status.ARMAWAY) {
                     Toast.makeText(mContext, mContext.getString(R.string.status) + ": " +
-                            mContext.getString(R.string.security_arm_away),
-                        Toast.LENGTH_LONG).show();
+                                    mContext.getString(R.string.security_arm_away),
+                            Toast.LENGTH_LONG).show();
 
                 } else if (action == DomoticzValues.Security.Status.ARMHOME) {
                     Toast.makeText(mContext, mContext.getString(R.string.status) + ": " +
-                            mContext.getString(R.string.security_arm_home),
-                        Toast.LENGTH_LONG).show();
+                                    mContext.getString(R.string.security_arm_home),
+                            Toast.LENGTH_LONG).show();
 
                 } else if (action == DomoticzValues.Security.Status.DISARM) {
                     Toast.makeText(mContext, mContext.getString(R.string.status) + ": " +
-                            mContext.getString(R.string.security_disarm),
-                        Toast.LENGTH_LONG).show();
+                                    mContext.getString(R.string.security_disarm),
+                            Toast.LENGTH_LONG).show();
                 }
                 WidgetUtils.RefreshWidgets(mContext);
             }
@@ -107,8 +108,8 @@ public class SecurityWidgetIntentService extends Service {
             public void onError(Exception error) {
                 Log.e("SECURITYWIDGET", domoticz.getErrorMessage(error));
                 Toast.makeText(mContext,
-                    mContext.getString(R.string.security_generic_error),
-                    Toast.LENGTH_SHORT).show();
+                        mContext.getString(R.string.security_generic_error),
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }

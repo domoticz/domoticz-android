@@ -32,14 +32,15 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 
-import androidx.annotation.Nullable;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
@@ -69,7 +70,7 @@ public class WidgetProviderSmallTemp extends AppWidgetProvider {
         packageName = context.getPackageName();
         // Get all ids
         ComponentName thisWidget = new ComponentName(context,
-            WidgetProviderSmallTemp.class);
+                WidgetProviderSmallTemp.class);
         int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
         if (allWidgetIds != null) {
             for (int mAppWidgetId : allWidgetIds) {
@@ -102,11 +103,11 @@ public class WidgetProviderSmallTemp extends AppWidgetProvider {
             }
 
             AppWidgetManager appWidgetManager = AppWidgetManager
-                .getInstance(UpdateWidgetService.this);
+                    .getInstance(UpdateWidgetService.this);
 
             try {
                 int incomingAppWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID,
-                    INVALID_APPWIDGET_ID);
+                        INVALID_APPWIDGET_ID);
                 if (incomingAppWidgetId != INVALID_APPWIDGET_ID) {
                     try {
                         updateAppWidget(appWidgetManager, incomingAppWidgetId);
@@ -150,33 +151,33 @@ public class WidgetProviderSmallTemp extends AppWidgetProvider {
                         views = new RemoteViews(packageName, mSharedPrefs.getSmallTempWidgetLayout(appWidgetId));
                         final double temperature = s.getTemperature();
                         String sign = domoticz.getServerUtil() != null && domoticz.getServerUtil().getActiveServer() != null
-                            && domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null ?
-                            domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getTempSign() : "C";
+                                && domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null ?
+                                domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getTempSign() : "C";
 
                         String text = s.getData();
                         if (!Double.isNaN(temperature)) {
                             text = temperature
-                                + " " + sign;
+                                    + " " + sign;
                         }
                         views.setTextViewText(R.id.title, text);
                         views.setTextViewText(R.id.desc, s.getName());
 
                         int icon;
                         if ((!UsefulBits.isEmpty(sign) && sign.equals("C") && s.getTemperature() < 0) ||
-                            (!UsefulBits.isEmpty(sign) && sign.equals("F") && s.getTemperature() < 30)) {
+                                (!UsefulBits.isEmpty(sign) && sign.equals("F") && s.getTemperature() < 30)) {
                             icon = (DomoticzIcons.getDrawableIcon(s.getTypeImg(),
-                                s.getType(),
-                                null,
-                                domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null && s.getTemperature() > domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getDegreeDaysBaseTemperature(),
-                                true,
-                                "Freezing"));
+                                    s.getType(),
+                                    null,
+                                    domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null && s.getTemperature() > domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getDegreeDaysBaseTemperature(),
+                                    true,
+                                    "Freezing"));
                         } else {
                             icon = (DomoticzIcons.getDrawableIcon(s.getTypeImg(),
-                                s.getType(),
-                                null,
-                                domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null && s.getTemperature() > domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getDegreeDaysBaseTemperature(),
-                                false,
-                                null));
+                                    s.getType(),
+                                    null,
+                                    domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null && s.getTemperature() > domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getDegreeDaysBaseTemperature(),
+                                    false,
+                                    null));
                         }
 
                         views.setImageViewResource(R.id.rowIcon, icon);

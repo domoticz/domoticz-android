@@ -38,6 +38,11 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.fragment.app.Fragment;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
@@ -47,10 +52,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ui.MultiSelectionSpinner;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
@@ -70,9 +71,9 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     private ServerUtil mServerUtil;
 
     private AppCompatEditText remote_server_input, remote_port_input,
-        remote_username_input, remote_password_input,
-        remote_directory_input, local_server_input, local_password_input,
-        local_username_input, local_port_input, local_directory_input;
+            remote_username_input, remote_password_input,
+            remote_directory_input, local_server_input, local_password_input,
+            local_username_input, local_port_input, local_directory_input;
 
     private Spinner remote_protocol_spinner, local_protocol_spinner;
     private SwitchMaterial localServer_switch;
@@ -148,27 +149,27 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
             @Override
             public void onClick(View v) {
                 new MaterialDialog.Builder(getContext())
-                    .title(R.string.welcome_ssid_button_prompt)
-                    .content(R.string.welcome_msg_no_ssid_found)
-                    .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
-                    .input(null, null, new MaterialDialog.InputCallback() {
-                        @Override
-                        public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                            Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
-                            final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
-                            if (ssidFromPrefs != null) {
-                                if (ssidFromPrefs.size() > 0) {
-                                    for (String wifi : ssidFromPrefs) {
-                                        ssidListFromPrefs.add(wifi);
+                        .title(R.string.welcome_ssid_button_prompt)
+                        .content(R.string.welcome_msg_no_ssid_found)
+                        .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                        .input(null, null, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
+                                final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
+                                if (ssidFromPrefs != null) {
+                                    if (ssidFromPrefs.size() > 0) {
+                                        for (String wifi : ssidFromPrefs) {
+                                            ssidListFromPrefs.add(wifi);
+                                        }
                                     }
                                 }
-                            }
-                            ssidListFromPrefs.add(String.valueOf(input));
-                            mServerUtil.getActiveServer().setLocalServerSsid(ssidListFromPrefs);
+                                ssidListFromPrefs.add(String.valueOf(input));
+                                mServerUtil.getActiveServer().setLocalServerSsid(ssidListFromPrefs);
 
-                            setSsid_spinner();
-                        }
-                    }).show();
+                                setSsid_spinner();
+                            }
+                        }).show();
             }
         });
 
@@ -288,7 +289,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     private void setProtocol_spinner() {
         String[] protocols = getResources().getStringArray(R.array.remote_server_protocols);
         ArrayAdapter<String> protocolAdapter
-            = new ArrayAdapter<>(getActivity(), R.layout.spinner_list_item, protocols);
+                = new ArrayAdapter<>(getActivity(), R.layout.spinner_list_item, protocols);
         remote_protocol_spinner.setAdapter(protocolAdapter);
         remote_protocol_spinner.setSelection(getPrefsDomoticzRemoteSecureIndex());
         remote_protocol_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -320,34 +321,34 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
 
     private void writePreferenceValues() {
         mServerUtil.getActiveServer().setRemoteServerUsername(
-            remote_username_input.getText().toString().trim());
+                remote_username_input.getText().toString().trim());
         mServerUtil.getActiveServer().setRemoteServerPassword(
-            remote_password_input.getText().toString().trim());
+                remote_password_input.getText().toString().trim());
         mServerUtil.getActiveServer().setRemoteServerUrl(
-            remote_server_input.getText().toString().trim());
+                remote_server_input.getText().toString().trim());
         mServerUtil.getActiveServer().setRemoteServerPort(
-            remote_port_input.getText().toString().trim());
+                remote_port_input.getText().toString().trim());
         mServerUtil.getActiveServer().setRemoteServerDirectory(
-            remote_directory_input.getText().toString().trim());
+                remote_directory_input.getText().toString().trim());
         mServerUtil.getActiveServer().setRemoteServerSecure(
-            getSpinnerDomoticzRemoteSecureBoolean());
+                getSpinnerDomoticzRemoteSecureBoolean());
         SwitchMaterial useSameAddress = v.findViewById(R.id.localServer_switch);
         if (!useSameAddress.isChecked()) {
             mServerUtil.getActiveServer().setLocalSameAddressAsRemote();
             mServerUtil.getActiveServer().setIsLocalServerAddressDifferent(false);
         } else {
             mServerUtil.getActiveServer().setLocalServerUsername(
-                local_username_input.getText().toString().trim());
+                    local_username_input.getText().toString().trim());
             mServerUtil.getActiveServer().setLocalServerPassword(
-                local_password_input.getText().toString().trim());
+                    local_password_input.getText().toString().trim());
             mServerUtil.getActiveServer().setLocalServerUrl(
-                local_server_input.getText().toString().trim());
+                    local_server_input.getText().toString().trim());
             mServerUtil.getActiveServer().setLocalServerPort(
-                local_port_input.getText().toString().trim());
+                    local_port_input.getText().toString().trim());
             mServerUtil.getActiveServer().setLocalServerDirectory(
-                local_directory_input.getText().toString().trim());
+                    local_directory_input.getText().toString().trim());
             mServerUtil.getActiveServer().setLocalServerSecure(
-                getSpinnerDomoticzLocalSecureBoolean());
+                    getSpinnerDomoticzLocalSecureBoolean());
             mServerUtil.getActiveServer().setIsLocalServerAddressDifferent(true);
         }
 
@@ -418,13 +419,13 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
         Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
         String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_LOCATION_PERMS);
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
-            getActivity().getString(R.string.permission_desc_location), neededPermission, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (mPhoneConnectionUtil != null)
-                        mPhoneConnectionUtil.stopReceiver();
-                }
-            });
+                getActivity().getString(R.string.permission_desc_location), neededPermission, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (mPhoneConnectionUtil != null)
+                            mPhoneConnectionUtil.stopReceiver();
+                    }
+                });
         if (!alert.isShowing()) {
             alert.show();
         }

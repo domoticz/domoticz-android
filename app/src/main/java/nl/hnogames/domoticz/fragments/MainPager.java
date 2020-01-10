@@ -30,8 +30,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,14 +37,17 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.app.RefreshFragment;
+import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
+import nl.hnogames.domoticz.utils.SharedPrefUtil;
 
 public class MainPager extends RefreshFragment implements DomoticzFragmentListener {
     private static final String TAG = MainPager.class.getSimpleName();
@@ -67,8 +68,8 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
     public void RefreshFragment() {
         try {
             Fragment f = (Fragment) vpPager
-                .getAdapter()
-                .instantiateItem(vpPager, vpPager.getCurrentItem());
+                    .getAdapter()
+                    .instantiateItem(vpPager, vpPager.getCurrentItem());
             if (f instanceof DomoticzRecyclerFragment) {
                 ((DomoticzRecyclerFragment) f).refreshFragment();
                 ((DomoticzRecyclerFragment) f).showViews();
@@ -88,8 +89,8 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
     public void Filter(String newText) {
         try {
             Fragment n = (Fragment) vpPager
-                .getAdapter()
-                .instantiateItem(vpPager, vpPager.getCurrentItem());
+                    .getAdapter()
+                    .instantiateItem(vpPager, vpPager.getCurrentItem());
             if (n instanceof DomoticzDashboardFragment) {
                 ((DomoticzDashboardFragment) n).Filter(newText);
             } else if (n instanceof DomoticzRecyclerFragment) {
@@ -105,8 +106,8 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
     public void sortFragment(String selectedSort) {
         try {
             Fragment f = (Fragment) vpPager
-                .getAdapter()
-                .instantiateItem(vpPager, vpPager.getCurrentItem());
+                    .getAdapter()
+                    .instantiateItem(vpPager, vpPager.getCurrentItem());
             if (f instanceof DomoticzRecyclerFragment) {
                 ((DomoticzRecyclerFragment) f).sortFragment(selectedSort);
             } else if (f instanceof DomoticzDashboardFragment) {

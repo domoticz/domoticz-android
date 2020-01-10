@@ -38,6 +38,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.github.javiersantos.piracychecker.PiracyChecker;
 import com.github.javiersantos.piracychecker.PiracyCheckerUtils;
 import com.github.javiersantos.piracychecker.enums.InstallerID;
@@ -60,15 +64,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.service.TaskService;
 import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.service.TaskService;
 import nl.hnogames.domoticzapi.Containers.AuthInfo;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
@@ -139,8 +140,8 @@ public class UsefulBits {
 
     public static String Join(List<String> msgs) {
         return msgs == null || msgs.size() == 0 ?
-            "" : msgs.size() == 1 ? msgs.get(0) :
-            msgs.subList(0, msgs.size() - 1).toString().replaceAll("^.|.$", "") + " and " + msgs.get(msgs.size() - 1);
+                "" : msgs.size() == 1 ? msgs.get(0) :
+                msgs.subList(0, msgs.size() - 1).toString().replaceAll("^.|.$", "") + " and " + msgs.get(msgs.size() - 1);
     }
 
     public static String newLine() {
@@ -200,7 +201,7 @@ public class UsefulBits {
             for (byte aHash : hash) {
                 if ((0xff & aHash) < 0x10) {
                     hexString.append("0"
-                        + Integer.toHexString((0xFF & aHash)));
+                            + Integer.toHexString((0xFF & aHash)));
                 } else {
                     hexString.append(Integer.toHexString(0xFF & aHash));
                 }
@@ -338,9 +339,9 @@ public class UsefulBits {
                     showSimpleToast(context, "Downloaded language files did not match the preferred language", Toast.LENGTH_SHORT);
 
                 Log.d(TAG, "Downloaded language files did not match the preferred language:" + newLine()
-                    + "Current downloaded language: " + downloadedLanguage + newLine()
-                    + "Active language: " + activeLanguage + newLine()
-                    + "Downloading the correct language");
+                        + "Current downloaded language: " + downloadedLanguage + newLine()
+                        + "Active language: " + activeLanguage + newLine()
+                        + "Downloading the correct language");
                 mSharedPrefs.getLanguageStringsFromServer(activeLanguage.toLowerCase(), serverUtil);
             }
         }
@@ -413,14 +414,14 @@ public class UsefulBits {
 
             @SuppressWarnings("PointlessArithmeticExpression")
             PeriodicTask task = new PeriodicTask.Builder()
-                .setService(TaskService.class)                      // Service to start
-                .setPersisted(true)                                 // Will survive reboots
-                .setTag(TASK_TAG_PERIODIC)                          // Schedule periodic
-                .setPeriod(60 * 60 * 24 * 1)                        // Every day
-                .setFlex(60 * 60 * 8)                               // Flex of 8 hours
-                .setRequiredNetwork(Task.NETWORK_STATE_UNMETERED)   // Only un metered networks
-                .setRequiresCharging(true)                          // Only when charging
-                .build();
+                    .setService(TaskService.class)                      // Service to start
+                    .setPersisted(true)                                 // Will survive reboots
+                    .setTag(TASK_TAG_PERIODIC)                          // Schedule periodic
+                    .setPeriod(60 * 60 * 24 * 1)                        // Every day
+                    .setFlex(60 * 60 * 8)                               // Flex of 8 hours
+                    .setRequiredNetwork(Task.NETWORK_STATE_UNMETERED)   // Only un metered networks
+                    .setRequiresCharging(true)                          // Only when charging
+                    .build();
 
             mGcmNetworkManager.schedule(task);
             mSharedPrefUtil.setTaskIsScheduled(true);
@@ -466,8 +467,8 @@ public class UsefulBits {
             public void onError(Exception error) {
                 if (error != null && domoticz != null)
                     showSimpleToast(context, String.format(
-                        context.getString(R.string.error_couldNotCheckForConfig),
-                        domoticz.getErrorMessage(error)), Toast.LENGTH_SHORT);
+                            context.getString(R.string.error_couldNotCheckForConfig),
+                            domoticz.getErrorMessage(error)), Toast.LENGTH_SHORT);
                 if (receiver != null)
                     receiver.onError(error);
             }
@@ -480,8 +481,8 @@ public class UsefulBits {
 
         ArrayList<UserInfo> mDetailUserInfo = new ArrayList<>();
         UserInfo currentUser = new UserInfo(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
-            UsefulBits.getMd5String(domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD)),
-            auth != null ? auth.getRights() : 0);
+                UsefulBits.getMd5String(domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD)),
+                auth != null ? auth.getRights() : 0);
         if (currentConfig != null && currentConfig.getUsers() != null) {
             for (UserInfo user : currentConfig.getUsers()) {
                 if (!user.getUsername().equals(currentUser.getUsername()))
@@ -501,8 +502,8 @@ public class UsefulBits {
                     ArrayList<UserInfo> mDetailUserInfo = new ArrayList<>();
                     //also add current user
                     UserInfo currentUser = new UserInfo(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
-                        UsefulBits.getMd5String(domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD)),
-                        auth != null ? auth.getRights() : 0);
+                            UsefulBits.getMd5String(domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD)),
+                            auth != null ? auth.getRights() : 0);
                     for (UserInfo user : mUserInfo) {
                         if (!user.getUsername().equals(currentUser.getUsername()))
                             mDetailUserInfo.add(user);
@@ -542,7 +543,7 @@ public class UsefulBits {
                 // Unresolvable error
                 Log.e(TAG, "Google Play services is unavailable.");
                 showSimpleToast(activity,
-                    activity.getString(R.string.google_play_services_unavailable), Toast.LENGTH_SHORT);
+                        activity.getString(R.string.google_play_services_unavailable), Toast.LENGTH_SHORT);
                 return false;
             }
         }
@@ -584,27 +585,27 @@ public class UsefulBits {
                                               View.OnClickListener onclickListener, String actiontext) {
         try {
             if (context != null &&
-                coordinatorLayout != null &&
-                !UsefulBits.isEmpty(message)) {
+                    coordinatorLayout != null &&
+                    !UsefulBits.isEmpty(message)) {
                 if (onclickListener == null || UsefulBits.isEmpty(actiontext)) {
                     if (callback != null) {
                         Snackbar.make(coordinatorLayout, message, length)
-                            .setCallback(callback)
-                            .show();
+                                .setCallback(callback)
+                                .show();
                     } else {
                         Snackbar.make(coordinatorLayout, message, length)
-                            .show();
+                                .show();
                     }
                 } else {
                     if (callback != null) {
                         Snackbar.make(coordinatorLayout, message, length)
-                            .setAction(actiontext, onclickListener)
-                            .setCallback(callback)
-                            .show();
+                                .setAction(actiontext, onclickListener)
+                                .setCallback(callback)
+                                .show();
                     } else {
                         Snackbar.make(coordinatorLayout, message, length)
-                            .setAction(actiontext, onclickListener)
-                            .show();
+                                .setAction(actiontext, onclickListener)
+                                .show();
                     }
                 }
             }
@@ -623,8 +624,8 @@ public class UsefulBits {
             if (otherApp.activityInfo.applicationInfo.packageName.equals("com.android.vending")) {
                 ActivityInfo otherAppActivity = otherApp.activityInfo;
                 ComponentName componentName = new ComponentName(
-                    otherAppActivity.applicationInfo.packageName,
-                    otherAppActivity.name
+                        otherAppActivity.applicationInfo.packageName,
+                        otherAppActivity.name
                 );
                 rateIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
                 rateIntent.setComponent(componentName);
@@ -663,21 +664,21 @@ public class UsefulBits {
             // release build
             PiracyChecker oPiracyChecker = new PiracyChecker(context);
             oPiracyChecker
-                .enableSigningCertificate(context.getString(R.string.APK_VALIDATE_PROD))
-                .enableGooglePlayLicensing(context.getString(R.string.APK_LICENSE_PREMIUM))
-                .enableInstallerId(InstallerID.GOOGLE_PLAY)
-                .callback(new PiracyCheckerCallback() {
-                    @Override
-                    public void allow() {
-                        mSharedPrefs.setAPKValidated(true);
-                    }
+                    .enableSigningCertificate(context.getString(R.string.APK_VALIDATE_PROD))
+                    .enableGooglePlayLicensing(context.getString(R.string.APK_LICENSE_PREMIUM))
+                    .enableInstallerId(InstallerID.GOOGLE_PLAY)
+                    .callback(new PiracyCheckerCallback() {
+                        @Override
+                        public void allow() {
+                            mSharedPrefs.setAPKValidated(true);
+                        }
 
-                    @Override
-                    public void dontAllow(@NonNull PiracyCheckerError piracyCheckerError, @Nullable PirateApp pirateApp) {
-                        mSharedPrefs.setAPKValidated(false);
-                    }
-                })
-                .start();
+                        @Override
+                        public void dontAllow(@NonNull PiracyCheckerError piracyCheckerError, @Nullable PirateApp pirateApp) {
+                            mSharedPrefs.setAPKValidated(false);
+                        }
+                    })
+                    .start();
         }
     }
 }

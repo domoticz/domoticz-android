@@ -39,7 +39,7 @@ public class DeviceUtils {
         if (mDeviceInfo.equals(null))
             return false;
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
-            (mDeviceInfo.getSwitchType() == null)) {
+                (mDeviceInfo.getSwitchType() == null)) {
             if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
                 return true;
             } else {

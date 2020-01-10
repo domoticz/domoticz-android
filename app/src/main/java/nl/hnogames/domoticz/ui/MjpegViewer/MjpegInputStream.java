@@ -62,7 +62,7 @@ public class MjpegInputStream extends DataInputStream {
 
     /*********************************************************************************************/
     private int parseContentLength(byte[] headerBytes)
-        throws IOException, NumberFormatException {
+            throws IOException, NumberFormatException {
         ByteArrayInputStream headerIn = new ByteArrayInputStream(headerBytes);
         Properties props = new Properties();
         props.load(headerIn);

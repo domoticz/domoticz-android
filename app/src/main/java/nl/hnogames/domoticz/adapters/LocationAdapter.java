@@ -32,14 +32,15 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
-import androidx.core.content.ContextCompat;
+import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.LocationInfo;
 import nl.hnogames.domoticz.interfaces.LocationClickListener;
-import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 
@@ -118,7 +119,7 @@ public class LocationAdapter extends BaseAdapter {
             holder.connectedSwitch.setText(context.getString(R.string.connectedSwitch) + ": " + mLocationInfo.getSwitchIdx());
         } else {
             holder.connectedSwitch.setText(context.getString(R.string.connectedSwitch)
-                + ": " + context.getString(R.string.not_available));
+                    + ": " + context.getString(R.string.not_available));
         }
 
         if (!UsefulBits.isEmpty(mLocationInfo.getValue()))

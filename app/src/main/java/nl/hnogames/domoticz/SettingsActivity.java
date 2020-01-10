@@ -25,10 +25,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.preference.Preference;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 
 public class SettingsActivity extends AppCompatPermissionsActivity {
 
@@ -47,7 +47,7 @@ public class SettingsActivity extends AppCompatPermissionsActivity {
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getFragmentManager().beginTransaction().replace(android.R.id.content,
-            new Preference()).commit();
+                new Preference()).commit();
     }
 
     @Override

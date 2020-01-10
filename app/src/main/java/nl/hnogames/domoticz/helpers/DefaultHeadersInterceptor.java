@@ -44,12 +44,12 @@ public class DefaultHeadersInterceptor implements Interceptor {
         Request request = chain.request();
         Request.Builder builder = request.newBuilder();
         builder.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
-            .header("Connection", "keep-alive")
-            //.header("Accept-Language", "en-GB,en;q=0.5")
-            //.header("Upgrade-Insecure-Requests", "1")
-            .header("Accept-Encoding", "gzip, deflate, br")
-            //.header("X-Client-Id", getPackageName() + "-" + getVersionName() + "-" + getVersionCode() + "-" + getBuildType())
-            .header("User-Agent", getPackageName() + "-" + getVersionName() + "-" + getVersionCode() + "-" + getBuildType());
+                .header("Connection", "keep-alive")
+                //.header("Accept-Language", "en-GB,en;q=0.5")
+                //.header("Upgrade-Insecure-Requests", "1")
+                .header("Accept-Encoding", "gzip, deflate, br")
+                //.header("X-Client-Id", getPackageName() + "-" + getVersionName() + "-" + getVersionCode() + "-" + getBuildType())
+                .header("User-Agent", getPackageName() + "-" + getVersionName() + "-" + getVersionCode() + "-" + getBuildType());
         if (useBasicAuth)
             builder.header("Authorization", Credentials.basic(sUsername, sPassword));
         if (useCookie)

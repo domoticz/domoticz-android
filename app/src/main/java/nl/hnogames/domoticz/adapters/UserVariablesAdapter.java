@@ -30,16 +30,17 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.button.MaterialButton;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-import nl.hnogames.domoticz.interfaces.UserVariablesClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.interfaces.UserVariablesClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.UserVariableInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -83,7 +84,7 @@ public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdap
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.vars_row_default, parent, false);
+                .inflate(R.layout.vars_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             if ((view.findViewById(R.id.card_global_wrapper)) != null)
@@ -135,7 +136,7 @@ public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdap
 
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-        implements View.OnClickListener {
+            implements View.OnClickListener {
         TextView name;
         TextView datetime;
         TextView message;

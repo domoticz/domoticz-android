@@ -24,9 +24,9 @@ package nl.hnogames.domoticz;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.fragments.Camera;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 
 public class CameraActivity extends AppCompatAssistActivity {
 
@@ -55,7 +55,7 @@ public class CameraActivity extends AppCompatAssistActivity {
             if (getSupportActionBar() != null)
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
-                camera).commit();
+                    camera).commit();
             camera.setImage(imageUrl);
         }
     }

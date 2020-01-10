@@ -28,12 +28,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
 import java.util.ArrayList;
 
-import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.VersionInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -81,10 +82,10 @@ public class WelcomePage4 extends Fragment {
 
         if (!mDomoticz.isConnectionDataComplete(mServerUtil.getActiveServer())) {
             setResultText(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n"
-                + getString(R.string.welcome_msg_correctOnPreviousPage));
+                    + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else if (!mDomoticz.isUrlValid(mServerUtil.getActiveServer())) {
             setResultText(getString(R.string.welcome_msg_connectionDataInvalid) + "\n\n"
-                + getString(R.string.welcome_msg_correctOnPreviousPage));
+                    + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else {
             mDomoticz.getServerVersion(new VersionReceiver() {
                 @Override

@@ -26,6 +26,9 @@ import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -42,11 +45,8 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLEngine;
 import javax.net.ssl.X509TrustManager;
 
-import androidx.multidex.MultiDex;
-import androidx.multidex.MultiDexApplication;
 import de.duenndns.ssl.MemorizingTrustManager;
 import nl.hnogames.domoticz.R;
 import shortbread.Shortbread;
@@ -89,7 +89,7 @@ public class AppController extends MultiDexApplication {
                 }
                 HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
                 HttpsURLConnection.setDefaultHostnameVerifier(
-                    mtm.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
+                        mtm.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
             } catch (KeyManagementException | NoSuchAlgorithmException |
                     GooglePlayServicesNotAvailableException | GooglePlayServicesRepairableException e) {
                 e.printStackTrace();
@@ -103,8 +103,8 @@ public class AppController extends MultiDexApplication {
         req.setTag(TAG);
 
         RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeout,
-            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
 
         req.setRetryPolicy(retryPolicy);
         getRequestQueue().add(req);

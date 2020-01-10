@@ -25,16 +25,17 @@ import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 
-import androidx.appcompat.app.AppCompatActivity;
 import hugo.weaving.DebugLog;
-import nl.hnogames.domoticz.containers.NFCInfo;
 import nl.hnogames.domoticz.NFCSettingsActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.containers.NFCInfo;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -98,8 +99,8 @@ public class NFCServiceActivity extends AppCompatActivity {
 
                 if (!isSceneOrGroup) {
                     if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
-                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) {
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) {
                         if (!mDevicesInfo.getStatusBoolean()) {
                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                             if (!UsefulBits.isEmpty(value)) {

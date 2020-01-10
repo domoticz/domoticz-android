@@ -35,14 +35,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.fastaccess.permission.base.PermissionFragmentHelper;
-import com.fastaccess.permission.base.callback.OnPermissionCallback;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -52,19 +44,28 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.fastaccess.permission.base.PermissionFragmentHelper;
+import com.fastaccess.permission.base.callback.OnPermissionCallback;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.adapters.CamerasAdapter;
 import nl.hnogames.domoticz.CameraActivity;
-import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
-import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.adapters.CamerasAdapter;
+import nl.hnogames.domoticz.app.DomoticzCardFragment;
+import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
@@ -217,7 +218,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
 
         if (mItemTouchHelper == null) {
             mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(mAdapter, true, false,
-                false));
+                    false));
         }
         if (mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
             mItemTouchHelper.attachToRecyclerView(mRecyclerView);
@@ -247,7 +248,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             }
         }
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
-            getActivity().getString(R.string.permission_desc_storage), neededPermission);
+                getActivity().getString(R.string.permission_desc_storage), neededPermission);
         if (!alert.isShowing()) {
             alert.show();
         }
@@ -344,6 +345,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                                 }
                             });
                         }
+
                         @Override
                         public void onError(Exception error) {
                             errorHandling(error, coordinatorLayout);

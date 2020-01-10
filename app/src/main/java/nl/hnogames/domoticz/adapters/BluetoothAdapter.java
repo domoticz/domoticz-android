@@ -33,14 +33,15 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
-import androidx.core.content.ContextCompat;
+import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.BluetoothInfo;
 import nl.hnogames.domoticz.interfaces.BluetoothClickListener;
-import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 
@@ -124,7 +125,7 @@ public class BluetoothAdapter extends BaseAdapter {
             holder.switch_idx.setText(context.getString(R.string.connectedSwitch) + ": " + mBluetoothInfo.getSwitchIdx());
         } else {
             holder.switch_idx.setText(context.getString(R.string.connectedSwitch)
-                + ": " + context.getString(R.string.not_available));
+                    + ": " + context.getString(R.string.not_available));
         }
 
         if (!UsefulBits.isEmpty(mBluetoothInfo.getValue()))

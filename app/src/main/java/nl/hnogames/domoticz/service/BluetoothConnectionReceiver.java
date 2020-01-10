@@ -9,12 +9,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.hnogames.domoticz.containers.BluetoothInfo;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.containers.BluetoothInfo;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.WidgetUtils;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -49,7 +49,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
 
         if (connectedDevice != null && connectedDevice.isEnabled()) {
             handleSwitch(context, connectedDevice.getSwitchIdx(), connectedDevice.getSwitchPassword(), (BluetoothDevice.ACTION_ACL_CONNECTED.equals(intent.getAction())),
-                connectedDevice.getValue(), connectedDevice.isSceneOrGroup());
+                    connectedDevice.getValue(), connectedDevice.isSceneOrGroup());
             Toast.makeText(context, context.getString(R.string.bluetooth) + " " + connectedDevice.getName(), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, context.getString(R.string.bluetooth_disabled), Toast.LENGTH_SHORT).show();
@@ -92,8 +92,8 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
                     }
 
                     if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
-                        mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) {
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) {
                         if (checked)
                             jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                         else

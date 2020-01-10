@@ -38,6 +38,16 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.biometric.BiometricPrompt;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
@@ -74,15 +84,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.biometric.BiometricPrompt;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.MenuItemCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import hotchemi.android.rate.AppRate;
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
@@ -783,14 +784,18 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                         @Override
                         public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                            if (!task.isSuccessful() && task.getResult() == null) {
-                                Log.w(TAG, "getInstanceId failed", task.getException());
-                                return;
-                            }
+                            try {
+                                if (!task.isSuccessful() && task.getResult() == null) {
+                                    Log.w(TAG, "getInstanceId failed", task.getException());
+                                    return;
+                                }
 
-                            String refreshedToken = task.getResult().getToken();
-                            Log.d("Firebase id login", "Refreshed token: " + refreshedToken);
-                            GCMUtils.sendRegistrationIdToBackend(MainActivity.this, refreshedToken);
+                                String refreshedToken = task.getResult().getToken();
+                                Log.d("Firebase id login", "Refreshed token: " + refreshedToken);
+                                GCMUtils.sendRegistrationIdToBackend(MainActivity.this, refreshedToken);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
         } catch (Exception e) {

@@ -32,13 +32,14 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
-import androidx.core.content.ContextCompat;
-import nl.hnogames.domoticz.interfaces.ServerClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.interfaces.ServerClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
 

@@ -30,8 +30,8 @@ import com.afollestad.materialdialogs.Theme;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.adapters.TimersAdapter;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.adapters.TimersAdapter;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.SwitchTimerInfo;
 
@@ -49,8 +49,8 @@ public class SwitchTimerInfoDialog {
 
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
-            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-            .positiveText(android.R.string.ok);
+                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
+                .positiveText(android.R.string.ok);
     }
 
     public void show() {

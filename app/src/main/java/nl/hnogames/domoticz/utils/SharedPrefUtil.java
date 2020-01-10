@@ -49,13 +49,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.BluetoothInfo;
 import nl.hnogames.domoticz.containers.LocationInfo;
 import nl.hnogames.domoticz.containers.NFCInfo;
 import nl.hnogames.domoticz.containers.QRCodeInfo;
 import nl.hnogames.domoticz.containers.SpeechInfo;
-import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.Language;
 import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -752,7 +752,7 @@ public class SharedPrefUtil {
 
     public void setStartupScreenIndex(int position) {
         String[] startupScreenValues =
-            mContext.getResources().getStringArray(R.array.startup_actions);
+                mContext.getResources().getStringArray(R.array.startup_actions);
         String startupScreenValue;
 
         try {
@@ -991,7 +991,7 @@ public class SharedPrefUtil {
             String jsonNFCs = prefs.getString(PREF_NFC_TAGS, null);
             Gson gson = new Gson();
             NFCInfo[] item = gson.fromJson(jsonNFCs,
-                NFCInfo[].class);
+                    NFCInfo[].class);
             nfcs = Arrays.asList(item);
             for (NFCInfo n : nfcs) {
                 oReturnValue.add(n);
@@ -1015,7 +1015,7 @@ public class SharedPrefUtil {
             String jsonBluetooths = prefs.getString(PREF_BLUETOOTH, null);
             Gson gson = new Gson();
             BluetoothInfo[] item = gson.fromJson(jsonBluetooths,
-                BluetoothInfo[].class);
+                    BluetoothInfo[].class);
             Bluetooths = Arrays.asList(item);
             for (BluetoothInfo n : Bluetooths) {
                 oReturnValue.add(n);
@@ -1038,7 +1038,7 @@ public class SharedPrefUtil {
             String jsonNFCs = prefs.getString(PREF_QR_CODES, null);
             Gson gson = new Gson();
             QRCodeInfo[] item = gson.fromJson(jsonNFCs,
-                QRCodeInfo[].class);
+                    QRCodeInfo[].class);
             qrs = Arrays.asList(item);
             for (QRCodeInfo n : qrs) {
                 oReturnValue.add(n);
@@ -1062,7 +1062,7 @@ public class SharedPrefUtil {
             String jsonNFCs = prefs.getString(PREF_SPEECH_COMMANDS, null);
             Gson gson = new Gson();
             SpeechInfo[] item = gson.fromJson(jsonNFCs,
-                SpeechInfo[].class);
+                    SpeechInfo[].class);
             qrs = Arrays.asList(item);
             for (SpeechInfo n : qrs) {
                 oReturnValue.add(n);
@@ -1089,7 +1089,7 @@ public class SharedPrefUtil {
             String jsonLocations = prefs.getString(PREF_GEOFENCE_LOCATIONS, null);
             Gson gson = new Gson();
             LocationInfo[] locationItem = gson.fromJson(jsonLocations,
-                LocationInfo[].class);
+                    LocationInfo[].class);
             locations = Arrays.asList(locationItem);
             for (LocationInfo l : locations) {
                 if (l.toGeofence() != null) {
@@ -1101,8 +1101,8 @@ public class SharedPrefUtil {
             if (incorrectDetected) {
                 saveLocations(returnValue);
                 Toast.makeText(mContext,
-                    R.string.geofence_error_recreateLocations,
-                    Toast.LENGTH_LONG).show();
+                        R.string.geofence_error_recreateLocations,
+                        Toast.LENGTH_LONG).show();
             }
         } else
             return null;
@@ -1165,7 +1165,7 @@ public class SharedPrefUtil {
             HashMap<String, Object> oSavePrefs = new HashMap<String, Object>();
             for (Map.Entry<String, ?> entry : oAllPrefs.entrySet()) {
                 //Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
-                if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET")|| entry.getKey().startsWith("SMALLTEMPWIDGET")|| entry.getKey().startsWith("WIDGETSECURITY"))
+                if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET") || entry.getKey().startsWith("SMALLTEMPWIDGET") || entry.getKey().startsWith("WIDGETSECURITY"))
                     Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
                 else if (entry.getKey().equals("receivedNotifications") || entry.getKey().equals("receivedNotificationsLog"))
                     Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
@@ -1223,7 +1223,7 @@ public class SharedPrefUtil {
                 Object v = entry.getValue();
                 String key = entry.getKey();
                 if (v != null && !UsefulBits.isEmpty(key)) {
-                    if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET")|| entry.getKey().startsWith("SMALLTEMPWIDGET")|| entry.getKey().startsWith("WIDGETSECURITY"))
+                    if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET") || entry.getKey().startsWith("SMALLTEMPWIDGET") || entry.getKey().startsWith("WIDGETSECURITY"))
                         Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
                     else if (entry.getKey().equals("receivedNotifications") || entry.getKey().equals("receivedNotificationsLog"))
                         Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());

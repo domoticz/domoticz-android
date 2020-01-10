@@ -24,15 +24,16 @@ package nl.hnogames.domoticz;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import androidx.fragment.app.FragmentTransaction;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
-import androidx.fragment.app.FragmentTransaction;
 import hugo.weaving.DebugLog;
+import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.fragments.Dashboard;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
@@ -45,8 +46,8 @@ public class PlanActivity extends AppCompatAssistActivity {
     @DebugLog
     public ConfigInfo getConfig() {
         return mServerUtil != null && mServerUtil.getActiveServer() != null ?
-            mServerUtil.getActiveServer().getConfigInfo(this) :
-            null;
+                mServerUtil.getActiveServer().getConfigInfo(this) :
+                null;
     }
 
     private void setupAutoRefresh() {

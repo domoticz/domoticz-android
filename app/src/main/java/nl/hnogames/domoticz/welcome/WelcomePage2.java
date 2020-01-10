@@ -31,6 +31,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.google.android.material.button.MaterialButton;
@@ -38,9 +42,6 @@ import com.google.android.material.button.MaterialButton;
 import java.io.File;
 import java.util.Arrays;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -69,7 +70,7 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (!PermissionsUtil.canAccessStorage(getActivity())) {
                         permissionFragmentHelper
-                            .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                                .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                     } else {
                         importSettings();
                     }
@@ -106,7 +107,7 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
         Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
         String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_STORAGE_PERMS);
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
-            getActivity().getString(R.string.permission_desc_storage), neededPermission);
+                getActivity().getString(R.string.permission_desc_storage), neededPermission);
         if (!alert.isShowing()) {
             alert.show();
         }

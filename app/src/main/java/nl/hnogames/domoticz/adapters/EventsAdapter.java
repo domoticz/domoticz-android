@@ -29,16 +29,17 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-import nl.hnogames.domoticz.interfaces.EventsClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.interfaces.EventsClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.EventInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -81,7 +82,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.event_row_default, parent, false);
+                .inflate(R.layout.event_row_default, parent, false);
 
         if (mSharedPrefs.darkThemeEnabled()) {
             if ((view.findViewById(R.id.card_global_wrapper)) != null)
@@ -147,7 +148,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-        implements View.OnClickListener {
+            implements View.OnClickListener {
         TextView name;
         TextView message;
         SwitchMaterial buttonON;

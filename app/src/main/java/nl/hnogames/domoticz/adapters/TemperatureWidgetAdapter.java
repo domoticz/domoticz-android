@@ -32,11 +32,12 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
@@ -145,8 +146,8 @@ public class TemperatureWidgetAdapter extends BaseAdapter implements Filterable 
 
             if (holder.switch_battery_level != null) {
                 String batteryText = context.getString(R.string.temperature)
-                    + ": "
-                    + mDeviceInfo.getData();
+                        + ": "
+                        + mDeviceInfo.getData();
                 holder.switch_battery_level.setText(batteryText);
             }
         } else {
@@ -154,17 +155,17 @@ public class TemperatureWidgetAdapter extends BaseAdapter implements Filterable 
                 holder.signal_level.setVisibility(View.VISIBLE);
             if (holder.switch_battery_level != null) {
                 String batteryLevelText = context.getString(R.string.temperature)
-                    + ": "
-                    + temperature
-                    + " " + sign;
+                        + ": "
+                        + temperature
+                        + " " + sign;
                 holder.switch_battery_level.setText(batteryLevelText);
             }
 
             if (holder.signal_level != null) {
                 String signalText = context.getString(R.string.set_point)
-                    + ": "
-                    + mDeviceInfo.getSetPoint()
-                    + " " + sign;
+                        + ": "
+                        + mDeviceInfo.getSetPoint()
+                        + " " + sign;
                 holder.signal_level.setText(signalText);
             }
         }

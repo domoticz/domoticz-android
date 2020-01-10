@@ -32,21 +32,22 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SettingsInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -61,18 +62,16 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
 
     private final String TAG = this.getClass().getSimpleName();
     private final int iWelcomeResultCode = 885;
+    public CoordinatorLayout coordinatorLayout;
     int mAppWidgetId;
     private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
-
     private TextView txtTitle;
     private TextView txtStatus;
     private Button btnConfig;
     private androidx.appcompat.widget.AppCompatEditText editPin;
-
     private SettingsInfo mSettings;
     private DevicesInfo sSecurityPanel;
-    public CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,10 +125,10 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
                 }
 
                 InputMethodManager imm =
-                    (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(editPin.getWindowToken(), 0);
                 final String password =
-                    UsefulBits.getMd5String(editPin.getText().toString());
+                        UsefulBits.getMd5String(editPin.getText().toString());
                 if (UsefulBits.isEmpty(password)) {
                     Toast.makeText(getApplicationContext(), getString(R.string.security_wrong_code), Toast.LENGTH_LONG).show();
                     return;
@@ -143,7 +142,7 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
                             if (validatePassword(password)) {
                                 if (sSecurityPanel != null) {
                                     getBackground(sSecurityPanel, password, getApplicationContext().getString(R.string.status) + ": " +
-                                        sSecurityPanel.getData());
+                                            sSecurityPanel.getData());
                                 }
                             } else
                                 Toast.makeText(getApplicationContext(), getString(R.string.security_wrong_code), Toast.LENGTH_LONG).show();
@@ -158,7 +157,7 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
                     if (validatePassword(password)) {
                         if (sSecurityPanel != null) {
                             getBackground(sSecurityPanel, password, getApplicationContext().getString(R.string.status) + ": " +
-                                sSecurityPanel.getData());
+                                    sSecurityPanel.getData());
                         }
                     } else
                         Toast.makeText(getApplicationContext(), getString(R.string.security_wrong_code), Toast.LENGTH_LONG).show();
@@ -184,17 +183,17 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
 
     private void getBackground(final DevicesInfo mSelectedSwitch, final String password, final String value) {
         new MaterialDialog.Builder(this)
-            .title(this.getString(R.string.widget_background))
-            .items(new String[]{this.getString(R.string.widget_dark), this.getString(R.string.widget_light), this.getString(R.string.widget_transparent_dark), this.getString(R.string.widget_transparent_light)})
-            .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                @Override
-                public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                    showAppWidget(mSelectedSwitch, value, password, getWidgetLayout(String.valueOf(text)));
-                    return true;
-                }
-            })
-            .positiveText(R.string.ok)
-            .show();
+                .title(this.getString(R.string.widget_background))
+                .items(new String[]{this.getString(R.string.widget_dark), this.getString(R.string.widget_light), this.getString(R.string.widget_transparent_dark), this.getString(R.string.widget_transparent_light)})
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        showAppWidget(mSelectedSwitch, value, password, getWidgetLayout(String.valueOf(text)));
+                        return true;
+                    }
+                })
+                .positiveText(R.string.ok)
+                .show();
     }
 
     private int getWidgetLayout(String background) {
@@ -249,12 +248,12 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
                     boolean deviceFound = false;
                     for (DevicesInfo d : mDevicesInfo) {
                         if (!UsefulBits.isEmpty(d.getSwitchType()) &&
-                            d.getSwitchType().equals(DomoticzValues.Device.Type.Name.SECURITY)) {
+                                d.getSwitchType().equals(DomoticzValues.Device.Type.Name.SECURITY)) {
                             if (d.getSubType().equals(DomoticzValues.Device.SubType.Name.SECURITYPANEL)) {
                                 sSecurityPanel = d;
                                 txtTitle.setText(sSecurityPanel.getName());
                                 txtStatus.setText(getApplicationContext().getString(R.string.status) + ": " +
-                                    sSecurityPanel.getData());
+                                        sSecurityPanel.getData());
                                 deviceFound = true;
                             }
                         }
@@ -291,10 +290,10 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
 
         if (extras != null) {
             mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
-                INVALID_APPWIDGET_ID);
+                    INVALID_APPWIDGET_ID);
             mSharedPrefs.setSecurityWidgetIDX(mAppWidgetId, idx, value, pin, layout);
             Intent startService = new Intent(SecurityWidgetConfigurationActivity.this,
-                SecurityWidgetProvider.UpdateSecurityWidgetService.class);
+                    SecurityWidgetProvider.UpdateSecurityWidgetService.class);
             startService.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
             startService.setAction("FROM CONFIGURATION ACTIVITY");
             startService(startService);
