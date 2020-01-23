@@ -75,7 +75,6 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
                     }
                 })
                 .negativeText(android.R.string.cancel)
-                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
@@ -100,14 +99,6 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
 
         editPassword = view.findViewById(R.id.password);
         showPassword = view.findViewById(R.id.showpassword);
-
-        if (mSharedPrefs.darkThemeEnabled()) {
-            showPassword.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-            editPassword.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-            int[][] states = new int[][]{new int[]{android.R.attr.state_activated}, new int[]{-android.R.attr.state_activated}};
-            int[] colors = new int[]{Color.WHITE, Color.WHITE};
-            editPassword.setTextColor(new ColorStateList(states, colors));
-        }
 
         showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

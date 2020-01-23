@@ -86,17 +86,6 @@ public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdap
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.vars_row_default, parent, false);
 
-        if (mSharedPrefs.darkThemeEnabled()) {
-            if ((view.findViewById(R.id.card_global_wrapper)) != null)
-                view.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-            if ((view.findViewById(R.id.row_wrapper)) != null)
-                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
-            if ((view.findViewById(R.id.row_global_wrapper)) != null)
-                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-            if ((view.findViewById(R.id.set_uservar)) != null)
-                ((MaterialButton) view.findViewById(R.id.set_uservar)).setTextColor(ContextCompat.getColor(context, R.color.white));
-        }
-
         return new DataObjectHolder(view);
     }
 

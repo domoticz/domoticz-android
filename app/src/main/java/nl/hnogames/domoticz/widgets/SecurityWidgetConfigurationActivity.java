@@ -37,6 +37,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.ftinc.scoop.Scoop;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -76,11 +77,8 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
-        if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
-        else
-            setTheme(R.style.AppTheme);
 
+        Scoop.getInstance().apply(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.widget_security_configuration);
         setResult(RESULT_CANCELED);
@@ -94,12 +92,6 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
         btnConfig = this.findViewById(R.id.checkpin);
 
         editPin = this.findViewById(R.id.securitypin);
-        if (mSharedPrefs.darkThemeEnabled()) {
-            btnConfig.setBackground(ContextCompat.getDrawable(this, R.color.button_dark));
-            editPin.setTextColor(ContextCompat.getColor(this, R.color.white));
-            txtStatus.setTextColor(ContextCompat.getColor(this, R.color.white));
-            txtTitle.setTextColor(ContextCompat.getColor(this, R.color.white));
-        }
 
         btnConfig.setOnClickListener(new View.OnClickListener() {
             @Override

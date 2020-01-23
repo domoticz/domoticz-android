@@ -24,6 +24,8 @@ package nl.hnogames.domoticz;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.ftinc.scoop.Scoop;
+
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.fragments.Graph;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -34,10 +36,9 @@ public class GraphActivity extends AppCompatAssistActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
-        if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
-        else
-            setTheme(R.style.AppTheme);
+
+        // Apply Scoop to the activity
+        Scoop.getInstance().apply(this);
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 

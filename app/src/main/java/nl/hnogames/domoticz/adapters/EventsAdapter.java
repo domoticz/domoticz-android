@@ -84,15 +84,6 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.event_row_default, parent, false);
 
-        if (mSharedPrefs.darkThemeEnabled()) {
-            if ((view.findViewById(R.id.card_global_wrapper)) != null)
-                view.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-            if ((view.findViewById(R.id.row_wrapper)) != null)
-                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
-            if ((view.findViewById(R.id.row_global_wrapper)) != null)
-                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-        }
-
         return new DataObjectHolder(view);
     }
 

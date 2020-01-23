@@ -49,7 +49,6 @@ public class SwitchLogInfoDialog implements DialogInterface.OnDismissListener {
         this.mContext = c;
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
-                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }

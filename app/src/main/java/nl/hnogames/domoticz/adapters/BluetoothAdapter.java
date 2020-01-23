@@ -98,17 +98,6 @@ public class BluetoothAdapter extends BaseAdapter {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(layoutResourceId, parent, false);
 
-        if (mSharedPrefs.darkThemeEnabled()) {
-            if ((convertView.findViewById(R.id.card_global_wrapper)) != null)
-                convertView.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-            if ((convertView.findViewById(R.id.row_wrapper)) != null)
-                (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
-            if ((convertView.findViewById(R.id.row_global_wrapper)) != null)
-                (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-            if ((convertView.findViewById(R.id.remove_button)) != null)
-                ((MaterialButton) convertView.findViewById(R.id.remove_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
-        }
-
         holder.enable = convertView.findViewById(R.id.enable);
         holder.name = convertView.findViewById(R.id.name);
         holder.tag_id = convertView.findViewById(R.id.tag_id);

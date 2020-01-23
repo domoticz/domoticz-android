@@ -125,7 +125,6 @@ public class SharedPrefUtil {
     private final String PREF_SORT_CUSTOM = "sortCustom";
     private final String PREF_LOCK_SORT_CUSTOM = "lockSortCustom";
     @SuppressWarnings("FieldCanBeLocal")
-    private final String PREF_DARK_THEME = "darkTheme";
     private final String PREF_SWITCH_BUTTONS = "switchButtons";
     @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_DASHBOARD_LIST = "dashboardAsList";
@@ -138,10 +137,6 @@ public class SharedPrefUtil {
         this.mContext = mContext;
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         editor = prefs.edit();
-    }
-
-    public boolean darkThemeEnabled() {
-        return prefs.getBoolean(PREF_DARK_THEME, false);
     }
 
     public boolean showDashboardAsList() {
@@ -860,7 +855,6 @@ public class SharedPrefUtil {
 
     public String[] getNavigationIcons() {
         if (!prefs.contains(PREF_NAVIGATION_ITEMS)) setNavigationDefaults();
-
         TypedArray icons = mContext.getResources().obtainTypedArray(R.array.drawer_icons);
         Set<String> selections = prefs.getStringSet(PREF_NAVIGATION_ITEMS, null);
         String[] allNames = mContext.getResources().getStringArray(R.array.drawer_actions);

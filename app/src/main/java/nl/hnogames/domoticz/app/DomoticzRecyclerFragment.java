@@ -106,44 +106,6 @@ public class DomoticzRecyclerFragment extends Fragment {
     public void setTheme() {
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getActivity());
-
-        if (mSharedPrefs.darkThemeEnabled()) {
-            if (gridView != null)
-                gridView.setBackgroundColor(getResources().getColor(R.color.background_dark));
-            if ((root.findViewById(R.id.debugLayout)) != null)
-                (root.findViewById(R.id.debugLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
-            if ((root.findViewById(R.id.coordinatorLayout)) != null)
-                (root.findViewById(R.id.coordinatorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
-            if (root.findViewById(R.id.errorImage) != null)
-                ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(getResources().getDrawable(R.drawable.sad_smiley_dark));
-            if ((root.findViewById(R.id.errorLayout)) != null)
-                (root.findViewById(R.id.errorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
-            if ((root.findViewById(R.id.btnCheckSettings)) != null)
-                ((MaterialButton) root.findViewById(R.id.btnCheckSettings)).setTextColor(getResources().getColor(R.color.white));
-
-            if (bottomLayoutWrapper != null)
-                bottomLayoutWrapper.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
-            if (collapseSortButton != null) {
-                int[][] states = new int[][]{
-                        new int[]{android.R.attr.state_enabled}, // enabled
-                        new int[]{-android.R.attr.state_enabled}, // disabled
-                        new int[]{-android.R.attr.state_checked}, // unchecked
-                        new int[]{android.R.attr.state_pressed}  // pressed
-                };
-
-                int[] colors = new int[]{
-                        R.color.primary, R.color.primary, R.color.primary, R.color.primary
-                };
-
-                ColorStateList newStates = new ColorStateList(states, colors);
-                collapseSortButton.setTextColor(ContextCompat.getColor(getContext(), R.color.primary));
-                collapseSortButton.setIconTint(newStates);
-            }
-            mSwipeRefreshLayout.setColorSchemeResources(
-                    R.color.secondary,
-                    R.color.secondary_dark,
-                    R.color.background_dark);
-        }
     }
 
     public ConfigInfo getServerConfigInfo(Context context) {

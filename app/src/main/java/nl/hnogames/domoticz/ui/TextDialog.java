@@ -53,8 +53,7 @@ public class TextDialog implements
         this.context = context;
 
         mdb = new MaterialDialog.Builder(context);
-        mdb.customView(R.layout.dialog_text, true).negativeText(android.R.string.cancel)
-                .theme((new SharedPrefUtil(context)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT);
+        mdb.customView(R.layout.dialog_text, true).negativeText(android.R.string.cancel);
         mdb.dismissListener(this);
         mdb.cancelListener(this);
         mdb.onPositive(this);

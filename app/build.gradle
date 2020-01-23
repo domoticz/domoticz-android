@@ -239,6 +239,7 @@ dependencies {
     implementation 'com.github.zagum:SpeechRecognitionView:1.0.2'
     implementation "com.github.skydoves:colorpickerview:2.0.1"
     implementation 'com.github.paolorotolo:appintro:v5.1.0'
+    implementation 'com.52inc:scoops:1.0.0'
 
     implementation project(':libs:MemorizingTrustManager')
     implementation project(path: ':SeekArc_library')

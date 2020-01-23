@@ -74,7 +74,6 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
         mSharedPrefs = new SharedPrefUtil(c);
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_security, true)
-                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .negativeText(android.R.string.cancel);
 
         mdb.dismissListener(this);
@@ -97,17 +96,6 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
             btnArmHome = view.findViewById(R.id.armhome);
             btnArmAway = view.findViewById(R.id.armaway);
             txtCountDown = view.findViewById(R.id.countdown);
-
-            if (mSharedPrefs.darkThemeEnabled()) {
-                btnArmAway.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                btnArmHome.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                btnDisarm.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                editPinCode.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-
-                int[][] states = new int[][]{new int[]{android.R.attr.state_activated}, new int[]{-android.R.attr.state_activated}};
-                int[] colors = new int[]{Color.WHITE, Color.WHITE};
-                editPinCode.setTextColor(new ColorStateList(states, colors));
-            }
         }
         domoticz.getSettings(new SettingsReceiver() {
             @Override

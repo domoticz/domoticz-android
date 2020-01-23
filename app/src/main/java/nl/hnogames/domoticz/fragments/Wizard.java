@@ -88,11 +88,6 @@ public class Wizard extends Fragment {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_wizard, null);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_wizard);
         mSharedPrefs = new SharedPrefUtil(getActivity());
-
-        if (mSharedPrefs.darkThemeEnabled()) {
-            if ((root.findViewById(R.id.wizard_relativeLayout)) != null)
-                (root.findViewById(R.id.wizard_relativeLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
-        }
         createCards();
         return root;
     }
@@ -151,11 +146,6 @@ public class Wizard extends Fragment {
         int otherColor = ContextCompat.getColor(context, R.color.md_white_1000);
         int titleColorLight = Color.WHITE;
         int titleColorOther = Color.GRAY;
-
-        if (mSharedPrefs.darkThemeEnabled()) {
-            titleColorOther = Color.WHITE;
-            otherColor = Color.parseColor("#3F3F3F");
-        }
 
         List<Card> cards = new ArrayList<>();
         for (String card : cardsToGenerate) {

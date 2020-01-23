@@ -33,6 +33,7 @@ import android.widget.TextView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 
+import com.ftinc.scoop.Scoop;
 import com.google.android.material.snackbar.Snackbar;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
@@ -62,10 +63,9 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
-        if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
-        else
-            setTheme(R.style.AppTheme);
+        // Apply Scoop to the activity
+        Scoop.getInstance().apply(this);
+
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
@@ -77,10 +77,6 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
         this.setTitle(R.string.server_settings);
 
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
-        if (mSharedPrefs.darkThemeEnabled()) {
-            coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
-        }
-
         createListView();
     }
 
@@ -120,10 +116,6 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
         });
 
         ListView listView = findViewById(R.id.listView);
-        if ((new SharedPrefUtil(this)).darkThemeEnabled()) {
-            listView.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
-        }
-
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
         listView.setAdapter(animationAdapter);
@@ -148,6 +140,7 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             createListView(); //reload total list
         }

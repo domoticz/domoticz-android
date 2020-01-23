@@ -52,6 +52,7 @@ import androidx.legacy.app.ActivityCompat;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
+import com.ftinc.scoop.ui.ScoopSettingsActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -189,7 +190,7 @@ public class Preference extends PreferenceFragment {
         android.preference.Preference premiumPreference = findPreference("premium_settings");
         NotificationsMultiSelectListPreference notificationsMultiSelectListPreference = (NotificationsMultiSelectListPreference) findPreference("suppressNotifications");
         NotificationsMultiSelectListPreference alarmMultiSelectListPreference = (NotificationsMultiSelectListPreference) findPreference("alarmNotifications");
-        android.preference.SwitchPreference ThemePreference = (android.preference.SwitchPreference) findPreference("darkTheme");
+        android.preference.Preference ThemePreference = findPreference("darkTheme");
         android.preference.SwitchPreference ClockPreference = (android.preference.SwitchPreference) findPreference("dashboardShowClock");
         android.preference.Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
         android.preference.SwitchPreference FingerPrintPreference = (android.preference.SwitchPreference) findPreference("enableSecurity");
@@ -280,14 +281,15 @@ public class Preference extends PreferenceFragment {
             }
         });
 
-        ThemePreference.setOnPreferenceChangeListener(new android.preference.Preference.OnPreferenceChangeListener() {
+        ThemePreference.setOnPreferenceClickListener(new android.preference.Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceChange(android.preference.Preference preference, Object newValue) {
+            public boolean onPreferenceClick(android.preference.Preference preference) {
                 if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_theme));
                     return false;
                 } else {
-                    ((SettingsActivity) getActivity()).reloadSettings();
+                    Intent intent = ScoopSettingsActivity.createIntent(mContext, getString(R.string.config_theme));
+                    startActivity(intent);
                     return true;
                 }
             }

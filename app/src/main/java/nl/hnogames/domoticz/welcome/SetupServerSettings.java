@@ -120,12 +120,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        if (mSharedPrefs.darkThemeEnabled())
-            v = inflater.inflate(R.layout.fragment_add_server_dark, container, false);
-        else
-            v = inflater.inflate(R.layout.fragment_add_server, container, false);
-
+        v = inflater.inflate(R.layout.fragment_add_server, container, false);
         permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
         getLayoutReferences();
         setPreferenceValues();

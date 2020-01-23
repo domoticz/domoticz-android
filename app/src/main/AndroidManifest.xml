@@ -492,7 +492,7 @@
             android:name="nl.hnogames.domoticz.QRCodeCaptureActivity"
             android:label="@string/category_QRCode"
             android:parentActivityName="nl.hnogames.domoticz.QRCodeSettingsActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            />
 
         <activity
             android:name="nl.hnogames.domoticz.ServerListSettingsActivity"
@@ -528,18 +528,18 @@
         <activity
             android:name="nl.hnogames.domoticz.UpdateActivity"
             android:label="@string/title_activity_update"
-            android:parentActivityName="nl.hnogames.domoticz.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:parentActivityName="nl.hnogames.domoticz.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.hnogames.domoticz.MainActivity"/>
         </activity>
 
+        <activity android:name="com.ftinc.scoop.ui.ScoopSettingsActivity" />
+
         <activity
             android:name="com.schibstedspain.leku.LocationPickerActivity"
             android:label="@string/title_add_location"
             android:parentActivityName="nl.hnogames.domoticz.GeoSettingsActivity"
-            android:theme="@style/AppThemeMain"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
@@ -556,6 +556,5 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false"/>
-
     </application>
 </manifest>

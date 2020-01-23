@@ -42,6 +42,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
+import com.ftinc.scoop.Scoop;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -89,10 +90,9 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
-        if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
-        else
-            setTheme(R.style.AppTheme);
+
+        // Apply Scoop to the activity
+        Scoop.getInstance().apply(this);
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
         oGeoUtils = new GeoUtils(this, this);
@@ -107,9 +107,6 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
 
         domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
-        if (mSharedPrefs.darkThemeEnabled()) {
-            coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
-        }
 
         oGeoUtils.AddGeofences();
         createListView();
@@ -264,10 +261,6 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
         });
 
         ListView listView = findViewById(R.id.listView);
-        if (mSharedPrefs.darkThemeEnabled()) {
-            listView.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
-        }
-
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
         listView.setAdapter(animationAdapter);

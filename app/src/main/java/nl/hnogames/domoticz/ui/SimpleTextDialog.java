@@ -49,7 +49,6 @@ public class SimpleTextDialog {
 
         //noinspection ConstantConditions
         mdb.customView(R.layout.dialog_text, wrapInScrollView)
-                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .positiveText(android.R.string.ok);
     }
 

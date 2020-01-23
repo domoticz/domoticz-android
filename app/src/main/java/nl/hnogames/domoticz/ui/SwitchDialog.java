@@ -56,7 +56,6 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
 
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
-                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .negativeText(android.R.string.cancel);
         mdb.dismissListener(this);
     }

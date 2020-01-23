@@ -24,6 +24,8 @@ package nl.hnogames.domoticz;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.ftinc.scoop.Scoop;
+
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.fragments.Camera;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -32,10 +34,9 @@ public class CameraActivity extends AppCompatAssistActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (new SharedPrefUtil(this).darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
-        else
-            setTheme(R.style.AppTheme);
+
+        // Apply Scoop to the activity
+        Scoop.getInstance().apply(this);
 
         super.onCreate(savedInstanceState);
 

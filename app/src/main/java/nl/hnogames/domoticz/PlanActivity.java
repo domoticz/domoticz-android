@@ -26,6 +26,8 @@ import android.view.MenuItem;
 
 import androidx.fragment.app.FragmentTransaction;
 
+import com.ftinc.scoop.Scoop;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -72,10 +74,9 @@ public class PlanActivity extends AppCompatAssistActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
-        if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
-        else
-            setTheme(R.style.AppTheme);
+        // Apply Scoop to the activity
+        Scoop.getInstance().apply(this);
+
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 

@@ -259,11 +259,8 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_theme">
-        <SwitchPreference
-            android:defaultValue="false"
+        <Preference
             android:key="darkTheme"
-            android:summaryOff="@string/set_dark_theme"
-            android:summaryOn="@string/set_light_theme"
             android:title="@string/config_theme"/>
     </PreferenceCategory>
 

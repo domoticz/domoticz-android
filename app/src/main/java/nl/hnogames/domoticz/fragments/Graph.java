@@ -141,16 +141,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         XAxis xAxis = chart.getXAxis();
         YAxis yAxis = chart.getAxisLeft();
 
-        if (mSharedPrefs.darkThemeEnabled()) {
-            xAxis.setTextColor(Color.WHITE);
-            yAxis.setTextColor(Color.WHITE);
-            chart.getLegend().setTextColor(Color.WHITE);
-            //chart.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
             chart.setDrawGridBackground(true);
-        } else {
-            //chart.setBackgroundColor(Color.WHITE);
-            chart.setDrawGridBackground(true);
-        }
 
         chart.getDescription().setEnabled(false);
         xAxis.setDrawGridLines(false); // no grid lines

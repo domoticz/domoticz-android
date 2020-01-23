@@ -84,15 +84,6 @@ public class TimersAdapter extends BaseAdapter {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 convertView = inflater.inflate(layoutResourceId, parent, false);
 
-                if (mSharedPrefs.darkThemeEnabled()) {
-                    if ((convertView.findViewById(R.id.card_global_wrapper)) != null)
-                        convertView.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-                    if ((convertView.findViewById(R.id.row_wrapper)) != null)
-                        (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
-                    if ((convertView.findViewById(R.id.row_global_wrapper)) != null)
-                        (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-                }
-
                 holder.switch_name = convertView.findViewById(R.id.switch_name);
                 holder.switch_status = convertView.findViewById(R.id.switch_battery_level);
                 holder.signal_level = convertView.findViewById(R.id.switch_signal_level);

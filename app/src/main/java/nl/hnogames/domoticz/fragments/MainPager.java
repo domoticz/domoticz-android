@@ -134,11 +134,6 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
     private void initViews() {
         vpPager = root.findViewById(R.id.vpPager);
         bottomNavigation = root.findViewById(R.id.BottomNavigation);
-        if (mSharedPrefs.darkThemeEnabled()) {
-            bottomNavigation.setBackgroundColor(getResources().getColor(R.color.background_dark));
-            bottomNavigation.setItemIconTintList(ContextCompat.getColorStateList(bottomNavigation.getContext(), R.color.material_grey_500_));
-            bottomNavigation.setItemTextColor(ContextCompat.getColorStateList(bottomNavigation.getContext(), R.color.white));
-        }
         adapterViewPager = new MainPagerAdapter(((AppCompatActivity) context), 3);
         vpPager.setAdapter(adapterViewPager);
         vpPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

@@ -134,15 +134,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.weather_row_default, parent, false);
 
-        if (mSharedPrefs.darkThemeEnabled()) {
-            if ((view.findViewById(R.id.card_global_wrapper)) != null)
-                view.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-            if ((view.findViewById(R.id.row_wrapper)) != null)
-                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
-            if ((view.findViewById(R.id.row_global_wrapper)) != null)
-                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-        }
-
         return new DataObjectHolder(view);
     }
 
@@ -216,11 +207,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 holder.data.append(", " + context.getString(R.string.temp) + ": " + mWeatherInfo.getTemp() + " " + tempSign);
 
                 holder.pieView.setVisibility(View.VISIBLE);
-
-                if (!this.mSharedPrefs.darkThemeEnabled()) {
-                    holder.pieView.setInnerBackgroundColor(ContextCompat.getColor(context, R.color.white));
-                    holder.pieView.setTextColor(ContextCompat.getColor(context, R.color.black));
-                }
                 holder.pieView.setPercentageTextSize(16);
                 holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
 

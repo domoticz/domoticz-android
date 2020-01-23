@@ -64,7 +64,6 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_temperature, false)
                 .negativeText(android.R.string.cancel)
-                .theme(mSharedPrefUtil.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .positiveText(android.R.string.ok)
                 .onAny(this);
 
@@ -93,11 +92,6 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
         Button bntPlus = view.findViewById(R.id.plus);
         Button btnMin = view.findViewById(R.id.min);
-
-        if (mSharedPrefUtil.darkThemeEnabled()) {
-            btnMin.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-            bntPlus.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-        }
 
         final String text = String.valueOf(currentTemperature);
         temperatureText.setText(text);

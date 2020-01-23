@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.app;
 import android.app.Application;
 import android.content.Context;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.multidex.MultiDex;
@@ -34,6 +35,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.Volley;
+import com.ftinc.scoop.Scoop;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -67,6 +69,16 @@ public class AppController extends MultiDexApplication {
         super.onCreate();
         Shortbread.create(this);
         mInstance = this;
+
+        Scoop.waffleCone()
+                .addFlavor("Default", R.style.AppThemeMain, true)
+                .addFlavor("Light", R.style.AppThemeMain)
+                .addFlavor("Dark", R.style.AppThemeDarkMain)
+                //.addDayNightFlavor("DayNight", R.style.Theme_Scoop_DayNight)
+                //.addFlavor("Alternate 1", R.style.Theme_Scoop_Alt1)
+                //.addFlavor("Alternate 2", R.style.Theme_Scoop_Alt2)
+                .setSharedPreferences(PreferenceManager.getDefaultSharedPreferences(this))
+                .initialize();
     }
 
     @SuppressWarnings("TryWithIdenticalCatches")

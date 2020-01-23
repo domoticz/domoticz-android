@@ -50,6 +50,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
+import com.ftinc.scoop.Scoop;
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
 import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter;
 import com.google.android.gms.ads.AdRequest;
@@ -177,10 +178,9 @@ public class MainActivity extends AppCompatPermissionsActivity {
         }
         InitBiometric();
         mSharedPrefs = new SharedPrefUtil(this);
-        if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDarkMain);
-        else
-            setTheme(R.style.AppThemeMain);
+
+        // Apply Scoop to the activity
+        Scoop.getInstance().apply(this);
         permissionHelper = PermissionHelper.getInstance(this);
 
         UsefulBits.checkAPK(this, mSharedPrefs);
@@ -203,10 +203,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
         }
 
         toolbar = findViewById(R.id.toolbar);
-        if (mSharedPrefs.darkThemeEnabled()) {
-            toolbar.setBackgroundColor(getResources().getColor(R.color.secondary));
-            toolbar.setPopupTheme(R.style.ThemeOverlay_AppCompat_Dark);
-        }
         setSupportActionBar(toolbar);
 
         boolean resolvableError = UsefulBits.checkPlayServicesAvailable(this);
@@ -397,22 +393,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     Bundle res = data.getExtras();
                     if (res != null && !res.getBoolean("RESULT", false))
                         this.finish();
-                    else {
-                        if (mSharedPrefs.darkThemeEnabled())
-                            setTheme(R.style.AppThemeDarkMain);
-                        else
-                            setTheme(R.style.AppThemeMain);
+                    else
                         initScreen();
-                    }
                     SerializableManager.cleanAllSerializableObjects(this);
                     break;
                 case iSettingsResultCode:
                     mServerUtil = new ServerUtil(this);
                     SerializableManager.cleanAllSerializableObjects(this);
-                    if (mSharedPrefs.darkThemeEnabled())
-                        setTheme(R.style.AppThemeDarkMain);
-                    else
-                        setTheme(R.style.AppThemeMain);
                     this.recreate();
                     break;
                 case iQRResultCode:
@@ -828,10 +815,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 .withName("Logged in")
                 .withEmail(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME))
                 .withIcon(R.mipmap.ic_launcher);
-        if (mSharedPrefs.darkThemeEnabled()) {
-            loggedinAccount.withSelectedColorRes(R.color.primary);
-            loggedinAccount.withSelectedTextColorRes(R.color.white);
-        }
         allUsers.add(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME));
 
         // Create the AccountHeader
@@ -909,10 +892,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     ).withEmail(user.getUsername())
                             .withIcon(R.drawable.users)
                             .withEnabled(user.isEnabled());
-
-                    if (mSharedPrefs.darkThemeEnabled()) {
-                        profile.withSelectedColorRes(R.color.primary);
-                    }
                     allUsers.add(user.getUsername());
                     headerResult.addProfiles(profile);
                 }
@@ -1013,35 +992,22 @@ public class MainActivity extends AppCompatPermissionsActivity {
             }
         } catch (Exception ex) {
         }
-
         return drawerItems;
     }
 
     private SecondaryDrawerItem createSecondaryDrawerItem(String title, String icon, String fragmentID) {
         SecondaryDrawerItem item = new SecondaryDrawerItem();
         item.withName(title)
-                .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.primary)
+                .withIcon(GoogleMaterial.Icon.valueOf(icon))
                 .withTag(fragmentID);
-        if (mSharedPrefs.darkThemeEnabled()) {
-            item.withIconColorRes(R.color.white);
-            item.withSelectedColorRes(R.color.primary);
-            item.withSelectedTextColorRes(R.color.white);
-            item.withSelectedIconColorRes(R.color.white);
-        }
         return item;
     }
 
     private PrimaryDrawerItem createPrimaryDrawerItem(String title, String icon, String fragmentID) {
         PrimaryDrawerItem item = new PrimaryDrawerItem();
         item.withName(title)
-                .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.primary)
+                .withIcon(GoogleMaterial.Icon.valueOf(icon))
                 .withTag(fragmentID);
-        if (mSharedPrefs.darkThemeEnabled()) {
-            item.withIconColorRes(R.color.white);
-            item.withSelectedColorRes(R.color.primary);
-            item.withSelectedTextColorRes(R.color.white);
-            item.withSelectedIconColorRes(R.color.white);
-        }
         return item;
     }
 
@@ -1159,11 +1125,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
                                 stopRecognition();
                             }
                         };
-                    }
-                    if (mSharedPrefs.darkThemeEnabled()) {
-                        int color = ContextCompat.getColor(MainActivity.this, R.color.background_dark);
-                        if (color != 0 && recognitionProgressView != null)
-                            recognitionProgressView.setBackgroundColor(color);
                     }
                     int[] colors = {
                             ContextCompat.getColor(this, R.color.material_amber_600),

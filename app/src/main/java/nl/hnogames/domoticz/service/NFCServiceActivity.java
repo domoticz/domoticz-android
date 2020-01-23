@@ -27,6 +27,8 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ftinc.scoop.Scoop;
+
 import java.util.ArrayList;
 
 import hugo.weaving.DebugLog;
@@ -51,8 +53,7 @@ public class NFCServiceActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
-        if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
+        Scoop.getInstance().apply(this);
 
         super.onCreate(savedInstanceState);
         if (mSharedPrefs.isNFCEnabled()) {

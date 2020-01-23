@@ -43,7 +43,6 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.squareup.picasso.Picasso;
@@ -170,21 +169,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             row = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.dashboard_row, parent, false);
 
-        if (mSharedPrefs.darkThemeEnabled()) {
-            if ((row.findViewById(R.id.card_global_wrapper)) != null)
-                row.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-            if ((row.findViewById(R.id.row_wrapper)) != null)
-                (row.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
-            if ((row.findViewById(R.id.row_global_wrapper)) != null)
-                (row.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-
-            if ((row.findViewById(R.id.on_button)) != null)
-                ((MaterialButton) row.findViewById(R.id.on_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
-            if ((row.findViewById(R.id.off_button)) != null)
-                ((MaterialButton) row.findViewById(R.id.off_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
-            if ((row.findViewById(R.id.color_button)) != null)
-                ((MaterialButton) row.findViewById(R.id.color_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
-        }
         return new DataObjectHolder(row);
     }
 
@@ -193,10 +177,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (filteredData != null && filteredData.size() >= position) {
             DevicesInfo extendedStatusInfo = filteredData.get(position);
 
-            if (!this.mSharedPrefs.darkThemeEnabled()) {
-                holder.pieView.setInnerBackgroundColor(ContextCompat.getColor(context, R.color.white));
-                holder.pieView.setTextColor(ContextCompat.getColor(context, R.color.black));
-            }
             holder.pieView.setPercentageTextSize(16);
             holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
 

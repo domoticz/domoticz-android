@@ -100,19 +100,6 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.scene_row_default, parent, false);
 
-        if (mSharedPrefs.darkThemeEnabled()) {
-            if ((view.findViewById(R.id.card_global_wrapper)) != null)
-                view.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-            if ((view.findViewById(R.id.row_wrapper)) != null)
-                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
-            if ((view.findViewById(R.id.row_global_wrapper)) != null)
-                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-            if ((view.findViewById(R.id.on_button)) != null)
-                ((MaterialButton) view.findViewById(R.id.on_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
-            if ((view.findViewById(R.id.off_button)) != null)
-                ((MaterialButton) view.findViewById(R.id.off_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
-        }
-
         return new DataObjectHolder(view);
     }
 

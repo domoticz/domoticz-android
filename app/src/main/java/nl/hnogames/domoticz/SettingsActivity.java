@@ -25,6 +25,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.ftinc.scoop.Scoop;
+
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.preference.Preference;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -35,10 +37,9 @@ public class SettingsActivity extends AppCompatPermissionsActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
-        if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
-        else
-            setTheme(R.style.AppTheme);
+        // Apply Scoop to the activity
+        Scoop.getInstance().apply(this);
+
         super.onCreate(savedInstanceState);
 
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
