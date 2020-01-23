@@ -41,6 +41,9 @@
         <item name="material_drawer_selected">@color/material_drawer_selected</item>
         <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
         <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
+
+        <!-- Custom values -->
+        <item name="recyclerBackground">@color/background_grey</item>
     </style>
 
     <style name="AppThemeDarkMain" parent="Theme.MaterialComponents.NoActionBar">
@@ -62,6 +65,9 @@
         <item name="material_drawer_selected">@color/button_dark</item>
         <item name="material_drawer_selected_text">@color/material_drawer_dark_selected_text</item>
         <item name="material_drawer_header_selection_text">@color/material_drawer_dark_header_selection_text</item>
+
+        <!-- Custom values -->
+        <item name="recyclerBackground">@color/secondary_dark</item>
     </style>
 
     <!-- Base application theme. -->
@@ -77,25 +83,10 @@
         <item name="colorAccent">@color/primary</item>
     </style>
 
-    <!--        Styles Light     -->
     <style name="background_listview">
         <item name="android:paddingLeft">@dimen/row_space</item>
         <item name="android:paddingRight">@dimen/row_space</item>
         <item name="android:background">@color/background_grey</item>
-    </style>
-
-    <style name="background_recyclerview">
-        <item name="android:background">@color/background_grey</item>
-    </style>
-
-    <style name="listview_row">
-        <item name="android:background">@drawable/bordershadow</item>
-        <item name="android:foreground">?android:attr/selectableItemBackground</item>
-    </style>
-
-    <style name="listview_row_dark">
-        <item name="android:background">@drawable/bordershadowdark</item>
-        <item name="android:foreground">?android:attr/selectableItemBackground</item>
     </style>
 
     <!--        Welcome     -->
@@ -175,6 +166,16 @@
     <!--        List view        -->
     <style name="listView">
         <item name="android:scrollbarStyle">outsideOverlay</item>
+    </style>
+
+    <style name="listview_row">
+        <item name="android:background">@drawable/bordershadow</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <style name="listview_row_dark">
+        <item name="android:background">@drawable/bordershadowdark</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
     </style>
 
     <!--        Debugging        -->

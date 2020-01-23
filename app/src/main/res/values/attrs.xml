@@ -27,6 +27,9 @@
     <attr name="dynamicEntryValuesProvider" format="string"/>
     <attr name="selectAllValuesByDefault" format="boolean"/>
 
+    <attr name="recyclerBackground" format="color" />
+    <attr name="listviewBackground" format="color" />
+
     <declare-styleable name="CustomListPreference">
         <attr name="lockedValues"/>
         <attr name="lockedValuesDependencyKeys"/>
