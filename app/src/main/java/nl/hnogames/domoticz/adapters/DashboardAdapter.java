@@ -493,12 +493,33 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.switch_battery_level.append(", " + context.getString(R.string.humidity) + ": " + mDeviceInfo.getHumidityStatus());
             }
 
-            Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
-                    mDeviceInfo.getType(),
-                    mDeviceInfo.getSubType(),
-                    mDeviceInfo.getStatusBoolean(),
-                    mDeviceInfo.getUseCustomImage(),
-                    mDeviceInfo.getImage())).into(holder.iconRow);
+            if(mDeviceInfo.getTypeImg().equals("temperature"))
+            {
+                if ((!UsefulBits.isEmpty(tempSign) && tempSign.equals("C") && mDeviceInfo.getTemperature() < 0) ||
+                        (!UsefulBits.isEmpty(tempSign) && tempSign.equals("F") && mDeviceInfo.getTemperature() < 30)) {
+                    Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                            mDeviceInfo.getType(),
+                            null,
+                            mConfigInfo != null && mDeviceInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature(),
+                            true,
+                            "Freezing")).into(holder.iconRow);
+                } else {
+                    Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                            mDeviceInfo.getType(),
+                            null,
+                            mConfigInfo != null && mDeviceInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature(),
+                            false,
+                            null)).into(holder.iconRow);
+                }
+            }
+            else{
+                Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                        mDeviceInfo.getType(),
+                        mDeviceInfo.getSubType(),
+                        mDeviceInfo.getStatusBoolean(),
+                        mDeviceInfo.getUseCustomImage(),
+                        mDeviceInfo.getImage())).into(holder.iconRow);
+            }
 
             holder.iconRow.setAlpha(1f);
             if (!mDeviceInfo.getStatusBoolean())
@@ -882,14 +903,21 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             }
         }
 
-        if ((sign.equals("C") && temperature < 0) || (sign.equals("F") && temperature < 30)) {
-            Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(),
-                    mConfigInfo != null && temperature > mConfigInfo.getDegreeDaysBaseTemperature(),
-                    true, "Freezing")).into(holder.iconRow);
+        if ((!UsefulBits.isEmpty(sign) && sign.equals("C") && mDeviceInfo.getTemperature() < 0) ||
+                (!UsefulBits.isEmpty(sign) && sign.equals("F") && mDeviceInfo.getTemperature() < 30)) {
+            Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                    mDeviceInfo.getType(),
+                    null,
+                    mConfigInfo != null && mDeviceInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature(),
+                    true,
+                    "Freezing")).into(holder.iconRow);
         } else {
-            Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(), mDeviceInfo.getType(), mDeviceInfo.getSubType(),
-                    mConfigInfo != null && temperature > mConfigInfo.getDegreeDaysBaseTemperature(),
-                    false, null)).into(holder.iconRow);
+            Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                    mDeviceInfo.getType(),
+                    null,
+                    mConfigInfo != null && mDeviceInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature(),
+                    false,
+                    null)).into(holder.iconRow);
         }
     }
 
