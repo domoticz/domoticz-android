@@ -32,6 +32,8 @@
     <attr name="listviewRowBackground" format="color" />
     <attr name="backdropBackground" format="color" />
     <attr name="buttonTextColor" format="color" />
+    <attr name="toolbarBackground" format="color" />
+    <attr name="toolbarTextColor" format="color" />
 
     <declare-styleable name="CustomListPreference">
         <attr name="lockedValues"/>

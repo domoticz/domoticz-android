@@ -25,30 +25,30 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <!-- Base application theme. -->
     <style name="AppThemeMain" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/primary_accent</item>
+        <item name="colorAccent">@color/primary</item>
 
-        <!-- override the menu item text colors -->
+        <item name="actionMenuTextColor">@android:color/white</item>
         <item name="android:actionMenuTextColor">@color/white</item>
-        <item name="actionMenuTextColor">@color/white</item>
 
         <!-- MaterialDrawer specific values -->
-        <item name="material_drawer_background">@color/primary_dark</item>
-        <item name="material_drawer_primary_text">@color/secondary</item>
-        <item name="material_drawer_primary_icon">@color/primary_accent</item>
-        <item name="material_drawer_secondary_text">@color/secondary</item>
-        <item name="material_drawer_hint_text">@color/secondary</item>
-        <item name="material_drawer_divider">@color/primary_dark</item>
-        <item name="material_drawer_selected">@color/primary_dark</item>
-        <item name="material_drawer_selected_text">@color/primary_accent</item>
-        <item name="material_drawer_header_selection_text">@color/white</item>
+        <item name="material_drawer_background">@color/material_drawer_background</item>
+        <item name="material_drawer_primary_text">@color/material_drawer_primary_text</item>
+        <item name="material_drawer_primary_icon">@color/material_drawer_primary_icon</item>
+        <item name="material_drawer_secondary_text">@color/material_drawer_secondary_text</item>
+        <item name="material_drawer_hint_text">@color/material_drawer_hint_text</item>
+        <item name="material_drawer_divider">@color/material_drawer_divider</item>
+        <item name="material_drawer_selected">@color/material_drawer_selected</item>
+        <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
+        <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
 
         <!-- Custom values -->
-        <item name="recyclerBackground">@color/primary_dark</item>
-        <item name="listviewRowBackground">@color/primary</item>
+        <item name="toolbarBackground">@color/primary</item>
+        <item name="toolbarTextColor">@color/white</item>
+        <item name="recyclerBackground">@color/background_grey</item>
+        <item name="listviewRowBackground">@color/white</item>
         <item name="backdropBackground">@color/primary</item>
         <item name="buttonTextColor">@color/primary_accent</item>
     </style>
@@ -57,10 +57,6 @@
         <item name="colorPrimary">@color/secondary</item>
         <item name="colorPrimaryDark">@color/secondary_dark</item>
         <item name="colorAccent">@color/secondary_accent</item>
-
-        <!-- override the menu item text colors -->
-        <item name="android:actionMenuTextColor">@color/white</item>
-        <item name="actionMenuTextColor">@color/white</item>
 
         <!-- MaterialDrawer specific values -->
         <item name="material_drawer_background">@color/secondary_dark</item>
@@ -74,10 +70,19 @@
         <item name="material_drawer_header_selection_text">@color/white</item>
 
         <!-- Custom values -->
+        <item name="toolbarTextColor">@color/white</item>
+        <item name="toolbarBackground">@color/secondary</item>
         <item name="recyclerBackground">@color/secondary_dark</item>
         <item name="listviewRowBackground">@color/secondary</item>
         <item name="backdropBackground">@color/secondary</item>
         <item name="buttonTextColor">@color/secondary_accent</item>
+    </style>
+
+    <style name="AppThemeToolbarStyle" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="actionMenuTextColor">@color/white</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
     </style>
 
     <!-- Base application theme. -->

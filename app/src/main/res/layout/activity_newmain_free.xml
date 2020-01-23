@@ -36,8 +36,10 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar" 
+			android:theme="@style/AppThemeToolbarStyle"
             android:layout_width="match_parent"
+		android:background="?attr/toolbarBackground"
             android:layout_height="?attr/actionBarSize"/>
 
         <com.github.zagum.speechrecognitionview.RecognitionProgressView
