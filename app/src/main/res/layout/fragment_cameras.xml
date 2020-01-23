@@ -38,6 +38,7 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/backdropBackground"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -185,6 +186,7 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:background="?attr/recyclerBackground"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -262,7 +264,7 @@
                                 tools:text="Error: No network connection available" />
 
                             <com.google.android.material.button.MaterialButton 
-android:textColor="?attr/buttonTextColor"
+                                android:textColor="?attr/buttonTextColor"
                                 android:id="@+id/btnCheckSettings"
                                 style="@style/Widget.MaterialComponents.Button.TextButton"
                                 android:layout_width="wrap_content"
@@ -275,7 +277,7 @@ android:textColor="?attr/buttonTextColor"
                 </RelativeLayout>
 
                 <com.google.android.material.button.MaterialButton
-android:textColor="?attr/buttonTextColor"
+                    android:textColor="?attr/buttonTextColor"
                     android:id="@+id/btnSortCollapse"
                     style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                     android:layout_width="match_parent"
