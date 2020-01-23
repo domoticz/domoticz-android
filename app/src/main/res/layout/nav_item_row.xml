@@ -24,7 +24,7 @@
               android:id="@+id/row_global_wrapper"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:background="@color/white"
+              android:background="?attr/listviewRowBackground"
               android:foreground="?android:attr/selectableItemBackground"
               android:orientation="horizontal"
               android:paddingTop="13dp"

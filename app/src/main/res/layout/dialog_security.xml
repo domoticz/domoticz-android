@@ -54,7 +54,8 @@
             android:layout_marginRight="10dp"
             android:orientation="vertical">
 
-            <com.google.android.material.button.MaterialButton
+            <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
                 android:id="@+id/armhome"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
@@ -65,7 +66,8 @@
                 android:layout_weight="1"
                 android:text="@string/security_arm_home"/>
 
-            <com.google.android.material.button.MaterialButton
+            <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
                 android:id="@+id/armaway"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
@@ -76,7 +78,8 @@
                 android:layout_weight="1"
                 android:text="@string/security_arm_away"/>
 
-            <com.google.android.material.button.MaterialButton
+            <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
                 android:id="@+id/disarm"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"

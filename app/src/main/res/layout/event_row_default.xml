@@ -39,13 +39,13 @@
         android:id="@+id/row_global_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/material_grey_300_">
+        android:background="?attr/recyclerBackground">
 
         <LinearLayout
             android:id="@+id/row_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="?attr/listviewRowBackground"
             android:minHeight="50dp"
             android:orientation="horizontal"
             android:paddingLeft="10dp"

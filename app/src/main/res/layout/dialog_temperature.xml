@@ -86,7 +86,8 @@
             android:layout_marginTop="70dp"
             android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
+            <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
                 android:id="@+id/min"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="60dp"
@@ -97,7 +98,8 @@
                 android:text="-"
                 android:textSize="12sp"/>
 
-            <com.google.android.material.button.MaterialButton
+            <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
                 android:id="@+id/plus"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="60dp"

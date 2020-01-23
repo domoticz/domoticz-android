@@ -30,7 +30,7 @@
 
     <LinearLayout
         android:id="@+id/row_wrapper"
-        style="@style/listview_row"
+        
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
@@ -95,7 +95,8 @@
         android:gravity="center_vertical"
         android:orientation="vertical">
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
             android:id="@+id/remove_button"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="60dp"

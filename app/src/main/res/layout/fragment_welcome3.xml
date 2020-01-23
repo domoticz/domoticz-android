@@ -23,7 +23,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:background="?attr/listviewRowBackground"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/welcome_top_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
@@ -214,7 +214,8 @@
                 android:layout_height="wrap_content"
                 android:prompt="@string/welcome_ssid_spinner_prompt"/>
 
-            <com.google.android.material.button.MaterialButton
+            <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
                 android:id="@+id/set_ssid"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"

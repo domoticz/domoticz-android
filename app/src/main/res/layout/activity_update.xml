@@ -107,7 +107,8 @@
                 android:text="@string/server_update_available"
                 android:textSize="@dimen/text_size_large"/>
 
-            <com.google.android.material.button.MaterialButton
+            <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
                 android:id="@+id/buttonUpdateServer"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"

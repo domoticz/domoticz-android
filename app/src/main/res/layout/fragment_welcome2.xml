@@ -23,7 +23,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
+                android:background="?attr/listviewRowBackground"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/welcome_top_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
@@ -51,7 +51,8 @@
             android:textColor="@color/default_text_color_light"
             android:textSize="@dimen/text_size_welcomePage2_settingsInfo"/>
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
             android:id="@+id/import_settings"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
@@ -59,7 +60,8 @@
             android:layout_marginTop="20dp"
             android:text="@string/import_settings"/>
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
             android:id="@+id/demo_settings"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"

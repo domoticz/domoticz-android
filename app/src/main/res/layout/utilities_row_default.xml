@@ -39,7 +39,7 @@
         android:id="@+id/row_global_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/material_grey_300_"
+        android:background="?attr/recyclerBackground"
         android:descendantFocusability="blocksDescendants"
         android:orientation="vertical">
 
@@ -47,7 +47,7 @@
             android:id="@+id/row_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="?attr/listviewRowBackground"
             android:minHeight="50dp"
             android:orientation="horizontal"
             android:padding="10dp">
@@ -112,7 +112,8 @@
                 android:layout_gravity="center"
                 android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton
+                <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
                     android:id="@+id/on_button"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="60dp"

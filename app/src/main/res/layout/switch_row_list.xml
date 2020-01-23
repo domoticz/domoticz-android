@@ -38,14 +38,14 @@
                   android:id="@+id/row_global_wrapper"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:background="@color/material_grey_300_"
+                  android:background="?attr/recyclerBackground"
                   android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/row_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="?attr/listviewRowBackground"
             android:orientation="horizontal"
             android:padding="10dp">
 
@@ -143,7 +143,8 @@
                                 android:layout_centerVertical="true"
                                 app:useMaterialThemeColors="false"/>
 
-                            <com.google.android.material.button.MaterialButton
+                            <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
                                 android:id="@+id/set_button"
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="56dp"
@@ -242,7 +243,8 @@
                                     plainpie:percentage="75"
                                     plainpie:percentage_size="15"/>
 
-                                <com.google.android.material.button.MaterialButton
+                                <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
                                     android:id="@+id/on_button"
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                     android:layout_width="60dp"
@@ -252,7 +254,8 @@
                                     android:text="@string/button_state_on"
                                     android:textSize="10dp"/>
 
-                                <com.google.android.material.button.MaterialButton
+                                <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
                                     android:id="@+id/off_button"
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                     android:layout_width="60dp"
@@ -270,7 +273,8 @@
                                     app:useMaterialThemeColors="false"/>
                             </LinearLayout>
 
-                            <com.google.android.material.button.MaterialButton
+                            <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
                                 android:id="@+id/color_button"
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="wrap_content"

@@ -29,6 +29,9 @@
 
     <attr name="recyclerBackground" format="color" />
     <attr name="listviewBackground" format="color" />
+    <attr name="listviewRowBackground" format="color" />
+    <attr name="backdropBackground" format="color" />
+    <attr name="buttonTextColor" format="color" />
 
     <declare-styleable name="CustomListPreference">
         <attr name="lockedValues"/>

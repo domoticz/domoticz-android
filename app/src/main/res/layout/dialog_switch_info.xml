@@ -144,7 +144,8 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
-            <com.google.android.material.button.MaterialButton
+            <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
                 android:id="@+id/full_button"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
@@ -154,7 +155,8 @@
                 android:text="@string/button_state_full_light"
                 android:textSize="10dp"/>
 
-            <com.google.android.material.button.MaterialButton
+            <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
                 android:id="@+id/night_button"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"

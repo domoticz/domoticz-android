@@ -228,7 +228,8 @@
                 android:layout_height="wrap_content"
                 android:prompt="@string/welcome_ssid_spinner_prompt"/>
 
-            <com.google.android.material.button.MaterialButton
+            <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
                 android:id="@+id/set_ssid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -365,7 +366,8 @@
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.button.MaterialButton 
+android:textColor="?attr/buttonTextColor"
             android:id="@+id/save_server"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
