@@ -286,6 +286,7 @@
                     android:text="@string/filterOn_all"
                     android:textSize="10dp"
                     android:visibility="gone"
+                    app:iconTint="?attr/buttonTextColor"
                     app:icon="@drawable/baseline_keyboard_arrow_down_black_18"
                     app:iconGravity="end" />
 
