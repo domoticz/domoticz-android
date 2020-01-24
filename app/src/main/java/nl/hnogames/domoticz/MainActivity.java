@@ -23,12 +23,14 @@ package nl.hnogames.domoticz;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -817,14 +819,17 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 .withIcon(R.mipmap.ic_launcher);
         allUsers.add(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME));
 
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = getTheme();
+        theme.resolveAttribute(R.attr.toolbarTextColor, typedValue, true);
+
         // Create the AccountHeader
         final ConfigInfo finalConfig = config;
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
-                //.withHeaderBackground(R.drawable.darkheader)
                 .addProfiles(loggedinAccount)
+                .withTextColor(typedValue.data)
                 .withOnlyMainProfileImageVisible(true)
-                .withTextColorRes(R.color.white)
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     @DebugLog

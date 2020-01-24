@@ -36,6 +36,12 @@
     <color name="alt2_dark">#1D2733</color>
     <color name="alt2_accent">#F7304D</color>
 
+    <color name="alt3">#1E2E52</color>
+    <color name="alt3_dark">#1D2733</color>
+    <color name="alt3_accent">#2196F3</color>
+    <color name="alt3_light">#2A5796</color>
+    <color name="alt3_background">#F8F9FB</color>
+
     <color name="background_grey">#EDEDED</color>
     <color name="accent">@color/button_dark_status</color>
 

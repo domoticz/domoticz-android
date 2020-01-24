@@ -25,6 +25,60 @@
     </style>
 
     <!-- Base application theme. -->
+    <style name="AppThemeDefault" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/primary</item>
+
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:buttonBarButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButton</item>
+        <item name="android:actionBarStyle">@style/AppThemeActionBar</item>
+        <item name="actionBarStyle">@style/AppThemeActionBar</item>
+
+        <item name="materialAlertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
+
+        <!-- MaterialDrawer specific values -->
+        <item name="material_drawer_background">@color/material_drawer_background</item>
+        <item name="material_drawer_primary_text">@color/material_drawer_primary_text</item>
+        <item name="material_drawer_primary_icon">@color/material_drawer_selected_text</item>
+        <item name="material_drawer_secondary_text">@color/material_drawer_primary_text</item>
+        <item name="material_drawer_hint_text">@color/material_drawer_primary_text</item>
+        <item name="material_drawer_divider">@color/material_drawer_divider</item>
+        <item name="material_drawer_selected">@color/material_drawer_selected</item>
+        <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
+        <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
+
+        <!-- Needed for the theme activity -->
+        <item name="colorControlHighlight">@color/primary</item>
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="toolbarItemTint">@color/white</item>
+
+        <!-- Style to use for Snackbars in this theme. -->
+        <item name="snackbarStyle">@style/snackbarStyle</item>
+        <item name="snackbarButtonStyle">@style/snackbarButton</item>
+        <item name="snackbarTextViewStyle">@style/snackbarText</item>
+
+        <!-- Custom values -->
+        <item name="toolbarBackground">@color/primary</item>
+        <item name="toolbarTextColor">@color/white</item>
+        <item name="recyclerBackground">@color/background_grey</item>
+        <item name="listviewRowBackground">@color/white</item>
+        <item name="backdropBackground">@color/primary</item>
+        <item name="buttonTextColor">@color/primary_accent</item>
+        <item name="graphTextColor">@color/grey_900</item>
+        <item name="wizardCardColor">@color/white</item>
+        <item name="wizardTitleColor">@color/grey_900</item>
+        <item name="temperatureTextColor">@color/grey_900</item>
+    </style>
+
     <style name="AppThemeMain" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
@@ -55,6 +109,12 @@
         <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
         <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
 
+        <!-- Needed for the theme activity -->
+        <item name="colorControlHighlight">@color/primary</item>
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="toolbarItemTint">@color/white</item>
+
         <!-- Style to use for Snackbars in this theme. -->
         <item name="snackbarStyle">@style/snackbarStyle</item>
         <item name="snackbarButtonStyle">@style/snackbarButton</item>
@@ -73,10 +133,10 @@
         <item name="temperatureTextColor">@color/grey_900</item>
     </style>
 
-    <style name="AppThemeDarkMain" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="colorPrimary">@color/secondary_accent</item>
+    <style name="AppThemeAlt1Main" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/alt1_accent</item>
         <item name="colorPrimaryDark">@color/secondary_dark</item>
-        <item name="colorAccent">@color/secondary_accent</item>
+        <item name="colorAccent">@color/alt1_accent</item>
 
         <item name="android:windowBackground">@color/secondary_dark</item>
         <item name="android:buttonBarButtonStyle">@style/DialogButton</item>
@@ -97,51 +157,6 @@
         <item name="material_drawer_hint_text">@color/white</item>
         <item name="material_drawer_divider">@color/secondary</item>
         <item name="material_drawer_selected">@color/secondary_dark</item>
-        <item name="material_drawer_selected_text">@color/secondary_accent</item>
-        <item name="material_drawer_header_selection_text">@color/white</item>
-
-        <!-- Style to use for Snackbars in this theme. -->
-        <item name="snackbarStyle">@style/snackbarDarkStyle</item>
-        <item name="snackbarButtonStyle">@style/snackbarDarkButton</item>
-        <item name="snackbarTextViewStyle">@style/snackbarDarkText</item>
-
-        <!-- Custom values -->
-        <item name="toolbarTextColor">@color/white</item>
-        <item name="toolbarBackground">@color/secondary</item>
-        <item name="recyclerBackground">@color/secondary_dark</item>
-        <item name="listviewRowBackground">@color/secondary</item>
-        <item name="backdropBackground">@color/secondary</item>
-        <item name="buttonTextColor">@color/secondary_accent</item>
-        <item name="graphTextColor">@color/white</item>
-        <item name="wizardCardColor">@color/secondary</item>
-        <item name="wizardTitleColor">@color/white</item>
-        <item name="temperatureTextColor">@color/white</item>
-    </style>
-
-    <style name="AppThemeAlt1Main" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="colorPrimary">@color/alt1_accent</item>
-        <item name="colorPrimaryDark">@color/alt1_dark</item>
-        <item name="colorAccent">@color/alt1_accent</item>
-
-        <item name="android:windowBackground">@color/alt1_dark</item>
-        <item name="android:buttonBarButtonStyle">@style/DialogButton</item>
-        <item name="buttonBarNeutralButtonStyle">@style/DialogButton</item>
-        <item name="buttonBarNegativeButtonStyle">@style/DialogButton</item>
-        <item name="buttonBarPositiveButtonStyle">@style/DialogButton</item>
-        <item name="materialAlertDialogTheme">@style/AlertDialogDarkTheme</item>
-        <item name="android:alertDialogTheme">@style/AlertDialogDarkTheme</item>
-        <item name="alertDialogTheme">@style/AlertDialogDarkTheme</item>
-        <item name="android:actionBarStyle">@style/AppThemeDarkActionBar</item>
-        <item name="actionBarStyle">@style/AppThemeDarkActionBar</item>
-
-        <!-- MaterialDrawer specific values -->
-        <item name="material_drawer_background">@color/alt1_dark</item>
-        <item name="material_drawer_primary_text">@color/white</item>
-        <item name="material_drawer_primary_icon">@color/white</item>
-        <item name="material_drawer_secondary_text">@color/white</item>
-        <item name="material_drawer_hint_text">@color/white</item>
-        <item name="material_drawer_divider">@color/secondary</item>
-        <item name="material_drawer_selected">@color/alt1_dark</item>
         <item name="material_drawer_selected_text">@color/alt1_accent</item>
         <item name="material_drawer_header_selection_text">@color/white</item>
 
@@ -150,21 +165,27 @@
         <item name="snackbarButtonStyle">@style/snackbarDarkButton</item>
         <item name="snackbarTextViewStyle">@style/snackbarDarkText</item>
 
+        <!-- Needed for the theme activity -->
+        <item name="colorControlHighlight">@color/alt1_accent</item>
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="toolbarItemTint">@color/white</item>
+
         <!-- Custom values -->
         <item name="toolbarTextColor">@color/white</item>
-        <item name="toolbarBackground">@color/alt1_dark</item>
-        <item name="recyclerBackground">@color/alt1_dark</item>
+        <item name="toolbarBackground">@color/secondary</item>
+        <item name="recyclerBackground">@color/secondary_dark</item>
         <item name="listviewRowBackground">@color/secondary</item>
-        <item name="backdropBackground">@color/alt1_dark</item>
+        <item name="backdropBackground">@color/secondary</item>
         <item name="buttonTextColor">@color/alt1_accent</item>
         <item name="graphTextColor">@color/white</item>
-        <item name="wizardCardColor">@color/alt1</item>
+        <item name="wizardCardColor">@color/secondary</item>
         <item name="wizardTitleColor">@color/white</item>
         <item name="temperatureTextColor">@color/white</item>
     </style>
 
     <style name="AppThemeAlt2Main" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="colorPrimary">@color/alt2</item>
+        <item name="colorPrimary">@color/alt2_accent</item>
         <item name="colorPrimaryDark">@color/alt2_dark</item>
         <item name="colorAccent">@color/alt2_accent</item>
 
@@ -185,7 +206,7 @@
         <item name="material_drawer_primary_icon">@color/white</item>
         <item name="material_drawer_secondary_text">@color/white</item>
         <item name="material_drawer_hint_text">@color/white</item>
-        <item name="material_drawer_divider">@color/alt2</item>
+        <item name="material_drawer_divider">@color/secondary</item>
         <item name="material_drawer_selected">@color/alt2_dark</item>
         <item name="material_drawer_selected_text">@color/alt2_accent</item>
         <item name="material_drawer_header_selection_text">@color/white</item>
@@ -195,17 +216,77 @@
         <item name="snackbarButtonStyle">@style/snackbarDarkButton</item>
         <item name="snackbarTextViewStyle">@style/snackbarDarkText</item>
 
+        <!-- Needed for the theme activity -->
+        <item name="colorControlHighlight">@color/alt2_accent</item>
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="toolbarItemTint">@color/white</item>
+
         <!-- Custom values -->
         <item name="toolbarTextColor">@color/white</item>
-        <item name="toolbarBackground">@color/alt2_dark</item>
+        <item name="toolbarBackground">@color/alt2</item>
         <item name="recyclerBackground">@color/alt2_dark</item>
         <item name="listviewRowBackground">@color/alt2</item>
-        <item name="backdropBackground">@color/alt2_dark</item>
+        <item name="backdropBackground">@color/alt2</item>
         <item name="buttonTextColor">@color/alt2_accent</item>
         <item name="graphTextColor">@color/white</item>
         <item name="wizardCardColor">@color/alt2</item>
         <item name="wizardTitleColor">@color/white</item>
         <item name="temperatureTextColor">@color/white</item>
+    </style>
+
+    <style name="AppThemeAlt3Main" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/alt3</item>
+        <item name="colorPrimaryDark">@color/alt3_dark</item>
+        <item name="colorAccent">@color/alt3</item>
+
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:buttonBarButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButton</item>
+        <item name="android:actionBarStyle">@style/AppThemeActionBar</item>
+        <item name="actionBarStyle">@style/AppThemeActionBar</item>
+
+        <item name="materialAlertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
+
+        <!-- MaterialDrawer specific values -->
+        <item name="material_drawer_background">@color/material_drawer_background</item>
+        <item name="material_drawer_primary_text">@color/material_drawer_primary_text</item>
+        <item name="material_drawer_primary_icon">@color/alt3_light</item>
+        <item name="material_drawer_secondary_text">@color/material_drawer_primary_text</item>
+        <item name="material_drawer_hint_text">@color/material_drawer_primary_text</item>
+        <item name="material_drawer_divider">@color/material_drawer_divider</item>
+        <item name="material_drawer_selected">@color/material_drawer_selected</item>
+        <item name="material_drawer_selected_text">@color/alt3_accent</item>
+        <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
+
+        <!-- Style to use for Snackbars in this theme. -->
+        <item name="snackbarStyle">@style/snackbarStyle</item>
+        <item name="snackbarButtonStyle">@style/snackbarButton</item>
+        <item name="snackbarTextViewStyle">@style/snackbarText</item>
+
+        <!-- Needed for the theme activity -->
+        <item name="colorControlHighlight">@color/alt3</item>
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="toolbarItemTint">@color/white</item>
+
+        <!-- Custom values -->
+        <item name="toolbarBackground">@color/alt3</item>
+        <item name="toolbarTextColor">@color/white</item>
+        <item name="recyclerBackground">@color/alt3_background</item>
+        <item name="listviewRowBackground">@color/white</item>
+        <item name="backdropBackground">@color/alt3</item>
+        <item name="buttonTextColor">@color/alt3_accent</item>
+        <item name="graphTextColor">@color/black</item>
+        <item name="wizardCardColor">@color/white</item>
+        <item name="wizardTitleColor">@color/black</item>
+        <item name="temperatureTextColor">@color/black</item>
     </style>
 
     <!-- Dialog themes -->
