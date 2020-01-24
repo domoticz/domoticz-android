@@ -19,12 +19,12 @@
   ~  under the License.
   -->
 <resources>
-    <!-- Base application theme. -->
     <style name="AppThemeIntro" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!-- Base application theme. -->
     <style name="AppThemeMain" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
@@ -32,6 +32,15 @@
 
         <item name="actionMenuTextColor">@android:color/white</item>
         <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:buttonBarButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButton</item>
+
+        <item name="materialAlertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
 
         <!-- MaterialDrawer specific values -->
         <item name="material_drawer_background">@color/material_drawer_background</item>
@@ -63,6 +72,15 @@
         <item name="colorPrimaryDark">@color/secondary_dark</item>
         <item name="colorAccent">@color/secondary_accent</item>
 
+        <item name="android:windowBackground">@color/secondary_dark</item>
+        <item name="android:buttonBarButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButton</item>
+        <item name="materialAlertDialogTheme">@style/AlertDialogDarkTheme</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogDarkTheme</item>
+        <item name="alertDialogTheme">@style/AlertDialogDarkTheme</item>
+
         <!-- MaterialDrawer specific values -->
         <item name="material_drawer_background">@color/secondary_dark</item>
         <item name="material_drawer_primary_text">@color/white</item>
@@ -88,39 +106,43 @@
         <item name="buttonTextColor">@color/secondary_accent</item>
     </style>
 
-    <style name="AppThemeDayNightMain" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/primary</item>
-
-        <item name="actionMenuTextColor">@android:color/white</item>
-        <item name="android:actionMenuTextColor">@color/white</item>
-
-        <!-- MaterialDrawer specific values -->
-        <item name="material_drawer_background">@color/material_drawer_background</item>
-        <item name="material_drawer_primary_text">@color/material_drawer_primary_text</item>
-        <item name="material_drawer_primary_icon">@color/material_drawer_selected_text</item>
-        <item name="material_drawer_secondary_text">@color/material_drawer_primary_text</item>
-        <item name="material_drawer_hint_text">@color/material_drawer_primary_text</item>
-        <item name="material_drawer_divider">@color/material_drawer_divider</item>
-        <item name="material_drawer_selected">@color/material_drawer_selected</item>
-        <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
-        <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
-
-        <!-- Style to use for Snackbars in this theme. -->
-        <item name="snackbarStyle">@style/snackbarStyle</item>
-        <item name="snackbarButtonStyle">@style/snackbarButton</item>
-        <item name="snackbarTextViewStyle">@style/snackbarText</item>
-
-        <!-- Custom values -->
-        <item name="toolbarBackground">@color/primary</item>
-        <item name="toolbarTextColor">@color/white</item>
-        <item name="recyclerBackground">@color/background_grey</item>
-        <item name="listviewRowBackground">@color/white</item>
-        <item name="backdropBackground">@color/primary</item>
-        <item name="buttonTextColor">@color/primary_accent</item>
+    <!-- Dialog themes -->
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurface">@color/white</item>
+        <item name="android:background">@color/white</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarNeutralButtonStyle">@style/NegativeButtonStyle</item>
     </style>
 
+    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/primary_accent</item>
+        <item name="rippleColor">#ad1457</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/primary_accent</item>
+    </style>
+
+    <style name="AlertDialogDarkTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurface">@color/secondary_dark</item>
+        <item name="android:background">@color/secondary_dark</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonDarkStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonDarkStyle</item>
+        <item name="buttonBarNeutralButtonStyle">@style/NegativeButtonDarkStyle</item>
+    </style>
+
+    <style name="PositiveButtonDarkStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/secondary_accent</item>
+        <item name="rippleColor">@color/secondary_accent</item>
+    </style>
+
+    <style name="NegativeButtonDarkStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/secondary_accent</item>
+        <item name="rippleColor">@color/secondary_accent</item>
+    </style>
+
+    <style name="DialogButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog"/>
 
     <!-- Snackbar styles -->
     <style name="snackbarStyle" parent="@style/Widget.MaterialComponents.Snackbar">
@@ -153,6 +175,7 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <!-- Toolbar style -->
     <style name="AppThemeToolbarStyle" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:textColorPrimary">@color/white</item>
         <item name="actionMenuTextColor">@color/white</item>

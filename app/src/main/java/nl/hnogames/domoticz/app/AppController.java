@@ -73,7 +73,7 @@ public class AppController extends MultiDexApplication {
         Scoop.waffleCone()
                 .addFlavor("Light", R.style.AppThemeMain, true)
                 .addFlavor("Dark", R.style.AppThemeDarkMain)
-                .addDayNightFlavor("DayNight", R.style.AppThemeDayNightMain)
+                //.addDayNightFlavor("DayNight", R.style.AppThemeDayNightMain)
                 //.addFlavor("Alternate 1", R.style.Theme_Scoop_Alt1)
                 //.addFlavor("Alternate 2", R.style.Theme_Scoop_Alt2)
                 .setSharedPreferences(PreferenceManager.getDefaultSharedPreferences(this))

@@ -35,20 +35,26 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 
 public class SettingsActivity extends AppCompatPermissionsActivity {
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
+
         // Apply Scoop to the activity
         Scoop.getInstance().apply(this);
-
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_graph);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getFragmentManager().beginTransaction().replace(android.R.id.content,
+        getFragmentManager().beginTransaction().replace(R.id.main,
                 new Preference()).commit();
     }
 
