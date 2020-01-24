@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import androidx.appcompat.widget.Toolbar;
 
 import com.ftinc.scoop.Scoop;
+import com.ftinc.scoop.ui.ScoopSettingsActivity;
 
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.preference.Preference;
@@ -36,6 +37,7 @@ import nl.hnogames.domoticz.utils.UsefulBits;
 
 public class SettingsActivity extends AppCompatPermissionsActivity {
     private Toolbar toolbar;
+    private final int THEME_CHANGED = 55;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +76,19 @@ public class SettingsActivity extends AppCompatPermissionsActivity {
     }
 
     public void reloadSettings() {
-        Bundle conData = new Bundle();
-        Intent intent = new Intent();
-        intent.putExtras(conData);
-        setResult(789, intent);
-        super.finish();
+        recreate();
+    }
+
+    public void openThemePicker() {
+        startActivityForResult(ScoopSettingsActivity.createIntent(this, getString(R.string.config_theme)), THEME_CHANGED);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == THEME_CHANGED) {
+            recreate();
+        }
     }
 
     private void finishWithResult() {

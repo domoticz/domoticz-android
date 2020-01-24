@@ -88,9 +88,9 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 import static android.content.Context.KEYGUARD_SERVICE;
 
 public class Preference extends PreferenceFragment {
-
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = Preference.class.getSimpleName();
+
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG_IMPORT = "Import Settings";
     @SuppressWarnings("FieldCanBeLocal")
@@ -288,8 +288,7 @@ public class Preference extends PreferenceFragment {
                     showPremiumSnackbar(getString(R.string.category_theme));
                     return false;
                 } else {
-                    Intent intent = ScoopSettingsActivity.createIntent(mContext, getString(R.string.config_theme));
-                    startActivity(intent);
+                    ((SettingsActivity) getActivity()).openThemePicker();
                     return true;
                 }
             }

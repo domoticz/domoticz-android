@@ -398,9 +398,9 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     SerializableManager.cleanAllSerializableObjects(this);
                     break;
                 case iSettingsResultCode:
+                    this.recreate();
                     mServerUtil = new ServerUtil(this);
                     SerializableManager.cleanAllSerializableObjects(this);
-                    this.recreate();
                     break;
                 case iQRResultCode:
                     String QR_ID = data.getStringExtra("QRCODE");
