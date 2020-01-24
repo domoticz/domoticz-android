@@ -68,7 +68,7 @@
     </style>
 
     <style name="AppThemeDarkMain" parent="Theme.MaterialComponents.NoActionBar">
-        <item name="colorPrimary">@color/secondary</item>
+        <item name="colorPrimary">@color/secondary_accent</item>
         <item name="colorPrimaryDark">@color/secondary_dark</item>
         <item name="colorAccent">@color/secondary_accent</item>
 
@@ -116,12 +116,13 @@
     </style>
 
     <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/primary_accent</item>
-        <item name="rippleColor">#ad1457</item>
+    <item name="android:textColor">@color/primary_accent</item>
+        <item name="rippleColor">@color/primary_accent</item>
     </style>
 
     <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/primary_accent</item>
+        <item name="rippleColor">@color/primary_accent</item>
     </style>
 
     <style name="AlertDialogDarkTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
