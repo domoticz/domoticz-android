@@ -36,9 +36,9 @@
         <!-- MaterialDrawer specific values -->
         <item name="material_drawer_background">@color/material_drawer_background</item>
         <item name="material_drawer_primary_text">@color/material_drawer_primary_text</item>
-        <item name="material_drawer_primary_icon">@color/material_drawer_primary_icon</item>
-        <item name="material_drawer_secondary_text">@color/material_drawer_secondary_text</item>
-        <item name="material_drawer_hint_text">@color/material_drawer_hint_text</item>
+        <item name="material_drawer_primary_icon">@color/material_drawer_selected_text</item>
+        <item name="material_drawer_secondary_text">@color/material_drawer_primary_text</item>
+        <item name="material_drawer_hint_text">@color/material_drawer_primary_text</item>
         <item name="material_drawer_divider">@color/material_drawer_divider</item>
         <item name="material_drawer_selected">@color/material_drawer_selected</item>
         <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
@@ -88,6 +88,8 @@
         <item name="buttonTextColor">@color/secondary_accent</item>
     </style>
 
+
+    <!-- Snackbar styles -->
     <style name="snackbarStyle" parent="@style/Widget.MaterialComponents.Snackbar">
         <item name="android:layout_margin">16dp</item>
         <item name="android:background">@color/white</item>
@@ -141,7 +143,7 @@
     <style name="background_listview">
         <item name="android:paddingLeft">@dimen/row_space</item>
         <item name="android:paddingRight">@dimen/row_space</item>
-        <item name="android:background">@color/background_grey</item>
+        <item name="android:scrollbarStyle">outsideOverlay</item>
     </style>
 
     <!--        Welcome     -->

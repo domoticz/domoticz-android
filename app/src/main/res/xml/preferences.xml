@@ -387,13 +387,6 @@
                     android:key="reset_settings"
                     android:title="@string/reset_settings"/>
             </PreferenceCategory>
-
-            <SwitchPreference
-                android:defaultValue="false"
-                android:key="debugging"
-                android:summaryOff="@string/debug_switch_summary_off"
-                android:summaryOn="@string/debug_switch_summary_on"
-                android:title="@string/debug_switch_title"/>
         </PreferenceScreen>
         <PreferenceScreen android:title="@string/category_info">
             <PreferenceCategory android:title="@string/category_info">

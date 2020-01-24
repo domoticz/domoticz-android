@@ -97,7 +97,6 @@ public class SharedPrefUtil {
     private static final String PREF_QRCODE_ENABLED = "enableQRCode";
     private static final String PREF_GEOFENCE_STARTED = "geofence_started";
     private static final String PREF_ADVANCED_SETTINGS_ENABLED = "advanced_settings_enabled";
-    private static final String PREF_DEBUGGING = "debugging";
     private static final int INVALID_IDX = 999999;
     private static final String PREF_SAVED_LANGUAGE_STRING = "savedLanguageString";
     private static final String PREF_FIRST_START = "isFirstStart";
@@ -108,8 +107,6 @@ public class SharedPrefUtil {
     private static final String PREF_ALARM_NOTIFICATIONS = "alarmNotifications";
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
     private static final String PREF_RECEIVED_NOTIFICATIONS_LOG = "receivedNotificationsLog";
-    private static final String PREF_CHECK_UPDATES = "checkForSystemUpdates";
-    private static final String PREF_LAST_VERSION = "lastappversion";
     private static final String PREF_APK_VALIDATED = "apkvalidated";
     private static final String PREF_TALK_BACK = "talkBack";
     private static final String PREF_ALARM_TIMER = "alarmNotificationTimer";
@@ -881,7 +878,7 @@ public class SharedPrefUtil {
     }
 
     public boolean isDebugEnabled() {
-        return prefs.getBoolean(PREF_DEBUGGING, false);
+        return false;
     }
 
     public boolean isAdvancedSettingsEnabled() {
