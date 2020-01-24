@@ -89,8 +89,9 @@
     </style>
 
     <style name="snackbarStyle" parent="@style/Widget.MaterialComponents.Snackbar">
-        <item name="android:layout_margin">32dp</item>
+        <item name="android:layout_margin">16dp</item>
         <item name="android:background">@color/white</item>
+        <item name="animationMode">slide</item>
     </style>
 
     <style name="snackbarButton" parent="@style/Widget.MaterialComponents.Button">
@@ -103,8 +104,9 @@
     </style>
 
     <style name="snackbarDarkStyle" parent="@style/Widget.MaterialComponents.Snackbar">
-        <item name="android:layout_margin">32dp</item>
+        <item name="android:layout_margin">16dp</item>
         <item name="android:background">@color/grey_900</item>
+        <item name="animationMode">slide</item>
     </style>
 
     <style name="snackbarDarkButton" parent="@style/Widget.MaterialComponents.Button">
