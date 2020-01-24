@@ -44,6 +44,11 @@
         <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
         <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
 
+        <!-- Style to use for Snackbars in this theme. -->
+        <item name="snackbarStyle">@style/snackbarStyle</item>
+        <item name="snackbarButtonStyle">@style/snackbarButton</item>
+        <item name="snackbarTextViewStyle">@style/snackbarText</item>
+
         <!-- Custom values -->
         <item name="toolbarBackground">@color/primary</item>
         <item name="toolbarTextColor">@color/white</item>
@@ -69,6 +74,11 @@
         <item name="material_drawer_selected_text">@color/secondary_accent</item>
         <item name="material_drawer_header_selection_text">@color/white</item>
 
+        <!-- Style to use for Snackbars in this theme. -->
+        <item name="snackbarStyle">@style/snackbarDarkStyle</item>
+        <item name="snackbarButtonStyle">@style/snackbarDarkButton</item>
+        <item name="snackbarTextViewStyle">@style/snackbarDarkText</item>
+
         <!-- Custom values -->
         <item name="toolbarTextColor">@color/white</item>
         <item name="toolbarBackground">@color/secondary</item>
@@ -76,6 +86,34 @@
         <item name="listviewRowBackground">@color/secondary</item>
         <item name="backdropBackground">@color/secondary</item>
         <item name="buttonTextColor">@color/secondary_accent</item>
+    </style>
+
+    <style name="snackbarStyle" parent="@style/Widget.MaterialComponents.Snackbar">
+        <item name="android:layout_margin">32dp</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="snackbarButton" parent="@style/Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/grey_900</item>
+    </style>
+
+    <style name="snackbarText" parent="@style/Widget.MaterialComponents.Snackbar.TextView">
+        <item name="android:textColor">@color/grey_900</item>
+    </style>
+
+    <style name="snackbarDarkStyle" parent="@style/Widget.MaterialComponents.Snackbar">
+        <item name="android:layout_margin">32dp</item>
+        <item name="android:background">@color/grey_900</item>
+    </style>
+
+    <style name="snackbarDarkButton" parent="@style/Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/grey_900</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="snackbarDarkText" parent="@style/Widget.MaterialComponents.Snackbar.TextView">
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="AppThemeToolbarStyle" parent="Theme.MaterialComponents.NoActionBar">
@@ -182,16 +220,6 @@
     <style name="listView">
         <item name="android:scrollbarStyle">outsideOverlay</item>
     </style>
-
-    <!--   <style name="listview_row">
-        <item name="android:background">@drawable/bordershadow</item>
-        <item name="android:foreground">?android:attr/selectableItemBackground</item>
-    </style>
-
-    <style name="listview_row_dark">
-        <item name="android:background">@drawable/bordershadowdark</item>
-        <item name="android:foreground">?android:attr/selectableItemBackground</item>
-    </style>-->
 
     <!--        Debugging        -->
     <style name="debug_layout">
