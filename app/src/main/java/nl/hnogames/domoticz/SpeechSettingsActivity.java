@@ -35,6 +35,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 
@@ -81,6 +82,7 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
     private RecognitionProgressView recognitionProgressView;
     private RecognitionListenerAdapter recognitionListener;
     private boolean listeningSpeechRecognition = false;
+    private Toolbar toolbar;
 
     private PermissionHelper permissionHelper;
 
@@ -95,6 +97,8 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
         permissionHelper = PermissionHelper.getInstance(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speech_settings);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
         if (getSupportActionBar() != null)

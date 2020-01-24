@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -65,6 +66,7 @@ public class UpdateActivity extends AppCompatAssistActivity {
     private TextView updateSummary;
     private ServerUtil serverUtil;
     private SharedPrefUtil mSharedPrefs;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +80,8 @@ public class UpdateActivity extends AppCompatAssistActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);

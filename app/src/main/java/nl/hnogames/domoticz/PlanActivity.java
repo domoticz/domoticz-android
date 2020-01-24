@@ -24,6 +24,7 @@ package nl.hnogames.domoticz;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.ftinc.scoop.Scoop;
@@ -44,6 +45,7 @@ public class PlanActivity extends AppCompatAssistActivity {
     private Timer autoRefreshTimer = null;
     private Dashboard dash;
     private SharedPrefUtil mSharedPrefs;
+    private Toolbar toolbar;
 
     @DebugLog
     public ConfigInfo getConfig() {
@@ -82,6 +84,10 @@ public class PlanActivity extends AppCompatAssistActivity {
 
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_graph);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             //noinspection SpellCheckingInspection
@@ -96,7 +102,7 @@ public class PlanActivity extends AppCompatAssistActivity {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-            tx.replace(android.R.id.content, dash);
+            tx.replace(R.id.main, dash);
             tx.commit();
             setupAutoRefresh();
         } else this.finish();

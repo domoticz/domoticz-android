@@ -18,40 +18,29 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                     android:id="@+id/coordinatorLayout"
-                                                     style="@style/background_listview"
-                                                     android:layout_width="match_parent"
-                                                     android:layout_height="match_parent">
-
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:context=".GraphActivity">
     <LinearLayout
+        android:id="@+id/phoneLayoutWrapper"
+        android:background="?attr/recyclerBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            android:background="?attr/toolbarBackground"
-            android:theme="@style/AppThemeToolbarStyle"
+		android:background="?attr/toolbarBackground"
+			android:theme="@style/AppThemeToolbarStyle"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"/>
 
-        <ListView
-            android:id="@+id/listView"
-            style="@style/listView"
+        <FrameLayout
+            android:id="@+id/main"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:animationCache="false"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="@dimen/row_space"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:paddingTop="@dimen/row_space"
-            android:paddingBottom="@dimen/row_space"
-            android:scrollingCache="false"
-            android:smoothScrollbar="true"/>
+            android:layout_height="match_parent"/>
     </LinearLayout>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

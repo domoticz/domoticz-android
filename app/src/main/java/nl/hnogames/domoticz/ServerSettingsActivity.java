@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
 import androidx.fragment.app.Fragment;
 
@@ -48,6 +49,7 @@ public class ServerSettingsActivity extends AppCompatAssistActivity {
     private String updateName = "";
     private boolean addNew = false;
     private boolean activeServer = false;
+    private Toolbar toolbar;
 
 
     @Override
@@ -60,6 +62,10 @@ public class ServerSettingsActivity extends AppCompatAssistActivity {
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_graph);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -77,7 +83,7 @@ public class ServerSettingsActivity extends AppCompatAssistActivity {
         if (!addNew && UsefulBits.isEmpty(updateName)) {
             Fragment serverSettings = WelcomePage3.newInstance(SETTINGS);
             getSupportFragmentManager().beginTransaction()
-                    .replace(android.R.id.content, serverSettings)
+                    .replace(R.id.main, serverSettings)
                     .commit();
         } else {
             SetupServerSettings serverSettings = SetupServerSettings.newInstance(SETTINGS);
@@ -90,7 +96,7 @@ public class ServerSettingsActivity extends AppCompatAssistActivity {
             }
 
             getSupportFragmentManager().beginTransaction()
-                    .replace(android.R.id.content, serverSettings)
+                    .replace(R.id.main, serverSettings)
                     .commit();
         }
     }
@@ -98,7 +104,6 @@ public class ServerSettingsActivity extends AppCompatAssistActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
             case android.R.id.home:
                 if (!addNew)
                     NavUtils.navigateUpFromSameTask(this);

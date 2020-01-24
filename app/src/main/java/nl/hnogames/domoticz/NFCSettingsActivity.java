@@ -42,6 +42,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 
@@ -91,6 +92,7 @@ public class NFCSettingsActivity extends AppCompatAssistActivity implements NFCC
     private ArrayList<NFCInfo> nfcList;
     private NFCAdapter adapter;
     private boolean busyWithTag = false;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +107,8 @@ public class NFCSettingsActivity extends AppCompatAssistActivity implements NFCC
         setContentView(R.layout.activity_nfc_settings);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.category_nfc);

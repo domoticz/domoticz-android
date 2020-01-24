@@ -33,6 +33,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 
@@ -72,6 +73,7 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
     private ArrayList<QRCodeInfo> qrcodeList;
     private QRCodeAdapter adapter;
     private PermissionHelper permissionHelper;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +86,9 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
         permissionHelper = PermissionHelper.getInstance(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode_settings);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
         if (getSupportActionBar() != null)

@@ -36,6 +36,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 
@@ -76,6 +77,7 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
     private nl.hnogames.domoticz.adapters.BluetoothAdapter adapter;
     private PermissionHelper permissionHelper;
     private BluetoothAdapter mBluetoothAdapter;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +88,11 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
         permissionHelper = PermissionHelper.getInstance(this);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_bluetooth_settings);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

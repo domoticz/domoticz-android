@@ -30,6 +30,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 
@@ -59,6 +60,7 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
     private CoordinatorLayout coordinatorLayout;
     private ServerAdapter adapter;
     private ArrayList<ServerInfo> mServerList;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,8 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server_settings);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
