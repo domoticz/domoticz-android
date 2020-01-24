@@ -30,7 +30,6 @@ import com.ftinc.scoop.Scoop;
 
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.fragments.Camera;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
 
 public class CameraActivity extends AppCompatAssistActivity {
 

@@ -29,7 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.skydoves.colorpickerview.ColorPickerView;
 import com.skydoves.colorpickerview.listeners.ColorListener;

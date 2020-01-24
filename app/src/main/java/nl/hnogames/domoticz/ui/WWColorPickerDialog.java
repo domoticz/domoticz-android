@@ -27,7 +27,6 @@ import android.view.View;
 import android.widget.SeekBar;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;

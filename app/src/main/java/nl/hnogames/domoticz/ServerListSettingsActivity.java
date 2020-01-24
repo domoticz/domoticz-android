@@ -32,7 +32,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
 
 import com.ftinc.scoop.Scoop;
 import com.google.android.material.snackbar.Snackbar;

@@ -33,10 +33,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
-import com.google.android.material.button.MaterialButton;
-
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;

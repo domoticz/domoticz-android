@@ -32,8 +32,6 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

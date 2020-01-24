@@ -36,8 +36,8 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 
 public class SettingsActivity extends AppCompatPermissionsActivity {
-    private Toolbar toolbar;
     private final int THEME_CHANGED = 55;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

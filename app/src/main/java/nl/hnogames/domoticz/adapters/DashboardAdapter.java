@@ -482,8 +482,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.switch_battery_level.append(", " + context.getString(R.string.humidity) + ": " + mDeviceInfo.getHumidityStatus());
             }
 
-            if(mDeviceInfo.getTypeImg().equals("temperature"))
-            {
+            if (mDeviceInfo.getTypeImg().equals("temperature")) {
                 if ((!UsefulBits.isEmpty(tempSign) && tempSign.equals("C") && mDeviceInfo.getTemperature() < 0) ||
                         (!UsefulBits.isEmpty(tempSign) && tempSign.equals("F") && mDeviceInfo.getTemperature() < 30)) {
                     Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
@@ -500,8 +499,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             false,
                             null)).into(holder.iconRow);
                 }
-            }
-            else{
+            } else {
                 Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                         mDeviceInfo.getType(),
                         mDeviceInfo.getSubType(),

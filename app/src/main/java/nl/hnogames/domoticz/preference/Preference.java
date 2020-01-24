@@ -52,7 +52,6 @@ import androidx.legacy.app.ActivityCompat;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
-import com.ftinc.scoop.ui.ScoopSettingsActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 

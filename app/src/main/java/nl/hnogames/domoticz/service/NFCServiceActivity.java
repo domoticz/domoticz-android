@@ -33,7 +33,6 @@ import java.util.ArrayList;
 
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.NFCSettingsActivity;
-import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.NFCInfo;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;

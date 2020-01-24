@@ -23,18 +23,13 @@ package nl.hnogames.domoticz.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.text.InputType;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
-import androidx.core.content.ContextCompat;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;

@@ -34,7 +34,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.ftinc.scoop.Scoop;
