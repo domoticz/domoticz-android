@@ -65,6 +65,9 @@
         <item name="listviewRowBackground">@color/white</item>
         <item name="backdropBackground">@color/primary</item>
         <item name="buttonTextColor">@color/primary_accent</item>
+        <item name="graphTextColor">@color/grey_900</item>
+        <item name="wizardCardColor">@color/white</item>
+        <item name="wizardTitleColor">@color/grey_900</item>
     </style>
 
     <style name="AppThemeDarkMain" parent="Theme.MaterialComponents.NoActionBar">
@@ -104,6 +107,9 @@
         <item name="listviewRowBackground">@color/secondary</item>
         <item name="backdropBackground">@color/secondary</item>
         <item name="buttonTextColor">@color/secondary_accent</item>
+        <item name="graphTextColor">@color/white</item>
+        <item name="wizardCardColor">@color/secondary</item>
+        <item name="wizardTitleColor">@color/white</item>
     </style>
 
     <!-- Dialog themes -->

@@ -23,9 +23,11 @@ package nl.hnogames.domoticz.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +37,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -141,7 +144,14 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         XAxis xAxis = chart.getXAxis();
         YAxis yAxis = chart.getAxisLeft();
 
-            chart.setDrawGridBackground(true);
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = context.getTheme();
+        theme.resolveAttribute(R.attr.graphTextColor, typedValue, true);
+        xAxis.setTextColor(typedValue.data);
+        yAxis.setTextColor(typedValue.data);
+        chart.getLegend().setTextColor(typedValue.data);
+
+        chart.setDrawGridBackground(true);
 
         chart.getDescription().setEnabled(false);
         xAxis.setDrawGridLines(false); // no grid lines

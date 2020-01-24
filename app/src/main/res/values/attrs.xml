@@ -34,6 +34,9 @@
     <attr name="buttonTextColor" format="color" />
     <attr name="toolbarBackground" format="color" />
     <attr name="toolbarTextColor" format="color" />
+    <attr name="graphTextColor" format="color" />
+    <attr name="wizardCardColor" format="color" />
+    <attr name="wizardTitleColor" format="color" />
 
     <declare-styleable name="CustomListPreference">
         <attr name="lockedValues"/>
