@@ -821,7 +821,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         final ConfigInfo finalConfig = config;
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
-                .withHeaderBackground(R.drawable.darkheader)
+                //.withHeaderBackground(R.drawable.darkheader)
                 .addProfiles(loggedinAccount)
                 .withOnlyMainProfileImageVisible(true)
                 .withTextColorRes(R.color.white)

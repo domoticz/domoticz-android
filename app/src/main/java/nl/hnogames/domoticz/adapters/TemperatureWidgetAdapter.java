@@ -32,8 +32,6 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

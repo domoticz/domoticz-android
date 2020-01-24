@@ -37,6 +37,8 @@
         <item name="buttonBarNeutralButtonStyle">@style/DialogButton</item>
         <item name="buttonBarNegativeButtonStyle">@style/DialogButton</item>
         <item name="buttonBarPositiveButtonStyle">@style/DialogButton</item>
+        <item name="android:actionBarStyle">@style/AppThemeActionBar</item>
+        <item name="actionBarStyle">@style/AppThemeActionBar</item>
 
         <item name="materialAlertDialogTheme">@style/AlertDialogTheme</item>
         <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
@@ -68,6 +70,7 @@
         <item name="graphTextColor">@color/grey_900</item>
         <item name="wizardCardColor">@color/white</item>
         <item name="wizardTitleColor">@color/grey_900</item>
+        <item name="temperatureTextColor">@color/grey_900</item>
     </style>
 
     <style name="AppThemeDarkMain" parent="Theme.MaterialComponents.NoActionBar">
@@ -83,6 +86,8 @@
         <item name="materialAlertDialogTheme">@style/AlertDialogDarkTheme</item>
         <item name="android:alertDialogTheme">@style/AlertDialogDarkTheme</item>
         <item name="alertDialogTheme">@style/AlertDialogDarkTheme</item>
+        <item name="android:actionBarStyle">@style/AppThemeDarkActionBar</item>
+        <item name="actionBarStyle">@style/AppThemeDarkActionBar</item>
 
         <!-- MaterialDrawer specific values -->
         <item name="material_drawer_background">@color/secondary_dark</item>
@@ -110,6 +115,97 @@
         <item name="graphTextColor">@color/white</item>
         <item name="wizardCardColor">@color/secondary</item>
         <item name="wizardTitleColor">@color/white</item>
+        <item name="temperatureTextColor">@color/white</item>
+    </style>
+
+    <style name="AppThemeAlt1Main" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/alt1_accent</item>
+        <item name="colorPrimaryDark">@color/alt1_dark</item>
+        <item name="colorAccent">@color/alt1_accent</item>
+
+        <item name="android:windowBackground">@color/alt1_dark</item>
+        <item name="android:buttonBarButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButton</item>
+        <item name="materialAlertDialogTheme">@style/AlertDialogDarkTheme</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogDarkTheme</item>
+        <item name="alertDialogTheme">@style/AlertDialogDarkTheme</item>
+        <item name="android:actionBarStyle">@style/AppThemeDarkActionBar</item>
+        <item name="actionBarStyle">@style/AppThemeDarkActionBar</item>
+
+        <!-- MaterialDrawer specific values -->
+        <item name="material_drawer_background">@color/alt1_dark</item>
+        <item name="material_drawer_primary_text">@color/white</item>
+        <item name="material_drawer_primary_icon">@color/white</item>
+        <item name="material_drawer_secondary_text">@color/white</item>
+        <item name="material_drawer_hint_text">@color/white</item>
+        <item name="material_drawer_divider">@color/secondary</item>
+        <item name="material_drawer_selected">@color/alt1_dark</item>
+        <item name="material_drawer_selected_text">@color/alt1_accent</item>
+        <item name="material_drawer_header_selection_text">@color/white</item>
+
+        <!-- Style to use for Snackbars in this theme. -->
+        <item name="snackbarStyle">@style/snackbarDarkStyle</item>
+        <item name="snackbarButtonStyle">@style/snackbarDarkButton</item>
+        <item name="snackbarTextViewStyle">@style/snackbarDarkText</item>
+
+        <!-- Custom values -->
+        <item name="toolbarTextColor">@color/white</item>
+        <item name="toolbarBackground">@color/alt1_dark</item>
+        <item name="recyclerBackground">@color/alt1_dark</item>
+        <item name="listviewRowBackground">@color/secondary</item>
+        <item name="backdropBackground">@color/alt1_dark</item>
+        <item name="buttonTextColor">@color/alt1_accent</item>
+        <item name="graphTextColor">@color/white</item>
+        <item name="wizardCardColor">@color/alt1</item>
+        <item name="wizardTitleColor">@color/white</item>
+        <item name="temperatureTextColor">@color/white</item>
+    </style>
+
+    <style name="AppThemeAlt2Main" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/alt2</item>
+        <item name="colorPrimaryDark">@color/alt2_dark</item>
+        <item name="colorAccent">@color/alt2_accent</item>
+
+        <item name="android:windowBackground">@color/alt2_dark</item>
+        <item name="android:buttonBarButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButton</item>
+        <item name="materialAlertDialogTheme">@style/AlertDialogDarkTheme</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogDarkTheme</item>
+        <item name="alertDialogTheme">@style/AlertDialogDarkTheme</item>
+        <item name="android:actionBarStyle">@style/AppThemeDarkActionBar</item>
+        <item name="actionBarStyle">@style/AppThemeDarkActionBar</item>
+
+        <!-- MaterialDrawer specific values -->
+        <item name="material_drawer_background">@color/alt2_dark</item>
+        <item name="material_drawer_primary_text">@color/white</item>
+        <item name="material_drawer_primary_icon">@color/white</item>
+        <item name="material_drawer_secondary_text">@color/white</item>
+        <item name="material_drawer_hint_text">@color/white</item>
+        <item name="material_drawer_divider">@color/alt2</item>
+        <item name="material_drawer_selected">@color/alt2_dark</item>
+        <item name="material_drawer_selected_text">@color/alt2_accent</item>
+        <item name="material_drawer_header_selection_text">@color/white</item>
+
+        <!-- Style to use for Snackbars in this theme. -->
+        <item name="snackbarStyle">@style/snackbarDarkStyle</item>
+        <item name="snackbarButtonStyle">@style/snackbarDarkButton</item>
+        <item name="snackbarTextViewStyle">@style/snackbarDarkText</item>
+
+        <!-- Custom values -->
+        <item name="toolbarTextColor">@color/white</item>
+        <item name="toolbarBackground">@color/alt2_dark</item>
+        <item name="recyclerBackground">@color/alt2_dark</item>
+        <item name="listviewRowBackground">@color/alt2</item>
+        <item name="backdropBackground">@color/alt2_dark</item>
+        <item name="buttonTextColor">@color/alt2_accent</item>
+        <item name="graphTextColor">@color/white</item>
+        <item name="wizardCardColor">@color/alt2</item>
+        <item name="wizardTitleColor">@color/white</item>
+        <item name="temperatureTextColor">@color/white</item>
     </style>
 
     <!-- Dialog themes -->
@@ -184,6 +280,22 @@
 
     <!-- Toolbar style -->
     <style name="AppThemeToolbarStyle" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="actionMenuTextColor">@color/white</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
+
+    <style name="AppThemeActionBar" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="android:background">@color/primary</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="actionMenuTextColor">@color/white</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
+
+    <style name="AppThemeDarkActionBar" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="android:background">@color/secondary</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="actionMenuTextColor">@color/white</item>
         <item name="android:actionMenuTextColor">@color/white</item>

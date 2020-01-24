@@ -22,7 +22,9 @@
 package nl.hnogames.domoticz.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -170,6 +172,14 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                         false,
                         null)).into(holder.iconRow);
             }
+
+            TypedValue pieBackgroundValue = new TypedValue();
+            TypedValue temperatureValue = new TypedValue();
+            Resources.Theme theme = context.getTheme();
+            theme.resolveAttribute(R.attr.listviewRowBackground, pieBackgroundValue, true);
+            theme.resolveAttribute(R.attr.temperatureTextColor, temperatureValue, true);
+            holder.pieView.setInnerBackgroundColor(pieBackgroundValue.data);
+            holder.pieView.setTextColor(temperatureValue.data);
 
             if (!UsefulBits.isEmpty(mTemperatureInfo.getHardwareName()) && mTemperatureInfo.getHardwareName().equalsIgnoreCase(DomoticzValues.Device.Hardware.EVOHOME)) {
                 holder.setButton.setVisibility(View.VISIBLE);

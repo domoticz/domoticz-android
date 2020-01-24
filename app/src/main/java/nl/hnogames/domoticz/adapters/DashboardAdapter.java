@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -179,6 +180,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
             holder.pieView.setPercentageTextSize(16);
             holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
+
+            TypedValue pieBackgroundValue = new TypedValue();
+            TypedValue temperatureValue = new TypedValue();
+            Resources.Theme theme = context.getTheme();
+            theme.resolveAttribute(R.attr.listviewRowBackground, pieBackgroundValue, true);
+            theme.resolveAttribute(R.attr.temperatureTextColor, temperatureValue, true);
+            holder.pieView.setInnerBackgroundColor(pieBackgroundValue.data);
+            holder.pieView.setTextColor(temperatureValue.data);
 
             setSwitchRowData(extendedStatusInfo, holder);
 
