@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -21,16 +20,16 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/row_global_wrapper"
-                style="@style/background_listview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/row_global_wrapper"
+    style="@style/background_listview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants">
 
     <LinearLayout
         android:id="@+id/row_wrapper"
-        
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
@@ -46,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -59,7 +58,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                tools:text="Speech name"/>
+                tools:text="Speech name" />
 
             <TextView
                 android:id="@+id/speech_tag_id"
@@ -67,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/speech_name"
-                tools:text="16a54e3f"/>
+                tools:text="16a54e3f" />
 
             <TextView
                 android:id="@+id/speech_switchidx"
@@ -79,7 +78,7 @@
                 android:layout_alignRight="@+id/speech_tag_id"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
-                tools:text="Switch IDX: 65484"/>
+                tools:text="Switch IDX: 65484" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -95,8 +94,7 @@
         android:gravity="center_vertical"
         android:orientation="vertical">
 
-        <com.google.android.material.button.MaterialButton 
-android:textColor="?attr/buttonTextColor"
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/remove_button"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="60dp"
@@ -104,7 +102,8 @@ android:textColor="?attr/buttonTextColor"
             android:layout_gravity="center_vertical|right"
             android:background="@drawable/button_status"
             android:text="@string/delete_short"
-            android:textSize="10dp"/>
+            android:textColor="?attr/buttonTextColor"
+            android:textSize="10dp" />
 
     </LinearLayout>
 </RelativeLayout>

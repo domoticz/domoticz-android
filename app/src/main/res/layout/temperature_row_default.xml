@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -19,8 +18,7 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:plainpie="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -60,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|start"
                 android:src="@drawable/outline_info_black_18"
-                android:tint="@color/md_grey_300"/>
+                android:tint="@color/md_grey_300" />
 
             <ImageView
                 android:id="@+id/rowIcon"
@@ -70,13 +68,13 @@
                 android:layout_marginLeft="-15dp"
                 android:contentDescription="@string/error_image_description"
                 android:paddingRight="5dp"
-                android:src="@drawable/clock48"/>
+                android:src="@drawable/clock48" />
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_marginBottom="10dp"
-                          android:orientation="vertical">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -95,7 +93,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
-                            tools:text="Utility name"/>
+                            tools:text="Utility name" />
 
                         <TextView
                             android:id="@+id/temperature_data"
@@ -105,7 +103,7 @@
                             android:layout_below="@+id/temperature_name"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentLeft="true"
-                            android:text="@string/temperature"/>
+                            android:text="@string/temperature" />
 
                         <LinearLayout
                             android:layout_width="175dp"
@@ -121,14 +119,14 @@
                                 android:layout_marginBottom="5dp"
                                 android:text="@string/temperature"
                                 android:textSize="8sp"
-                                android:textStyle="italic"/>
+                                android:textStyle="italic" />
 
                             <ImageView
                                 android:id="@+id/mode_icon"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="5dp"
-                                android:src="@drawable/ic_schedule_black_18dp"/>
+                                android:src="@drawable/ic_schedule_black_18dp" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -151,10 +149,9 @@
                             plainpie:inner_pie_padding="10"
                             plainpie:inner_text_visibility="true"
                             plainpie:percentage="75"
-                            plainpie:percentage_size="15"/>
+                            plainpie:percentage_size="15" />
 
-                        <com.google.android.material.button.MaterialButton 
-android:textColor="?attr/buttonTextColor"
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/set_button"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="56dp"
@@ -164,14 +161,15 @@ android:textColor="?attr/buttonTextColor"
                             android:layout_gravity="right"
                             android:background="@drawable/button_status"
                             android:text="@string/set_temperature"
-                            android:textSize="10dp"/>
+                            android:textColor="?attr/buttonTextColor"
+                            android:textSize="10dp" />
 
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
 
-        <include layout="@layout/log_graph_buttons_row_default"/>
+        <include layout="@layout/log_graph_buttons_row_default" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

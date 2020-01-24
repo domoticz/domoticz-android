@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -21,11 +20,11 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -42,70 +41,70 @@
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/idx"/>
+                android:text="@string/idx" />
 
             <TextView
                 android:id="@+id/LastUpdate_title"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/last_update"/>
+                android:text="@string/last_update" />
 
             <TextView
                 android:id="@+id/weather_forcast"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/forecast"/>
+                android:text="@string/forecast" />
 
             <TextView
                 android:id="@+id/weather_humidity"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/humidity"/>
+                android:text="@string/humidity" />
 
             <TextView
                 android:id="@+id/weather_drewpoint"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/dewPoint"/>
+                android:text="@string/dewPoint" />
 
             <TextView
                 android:id="@+id/weather_temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/temp"/>
+                android:text="@string/temp" />
 
             <TextView
                 android:id="@+id/weather_barometer"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/pressure"/>
+                android:text="@string/pressure" />
 
             <TextView
                 android:id="@+id/weather_chill"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/chill"/>
+                android:text="@string/chill" />
 
             <TextView
                 android:id="@+id/weather_direction"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/direction"/>
+                android:text="@string/direction" />
 
             <TextView
                 android:id="@+id/weather_speed"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/speed"/>
+                android:text="@string/speed" />
 
         </LinearLayout>
 
@@ -121,7 +120,7 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="2dp"
                 android:paddingRight="2dp"
-                android:paddingBottom="2dp"/>
+                android:paddingBottom="2dp" />
 
             <TextView
                 android:id="@+id/LastUpdate_value"
@@ -131,7 +130,7 @@
                 android:paddingTop="2dp"
                 android:paddingRight="2dp"
                 android:paddingBottom="2dp"
-                tools:text="2015-05-01 01:01:01"/>
+                tools:text="2015-05-01 01:01:01" />
 
             <TextView
                 android:id="@+id/weather_forcast_value"
@@ -141,7 +140,7 @@
                 android:paddingTop="2dp"
                 android:paddingRight="2dp"
                 android:paddingBottom="2dp"
-                android:text="@string/forecast"/>
+                android:text="@string/forecast" />
 
             <TextView
                 android:id="@+id/weather_humidity_value"
@@ -151,7 +150,7 @@
                 android:paddingTop="2dp"
                 android:paddingRight="2dp"
                 android:paddingBottom="2dp"
-                android:text="@string/humidity"/>
+                android:text="@string/humidity" />
 
             <TextView
                 android:id="@+id/weather_drewpoint_value"
@@ -161,7 +160,7 @@
                 android:paddingTop="2dp"
                 android:paddingRight="2dp"
                 android:paddingBottom="2dp"
-                android:text="@string/dewPoint"/>
+                android:text="@string/dewPoint" />
 
             <TextView
                 android:id="@+id/weather_temperature_value"
@@ -171,7 +170,7 @@
                 android:paddingTop="2dp"
                 android:paddingRight="2dp"
                 android:paddingBottom="2dp"
-                android:text="@string/temp"/>
+                android:text="@string/temp" />
 
             <TextView
                 android:id="@+id/weather_barometer_value"
@@ -181,7 +180,7 @@
                 android:paddingTop="2dp"
                 android:paddingRight="2dp"
                 android:paddingBottom="2dp"
-                android:text="@string/pressure"/>
+                android:text="@string/pressure" />
 
             <TextView
                 android:id="@+id/weather_chill_value"
@@ -191,7 +190,7 @@
                 android:paddingTop="2dp"
                 android:paddingRight="2dp"
                 android:paddingBottom="2dp"
-                android:text="@string/chill"/>
+                android:text="@string/chill" />
 
             <TextView
                 android:id="@+id/weather_direction_value"
@@ -201,7 +200,7 @@
                 android:paddingTop="2dp"
                 android:paddingRight="2dp"
                 android:paddingBottom="2dp"
-                android:text="@string/direction"/>
+                android:text="@string/direction" />
 
             <TextView
                 android:id="@+id/weather_speed_value"
@@ -211,7 +210,7 @@
                 android:paddingTop="2dp"
                 android:paddingRight="2dp"
                 android:paddingBottom="2dp"
-                android:text="@string/speed"/>
+                android:text="@string/speed" />
 
         </LinearLayout>
     </LinearLayout>
@@ -226,13 +225,13 @@
             android:layout_width="126dp"
             android:layout_height="wrap_content"
             android:padding="2dp"
-            android:text="@string/favorite"/>
+            android:text="@string/favorite" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/favorite_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:useMaterialThemeColors="false"/>
+            app:useMaterialThemeColors="false" />
 
     </LinearLayout>
 </LinearLayout>

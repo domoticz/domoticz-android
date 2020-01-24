@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -20,66 +19,70 @@
   ~  under the License.
   -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@+id/coordinatorLayout"  xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:foreground="?android:attr/selectableItemBackground"
-              android:minHeight="?android:attr/listPreferredItemHeight"
-              android:orientation="vertical">
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:orientation="vertical">
-    <TextView
-        android:id="@+id/title"
-        style="@style/row_name_small"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="@string/title_security_panel"
-        android:textColor="@color/secondary_dark"/>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/status"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingBottom="20dp"
-        android:text="Status: Armed"
-        android:textSize="@dimen/text_size_small"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_securitypin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/security_pin">
+        <TextView
+            android:id="@+id/title"
+            style="@style/row_name_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/title_security_panel"
+            android:textColor="@color/secondary_dark" />
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/securitypin"
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingBottom="20dp"
+            android:text="Status: Armed"
+            android:textSize="@dimen/text_size_small" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_securitypin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/security_pin">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/securitypin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_toStartOf="@+id/linearLayout5"
+                android:layout_toLeftOf="@+id/linearLayout5"
+                android:inputType="number"
+                android:textColor="@color/white" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/checkpin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:layout_toStartOf="@+id/linearLayout5"
-            android:layout_toLeftOf="@+id/linearLayout5"
-            android:inputType="number"
-            android:textColor="@color/white"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/checkpin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/button_status"
-        android:text="@string/ok"
-        android:textSize="12dp"/>
+            android:background="@drawable/button_status"
+            android:text="@string/ok"
+            android:textSize="12dp" />
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -19,28 +19,29 @@
   ~  under the License.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                tools:context=".GraphActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".GraphActivity">
+
     <LinearLayout
         android:id="@+id/phoneLayoutWrapper"
-        android:background="?attr/recyclerBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/recyclerBackground"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-		android:background="?attr/toolbarBackground"
-			android:theme="@style/AppThemeToolbarStyle"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"/>
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/toolbarBackground"
+            android:theme="@style/AppThemeToolbarStyle" />
 
         <FrameLayout
             android:id="@+id/main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </LinearLayout>
 </RelativeLayout>

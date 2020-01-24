@@ -263,32 +263,32 @@
                                 android:textSize="@dimen/text_size_small"
                                 tools:text="Error: No network connection available" />
 
-                            <com.google.android.material.button.MaterialButton 
-                                android:textColor="?attr/buttonTextColor"
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnCheckSettings"
                                 style="@style/Widget.MaterialComponents.Button.TextButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/errorTextMessage"
                                 android:layout_centerHorizontal="true"
-                                android:text="@string/check_settings" />
+                                android:text="@string/check_settings"
+                                android:textColor="?attr/buttonTextColor" />
                         </RelativeLayout>
                     </ScrollView>
                 </RelativeLayout>
 
                 <com.google.android.material.button.MaterialButton
-                    android:textColor="?attr/buttonTextColor"
                     android:id="@+id/btnSortCollapse"
                     style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="0dp"
                     android:text="@string/filterOn_all"
+                    android:textColor="?attr/buttonTextColor"
                     android:textSize="10dp"
                     android:visibility="gone"
-                    app:iconTint="?attr/buttonTextColor"
                     app:icon="@drawable/baseline_keyboard_arrow_down_black_18"
-                    app:iconGravity="end" />
+                    app:iconGravity="end"
+                    app:iconTint="?attr/buttonTextColor" />
 
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/swipe_refresh_layout"
@@ -297,10 +297,10 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/my_recycler_view"
-                        android:background="?attr/recyclerBackground"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
+                        android:background="?attr/recyclerBackground"
                         android:scrollbars="vertical" />
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

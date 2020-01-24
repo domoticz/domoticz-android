@@ -19,41 +19,40 @@
   ~  under the License.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:ads="http://schemas.android.com/apk/res-auto"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context=".MainActivity">
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:id="@+id/phoneLayoutWrapper"
-        android:background="?attr/recyclerBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="5"
+        android:background="?attr/recyclerBackground"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar" 
-			android:theme="@style/AppThemeToolbarStyle"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-		android:background="?attr/toolbarBackground"
-            android:layout_height="?attr/actionBarSize"/>
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/toolbarBackground"
+            android:theme="@style/AppThemeToolbarStyle" />
 
         <com.github.zagum.speechrecognitionview.RecognitionProgressView
             android:id="@+id/recognition_view"
-            android:background="?attr/recyclerBackground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:background="?attr/recyclerBackground"
+            android:visibility="gone" />
 
         <FrameLayout
             android:id="@+id/main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <LinearLayout
@@ -68,7 +67,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             ads:adSize="SMART_BANNER"
-            ads:adUnitId="@string/ADMOB_ADS_KEY">
-        </com.google.android.gms.ads.AdView>
+            ads:adUnitId="@string/ADMOB_ADS_KEY"></com.google.android.gms.ads.AdView>
     </LinearLayout>
 </LinearLayout>

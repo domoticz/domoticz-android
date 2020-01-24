@@ -20,9 +20,10 @@
   -->
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                     android:id="@+id/coordinatorLayout"
-                                                     android:layout_width="match_parent"
-                                                     android:layout_height="match_parent">
+    android:id="@+id/coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/recyclerBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,10 +32,10 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            android:background="?attr/toolbarBackground"
-            android:theme="@style/AppThemeToolbarStyle"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"/>
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/toolbarBackground"
+            android:theme="@style/AppThemeToolbarStyle" />
 
         <ListView
             android:id="@+id/listView"
@@ -50,7 +51,7 @@
             android:paddingTop="@dimen/row_space"
             android:paddingBottom="@dimen/row_space"
             android:scrollingCache="false"
-            android:smoothScrollbar="true"/>
+            android:smoothScrollbar="true" />
 
     </LinearLayout>
 

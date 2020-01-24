@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -21,21 +20,21 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/row_global_wrapper"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:background="?attr/listviewRowBackground"
-              android:foreground="?android:attr/selectableItemBackground"
-              android:orientation="horizontal"
-              android:paddingTop="13dp"
-              android:paddingBottom="13dp">
+    android:id="@+id/row_global_wrapper"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/listviewRowBackground"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:paddingTop="13dp"
+    android:paddingBottom="13dp">
 
     <ImageView
         android:id="@+id/rowIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="16dp"
-        android:src="@drawable/clock48"/>
+        android:src="@drawable/clock48" />
 
     <TextView
         android:id="@+id/rowText"
@@ -44,6 +43,6 @@
         android:layout_height="wrap_content"
         android:paddingLeft="12dp"
         android:paddingTop="4dp"
-        android:text="Medium Text"/>
+        android:text="Medium Text" />
 
 </LinearLayout>

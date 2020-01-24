@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -19,8 +18,7 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_global_wrapper"
     android:layout_width="match_parent"
@@ -35,11 +33,11 @@
     app:cardElevation="1dp">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:id="@+id/row_global_wrapper"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:background="?attr/recyclerBackground"
-                  android:orientation="vertical">
+        android:id="@+id/row_global_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/recyclerBackground"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/row_wrapper"
@@ -56,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|start"
                 android:src="@drawable/outline_info_black_18"
-                android:tint="@color/md_grey_300"/>
+                android:tint="@color/md_grey_300" />
 
             <ImageView
                 android:id="@+id/rowIcon"
@@ -66,7 +64,7 @@
                 android:layout_marginLeft="-15dp"
                 android:contentDescription="@string/error_image_description"
                 android:paddingRight="5dp"
-                android:src="@drawable/clock48"/>
+                android:src="@drawable/clock48" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -98,7 +96,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:layout_marginRight="35dp"
-                                android:text="Switch"/>
+                                android:text="Switch" />
 
                             <TextView
                                 android:id="@+id/switch_battery_level"
@@ -111,7 +109,7 @@
                                 android:layout_toStartOf="@+id/linearLayout4"
                                 android:layout_toLeftOf="@+id/linearLayout4"
                                 android:gravity="center_vertical"
-                                android:text="@string/battery_level"/>
+                                android:text="@string/battery_level" />
 
                             <TextView
                                 android:id="@+id/switch_signal_level"
@@ -122,7 +120,7 @@
                                 android:layout_marginBottom="5dp"
                                 android:text="@string/signal_level"
                                 android:textSize="8sp"
-                                android:textStyle="italic"/>
+                                android:textStyle="italic" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -141,10 +139,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                app:useMaterialThemeColors="false"/>
+                                app:useMaterialThemeColors="false" />
 
-                            <com.google.android.material.button.MaterialButton 
-android:textColor="?attr/buttonTextColor"
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/set_button"
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="56dp"
@@ -153,7 +150,8 @@ android:textColor="?attr/buttonTextColor"
                                 android:layout_centerVertical="true"
                                 android:layout_gravity="right"
                                 android:text="@string/set_temperature"
-                                android:textSize="10dp"/>
+                                android:textColor="?attr/buttonTextColor"
+                                android:textSize="10dp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -183,7 +181,7 @@ android:textColor="?attr/buttonTextColor"
                                     android:layout_margin="7dp"
                                     android:layout_marginTop="10dp"
                                     android:src="@drawable/baseline_keyboard_arrow_up_black_24"
-                                    android:tint="@color/primary"/>
+                                    android:tint="@color/primary" />
 
                                 <ImageView
                                     android:id="@+id/switch_button_stop"
@@ -192,7 +190,7 @@ android:textColor="?attr/buttonTextColor"
                                     android:layout_margin="7dp"
                                     android:layout_marginTop="10dp"
                                     android:src="@drawable/baseline_stop_black_24"
-                                    android:tint="@color/primary"/>
+                                    android:tint="@color/primary" />
 
                                 <ImageView
                                     android:id="@+id/switch_button_down"
@@ -201,7 +199,7 @@ android:textColor="?attr/buttonTextColor"
                                     android:layout_margin="7dp"
                                     android:layout_marginTop="10dp"
                                     android:src="@drawable/baseline_keyboard_arrow_down_black_24"
-                                    android:tint="@color/primary"/>
+                                    android:tint="@color/primary" />
 
                             </LinearLayout>
 
@@ -211,14 +209,14 @@ android:textColor="?attr/buttonTextColor"
                                 android:layout_height="22dp"
                                 android:layout_gravity="right"
                                 android:layout_marginRight="6dp"
-                                android:text="55%"/>
+                                android:text="55%" />
 
                             <Spinner
                                 android:id="@+id/spSelector"
                                 android:layout_width="129dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom"
-                                android:minWidth="150dp"/>
+                                android:minWidth="150dp" />
 
                             <LinearLayout
                                 android:id="@+id/linearLayout44"
@@ -232,8 +230,7 @@ android:textColor="?attr/buttonTextColor"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
-                                <az.plainpie.PieView
-                                    xmlns:plainpie="http://schemas.android.com/apk/res-auto"
+                                <az.plainpie.PieView xmlns:plainpie="http://schemas.android.com/apk/res-auto"
                                     android:id="@+id/pieView"
                                     android:layout_width="72dp"
                                     android:layout_height="73dp"
@@ -241,10 +238,9 @@ android:textColor="?attr/buttonTextColor"
                                     plainpie:inner_pie_padding="10"
                                     plainpie:inner_text_visibility="true"
                                     plainpie:percentage="75"
-                                    plainpie:percentage_size="15"/>
+                                    plainpie:percentage_size="15" />
 
-                                <com.google.android.material.button.MaterialButton 
-android:textColor="?attr/buttonTextColor"
+                                <com.google.android.material.button.MaterialButton
                                     android:id="@+id/on_button"
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                     android:layout_width="60dp"
@@ -252,10 +248,10 @@ android:textColor="?attr/buttonTextColor"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
                                     android:text="@string/button_state_on"
-                                    android:textSize="10dp"/>
+                                    android:textColor="?attr/buttonTextColor"
+                                    android:textSize="10dp" />
 
-                                <com.google.android.material.button.MaterialButton 
-android:textColor="?attr/buttonTextColor"
+                                <com.google.android.material.button.MaterialButton
                                     android:id="@+id/off_button"
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                     android:layout_width="60dp"
@@ -263,18 +259,18 @@ android:textColor="?attr/buttonTextColor"
                                     android:layout_marginLeft="7dp"
                                     android:layout_weight="1"
                                     android:text="@string/button_state_off"
-                                    android:textSize="10dp"/>
+                                    android:textColor="?attr/buttonTextColor"
+                                    android:textSize="10dp" />
 
                                 <com.google.android.material.switchmaterial.SwitchMaterial
                                     android:id="@+id/switch_dimmer_switch"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
-                                    app:useMaterialThemeColors="false"/>
+                                    app:useMaterialThemeColors="false" />
                             </LinearLayout>
 
-                            <com.google.android.material.button.MaterialButton 
-android:textColor="?attr/buttonTextColor"
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/color_button"
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
@@ -285,7 +281,8 @@ android:textColor="?attr/buttonTextColor"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginBottom="5dp"
                                 android:text="@string/button_color"
-                                android:textSize="10dp"/>
+                                android:textColor="?attr/buttonTextColor"
+                                android:textSize="10dp" />
                         </LinearLayout>
                     </RelativeLayout>
 
@@ -299,12 +296,12 @@ android:textColor="?attr/buttonTextColor"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_gravity="bottom"
-                        android:paddingTop="15dp"/>
+                        android:paddingTop="15dp" />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
 
-        <include layout="@layout/log_timer_button_row_default"/>
+        <include layout="@layout/log_timer_button_row_default" />
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

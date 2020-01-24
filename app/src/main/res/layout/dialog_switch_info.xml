@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -21,11 +20,11 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -42,28 +41,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/idx"/>
+                android:text="@string/idx" />
 
             <TextView
                 android:id="@+id/LastUpdate_title"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/last_update"/>
+                android:text="@string/last_update" />
 
             <TextView
                 android:id="@+id/SignalLevel_title"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/signal_level"/>
+                android:text="@string/signal_level" />
 
             <TextView
                 android:id="@+id/BatteryLevel_title"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/battery_level"/>
+                android:text="@string/battery_level" />
         </LinearLayout>
 
         <LinearLayout
@@ -78,7 +77,7 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="2dp"
                 android:paddingRight="2dp"
-                android:paddingBottom="2dp"/>
+                android:paddingBottom="2dp" />
 
             <TextView
                 android:id="@+id/LastUpdate_value"
@@ -88,12 +87,12 @@
                 android:paddingTop="2dp"
                 android:paddingRight="2dp"
                 android:paddingBottom="2dp"
-                tools:text="2015-05-01 01:01:01"/>
+                tools:text="2015-05-01 01:01:01" />
 
             <SeekBar
                 android:id="@+id/SignalLevel_indicator"
                 android:layout_width="160dp"
-                android:layout_height="32dp"/>
+                android:layout_height="32dp" />
 
             <TextView
                 android:id="@+id/BatteryLevel_value"
@@ -104,13 +103,13 @@
                 android:paddingRight="2dp"
                 android:paddingBottom="2dp"
                 android:text="@string/placeholder_value"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
             <SeekBar
                 android:id="@+id/BatteryLevel_indicator"
                 android:layout_width="160dp"
                 android:layout_height="32dp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 
@@ -124,13 +123,13 @@
             android:layout_width="126dp"
             android:layout_height="wrap_content"
             android:padding="2dp"
-            android:text="@string/favorite"/>
+            android:text="@string/favorite" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/favorite_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:useMaterialThemeColors="false"/>
+            app:useMaterialThemeColors="false" />
     </LinearLayout>
 
     <HorizontalScrollView
@@ -144,8 +143,7 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
-            <com.google.android.material.button.MaterialButton 
-android:textColor="?attr/buttonTextColor"
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/full_button"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
@@ -153,10 +151,10 @@ android:textColor="?attr/buttonTextColor"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:text="@string/button_state_full_light"
-                android:textSize="10dp"/>
+                android:textColor="?attr/buttonTextColor"
+                android:textSize="10dp" />
 
-            <com.google.android.material.button.MaterialButton 
-android:textColor="?attr/buttonTextColor"
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/night_button"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
@@ -165,7 +163,8 @@ android:textColor="?attr/buttonTextColor"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:text="@string/button_state_night"
-                android:textSize="10dp"/>
+                android:textColor="?attr/buttonTextColor"
+                android:textSize="10dp" />
         </LinearLayout>
     </HorizontalScrollView>
 </LinearLayout>

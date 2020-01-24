@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -21,12 +20,12 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/row_global_wrapper"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:layout_margin="5sp"
-              android:background="@drawable/appwidget_dark_bg_clickable"
-              android:orientation="horizontal">
+    android:id="@+id/row_global_wrapper"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_margin="5sp"
+    android:background="@drawable/appwidget_dark_bg_clickable"
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/rowIcon"
@@ -35,13 +34,13 @@
         android:layout_gravity="center_vertical"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:src="@drawable/defaultimage"/>
+        android:src="@drawable/defaultimage" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_gravity="center_vertical"
-                  android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -57,7 +56,7 @@
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
                 android:text="@string/text_loading"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/desc"
@@ -69,7 +68,7 @@
                 android:layout_alignParentLeft="true"
                 android:paddingLeft="5dp"
                 android:text="@string/text_loading"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white" />
 
             <LinearLayout
                 android:id="@+id/linearLayout4"
@@ -91,7 +90,7 @@
                     android:background="@drawable/button_status_dark"
                     android:text="@string/button_state_on"
                     android:textColor="@color/white"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp" />
 
                 <Button
                     android:id="@+id/off_button"
@@ -103,7 +102,7 @@
                     android:background="@drawable/button_status_dark"
                     android:text="@string/button_state_off"
                     android:textColor="@color/white"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp" />
 
             </LinearLayout>
         </RelativeLayout>

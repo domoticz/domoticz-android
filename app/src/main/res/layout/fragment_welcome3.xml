@@ -20,15 +20,15 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/listviewRowBackground"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/welcome_top_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:windowSoftInputMode="adjustPan">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/listviewRowBackground"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/welcome_top_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:windowSoftInputMode="adjustPan">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,7 +43,7 @@
             android:text="@string/welcome_server_settings_title"
             android:textColor="@color/default_text_color_light"
             android:textSize="@dimen/text_size_welcomePage3_serverSettings_title"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
@@ -58,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textNoSuggestions"
-                android:textColor="@color/default_text_color_light"/>
+                android:textColor="@color/default_text_color_light" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TableLayout
@@ -77,7 +77,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:paddingTop="3dp"
-                    android:spinnerMode="dropdown"/>
+                    android:spinnerMode="dropdown" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
@@ -93,7 +93,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberSigned"
-                        android:textColor="@color/default_text_color_light"/>
+                        android:textColor="@color/default_text_color_light" />
                 </com.google.android.material.textfield.TextInputLayout>
             </TableRow>
         </TableLayout>
@@ -119,7 +119,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textNoSuggestions"
                     android:paddingRight="15dp"
-                    android:textColor="@color/default_text_color_light"/>
+                    android:textColor="@color/default_text_color_light" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -137,7 +137,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:paddingRight="15dp"
-                    android:textColor="@color/default_text_color_light"/>
+                    android:textColor="@color/default_text_color_light" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
@@ -149,7 +149,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/show_password"
             android:textColor="@color/default_text_color_light"
-            android:textSize="@dimen/text_size_small"/>
+            android:textSize="@dimen/text_size_small" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
@@ -163,7 +163,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textNoSuggestions"
-                android:textColor="@color/default_text_color_light"/>
+                android:textColor="@color/default_text_color_light" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -173,7 +173,7 @@
             android:layout_marginTop="15dp"
             android:text="@string/welcome_local_server_used_switch_title"
             android:textColor="@color/default_text_color_light"
-            android:textSize="@dimen/text_size_large"/>
+            android:textSize="@dimen/text_size_large" />
 
         <TextView
             android:id="@+id/local_server_summary"
@@ -181,7 +181,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:text="@string/welcome_local_server_used_switch_summary"
-            android:textColor="@color/default_text_color_light"/>
+            android:textColor="@color/default_text_color_light" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/localServer_switch"
@@ -189,7 +189,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:checked="false"
-            app:useMaterialThemeColors="false"/>
+            app:useMaterialThemeColors="false" />
 
         <LinearLayout
             android:id="@+id/local_server_settings"
@@ -206,16 +206,15 @@
                 android:paddingTop="5dp"
                 android:text="@string/welcome_local_server_ssid"
                 android:textColor="@color/default_text_color_light"
-                android:textSize="@dimen/text_size_large"/>
+                android:textSize="@dimen/text_size_large" />
 
             <nl.hnogames.domoticz.ui.MultiSelectionSpinner
                 android:id="@+id/local_wifi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:prompt="@string/welcome_ssid_spinner_prompt"/>
+                android:prompt="@string/welcome_ssid_spinner_prompt" />
 
-            <com.google.android.material.button.MaterialButton 
-android:textColor="?attr/buttonTextColor"
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/set_ssid"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
@@ -225,7 +224,8 @@ android:textColor="?attr/buttonTextColor"
                 android:layout_gravity="right"
                 android:layout_marginTop="15dp"
                 android:layout_weight="1"
-                android:text="@string/add"/>
+                android:text="@string/add"
+                android:textColor="?attr/buttonTextColor" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
@@ -240,7 +240,7 @@ android:textColor="?attr/buttonTextColor"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:inputType="textNoSuggestions"
-                    android:textColor="@color/default_text_color_light"/>
+                    android:textColor="@color/default_text_color_light" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TableLayout
@@ -259,7 +259,7 @@ android:textColor="?attr/buttonTextColor"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
                         android:paddingTop="3dp"
-                        android:spinnerMode="dropdown"/>
+                        android:spinnerMode="dropdown" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
@@ -275,7 +275,7 @@ android:textColor="?attr/buttonTextColor"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="numberSigned"
-                            android:textColor="@color/default_text_color_light"/>
+                            android:textColor="@color/default_text_color_light" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </TableRow>
             </TableLayout>
@@ -302,7 +302,7 @@ android:textColor="?attr/buttonTextColor"
                         android:layout_height="wrap_content"
                         android:inputType="textNoSuggestions"
                         android:minWidth="@dimen/width_min_welcomePage3_username_input"
-                        android:textColor="@color/default_text_color_light"/>
+                        android:textColor="@color/default_text_color_light" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -320,7 +320,7 @@ android:textColor="?attr/buttonTextColor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:textColor="@color/default_text_color_light"/>
+                        android:textColor="@color/default_text_color_light" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -332,7 +332,7 @@ android:textColor="?attr/buttonTextColor"
                 android:layout_marginTop="10dp"
                 android:text="@string/show_password"
                 android:textColor="@color/default_text_color_light"
-                android:textSize="@dimen/text_size_small"/>
+                android:textSize="@dimen/text_size_small" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
@@ -347,7 +347,7 @@ android:textColor="?attr/buttonTextColor"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:inputType="textNoSuggestions"
-                    android:textColor="@color/default_text_color_light"/>
+                    android:textColor="@color/default_text_color_light" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 

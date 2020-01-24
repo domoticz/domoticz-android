@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -19,8 +18,7 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:plainpie="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_global_wrapper"
@@ -62,7 +60,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
                     android:src="@drawable/outline_info_black_18"
-                    android:tint="@color/md_grey_300"/>
+                    android:tint="@color/md_grey_300" />
 
                 <ImageView
                     android:id="@+id/rowIcon"
@@ -71,7 +69,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:contentDescription="@string/error_image_description"
-                    android:src="@drawable/clock48"/>
+                    android:src="@drawable/clock48" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -103,7 +101,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center_horizontal"
                                 android:paddingLeft="0dp"
-                                android:text="@string/sunrise"/>
+                                android:text="@string/sunrise" />
 
                             <rm.com.clocks.ClockImageView
                                 android:id="@+id/sunrise"
@@ -118,8 +116,7 @@
                                 app:indeterminateSpeed="2"
                                 app:minutes="20"
                                 app:pointerWidth="thin"
-                                app:timeSetDuration="400"
-                                />
+                                app:timeSetDuration="400" />
 
                             <TextView
                                 android:id="@+id/sunriseText"
@@ -127,7 +124,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_horizontal"
-                                android:paddingLeft="0dp"/>
+                                android:paddingLeft="0dp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -147,7 +144,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center_horizontal"
                                 android:paddingLeft="0dp"
-                                android:text="@string/now"/>
+                                android:text="@string/now" />
 
                             <rm.com.clocks.ClockImageView
                                 android:id="@+id/clock"
@@ -162,8 +159,7 @@
                                 app:indeterminateSpeed="2"
                                 app:minutes="20"
                                 app:pointerWidth="thin"
-                                app:timeSetDuration="400"
-                                />
+                                app:timeSetDuration="400" />
 
                             <TextView
                                 android:id="@+id/clockText"
@@ -171,7 +167,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_horizontal"
-                                android:paddingLeft="0dp"/>
+                                android:paddingLeft="0dp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -191,7 +187,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center_horizontal"
                                 android:paddingLeft="0dp"
-                                android:text="@string/sunset"/>
+                                android:text="@string/sunset" />
 
                             <rm.com.clocks.ClockImageView
                                 android:id="@+id/sunset"
@@ -206,8 +202,7 @@
                                 app:indeterminateSpeed="2"
                                 app:minutes="20"
                                 app:pointerWidth="thin"
-                                app:timeSetDuration="400"
-                                />
+                                app:timeSetDuration="400" />
 
                             <TextView
                                 android:id="@+id/sunsetText"
@@ -215,7 +210,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_horizontal"
-                                android:paddingLeft="0dp"/>
+                                android:paddingLeft="0dp" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -242,7 +237,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:gravity="center_horizontal"
                                 android:maxLines="2"
-                                android:paddingBottom="7dp"/>
+                                android:paddingBottom="7dp" />
 
                             <TextView
                                 android:id="@+id/switch_battery_level"
@@ -252,7 +247,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_marginTop="-10dp"
                                 android:gravity="center_horizontal"
-                                android:text="@string/battery_level"/>
+                                android:text="@string/battery_level" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -273,7 +268,7 @@
                                 plainpie:inner_pie_padding="5"
                                 plainpie:inner_text_visibility="true"
                                 plainpie:percentage="50"
-                                plainpie:percentage_size="8"/>
+                                plainpie:percentage_size="8" />
 
                             <com.google.android.material.switchmaterial.SwitchMaterial
                                 android:id="@+id/switch_button"
@@ -281,10 +276,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                app:useMaterialThemeColors="false"/>
+                                app:useMaterialThemeColors="false" />
 
-                            <com.google.android.material.button.MaterialButton 
-android:textColor="?attr/buttonTextColor"
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/on_button"
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="60dp"
@@ -292,11 +286,11 @@ android:textColor="?attr/buttonTextColor"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:text="@string/button_state_on"
-								
-                                android:textSize="10dp"/>
+                                android:textColor="?attr/buttonTextColor"
 
-                            <com.google.android.material.button.MaterialButton 
-android:textColor="?attr/buttonTextColor"
+                                android:textSize="10dp" />
+
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/off_button"
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="60dp"
@@ -304,10 +298,10 @@ android:textColor="?attr/buttonTextColor"
                                 android:layout_marginLeft="7dp"
                                 android:layout_weight="1"
                                 android:text="@string/button_state_off"
-                                android:textSize="10dp"/>
+                                android:textColor="?attr/buttonTextColor"
+                                android:textSize="10dp" />
 
-                            <com.google.android.material.button.MaterialButton 
-android:textColor="?attr/buttonTextColor"
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/set_button"
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="56dp"
@@ -316,7 +310,8 @@ android:textColor="?attr/buttonTextColor"
                                 android:layout_centerVertical="true"
                                 android:layout_gravity="right"
                                 android:text="@string/set_temperature"
-                                android:textSize="10dp"/>
+                                android:textColor="?attr/buttonTextColor"
+                                android:textSize="10dp" />
 
                             <ImageView
                                 android:id="@+id/switch_button_up"
@@ -325,7 +320,7 @@ android:textColor="?attr/buttonTextColor"
                                 android:layout_margin="7dp"
                                 android:layout_marginTop="10dp"
                                 android:src="@drawable/baseline_keyboard_arrow_up_black_24"
-                                android:tint="@color/primary"/>
+                                android:tint="@color/primary" />
 
                             <ImageView
                                 android:id="@+id/switch_button_stop"
@@ -334,7 +329,7 @@ android:textColor="?attr/buttonTextColor"
                                 android:layout_margin="7dp"
                                 android:layout_marginTop="10dp"
                                 android:src="@drawable/baseline_stop_black_24"
-                                android:tint="@color/primary"/>
+                                android:tint="@color/primary" />
 
                             <ImageView
                                 android:id="@+id/switch_button_down"
@@ -343,7 +338,7 @@ android:textColor="?attr/buttonTextColor"
                                 android:layout_margin="7dp"
                                 android:layout_marginTop="10dp"
                                 android:src="@drawable/baseline_keyboard_arrow_down_black_24"
-                                android:tint="@color/primary"/>
+                                android:tint="@color/primary" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -360,31 +355,30 @@ android:textColor="?attr/buttonTextColor"
                                 android:id="@+id/switch_dimmer_level"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"/>
+                                android:layout_gravity="center_horizontal" />
 
                             <SeekBar
                                 android:id="@+id/switch_dimmer"
                                 android:layout_width="129dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom"
-                                android:minWidth="150dp"/>
+                                android:minWidth="150dp" />
 
                             <Spinner
                                 android:id="@+id/spSelector"
                                 android:layout_width="129dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom"
-                                android:minWidth="150dp"/>
+                                android:minWidth="150dp" />
 
                             <com.google.android.material.switchmaterial.SwitchMaterial
                                 android:id="@+id/switch_dimmer_switch"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
-                                app:useMaterialThemeColors="false"/>
+                                app:useMaterialThemeColors="false" />
 
-                            <com.google.android.material.button.MaterialButton 
-android:textColor="?attr/buttonTextColor"
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/color_button"
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
@@ -395,7 +389,8 @@ android:textColor="?attr/buttonTextColor"
                                 android:layout_marginTop="5dp"
                                 android:layout_marginBottom="5dp"
                                 android:text="@string/button_color"
-                                android:textSize="10dp"/>
+                                android:textColor="?attr/buttonTextColor"
+                                android:textSize="10dp" />
                         </LinearLayout>
 
                     </RelativeLayout>
@@ -413,10 +408,10 @@ android:textColor="?attr/buttonTextColor"
                     android:gravity="end"
                     android:text="@string/signal_level"
                     android:textSize="8sp"
-                    android:textStyle="italic"/>
+                    android:textStyle="italic" />
             </LinearLayout>
         </LinearLayout>
 
-        <include layout="@layout/log_timer_button_row_default"/>
+        <include layout="@layout/log_timer_button_row_default" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

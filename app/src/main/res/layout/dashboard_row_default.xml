@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -21,15 +20,15 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/row_global_wrapper"
-              style="@style/background_listview"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/row_global_wrapper"
+    style="@style/background_listview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/row_wrapper"
-        
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:longClickable="true"
@@ -46,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|start"
             android:src="@drawable/outline_info_black_18"
-            android:tint="@color/md_grey_300"/>
+            android:tint="@color/md_grey_300" />
 
         <ImageView
             android:id="@+id/rowIcon"
@@ -55,7 +54,7 @@
             android:layout_gravity="center_vertical"
             android:contentDescription="@string/error_image_description"
             android:paddingRight="5dp"
-            android:src="@drawable/clock48"/>
+            android:src="@drawable/clock48" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -67,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                tools:text="Switch name"/>
+                tools:text="Switch name" />
 
             <TextView
                 android:id="@+id/switch_battery_level"
@@ -77,7 +76,7 @@
                 android:layout_below="@+id/switch_name"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
-                android:text="@string/battery_level"/>
+                android:text="@string/battery_level" />
 
             <TextView
                 android:id="@+id/switch_signal_level"
@@ -91,7 +90,7 @@
                 android:gravity="end"
                 android:text="@string/signal_level"
                 android:textSize="8sp"
-                android:textStyle="italic"/>
+                android:textStyle="italic" />
 
         </RelativeLayout>
     </LinearLayout>
