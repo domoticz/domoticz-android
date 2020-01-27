@@ -30,6 +30,7 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/primary</item>
 
+        <item name="md_background_color">@color/white</item>
         <item name="actionMenuTextColor">@android:color/white</item>
         <item name="android:actionMenuTextColor">@color/white</item>
         <item name="android:windowBackground">@color/white</item>
@@ -84,6 +85,7 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/primary</item>
 
+        <item name="md_background_color">@color/white</item>
         <item name="actionMenuTextColor">@android:color/white</item>
         <item name="android:actionMenuTextColor">@color/white</item>
         <item name="android:windowBackground">@color/white</item>
@@ -138,6 +140,7 @@
         <item name="colorPrimaryDark">@color/secondary_dark</item>
         <item name="colorAccent">@color/alt1_accent</item>
 
+        <item name="md_background_color">@color/secondary_dark</item>
         <item name="android:windowBackground">@color/secondary_dark</item>
         <item name="android:buttonBarButtonStyle">@style/DialogButton</item>
         <item name="buttonBarNeutralButtonStyle">@style/DialogButton</item>
@@ -189,6 +192,7 @@
         <item name="colorPrimaryDark">@color/alt2_dark</item>
         <item name="colorAccent">@color/alt2_accent</item>
 
+        <item name="md_background_color">@color/alt2_dark</item>
         <item name="android:windowBackground">@color/alt2_dark</item>
         <item name="android:buttonBarButtonStyle">@style/DialogButton</item>
         <item name="buttonBarNeutralButtonStyle">@style/DialogButton</item>
@@ -240,6 +244,7 @@
         <item name="colorPrimaryDark">@color/alt3_dark</item>
         <item name="colorAccent">@color/alt3</item>
 
+        <item name="md_background_color">@color/alt3_dark</item>
         <item name="actionMenuTextColor">@android:color/white</item>
         <item name="android:actionMenuTextColor">@color/white</item>
         <item name="android:windowBackground">@color/white</item>
