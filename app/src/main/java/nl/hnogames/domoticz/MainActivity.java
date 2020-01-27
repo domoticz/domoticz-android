@@ -821,7 +821,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = getTheme();
-        theme.resolveAttribute(R.attr.toolbarTextColor, typedValue, true);
+        theme.resolveAttribute(R.attr.graphTextColor, typedValue, true);
 
         // Create the AccountHeader
         final ConfigInfo finalConfig = config;

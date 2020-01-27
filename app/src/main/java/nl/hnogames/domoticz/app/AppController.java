@@ -67,6 +67,7 @@ public class AppController extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+
         Shortbread.create(this);
         mInstance = this;
 
