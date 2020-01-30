@@ -178,11 +178,12 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 e.printStackTrace();
             }
         }
-        InitBiometric();
-        mSharedPrefs = new SharedPrefUtil(this);
 
         // Apply Scoop to the activity
         Scoop.getInstance().apply(this);
+
+        InitBiometric();
+        mSharedPrefs = new SharedPrefUtil(this);
         permissionHelper = PermissionHelper.getInstance(this);
 
         UsefulBits.checkAPK(this, mSharedPrefs);
@@ -393,7 +394,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     if (res != null && !res.getBoolean("RESULT", false))
                         this.finish();
                     else
-                        initScreen();
+                        this.recreate();
                     SerializableManager.cleanAllSerializableObjects(this);
                     break;
                 case iSettingsResultCode:
