@@ -207,8 +207,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (!UsefulBits.checkPlayServicesAvailable(this)) 
-			this.finish();
+        if (!UsefulBits.checkPlayServicesAvailable(this))
+            this.finish();
 
         if (mSharedPrefs.isFirstStart()) {
             mSharedPrefs.setNavigationDefaults();

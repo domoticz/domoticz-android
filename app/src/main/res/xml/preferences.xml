@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -20,116 +19,114 @@
   ~  under the License.
   -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:customPreference="http://schemas.android.com/apk/res-auto"
-                  android:key="settingsscreen">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:customPreference="http://schemas.android.com/apk/res-auto"
+    android:key="settingsscreen">
 
-    <PreferenceCategory
+    <androidx.preference.PreferenceCategory
         android:key="premium_category"
         android:title="@string/premium_category">
-        <Preference
+        <androidx.preference.Preference
             android:key="premium_settings"
-            android:title="@string/premium_title"/>
-    </PreferenceCategory>
+            android:title="@string/premium_title" />
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_generic">
-        <ListPreference
+    <androidx.preference.PreferenceCategory android:title="@string/category_generic">
+        <androidx.preference.ListPreference
             android:entries="@array/startup_actions"
             android:entryValues="@array/startup_actions"
             android:key="startup_nav"
-            android:title="@string/startup_screen"/>
+            android:title="@string/startup_screen" />
 
-        <MultiSelectListPreference
+        <androidx.preference.MultiSelectListPreference
             android:defaultValue="@array/drawer_actions"
             android:entries="@array/drawer_actions"
             android:entryValues="@array/drawer_actions"
             android:key="show_nav_items"
-            android:title="@string/enable_items"/>
+            android:title="@string/enable_items" />
 
-        <SwitchPreference
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="switchButtons"
             android:summaryOff="@string/switch_buttons_off"
             android:summaryOn="@string/switch_buttons_on"
-            android:title="@string/switch_buttons_title"/>
-        <SwitchPreference
+            android:title="@string/switch_buttons_title" />
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="alwayson"
             android:summaryOff="@string/always_on_off"
             android:summaryOn="@string/always_on_on"
-            android:title="@string/always_on_title"/>
-        <SwitchPreference
+            android:title="@string/always_on_title" />
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="autorefresh"
             android:summaryOff="@string/always_auto_refresh_off"
             android:summaryOn="@string/always_auto_refresh_on"
-            android:title="@string/always_auto_refresh"/>
+            android:title="@string/always_auto_refresh" />
         <nl.hnogames.domoticz.preference.EditTextIntegerPreference
-            android:key="autorefreshTimer"
             android:dependency="autorefresh"
+            android:key="autorefreshTimer"
             android:summary="@string/set_auto_refresh_time"
-            android:title="@string/auto_refresh_time"/>
-    </PreferenceCategory>
+            android:title="@string/auto_refresh_time" />
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceScreen
+    <androidx.preference.PreferenceCategory
         android:key="defaultValues"
         android:title="@string/default_values">
-        <PreferenceCategory android:title="@string/temperature">
-            <nl.hnogames.domoticz.preference.EditTextIntegerPreference
-                android:key="tempMinValue"
-                android:summary="@string/set_point_min_description"
-                android:title="@string/set_point_min"/>
-            <nl.hnogames.domoticz.preference.EditTextIntegerPreference
-                android:key="tempMaxValue"
-                android:summary="@string/set_point_max_description"
-                android:title="@string/set_point_max"/>
-        </PreferenceCategory>
-    </PreferenceScreen>
+        <nl.hnogames.domoticz.preference.EditTextIntegerPreference
+            android:key="tempMinValue"
+            android:summary="@string/set_point_min_description"
+            android:title="@string/set_point_min" />
+        <nl.hnogames.domoticz.preference.EditTextIntegerPreference
+            android:key="tempMaxValue"
+            android:summary="@string/set_point_max_description"
+            android:title="@string/set_point_max" />
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/sort_server_title">
-        <SwitchPreference
+    <androidx.preference.PreferenceCategory android:title="@string/sort_server_title">
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="sortCustom"
             android:summaryOff="@string/sort_server_on"
             android:summaryOn="@string/sort_custom_on"
-            android:title="@string/sort_server_title"/>
-        <SwitchPreference
+            android:title="@string/sort_server_title" />
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:dependency="sortCustom"
             android:key="lockSortCustom"
             android:summaryOff="@string/sort_lock_custom_on"
             android:summaryOn="@string/sort_lock_custom_on"
-            android:title="@string/sort_lock_server_title"/>
-    </PreferenceCategory>
+            android:title="@string/sort_lock_server_title" />
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/title_dashboard">
-        <SwitchPreference
+    <androidx.preference.PreferenceCategory android:title="@string/title_dashboard">
+        <androidx.preference.SwitchPreference
             android:defaultValue="true"
             android:key="extradata"
             android:summaryOff="@string/show_extra_data_off"
             android:summaryOn="@string/show_extra_data_on"
-            android:title="@string/extra_data_title"/>
-        <SwitchPreference
+            android:title="@string/extra_data_title" />
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="dashboardAsList"
             android:summaryOff="@string/show_dashboard_list_on"
             android:summaryOn="@string/show_dashboard_list_off"
-            android:title="@string/dashboard_list_title"/>
-        <SwitchPreference
+            android:title="@string/dashboard_list_title" />
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="dashboardShowClock"
             android:summaryOff="@string/show_dashboard_clock"
             android:summaryOn="@string/show_dashboard_clock"
-            android:title="@string/dashboard_clock"/>
-    </PreferenceCategory>
+            android:title="@string/dashboard_clock" />
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_wear">
-        <SwitchPreference
+    <androidx.preference.PreferenceCategory android:title="@string/category_wear">
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="enableWearItems"
             android:summaryOff="@string/wear_custom_off"
             android:summaryOn="@string/wear_custom_on"
-            android:title="@string/enable_wear_select"/>
+            android:title="@string/enable_wear_select" />
         <nl.hnogames.domoticz.preference.WearMultiSelectListPreference
             android:defaultValue="@array/empty_array"
             android:dependency="enableWearItems"
@@ -139,266 +136,160 @@
             android:key="wearItems"
             android:summary="@string/custom_wear_select_desc"
             android:title="@string/custom_wear_select"
-            customPreference:selectAllValuesByDefault="true"/>
-    </PreferenceCategory>
+            customPreference:selectAllValuesByDefault="true" />
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_server">
-        <SwitchPreference
+    <androidx.preference.PreferenceCategory android:title="@string/category_server">
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="enableMultiServers"
             android:summaryOff="@string/multi_server_settings"
             android:summaryOn="@string/multi_server_settings"
-            android:title="@string/multi_server"/>
-        <Preference
+            android:title="@string/multi_server" />
+        <androidx.preference.Preference
             android:key="server_settings"
-            android:title="@string/server_settings"/>
-        <Preference
+            android:title="@string/server_settings" />
+        <androidx.preference.Preference
             android:key="server_force_fetch_config"
-            android:title="@string/server_force_fetch_config"/>
-    </PreferenceCategory>
+            android:title="@string/server_force_fetch_config" />
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_geofencing">
-        <Preference
+    <androidx.preference.PreferenceCategory android:title="@string/category_geofencing">
+        <androidx.preference.Preference
             android:key="geo_settings"
-            android:title="@string/geofencing_configure"/>
-    </PreferenceCategory>
+            android:title="@string/geofencing_configure" />
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/wizard_widgets">
-        <SwitchPreference
+    <!--<androidx.preference.PreferenceCategory android:title="@string/wizard_widgets">
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="enableWidgets"
             android:summaryOff="@string/widget_description"
             android:summaryOn="@string/widget_description"
             android:title="@string/category_widgets"/>
-    </PreferenceCategory>
+    </androidx.preference.PreferenceCategory>-->
 
-    <PreferenceCategory android:title="@string/category_nfc">
-        <SwitchPreference
+    <androidx.preference.PreferenceCategory android:title="@string/category_nfc">
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="enableNFC"
             android:summaryOff="@string/nfc_enable_settings"
             android:summaryOn="@string/nfc_enable_settings"
-            android:title="@string/enable_nfc"/>
-        <Preference
+            android:title="@string/enable_nfc" />
+        <androidx.preference.Preference
             android:dependency="enableNFC"
             android:key="nfc_settings"
-            android:title="@string/nfc_settings"/>
-    </PreferenceCategory>
+            android:title="@string/nfc_settings" />
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_Speech">
-        <SwitchPreference
+    <androidx.preference.PreferenceCategory android:title="@string/category_Speech">
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="enableSpeech"
             android:summaryOff="@string/speech_enable_settings"
             android:summaryOn="@string/speech_enable_settings"
-            android:title="@string/enable_speech"/>
-        <Preference
+            android:title="@string/enable_speech" />
+        <androidx.preference.Preference
             android:dependency="enableSpeech"
             android:key="speech_settings"
-            android:title="@string/speech_settings"/>
-    </PreferenceCategory>
+            android:title="@string/speech_settings" />
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_QRCode">
-        <SwitchPreference
+    <androidx.preference.PreferenceCategory android:title="@string/category_QRCode">
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="enableQRCode"
             android:summaryOff="@string/qrcode_enable_settings"
             android:summaryOn="@string/qrcode_enable_settings"
-            android:title="@string/enable_qrcode"/>
-        <Preference
+            android:title="@string/enable_qrcode" />
+        <androidx.preference.Preference
             android:dependency="enableQRCode"
             android:key="qrcode_settings"
-            android:title="@string/qrcode_settings"/>
-    </PreferenceCategory>
+            android:title="@string/qrcode_settings" />
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_bluetooth">
-        <SwitchPreference
+    <androidx.preference.PreferenceCategory android:title="@string/category_bluetooth">
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="enableBluetooth"
-            android:title="@string/enable_bluetooth"/>
-        <Preference
+            android:title="@string/enable_bluetooth" />
+        <androidx.preference.Preference
             android:dependency="enableBluetooth"
             android:key="bluetooth_settings"
-            android:title="@string/bluetooth_settings"/>
-    </PreferenceCategory>
+            android:title="@string/bluetooth_settings" />
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_startup_security">
-        <SwitchPreference
+    <androidx.preference.PreferenceCategory android:title="@string/category_startup_security">
+        <androidx.preference.SwitchPreference
             android:defaultValue="false"
             android:key="enableSecurity"
             android:summaryOff="@string/enable_security"
             android:summaryOn="@string/disable_security"
-            android:title="@string/security_settings"/>
-        <Preference
+            android:title="@string/security_settings" />
+        <androidx.preference.Preference
             android:dependency="enableSecurity"
             android:key="SecuritySettings"
-            android:title="@string/setup_fingerprints"/>
-    </PreferenceCategory>
+            android:title="@string/setup_fingerprints" />
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_language">
-        <PreferenceScreen android:title="@string/category_language">
-            <PreferenceCategory android:title="@string/category_language">
-                <ListPreference
-                    android:entries="@array/domoticz_language_entries"
-                    android:entryValues="@array/domoticz_language_entryValues"
-                    android:key="displayLanguage"
-                    android:title="@string/category_language"/>
-                <SwitchPreference
-                    android:defaultValue="false"
-                    android:key="talkBack"
-                    android:summaryOff="@string/set_talk_back_on"
-                    android:summaryOn="@string/set_talk_back_off"
-                    android:title="@string/category_talk_back"/>
-            </PreferenceCategory>
-            <PreferenceCategory android:title="@string/category_help">
-                <Preference
-                    android:key="translate"
-                    android:summary="@string/translate_description"
-                    android:title="@string/translate_title"/>
-            </PreferenceCategory>
-        </PreferenceScreen>
-    </PreferenceCategory>
+    <androidx.preference.PreferenceCategory android:title="@string/category_language">
+        <androidx.preference.ListPreference
+            android:entries="@array/domoticz_language_entries"
+            android:entryValues="@array/domoticz_language_entryValues"
+            android:key="displayLanguage"
+            android:title="@string/category_language" />
+        <androidx.preference.SwitchPreference
+            android:defaultValue="false"
+            android:key="talkBack"
+            android:summaryOff="@string/set_talk_back_on"
+            android:summaryOn="@string/set_talk_back_off"
+            android:title="@string/category_talk_back" />
+        <androidx.preference.Preference
+            android:key="translate"
+            android:summary="@string/translate_description"
+            android:title="@string/translate_title" />
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_theme">
-        <Preference
+    <androidx.preference.PreferenceCategory android:title="@string/category_theme">
+        <androidx.preference.Preference
             android:key="darkTheme"
-            android:title="@string/config_theme"/>
-    </PreferenceCategory>
+            android:title="@string/config_theme" />
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_notification">
-        <PreferenceScreen
-            android:key="notificationscreen"
-            android:title="@string/notification_screen_title">
-            <SwitchPreference
-                android:defaultValue="true"
-                android:key="enableNotifications"
-                android:summaryOff="@string/enable_notifications"
-                android:summaryOn="@string/enable_notifications"
-                android:title="@string/enable_notifications_title"/>
+    <androidx.preference.PreferenceCategory android:title="@string/category_notification">
+        <Preference
+            android:key="openNotificationSettings"
+            android:title="@string/category_notification" />
+    </androidx.preference.PreferenceCategory>
 
-            <Preference
-                android:key="noticiationSettings"
-                android:title="@string/action_settings"/>
+    <androidx.preference.PreferenceCategory android:title="@string/category_advanced">
+        <androidx.preference.Preference
+            android:key="export_settings"
+            android:title="@string/export_settings" />
+        <androidx.preference.Preference
+            android:key="import_settings"
+            android:title="@string/import_settings" />
+        <androidx.preference.PreferenceCategory android:title="@string/permission_prefs_title">
+            <androidx.preference.Preference
+                android:key="permissionssettings"
+                android:title="@string/permission_config" />
+        </androidx.preference.PreferenceCategory>
+        <androidx.preference.Preference
+            android:key="reset_settings"
+            android:title="@string/reset_settings" />
+    </androidx.preference.PreferenceCategory>
 
-            <nl.hnogames.domoticz.preference.NotificationsMultiSelectListPreference
-                android:defaultValue="@array/empty_array"
-                android:dependency="enableNotifications"
-                android:dialogTitle="@string/suppress_notifications_select"
-                android:entries="@array/empty_array"
-                android:entryValues="@array/empty_array"
-                android:key="suppressNotifications"
-                android:summary="@string/suppress_notifications"
-                android:title="@string/suppress_notifications_title"
-                customPreference:selectAllValuesByDefault="false"/>
+    <androidx.preference.PreferenceCategory android:title="@string/category_info">
+        <androidx.preference.Preference
+            android:key="version"
+            android:summary="Version 1.0.2"
+            android:title="@string/info_version" />
+        <androidx.preference.Preference
+            android:key="info_about"
+            android:title="@string/info_about" />
+        <androidx.preference.Preference
+            android:key="info_credits"
+            android:title="@string/info_credits" />
+    </androidx.preference.PreferenceCategory>
 
-            <SwitchPreference
-                android:defaultValue="false"
-                android:dependency="enableNotifications"
-                android:key="overwriteNotifications"
-                android:summaryOff="@string/overwrite_notifications"
-                android:summaryOn="@string/overwrite_notifications"
-                android:title="@string/overwrite_notifications_title"/>
-
-            <PreferenceCategory
-                android:key="notificationSound"
-                android:title="@string/notification_sound_title">
-                <SwitchPreference
-                    android:defaultValue="true"
-                    android:dependency="enableNotifications"
-                    android:key="notification_vibrate"
-                    android:summaryOff="@string/notification_vibrate_off"
-                    android:summaryOn="@string/notification_vibrate_on"
-                    android:title="@string/notification_vibrate_title"/>
-                <RingtonePreference
-                    android:dependency="enableNotifications"
-                    android:key="notification_sound"
-                    android:ringtoneType="notification"
-                    android:showDefault="true"
-                    android:showSilent="true"
-                    android:summary="@string/notification_sound_summary"
-                    android:title="@string/notification_sound_title"/>
-            </PreferenceCategory>
-
-            <PreferenceCategory android:title="@string/alarm">
-                <nl.hnogames.domoticz.preference.NotificationsMultiSelectListPreference
-                    android:defaultValue="@array/empty_array"
-                    android:dependency="enableNotifications"
-                    android:dialogTitle="@string/alarm_notifications_select"
-                    android:entries="@array/empty_array"
-                    android:entryValues="@array/empty_array"
-                    android:key="alarmNotifications"
-                    android:summary="@string/alarm_notifications"
-                    android:title="@string/alarm_notifications_title"
-                    customPreference:selectAllValuesByDefault="false"/>
-
-                <nl.hnogames.domoticz.preference.EditTextIntegerPreference
-                    android:defaultValue="5"
-                    android:dependency="enableNotifications"
-                    android:key="alarmNotificationTimer"
-                    android:summary="@string/alarmtimer_title"
-                    android:title="@string/alarmtimer"/>
-            </PreferenceCategory>
-
-            <PreferenceCategory android:title="@string/category_advanced">
-                <Preference
-                    android:dependency="enableNotifications"
-                    android:key="notification_show_logs"
-                    android:summary="@string/notification_show"
-                    android:title="@string/notification_show_title"/>
-                <Preference
-                    android:dependency="enableNotifications"
-                    android:key="notification_registration_id"
-                    android:summary="@string/notification_settings_push"
-                    android:title="@string/notification_settings_id"/>
-                <Preference
-                    android:dependency="enableNotifications"
-                    android:key="clear_notifications"
-                    android:title="@string/clear_notifications"/>
-            </PreferenceCategory>
-
-        </PreferenceScreen>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/timer_other">
-        <PreferenceScreen android:title="@string/category_advanced">
-            <PreferenceCategory android:title="@string/category_advanced">
-                <Preference
-                    android:key="version"
-                    android:summary="Version 1.0.2"
-                    android:title="@string/info_version"/>
-            </PreferenceCategory>
-
-            <PreferenceCategory android:title="@string/category_export">
-                <Preference
-                    android:key="export_settings"
-                    android:title="@string/export_settings"/>
-                <Preference
-                    android:key="import_settings"
-                    android:title="@string/import_settings"/>
-            </PreferenceCategory>
-
-            <PreferenceCategory android:title="@string/permission_prefs_title">
-                <Preference
-                    android:key="permissionssettings"
-                    android:title="@string/permission_config"/>
-            </PreferenceCategory>
-
-            <PreferenceCategory android:title="@string/category_Reset">
-                <Preference
-                    android:key="reset_settings"
-                    android:title="@string/reset_settings"/>
-            </PreferenceCategory>
-        </PreferenceScreen>
-        <PreferenceScreen android:title="@string/category_info">
-            <PreferenceCategory android:title="@string/category_info">
-                <Preference
-                    android:key="info_about"
-                    android:title="@string/info_about"/>
-                <Preference
-                    android:key="info_credits"
-                    android:title="@string/info_credits"/>
-            </PreferenceCategory>
-        </PreferenceScreen>
-    </PreferenceCategory>
-
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

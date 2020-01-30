@@ -23,8 +23,9 @@ package nl.hnogames.domoticz.preference;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.preference.MultiSelectListPreference;
 import android.util.AttributeSet;
+
+import androidx.preference.MultiSelectListPreference;
 
 import java.util.HashSet;
 import java.util.List;

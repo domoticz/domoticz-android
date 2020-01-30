@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2015 Domoticz - Mark Heinis
+  ~
+  ~  Licensed to the Apache Software Foundation (ASF) under one
+  ~  or more contributor license agreements.  See the NOTICE file
+  ~  distributed with this work for additional information
+  ~  regarding copyright ownership.  The ASF licenses this file
+  ~  to you under the Apache License, Version 2.0 (the
+  ~  "License"); you may not use this file except in compliance
+  ~  with the License.  You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an
+  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~  KIND, either express or implied.  See the License for the
+  ~  specific language governing permissions and limitations
+  ~  under the License.
+  -->
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:customPreference="http://schemas.android.com/apk/res-auto"
+    android:key="settingsscreen">
+
+    <androidx.preference.PreferenceCategory android:title="@string/category_notification">
+        <androidx.preference.SwitchPreference
+            android:defaultValue="true"
+            android:key="enableNotifications"
+            android:summaryOff="@string/enable_notifications"
+            android:summaryOn="@string/enable_notifications"
+            android:title="@string/enable_notifications_title" />
+
+        <androidx.preference.Preference
+            android:key="noticiationSettings"
+            android:title="@string/action_settings" />
+
+        <nl.hnogames.domoticz.preference.NotificationsMultiSelectListPreference
+            android:defaultValue="@array/empty_array"
+            android:dependency="enableNotifications"
+            android:dialogTitle="@string/suppress_notifications_select"
+            android:entries="@array/empty_array"
+            android:entryValues="@array/empty_array"
+            android:key="suppressNotifications"
+            android:summary="@string/suppress_notifications"
+            android:title="@string/suppress_notifications_title"
+            customPreference:selectAllValuesByDefault="false" />
+
+        <androidx.preference.SwitchPreference
+            android:defaultValue="false"
+            android:dependency="enableNotifications"
+            android:key="overwriteNotifications"
+            android:summaryOff="@string/overwrite_notifications"
+            android:summaryOn="@string/overwrite_notifications"
+            android:title="@string/overwrite_notifications_title" />
+
+        <androidx.preference.PreferenceCategory
+            android:key="notificationSound"
+            android:title="@string/notification_sound_title">
+            <androidx.preference.SwitchPreference
+                android:defaultValue="true"
+                android:dependency="enableNotifications"
+                android:key="notification_vibrate"
+                android:summaryOff="@string/notification_vibrate_off"
+                android:summaryOn="@string/notification_vibrate_on"
+                android:title="@string/notification_vibrate_title" />
+        </androidx.preference.PreferenceCategory>
+
+        <androidx.preference.PreferenceCategory android:title="@string/alarm">
+            <nl.hnogames.domoticz.preference.NotificationsMultiSelectListPreference
+                android:defaultValue="@array/empty_array"
+                android:dependency="enableNotifications"
+                android:dialogTitle="@string/alarm_notifications_select"
+                android:entries="@array/empty_array"
+                android:entryValues="@array/empty_array"
+                android:key="alarmNotifications"
+                android:summary="@string/alarm_notifications"
+                android:title="@string/alarm_notifications_title"
+                customPreference:selectAllValuesByDefault="false" />
+
+            <nl.hnogames.domoticz.preference.EditTextIntegerPreference
+                android:defaultValue="5"
+                android:dependency="enableNotifications"
+                android:key="alarmNotificationTimer"
+                android:summary="@string/alarmtimer_title"
+                android:title="@string/alarmtimer" />
+        </androidx.preference.PreferenceCategory>
+
+        <androidx.preference.PreferenceCategory android:title="@string/category_advanced">
+            <androidx.preference.Preference
+                android:dependency="enableNotifications"
+                android:key="notification_show_logs"
+                android:summary="@string/notification_show"
+                android:title="@string/notification_show_title" />
+            <androidx.preference.Preference
+                android:dependency="enableNotifications"
+                android:key="notification_registration_id"
+                android:summary="@string/notification_settings_push"
+                android:title="@string/notification_settings_id" />
+            <androidx.preference.Preference
+                android:dependency="enableNotifications"
+                android:key="clear_notifications"
+                android:title="@string/clear_notifications" />
+        </androidx.preference.PreferenceCategory>
+    </androidx.preference.PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>
