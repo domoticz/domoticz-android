@@ -206,9 +206,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        boolean resolvableError = UsefulBits.checkPlayServicesAvailable(this);
-        if (!resolvableError) this.finish();
+        if (!UsefulBits.checkPlayServicesAvailable(this)) 
+			this.finish();
 
         if (mSharedPrefs.isFirstStart()) {
             mSharedPrefs.setNavigationDefaults();
@@ -316,13 +315,11 @@ public class MainActivity extends AppCompatPermissionsActivity {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             applyLanguage();
             TextView usingTabletLayout = findViewById(R.id.tabletLayout);
-
             if (usingTabletLayout == null)
                 onPhone = true;
 
             appRate();
             initTalkBack();
-
             ShowLoading();
 
             mServerUtil = new ServerUtil(this);
@@ -905,7 +902,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
         drawer = new DrawerBuilder()
                 .withActivity(this)
-                .withTranslucentStatusBar(false)
                 .withActionBarDrawerToggle(true)
                 .withAccountHeader(headerResult)
                 .withToolbar(toolbar)
