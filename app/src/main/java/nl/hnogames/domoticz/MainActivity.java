@@ -247,11 +247,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 super.onAuthenticationFailed();
             }
         });
+
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
                 .setTitle(getString(R.string.app_name_domoticz))
                 .setSubtitle(getString(R.string.fingerprint_make_sure))
                 .setDescription(getString(R.string.fingerprint_dialog_description))
                 .setNegativeButtonText(getString(R.string.security_password_fallback))
+                .setConfirmationRequired(false)
                 .build();
     }
 
