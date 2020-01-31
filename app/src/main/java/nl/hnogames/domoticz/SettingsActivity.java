@@ -28,10 +28,10 @@ import android.view.MenuItem;
 import androidx.appcompat.widget.Toolbar;
 
 import com.ftinc.scoop.Scoop;
-import com.ftinc.scoop.ui.ScoopSettingsActivity;
 
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.preference.PreferenceFragment;
+import nl.hnogames.domoticz.ui.ScoopSettingsActivity;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 

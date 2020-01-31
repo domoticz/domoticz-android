@@ -421,7 +421,7 @@
                 android:value="nl.hnogames.domoticz.MainActivity"/>
         </activity>
 
-        <activity android:name="com.ftinc.scoop.ui.ScoopSettingsActivity" />
+        <activity android:name="nl.hnogames.domoticz.ui.ScoopSettingsActivity" />
 
         <activity
             android:name="com.schibstedspain.leku.LocationPickerActivity"
