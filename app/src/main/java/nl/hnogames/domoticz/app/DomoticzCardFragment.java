@@ -254,8 +254,6 @@ public class DomoticzCardFragment extends Fragment {
             settingsButton.setVisibility(View.GONE);
 
             ImageView errorImage = root.findViewById(R.id.errorImage);
-            errorImage.setImageResource(R.drawable.empty);
-            errorImage.setAlpha(0.5f);
             errorImage.setVisibility(View.VISIBLE);
 
             TextView errorTextWrong = root.findViewById(R.id.errorTextWrong);
