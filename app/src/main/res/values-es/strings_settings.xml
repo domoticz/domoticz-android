@@ -38,7 +38,7 @@
     <string name="category_debug">Depuración</string>
     <string name="category_export">Exportar/importar preferencias</string>
     <string name="category_theme">Estilo</string>
-    <string name="category_clock">Clock</string>
+    <string name="category_clock">Reloj</string>
     <string name="category_nfc">Conexiones NFC</string>
     <string name="category_startup_security">Seguridad</string>
     <string name="category_account">Cuentas</string>
@@ -46,7 +46,7 @@
     <string name="category_bluetooth">Bluetooth</string>
     <string name="category_Speech">Discurso</string>
     <string name="category_Reset">Restablecer</string>
-    <string name="category_help">Contribute</string>
+    <string name="category_help">Contribuye</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Pantalla de inicio</string>
     <string name="enable_items">Activar/desactivar elementos</string>
@@ -64,16 +64,16 @@
     <string name="always_on_on">Bloquear la pantalla siempre Encendido</string>
     <string name="always_on_off">No bloquear la pantalla siempre Encendido</string>
     <string name="always_auto_refresh">Actualización automática</string>
-    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
-    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_on">Actualizar el estado de los dispositivos cada varios segundos</string>
+    <string name="always_auto_refresh_off">No actualizar automáticamente estados cada pocos segundos</string>
     <string name="switch_buttons_title">Interruptores</string>
     <string name="switch_buttons_on">Mostrar los interruptores con interruptor encendido/apagado</string>
     <string name="switch_buttons_off">Mostrar los interruptores con botones de encendido/apagado</string>
     <string name="dashboard_list_title">Cuadrícula de tablero</string>
     <string name="show_dashboard_list_on">Mostrar tablero como lista</string>
     <string name="show_dashboard_list_off">Mostrar tablero en cuadrícula</string>
-    <string name="dashboard_clock">Clock</string>
-    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
+    <string name="dashboard_clock">Reloj</string>
+    <string name="show_dashboard_clock">Mostrar reloj en el panel</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Elementos específicos de Android Wear</string>
     <string name="custom_wear_select">Seleccionar interruptores Android Wear</string>
@@ -118,8 +118,8 @@
     <string name="qrcode_enable_settings">Habilitar la funcionalidad de Código QR</string>
     <string name="bluetooth_settings">Configurar dispositivos Bluetooth</string>
     <string name="enable_bluetooth">Habilitar la funcionalidad Bluetooth</string>
-    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
-    <string name="translate_title">Translations</string>
+    <string name="translate_description">Puedes ayudar a mejorar nuestras traducciones e incluso añadir nuevos idiomas a esta aplicación a través de nuestro proyecto Crowdin</string>
+    <string name="translate_title">Traducciones</string>
     <string name="security_settings">Configuración de Seguridad</string>
     <string name="enable_security">Habilitar la protección por huella dactilar al inicio</string>
     <string name="disable_security">Desactivar la protección por huella dactilar en el inicio</string>

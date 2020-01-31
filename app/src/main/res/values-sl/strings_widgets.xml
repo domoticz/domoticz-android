@@ -21,18 +21,18 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="pick_device_title">Označite napravo</string>
-  <string name="choose_switch">Izberite napravo</string>
-  <string name="failed_to_get_securitypanel">Stikalo nima varnostne nastavitve</string>
-  <string name="failed_to_get_switches">Ni uspelo pridobiti naprave</string>
-  <string name="failed_toggle_switch">Ni uspelo preklopiti naprave</string>
-  <string name="switch_toggled">"Preklopi napravo"</string>
-  <string name="text_loading">Nalagam...</string>
-  <string name="text_go">POJDI</string>
-  <string name="widget_background">Ozadje</string>
-  <string name="widget_dark">Temno</string>
-  <string name="widget_light">Svetlo</string>
-  <string name="widget_transparent_dark">Prosojno temno</string>
-  <string name="widget_transparent_light">Prosojno svetlo</string>
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="pick_device_title">Označite napravo</string>
+    <string name="choose_switch">Izberite napravo</string>
+    <string name="failed_to_get_securitypanel">Stikalo nima varnostne nastavitve</string>
+    <string name="failed_to_get_switches">Ni uspelo pridobiti naprave</string>
+    <string name="failed_toggle_switch">Ni uspelo preklopiti naprave</string>
+    <string name="switch_toggled">"Preklopi napravo"</string>
+    <string name="text_loading">Nalagam...</string>
+    <string name="text_go">POJDI</string>
+    <string name="widget_background">Ozadje</string>
+    <string name="widget_dark">Temno</string>
+    <string name="widget_light">Svetlo</string>
+    <string name="widget_transparent_dark">Prosojno temno</string>
+    <string name="widget_transparent_light">Prosojno svetlo</string>
 </resources>
