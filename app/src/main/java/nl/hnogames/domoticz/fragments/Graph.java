@@ -126,7 +126,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             range = data.getString("RANGE");
             type = data.getString("TYPE");
             axisYLabel = data.getString("TITLE");
-            steps = data.getInt("STEPS", 1);
+            //steps = data.getInt("STEPS", 1); For now we dont look at the steps anymore
         }
     }
 
