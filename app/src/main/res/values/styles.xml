@@ -393,19 +393,6 @@
         <item name="android:textColorSecondary">@color/white</item>
     </style>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/primary</item>
-    </style>
-
-    <style name="AppThemeDark" parent="Theme.MaterialComponents.Bridge">
-        <item name="colorPrimary">@color/secondary</item>
-        <item name="colorPrimaryDark">@color/secondary_dark</item>
-        <item name="colorAccent">@color/secondary_accent</item>
-    </style>
-
     <style name="background_listview">
         <item name="android:paddingLeft">@dimen/row_space</item>
         <item name="android:paddingRight">@dimen/row_space</item>
@@ -510,11 +497,6 @@
         <item name="android:layout_marginBottom">2dp</item>
         <item name="android:maxLines">5</item>
         <item name="android:scrollbars">vertical</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>

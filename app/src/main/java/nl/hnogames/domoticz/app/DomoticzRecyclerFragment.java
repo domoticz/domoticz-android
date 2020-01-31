@@ -425,11 +425,9 @@ public class DomoticzRecyclerFragment extends Fragment {
      * @param error Exception
      */
     public void errorHandling(Exception error) {
-
         showSpinner(false);
         error.printStackTrace();
         String errorMessage = mDomoticz.getErrorMessage(error);
-
         if (mPhoneConnectionUtil == null)
             mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
         if (mPhoneConnectionUtil.isNetworkAvailable()) {

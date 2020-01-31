@@ -108,7 +108,6 @@ import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.TalkBackUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.utils.WidgetUtils;
 import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
@@ -169,6 +168,9 @@ public class MainActivity extends AppCompatPermissionsActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Apply Scoop to the activity
+        Scoop.getInstance().apply(this);
+
         configException = null;
         if (Build.VERSION.SDK_INT >= 24) {
             try {
@@ -178,9 +180,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 e.printStackTrace();
             }
         }
-
-        // Apply Scoop to the activity
-        Scoop.getInstance().apply(this);
 
         InitBiometric();
         mSharedPrefs = new SharedPrefUtil(this);
@@ -291,14 +290,12 @@ public class MainActivity extends AppCompatPermissionsActivity {
             if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage())) {
                 oTalkBackUtil.Init(this, new Locale(mSharedPrefs.getDisplayLanguage()), new TalkBackUtil.InitListener() {
                     @Override
-                    public void onInit(int status) {
-                    }
+                    public void onInit(int status) {}
                 });
             } else {
                 oTalkBackUtil.Init(this, new TalkBackUtil.InitListener() {
                     @Override
-                    public void onInit(int status) {
-                    }
+                    public void onInit(int status) {}
                 });
             }
         }
@@ -316,14 +313,14 @@ public class MainActivity extends AppCompatPermissionsActivity {
     @DebugLog
     public void initScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
+            ShowLoading();
+            appRate();
+            initTalkBack();
             applyLanguage();
+
             TextView usingTabletLayout = findViewById(R.id.tabletLayout);
             if (usingTabletLayout == null)
                 onPhone = true;
-
-            appRate();
-            initTalkBack();
-            ShowLoading();
 
             mServerUtil = new ServerUtil(this);
             if (mServerUtil.getActiveServer() != null && UsefulBits.isEmpty(mServerUtil.getActiveServer().getRemoteServerUrl())) {
@@ -351,8 +348,10 @@ public class MainActivity extends AppCompatPermissionsActivity {
                                 setupMobileDevice();
                                 setScheduledTasks();
 
-                                WidgetUtils.RefreshWidgets(MainActivity.this);
-                                buildscreen();
+                                //WidgetUtils.RefreshWidgets(MainActivity.this);
+                                drawNavigationMenu(mConfigInfo);
+                                if (!fromShortcut)
+                                    addFragment(false);
                             }
                         }
 
@@ -368,6 +367,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 if (mSharedPrefs.isStartupSecurityEnabled()) {
                     biometricPrompt.authenticate(promptInfo);
                 }
+                drawNavigationMenu(null);
             }
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
@@ -380,13 +380,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         changeFragment("nl.hnogames.domoticz.fragments.Loading", false);
     }
 
-    public void buildscreen() {
-        drawNavigationMenu(mConfigInfo);
-        if (!fromShortcut)
-            addFragment(false);
-    }
-
-    /* Called when the second activity's finishes */
+      /* Called when the second activity's finishes */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null && resultCode == RESULT_OK) {
@@ -889,8 +883,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 })
                 .build();
 
-        if (config != null &&
-                config.getUsers() != null) {
+        if (config != null && config.getUsers() != null) {
             for (UserInfo user : config.getUsers()) {
                 if (!allUsers.contains(user.getUsername())) {
                     ProfileDrawerItem profile = new ProfileDrawerItem().withName(user.getRightsValue(this)
@@ -902,7 +895,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 }
             }
         }
-
         drawer = new DrawerBuilder()
                 .withActivity(this)
                 .withActionBarDrawerToggle(true)
@@ -943,6 +935,9 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
     private List<IDrawerItem> getDrawerItems() {
         List<IDrawerItem> drawerItems = new ArrayList<>();
+        if (mConfigInfo == null)
+            return drawerItems;
+
         String[] drawerActions = mSharedPrefs.getNavigationActions();
         String[] fragments = mSharedPrefs.getNavigationFragments();
         String[] ICONS = mSharedPrefs.getNavigationIcons();
