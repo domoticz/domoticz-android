@@ -38,6 +38,7 @@
     <attr name="wizardCardColor" format="color" />
     <attr name="wizardTitleColor" format="color" />
     <attr name="temperatureTextColor" format="color" />
+    <attr name="preferenceIconColor" format="color" />
 
     <declare-styleable name="CustomListPreference">
         <attr name="lockedValues"/>

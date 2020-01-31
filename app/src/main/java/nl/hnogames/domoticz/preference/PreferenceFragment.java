@@ -29,6 +29,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.hardware.fingerprint.FingerprintManager;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
@@ -49,6 +52,7 @@ import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceScreen;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -86,7 +90,7 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 import static android.content.Context.KEYGUARD_SERVICE;
 
-public class PreferenceFragment extends PreferenceFragmentCompat implements PreferenceFragmentCompat.OnPreferenceStartScreenCallback{
+public class PreferenceFragment extends PreferenceFragmentCompat{
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = PreferenceFragment.class.getSimpleName();
 
@@ -101,18 +105,10 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Pref
     private ConfigInfo mConfigInfo;
     private ServerUtil mServerUtil;
     private PermissionHelper permissionHelper;
-    public boolean SubPreferenceOpened = false;
 
     @Override
     public Fragment getCallbackFragment() {
         return this;
-    }
-
-    @Override
-    public boolean onPreferenceStartScreen(PreferenceFragmentCompat caller, PreferenceScreen pref) {
-        SubPreferenceOpened=true;
-        caller.setPreferenceScreen(pref);
-        return true;
     }
 
     @Override
@@ -130,11 +126,39 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Pref
 
         UsefulBits.checkAPK(mContext, mSharedPrefs);
 
+        setIconColor();
         setPreferences();
         setStartUpScreenDefaultValue();
         handleImportExportButtons();
         handleInfoAndAbout();
         GetVersion();
+    }
+
+    private void setIconColor()
+    {
+        int colorAttr = R.attr.preferenceIconColor;
+        TypedArray ta = mContext.getTheme().obtainStyledAttributes(new int[]{colorAttr});
+        int color = ta.getColor(0, 0);
+        ta.recycle();
+        tintIcons(getPreferenceScreen(), color);
+    }
+
+    private static void tintIcons(Preference preference, int color) {
+        if (preference instanceof PreferenceGroup) {
+            PreferenceGroup group = ((PreferenceGroup) preference);
+            Drawable icon = group.getIcon();
+            if (icon != null) {
+                icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            }
+            for (int i = 0; i < group.getPreferenceCount(); i++) {
+                tintIcons(group.getPreference(i), color);
+            }
+        } else {
+            Drawable icon = preference.getIcon();
+            if (icon != null) {
+                icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            }
+        }
     }
 
     private void setupDefaultValues() {

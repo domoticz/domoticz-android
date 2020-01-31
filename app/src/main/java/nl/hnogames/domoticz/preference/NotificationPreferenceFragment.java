@@ -23,6 +23,9 @@ package nl.hnogames.domoticz.preference;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,7 +33,9 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceScreen;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
@@ -51,7 +56,7 @@ import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
-public class NotificationPreferenceFragment extends PreferenceFragmentCompat implements PreferenceFragmentCompat.OnPreferenceStartScreenCallback{
+public class NotificationPreferenceFragment extends PreferenceFragmentCompat{
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = NotificationPreferenceFragment.class.getSimpleName();
 
@@ -61,19 +66,11 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat imp
     private Domoticz mDomoticz;
     private ConfigInfo mConfigInfo;
     private ServerUtil mServerUtil;
-    public boolean SubPreferenceOpened = false;
     private PermissionHelper permissionHelper;
 
     @Override
     public Fragment getCallbackFragment() {
         return this;
-    }
-
-    @Override
-    public boolean onPreferenceStartScreen(PreferenceFragmentCompat caller, PreferenceScreen pref) {
-        SubPreferenceOpened=true;
-        caller.setPreferenceScreen(pref);
-        return true;
     }
 
     @Override
@@ -88,7 +85,35 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat imp
         mDomoticz = new Domoticz(mContext, AppController.getInstance().getRequestQueue());
         mConfigInfo = mServerUtil.getActiveServer().getConfigInfo(mContext);
 
+        setIconColor();
         setPreferences();
+    }
+
+    private void setIconColor()
+    {
+        int colorAttr = R.attr.preferenceIconColor;
+        TypedArray ta = mContext.getTheme().obtainStyledAttributes(new int[]{colorAttr});
+        int color = ta.getColor(0, 0);
+        ta.recycle();
+        tintIcons(getPreferenceScreen(), color);
+    }
+
+    private static void tintIcons(Preference preference, int color) {
+        if (preference instanceof PreferenceGroup) {
+            PreferenceGroup group = ((PreferenceGroup) preference);
+            Drawable icon = group.getIcon();
+            if (icon != null) {
+                icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            }
+            for (int i = 0; i < group.getPreferenceCount(); i++) {
+                tintIcons(group.getPreference(i), color);
+            }
+        } else {
+            Drawable icon = preference.getIcon();
+            if (icon != null) {
+                icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            }
+        }
     }
 
     private void setPreferences() {

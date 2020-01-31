@@ -133,6 +133,8 @@
         <item name="wizardCardColor">@color/white</item>
         <item name="wizardTitleColor">@color/grey_900</item>
         <item name="temperatureTextColor">@color/grey_900</item>
+        <item name="preferenceIconColor">@color/primary_accent</item>
+
     </style>
 
     <style name="AppThemeAlt1Main" parent="Theme.MaterialComponents.NoActionBar">
@@ -185,6 +187,7 @@
         <item name="wizardCardColor">@color/secondary</item>
         <item name="wizardTitleColor">@color/white</item>
         <item name="temperatureTextColor">@color/white</item>
+        <item name="preferenceIconColor">@color/white</item>
     </style>
 
     <style name="AppThemeAlt2Main" parent="Theme.MaterialComponents.NoActionBar">
@@ -237,6 +240,7 @@
         <item name="wizardCardColor">@color/alt2</item>
         <item name="wizardTitleColor">@color/white</item>
         <item name="temperatureTextColor">@color/white</item>
+        <item name="preferenceIconColor">@color/white</item>
     </style>
 
     <style name="AppThemeAlt3Main" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -292,6 +296,7 @@
         <item name="wizardCardColor">@color/white</item>
         <item name="wizardTitleColor">@color/black</item>
         <item name="temperatureTextColor">@color/black</item>
+        <item name="preferenceIconColor">@color/alt3_accent</item>
     </style>
 
     <!-- Dialog themes -->

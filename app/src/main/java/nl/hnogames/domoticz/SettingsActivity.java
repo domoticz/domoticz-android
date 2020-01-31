@@ -74,13 +74,9 @@ public class SettingsActivity extends AppCompatPermissionsActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onBackPressed() {
-        if(fragment.SubPreferenceOpened)
-            recreate();
-        else
-            finishWithResult();
+        finishWithResult();
     }
 
     public void reloadSettings() {

@@ -30,8 +30,6 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 
 public class NotificationSettingsActivity extends AppCompatPermissionsActivity {
-    private Toolbar toolbar;
-    private NotificationPreferenceFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +40,7 @@ public class NotificationSettingsActivity extends AppCompatPermissionsActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_graph);
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
@@ -51,7 +49,7 @@ public class NotificationSettingsActivity extends AppCompatPermissionsActivity {
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        fragment = new NotificationPreferenceFragment();
+        NotificationPreferenceFragment fragment = new NotificationPreferenceFragment();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main, fragment)
                 .commit();

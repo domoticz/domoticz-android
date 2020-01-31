@@ -70,6 +70,7 @@
         <item name="wizardCardColor">@color/secondary</item>
         <item name="wizardTitleColor">@color/white</item>
         <item name="temperatureTextColor">@color/white</item>
+        <item name="preferenceIconColor">@color/white</item>
     </style>
 
 </resources>

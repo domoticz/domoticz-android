@@ -19,45 +19,43 @@
   ~  under the License.
   -->
 
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:customPreference="http://schemas.android.com/apk/res-auto"
     android:key="settingsscreen">
 
-    <androidx.preference.PreferenceCategory
-        android:key="premium_category"
+    <PreferenceCategory
+        android:key="premium_category" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_store_white_24"
         android:title="@string/premium_category">
-        <androidx.preference.Preference
+        <Preference
             android:key="premium_settings"
             android:title="@string/premium_title" />
-    </androidx.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/category_generic">
-        <androidx.preference.ListPreference
+    <PreferenceCategory android:title="@string/category_generic" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_view_carousel_black_24">
+        <ListPreference
             android:entries="@array/startup_actions"
             android:entryValues="@array/startup_actions"
             android:key="startup_nav"
             android:title="@string/startup_screen" />
-
-        <androidx.preference.MultiSelectListPreference
+        <MultiSelectListPreference
             android:defaultValue="@array/drawer_actions"
             android:entries="@array/drawer_actions"
             android:entryValues="@array/drawer_actions"
             android:key="show_nav_items"
             android:title="@string/enable_items" />
-
-        <androidx.preference.SwitchPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="switchButtons"
             android:summaryOff="@string/switch_buttons_off"
             android:summaryOn="@string/switch_buttons_on"
             android:title="@string/switch_buttons_title" />
-        <androidx.preference.SwitchPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="alwayson"
             android:summaryOff="@string/always_on_off"
             android:summaryOn="@string/always_on_on"
             android:title="@string/always_on_title" />
-        <androidx.preference.SwitchPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="autorefresh"
             android:summaryOff="@string/always_auto_refresh_off"
@@ -68,11 +66,11 @@
             android:key="autorefreshTimer"
             android:summary="@string/set_auto_refresh_time"
             android:title="@string/auto_refresh_time" />
-    </androidx.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory
+    <PreferenceCategory
         android:key="defaultValues"
-        android:title="@string/default_values">
+        android:title="@string/default_values" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_keyboard_arrow_down_black_24">
         <nl.hnogames.domoticz.preference.EditTextIntegerPreference
             android:key="tempMinValue"
             android:summary="@string/set_point_min_description"
@@ -81,47 +79,47 @@
             android:key="tempMaxValue"
             android:summary="@string/set_point_max_description"
             android:title="@string/set_point_max" />
-    </androidx.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/sort_server_title">
-        <androidx.preference.SwitchPreference
+    <PreferenceCategory android:title="@string/sort_server_title" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_filter_list_white_24">
+        <SwitchPreference
             android:defaultValue="false"
             android:key="sortCustom"
             android:summaryOff="@string/sort_server_on"
             android:summaryOn="@string/sort_custom_on"
             android:title="@string/sort_server_title" />
-        <androidx.preference.SwitchPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:dependency="sortCustom"
             android:key="lockSortCustom"
             android:summaryOff="@string/sort_lock_custom_on"
             android:summaryOn="@string/sort_lock_custom_on"
             android:title="@string/sort_lock_server_title" />
-    </androidx.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/title_dashboard">
-        <androidx.preference.SwitchPreference
+    <PreferenceCategory android:title="@string/title_dashboard" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_view_carousel_black_24">
+        <SwitchPreference
             android:defaultValue="true"
             android:key="extradata"
             android:summaryOff="@string/show_extra_data_off"
             android:summaryOn="@string/show_extra_data_on"
             android:title="@string/extra_data_title" />
-        <androidx.preference.SwitchPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="dashboardAsList"
             android:summaryOff="@string/show_dashboard_list_on"
             android:summaryOn="@string/show_dashboard_list_off"
             android:title="@string/dashboard_list_title" />
-        <androidx.preference.SwitchPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="dashboardShowClock"
             android:summaryOff="@string/show_dashboard_clock"
             android:summaryOn="@string/show_dashboard_clock"
             android:title="@string/dashboard_clock" />
-    </androidx.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/category_wear">
-        <androidx.preference.SwitchPreference
+    <PreferenceCategory android:title="@string/category_wear" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_watch_white_24">
+        <SwitchPreference
             android:defaultValue="false"
             android:key="enableWearItems"
             android:summaryOff="@string/wear_custom_off"
@@ -137,159 +135,158 @@
             android:summary="@string/custom_wear_select_desc"
             android:title="@string/custom_wear_select"
             customPreference:selectAllValuesByDefault="true" />
-    </androidx.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/category_server">
-        <androidx.preference.SwitchPreference
+    <PreferenceCategory android:title="@string/category_server" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_settings_input_component_white_24">
+        <SwitchPreference
             android:defaultValue="false"
             android:key="enableMultiServers"
             android:summaryOff="@string/multi_server_settings"
             android:summaryOn="@string/multi_server_settings"
             android:title="@string/multi_server" />
-        <androidx.preference.Preference
+        <Preference
             android:key="server_settings"
             android:title="@string/server_settings" />
-        <androidx.preference.Preference
+        <Preference
             android:key="server_force_fetch_config"
             android:title="@string/server_force_fetch_config" />
-    </androidx.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/category_geofencing">
-        <androidx.preference.Preference
+    <PreferenceCategory android:title="@string/category_geofencing" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_my_location_white_24">
+        <Preference
             android:key="geo_settings"
             android:title="@string/geofencing_configure" />
-    </androidx.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <!--<androidx.preference.PreferenceCategory android:title="@string/wizard_widgets">
-        <androidx.preference.SwitchPreference
+    <!--<PreferenceCategory android:title="@string/wizard_widgets">
+        <SwitchPreference
             android:defaultValue="false"
             android:key="enableWidgets"
             android:summaryOff="@string/widget_description"
             android:summaryOn="@string/widget_description"
             android:title="@string/category_widgets"/>
-    </androidx.preference.PreferenceCategory>-->
+    </PreferenceCategory>-->
 
-    <androidx.preference.PreferenceCategory android:title="@string/category_nfc">
-        <androidx.preference.SwitchPreference
+    <PreferenceCategory android:title="@string/category_nfc" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_nfc_white_24">
+        <SwitchPreference
             android:defaultValue="false"
             android:key="enableNFC"
             android:summaryOff="@string/nfc_enable_settings"
             android:summaryOn="@string/nfc_enable_settings"
             android:title="@string/enable_nfc" />
-        <androidx.preference.Preference
+        <Preference
             android:dependency="enableNFC"
             android:key="nfc_settings"
             android:title="@string/nfc_settings" />
-    </androidx.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/category_Speech">
-        <androidx.preference.SwitchPreference
+    <PreferenceCategory android:title="@string/category_Speech" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_mic_none_white_24" >
+        <SwitchPreference
             android:defaultValue="false"
             android:key="enableSpeech"
             android:summaryOff="@string/speech_enable_settings"
             android:summaryOn="@string/speech_enable_settings"
             android:title="@string/enable_speech" />
-        <androidx.preference.Preference
+        <Preference
             android:dependency="enableSpeech"
             android:key="speech_settings"
             android:title="@string/speech_settings" />
-    </androidx.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/category_QRCode">
-        <androidx.preference.SwitchPreference
+    <PreferenceCategory android:title="@string/category_QRCode" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_camera_black_24">
+        <SwitchPreference
             android:defaultValue="false"
             android:key="enableQRCode"
             android:summaryOff="@string/qrcode_enable_settings"
             android:summaryOn="@string/qrcode_enable_settings"
             android:title="@string/enable_qrcode" />
-        <androidx.preference.Preference
+        <Preference
             android:dependency="enableQRCode"
             android:key="qrcode_settings"
             android:title="@string/qrcode_settings" />
-    </androidx.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/category_bluetooth">
-        <androidx.preference.SwitchPreference
+    <PreferenceCategory android:title="@string/category_bluetooth" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_bluetooth_black_24">
+        <SwitchPreference
             android:defaultValue="false"
             android:key="enableBluetooth"
             android:title="@string/enable_bluetooth" />
-        <androidx.preference.Preference
+        <Preference
             android:dependency="enableBluetooth"
             android:key="bluetooth_settings"
             android:title="@string/bluetooth_settings" />
-    </androidx.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/category_startup_security">
-        <androidx.preference.SwitchPreference
+    <PreferenceCategory android:title="@string/category_startup_security" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_fingerprint_white_24">
+        <SwitchPreference
             android:defaultValue="false"
             android:key="enableSecurity"
             android:summaryOff="@string/enable_security"
             android:summaryOn="@string/disable_security"
             android:title="@string/security_settings" />
-        <androidx.preference.Preference
+        <Preference
             android:dependency="enableSecurity"
             android:key="SecuritySettings"
             android:title="@string/setup_fingerprints" />
-    </androidx.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/category_language">
-        <androidx.preference.ListPreference
+    <PreferenceCategory android:title="@string/category_language" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_language_white_24">
+        <ListPreference
             android:entries="@array/domoticz_language_entries"
             android:entryValues="@array/domoticz_language_entryValues"
             android:key="displayLanguage"
             android:title="@string/category_language" />
-        <androidx.preference.SwitchPreference
+        <SwitchPreference
             android:defaultValue="false"
             android:key="talkBack"
             android:summaryOff="@string/set_talk_back_on"
             android:summaryOn="@string/set_talk_back_off"
             android:title="@string/category_talk_back" />
-        <androidx.preference.Preference
+        <Preference
             android:key="translate"
             android:summary="@string/translate_description"
             android:title="@string/translate_title" />
-    </androidx.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/category_theme">
-        <androidx.preference.Preference
+    <PreferenceCategory android:title="@string/category_theme" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_invert_colors_white_24">
+        <Preference
             android:key="darkTheme"
             android:title="@string/config_theme" />
-    </androidx.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/category_notification">
+    <PreferenceCategory android:title="@string/category_notification" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_notification_important_white_24">
         <Preference
             android:key="openNotificationSettings"
             android:title="@string/category_notification" />
-    </androidx.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/category_advanced">
-        <androidx.preference.Preference
+    <PreferenceCategory android:title="@string/category_advanced" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_settings_white_24">
+        <Preference
             android:key="export_settings"
             android:title="@string/export_settings" />
-        <androidx.preference.Preference
+        <Preference
             android:key="import_settings"
             android:title="@string/import_settings" />
-        <androidx.preference.PreferenceCategory android:title="@string/permission_prefs_title">
-            <androidx.preference.Preference
+        <PreferenceCategory android:title="@string/permission_prefs_title">
+            <Preference
                 android:key="permissionssettings"
                 android:title="@string/permission_config" />
-        </androidx.preference.PreferenceCategory>
-        <androidx.preference.Preference
+        </PreferenceCategory>
+        <Preference
             android:key="reset_settings"
             android:title="@string/reset_settings" />
-    </androidx.preference.PreferenceCategory>
+    </PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/category_info">
-        <androidx.preference.Preference
+    <PreferenceCategory android:title="@string/category_info" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_info_white_24">
+        <Preference
             android:key="version"
             android:summary="Version 1.0.2"
             android:title="@string/info_version" />
-        <androidx.preference.Preference
+        <Preference
             android:key="info_about"
             android:title="@string/info_about" />
-        <androidx.preference.Preference
+        <Preference
             android:key="info_credits"
             android:title="@string/info_credits" />
-    </androidx.preference.PreferenceCategory>
-
-</androidx.preference.PreferenceScreen>
+    </PreferenceCategory>
+</PreferenceScreen>
