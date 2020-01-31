@@ -21,9 +21,12 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:customPreference="http://schemas.android.com/apk/res-auto"
     android:tint="?attr/preferenceIconColor"
-    android:key="settingsscreen">
+    android:key="notificationscreen">
 
-    <androidx.preference.PreferenceCategory android:title="@string/category_notification" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_notification_important_white_24">
+    <androidx.preference.PreferenceCategory
+        android:key="notificationcategory"
+         android:title="@string/category_notification" android:tint="?attr/preferenceIconColor" android:icon="@drawable/baseline_notification_important_white_24">
+
         <androidx.preference.SwitchPreference
             android:defaultValue="true"
             android:key="enableNotifications"

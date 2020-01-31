@@ -34,9 +34,10 @@ import android.util.Log;
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
-import androidx.preference.PreferenceScreen;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.google.android.material.snackbar.Snackbar;
@@ -122,27 +123,30 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat{
         NotificationsMultiSelectListPreference notificationsMultiSelectListPreference = findPreference("suppressNotifications");
         NotificationsMultiSelectListPreference alarmMultiSelectListPreference = findPreference("alarmNotifications");
         final androidx.preference.Preference registrationId = findPreference("notification_registration_id");
-        PreferenceScreen notificationScreen = findPreference("notificationscreen");
+        PreferenceCategory notificationCategory = findPreference("notificationcategory");
         androidx.preference.Preference noticiationSettings = findPreference("noticiationSettings");
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             androidx.preference.PreferenceCategory notificationSound = findPreference("notificationSound");
-            if (notificationScreen != null && notificationSound != null)
-                notificationScreen.removePreference(notificationSound);
+            if (notificationCategory != null && notificationSound != null)
+                notificationCategory.removePreference(notificationSound);
         } else {
-            if (notificationScreen != null && noticiationSettings != null)
-                notificationScreen.removePreference(noticiationSettings);
+            if (notificationCategory != null && noticiationSettings != null)
+                notificationCategory.removePreference(noticiationSettings);
         }
 
         if (noticiationSettings != null)
             noticiationSettings.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(androidx.preference.Preference preference) {
-                    Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
-                    intent.putExtra(Settings.EXTRA_CHANNEL_ID, NotificationUtil.CHANNEL_ID);
-                    intent.putExtra(Settings.EXTRA_APP_PACKAGE, mContext.getPackageName());
-                    startActivity(intent);
-                    return true;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+                        intent.putExtra(Settings.EXTRA_CHANNEL_ID, NotificationUtil.CHANNEL_ID);
+                        intent.putExtra(Settings.EXTRA_APP_PACKAGE, mContext.getPackageName());
+                        startActivity(intent);
+                        return true;
+                    }
+                    return false;
                 }
             });
 
@@ -195,7 +199,7 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat{
                         Collections.reverse(logs);
                         new MaterialDialog.Builder(mContext)
                                 .title(mContext.getString(R.string.notification_show_title))
-                                .items((CharSequence[]) logs.toArray(new String[0]))
+                                .items((CharSequence[]) logs.toArray(new CharSequence[0]))
                                 .show();
                     } else
                         UsefulBits.showSimpleToast(mContext, getString(R.string.notification_show_nothing), Toast.LENGTH_LONG);
@@ -204,7 +208,7 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat{
             });
     }
 
-    private void showSnackbar(final String text) {
+    private void showSnack(final String text) {
         try {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -215,7 +219,7 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat{
                 }
             }, (300));
         } catch (Exception ex) {
-            Log.e(TAG, "No Snackbar shown: " + ex.getMessage());
+            Log.e(TAG, "No snack shown: " + ex.getMessage());
         }
     }
 
@@ -230,13 +234,13 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat{
                     @Override
                     public void onSuccess() {
                         if (isAdded())
-                            showSnackbar(mContext.getString(R.string.notification_settings_pushed));
+                            showSnack(mContext.getString(R.string.notification_settings_pushed));
                     }
 
                     @Override
                     public void onError(Exception error) {
                         if (isAdded())
-                            showSnackbar(mContext.getString(R.string.notification_settings_push_failed));
+                            showSnack(mContext.getString(R.string.notification_settings_push_failed));
                     }
                 });
             }
@@ -248,13 +252,13 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat{
                     @Override
                     public void onSuccess() {
                         if (isAdded())
-                            showSnackbar(mContext.getString(R.string.notification_settings_pushed));
+                            showSnack(mContext.getString(R.string.notification_settings_pushed));
                     }
 
                     @Override
                     public void onError(Exception error) {
                         if (isAdded())
-                            showSnackbar(mContext.getString(R.string.notification_settings_push_failed));
+                            showSnack(mContext.getString(R.string.notification_settings_push_failed));
                     }
                 });
             }

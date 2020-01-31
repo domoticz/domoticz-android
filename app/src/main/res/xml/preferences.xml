@@ -118,23 +118,10 @@
             android:title="@string/dashboard_clock" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_wear" android:icon="@drawable/baseline_watch_white_24">
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="enableWearItems"
-            android:summaryOff="@string/wear_custom_off"
-            android:summaryOn="@string/wear_custom_on"
-            android:title="@string/enable_wear_select" />
-        <nl.hnogames.domoticz.preference.WearMultiSelectListPreference
-            android:defaultValue="@array/empty_array"
-            android:dependency="enableWearItems"
-            android:dialogTitle="@string/custom_wear_select"
-            android:entries="@array/empty_array"
-            android:entryValues="@array/empty_array"
-            android:key="wearItems"
-            android:summary="@string/custom_wear_select_desc"
-            android:title="@string/custom_wear_select"
-            customPreference:selectAllValuesByDefault="true" />
+    <PreferenceCategory android:title="@string/category_notification" android:icon="@drawable/baseline_notification_important_white_24">
+        <Preference
+            android:key="openNotificationSettings"
+            android:title="@string/category_notification" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_server" android:icon="@drawable/baseline_settings_input_component_white_24">
@@ -254,10 +241,23 @@
             android:title="@string/config_theme" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_notification" android:icon="@drawable/baseline_notification_important_white_24">
-        <Preference
-            android:key="openNotificationSettings"
-            android:title="@string/category_notification" />
+    <PreferenceCategory android:title="@string/category_wear" android:icon="@drawable/baseline_watch_white_24">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enableWearItems"
+            android:summaryOff="@string/wear_custom_off"
+            android:summaryOn="@string/wear_custom_on"
+            android:title="@string/enable_wear_select" />
+        <nl.hnogames.domoticz.preference.WearMultiSelectListPreference
+            android:defaultValue="@array/empty_array"
+            android:dependency="enableWearItems"
+            android:dialogTitle="@string/custom_wear_select"
+            android:entries="@array/empty_array"
+            android:entryValues="@array/empty_array"
+            android:key="wearItems"
+            android:summary="@string/custom_wear_select_desc"
+            android:title="@string/custom_wear_select"
+            customPreference:selectAllValuesByDefault="true" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_advanced" android:icon="@drawable/baseline_settings_white_24">
