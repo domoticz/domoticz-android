@@ -62,6 +62,7 @@ import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticzapi.Interfaces.NotificationReceiver;
 import nl.hnogames.domoticzapi.Interfaces.PlansReceiver;
 import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.SendNotificationReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SettingsReceiver;
 import nl.hnogames.domoticzapi.Interfaces.StatusReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SunRiseReceiver;
@@ -94,6 +95,7 @@ import nl.hnogames.domoticzapi.Parsers.MobileDeviceParser;
 import nl.hnogames.domoticzapi.Parsers.NotificationsParser;
 import nl.hnogames.domoticzapi.Parsers.PlanParser;
 import nl.hnogames.domoticzapi.Parsers.ScenesParser;
+import nl.hnogames.domoticzapi.Parsers.SendNotificationParser;
 import nl.hnogames.domoticzapi.Parsers.SettingsParser;
 import nl.hnogames.domoticzapi.Parsers.StatusInfoParser;
 import nl.hnogames.domoticzapi.Parsers.SunRiseParser;
@@ -391,6 +393,18 @@ public class Domoticz {
             }
             mServerUtil.saveDomoticzServers(true);
         }
+    }
+
+    public void SendNotification(String Subject, String Body, SendNotificationReceiver receiver) {
+        SendNotificationParser parser = new SendNotificationParser(receiver);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SEND_NOTIFICATION);
+        url += "&subject=" + Subject;
+        url += "&body=" + Body;;
+
+        RequestUtil.makeJsonGetRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, false, 1, queue);
     }
 
     /**

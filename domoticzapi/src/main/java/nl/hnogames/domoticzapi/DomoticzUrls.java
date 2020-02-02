@@ -304,6 +304,9 @@ public class DomoticzUrls {
         String url;
 
         switch (jsonGetUrl) {
+            case DomoticzValues.Json.Url.Request.SEND_NOTIFICATION:
+                url = DomoticzValues.Url.System.SEND_NOTIFICATION;
+                break;
             case DomoticzValues.Json.Url.Request.LANGUAGE:
                 url = DomoticzValues.Url.System.LANGUAGE_TRANSLATIONS;
                 break;
