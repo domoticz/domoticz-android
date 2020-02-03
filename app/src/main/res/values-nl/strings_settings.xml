@@ -146,6 +146,7 @@
     <string name="enable_notifications_title">Notificaties activeren</string>
     <string name="enable_notifications">Notificaties op dit apparaat inschakelen</string>
     <string name="notification_screen_title">Notificatie instellingen</string>
+    <string name="notification_history">Notificatie geschiedenis</string>
     <string name="notification_vibrate_title">Trillen</string>
     <string name="notification_vibrate_on">Trillen bij het ontvangen van een notificatie</string>
     <string name="notification_vibrate_off">Niet trillen bij het ontvangen van een notificatie</string>

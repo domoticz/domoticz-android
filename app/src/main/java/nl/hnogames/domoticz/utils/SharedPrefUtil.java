@@ -973,7 +973,7 @@ public class SharedPrefUtil {
     }
 
     public void saveNFCList(List<NFCInfo> list) {
-         editor.putString(PREF_NFC_TAGS, gson.toJson(list));
+        editor.putString(PREF_NFC_TAGS, gson.toJson(list));
         editor.commit();
     }
 
@@ -1016,7 +1016,7 @@ public class SharedPrefUtil {
     }
 
     public void saveQRCodeList(List<QRCodeInfo> list) {
-       editor.putString(PREF_QR_CODES, gson.toJson(list));
+        editor.putString(PREF_QR_CODES, gson.toJson(list));
         editor.commit();
     }
 

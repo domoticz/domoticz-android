@@ -146,6 +146,7 @@
     <string name="enable_notifications_title">Povolit oznámení</string>
     <string name="enable_notifications">Povolit oznámení na tomto zařízení</string>
     <string name="notification_screen_title">Nastavení oznámení</string>
+    <string name="notification_history">Notification history</string>
     <string name="notification_vibrate_title">Vibrovat</string>
     <string name="notification_vibrate_on">Vibrovat při doručení oznámení</string>
     <string name="notification_vibrate_off">Nevibrovat</string>

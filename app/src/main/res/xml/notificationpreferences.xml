@@ -35,8 +35,10 @@
             android:title="@string/enable_notifications_title" />
 
         <androidx.preference.Preference
-            android:key="noticiationSettings"
-            android:title="@string/action_settings" />
+            android:dependency="enableNotifications"
+            android:key="notification_show_logs"
+            android:summary="@string/notification_show"
+            android:title="@string/notification_history" />
 
         <nl.hnogames.domoticz.preference.NotificationsMultiSelectListPreference
             android:defaultValue="@array/empty_array"
@@ -56,6 +58,10 @@
             android:summaryOff="@string/overwrite_notifications"
             android:summaryOn="@string/overwrite_notifications"
             android:title="@string/overwrite_notifications_title" />
+
+        <androidx.preference.Preference
+            android:key="noticiationSettings"
+            android:title="@string/action_settings" />
 
         <androidx.preference.PreferenceCategory
             android:key="notificationSound"
@@ -90,11 +96,6 @@
         </androidx.preference.PreferenceCategory>
 
         <androidx.preference.PreferenceCategory android:title="@string/category_advanced">
-            <androidx.preference.Preference
-                android:dependency="enableNotifications"
-                android:key="notification_show_logs"
-                android:summary="@string/notification_show"
-                android:title="@string/notification_show_title" />
             <androidx.preference.Preference
                 android:dependency="enableNotifications"
                 android:key="notification_registration_id"

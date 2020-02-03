@@ -146,6 +146,7 @@
     <string name="enable_notifications_title">Разрешаване на уведомленията</string>
     <string name="enable_notifications">Разреши уведомленията на това устройство</string>
     <string name="notification_screen_title">Настройки на уведомленията</string>
+    <string name="notification_history">Notification history</string>
     <string name="notification_vibrate_title">Вибрирай</string>
     <string name="notification_vibrate_on">Vibrate when an notification is received</string>
     <string name="notification_vibrate_off">Без вибрация</string>

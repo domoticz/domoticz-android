@@ -44,8 +44,7 @@ public class FCMMessageInstanceService extends FirebaseMessagingService {
             }
 
             if (!UsefulBits.isEmpty(subject) && !UsefulBits.isEmpty(body) &&
-                    !body.equals(subject))
-            {
+                    !body.equals(subject)) {
                 String deviceId = decode(data.containsKey("deviceid") ? data.get("deviceid").toString() : "");
                 if (!UsefulBits.isEmpty(deviceId) && isDigitsOnly(deviceId) && Integer.valueOf(deviceId) > 0)
                     NotificationUtil.sendSimpleNotification(new NotificationInfo(Integer.valueOf(deviceId), subject, body, prio, new Date()), this);

@@ -43,6 +43,8 @@
     <attr name="incomingTextColor" format="color" />
     <attr name="outcomingDefaultBubbleColor" format="color" />
     <attr name="outcomingTextColor" format="color" />
+    <attr name="editTextBackgroundColor" format="color" />
+    <attr name="editTextTextColor" format="color" />
 
     <declare-styleable name="CustomListPreference">
         <attr name="lockedValues"/>

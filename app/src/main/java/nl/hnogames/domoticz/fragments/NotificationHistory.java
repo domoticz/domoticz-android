@@ -21,30 +21,20 @@
 
 package nl.hnogames.domoticz.fragments;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
-import com.dexafree.materialList.card.Card;
-import com.dexafree.materialList.card.CardProvider;
-import com.dexafree.materialList.card.OnActionClickListener;
-import com.dexafree.materialList.card.action.TextViewAction;
-import com.dexafree.materialList.card.action.WelcomeButtonAction;
-import com.dexafree.materialList.listeners.OnDismissCallback;
-import com.dexafree.materialList.view.MaterialListView;
+import com.google.android.material.snackbar.Snackbar;
 import com.stfalcon.chatkit.messages.MessageHolders;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
@@ -54,19 +44,35 @@ import java.util.List;
 
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.MainActivity;
+import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.SettingsActivity;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.helpers.CustomIncomingMessageViewHolder;
 import nl.hnogames.domoticz.helpers.CustomOutcomingMessageViewHolder;
+import nl.hnogames.domoticz.ui.SendNotificationDialog;
 import nl.hnogames.domoticz.utils.DeviceUtils;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
+import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticzapi.Containers.ConfigInfo;
+import nl.hnogames.domoticzapi.Containers.NotificationTypeInfo;
+import nl.hnogames.domoticzapi.Containers.UserInfo;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Interfaces.NotificationTypesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.SendNotificationReceiver;
+import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class NotificationHistory extends Fragment {
-    private final String TAG = NotificationHistory.class.getSimpleName();
     private ViewGroup root;
     private SharedPrefUtil mSharedPrefs;
     private Context context;
+    private Domoticz mDomoticz;
+    private ArrayList<NotificationTypeInfo> mNotificationTypes;
+    private MessagesListAdapter<NotificationInfo> adapter;
+    private CoordinatorLayout coordinatorLayout;
+    private UserInfo user = null;
+    private ServerUtil mServerUtil = null;
+    private ConfigInfo mConfigInfo = null;
 
     @Override
     @DebugLog
@@ -74,11 +80,16 @@ public class NotificationHistory extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_notification_history, null);
-        context = getActivity();
-        mSharedPrefs = new SharedPrefUtil(context);
-        List<NotificationInfo> notifications = mSharedPrefs.getLoggedNotifications();
 
-        if(notifications != null && notifications.size()>0) {
+        context = getActivity();
+        mServerUtil = new ServerUtil(context);
+        mConfigInfo = mServerUtil.getActiveServer().getConfigInfo(context);
+
+        mSharedPrefs = new SharedPrefUtil(context);
+        mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
+
+        List<NotificationInfo> notifications = mSharedPrefs.getLoggedNotifications();
+        if (notifications != null && notifications.size() > 0) {
             MessageHolders holdersConfig = new MessageHolders()
                     .setIncomingTextConfig(
                             CustomIncomingMessageViewHolder.class,
@@ -88,10 +99,86 @@ public class NotificationHistory extends Fragment {
                             R.layout.item_custom_outcoming_text_message);
 
             MessagesList messagesList = root.findViewById(R.id.messagesList);
-            MessagesListAdapter<NotificationInfo> adapter = new MessagesListAdapter<>(DeviceUtils.getUniqueID(context), holdersConfig, null);
+            adapter = new MessagesListAdapter<>(DeviceUtils.getUniqueID(context), holdersConfig, null);
             adapter.addToEnd(notifications, false);
             messagesList.setAdapter(adapter);
         }
+        coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
+        mDomoticz.GetNotificationSystems(new NotificationTypesReceiver() {
+            @Override
+            public void onReceive(ArrayList<NotificationTypeInfo> notificationTypes) {
+                mNotificationTypes = notificationTypes;
+                getActivity().invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onError(Exception error) {
+            }
+        });
+
         return root;
+    }
+
+    public UserInfo getCurrentUser(Domoticz domoticz) {
+        try {
+            ConfigInfo config = mConfigInfo;
+            if (config != null) {
+                for (UserInfo user : config.getUsers()) {
+                    if (user.getUsername().equals(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME)))
+                        return user;
+                }
+            }
+        } catch (Exception ex) {
+        }
+        return null;
+    }
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (mNotificationTypes != null) {
+            UserInfo user = getCurrentUser(mDomoticz);
+            if (user != null && user.getRights() >= 2) {
+                inflater.inflate(R.menu.menu_notification, menu);
+            }
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().finish();
+                return true;
+            case R.id.action_add:
+                SendNotificationDialog dialog = new SendNotificationDialog(context, mNotificationTypes);
+                dialog.onDismissListener(new SendNotificationDialog.DismissListener() {
+                    @Override
+                    public void OnSend(final NotificationInfo message) {
+                        mDomoticz.SendNotification(message.getTitle(), message.getText(), message.getSystems(), new SendNotificationReceiver() {
+                            @Override
+                            public void onSuccess() {
+                                adapter.addToStart(message, true);
+                                Snackbar.make(coordinatorLayout, R.string.notification_send, Snackbar.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onError(Exception error) {
+                                Snackbar.make(coordinatorLayout, R.string.notification_error_send, Snackbar.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                });
+                dialog.show();
+                return true;
+            default:
+                break;
+        }
+        return false;
     }
 }

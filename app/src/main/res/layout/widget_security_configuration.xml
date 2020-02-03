@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/security_pin">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                 android:id="@+id/securitypin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,8 +68,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_toStartOf="@+id/linearLayout5"
                 android:layout_toLeftOf="@+id/linearLayout5"
-                android:inputType="number"
-                android:textColor="@color/white" />
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button

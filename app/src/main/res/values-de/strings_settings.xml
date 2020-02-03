@@ -146,6 +146,7 @@
     <string name="enable_notifications_title">Benachrichtigungen aktivieren</string>
     <string name="enable_notifications">Aktivieren von Benachrichtigungen auf diesem Gerät</string>
     <string name="notification_screen_title">Benachrichtungseinstellungen</string>
+    <string name="notification_history">Notification history</string>
     <string name="notification_vibrate_title">Vibrieren</string>
     <string name="notification_vibrate_on">Vibrieren bei einer Benachrichtigung</string>
     <string name="notification_vibrate_off">Nicht Vibrieren</string>

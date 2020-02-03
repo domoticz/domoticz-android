@@ -146,6 +146,7 @@
     <string name="enable_notifications_title">Ota ilmoitukset käyttöön</string>
     <string name="enable_notifications">Ota ilmoitukset käyttöön tässä laitteessa</string>
     <string name="notification_screen_title">Ilmoitusasetukset</string>
+    <string name="notification_history">Notification history</string>
     <string name="notification_vibrate_title">Värinä</string>
     <string name="notification_vibrate_on">Värise, kun ilmoitus saapuu</string>
     <string name="notification_vibrate_off">Värinä pois</string>

@@ -118,12 +118,12 @@ public class NotificationUtil {
                             .setUnreadConversation(getUnreadConversation(context, notification.getText())));
                 }
 
-                if(mNotificationManager != null)
+                if (mNotificationManager != null)
                     mNotificationManager.notify(NOTIFICATION_ID, builder.build());
                 HandleAlarmSounds(context, loggedNotification, alarmNot);
             }
         } catch (Exception ex) {
-            if(ex != null)
+            if (ex != null)
                 Log.i("NOTIFY", ex.getMessage());
         }
     }
@@ -145,7 +145,7 @@ public class NotificationUtil {
         if (!backgroundProcess && prefUtil.getNotificationVibrate()) {
             channel.enableVibration(true);
         }
-        if(mNotificationManager != null)
+        if (mNotificationManager != null)
             mNotificationManager.createNotificationChannel(channel);
     }
 

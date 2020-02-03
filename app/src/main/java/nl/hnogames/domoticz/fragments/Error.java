@@ -31,7 +31,8 @@ import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 
 public class Error extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
     @Override
-    public void onConnectionFailed() { }
+    public void onConnectionFailed() {
+    }
 
     @Override
     @DebugLog

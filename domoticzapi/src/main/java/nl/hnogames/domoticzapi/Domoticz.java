@@ -397,7 +397,7 @@ public class Domoticz {
         }
     }
 
-    public void SendNotificationTypes(NotificationTypesReceiver receiver) {
+    public void GetNotificationSystems(NotificationTypesReceiver receiver) {
         NotificationTypesParser parser = new NotificationTypesParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NOTIFICATIONTYPES);
         RequestUtil.makeJsonGetRequest(parser,

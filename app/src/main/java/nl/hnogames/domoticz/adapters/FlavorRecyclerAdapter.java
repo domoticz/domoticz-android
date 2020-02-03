@@ -35,10 +35,9 @@ import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ftinc.scoop.Scoop;
 import com.ftinc.scoop.Flavor;
-
 import com.ftinc.scoop.R;
+import com.ftinc.scoop.Scoop;
 import com.ftinc.scoop.util.AttrUtils;
 import com.ftinc.scoop.util.Utils;
 
@@ -65,7 +64,7 @@ public class FlavorRecyclerAdapter extends RecyclerView.Adapter<FlavorRecyclerAd
     private OnItemClickListener mItemClickListener;
     private Flavor mCurrentFlavor;
 
-    public FlavorRecyclerAdapter(Activity activity){
+    public FlavorRecyclerAdapter(Activity activity) {
         setHasStableIds(true);
         mInflater = activity.getLayoutInflater();
         mItems = new ArrayList<>();
@@ -83,19 +82,19 @@ public class FlavorRecyclerAdapter extends RecyclerView.Adapter<FlavorRecyclerAd
 
     public void setCurrentFlavor(Flavor currentFlavor) {
         int previousIndex = -1;
-        if(mCurrentFlavor != null) previousIndex = mItems.indexOf(mCurrentFlavor);
+        if (mCurrentFlavor != null) previousIndex = mItems.indexOf(mCurrentFlavor);
 
         // Set the current flavor
         mCurrentFlavor = currentFlavor;
 
         // Update old position if existed
-        if(previousIndex != -1){
+        if (previousIndex != -1) {
             notifyItemChanged(previousIndex);
         }
 
         // Update the new position
         int index = mItems.indexOf(mCurrentFlavor);
-        if(index != -1){
+        if (index != -1) {
             notifyItemChanged(index);
         }
 
@@ -125,7 +124,8 @@ public class FlavorRecyclerAdapter extends RecyclerView.Adapter<FlavorRecyclerAd
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mItemClickListener != null) mItemClickListener.onItemClicked(v, item, holder.getAdapterPosition());
+                if (mItemClickListener != null)
+                    mItemClickListener.onItemClicked(v, item, holder.getAdapterPosition());
             }
         });
 
@@ -140,10 +140,20 @@ public class FlavorRecyclerAdapter extends RecyclerView.Adapter<FlavorRecyclerAd
     @Override
     public long getItemId(int position) {
         Flavor item = mItems.get(position);
-        if(item != null){
+        if (item != null) {
             return item.hashCode();
         }
         return super.getItemId(position);
+    }
+
+    /***********************************************************************************************
+     *
+     * Listeners
+     *
+     */
+
+    public interface OnItemClickListener {
+        void onItemClicked(View view, Flavor item, int position);
     }
 
     /***********************************************************************************************
@@ -154,32 +164,31 @@ public class FlavorRecyclerAdapter extends RecyclerView.Adapter<FlavorRecyclerAd
 
     static class FlavorViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        static FlavorViewHolder create(LayoutInflater inflater, ViewGroup parent){
-            View view = inflater.inflate(R.layout.item_layout_flavor, parent, false);
-            return new FlavorViewHolder(view);
-        }
-
         TextView mTitle;
         ImageView mPrimary, mDark, mAccent;
         ImageView mIndicator;
         ViewGroup mOptionsGroup;
         com.google.android.material.button.MaterialButton mOptAuto, mOptSystem, mOptOff, mOptOn;
-
         FlavorViewHolder(View itemView) {
             super(itemView);
-            mTitle = (TextView) itemView.findViewById(R.id.title);
-            mPrimary = (ImageView) itemView.findViewById(R.id.primaryColor);
-            mDark = (ImageView) itemView.findViewById(R.id.primaryColorDark);
-            mAccent = (ImageView) itemView.findViewById(R.id.accentColor);
-            mIndicator = (ImageView) itemView.findViewById(R.id.indicator);
-            mOptionsGroup = (ViewGroup) itemView.findViewById(R.id.daynight_options);
-            mOptAuto = (com.google.android.material.button.MaterialButton) mOptionsGroup.findViewById(R.id.opt_auto);
-            mOptSystem = (com.google.android.material.button.MaterialButton) mOptionsGroup.findViewById(R.id.opt_system);
-            mOptOff = (com.google.android.material.button.MaterialButton) mOptionsGroup.findViewById(R.id.opt_off);
-            mOptOn = (com.google.android.material.button.MaterialButton) mOptionsGroup.findViewById(R.id.opt_on);
+            mTitle = itemView.findViewById(R.id.title);
+            mPrimary = itemView.findViewById(R.id.primaryColor);
+            mDark = itemView.findViewById(R.id.primaryColorDark);
+            mAccent = itemView.findViewById(R.id.accentColor);
+            mIndicator = itemView.findViewById(R.id.indicator);
+            mOptionsGroup = itemView.findViewById(R.id.daynight_options);
+            mOptAuto = mOptionsGroup.findViewById(R.id.opt_auto);
+            mOptSystem = mOptionsGroup.findViewById(R.id.opt_system);
+            mOptOff = mOptionsGroup.findViewById(R.id.opt_off);
+            mOptOn = mOptionsGroup.findViewById(R.id.opt_on);
         }
 
-        void bind(Flavor flavor, boolean isCurrentFlavor){
+        static FlavorViewHolder create(LayoutInflater inflater, ViewGroup parent) {
+            View view = inflater.inflate(R.layout.item_layout_flavor, parent, false);
+            return new FlavorViewHolder(view);
+        }
+
+        void bind(Flavor flavor, boolean isCurrentFlavor) {
             mTitle.setText(flavor.getName());
 
             // Pull colors
@@ -202,7 +211,7 @@ public class FlavorRecyclerAdapter extends RecyclerView.Adapter<FlavorRecyclerAd
 
         }
 
-        ShapeDrawable generateDrawable(@ColorInt int color){
+        ShapeDrawable generateDrawable(@ColorInt int color) {
             ShapeDrawable d = new ShapeDrawable(new OvalShape());
             d.setIntrinsicWidth(Utils.dipToPx(itemView.getContext(), 24));
             d.setIntrinsicHeight(Utils.dipToPx(itemView.getContext(), 24));
@@ -210,13 +219,13 @@ public class FlavorRecyclerAdapter extends RecyclerView.Adapter<FlavorRecyclerAd
             return d;
         }
 
-        void checkMode(com.google.android.material.button.MaterialButton btn, int mode, int desired){
+        void checkMode(com.google.android.material.button.MaterialButton btn, int mode, int desired) {
             int color = AttrUtils.getColorAttr(itemView.getContext(), mode == desired ? R.attr.colorAccent : android.R.attr.textColorPrimary);
             btn.setTextColor(color);
             btn.setOnClickListener(this);
         }
 
-        void bindOptions(int mode){
+        void bindOptions(int mode) {
             checkMode(mOptAuto, mode, AppCompatDelegate.MODE_NIGHT_AUTO);
             checkMode(mOptSystem, mode, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
             checkMode(mOptOff, mode, AppCompatDelegate.MODE_NIGHT_NO);
@@ -242,15 +251,5 @@ public class FlavorRecyclerAdapter extends RecyclerView.Adapter<FlavorRecyclerAd
             Scoop.getInstance().chooseDayNightMode(mode);
             bindOptions(mode);
         }
-    }
-
-    /***********************************************************************************************
-     *
-     * Listeners
-     *
-     */
-
-    public interface OnItemClickListener{
-        void onItemClicked(View view, Flavor item, int position);
     }
 }

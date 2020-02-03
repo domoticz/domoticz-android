@@ -53,18 +53,14 @@ import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
-import androidx.preference.PreferenceScreen;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.BluetoothSettingsActivity;
@@ -90,7 +86,7 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 import static android.content.Context.KEYGUARD_SERVICE;
 
-public class PreferenceFragment extends PreferenceFragmentCompat{
+public class PreferenceFragment extends PreferenceFragmentCompat {
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = PreferenceFragment.class.getSimpleName();
 
@@ -105,6 +101,24 @@ public class PreferenceFragment extends PreferenceFragmentCompat{
     private ConfigInfo mConfigInfo;
     private ServerUtil mServerUtil;
     private PermissionHelper permissionHelper;
+
+    private static void tintIcons(Preference preference, int color) {
+        if (preference instanceof PreferenceGroup) {
+            PreferenceGroup group = ((PreferenceGroup) preference);
+            Drawable icon = group.getIcon();
+            if (icon != null) {
+                icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            }
+            for (int i = 0; i < group.getPreferenceCount(); i++) {
+                tintIcons(group.getPreference(i), color);
+            }
+        } else {
+            Drawable icon = preference.getIcon();
+            if (icon != null) {
+                icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            }
+        }
+    }
 
     @Override
     public Fragment getCallbackFragment() {
@@ -134,31 +148,12 @@ public class PreferenceFragment extends PreferenceFragmentCompat{
         GetVersion();
     }
 
-    private void setIconColor()
-    {
+    private void setIconColor() {
         int colorAttr = R.attr.preferenceIconColor;
         TypedArray ta = mContext.getTheme().obtainStyledAttributes(new int[]{colorAttr});
         int color = ta.getColor(0, 0);
         ta.recycle();
         tintIcons(getPreferenceScreen(), color);
-    }
-
-    private static void tintIcons(Preference preference, int color) {
-        if (preference instanceof PreferenceGroup) {
-            PreferenceGroup group = ((PreferenceGroup) preference);
-            Drawable icon = group.getIcon();
-            if (icon != null) {
-                icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-            }
-            for (int i = 0; i < group.getPreferenceCount(); i++) {
-                tintIcons(group.getPreference(i), color);
-            }
-        } else {
-            Drawable icon = preference.getIcon();
-            if (icon != null) {
-                icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-            }
-        }
     }
 
     private void setupDefaultValues() {
@@ -273,7 +268,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat{
             });
 
 
-        if(openNotificationSettings != null)
+        if (openNotificationSettings != null)
             openNotificationSettings.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {

@@ -290,12 +290,14 @@ public class MainActivity extends AppCompatPermissionsActivity {
             if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage())) {
                 oTalkBackUtil.Init(this, new Locale(mSharedPrefs.getDisplayLanguage()), new TalkBackUtil.InitListener() {
                     @Override
-                    public void onInit(int status) {}
+                    public void onInit(int status) {
+                    }
                 });
             } else {
                 oTalkBackUtil.Init(this, new TalkBackUtil.InitListener() {
                     @Override
-                    public void onInit(int status) {}
+                    public void onInit(int status) {
+                    }
                 });
             }
         }
@@ -380,7 +382,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         changeFragment("nl.hnogames.domoticz.fragments.Loading", false);
     }
 
-      /* Called when the second activity's finishes */
+    /* Called when the second activity's finishes */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null && resultCode == RESULT_OK) {

@@ -79,6 +79,8 @@
         <item name="wizardTitleColor">@color/grey_900</item>
         <item name="temperatureTextColor">@color/grey_900</item>
         <item name="preferenceIconColor">@color/primary_accent</item>
+        <item name="editTextBackgroundColor">@color/white</item>
+        <item name="editTextTextColor">@color/grey_900</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/white</item>
@@ -141,6 +143,8 @@
         <item name="wizardTitleColor">@color/grey_900</item>
         <item name="temperatureTextColor">@color/grey_900</item>
         <item name="preferenceIconColor">@color/primary_accent</item>
+        <item name="editTextBackgroundColor">@color/white</item>
+        <item name="editTextTextColor">@color/grey_900</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/white</item>
@@ -200,6 +204,8 @@
         <item name="wizardTitleColor">@color/white</item>
         <item name="temperatureTextColor">@color/white</item>
         <item name="preferenceIconColor">@color/white</item>
+        <item name="editTextBackgroundColor">@color/secondary</item>
+        <item name="editTextTextColor">@color/white</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/grey_900</item>
@@ -259,6 +265,8 @@
         <item name="wizardTitleColor">@color/white</item>
         <item name="temperatureTextColor">@color/white</item>
         <item name="preferenceIconColor">@color/white</item>
+        <item name="editTextBackgroundColor">@color/alt2</item>
+        <item name="editTextTextColor">@color/white</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/alt2</item>
@@ -272,7 +280,7 @@
         <item name="colorPrimaryDark">@color/alt3_dark</item>
         <item name="colorAccent">@color/alt3</item>
 
-        <item name="md_background_color">@color/alt3_dark</item>
+        <item name="md_background_color">@color/white</item>
         <item name="actionMenuTextColor">@android:color/white</item>
         <item name="android:actionMenuTextColor">@color/white</item>
         <item name="android:windowBackground">@color/white</item>
@@ -315,18 +323,20 @@
         <item name="recyclerBackground">@color/alt3_background</item>
         <item name="listviewRowBackground">@color/white</item>
         <item name="backdropBackground">@color/alt3</item>
-        <item name="buttonTextColor">@color/alt3_accent</item>
+        <item name="buttonTextColor">@color/alt3</item>
         <item name="graphTextColor">@color/black</item>
         <item name="wizardCardColor">@color/white</item>
         <item name="wizardTitleColor">@color/black</item>
         <item name="temperatureTextColor">@color/black</item>
-        <item name="preferenceIconColor">@color/alt3_accent</item>
+        <item name="preferenceIconColor">@color/alt3</item>
+        <item name="editTextBackgroundColor">@color/white</item>
+        <item name="editTextTextColor">@color/alt3</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/white</item>
         <item name="incomingTextColor">@color/black</item>
-        <item name="outcomingDefaultBubbleColor">@color/alt3</item>
-        <item name="outcomingTextColor">@color/white</item>
+        <item name="outcomingDefaultBubbleColor">@color/white</item>
+        <item name="outcomingTextColor">@color/alt3</item>
     </style>
 
     <!-- Dialog themes -->

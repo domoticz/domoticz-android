@@ -31,37 +31,32 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
-import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import java.util.Collections;
 import java.util.List;
 
 import nl.hnogames.domoticz.NotificationHistoryActivity;
-import nl.hnogames.domoticz.NotificationSettingsActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.utils.DeviceUtils;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
-import nl.hnogames.domoticzapi.Containers.NotificationInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
-public class NotificationPreferenceFragment extends PreferenceFragmentCompat{
+public class NotificationPreferenceFragment extends PreferenceFragmentCompat {
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = NotificationPreferenceFragment.class.getSimpleName();
 
@@ -72,6 +67,24 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat{
     private ConfigInfo mConfigInfo;
     private ServerUtil mServerUtil;
     private PermissionHelper permissionHelper;
+
+    private static void tintIcons(Preference preference, int color) {
+        if (preference instanceof PreferenceGroup) {
+            PreferenceGroup group = ((PreferenceGroup) preference);
+            Drawable icon = group.getIcon();
+            if (icon != null) {
+                icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            }
+            for (int i = 0; i < group.getPreferenceCount(); i++) {
+                tintIcons(group.getPreference(i), color);
+            }
+        } else {
+            Drawable icon = preference.getIcon();
+            if (icon != null) {
+                icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            }
+        }
+    }
 
     @Override
     public Fragment getCallbackFragment() {
@@ -94,31 +107,12 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat{
         setPreferences();
     }
 
-    private void setIconColor()
-    {
+    private void setIconColor() {
         int colorAttr = R.attr.preferenceIconColor;
         TypedArray ta = mContext.getTheme().obtainStyledAttributes(new int[]{colorAttr});
         int color = ta.getColor(0, 0);
         ta.recycle();
         tintIcons(getPreferenceScreen(), color);
-    }
-
-    private static void tintIcons(Preference preference, int color) {
-        if (preference instanceof PreferenceGroup) {
-            PreferenceGroup group = ((PreferenceGroup) preference);
-            Drawable icon = group.getIcon();
-            if (icon != null) {
-                icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-            }
-            for (int i = 0; i < group.getPreferenceCount(); i++) {
-                tintIcons(group.getPreference(i), color);
-            }
-        } else {
-            Drawable icon = preference.getIcon();
-            if (icon != null) {
-                icon.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-            }
-        }
     }
 
     private void setPreferences() {
@@ -198,17 +192,6 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat{
                 @Override
                 public boolean onPreferenceClick(androidx.preference.Preference preference) {
                     startActivity(new Intent(mContext, NotificationHistoryActivity.class));
-
-                    /* //show notification history screen
-                    List<NotificationInfo> logs = mSharedPrefs.getLoggedNotifications();
-                    if (logs != null && logs.size() > 0) {
-                        Collections.reverse(logs);
-                        new MaterialDialog.Builder(mContext)
-                                .title(mContext.getString(R.string.notification_show_title))
-                                .items((CharSequence[]) logs.toArray(new CharSequence[0]))
-                                .show();
-                    } else
-                        UsefulBits.showSimpleToast(mContext, getString(R.string.notification_show_nothing), Toast.LENGTH_LONG);*/
                     return true;
                 }
             });

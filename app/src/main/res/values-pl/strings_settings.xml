@@ -146,6 +146,7 @@
     <string name="enable_notifications_title">Włącz powiadomienia</string>
     <string name="enable_notifications">Włącz powiadomienia na urządzeniu</string>
     <string name="notification_screen_title">Ustawienia powiadomień</string>
+    <string name="notification_history">Notification history</string>
     <string name="notification_vibrate_title">Wibracja</string>
     <string name="notification_vibrate_on">Wibruj po odebraniu powiadomienia</string>
     <string name="notification_vibrate_off">Brak wibracji</string>

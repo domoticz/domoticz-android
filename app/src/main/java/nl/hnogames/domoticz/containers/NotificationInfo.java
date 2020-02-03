@@ -32,6 +32,9 @@ public class NotificationInfo implements IMessage {
     private String text;
     private int priority;
     private Date date;
+    private String systems;
+    private boolean sendOurselves;
+    private String deviceID;
 
     public NotificationInfo(int idx, String title, String text, int priority, Date date) {
         this.idx = idx;
@@ -39,6 +42,16 @@ public class NotificationInfo implements IMessage {
         this.text = text;
         this.priority = priority;
         this.date = date;
+    }
+
+    public NotificationInfo(int idx, String title, String text, int priority, Date date, boolean send, String deviceID) {
+        this.idx = idx;
+        this.title = title;
+        this.text = text;
+        this.priority = priority;
+        this.date = date;
+        this.sendOurselves = send;
+        this.deviceID = deviceID;
     }
 
     public int getIdx() {
@@ -55,10 +68,6 @@ public class NotificationInfo implements IMessage {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 
     public int getPriority() {
@@ -86,28 +95,67 @@ public class NotificationInfo implements IMessage {
         return text;
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
+
     @Override
     public IUser getUser() {
-        return new IUser() {
-            @Override
-            public String getId() {
-                return "654s6f84sef"; //dummy value
-            }
+        if (sendOurselves) {
+            return new IUser() {
+                @Override
+                public String getId() {
+                    return deviceID;
+                }
 
-            @Override
-            public String getName() {
-                return "";
-            }
+                @Override
+                public String getName() {
+                    return "";
+                }
 
-            @Override
-            public String getAvatar() {
-                return null;
-            }
-        };
+                @Override
+                public String getAvatar() {
+                    return null;
+                }
+            };
+        } else {
+            return new IUser() {
+                @Override
+                public String getId() {
+                    return "654s6f84sef"; //dummy value
+                }
+
+                @Override
+                public String getName() {
+                    return "";
+                }
+
+                @Override
+                public String getAvatar() {
+                    return null;
+                }
+            };
+        }
     }
 
     @Override
     public Date getCreatedAt() {
         return date;
+    }
+
+    public String getSystems() {
+        return systems;
+    }
+
+    public void setSystems(String systems) {
+        this.systems = systems;
+    }
+
+    public boolean isSendOurselves() {
+        return sendOurselves;
+    }
+
+    public void setSendOurselves(boolean sendOurselves) {
+        this.sendOurselves = sendOurselves;
     }
 }

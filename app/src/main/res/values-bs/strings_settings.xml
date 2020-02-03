@@ -146,6 +146,7 @@
     <string name="enable_notifications_title">Omogući obavijesti</string>
     <string name="enable_notifications">Omogući obavijesti na ovom uređaju</string>
     <string name="notification_screen_title">Postavke obavijesti</string>
+    <string name="notification_history">Notification history</string>
     <string name="notification_vibrate_title">Vibriraj</string>
     <string name="notification_vibrate_on">Vibriraj kada primiš obavijest</string>
     <string name="notification_vibrate_off">Ne vibriraj</string>

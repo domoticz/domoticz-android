@@ -40,13 +40,12 @@
             android:layout_height="wrap_content"
             android:hint="@string/servername">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                 android:id="@+id/server_name_input"
                 style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text|textEmailAddress"
-                android:textColor="@color/default_text_color_light" />
+                android:inputType="text|textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -66,13 +65,12 @@
             android:layout_marginTop="15dp"
             android:hint="@string/welcome_remote_server_address">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                 android:id="@+id/remote_server_input"
                 style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textNoSuggestions"
-                android:textColor="@color/default_text_color_light" />
+                android:inputType="textNoSuggestions" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TableLayout
@@ -101,13 +99,12 @@
                     android:layout_weight="0"
                     android:hint="@string/welcome_remote_server_port">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                         android:id="@+id/remote_port_input"
                         style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="numberSigned"
-                        android:textColor="@color/default_text_color_light" />
+                        android:inputType="numberSigned" />
                 </com.google.android.material.textfield.TextInputLayout>
             </TableRow>
         </TableLayout>
@@ -126,14 +123,13 @@
                 android:hint="@string/welcome_remote_server_username"
                 android:minWidth="@dimen/width_min_welcomePage3_username_input">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                     android:id="@+id/remote_username_input"
                     style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textNoSuggestions"
-                    android:paddingRight="15dp"
-                    android:textColor="@color/default_text_color_light" />
+                    android:paddingRight="15dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -144,14 +140,13 @@
                 android:layout_weight="1"
                 android:hint="@string/welcome_remote_server_password">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                     android:id="@+id/remote_password_input"
                     style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:paddingRight="15dp"
-                    android:textColor="@color/default_text_color_light" />
+                    android:paddingRight="15dp" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
@@ -171,13 +166,12 @@
             android:layout_height="wrap_content"
             android:hint="@string/welcome_remote_server_directory">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                 android:id="@+id/remote_directory_input"
                 style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textNoSuggestions"
-                android:textColor="@color/default_text_color_light" />
+                android:inputType="textNoSuggestions" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -230,6 +224,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/set_ssid"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -237,10 +232,8 @@
                 android:layout_gravity="right"
                 android:layout_marginTop="15dp"
                 android:layout_weight="1"
-                android:background="@drawable/button_status_dark"
                 android:text="@string/add"
-                android:textColor="?attr/buttonTextColor"
-                android:textSize="10dp" />
+                android:textColor="?attr/buttonTextColor" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
@@ -248,14 +241,13 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/welcome_local_server_address">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                     android:id="@+id/local_server_input"
                     style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:inputType="textNoSuggestions"
-                    android:textColor="@color/default_text_color_light" />
+                    android:inputType="textNoSuggestions" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TableLayout
@@ -284,13 +276,12 @@
                         android:layout_weight="0"
                         android:hint="@string/welcome_local_server_port">
 
-                        <androidx.appcompat.widget.AppCompatEditText
+                        <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                             android:id="@+id/local_port_input"
                             style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="numberSigned"
-                            android:textColor="@color/default_text_color_light" />
+                            android:inputType="numberSigned" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </TableRow>
             </TableLayout>
@@ -310,14 +301,13 @@
                     android:hint="@string/welcome_local_server_username"
                     android:minWidth="@dimen/width_min_welcomePage3_username_input">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                         android:id="@+id/local_username_input"
                         style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textNoSuggestions"
-                        android:minWidth="@dimen/width_min_welcomePage3_username_input"
-                        android:textColor="@color/default_text_color_light" />
+                        android:minWidth="@dimen/width_min_welcomePage3_username_input" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -329,13 +319,12 @@
                     android:layout_weight="1"
                     android:hint="@string/welcome_local_server_password">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                         android:id="@+id/local_password_input"
                         style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPassword"
-                        android:textColor="@color/default_text_color_light" />
+                        android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -355,14 +344,13 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/welcome_local_server_directory">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                     android:id="@+id/local_directory_input"
                     style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:inputType="textNoSuggestions"
-                    android:textColor="@color/default_text_color_light" />
+                    android:inputType="textNoSuggestions" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 

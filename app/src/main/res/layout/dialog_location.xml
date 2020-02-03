@@ -30,12 +30,11 @@
         android:layout_height="wrap_content"
         android:hint="@string/Location_name">
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textNoSuggestions"
-            android:textColor="@color/default_text_color_light" />
+            android:inputType="textNoSuggestions"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -43,13 +42,12 @@
         android:layout_height="wrap_content"
         android:hint="@string/locationAddress">
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
             android:id="@+id/address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:inputType="textNoSuggestions"
-            android:textColor="@color/default_text_color_light" />
+            android:inputType="textNoSuggestions" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
@@ -64,13 +62,12 @@
             android:layout_height="wrap_content"
             android:hint="@string/latitude">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                 android:id="@+id/latitude"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:inputType="textNoSuggestions|number"
-                android:textColor="@color/default_text_color_light" />
+                android:inputType="textNoSuggestions|number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -78,13 +75,12 @@
             android:layout_height="wrap_content"
             android:hint="@string/longitude">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                 android:id="@+id/longitude"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:inputType="textNoSuggestions|number"
-                android:textColor="@color/default_text_color_light" />
+                android:inputType="textNoSuggestions|number" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
@@ -144,12 +140,11 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/radius">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                     android:id="@+id/radius"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:textColor="@color/default_text_color_light" />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
