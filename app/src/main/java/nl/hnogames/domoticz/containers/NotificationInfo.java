@@ -26,7 +26,7 @@ import com.stfalcon.chatkit.commons.models.IUser;
 
 import java.util.Date;
 
-public class NotificationInfo implements IMessage {
+public class NotificationInfo implements IMessage, Comparable<NotificationInfo> {
     private int idx = -1;
     private String title;
     private String text;
@@ -157,5 +157,10 @@ public class NotificationInfo implements IMessage {
 
     public void setSendOurselves(boolean sendOurselves) {
         this.sendOurselves = sendOurselves;
+    }
+
+    @Override
+    public int compareTo(NotificationInfo o) {
+        return getDate().compareTo(o.getDate());
     }
 }

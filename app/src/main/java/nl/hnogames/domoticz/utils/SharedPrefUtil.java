@@ -81,8 +81,6 @@ public class SharedPrefUtil {
     private static final String PREF_DISPLAY_LANGUAGE = "displayLanguage";
     private static final String PREF_SAVED_LANGUAGE = "savedLanguage";
     private static final String PREF_SAVED_LANGUAGE_DATE = "savedLanguageDate";
-    private static final String PREF_UPDATE_SERVER_AVAILABLE = "updateserveravailable";
-    private static final String PREF_UPDATE_SERVER_SHOWN = "updateservershown";
     private static final String PREF_EXTRA_DATA = "extradata";
     private static final String PREF_STARTUP_SCREEN = "startup_nav";
     private static final String PREF_TASK_SCHEDULED = "task_scheduled";
@@ -121,6 +119,7 @@ public class SharedPrefUtil {
     private final String TAG = "Shared Pref util";
     @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_SORT_CUSTOM = "sortCustom";
+    @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_LOCK_SORT_CUSTOM = "lockSortCustom";
     @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_SWITCH_BUTTONS = "switchButtons";
@@ -590,9 +589,43 @@ public class SharedPrefUtil {
             for (String s : notifications) {
                 notificationsValues.add(gson.fromJson(s, NotificationInfo.class));
             }
-            //java.util.Collections.sort(notificationsValues);
+            Collections.sort(notificationsValues);
             return notificationsValues;
-        } else return null;
+        }
+        else return null;
+    }
+
+    /**
+     * Adds the notification to the list of received notifications (only unique ones are stored)
+     *
+     * @param notification Notification string to add
+     */
+    public void addLoggedNotification(NotificationInfo notification) {
+        if (notification == null)
+            return;
+
+        try {
+            Set<String> notifications;
+            if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS_LOG)) {
+                notifications = new HashSet<>();
+                notifications.add(gson.toJson(notification));
+                editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, notifications).apply();
+            } else {
+                notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, null);
+                if (notifications == null)
+                    notifications = new HashSet<>();
+                notifications.add(gson.toJson(notification));
+                if (notifications.size() > 100) {
+                    List<String> notificationsValues = new ArrayList<>(notifications);
+                    Collections.sort(notificationsValues);
+                    notificationsValues.remove(0);
+                    editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, new HashSet(notificationsValues)).apply();
+                } else
+                    editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, notifications).apply();
+            }
+        } catch (Exception ex) {
+            Log.e(TAG, "Failed to save received notification: " + ex.getMessage());
+        }
     }
 
     /**
@@ -629,42 +662,6 @@ public class SharedPrefUtil {
         editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS, null).apply();
     }
 
-    /**
-     * Adds the notification to the list of received notifications (only unique ones are stored)
-     *
-     * @param notification Notification string to add
-     */
-    public void addLoggedNotification(NotificationInfo notification) {
-        if (notification == null)
-            return;
-
-        try {
-            Set<String> notifications;
-            if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS_LOG)) {
-                notifications = new HashSet<>();
-                notifications.add(gson.toJson(notification));
-                editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, notifications).apply();
-            } else {
-                notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, null);
-                if (notifications == null)
-                    notifications = new HashSet<>();
-                notifications.add(gson.toJson(notification));
-
-                if (notifications.size() > 50) {
-                    List<String> notificationsValues = new ArrayList<>();
-                    for (String s : notifications)
-                        notificationsValues.add(s);
-                    Collections.sort(notificationsValues);
-                    notificationsValues.remove(0);
-                    Collections.reverse(notificationsValues);
-                    editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, new HashSet(notificationsValues)).apply();
-                } else
-                    editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, notifications).apply();
-            }
-        } catch (Exception ex) {
-            Log.e(TAG, "Failed to save received notification: " + ex.getMessage());
-        }
-    }
 
     public void removeWizard() {
         // 1 if start up screen is 0 (wizard) change to dashboard

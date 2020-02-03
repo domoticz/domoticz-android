@@ -100,7 +100,7 @@ public class NotificationHistory extends Fragment {
 
             MessagesList messagesList = root.findViewById(R.id.messagesList);
             adapter = new MessagesListAdapter<>(DeviceUtils.getUniqueID(context), holdersConfig, null);
-            adapter.addToEnd(notifications, false);
+            adapter.addToEnd(notifications, true);
             messagesList.setAdapter(adapter);
         }
         coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
@@ -108,7 +108,8 @@ public class NotificationHistory extends Fragment {
             @Override
             public void onReceive(ArrayList<NotificationTypeInfo> notificationTypes) {
                 mNotificationTypes = notificationTypes;
-                getActivity().invalidateOptionsMenu();
+                if(getActivity() != null)
+                    getActivity().invalidateOptionsMenu();
             }
 
             @Override
@@ -153,7 +154,8 @@ public class NotificationHistory extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                getActivity().finish();
+                if(getActivity() != null)
+                    getActivity().finish();
                 return true;
             case R.id.action_add:
                 SendNotificationDialog dialog = new SendNotificationDialog(context, mNotificationTypes);

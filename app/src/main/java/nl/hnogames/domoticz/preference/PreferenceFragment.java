@@ -738,7 +738,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         return true;
     }
 
-
     private void showRestartMessage() {
         new MaterialDialog.Builder(mContext)
                 .title(R.string.restart_required_title)
@@ -799,7 +798,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         boolean mkdirsResultIsOk = new File(sPath + "/").mkdirs();
 
         androidx.preference.Preference exportButton = findPreference("export_settings");
-        exportButton.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
+        if(exportButton != null)
+            exportButton.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(androidx.preference.Preference preference) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -814,7 +814,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             }
         });
         androidx.preference.Preference importButton = findPreference("import_settings");
-        importButton.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
+        if(importButton != null)
+            importButton.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(androidx.preference.Preference preference) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -832,8 +833,10 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
     private void importSettings() {
         Log.v(TAG_IMPORT, "Importing settings from: " + SettingsFile.getPath());
-        if (mSharedPrefs.loadSharedPreferencesFromFile(SettingsFile))
+        if (mSharedPrefs.loadSharedPreferencesFromFile(SettingsFile)) {
+            ((SettingsActivity) getActivity()).reloadSettings();
             showSnackbar(mContext.getString(R.string.settings_imported));
+        }
         else
             showSnackbar(mContext.getString(R.string.settings_import_failed));
     }
