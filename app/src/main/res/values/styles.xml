@@ -79,6 +79,12 @@
         <item name="wizardTitleColor">@color/grey_900</item>
         <item name="temperatureTextColor">@color/grey_900</item>
         <item name="preferenceIconColor">@color/primary_accent</item>
+
+        <!-- notification history -->
+        <item name="incomingDefaultBubbleColor">@color/white</item>
+        <item name="incomingTextColor">@color/grey_900</item>
+        <item name="outcomingDefaultBubbleColor">@color/primary_accent</item>
+        <item name="outcomingTextColor">@color/white</item>
     </style>
 
     <style name="AppThemeMain" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -135,6 +141,12 @@
         <item name="wizardTitleColor">@color/grey_900</item>
         <item name="temperatureTextColor">@color/grey_900</item>
         <item name="preferenceIconColor">@color/primary_accent</item>
+
+        <!-- notification history -->
+        <item name="incomingDefaultBubbleColor">@color/white</item>
+        <item name="incomingTextColor">@color/grey_900</item>
+        <item name="outcomingDefaultBubbleColor">@color/primary_accent</item>
+        <item name="outcomingTextColor">@color/white</item>
     </style>
 
     <style name="AppThemeAlt1Main" parent="Theme.MaterialComponents.NoActionBar">
@@ -188,6 +200,12 @@
         <item name="wizardTitleColor">@color/white</item>
         <item name="temperatureTextColor">@color/white</item>
         <item name="preferenceIconColor">@color/white</item>
+
+        <!-- notification history -->
+        <item name="incomingDefaultBubbleColor">@color/grey_900</item>
+        <item name="incomingTextColor">@color/white</item>
+        <item name="outcomingDefaultBubbleColor">@color/alt1_accent</item>
+        <item name="outcomingTextColor">@color/white</item>
     </style>
 
     <style name="AppThemeAlt2Main" parent="Theme.MaterialComponents.NoActionBar">
@@ -241,6 +259,12 @@
         <item name="wizardTitleColor">@color/white</item>
         <item name="temperatureTextColor">@color/white</item>
         <item name="preferenceIconColor">@color/white</item>
+
+        <!-- notification history -->
+        <item name="incomingDefaultBubbleColor">@color/alt2</item>
+        <item name="incomingTextColor">@color/white</item>
+        <item name="outcomingDefaultBubbleColor">@color/alt2_accent</item>
+        <item name="outcomingTextColor">@color/white</item>
     </style>
 
     <style name="AppThemeAlt3Main" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -297,6 +321,12 @@
         <item name="wizardTitleColor">@color/black</item>
         <item name="temperatureTextColor">@color/black</item>
         <item name="preferenceIconColor">@color/alt3_accent</item>
+
+        <!-- notification history -->
+        <item name="incomingDefaultBubbleColor">@color/white</item>
+        <item name="incomingTextColor">@color/black</item>
+        <item name="outcomingDefaultBubbleColor">@color/alt3</item>
+        <item name="outcomingTextColor">@color/white</item>
     </style>
 
     <!-- Dialog themes -->

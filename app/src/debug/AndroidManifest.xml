@@ -423,6 +423,8 @@
 
         <activity android:name="nl.hnogames.domoticz.ui.ScoopSettingsActivity" />
 
+        <activity android:name="nl.hnogames.domoticz.NotificationHistoryActivity" />
+
         <activity
             android:name="com.schibstedspain.leku.LocationPickerActivity"
             android:label="@string/title_add_location"

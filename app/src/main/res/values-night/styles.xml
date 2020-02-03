@@ -71,6 +71,11 @@
         <item name="wizardTitleColor">@color/white</item>
         <item name="temperatureTextColor">@color/white</item>
         <item name="preferenceIconColor">@color/white</item>
-    </style>
 
+        <!-- notification history -->
+        <item name="incomingDefaultBubbleColor">@color/secondary</item>
+        <item name="incomingTextColor">@color/white</item>
+        <item name="outcomingDefaultBubbleColor">@color/secondary_accent</item>
+        <item name="outcomingTextColor">@color/white</item>
+    </style>
 </resources>

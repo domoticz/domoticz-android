@@ -39,6 +39,10 @@
     <attr name="wizardTitleColor" format="color" />
     <attr name="temperatureTextColor" format="color" />
     <attr name="preferenceIconColor" format="color" />
+    <attr name="incomingDefaultBubbleColor" format="color" />
+    <attr name="incomingTextColor" format="color" />
+    <attr name="outcomingDefaultBubbleColor" format="color" />
+    <attr name="outcomingTextColor" format="color" />
 
     <declare-styleable name="CustomListPreference">
         <attr name="lockedValues"/>

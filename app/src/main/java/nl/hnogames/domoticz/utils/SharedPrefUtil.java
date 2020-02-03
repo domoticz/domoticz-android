@@ -54,6 +54,7 @@ import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.BluetoothInfo;
 import nl.hnogames.domoticz.containers.LocationInfo;
 import nl.hnogames.domoticz.containers.NFCInfo;
+import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.containers.QRCodeInfo;
 import nl.hnogames.domoticz.containers.SpeechInfo;
 import nl.hnogames.domoticzapi.Containers.Language;
@@ -106,7 +107,7 @@ public class SharedPrefUtil {
     private static final String PREF_SUPPRESS_NOTIFICATIONS = "suppressNotifications";
     private static final String PREF_ALARM_NOTIFICATIONS = "alarmNotifications";
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
-    private static final String PREF_RECEIVED_NOTIFICATIONS_LOG = "receivedNotificationsLog";
+    private static final String PREF_RECEIVED_NOTIFICATIONS_LOG = "receivedNotificationsLogv2";
     private static final String PREF_APK_VALIDATED = "apkvalidated";
     private static final String PREF_TALK_BACK = "talkBack";
     private static final String PREF_ALARM_TIMER = "alarmNotificationTimer";
@@ -128,12 +129,14 @@ public class SharedPrefUtil {
     private Context mContext;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
+    private Gson gson;
 
     @SuppressLint("CommitPrefEdits")
     public SharedPrefUtil(Context mContext) {
         this.mContext = mContext;
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         editor = prefs.edit();
+        gson = new Gson();
     }
 
     public boolean showDashboardAsList() {
@@ -578,16 +581,16 @@ public class SharedPrefUtil {
      *
      * @return List of received notifications
      */
-    public List<String> getLoggedNotifications() {
+    public List<NotificationInfo> getLoggedNotifications() {
         if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS_LOG)) return null;
 
         Set<String> notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, null);
         if (notifications != null) {
-            List<String> notificationsValues = new ArrayList<>();
+            List<NotificationInfo> notificationsValues = new ArrayList<>();
             for (String s : notifications) {
-                notificationsValues.add(s);
+                notificationsValues.add(gson.fromJson(s, NotificationInfo.class));
             }
-            java.util.Collections.sort(notificationsValues);
+            //java.util.Collections.sort(notificationsValues);
             return notificationsValues;
         } else return null;
     }
@@ -631,30 +634,30 @@ public class SharedPrefUtil {
      *
      * @param notification Notification string to add
      */
-    public void addLoggedNotification(String notification) {
-        if (UsefulBits.isEmpty(notification))
+    public void addLoggedNotification(NotificationInfo notification) {
+        if (notification == null)
             return;
 
         try {
             Set<String> notifications;
             if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS_LOG)) {
                 notifications = new HashSet<>();
-                notifications.add(notification);
+                notifications.add(gson.toJson(notification));
                 editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, notifications).apply();
             } else {
                 notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, null);
                 if (notifications == null)
                     notifications = new HashSet<>();
-                notifications.add(notification);
+                notifications.add(gson.toJson(notification));
 
-                if (notifications.size() > 20) {
+                if (notifications.size() > 50) {
                     List<String> notificationsValues = new ArrayList<>();
                     for (String s : notifications)
                         notificationsValues.add(s);
                     Collections.sort(notificationsValues);
                     notificationsValues.remove(0);
                     Collections.reverse(notificationsValues);
-                    editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, new HashSet<String>(notificationsValues)).apply();
+                    editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, new HashSet(notificationsValues)).apply();
                 } else
                     editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, notifications).apply();
             }
@@ -970,8 +973,7 @@ public class SharedPrefUtil {
     }
 
     public void saveNFCList(List<NFCInfo> list) {
-        Gson gson = new Gson();
-        editor.putString(PREF_NFC_TAGS, gson.toJson(list));
+         editor.putString(PREF_NFC_TAGS, gson.toJson(list));
         editor.commit();
     }
 
@@ -980,7 +982,6 @@ public class SharedPrefUtil {
         List<NFCInfo> nfcs;
         if (prefs.contains(PREF_NFC_TAGS)) {
             String jsonNFCs = prefs.getString(PREF_NFC_TAGS, null);
-            Gson gson = new Gson();
             NFCInfo[] item = gson.fromJson(jsonNFCs,
                     NFCInfo[].class);
             nfcs = Arrays.asList(item);
@@ -994,7 +995,6 @@ public class SharedPrefUtil {
     }
 
     public void saveBluetoothList(List<BluetoothInfo> list) {
-        Gson gson = new Gson();
         editor.putString(PREF_BLUETOOTH, gson.toJson(list));
         editor.commit();
     }
@@ -1004,7 +1004,6 @@ public class SharedPrefUtil {
         List<BluetoothInfo> Bluetooths;
         if (prefs.contains(PREF_BLUETOOTH)) {
             String jsonBluetooths = prefs.getString(PREF_BLUETOOTH, null);
-            Gson gson = new Gson();
             BluetoothInfo[] item = gson.fromJson(jsonBluetooths,
                     BluetoothInfo[].class);
             Bluetooths = Arrays.asList(item);
@@ -1017,8 +1016,7 @@ public class SharedPrefUtil {
     }
 
     public void saveQRCodeList(List<QRCodeInfo> list) {
-        Gson gson = new Gson();
-        editor.putString(PREF_QR_CODES, gson.toJson(list));
+       editor.putString(PREF_QR_CODES, gson.toJson(list));
         editor.commit();
     }
 
@@ -1027,7 +1025,6 @@ public class SharedPrefUtil {
         List<QRCodeInfo> qrs;
         if (prefs.contains(PREF_QR_CODES)) {
             String jsonNFCs = prefs.getString(PREF_QR_CODES, null);
-            Gson gson = new Gson();
             QRCodeInfo[] item = gson.fromJson(jsonNFCs,
                     QRCodeInfo[].class);
             qrs = Arrays.asList(item);
@@ -1041,7 +1038,6 @@ public class SharedPrefUtil {
     }
 
     public void saveSpeechList(List<SpeechInfo> list) {
-        Gson gson = new Gson();
         editor.putString(PREF_SPEECH_COMMANDS, gson.toJson(list));
         editor.commit();
     }
@@ -1051,7 +1047,6 @@ public class SharedPrefUtil {
         List<SpeechInfo> qrs;
         if (prefs.contains(PREF_SPEECH_COMMANDS)) {
             String jsonNFCs = prefs.getString(PREF_SPEECH_COMMANDS, null);
-            Gson gson = new Gson();
             SpeechInfo[] item = gson.fromJson(jsonNFCs,
                     SpeechInfo[].class);
             qrs = Arrays.asList(item);
@@ -1065,7 +1060,6 @@ public class SharedPrefUtil {
     }
 
     public void saveLocations(List<LocationInfo> locations) {
-        Gson gson = new Gson();
         String jsonLocations = gson.toJson(locations);
         editor.putString(PREF_GEOFENCE_LOCATIONS, jsonLocations);
         editor.commit();
@@ -1078,7 +1072,6 @@ public class SharedPrefUtil {
 
         if (prefs.contains(PREF_GEOFENCE_LOCATIONS)) {
             String jsonLocations = prefs.getString(PREF_GEOFENCE_LOCATIONS, null);
-            Gson gson = new Gson();
             LocationInfo[] locationItem = gson.fromJson(jsonLocations,
                     LocationInfo[].class);
             locations = Arrays.asList(locationItem);
@@ -1290,7 +1283,6 @@ public class SharedPrefUtil {
      */
     public void saveLanguage(Language language) {
         if (language != null) {
-            Gson gson = new Gson();
             try {
                 String jsonLocations = gson.toJson(language);
                 editor.putString(PREF_SAVED_LANGUAGE, jsonLocations).apply();
@@ -1312,7 +1304,6 @@ public class SharedPrefUtil {
         if (prefs.contains(PREF_SAVED_LANGUAGE)) {
             String languageStr = prefs.getString(PREF_SAVED_LANGUAGE, null);
             if (languageStr != null) {
-                Gson gson = new Gson();
                 try {
                     returnValue = gson.fromJson(languageStr, Language.class);
                 } catch (Exception ex) {

@@ -11,10 +11,12 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.LocationInfo;
+import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -71,8 +73,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                             notificationTitle = String.format(
                                     context.getString(R.string.geofence_location_entering), locationFound.getName());
                             notificationDescription = context.getString(R.string.geofence_location_entering_text);
-                            NotificationUtil.sendSimpleNotification(notificationTitle,
-                                    notificationDescription, 0, context);
+                            NotificationUtil.sendSimpleNotification(new NotificationInfo(-1, notificationTitle, notificationDescription, 0, new Date()), context);
                         }
                         if (locationFound.getSwitchIdx() > 0)
                             handleSwitch(context, locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), true, locationFound.getValue(), locationFound.isSceneOrGroup());
@@ -89,8 +90,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                                     context.getString(R.string.geofence_location_leaving),
                                     locationFound.getName());
                             notificationDescription = context.getString(R.string.geofence_location_leaving_text);
-                            NotificationUtil.sendSimpleNotification(notificationTitle,
-                                    notificationDescription, 0, context);
+                            NotificationUtil.sendSimpleNotification(new NotificationInfo(-1, notificationTitle, notificationDescription, 0, new Date()), context);
                         }
                         if (locationFound.getSwitchIdx() > 0)
                             handleSwitch(context, locationFound.getSwitchIdx(), locationFound.getSwitchPassword(), false, locationFound.getValue(), locationFound.isSceneOrGroup());

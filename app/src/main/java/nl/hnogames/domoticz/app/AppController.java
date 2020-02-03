@@ -70,7 +70,6 @@ public class AppController extends MultiDexApplication {
 
         mInstance = this;
         Shortbread.create(this);
-
         Scoop.waffleCone()
                 .addFlavor(getString(R.string.theme_default), R.style.AppThemeDefault, true)
                 .addDayNightFlavor(getString(R.string.theme_daynight), R.style.AppThemeMain)
@@ -84,7 +83,6 @@ public class AppController extends MultiDexApplication {
     @SuppressWarnings("TryWithIdenticalCatches")
     public RequestQueue getRequestQueue() {
         SSLContext sc;
-
         if (mRequestQueue == null) {
             Context context = getApplicationContext();
             try {

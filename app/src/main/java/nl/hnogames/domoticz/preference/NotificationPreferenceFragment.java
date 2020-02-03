@@ -45,6 +45,9 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Collections;
 import java.util.List;
+
+import nl.hnogames.domoticz.NotificationHistoryActivity;
+import nl.hnogames.domoticz.NotificationSettingsActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.utils.DeviceUtils;
@@ -53,6 +56,7 @@ import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
+import nl.hnogames.domoticzapi.Containers.NotificationInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
@@ -193,8 +197,10 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat{
             NotificationLogged.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(androidx.preference.Preference preference) {
-                    //show dialog
-                    List<String> logs = mSharedPrefs.getLoggedNotifications();
+                    startActivity(new Intent(mContext, NotificationHistoryActivity.class));
+
+                    /* //show notification history screen
+                    List<NotificationInfo> logs = mSharedPrefs.getLoggedNotifications();
                     if (logs != null && logs.size() > 0) {
                         Collections.reverse(logs);
                         new MaterialDialog.Builder(mContext)
@@ -202,7 +208,7 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat{
                                 .items((CharSequence[]) logs.toArray(new CharSequence[0]))
                                 .show();
                     } else
-                        UsefulBits.showSimpleToast(mContext, getString(R.string.notification_show_nothing), Toast.LENGTH_LONG);
+                        UsefulBits.showSimpleToast(mContext, getString(R.string.notification_show_nothing), Toast.LENGTH_LONG);*/
                     return true;
                 }
             });
