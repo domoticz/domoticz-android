@@ -304,6 +304,7 @@ public class DomoticzValues {
                 int UPDATE_DOWNLOAD_UPDATE = 43;
                 int SUNRISE = 44;
                 int SEND_NOTIFICATION = 50;
+                int NOTIFICATIONTYPES = 51;
             }
 
             @SuppressWarnings("SpellCheckingInspection")
@@ -526,6 +527,7 @@ public class DomoticzValues {
             String CLEAN_MOBILE_DEVICE = "/json.htm?type=command&param=deletemobiledevice";
             String LANGUAGE_TRANSLATIONS = "/i18n/domoticz-";
             String SEND_NOTIFICATION = "/json.htm?type=command&param=sendnotification";
+            String NOTIFICATIONTYPES = "/json.htm?type=notifications";
             String USERS = "/json.htm?type=users";
             String AUTH = "/json.htm?type=command&param=getauth";
             String LOGOFF = "/json.htm?type=command&param=dologout";

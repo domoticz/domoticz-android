@@ -60,6 +60,7 @@ import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
 import nl.hnogames.domoticzapi.Interfaces.LogsReceiver;
 import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
 import nl.hnogames.domoticzapi.Interfaces.NotificationReceiver;
+import nl.hnogames.domoticzapi.Interfaces.NotificationTypesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.PlansReceiver;
 import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SendNotificationReceiver;
@@ -92,6 +93,7 @@ import nl.hnogames.domoticzapi.Parsers.LogOffParser;
 import nl.hnogames.domoticzapi.Parsers.LoginParser;
 import nl.hnogames.domoticzapi.Parsers.LogsParser;
 import nl.hnogames.domoticzapi.Parsers.MobileDeviceParser;
+import nl.hnogames.domoticzapi.Parsers.NotificationTypesParser;
 import nl.hnogames.domoticzapi.Parsers.NotificationsParser;
 import nl.hnogames.domoticzapi.Parsers.PlanParser;
 import nl.hnogames.domoticzapi.Parsers.ScenesParser;
@@ -395,12 +397,21 @@ public class Domoticz {
         }
     }
 
-    public void SendNotification(String Subject, String Body, SendNotificationReceiver receiver) {
+    public void SendNotificationTypes(NotificationTypesReceiver receiver) {
+        NotificationTypesParser parser = new NotificationTypesParser(receiver);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NOTIFICATIONTYPES);
+        RequestUtil.makeJsonGetRequest(parser,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                url, mSessionUtil, false, 1, queue);
+    }
+
+    public void SendNotification(String Subject, String Body, String SubSystem, SendNotificationReceiver receiver) {
         SendNotificationParser parser = new SendNotificationParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SEND_NOTIFICATION);
         url += "&subject=" + Subject;
-        url += "&body=" + Body;;
-
+        url += "&body=" + Body;
+        url += "&subsystem=" + SubSystem;
         RequestUtil.makeJsonGetRequest(parser,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
