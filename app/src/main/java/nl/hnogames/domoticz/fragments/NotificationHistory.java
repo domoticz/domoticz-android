@@ -45,6 +45,7 @@ import com.dexafree.materialList.card.action.TextViewAction;
 import com.dexafree.materialList.card.action.WelcomeButtonAction;
 import com.dexafree.materialList.listeners.OnDismissCallback;
 import com.dexafree.materialList.view.MaterialListView;
+import com.stfalcon.chatkit.messages.MessageHolders;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 
@@ -56,6 +57,8 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.containers.NotificationInfo;
+import nl.hnogames.domoticz.helpers.CustomIncomingMessageViewHolder;
+import nl.hnogames.domoticz.helpers.CustomOutcomingMessageViewHolder;
 import nl.hnogames.domoticz.utils.DeviceUtils;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 
@@ -76,8 +79,16 @@ public class NotificationHistory extends Fragment {
         List<NotificationInfo> notifications = mSharedPrefs.getLoggedNotifications();
 
         if(notifications != null && notifications.size()>0) {
+            MessageHolders holdersConfig = new MessageHolders()
+                    .setIncomingTextConfig(
+                            CustomIncomingMessageViewHolder.class,
+                            R.layout.item_custom_incoming_text_message)
+                    .setOutcomingTextConfig(
+                            CustomOutcomingMessageViewHolder.class,
+                            R.layout.item_custom_outcoming_text_message);
+
             MessagesList messagesList = root.findViewById(R.id.messagesList);
-            MessagesListAdapter<NotificationInfo> adapter = new MessagesListAdapter<>(DeviceUtils.getUniqueID(context), null);
+            MessagesListAdapter<NotificationInfo> adapter = new MessagesListAdapter<>(DeviceUtils.getUniqueID(context), holdersConfig, null);
             adapter.addToEnd(notifications, false);
             messagesList.setAdapter(adapter);
         }
