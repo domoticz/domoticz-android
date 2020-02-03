@@ -68,15 +68,15 @@ public class AppController extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
 
-        Shortbread.create(this);
         mInstance = this;
+        Shortbread.create(this);
 
         Scoop.waffleCone()
-                .addFlavor("Default", R.style.AppThemeDefault, true)
-                .addDayNightFlavor("Day/Night", R.style.AppThemeMain)
-                .addFlavor("Orange", R.style.AppThemeAlt1Main)
-                .addFlavor("Pink", R.style.AppThemeAlt2Main)
-                .addFlavor("Blue", R.style.AppThemeAlt3Main)
+                .addFlavor(getString(R.string.theme_default), R.style.AppThemeDefault, true)
+                .addDayNightFlavor(getString(R.string.theme_daynight), R.style.AppThemeMain)
+                .addFlavor(getString(R.string.theme_orange), R.style.AppThemeAlt1Main)
+                .addFlavor(getString(R.string.theme_pink), R.style.AppThemeAlt2Main)
+                .addFlavor(getString(R.string.theme_blue), R.style.AppThemeAlt3Main)
                 .setSharedPreferences(PreferenceManager.getDefaultSharedPreferences(this))
                 .initialize();
     }

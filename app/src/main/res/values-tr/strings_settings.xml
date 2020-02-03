@@ -161,6 +161,13 @@
     <string name="alarm">Alarm</string>
     <string name="alarmtimer_title">Alarm zamanlayıcı</string>
     <string name="alarmtimer">Alarm zaman saniye sayısı</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Default</string>
+    <string name="theme_daynight">Day/Night</string>
+    <string name="theme_orange">Orange</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_blue">Blue</string>
+    <!-- Other -->
     <string name="default_values">Varsayılan değerlerler</string>
     <string name="default_values_min_error">Max değeri Min değerinden yüksek olmalıdır</string>
     <string name="default_values_max_error">Max değeri Min değerinden yüksek olmalıdır</string>
@@ -203,4 +210,5 @@
     <string name="debug_test_text">Hata ayıklama testi</string>
     <string name="restart_required_title">Yeniden başlatmak gerekli!</string>
     <string name="restart_now">Şimdi yeniden başlatılsın mı?</string>
+    <string name="check_settings">Check your settings</string>
 </resources>

@@ -161,6 +161,13 @@
     <string name="alarm">Alarm</string>
     <string name="alarmtimer_title">Alarmni tajmer</string>
     <string name="alarmtimer">Broj sekundi do vremena alarma</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Default</string>
+    <string name="theme_daynight">Day/Night</string>
+    <string name="theme_orange">Orange</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_blue">Blue</string>
+    <!-- Other -->
     <string name="default_values">Zadane vrijednosti</string>
     <string name="default_values_min_error">Max vrijednost treba biti veća od minimalne vrijednosti</string>
     <string name="default_values_max_error">Max vrijednost treba biti veća od minimalne vrijednosti</string>
@@ -203,4 +210,5 @@
     <string name="debug_test_text">Test ispravljanja grešaka</string>
     <string name="restart_required_title">Potrebno ponovno pokretanje</string>
     <string name="restart_now">Sada ponovno pokreni?</string>
+    <string name="check_settings">Check your settings</string>
 </resources>

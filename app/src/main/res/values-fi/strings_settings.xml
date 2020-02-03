@@ -161,6 +161,13 @@
     <string name="alarm">Hälytykset</string>
     <string name="alarmtimer_title">Hälytysajastin</string>
     <string name="alarmtimer">Hälytyksen kesto sekunteina</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Default</string>
+    <string name="theme_daynight">Day/Night</string>
+    <string name="theme_orange">Orange</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_blue">Blue</string>
+    <!-- Other -->
     <string name="default_values">Oletusarvot</string>
     <string name="default_values_min_error">Maksimiarvon pitää olla suurempi kuin minimiarvon</string>
     <string name="default_values_max_error">Maksimiarvon pitää olla suurempi kuin minimiarvon</string>
@@ -203,4 +210,5 @@
     <string name="debug_test_text">Virheenkorjaustesti</string>
     <string name="restart_required_title">Uudelleenkäynnistys tarvitaan</string>
     <string name="restart_now">Käynnistä uudelleen nyt?</string>
+    <string name="check_settings">Check your settings</string>
 </resources>

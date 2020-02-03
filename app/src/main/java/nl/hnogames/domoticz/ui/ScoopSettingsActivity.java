@@ -35,58 +35,33 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ftinc.scoop.R;
-import com.ftinc.scoop.Scoop;
 import com.ftinc.scoop.Flavor;
+import com.ftinc.scoop.Scoop;
 
+import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.FlavorRecyclerAdapter;
 
 public class ScoopSettingsActivity extends AppCompatActivity implements FlavorRecyclerAdapter.OnItemClickListener {
 
-    /***********************************************************************************************
-     *
-     * Intent Factories
-     *
-     */
-    public static Intent createIntent(Context ctx){
-        return createIntent(ctx, null);
-    }
-
-    public static Intent createIntent(Context ctx, @StringRes int titleResId){
-        return createIntent(ctx, ctx.getString(titleResId));
-    }
-
-    public static Intent createIntent(Context ctx, @Nullable String title){
-        Intent intent = new Intent(ctx, ScoopSettingsActivity.class);
-        if(!TextUtils.isEmpty(title)) intent.putExtra(EXTRA_TITLE, title);
-        return intent;
-    }
-
-    /***********************************************************************************************
-     *
-     * Constants
-     *
-     */
-
     private static final String EXTRA_TITLE = "com.ftinc.scoop.intent.EXTRA_TITLE";
-
-    /***********************************************************************************************
-     *
-     * Variables
-     *
-     */
-
     private Toolbar mAppBar;
     private RecyclerView mRecyclerView;
     private FlavorRecyclerAdapter mAdapter;
-
     private String mTitle;
 
-    /***********************************************************************************************
-     *
-     * Lifecycle Methods
-     *
-     */
+    public static Intent createIntent(Context ctx) {
+        return createIntent(ctx, null);
+    }
+
+    public static Intent createIntent(Context ctx, @StringRes int titleResId) {
+        return createIntent(ctx, ctx.getString(titleResId));
+    }
+
+    public static Intent createIntent(Context ctx, @Nullable String title) {
+        Intent intent = new Intent(ctx, ScoopSettingsActivity.class);
+        if (!TextUtils.isEmpty(title)) intent.putExtra(EXTRA_TITLE, title);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +71,7 @@ public class ScoopSettingsActivity extends AppCompatActivity implements FlavorRe
         Scoop.getInstance().apply(this);
 
         // Set the activity content
-        setContentView(R.layout.activity_scoop_settings);
+        setContentView(R.layout.activity_theme_settings);
 
         // Setup UI
         parseExtras(savedInstanceState);
@@ -112,35 +87,26 @@ public class ScoopSettingsActivity extends AppCompatActivity implements FlavorRe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    /***********************************************************************************************
-     *
-     * Helper Methods
-     *
-     */
-
     private void parseExtras(Bundle savedInstanceState) {
-        if(getIntent() != null){
+        if (getIntent() != null) {
             mTitle = getIntent().getStringExtra(EXTRA_TITLE);
         }
-
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             mTitle = savedInstanceState.getString(EXTRA_TITLE);
         }
     }
 
     private void setupActionBar() {
-
-        if(getSupportActionBar() == null){
-            mAppBar = findViewById(R.id.appbar);
+        if (getSupportActionBar() == null) {
+            mAppBar = findViewById(R.id.toolbar);
             setSupportActionBar(mAppBar);
-
             mAppBar.setVisibility(View.VISIBLE);
             mAppBar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -150,17 +116,16 @@ public class ScoopSettingsActivity extends AppCompatActivity implements FlavorRe
             });
         }
 
-        if(TextUtils.isEmpty(mTitle)) {
+        if (TextUtils.isEmpty(mTitle)) {
             getSupportActionBar().setTitle(R.string.activity_settings);
-        }else{
+        } else {
             getSupportActionBar().setTitle(mTitle);
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
-    private void setupRecyclerView(){
+    private void setupRecyclerView() {
         mRecyclerView = findViewById(R.id.recycler);
 
         mAdapter = new FlavorRecyclerAdapter(this);
@@ -174,7 +139,6 @@ public class ScoopSettingsActivity extends AppCompatActivity implements FlavorRe
 
     @Override
     public void onItemClicked(View view, Flavor item, int position) {
-
         // Update Scoops
         Scoop.getInstance().choose(item);
 
@@ -187,6 +151,5 @@ public class ScoopSettingsActivity extends AppCompatActivity implements FlavorRe
         finish();
         startActivity(restart);
         overridePendingTransition(0, 0);
-
     }
 }

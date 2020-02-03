@@ -161,6 +161,13 @@
     <string name="alarm">Alarme</string>
     <string name="alarmtimer_title">Minuteur pour alarme</string>
     <string name="alarmtimer">Durée en seconde de l\'alarme</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Default</string>
+    <string name="theme_daynight">Day/Night</string>
+    <string name="theme_orange">Orange</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_blue">Blue</string>
+    <!-- Other -->
     <string name="default_values">Valeur par défaut</string>
     <string name="default_values_min_error">La valeur maximale doit être supérieure à la valeur Minimale</string>
     <string name="default_values_max_error">La valeur maximale doit être supérieure à la valeur Minimale</string>
@@ -203,4 +210,5 @@
     <string name="debug_test_text">Débogage</string>
     <string name="restart_required_title">Redémarrage requis</string>
     <string name="restart_now">Redémarrer maintenant ?</string>
+    <string name="check_settings">Check your settings</string>
 </resources>

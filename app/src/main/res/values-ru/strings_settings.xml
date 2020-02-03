@@ -161,6 +161,13 @@
     <string name="alarm">Будильник</string>
     <string name="alarmtimer_title">Таймер будильника</string>
     <string name="alarmtimer">Количество секунд действия будильника</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Default</string>
+    <string name="theme_daynight">Day/Night</string>
+    <string name="theme_orange">Orange</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_blue">Blue</string>
+    <!-- Other -->
     <string name="default_values">Значения по умолчанию</string>
     <string name="default_values_min_error">Макс значение должно быть больше, чем минимальное значение</string>
     <string name="default_values_max_error">Макс значение должно быть больше, чем минимальное значение</string>
@@ -203,4 +210,5 @@
     <string name="debug_test_text">Отладочный тест</string>
     <string name="restart_required_title">Требуется перезапуск</string>
     <string name="restart_now">Перезапустить?</string>
+    <string name="check_settings">Check your settings</string>
 </resources>
