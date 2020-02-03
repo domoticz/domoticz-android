@@ -78,6 +78,7 @@
         <item name="wizardCardColor">@color/white</item>
         <item name="wizardTitleColor">@color/grey_900</item>
         <item name="temperatureTextColor">@color/grey_900</item>
+        <item name="preferenceIconColor">@color/primary_accent</item>
     </style>
 
     <style name="AppThemeMain" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -134,7 +135,6 @@
         <item name="wizardTitleColor">@color/grey_900</item>
         <item name="temperatureTextColor">@color/grey_900</item>
         <item name="preferenceIconColor">@color/primary_accent</item>
-
     </style>
 
     <style name="AppThemeAlt1Main" parent="Theme.MaterialComponents.NoActionBar">
