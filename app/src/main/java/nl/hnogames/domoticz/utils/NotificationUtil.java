@@ -43,6 +43,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import nl.hnogames.domoticz.MainActivity;
+import nl.hnogames.domoticz.NotificationHistoryActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.service.RingtonePlayingService;
@@ -74,10 +75,11 @@ public class NotificationUtil {
         try {
             if (prefUtil.isNotificationsEnabled() && suppressedNot != null && !suppressedNot.contains(notification.getText())) {
                 NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                     CreateChannel(CHANNEL_ID, notification.getPriority(), false, context);
-                }
 
+                Intent historyIntent = new Intent(context, NotificationHistoryActivity.class);
+                PendingIntent historyPendingIntent = PendingIntent.getActivity(context, 0, historyIntent, 0);
                 NotificationCompat.Builder builder =
                         new NotificationCompat.Builder(context, CHANNEL_ID)
                                 .setSmallIcon(R.drawable.domoticz_white)
@@ -85,13 +87,16 @@ public class NotificationUtil {
                                 .setContentTitle(alarmNot != null && alarmNot.contains(loggedNotification) ? context.getString(R.string.alarm) + ": " + notification.getTitle() : notification.getTitle())
                                 .setContentText(alarmNot != null && alarmNot.contains(loggedNotification) ? context.getString(R.string.alarm) + ": " + notification.getText() : notification.getText())
                                 .setStyle(new NotificationCompat.BigTextStyle().setSummaryText(notification.getText()))
+                                .addAction(R.drawable.baseline_notification_important_white_24, context.getString(R.string.notification_inbox), historyPendingIntent)
                                 .setAutoCancel(true);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     int nrOfNotifications = 1;
-                    StatusBarNotification[] activeNotifications = mNotificationManager.getActiveNotifications();
-                    if (activeNotifications != null) {
-                        nrOfNotifications = activeNotifications.length;
+                    if (mNotificationManager != null) {
+                        StatusBarNotification[] activeNotifications = mNotificationManager.getActiveNotifications();
+                        if (activeNotifications != null) {
+                            nrOfNotifications = activeNotifications.length;
+                        }
                     }
                     builder.setNumber(nrOfNotifications);
                 }
