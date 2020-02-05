@@ -31,11 +31,12 @@ public class Domoticz {
     @SuppressWarnings("SpellCheckingInspection")
     public static int getDrawableIcon(String imgType, String Type, String switchType, boolean State, boolean useCustomImage, String CustomImage) {
         int standardImage = getDrawableIcon(imgType, Type, switchType, State);
-
         if (useCustomImage && CustomImage != null && CustomImage.length() > 0) {
             switch (CustomImage) {
                 case "Alarm":
                     return R.drawable.alarm;
+                case "Freezing":
+                    return R.drawable.freezing;
                 case "Amplifier":
                     return R.drawable.volume;
                 case "Computer":
@@ -73,6 +74,8 @@ public class Domoticz {
                     return R.drawable.wall;
                 case "Water":
                     return R.drawable.water;
+                case "GoogleDevsHomeMini":
+                    return R.drawable.ghome;
             }
         }
 
@@ -94,7 +97,7 @@ public class Domoticz {
             case "door":
                 return R.drawable.door;
             case "lightbulb":
-                if (switchType != null && switchType.length() > 0 && switchType.equals(Device.Type.Value.DUSKSENSOR))
+                if (switchType != null && switchType.length() > 0 && switchType.equals(Device.Type.Name.DUSKSENSOR))
                     if (State)
                         return R.drawable.uvdark;
                     else
@@ -129,7 +132,7 @@ public class Domoticz {
             case "security":
                 return R.drawable.security;
             case "temperature":
-            case "Freezing":
+            case "override_mini":
                 if (State)
                     return R.drawable.heating;
                 else
@@ -168,6 +171,10 @@ public class Domoticz {
                 return R.drawable.defaultimage;
             case "utility":
                 return R.drawable.scale;
+            case "scale":
+                return R.drawable.scale;
+            case "lux":
+                return R.drawable.uvsunny;
         }
         switch (Type.toLowerCase()) {
             case "heating":
