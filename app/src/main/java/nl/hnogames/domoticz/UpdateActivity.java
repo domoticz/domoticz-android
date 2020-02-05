@@ -27,20 +27,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.ftinc.scoop.Scoop;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.app.AppController;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticzapi.Containers.VersionInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -66,22 +63,20 @@ public class UpdateActivity extends AppCompatAssistActivity {
     private TextView updateSummary;
     private ServerUtil serverUtil;
     private SharedPrefUtil mSharedPrefs;
-    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
-        // Apply Scoop to the activity
-        Scoop.getInstance().apply(this);
-
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+        else
+            setTheme(R.style.AppTheme);
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
@@ -113,14 +108,14 @@ public class UpdateActivity extends AppCompatAssistActivity {
                 if (serverVersion == null)
                     return;
                 if (serverUtil.getActiveServer() != null &&
-                        serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null) {
+                    serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null) {
                     currentServerVersionValue.setText(serverVersion.getVersion());
 
                     if (serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).isUpdateAvailable()) {
                         updateSummary.setText(R.string.server_update_available);
                         updateServerVersionValue.setText(serverUtil.getActiveServer()
-                                .getServerUpdateInfo(UpdateActivity.this)
-                                .getUpdateRevisionNumber());
+                            .getServerUpdateInfo(UpdateActivity.this)
+                            .getUpdateRevisionNumber());
                     } else if (mSharedPrefs.isDebugEnabled()) {
                         String message = "Debugging: " + getString(R.string.server_update_available);
                         updateSummary.setText(message);
@@ -135,7 +130,7 @@ public class UpdateActivity extends AppCompatAssistActivity {
                         }
                     });
                     if (!serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).isUpdateAvailable()
-                            && !mSharedPrefs.isDebugEnabled())
+                        && !mSharedPrefs.isDebugEnabled())
                         buttonUpdateServer.setEnabled(false);
                 }
             }
@@ -144,12 +139,12 @@ public class UpdateActivity extends AppCompatAssistActivity {
             public void onError(Exception error) {
                 mSwipeRefreshLayout.setRefreshing(false);
                 String message = String.format(
-                        getString(R.string.error_couldNotCheckForUpdates),
-                        mDomoticz.getErrorMessage(error));
+                    getString(R.string.error_couldNotCheckForUpdates),
+                    mDomoticz.getErrorMessage(error));
                 showSnackbar(message);
                 if (serverUtil != null &&
-                        serverUtil.getActiveServer() != null &&
-                        serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
+                    serverUtil.getActiveServer() != null &&
+                    serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
                     serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setCurrentServerVersion("");
                 currentServerVersionValue.setText(R.string.not_available);
             }
@@ -163,20 +158,20 @@ public class UpdateActivity extends AppCompatAssistActivity {
 
     private void showServerUpdateWarningDialog() {
         new MaterialDialog.Builder(this)
-                .title(R.string.server_update)
-                .content(getString(R.string.update_server_warning)
-                        + UsefulBits.newLine()
-                        + UsefulBits.newLine()
-                        + getString(R.string.continue_question))
-                .positiveText(R.string.yes)
-                .negativeText(R.string.no)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        updateServer();
-                    }
-                })
-                .show();
+            .title(R.string.server_update)
+            .content(getString(R.string.update_server_warning)
+                + UsefulBits.newLine()
+                + UsefulBits.newLine()
+                + getString(R.string.continue_question))
+            .positiveText(R.string.yes)
+            .negativeText(R.string.no)
+            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                    updateServer();
+                }
+            })
+            .show();
     }
 
     private void updateServer() {
@@ -186,13 +181,13 @@ public class UpdateActivity extends AppCompatAssistActivity {
 
         final boolean showMinMax = false;
         final MaterialDialog dialog = new MaterialDialog.Builder(this)
-                .title(R.string.msg_please_wait)
-                .content(getString(R.string.please_wait_while_server_updated)
-                        + UsefulBits.newLine()
-                        + getString(R.string.this_take_minutes))
-                .cancelable(false)
-                .progress(false, SERVER_UPDATE_TIME * 60, showMinMax)
-                .show();
+            .title(R.string.msg_please_wait)
+            .content(getString(R.string.please_wait_while_server_updated)
+                + UsefulBits.newLine()
+                + getString(R.string.this_take_minutes))
+            .cancelable(false)
+            .progress(false, SERVER_UPDATE_TIME * 60, showMinMax)
+            .show();
 
         CountDownTimer mCountDownTimer = new CountDownTimer(SERVER_UPDATE_TIME * 60 * 1000, 1000) {
 
@@ -319,8 +314,8 @@ public class UpdateActivity extends AppCompatAssistActivity {
             @Override
             public void onError(Exception error) {
                 String message = String.format(
-                        getString(R.string.error_couldNotCheckForUpdates),
-                        mDomoticz.getErrorMessage(error));
+                    getString(R.string.error_couldNotCheckForUpdates),
+                    mDomoticz.getErrorMessage(error));
                 showSnackbar(message);
                 serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setUpdateRevisionNumber("");
                 updateServerVersionValue.setText(R.string.not_available);
@@ -340,8 +335,8 @@ public class UpdateActivity extends AppCompatAssistActivity {
                 mSwipeRefreshLayout.setRefreshing(false);
                 if (serverVersion != null && !UsefulBits.isEmpty(serverVersion.getVersion())) {
                     if (serverUtil != null &&
-                            serverUtil.getActiveServer() != null &&
-                            serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
+                        serverUtil.getActiveServer() != null &&
+                        serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
                         serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setCurrentServerVersion(serverVersion.getVersion());
                     currentServerVersionValue.setText(serverVersion.getVersion());
                 } else currentServerVersionValue.setText(R.string.not_available);
@@ -351,12 +346,12 @@ public class UpdateActivity extends AppCompatAssistActivity {
             public void onError(Exception error) {
                 mSwipeRefreshLayout.setRefreshing(false);
                 String message = String.format(
-                        getString(R.string.error_couldNotCheckForUpdates),
-                        mDomoticz.getErrorMessage(error));
+                    getString(R.string.error_couldNotCheckForUpdates),
+                    mDomoticz.getErrorMessage(error));
                 showSnackbar(message);
                 if (serverUtil != null &&
-                        serverUtil.getActiveServer() != null &&
-                        serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
+                    serverUtil.getActiveServer() != null &&
+                    serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
                     serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setCurrentServerVersion("");
                 currentServerVersionValue.setText(R.string.not_available);
             }
@@ -372,9 +367,9 @@ public class UpdateActivity extends AppCompatAssistActivity {
 
     private void showSimpleDialog(String title, String message) {
         new MaterialDialog.Builder(this)
-                .title(title)
-                .content(message)
-                .positiveText(R.string.ok)
-                .show();
+            .title(title)
+            .content(message)
+            .positiveText(R.string.ok)
+            .show();
     }
 }

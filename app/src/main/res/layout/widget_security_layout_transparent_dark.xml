@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -20,9 +21,9 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,7 +37,7 @@
             android:layout_gravity="center_vertical"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:src="@drawable/defaultimage" />
+            android:src="@drawable/defaultimage"/>
 
         <TextView
             android:id="@+id/title"
@@ -47,7 +48,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="Security Panel"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"/>
     </LinearLayout>
 
     <TextView
@@ -58,7 +59,7 @@
         android:paddingBottom="10dp"
         android:text="Status: Armed"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_size_small" />
+        android:textSize="@dimen/text_size_small"/>
 
     <LinearLayout
         android:id="@+id/linearLayout5"
@@ -83,7 +84,7 @@
             android:background="@drawable/button_status_dark"
             android:text="@string/security_arm_home"
             android:textColor="@color/white"
-            android:textSize="12dp" />
+            android:textSize="12dp"/>
 
         <Button
             android:id="@+id/armaway"
@@ -96,7 +97,7 @@
             android:background="@drawable/button_status_dark"
             android:text="@string/security_arm_away"
             android:textColor="@color/white"
-            android:textSize="12dp" />
+            android:textSize="12dp"/>
 
         <Button
             android:id="@+id/disarm"
@@ -110,7 +111,7 @@
             android:background="@drawable/button_status_dark"
             android:text="@string/security_disarm"
             android:textColor="@color/white"
-            android:textSize="12dp" />
+            android:textSize="12dp"/>
     </LinearLayout>
 
 </LinearLayout>

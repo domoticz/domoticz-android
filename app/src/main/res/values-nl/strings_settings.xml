@@ -146,7 +146,6 @@
     <string name="enable_notifications_title">Notificaties activeren</string>
     <string name="enable_notifications">Notificaties op dit apparaat inschakelen</string>
     <string name="notification_screen_title">Notificatie instellingen</string>
-    <string name="notification_history">Notificatie geschiedenis</string>
     <string name="notification_vibrate_title">Trillen</string>
     <string name="notification_vibrate_on">Trillen bij het ontvangen van een notificatie</string>
     <string name="notification_vibrate_off">Niet trillen bij het ontvangen van een notificatie</string>
@@ -162,13 +161,6 @@
     <string name="alarm">Alarm</string>
     <string name="alarmtimer_title">Alarmtijd</string>
     <string name="alarmtimer">Aantal seconden voor het alarm automatisch stopt</string>
-    <!-- Theme properties -->
-    <string name="theme_default">Standaard</string>
-    <string name="theme_daynight">Dag &amp; Nacht</string>
-    <string name="theme_orange">Oranje</string>
-    <string name="theme_pink">Roze</string>
-    <string name="theme_blue">Blauw</string>
-    <!-- Other -->
     <string name="default_values">Standaardwaarden</string>
     <string name="default_values_min_error">Maximale waarde moet hoger zijn dan minimale waarde</string>
     <string name="default_values_max_error">Minimale waarde moet lager zijn dan maximale waarde</string>
@@ -211,5 +203,4 @@
     <string name="debug_test_text">Debugging test</string>
     <string name="restart_required_title">Opnieuw opstarten vereist</string>
     <string name="restart_now">Nu opnieuw opstarten?</string>
-    <string name="check_settings">Controleer je instellingen</string>
 </resources>

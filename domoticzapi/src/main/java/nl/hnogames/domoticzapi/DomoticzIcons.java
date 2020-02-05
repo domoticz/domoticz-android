@@ -73,8 +73,6 @@ public class DomoticzIcons {
                     return R.drawable.wall;
                 case "Water":
                     return R.drawable.water;
-                case "GoogleDevsHomeMini":
-                    return R.drawable.ghome;
             }
         }
 

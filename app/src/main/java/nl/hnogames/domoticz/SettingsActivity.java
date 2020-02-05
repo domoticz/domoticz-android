@@ -25,43 +25,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import androidx.appcompat.widget.Toolbar;
-
-import com.ftinc.scoop.Scoop;
-
+import nl.hnogames.domoticz.Preference.Preference;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
-import nl.hnogames.domoticz.preference.PreferenceFragment;
-import nl.hnogames.domoticz.ui.ScoopSettingsActivity;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticz.utils.UsefulBits;
 
 public class SettingsActivity extends AppCompatPermissionsActivity {
-    private final int THEME_CHANGED = 55;
-    private Toolbar toolbar;
-    private PreferenceFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
-
-        // Apply Scoop to the activity
-        Scoop.getInstance().apply(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+        else
+            setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_graph);
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        fragment = new PreferenceFragment();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main, fragment)
-                .commit();
+        getFragmentManager().beginTransaction().replace(android.R.id.content,
+            new Preference()).commit();
     }
 
     @Override
@@ -80,19 +66,11 @@ public class SettingsActivity extends AppCompatPermissionsActivity {
     }
 
     public void reloadSettings() {
-        recreate();
-    }
-
-    public void openThemePicker() {
-        startActivityForResult(ScoopSettingsActivity.createIntent(this, getString(R.string.config_theme)), THEME_CHANGED);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == THEME_CHANGED) {
-            recreate();
-        }
+        Bundle conData = new Bundle();
+        Intent intent = new Intent();
+        intent.putExtras(conData);
+        setResult(789, intent);
+        super.finish();
     }
 
     private void finishWithResult() {

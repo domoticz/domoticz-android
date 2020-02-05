@@ -18,10 +18,26 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-<androidx.wear.widget.WearableRecyclerView
+
+<android.support.wearable.view.BoxInsetLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/wearable_list"
-    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/gray"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:scrollbars="vertical" />
+    android:layout_width="match_parent">
+
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        app:layout_box="left|right">
+
+        <android.support.wearable.view.WearableListView
+            android:id="@+id/wearable_list"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+        </android.support.wearable.view.WearableListView>
+
+    </FrameLayout>
+
+</android.support.wearable.view.BoxInsetLayout>

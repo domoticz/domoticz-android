@@ -22,25 +22,9 @@
 <resources>
     <color name="primary">#2196F3</color>
     <color name="primary_dark">#2196F3</color>
-    <color name="primary_accent">#2196F3</color>
 
-    <color name="secondary">#25262C</color>
-    <color name="secondary_dark">#1B1C22</color>
-    <color name="secondary_accent">#2196F3</color>
-
-    <color name="alt1">#FB8C00</color>
-    <color name="alt1_dark">#1B1C22</color>
-    <color name="alt1_accent">#FB8C00</color>
-
-    <color name="alt2">#253240</color>
-    <color name="alt2_dark">#1D2733</color>
-    <color name="alt2_accent">#F7304D</color>
-
-    <color name="alt3">#1E2E52</color>
-    <color name="alt3_dark">#1D2733</color>
-    <color name="alt3_accent">#2196F3</color>
-    <color name="alt3_light">#2A5796</color>
-    <color name="alt3_background">#F8F9FB</color>
+    <color name="secondary">#1B324D</color>
+    <color name="secondary_dark">#142A3B</color>
 
     <color name="background_grey">#EDEDED</color>
     <color name="accent">@color/button_dark_status</color>

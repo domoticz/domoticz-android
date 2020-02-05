@@ -30,5 +30,4 @@
     <string name="action_qrcode_scan">QR Code scannen</string>
     <string name="action_bluetooth_show">Toon gekoppelde apparaten</string>
     <string name="action_speech">Spraakherkenning</string>
-    <string name="send">Verstuur</string>
 </resources>

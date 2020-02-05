@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -18,7 +19,8 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_global_wrapper"
     android:layout_width="match_parent"
@@ -36,7 +38,7 @@
         android:id="@+id/row_global_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/recyclerBackground"
+        android:background="@color/material_grey_300_"
         android:descendantFocusability="blocksDescendants"
         android:orientation="vertical">
 
@@ -44,7 +46,7 @@
             android:id="@+id/row_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/listviewRowBackground"
+            android:background="@color/white"
             android:minHeight="50dp"
             android:orientation="horizontal"
             android:padding="10dp">
@@ -55,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|start"
                 android:src="@drawable/outline_info_black_18"
-                android:tint="@color/md_grey_300" />
+                android:tint="@color/md_grey_300"/>
 
             <ImageView
                 android:id="@+id/rowIcon"
@@ -65,7 +67,7 @@
                 android:layout_marginLeft="-15dp"
                 android:contentDescription="@string/error_image_description"
                 android:paddingRight="5dp"
-                android:src="@drawable/clock48" />
+                android:src="@drawable/clock48"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -90,7 +92,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:layout_marginRight="35dp"
-                            android:text="Switch" />
+                            android:text="Switch"/>
 
                         <TextView
                             android:id="@+id/switch_battery_level"
@@ -103,7 +105,7 @@
                             android:layout_toStartOf="@+id/linearLayout4"
                             android:layout_toLeftOf="@+id/linearLayout4"
                             android:gravity="center_vertical"
-                            android:text="@string/battery_level" />
+                            android:text="@string/battery_level"/>
 
                         <TextView
                             android:id="@+id/switch_signal_level"
@@ -114,7 +116,7 @@
                             android:layout_marginBottom="5dp"
                             android:text="@string/signal_level"
                             android:textSize="8sp"
-                            android:textStyle="italic" />
+                            android:textStyle="italic"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -136,8 +138,7 @@
                             android:layout_centerVertical="true"
                             android:background="@drawable/button_status"
                             android:text="@string/button_state_on"
-                            android:textColor="?attr/buttonTextColor"
-                            android:textSize="10dp" />
+                            android:textSize="10dp"/>
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/off_button"
@@ -148,14 +149,13 @@
                             android:layout_weight="1"
                             android:background="@drawable/button_status"
                             android:text="@string/button_state_off"
-                            android:textColor="?attr/buttonTextColor"
-                            android:textSize="10dp" />
+                            android:textSize="10dp"/>
                     </LinearLayout>
                 </RelativeLayout>
 
             </LinearLayout>
         </LinearLayout>
 
-        <include layout="@layout/log_timer_button_row_default" />
+        <include layout="@layout/log_timer_button_row_default"/>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

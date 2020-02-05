@@ -39,10 +39,10 @@
     <string name="monthly_weekday">Щомісячно (по буднях)</string>
     <string name="yearly">Щорічно</string>
     <string name="yearly_weekday">Щорічно (по буднях)</string>
-    <string name="before_sun_at_south">До \"сонце на півдні\"</string>
-    <string name="after_sun_at_south">Після \"сонце на півдні\"</string>
-    <string name="before_civil_twilight_start">До початку цивільних сутінків</string>
-    <string name="after_civil_twilight_start">Після початку цивільних сутінків</string>
+    <string name="before_sun_at_south">Before Sun at South</string>
+    <string name="after_sun_at_south">After Sun at South</string>
+    <string name="before_civil_twilight_start">Before Civil Twilight Start</string>
+    <string name="after_civil_twilight_start">After Civil Twilight Start</string>
     <string name="before_civil_twilight_end">Before Civil Twilight End</string>
     <string name="after_civil_twilight_end">After Civil Twilight End</string>
     <string name="before_nautical_twilight_start">Before Nautical Twilight Start</string>

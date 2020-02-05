@@ -20,23 +20,16 @@
   -->
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/coordinatorLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/recyclerBackground">
+                                                     xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                     android:id="@+id/coordinatorLayout"
+                                                     style="@style/background_listview"
+                                                     android:layout_width="match_parent"
+                                                     android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/toolbarBackground"
-            android:theme="@style/AppThemeToolbarStyle" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,7 +54,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@+id/switch_button"
-                    android:text="@string/title_geofence" />
+                    android:text="@string/title_geofence"/>
 
                 <TextView
                     android:id="@+id/geofence_description"
@@ -73,7 +66,7 @@
                     android:layout_alignRight="@+id/geofence_onoff"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
-                    android:text="@string/description_geofence" />
+                    android:text="@string/description_geofence"/>
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/switch_button"
@@ -82,7 +75,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:paddingLeft="10dp"
-                    app:useMaterialThemeColors="false" />
+                    app:useMaterialThemeColors="false"/>
 
             </RelativeLayout>
 
@@ -102,7 +95,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:layout_toLeftOf="@+id/switch_notifications_button"
-                    android:text="@string/title_notification_geofence" />
+                    android:text="@string/title_notification_geofence"/>
 
                 <TextView
                     android:id="@+id/geofence_notifications_description"
@@ -114,7 +107,7 @@
                     android:layout_alignRight="@+id/geofence_notifications_onoff"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
-                    android:text="@string/description_notification_geofence" />
+                    android:text="@string/description_notification_geofence"/>
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/switch_notifications_button"
@@ -123,14 +116,14 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:paddingLeft="10dp"
-                    app:useMaterialThemeColors="false" />
+                    app:useMaterialThemeColors="false"/>
 
             </RelativeLayout>
         </LinearLayout>
 
         <ListView
             android:id="@+id/listView"
-            style="@style/background_listview"
+            style="@style/listView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -142,7 +135,7 @@
             android:paddingTop="@dimen/row_space"
             android:paddingBottom="@dimen/row_space"
             android:scrollingCache="false"
-            android:smoothScrollbar="true" />
+            android:smoothScrollbar="true"/>
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

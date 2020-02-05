@@ -23,14 +23,13 @@ package nl.hnogames.domoticz;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,19 +39,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.biometric.BiometricPrompt;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.MenuItemCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
-import com.ftinc.scoop.Scoop;
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
 import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter;
 import com.google.android.gms.ads.AdRequest;
@@ -60,12 +48,8 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -87,28 +71,40 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.biometric.BiometricPrompt;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import hotchemi.android.rate.AppRate;
 import hugo.weaving.DebugLog;
+import nl.hnogames.domoticz.Containers.QRCodeInfo;
+import nl.hnogames.domoticz.Containers.SpeechInfo;
+import nl.hnogames.domoticz.Fragments.Cameras;
+import nl.hnogames.domoticz.Fragments.Logs;
+import nl.hnogames.domoticz.Fragments.MainPager;
+import nl.hnogames.domoticz.Fragments.TemperatureMainPager;
+import nl.hnogames.domoticz.UI.PasswordDialog;
+import nl.hnogames.domoticz.UI.SortDialog;
+import nl.hnogames.domoticz.Utils.GCMUtils;
+import nl.hnogames.domoticz.Utils.GeoUtils;
+import nl.hnogames.domoticz.Utils.PermissionsUtil;
+import nl.hnogames.domoticz.Utils.SerializableManager;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.TalkBackUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
+import nl.hnogames.domoticz.Utils.WidgetUtils;
+import nl.hnogames.domoticz.Welcome.WelcomeViewActivity;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.app.RefreshFragment;
-import nl.hnogames.domoticz.containers.QRCodeInfo;
-import nl.hnogames.domoticz.containers.SpeechInfo;
-import nl.hnogames.domoticz.fragments.Cameras;
-import nl.hnogames.domoticz.fragments.Logs;
-import nl.hnogames.domoticz.ui.PasswordDialog;
-import nl.hnogames.domoticz.ui.SortDialog;
-import nl.hnogames.domoticz.utils.GCMUtils;
-import nl.hnogames.domoticz.utils.GeoUtils;
-import nl.hnogames.domoticz.utils.PermissionsUtil;
-import nl.hnogames.domoticz.utils.SerializableManager;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticz.utils.TalkBackUtil;
-import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
@@ -119,6 +115,7 @@ import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
+import nl.hnogames.domoticzapi.Utils.SessionUtil;
 import shortbread.Shortcut;
 
 @DebugLog
@@ -128,7 +125,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
     public boolean onPhone;
-    public Exception configException;
     private SharedPrefUtil mSharedPrefs;
     private String TAG = MainActivity.class.getSimpleName();
     private ServerUtil mServerUtil;
@@ -151,6 +147,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private ConfigInfo mConfigInfo;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
+    public Exception configException;
 
     @DebugLog
     public ServerUtil getServerUtil() {
@@ -168,9 +165,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Apply Scoop to the activity
-        Scoop.getInstance().apply(this);
-
         configException = null;
         if (Build.VERSION.SDK_INT >= 24) {
             try {
@@ -180,9 +174,12 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 e.printStackTrace();
             }
         }
-
         InitBiometric();
         mSharedPrefs = new SharedPrefUtil(this);
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDarkMain);
+        else
+            setTheme(R.style.AppThemeMain);
         permissionHelper = PermissionHelper.getInstance(this);
 
         UsefulBits.checkAPK(this, mSharedPrefs);
@@ -205,9 +202,14 @@ public class MainActivity extends AppCompatPermissionsActivity {
         }
 
         toolbar = findViewById(R.id.toolbar);
+        if (mSharedPrefs.darkThemeEnabled()) {
+            toolbar.setBackgroundColor(getResources().getColor(R.color.secondary));
+            toolbar.setPopupTheme(R.style.ThemeOverlay_AppCompat_Dark);
+        }
         setSupportActionBar(toolbar);
-        if (!UsefulBits.checkPlayServicesAvailable(this))
-            this.finish();
+
+        boolean resolvableError = UsefulBits.checkPlayServicesAvailable(this);
+        if (!resolvableError) this.finish();
 
         if (mSharedPrefs.isFirstStart()) {
             mSharedPrefs.setNavigationDefaults();
@@ -246,14 +248,12 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 super.onAuthenticationFailed();
             }
         });
-
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle(getString(R.string.app_name_domoticz))
-                .setSubtitle(getString(R.string.fingerprint_make_sure))
-                .setDescription(getString(R.string.fingerprint_dialog_description))
-                .setNegativeButtonText(getString(R.string.security_password_fallback))
-                .setConfirmationRequired(false)
-                .build();
+            .setTitle(getString(R.string.app_name_domoticz))
+            .setSubtitle(getString(R.string.fingerprint_make_sure))
+            .setDescription(getString(R.string.fingerprint_dialog_description))
+            .setNegativeButtonText(getString(R.string.security_password_fallback))
+            .build();
     }
 
     private void FallbackSecurity() {
@@ -315,14 +315,16 @@ public class MainActivity extends AppCompatPermissionsActivity {
     @DebugLog
     public void initScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
-            ShowLoading();
-            appRate();
-            initTalkBack();
             applyLanguage();
-
             TextView usingTabletLayout = findViewById(R.id.tabletLayout);
+
             if (usingTabletLayout == null)
                 onPhone = true;
+
+            appRate();
+            initTalkBack();
+
+            ShowLoading();
 
             mServerUtil = new ServerUtil(this);
             if (mServerUtil.getActiveServer() != null && UsefulBits.isEmpty(mServerUtil.getActiveServer().getRemoteServerUrl())) {
@@ -350,10 +352,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
                                 setupMobileDevice();
                                 setScheduledTasks();
 
-                                //WidgetUtils.RefreshWidgets(MainActivity.this);
-                                drawNavigationMenu(mConfigInfo);
-                                if (!fromShortcut)
-                                    addFragment(false);
+                                WidgetUtils.RefreshWidgets(MainActivity.this);
+                                buildscreen();
                             }
                         }
 
@@ -369,7 +369,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 if (mSharedPrefs.isStartupSecurityEnabled()) {
                     biometricPrompt.authenticate(promptInfo);
                 }
-                drawNavigationMenu(null);
             }
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
@@ -378,8 +377,15 @@ public class MainActivity extends AppCompatPermissionsActivity {
         }
     }
 
-    public void ShowLoading() {
-        changeFragment("nl.hnogames.domoticz.fragments.Loading", false);
+    public void ShowLoading()
+    {
+        changeFragment("nl.hnogames.domoticz.Fragments.Loading", false);
+    }
+
+    public void buildscreen() {
+        drawNavigationMenu(mConfigInfo);
+        if (!fromShortcut)
+            addFragment(false);
     }
 
     /* Called when the second activity's finishes */
@@ -391,14 +397,23 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     Bundle res = data.getExtras();
                     if (res != null && !res.getBoolean("RESULT", false))
                         this.finish();
-                    else
-                        this.recreate();
+                    else {
+                        if (mSharedPrefs.darkThemeEnabled())
+                            setTheme(R.style.AppThemeDarkMain);
+                        else
+                            setTheme(R.style.AppThemeMain);
+                        initScreen();
+                    }
                     SerializableManager.cleanAllSerializableObjects(this);
                     break;
                 case iSettingsResultCode:
-                    this.recreate();
                     mServerUtil = new ServerUtil(this);
                     SerializableManager.cleanAllSerializableObjects(this);
+                    if (mSharedPrefs.darkThemeEnabled())
+                        setTheme(R.style.AppThemeDarkMain);
+                    else
+                        setTheme(R.style.AppThemeMain);
+                    this.recreate();
                     break;
                 case iQRResultCode:
                     String QR_ID = data.getStringExtra("QRCODE");
@@ -441,7 +456,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
             this.finish();
 
         permissionHelper.onActivityForResult(requestCode);
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void hideViews() {
@@ -475,7 +489,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 if (!isSceneOrGroup) {
                     if (inputJSONAction < 0) {
                         if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
                             if (!mDevicesInfo.getStatusBoolean()) {
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                                 if (!UsefulBits.isEmpty(value)) {
@@ -506,7 +520,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                         }
                     } else {
                         if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                            mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
                             if (inputJSONAction == 1) {
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                                 if (!UsefulBits.isEmpty(value)) {
@@ -686,7 +700,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
             latestFragment = Fragment.instantiate(MainActivity.this, fragment);
             tx.replace(R.id.main, latestFragment);
             tx.commitAllowingStateLoss();
-            if (keepInStack)
+            if(keepInStack)
                 addFragmentStack(fragment);
             saveScreenToAnalytics(fragment);
             invalidateOptionsMenu();
@@ -696,7 +710,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     private void addFragment(boolean exception) {
-        if (!exception) {
+        if(!exception) {
             if (!isFinishing()) {
                 try {
                     changeFragment(getResources().getStringArray(R.array.drawer_fragments)[mSharedPrefs.getStartupScreenIndex()], true);
@@ -705,8 +719,9 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     changeFragment(getResources().getStringArray(R.array.drawer_fragments)[1], true);
                 }
             }
-        } else {
-            changeFragment("nl.hnogames.domoticz.fragments.Error", false);
+        }
+        else{
+            changeFragment("nl.hnogames.domoticz.Fragments.Error", false);
         }
     }
 
@@ -748,53 +763,36 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
     private void setupMobileDevice() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!PermissionsUtil.canAccessDeviceState(this))
+            if (!PermissionsUtil.canAccessDeviceState(this)) {
                 permissionHelper.request(PermissionsUtil.INITIAL_DEVICE_PERMS);
-            else
-                GetFirebaseToken();
+            } else {
+                try {
+                    String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                    Log.d("Firebase id login", "Refreshed token: " + refreshedToken);
+                    GCMUtils.sendRegistrationIdToBackend(this, refreshedToken);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         } else {
-            GetFirebaseToken();
-        }
-    }
 
-    private void GetFirebaseToken() {
-        try {
-            FirebaseInstanceId.getInstance().getInstanceId()
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "getInstanceId failed", e);
-                        }
-                    })
-                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                            try {
-                                if (!task.isSuccessful() && task.getResult() == null) {
-                                    Log.w(TAG, "getInstanceId failed", task.getException());
-                                    return;
-                                }
-
-                                String refreshedToken = task.getResult().getToken();
-                                Log.d("Firebase id login", "Refreshed token: " + refreshedToken);
-                                GCMUtils.sendRegistrationIdToBackend(MainActivity.this, refreshedToken);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                Log.d("Firebase id login", "Refreshed token: " + refreshedToken);
+                GCMUtils.sendRegistrationIdToBackend(this, refreshedToken);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private void appRate() {
         if (!BuildConfig.DEBUG) {
             AppRate.with(this)
-                    .setInstallDays(0) // default 10, 0 means install day.
-                    .setLaunchTimes(3) // default 10
-                    .setRemindInterval(2) // default 1
-                    .monitor();
+                .setInstallDays(0) // default 10, 0 means install day.
+                .setLaunchTimes(3) // default 10
+                .setRemindInterval(2) // default 1
+                .monitor();
 
             // Show a dialog if meets conditions
             AppRate.showRateDialogIfMeetsConditions(this);
@@ -810,136 +808,142 @@ public class MainActivity extends AppCompatPermissionsActivity {
             config = mServerUtil.getActiveServer().getConfigInfo(this);
 
         ProfileDrawerItem loggedinAccount = new ProfileDrawerItem()
-                .withName("Logged in")
-                .withEmail(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME))
-                .withIcon(R.mipmap.ic_launcher);
+            .withName("Logged in")
+            .withEmail(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME))
+            .withIcon(R.mipmap.ic_launcher);
+        if (mSharedPrefs.darkThemeEnabled()) {
+            loggedinAccount.withSelectedColorRes(R.color.primary);
+            loggedinAccount.withSelectedTextColorRes(R.color.white);
+        }
         allUsers.add(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME));
-
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = getTheme();
-        theme.resolveAttribute(R.attr.graphTextColor, typedValue, true);
 
         // Create the AccountHeader
         final ConfigInfo finalConfig = config;
         AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .addProfiles(loggedinAccount)
-                .withTextColor(typedValue.data)
-                .withOnlyMainProfileImageVisible(true)
-                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-                    @Override
-                    @DebugLog
-                    public boolean onProfileChanged(View view, final IProfile profile, boolean current) {
-                        if (!current) {
-                            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-                                if (getFragmentCoordinatorLayout() != null) {
-                                    Snackbar.make(getFragmentCoordinatorLayout(), getString(R.string.category_account) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
-                                            .setAction(R.string.upgrade, new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View view) {
-                                                    UsefulBits.openPremiumAppStore(MainActivity.this);
-                                                }
-                                            })
-                                            .setActionTextColor(ContextCompat.getColor(MainActivity.this, R.color.primary))
-                                            .show();
-                                }
-                                return false;
-                            } else {
-                                PasswordDialog passwordDialog = new PasswordDialog(MainActivity.this, null);
-                                passwordDialog.show();
-                                passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
-                                    @Override
-                                    @DebugLog
-                                    public void onDismiss(String password) {
-                                        if (UsefulBits.isEmpty(password)) {
-                                            UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
-                                            Talk(R.string.security_wrong_code);
-                                            drawNavigationMenu(finalConfig);
-                                        } else {
-                                            for (UserInfo user : finalConfig.getUsers()) {
-                                                if (user.getUsername().equals(profile.getEmail().getText())) {
-                                                    String md5Pass = UsefulBits.getMd5String(password);
-                                                    if (md5Pass.equals(user.getPassword())) {
-                                                        domoticz.LogOff();
-                                                        domoticz.setUserCredentials(user.getUsername(), password);
-                                                        initScreen();
-                                                    } else {
-                                                        UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
-                                                        drawNavigationMenu(finalConfig);
-                                                    }
+            .withActivity(this)
+            .withHeaderBackground(R.drawable.darkheader)
+            .addProfiles(loggedinAccount)
+            .withOnlyMainProfileImageVisible(true)
+            .withTextColorRes(R.color.white)
+            .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                @Override
+                @DebugLog
+                public boolean onProfileChanged(View view, final IProfile profile, boolean current) {
+                    if (!current) {
+                        if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                            if (getFragmentCoordinatorLayout() != null) {
+                                Snackbar.make(getFragmentCoordinatorLayout(), getString(R.string.category_account) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
+                                    .setAction(R.string.upgrade, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            UsefulBits.openPremiumAppStore(MainActivity.this);
+                                        }
+                                    })
+                                    .setActionTextColor(ContextCompat.getColor(MainActivity.this, R.color.primary))
+                                    .show();
+                            }
+                            return false;
+                        } else {
+                            PasswordDialog passwordDialog = new PasswordDialog(MainActivity.this, null);
+                            passwordDialog.show();
+                            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                                @Override
+                                @DebugLog
+                                public void onDismiss(String password) {
+                                    if (UsefulBits.isEmpty(password)) {
+                                        UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                        Talk(R.string.security_wrong_code);
+                                        drawNavigationMenu(finalConfig);
+                                    } else {
+                                        for (UserInfo user : finalConfig.getUsers()) {
+                                            if (user.getUsername().equals(profile.getEmail().getText())) {
+                                                String md5Pass = UsefulBits.getMd5String(password);
+                                                if (md5Pass.equals(user.getPassword())) {
+                                                    domoticz.LogOff();
+                                                    domoticz.setUserCredentials(user.getUsername(), password);
+                                                    initScreen();
+                                                } else {
+                                                    UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                                    drawNavigationMenu(finalConfig);
                                                 }
                                             }
                                         }
                                     }
+                                }
 
-                                    @Override
-                                    public void onCancel() {
-                                    }
-                                });
-                            }
-
-                            drawNavigationMenu(finalConfig);
+                                @Override
+                                public void onCancel() {
+                                }
+                            });
                         }
-                        return false;
-                    }
-                })
-                .build();
 
-        if (config != null && config.getUsers() != null) {
+                        drawNavigationMenu(finalConfig);
+                    }
+                    return false;
+                }
+            })
+            .build();
+
+        if (config != null &&
+            config.getUsers() != null) {
             for (UserInfo user : config.getUsers()) {
                 if (!allUsers.contains(user.getUsername())) {
                     ProfileDrawerItem profile = new ProfileDrawerItem().withName(user.getRightsValue(this)
                     ).withEmail(user.getUsername())
-                            .withIcon(R.drawable.users)
-                            .withEnabled(user.isEnabled());
+                        .withIcon(R.drawable.users)
+                        .withEnabled(user.isEnabled());
+
+                    if (mSharedPrefs.darkThemeEnabled()) {
+                        profile.withSelectedColorRes(R.color.primary);
+                    }
                     allUsers.add(user.getUsername());
                     headerResult.addProfiles(profile);
                 }
             }
         }
+
         drawer = new DrawerBuilder()
-                .withActivity(this)
-                .withActionBarDrawerToggle(true)
-                .withAccountHeader(headerResult)
-                .withToolbar(toolbar)
-                .withSelectedItem(-1)
-                .withDrawerItems(getDrawerItems())
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    @DebugLog
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if (drawerItem != null) {
-                            if (searchViewAction != null) {
-                                searchViewAction.setQuery("", false);
-                                searchViewAction.clearFocus();
-                            }
-                            if (drawerItem.getTag() != null && String.valueOf(drawerItem.getTag()).equals("Settings")) {
-                                OpenSettings();
-                            } else if (drawerItem.getTag() != null) {
-                                changeFragment(String.valueOf(drawerItem.getTag()), true);
-                                stopCameraTimer();
-                                invalidateOptionsMenu();
-                                if (onPhone)
-                                    drawer.closeDrawer();
-                            }
+            .withActivity(this)
+            .withTranslucentStatusBar(false)
+            .withActionBarDrawerToggle(true)
+            .withAccountHeader(headerResult)
+            .withToolbar(toolbar)
+            .withSelectedItem(-1)
+            .withDrawerItems(getDrawerItems())
+            .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                @Override
+                @DebugLog
+                public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                    if (drawerItem != null) {
+                        if (searchViewAction != null) {
+                            searchViewAction.setQuery("", false);
+                            searchViewAction.clearFocus();
                         }
-                        return false;
+                        if (drawerItem.getTag() != null && String.valueOf(drawerItem.getTag()).equals("Settings")) {
+                            OpenSettings();
+                        } else if (drawerItem.getTag() != null) {
+                            changeFragment(String.valueOf(drawerItem.getTag()), true);
+                            stopCameraTimer();
+                            invalidateOptionsMenu();
+                            if (onPhone)
+                                drawer.closeDrawer();
+                        }
                     }
-                })
-                .build();
+                    return false;
+                }
+            })
+            .build();
         drawer.addStickyFooterItem(createSecondaryDrawerItem(this.getString(R.string.action_settings), "gmd_settings", "Settings"));
     }
 
-    public void OpenSettings() {
+    public void OpenSettings()
+    {
         stopCameraTimer();
         startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), iSettingsResultCode);
     }
 
     private List<IDrawerItem> getDrawerItems() {
         List<IDrawerItem> drawerItems = new ArrayList<>();
-        if (mConfigInfo == null)
-            return drawerItems;
-
         String[] drawerActions = mSharedPrefs.getNavigationActions();
         String[] fragments = mSharedPrefs.getNavigationFragments();
         String[] ICONS = mSharedPrefs.getNavigationIcons();
@@ -956,59 +960,72 @@ public class MainActivity extends AppCompatPermissionsActivity {
         }
 
         for (int i = 0; i < drawerActions.length; i++)
-            if (fragments[i].contains("fragments.Wizard"))
+            if (fragments[i].contains("Fragments.Wizard"))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         if (drawerItems.size() > 0)
             drawerItems.add(new DividerDrawerItem());
 
         for (int i = 0; i < drawerActions.length; i++)
-            if (fragments[i].contains("fragments.Dashboard") ||
-                    (fragments[i].contains("fragments.Switch") && (mConfigInfo != null && mConfigInfo.isEnableTabLights())) ||
-                    (fragments[i].contains("fragments.Scene") && (mConfigInfo != null && mConfigInfo.isEnableTabScenes())))
+            if (fragments[i].contains("Fragments.Dashboard") ||
+                (fragments[i].contains("Fragments.Switch") && (mConfigInfo != null && mConfigInfo.isEnableTabLights())) ||
+                (fragments[i].contains("Fragments.Scene") && (mConfigInfo != null && mConfigInfo.isEnableTabScenes())))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         drawerItems.add(new DividerDrawerItem());
 
         for (int i = 0; i < drawerActions.length; i++)
-            if ((fragments[i].contains("fragments.Temperature") && (mConfigInfo != null && mConfigInfo.isEnableTabTemp())) ||
-                    (fragments[i].contains("fragments.Weather") && (mConfigInfo != null && mConfigInfo.isEnableTabWeather())))
+            if ((fragments[i].contains("Fragments.Temperature") && (mConfigInfo != null && mConfigInfo.isEnableTabTemp())) ||
+                (fragments[i].contains("Fragments.Weather") && (mConfigInfo != null && mConfigInfo.isEnableTabWeather())))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         drawerItems.add(new DividerDrawerItem());
 
         for (int i = 0; i < drawerActions.length; i++) {
-            if ((fragments[i].contains("fragments.Plans")) ||
-                    (fragments[i].contains("fragments.Utilities") && (mConfigInfo != null && mConfigInfo.isEnableTabUtility())))
+            if ((fragments[i].contains("Fragments.Plans")) ||
+                (fragments[i].contains("Fragments.Utilities") && (mConfigInfo != null && mConfigInfo.isEnableTabUtility())))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         }
 
         try {
             if (user != null && user.getRights() >= 2) {
                 for (int i = 0; i < drawerActions.length; i++) {
-                    if (fragments[i].contains("fragments.Camera"))
+                    if (fragments[i].contains("Fragments.Camera"))
                         drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
                 }
                 drawerItems.add(new DividerDrawerItem());
                 for (int i = 0; i < drawerActions.length; i++)
-                    if (fragments[i].contains("fragments.Logs") || fragments[i].contains("fragments.Events") || fragments[i].contains("fragments.UserVariables"))
+                    if (fragments[i].contains("Fragments.Logs") || fragments[i].contains("Fragments.Events") || fragments[i].contains("Fragments.UserVariables"))
                         drawerItems.add(createSecondaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
             }
         } catch (Exception ex) {
         }
+
         return drawerItems;
     }
 
     private SecondaryDrawerItem createSecondaryDrawerItem(String title, String icon, String fragmentID) {
         SecondaryDrawerItem item = new SecondaryDrawerItem();
         item.withName(title)
-                .withIcon(GoogleMaterial.Icon.valueOf(icon))
-                .withTag(fragmentID);
+            .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.primary)
+            .withTag(fragmentID);
+        if (mSharedPrefs.darkThemeEnabled()) {
+            item.withIconColorRes(R.color.white);
+            item.withSelectedColorRes(R.color.primary);
+            item.withSelectedTextColorRes(R.color.white);
+            item.withSelectedIconColorRes(R.color.white);
+        }
         return item;
     }
 
     private PrimaryDrawerItem createPrimaryDrawerItem(String title, String icon, String fragmentID) {
         PrimaryDrawerItem item = new PrimaryDrawerItem();
         item.withName(title)
-                .withIcon(GoogleMaterial.Icon.valueOf(icon))
-                .withTag(fragmentID);
+            .withIcon(GoogleMaterial.Icon.valueOf(icon)).withIconColorRes(R.color.primary)
+            .withTag(fragmentID);
+        if (mSharedPrefs.darkThemeEnabled()) {
+            item.withIconColorRes(R.color.white);
+            item.withSelectedColorRes(R.color.primary);
+            item.withSelectedTextColorRes(R.color.white);
+            item.withSelectedIconColorRes(R.color.white);
+        }
         return item;
     }
 
@@ -1019,8 +1036,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
         MenuItem speechMenuItem;
         if (!fromVoiceWidget && !fromQRCodeWidget) {
-            if ((f instanceof nl.hnogames.domoticz.fragments.Error)) {
-                getMenuInflater().inflate(R.menu.menu_error, menu);
+            if ((f instanceof nl.hnogames.domoticz.Fragments.Error)) {
+                    getMenuInflater().inflate(R.menu.menu_error, menu);
             } else if ((f instanceof Cameras)) {
                 if (cameraRefreshTimer != null)
                     getMenuInflater().inflate(R.menu.menu_camera_pause, menu);
@@ -1127,12 +1144,17 @@ public class MainActivity extends AppCompatPermissionsActivity {
                             }
                         };
                     }
+                    if (mSharedPrefs.darkThemeEnabled()) {
+                        int color = ContextCompat.getColor(MainActivity.this, R.color.background_dark);
+                        if (color != 0 && recognitionProgressView != null)
+                            recognitionProgressView.setBackgroundColor(color);
+                    }
                     int[] colors = {
-                            ContextCompat.getColor(this, R.color.material_amber_600),
-                            ContextCompat.getColor(this, R.color.material_blue_600),
-                            ContextCompat.getColor(this, R.color.material_deep_purple_600),
-                            ContextCompat.getColor(this, R.color.material_green_600),
-                            ContextCompat.getColor(this, R.color.material_orange_600)
+                        ContextCompat.getColor(this, R.color.material_amber_600),
+                        ContextCompat.getColor(this, R.color.material_blue_600),
+                        ContextCompat.getColor(this, R.color.material_deep_purple_600),
+                        ContextCompat.getColor(this, R.color.material_green_600),
+                        ContextCompat.getColor(this, R.color.material_orange_600)
                     };
                     recognitionProgressView.setColors(colors);
                     recognitionProgressView.setSpeechRecognizer(speechRecognizer);
@@ -1191,13 +1213,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     return true;
                 case R.id.action_sort:
                     SortDialog infoDialog = (latestFragment instanceof Logs) ?
-                            new SortDialog(
-                                    this,
-                                    R.layout.dialog_switch_logs,
-                                    new String[]{getString(R.string.filter_all), getString(R.string.filter_normal), getString(R.string.filter_status), getString(R.string.filter_error)}) :
-                            new SortDialog(
-                                    this,
-                                    R.layout.dialog_switch_logs, null);
+                        new SortDialog(
+                            this,
+                            R.layout.dialog_switch_logs,
+                            new String[]{getString(R.string.filter_all), getString(R.string.filter_normal), getString(R.string.filter_status), getString(R.string.filter_error)}) :
+                        new SortDialog(
+                            this,
+                            R.layout.dialog_switch_logs, null);
                     infoDialog.onDismissListener(new SortDialog.DismissListener() {
                         @Override
                         @DebugLog
@@ -1240,7 +1262,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
     @DebugLog
     private void showSpeechResults(Bundle results) {
         ArrayList<String> matches = results
-                .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         if (matches == null)
             return;
         int jsonAction = -1;
@@ -1335,36 +1357,36 @@ public class MainActivity extends AppCompatPermissionsActivity {
         for (ServerInfo s : mServerUtil.getEnabledServerList()) {
             serverNames[count] = s.getServerName();
             if (mServerUtil.getActiveServer() != null &&
-                    mServerUtil.getActiveServer().getServerName().equals(s.getServerName()))
+                mServerUtil.getActiveServer().getServerName().equals(s.getServerName()))
                 selectionId = count;
             count++;
         }
 
         //show dialog with servers
         new MaterialDialog.Builder(this)
-                .title(R.string.choose_server)
-                .items(serverNames)
-                .itemsCallbackSingleChoice(selectionId, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    @DebugLog
-                    public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                        try {
-                            for (ServerInfo s : mServerUtil.getEnabledServerList()) {
-                                if (s.getServerName() != null && s.getServerName().contentEquals(text)) {
-                                    String message = String.format(getString(R.string.switch_to_server), s.getServerName());
-                                    showSnackbar(message);
-                                    mServerUtil.setActiveServer(s);
-                                    domoticz.getSessionUtil().clearSessionCookie();
-                                    MainActivity.this.recreate();
-                                }
+            .title(R.string.choose_server)
+            .items(serverNames)
+            .itemsCallbackSingleChoice(selectionId, new MaterialDialog.ListCallbackSingleChoice() {
+                @Override
+                @DebugLog
+                public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                    try {
+                        for (ServerInfo s : mServerUtil.getEnabledServerList()) {
+                            if (s.getServerName() != null && s.getServerName().contentEquals(text)) {
+                                String message = String.format(getString(R.string.switch_to_server), s.getServerName());
+                                showSnackbar(message);
+                                mServerUtil.setActiveServer(s);
+                                domoticz.getSessionUtil().clearSessionCookie();
+                                MainActivity.this.recreate();
                             }
-                            return false;
-                        } catch (Exception ex) {
-                            return false;
                         }
+                        return false;
+                    } catch (Exception ex) {
+                        return false;
                     }
-                })
-                .show();
+                }
+            })
+            .show();
     }
 
     /**
@@ -1529,24 +1551,24 @@ public class MainActivity extends AppCompatPermissionsActivity {
     @Shortcut(id = "open_dashboard", icon = R.drawable.generic, shortLabelRes = R.string.title_dashboard, rank = 5, activity = MainActivity.class)
     public void OpenDashBoard() {
         fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.fragments.Dashboard", false);
+        changeFragment("nl.hnogames.domoticz.Fragments.Dashboard", false);
     }
 
     @Shortcut(id = "open_switches", icon = R.drawable.dimmer, shortLabelRes = R.string.title_switches, rank = 4, activity = MainActivity.class)
     public void OpenSwitch() {
         fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.fragments.Switches", false);
+        changeFragment("nl.hnogames.domoticz.Fragments.Switches", false);
     }
 
     @Shortcut(id = "open_utilities", icon = R.drawable.harddisk, shortLabelRes = R.string.title_utilities, rank = 3, activity = MainActivity.class)
     public void OpenUtilities() {
         fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.fragments.Utilities", false);
+        changeFragment("nl.hnogames.domoticz.Fragments.Utilities", false);
     }
 
     @Shortcut(id = "open_temperature", icon = R.drawable.temperature, shortLabelRes = R.string.title_temperature, rank = 2, activity = MainActivity.class)
     public void OpenTemperature() {
         fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.fragments.Temperature", false);
+        changeFragment("nl.hnogames.domoticz.Fragments.Temperature", false);
     }
 }

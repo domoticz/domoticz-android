@@ -28,7 +28,7 @@
     <string name="latitude">Zeměpisná šířka</string>
     <string name="radius">Poloměr (metry)</string>
     <string name="connectedSwitch">Propojený přepínač</string>
-    <string name="unable_to_get_switches">Nepodařilo se načíst všechny přepínače, zkuste to prosím znovu</string>
+    <string name="unable_to_get_switches">Nepodařilo se získat všechny přepínače, zkuste to prosím znovu</string>
     <string name="delete_short">DEL</string>
     <string name="delete">Smazat</string>
     <string name="Location_name">Název místa</string>
@@ -50,7 +50,7 @@
     <string name="description_geofence_notifications">Povolit oznámení pro spouštění událostí</string>
     <string name="geofence_place">Místo: %s</string>
     <string name="geofence_location_entering">"Vstupuji %1$s"</string>
-    <string name="geofence_location_leaving">Opouštím %1$s</string>
+    <string name="geofence_location_leaving">Opuštím %1$s</string>
     <string name="geofence_location_entering_text">Vstupuji do jednoho z míst</string>
     <string name="geofence_location_leaving_text">Opouštím jedno z míst</string>
     <string name="geofence_error_recreateLocations">Kvůli změnám v Geofencingu je nutné znovu vytvořit místa</string>
@@ -59,7 +59,7 @@
     <string name="noSwitchSelected_connectOneNow">Propojit ho teď?</string>
     <string name="geofencing_disabled_no_enabled_fences">Geofencing je deaktivován, protože nejsou povoleny žádné geofence</string>
     <string name="geofence_not_available">Služba Geofence není nyní k dispozici</string>
-    <string name="geofence_too_many_geofences">V aplikaci je registrováno příliš mnoho oblastí (geofence)</string>
+    <string name="geofence_too_many_geofences">V aplikace je registrováno příliš mnoho oblastí (geofence)</string>
     <string name="geofence_too_many_pending_intents">Příliš mnoho PendingIntents</string>
     <string name="unknown_geofence_error">Neznámá chyba</string>
 </resources>

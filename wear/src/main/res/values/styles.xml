@@ -22,11 +22,11 @@
 
 <resources>
     <style name="TextView.Small.Light.Action">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/light_grey</item>
     </style>
 
     <style name="TextView.Medium.Light.Action">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/light_grey</item>
     </style>
 
     <style name="ActionButton">

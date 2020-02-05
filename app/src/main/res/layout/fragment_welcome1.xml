@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -20,13 +21,13 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/welcome_top_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin">
+                android:id="@+id/root1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/welcome_top_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin">
 
     <ImageView
         android:id="@+id/logo_domoticz"
@@ -35,7 +36,7 @@
         android:layout_alignParentTop="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
-        android:src="@drawable/ic_domoticz_logo" />
+        android:src="@drawable/ic_domoticz_logo"/>
 
     <TextView
         android:id="@+id/info_text"
@@ -44,7 +45,7 @@
         android:layout_below="@id/logo_domoticz"
         android:text="@string/welcome_info_domoticz"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_size_welcomePage1_domoticzInfo" />
+        android:textSize="@dimen/text_size_welcomePage1_domoticzInfo"/>
 
     <TextView
         android:id="@+id/info_swipe"
@@ -53,6 +54,6 @@
         android:layout_alignParentBottom="true"
         android:text="@string/welcome_info_swipe"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_size_welcomePage1_swipeInfo" />
+        android:textSize="@dimen/text_size_welcomePage1_swipeInfo"/>
 
 </RelativeLayout>

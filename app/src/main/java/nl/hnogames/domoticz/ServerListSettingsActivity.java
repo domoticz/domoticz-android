@@ -30,20 +30,18 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
-import com.ftinc.scoop.Scoop;
 import com.google.android.material.snackbar.Snackbar;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.adapters.ServerAdapter;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import nl.hnogames.domoticz.Adapters.ServerAdapter;
+import nl.hnogames.domoticz.Interfaces.ServerClickListener;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
-import nl.hnogames.domoticz.interfaces.ServerClickListener;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
@@ -59,27 +57,29 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
     private CoordinatorLayout coordinatorLayout;
     private ServerAdapter adapter;
     private ArrayList<ServerInfo> mServerList;
-    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
-        // Apply Scoop to the activity
-        Scoop.getInstance().apply(this);
-
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+        else
+            setTheme(R.style.AppTheme);
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server_settings);
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.server_settings);
 
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
+        if (mSharedPrefs.darkThemeEnabled()) {
+            coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
+        }
+
         createListView();
     }
 
@@ -119,6 +119,10 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
         });
 
         ListView listView = findViewById(R.id.listView);
+        if ((new SharedPrefUtil(this)).darkThemeEnabled()) {
+            listView.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
+        }
+
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
         listView.setAdapter(animationAdapter);
@@ -143,7 +147,6 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             createListView(); //reload total list
         }
@@ -154,7 +157,7 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
         removeServerFromListView(serverInfo);
 
         UsefulBits.showSnackbarWithAction(this, coordinatorLayout, String.format(getString(R.string.something_deleted),
-                getString(R.string.server)), Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
+            getString(R.string.server)), Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);

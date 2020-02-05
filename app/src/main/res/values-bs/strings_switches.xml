@@ -21,18 +21,18 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-    <!-- only temporarily to suppress the missing translations errors for now!! -->
-    <string name="title_switches">Prekidači</string>
-    <string name="txt_notAvailable">N/A</string>
-    <string name="idx">IDX</string>
-    <string name="placeholder_value">255</string>
-    <string name="color_set">Odabrana boja za</string>
-    <string name="state_set">Odabrano stanje za</string>
-    <string name="error_favorite">Nije moguće postaviti omiljene</string>
-    <string name="error_logs">Nije moguće log za prikaz</string>
-    <string name="error_color">Nije moguće promijeniti boju</string>
-    <string name="error_state">Nije moguće promjeniti status</string>
-    <string name="error_timer">Ne mogu pokazati tajmer</string>
-    <string name="error_notifications">Ne mogu prikazati obavijesti</string>
-    <string name="set_level_switch">"Postavke nivoa za prekidač: %1$s do %2$d"</string>
+  <!-- only temporarily to suppress the missing translations errors for now!! -->
+  <string name="title_switches">Prekidači</string>
+  <string name="txt_notAvailable">N/A</string>
+  <string name="idx">IDX</string>
+  <string name="placeholder_value">255</string>
+  <string name="color_set">Odabrana boja za</string>
+  <string name="state_set">Odabrano stanje za</string>
+  <string name="error_favorite">Nije moguće postaviti omiljene</string>
+  <string name="error_logs">Nije moguće log za prikaz</string>
+  <string name="error_color">Nije moguće promijeniti boju</string>
+  <string name="error_state">Nije moguće promjeniti status</string>
+  <string name="error_timer">Ne mogu pokazati tajmer</string>
+  <string name="error_notifications">Ne mogu prikazati obavijesti</string>
+  <string name="set_level_switch">"Postavke nivoa za prekidač: %1$s do %2$d"</string>
 </resources>

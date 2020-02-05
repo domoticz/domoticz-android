@@ -27,13 +27,13 @@
     <string name="premium_feature">Toto je prémiová funkce, kupte si placenou verzi aplikace a podpořte tak vývojáře!</string>
     <string name="drawer_open">Otevřít navigační panel</string>
     <string name="drawer_close">Zavřít navigační panel</string>
-    <string name="msg_please_wait">Čekejte prosím&#8230;</string>
+    <string name="msg_please_wait">Počkejte prosím&#8230;</string>
     <string name="changelog">Historie změn</string>
-    <string name="button_state_on">ZAP</string>
-    <string name="button_state_off">VYP</string>
-    <string name="button_state_closed">Zavřeno</string>
+    <string name="button_state_on">Zapnnuto</string>
+    <string name="button_state_off">Vypnuto</string>
+    <string name="button_state_closed">Zavřít</string>
     <string name="button_state_open">Otevřít</string>
-    <string name="button_state_lock">Zamknout</string>
+    <string name="button_state_lock">Zámek</string>
     <string name="button_state_unlock">Odemknout</string>
     <string name="button_status_log">Záznam</string>
     <string name="button_status_day">Den</string>
@@ -44,7 +44,7 @@
     <string name="button_status_notifications">Notifikace</string>
     <string name="button_color">Barva</string>
     <string name="button_arm">Zastřežit</string>
-    <string name="button_disarm">Odstřežit</string>
+    <string name="button_disarm">Zajištěný</string>
     <string name="button_state_full_light">Plné světlo</string>
     <string name="button_state_night">Noční světlo</string>
     <string name="sunrise">Východ slunce</string>
@@ -86,7 +86,7 @@
     <string name="yes">Ano</string>
     <string name="no">Ne</string>
     <string name="are_you_sure">Opravdu?</string>
-    <string name="are_you_sure_clear_settings">Opravdu to chcete provést? Odstraníte tím všechny widgety z homescreenu, takže je pak budete muset znovu přidat.</string>
+    <string name="are_you_sure_clear_settings">Opravdu chcete toto provést? Tímto odstraníte všechny widgety z homescreenu, takže je potom budete muset znovu přidat.</string>
     <string name="add">Přidat</string>
     <string name="cancel">Zrušit</string>
     <string name="ok">Ok</string>
@@ -110,7 +110,7 @@
     <string name="filterOn_on">Stav zap</string>
     <string name="filterOn_off">Stav vyp</string>
     <string name="filterOn_static">Statické zařízení</string>
-    <string name="filterOn_all">Všechna zařízení</string>
+    <string name="filterOn_all">Všechny zařízení</string>
     <string name="filter">Filter</string>
     <string name="filter_devices">Filtrovat zařízení</string>
     <string name="filter_graph_empty">Prosím upřesněte filtr</string>
@@ -130,7 +130,7 @@
     <string name="filter_normal">Normální</string>
     <string name="filter_status">Stav</string>
     <string name="filter_error">Chyba</string>
-    <string name="use_demo_setup">Použít ukázkové nastavení</string>
-    <string name="auto_refresh_time">Obnovit časovač</string>
-    <string name="set_auto_refresh_time">Nastavit specifický časovač pro automatickou obnovu v sekundách.</string>
+    <string name="use_demo_setup">Use demo setup</string>
+    <string name="auto_refresh_time">Refresh timer</string>
+    <string name="set_auto_refresh_time">Set a specific timer for the auto refresh in seconds.</string>
 </resources>

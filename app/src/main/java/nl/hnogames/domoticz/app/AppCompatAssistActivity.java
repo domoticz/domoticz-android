@@ -26,10 +26,10 @@ import android.app.assist.AssistContent;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class AppCompatAssistActivity extends AppCompatActivity {
     @Override
@@ -43,13 +43,13 @@ public class AppCompatAssistActivity extends AppCompatActivity {
         super.onProvideAssistContent(outContent);
         try {
             outContent.setStructuredData(
-                    new JSONObject()
-                            .put("@type", "SoftwareApplication")
-                            .put("author", "Domoticz")
-                            .put("name", "Domoticz")
-                            .put("id", "http://www.domoticz.com")
-                            .put("description", "Domoticz is a very light weight home automation system that lets you monitor and configure miscellaneous devices, including lights, switches, various sensors/meters like temperature, rainfall, wind, ultraviolet (UV) radiation, electricity usage/production, gas consumption, water consumption and many more."
-                            ).toString()
+                new JSONObject()
+                    .put("@type", "SoftwareApplication")
+                    .put("author", "Domoticz")
+                    .put("name", "Domoticz")
+                    .put("id", "http://www.domoticz.com")
+                    .put("description", "Domoticz is a very light weight home automation system that lets you monitor and configure miscellaneous devices, including lights, switches, various sensors/meters like temperature, rainfall, wind, ultraviolet (UV) radiation, electricity usage/production, gas consumption, water consumption and many more."
+                    ).toString()
             );
         } catch (JSONException e) {
             e.printStackTrace();

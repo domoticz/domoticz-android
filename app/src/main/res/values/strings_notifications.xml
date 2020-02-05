@@ -30,13 +30,4 @@
     <string name="allsystems">All Systems</string>
     <string name="systems">Systems</string>
 
-    <string name="send_notification">Send notification</string>
-    <string name="notification_subject">Subject</string>
-    <string name="notification_message">Message</string>
-
-    <string name="notification_error_system">Please choose a system to send the notification to</string>
-    <string name="notification_error_message">Please fill in a message</string>
-    <string name="notification_error_subject">Please fill in a subject</string>
-    <string name="notification_error_send">Could not send the notification to Domoticz</string>
-    <string name="notification_send">Notification send to Domoticz</string>
 </resources>
