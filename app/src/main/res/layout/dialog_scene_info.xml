@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -21,11 +20,11 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -42,14 +41,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/idx"/>
+                android:text="@string/idx" />
 
             <TextView
                 android:id="@+id/LastSeen_title"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:padding="2dp"
-                android:text="@string/last_update"/>
+                android:text="@string/last_update" />
         </LinearLayout>
 
         <LinearLayout
@@ -64,7 +63,7 @@
                 android:paddingLeft="16dp"
                 android:paddingTop="2dp"
                 android:paddingRight="2dp"
-                android:paddingBottom="2dp"/>
+                android:paddingBottom="2dp" />
 
             <TextView
                 android:id="@+id/LastUpdate_value"
@@ -74,7 +73,7 @@
                 android:paddingTop="2dp"
                 android:paddingRight="2dp"
                 android:paddingBottom="2dp"
-                tools:text="2015-05-01 01:01:01"/>
+                tools:text="2015-05-01 01:01:01" />
         </LinearLayout>
     </LinearLayout>
 
@@ -88,13 +87,13 @@
             android:layout_width="126dp"
             android:layout_height="wrap_content"
             android:padding="2dp"
-            android:text="@string/favorite"/>
+            android:text="@string/favorite" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/favorite_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:useMaterialThemeColors="false"/>
+            app:useMaterialThemeColors="false" />
 
     </LinearLayout>
 </LinearLayout>

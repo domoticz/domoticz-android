@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -21,22 +20,21 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/Location_name">
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textNoSuggestions"
-            android:textColor="@color/default_text_color_light"/>
+            android:inputType="textNoSuggestions"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -44,13 +42,12 @@
         android:layout_height="wrap_content"
         android:hint="@string/locationAddress">
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
             android:id="@+id/address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:inputType="textNoSuggestions"
-            android:textColor="@color/default_text_color_light"/>
+            android:inputType="textNoSuggestions" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
@@ -65,13 +62,12 @@
             android:layout_height="wrap_content"
             android:hint="@string/latitude">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                 android:id="@+id/latitude"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:inputType="textNoSuggestions|number"
-                android:textColor="@color/default_text_color_light"/>
+                android:inputType="textNoSuggestions|number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -79,13 +75,12 @@
             android:layout_height="wrap_content"
             android:hint="@string/longitude">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                 android:id="@+id/longitude"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:inputType="textNoSuggestions|number"
-                android:textColor="@color/default_text_color_light"/>
+                android:inputType="textNoSuggestions|number" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
@@ -105,7 +100,8 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:text="@string/getLocation"/>
+            android:text="@string/getLocation"
+            android:textColor="?attr/buttonTextColor" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/edit_mode_button"
@@ -115,7 +111,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:text="@string/manual"/>
+            android:text="@string/manual"
+            android:textColor="?attr/buttonTextColor" />
     </LinearLayout>
 
     <LinearLayout
@@ -136,19 +133,18 @@
                 android:labelFor="@+id/radius"
                 android:paddingBottom="20dp"
                 android:text="@string/radius"
-                android:textSize="@dimen/text_size_large"/>
+                android:textSize="@dimen/text_size_large" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/radius">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
                     android:id="@+id/radius"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:textColor="@color/default_text_color_light"/>
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
@@ -166,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="20dp"
                 android:text="@string/locationAddress"
-                android:textSize="@dimen/text_size_large"/>
+                android:textSize="@dimen/text_size_large" />
 
             <TextView
                 android:id="@+id/resolvedAddress"
@@ -175,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:padding="2dp"
                 android:singleLine="false"
-                tools:text="Address 1, Ohio"/>
+                tools:text="Address 1, Ohio" />
 
             <TextView
                 android:id="@+id/resolvedCountry"
@@ -183,7 +179,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
-                tools:text="America"/>
+                tools:text="America" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -21,18 +21,18 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="pick_device_title">Вибрати пристрій</string>
-  <string name="choose_switch">Виберіть пристрій</string>
-  <string name="failed_to_get_securitypanel">Панель безпеки не знайдена серед Ваших перемикачів</string>
-  <string name="failed_to_get_switches">Не вдалося отримати пристроїв</string>
-  <string name="failed_toggle_switch">Не вдалося увімкнути або вимкнути пристрій</string>
-  <string name="switch_toggled">"Перемикач"</string>
-  <string name="text_loading">Завантаження...</string>
-  <string name="text_go">ПЕРЕЙТИ</string>
-  <string name="widget_background">Фоновий режим</string>
-  <string name="widget_dark">Темний</string>
-  <string name="widget_light">Світлий</string>
-  <string name="widget_transparent_dark">Темно-прозорий</string>
-  <string name="widget_transparent_light">Світло-прозорий</string>
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="pick_device_title">Вибрати пристрій</string>
+    <string name="choose_switch">Виберіть пристрій</string>
+    <string name="failed_to_get_securitypanel">Панель безпеки не знайдена серед Ваших перемикачів</string>
+    <string name="failed_to_get_switches">Не вдалося отримати пристроїв</string>
+    <string name="failed_toggle_switch">Не вдалося увімкнути або вимкнути пристрій</string>
+    <string name="switch_toggled">"Перемикач"</string>
+    <string name="text_loading">Завантаження...</string>
+    <string name="text_go">ПЕРЕЙТИ</string>
+    <string name="widget_background">Фоновий режим</string>
+    <string name="widget_dark">Темний</string>
+    <string name="widget_light">Світлий</string>
+    <string name="widget_transparent_dark">Темно-прозорий</string>
+    <string name="widget_transparent_light">Світло-прозорий</string>
 </resources>

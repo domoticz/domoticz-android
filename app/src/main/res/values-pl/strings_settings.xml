@@ -119,7 +119,7 @@
     <string name="bluetooth_settings">Setup Bluetooth devices</string>
     <string name="enable_bluetooth">Enable Bluetooth functionality</string>
     <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
-    <string name="translate_title">Translations</string>
+    <string name="translate_title">Tłumaczenia</string>
     <string name="security_settings">Ustawienia zabezpieczeń</string>
     <string name="enable_security">Włącz ochronę odciskiem palca na starcie</string>
     <string name="disable_security">Wyłącz ochronę odciskiem palca na starcie</string>
@@ -146,6 +146,7 @@
     <string name="enable_notifications_title">Włącz powiadomienia</string>
     <string name="enable_notifications">Włącz powiadomienia na urządzeniu</string>
     <string name="notification_screen_title">Ustawienia powiadomień</string>
+    <string name="notification_history">Notification history</string>
     <string name="notification_vibrate_title">Wibracja</string>
     <string name="notification_vibrate_on">Wibruj po odebraniu powiadomienia</string>
     <string name="notification_vibrate_off">Brak wibracji</string>
@@ -161,6 +162,13 @@
     <string name="alarm">Alarm</string>
     <string name="alarmtimer_title">Budzik</string>
     <string name="alarmtimer">Liczba sekund do czasu alarmu</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Default</string>
+    <string name="theme_daynight">Day/Night</string>
+    <string name="theme_orange">Orange</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_blue">Blue</string>
+    <!-- Other -->
     <string name="default_values">Wartości domyślne</string>
     <string name="default_values_min_error">Maksymalna wartość powinna być większa niż minimalna wartość</string>
     <string name="default_values_max_error">Maksymalna wartość powinna być większa niż minimalna wartość</string>
@@ -203,4 +211,5 @@
     <string name="debug_test_text">Test debugowania</string>
     <string name="restart_required_title">Wymagany restart</string>
     <string name="restart_now">Zrestartować teraz?</string>
+    <string name="check_settings">Check your settings</string>
 </resources>

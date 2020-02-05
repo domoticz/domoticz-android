@@ -30,4 +30,5 @@
     <string name="action_qrcode_scan">Načíst QR kód</string>
     <string name="action_bluetooth_show">Zobrazit spárovaná zařízení</string>
     <string name="action_speech">Rozpoznávání řeči</string>
+    <string name="send">Send</string>
 </resources>
