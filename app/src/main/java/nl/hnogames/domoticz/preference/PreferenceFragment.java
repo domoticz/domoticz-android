@@ -798,37 +798,37 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         boolean mkdirsResultIsOk = new File(sPath + "/").mkdirs();
 
         androidx.preference.Preference exportButton = findPreference("export_settings");
-        if(exportButton != null)
+        if (exportButton != null)
             exportButton.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(androidx.preference.Preference preference) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!PermissionsUtil.canAccessStorage(mContext)) {
-                        permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                @Override
+                public boolean onPreferenceClick(androidx.preference.Preference preference) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (!PermissionsUtil.canAccessStorage(mContext)) {
+                            permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                        } else
+                            exportSettings();
                     } else
                         exportSettings();
-                } else
-                    exportSettings();
 
-                return false;
-            }
-        });
+                    return false;
+                }
+            });
         androidx.preference.Preference importButton = findPreference("import_settings");
-        if(importButton != null)
+        if (importButton != null)
             importButton.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(androidx.preference.Preference preference) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!PermissionsUtil.canAccessStorage(mContext)) {
-                        permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                @Override
+                public boolean onPreferenceClick(androidx.preference.Preference preference) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (!PermissionsUtil.canAccessStorage(mContext)) {
+                            permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                        } else
+                            importSettings();
                     } else
                         importSettings();
-                } else
-                    importSettings();
 
-                return false;
-            }
-        });
+                    return false;
+                }
+            });
     }
 
     private void importSettings() {
@@ -836,8 +836,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         if (mSharedPrefs.loadSharedPreferencesFromFile(SettingsFile)) {
             ((SettingsActivity) getActivity()).reloadSettings();
             showSnackbar(mContext.getString(R.string.settings_imported));
-        }
-        else
+        } else
             showSnackbar(mContext.getString(R.string.settings_import_failed));
     }
 

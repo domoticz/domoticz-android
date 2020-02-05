@@ -169,6 +169,7 @@ public class FlavorRecyclerAdapter extends RecyclerView.Adapter<FlavorRecyclerAd
         ImageView mIndicator;
         ViewGroup mOptionsGroup;
         com.google.android.material.button.MaterialButton mOptAuto, mOptSystem, mOptOff, mOptOn;
+
         FlavorViewHolder(View itemView) {
             super(itemView);
             mTitle = itemView.findViewById(R.id.title);

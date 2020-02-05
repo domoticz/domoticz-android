@@ -21,7 +21,6 @@
 
 package nl.hnogames.domoticz.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -42,14 +41,12 @@ import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.AppController;
-import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
-import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
-import nl.hnogames.domoticz.app.RefreshFragment;
 import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.helpers.CustomIncomingMessageViewHolder;
 import nl.hnogames.domoticz.helpers.CustomOutcomingMessageViewHolder;
@@ -98,7 +95,7 @@ public class NotificationHistory extends Fragment {
             @Override
             public void onReceive(ArrayList<NotificationTypeInfo> notificationTypes) {
                 mNotificationTypes = notificationTypes;
-                if(getActivity() != null)
+                if (getActivity() != null)
                     getActivity().invalidateOptionsMenu();
             }
 
@@ -122,7 +119,7 @@ public class NotificationHistory extends Fragment {
 
         MessagesList messagesList = root.findViewById(R.id.messagesList);
         adapter = new MessagesListAdapter<>(DeviceUtils.getUniqueID(context), holdersConfig, null);
-        if(n!=null && n.size()>0)
+        if (n != null && n.size() > 0)
             adapter.addToEnd(n, true);
         messagesList.setAdapter(adapter);
     }
@@ -154,7 +151,6 @@ public class NotificationHistory extends Fragment {
                 inflater.inflate(R.menu.menu_notification, menu);
             else
                 inflater.inflate(R.menu.menu_notification_user, menu);
-
             MenuItem searchMenuItem = menu.findItem(R.id.search);
             searchViewAction = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
             searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -167,13 +163,13 @@ public class NotificationHistory extends Fragment {
                 @Override
                 @DebugLog
                 public boolean onQueryTextChange(String newText) {
-                    if (notifications != null && notifications.size() > 0)
-                    {
+                    if (notifications != null && notifications.size() > 0) {
                         List<NotificationInfo> filtered = new ArrayList<>();
-                        for (NotificationInfo n: notifications) {
-                            if(n.getTitle().toLowerCase().contains(newText.toLowerCase()) || n.getText().toLowerCase().contains(newText.toLowerCase()))
+                        for (NotificationInfo n : notifications) {
+                            if (n.getTitle().toLowerCase().contains(newText.toLowerCase()) || n.getText().toLowerCase().contains(newText.toLowerCase()))
                                 filtered.add(n);
                         }
+                        Collections.sort(filtered);
                         CreateList(filtered);
                     }
                     return false;
@@ -187,7 +183,7 @@ public class NotificationHistory extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if(getActivity() != null)
+                if (getActivity() != null)
                     getActivity().finish();
                 return true;
             case R.id.action_add:

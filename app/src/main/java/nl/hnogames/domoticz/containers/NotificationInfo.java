@@ -64,12 +64,11 @@ public class NotificationInfo implements IMessage, Comparable<NotificationInfo> 
         this.idx = idx;
     }
 
-    public String getTitle()
-    {
-        if(UsefulBits.isEmpty(title))
+    public String getTitle() {
+        if (UsefulBits.isEmpty(title))
             return "";
         else
-                return title;
+            return title;
     }
 
     public void setTitle(String title) {
@@ -98,7 +97,7 @@ public class NotificationInfo implements IMessage, Comparable<NotificationInfo> 
     }
 
     public String getText() {
-        if(UsefulBits.isEmpty(text))
+        if (UsefulBits.isEmpty(text))
             return "";
         else
             return text;

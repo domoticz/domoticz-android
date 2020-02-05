@@ -67,6 +67,7 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 @SuppressWarnings("SpellCheckingInspection")
 public class SharedPrefUtil {
 
+    private static final int NR_OF_HISTORY = 100;
     private static final String PREF_MULTI_SERVER = "enableMultiServers";
     private static final String PREF_STARTUP_PROTECTION_ENABLED = "enableSecurity";
     private static final String PREF_CUSTOM_WEAR = "enableWearItems";
@@ -582,16 +583,16 @@ public class SharedPrefUtil {
      * @return List of received notifications
      */
     public List<NotificationInfo> getLoggedNotifications() {
-        if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS_LOG)) return null;
-
+        if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS_LOG))
+            return null;
         String json = prefs.getString(PREF_RECEIVED_NOTIFICATIONS_LOG, null);
-        if(!UsefulBits.isEmpty(json)) {
-            List<NotificationInfo> notifications = gson.fromJson(json, new TypeToken<List<NotificationInfo>>() {}.getType());
+        if (!UsefulBits.isEmpty(json)) {
+            List<NotificationInfo> notifications = gson.fromJson(json, new TypeToken<List<NotificationInfo>>() {
+            }.getType());
             if (notifications != null)
                 Collections.sort(notifications);
             return notifications;
-        }
-        else
+        } else
             return null;
     }
 
@@ -610,7 +611,7 @@ public class SharedPrefUtil {
                 notifications = new ArrayList<>();
 
             notifications.add(notification);
-            if (notifications.size() > 100) {
+            if (notifications.size() > NR_OF_HISTORY) {
                 Collections.sort(notifications);
                 notifications.remove(0);
             }
