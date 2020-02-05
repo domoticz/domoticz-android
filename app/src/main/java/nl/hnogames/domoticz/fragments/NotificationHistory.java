@@ -31,7 +31,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -43,17 +45,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hugo.weaving.DebugLog;
-import nl.hnogames.domoticz.MainActivity;
-import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.app.RefreshFragment;
 import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.helpers.CustomIncomingMessageViewHolder;
 import nl.hnogames.domoticz.helpers.CustomOutcomingMessageViewHolder;
 import nl.hnogames.domoticz.ui.SendNotificationDialog;
 import nl.hnogames.domoticz.utils.DeviceUtils;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.NotificationTypeInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
@@ -73,6 +75,8 @@ public class NotificationHistory extends Fragment {
     private UserInfo user = null;
     private ServerUtil mServerUtil = null;
     private ConfigInfo mConfigInfo = null;
+    private SearchView searchViewAction;
+    private List<NotificationInfo> notifications;
 
     @Override
     @DebugLog
@@ -88,21 +92,7 @@ public class NotificationHistory extends Fragment {
         mSharedPrefs = new SharedPrefUtil(context);
         mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
 
-        List<NotificationInfo> notifications = mSharedPrefs.getLoggedNotifications();
-        if (notifications != null && notifications.size() > 0) {
-            MessageHolders holdersConfig = new MessageHolders()
-                    .setIncomingTextConfig(
-                            CustomIncomingMessageViewHolder.class,
-                            R.layout.item_custom_incoming_text_message)
-                    .setOutcomingTextConfig(
-                            CustomOutcomingMessageViewHolder.class,
-                            R.layout.item_custom_outcoming_text_message);
-
-            MessagesList messagesList = root.findViewById(R.id.messagesList);
-            adapter = new MessagesListAdapter<>(DeviceUtils.getUniqueID(context), holdersConfig, null);
-            adapter.addToEnd(notifications, true);
-            messagesList.setAdapter(adapter);
-        }
+        notifications = mSharedPrefs.getLoggedNotifications();
         coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
         mDomoticz.GetNotificationSystems(new NotificationTypesReceiver() {
             @Override
@@ -117,7 +107,24 @@ public class NotificationHistory extends Fragment {
             }
         });
 
+        CreateList(notifications);
         return root;
+    }
+
+    private void CreateList(List<NotificationInfo> n) {
+        MessageHolders holdersConfig = new MessageHolders()
+                .setIncomingTextConfig(
+                        CustomIncomingMessageViewHolder.class,
+                        R.layout.item_custom_incoming_text_message)
+                .setOutcomingTextConfig(
+                        CustomOutcomingMessageViewHolder.class,
+                        R.layout.item_custom_outcoming_text_message);
+
+        MessagesList messagesList = root.findViewById(R.id.messagesList);
+        adapter = new MessagesListAdapter<>(DeviceUtils.getUniqueID(context), holdersConfig, null);
+        if(n!=null && n.size()>0)
+            adapter.addToEnd(n, true);
+        messagesList.setAdapter(adapter);
     }
 
     public UserInfo getCurrentUser(Domoticz domoticz) {
@@ -143,9 +150,35 @@ public class NotificationHistory extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (mNotificationTypes != null) {
             UserInfo user = getCurrentUser(mDomoticz);
-            if (user != null && user.getRights() >= 2) {
+            if (user != null && user.getRights() >= 2)
                 inflater.inflate(R.menu.menu_notification, menu);
-            }
+            else
+                inflater.inflate(R.menu.menu_notification_user, menu);
+
+            MenuItem searchMenuItem = menu.findItem(R.id.search);
+            searchViewAction = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+            searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                @DebugLog
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                @DebugLog
+                public boolean onQueryTextChange(String newText) {
+                    if (notifications != null && notifications.size() > 0)
+                    {
+                        List<NotificationInfo> filtered = new ArrayList<>();
+                        for (NotificationInfo n: notifications) {
+                            if(n.getTitle().toLowerCase().contains(newText.toLowerCase()) || n.getText().toLowerCase().contains(newText.toLowerCase()))
+                                filtered.add(n);
+                        }
+                        CreateList(filtered);
+                    }
+                    return false;
+                }
+            });
         }
         super.onCreateOptionsMenu(menu, inflater);
     }

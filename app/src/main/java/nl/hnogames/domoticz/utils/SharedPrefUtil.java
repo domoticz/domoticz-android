@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.Geofence;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -105,7 +106,7 @@ public class SharedPrefUtil {
     private static final String PREF_SUPPRESS_NOTIFICATIONS = "suppressNotifications";
     private static final String PREF_ALARM_NOTIFICATIONS = "alarmNotifications";
     private static final String PREF_RECEIVED_NOTIFICATIONS = "receivedNotifications";
-    private static final String PREF_RECEIVED_NOTIFICATIONS_LOG = "receivedNotificationsLogv2";
+    private static final String PREF_RECEIVED_NOTIFICATIONS_LOG = "receivedNotificationsLogv3";
     private static final String PREF_APK_VALIDATED = "apkvalidated";
     private static final String PREF_TALK_BACK = "talkBack";
     private static final String PREF_ALARM_TIMER = "alarmNotificationTimer";
@@ -583,16 +584,15 @@ public class SharedPrefUtil {
     public List<NotificationInfo> getLoggedNotifications() {
         if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS_LOG)) return null;
 
-        Set<String> notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, null);
-        if (notifications != null) {
-            List<NotificationInfo> notificationsValues = new ArrayList<>();
-            for (String s : notifications) {
-                notificationsValues.add(gson.fromJson(s, NotificationInfo.class));
-            }
-            Collections.sort(notificationsValues);
-            return notificationsValues;
+        String json = prefs.getString(PREF_RECEIVED_NOTIFICATIONS_LOG, null);
+        if(!UsefulBits.isEmpty(json)) {
+            List<NotificationInfo> notifications = gson.fromJson(json, new TypeToken<List<NotificationInfo>>() {}.getType());
+            if (notifications != null)
+                Collections.sort(notifications);
+            return notifications;
         }
-        else return null;
+        else
+            return null;
     }
 
     /**
@@ -605,24 +605,16 @@ public class SharedPrefUtil {
             return;
 
         try {
-            Set<String> notifications;
-            if (!prefs.contains(PREF_RECEIVED_NOTIFICATIONS_LOG)) {
-                notifications = new HashSet<>();
-                notifications.add(gson.toJson(notification));
-                editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, notifications).apply();
-            } else {
-                notifications = prefs.getStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, null);
-                if (notifications == null)
-                    notifications = new HashSet<>();
-                notifications.add(gson.toJson(notification));
-                if (notifications.size() > 100) {
-                    List<String> notificationsValues = new ArrayList<>(notifications);
-                    Collections.sort(notificationsValues);
-                    notificationsValues.remove(0);
-                    editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, new HashSet(notificationsValues)).apply();
-                } else
-                    editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS_LOG, notifications).apply();
+            List<NotificationInfo> notifications = getLoggedNotifications();
+            if (notifications == null)
+                notifications = new ArrayList<>();
+
+            notifications.add(notification);
+            if (notifications.size() > 100) {
+                Collections.sort(notifications);
+                notifications.remove(0);
             }
+            editor.putString(PREF_RECEIVED_NOTIFICATIONS_LOG, gson.toJson(notifications)).apply();
         } catch (Exception ex) {
             Log.e(TAG, "Failed to save received notification: " + ex.getMessage());
         }

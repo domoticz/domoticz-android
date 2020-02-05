@@ -26,6 +26,8 @@ import com.stfalcon.chatkit.commons.models.IUser;
 
 import java.util.Date;
 
+import nl.hnogames.domoticz.utils.UsefulBits;
+
 public class NotificationInfo implements IMessage, Comparable<NotificationInfo> {
     private int idx = -1;
     private String title;
@@ -62,8 +64,12 @@ public class NotificationInfo implements IMessage, Comparable<NotificationInfo> 
         this.idx = idx;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTitle()
+    {
+        if(UsefulBits.isEmpty(title))
+            return "";
+        else
+                return title;
     }
 
     public void setTitle(String title) {
@@ -92,7 +98,10 @@ public class NotificationInfo implements IMessage, Comparable<NotificationInfo> 
     }
 
     public String getText() {
-        return text;
+        if(UsefulBits.isEmpty(text))
+            return "";
+        else
+            return text;
     }
 
     public void setText(String text) {
