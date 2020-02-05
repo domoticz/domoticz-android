@@ -28,12 +28,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.SwitchLogInfo;
 
 public class SwitchLogInfoDialog implements DialogInterface.OnDismissListener {
@@ -49,8 +47,7 @@ public class SwitchLogInfoDialog implements DialogInterface.OnDismissListener {
         this.mContext = c;
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
-            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-            .positiveText(android.R.string.ok);
+                .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }
 
@@ -66,7 +63,7 @@ public class SwitchLogInfoDialog implements DialogInterface.OnDismissListener {
 
         String[] listData = processLogs();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext,
-            android.R.layout.simple_list_item_1, android.R.id.text1, listData);
+                android.R.layout.simple_list_item_1, android.R.id.text1, listData);
         listView.setAdapter(adapter);
 
         md.show();

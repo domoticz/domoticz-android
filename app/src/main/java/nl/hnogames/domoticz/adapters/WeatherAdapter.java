@@ -22,7 +22,9 @@
 package nl.hnogames.domoticz.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,9 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
 import com.like.LikeButton;
@@ -42,14 +47,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
-import nl.hnogames.domoticz.interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
@@ -131,16 +134,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.weather_row_default, parent, false);
-
-        if (mSharedPrefs.darkThemeEnabled()) {
-            if ((view.findViewById(R.id.card_global_wrapper)) != null)
-                view.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-            if ((view.findViewById(R.id.row_wrapper)) != null)
-                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
-            if ((view.findViewById(R.id.row_global_wrapper)) != null)
-                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-        }
+                .inflate(R.layout.weather_row_default, parent, false);
 
         return new DataObjectHolder(view);
     }
@@ -181,6 +175,14 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 }
             });
 
+            TypedValue pieBackgroundValue = new TypedValue();
+            TypedValue temperatureValue = new TypedValue();
+            Resources.Theme theme = context.getTheme();
+            theme.resolveAttribute(R.attr.listviewRowBackground, pieBackgroundValue, true);
+            theme.resolveAttribute(R.attr.temperatureTextColor, temperatureValue, true);
+            holder.pieView.setInnerBackgroundColor(pieBackgroundValue.data);
+            holder.pieView.setTextColor(temperatureValue.data);
+
             holder.isProtected = mWeatherInfo.isProtected();
             holder.name.setText(mWeatherInfo.getName());
             holder.data.setText("");
@@ -215,11 +217,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 holder.data.append(", " + context.getString(R.string.temp) + ": " + mWeatherInfo.getTemp() + " " + tempSign);
 
                 holder.pieView.setVisibility(View.VISIBLE);
-
-                if (!this.mSharedPrefs.darkThemeEnabled()) {
-                    holder.pieView.setInnerBackgroundColor(ContextCompat.getColor(context, R.color.white));
-                    holder.pieView.setTextColor(ContextCompat.getColor(context, R.color.black));
-                }
                 holder.pieView.setPercentageTextSize(16);
                 holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
 

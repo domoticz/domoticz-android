@@ -38,6 +38,11 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.fragment.app.Fragment;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
@@ -47,17 +52,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ServerSettingsActivity;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.ui.MultiSelectionSpinner;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -73,9 +74,9 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     private ServerUtil mServerUtil;
 
     private AppCompatEditText remote_server_input, remote_port_input,
-        remote_username_input, remote_password_input,
-        remote_directory_input, local_server_input, local_password_input,
-        local_username_input, local_port_input, local_directory_input, server_name_input;
+            remote_username_input, remote_password_input,
+            remote_directory_input, local_server_input, local_password_input,
+            local_username_input, local_port_input, local_directory_input, server_name_input;
 
     private Spinner remote_protocol_spinner, local_protocol_spinner;
     private SwitchMaterial localServer_switch;
@@ -119,12 +120,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        if (mSharedPrefs.darkThemeEnabled())
-            v = inflater.inflate(R.layout.fragment_add_server_dark, container, false);
-        else
-            v = inflater.inflate(R.layout.fragment_add_server, container, false);
-
+        v = inflater.inflate(R.layout.fragment_add_server, container, false);
         permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
         getLayoutReferences();
         setPreferenceValues();
@@ -164,27 +160,27 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
             @Override
             public void onClick(View v) {
                 new MaterialDialog.Builder(getContext())
-                    .title(R.string.welcome_ssid_button_prompt)
-                    .content(R.string.welcome_msg_no_ssid_found)
-                    .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
-                    .input(null, null, new MaterialDialog.InputCallback() {
-                        @Override
-                        public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                            Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
-                            final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
-                            if (ssidFromPrefs != null) {
-                                if (ssidFromPrefs.size() > 0) {
-                                    for (String wifi : ssidFromPrefs) {
-                                        ssidListFromPrefs.add(wifi);
+                        .title(R.string.welcome_ssid_button_prompt)
+                        .content(R.string.welcome_msg_no_ssid_found)
+                        .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                        .input(null, null, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
+                                final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
+                                if (ssidFromPrefs != null) {
+                                    if (ssidFromPrefs.size() > 0) {
+                                        for (String wifi : ssidFromPrefs) {
+                                            ssidListFromPrefs.add(wifi);
+                                        }
                                     }
                                 }
-                            }
 
-                            ssidListFromPrefs.add(String.valueOf(input));
-                            mServerUtil.getActiveServer().setLocalServerSsid(ssidListFromPrefs);
-                            setSsid_spinner();
-                        }
-                    }).show();
+                                ssidListFromPrefs.add(String.valueOf(input));
+                                mServerUtil.getActiveServer().setLocalServerSsid(ssidListFromPrefs);
+                                setSsid_spinner();
+                            }
+                        }).show();
             }
         });
 
@@ -243,10 +239,10 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
 
         if (!UsefulBits.isEmpty(status)) {
             showErrorPopup(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n" + status + "\n\n"
-                + getString(R.string.welcome_msg_correctOnPreviousPage));
+                    + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else if (!mDomoticz.isUrlValid(newServer)) {
             showErrorPopup(getString(R.string.welcome_msg_connectionDataInvalid) + "\n\n"
-                + getString(R.string.welcome_msg_correctOnPreviousPage));
+                    + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else if (!isUpdateRequest && !mServerUtil.checkUniqueServerName(newServer)) {
             showErrorPopup("Server name must be unique!");
         } else {
@@ -256,15 +252,15 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
 
     private void showErrorPopup(String error) {
         new AlertDialog.Builder(getActivity())
-            .setIcon(android.R.drawable.ic_dialog_info)
-            .setTitle("Failed")
-            .setMessage(error)
-            .setPositiveButton(this.getString(R.string.yes), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                }
-            })
-            .show();
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle("Failed")
+                .setMessage(error)
+                .setPositiveButton(this.getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .show();
     }
 
     private void setPreferenceValues() {
@@ -349,7 +345,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     private void setProtocol_spinner() {
         String[] protocols = getResources().getStringArray(R.array.remote_server_protocols);
         ArrayAdapter<String> protocolAdapter
-            = new ArrayAdapter<>(getActivity(), R.layout.spinner_list_item, protocols);
+                = new ArrayAdapter<>(getActivity(), R.layout.spinner_list_item, protocols);
         remote_protocol_spinner.setAdapter(protocolAdapter);
         remote_protocol_spinner.setSelection(getPrefsDomoticzRemoteSecureIndex());
         remote_protocol_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -382,17 +378,17 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     private void buildServerInfo() {
         newServer = new ServerInfo();
         newServer.setRemoteServerUsername(
-            remote_username_input.getText().toString().trim());
+                remote_username_input.getText().toString().trim());
         newServer.setRemoteServerPassword(
-            remote_password_input.getText().toString().trim());
+                remote_password_input.getText().toString().trim());
         newServer.setRemoteServerUrl(
-            remote_server_input.getText().toString().trim());
+                remote_server_input.getText().toString().trim());
         newServer.setRemoteServerPort(
-            remote_port_input.getText().toString().trim());
+                remote_port_input.getText().toString().trim());
         newServer.setRemoteServerDirectory(
-            remote_directory_input.getText().toString().trim());
+                remote_directory_input.getText().toString().trim());
         newServer.setRemoteServerSecure(
-            getSpinnerDomoticzRemoteSecureBoolean());
+                getSpinnerDomoticzRemoteSecureBoolean());
         newServer.setEnabled(false);
 
         if (!localServer_switch.isChecked()) {
@@ -400,17 +396,17 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
             newServer.setIsLocalServerAddressDifferent(false);
         } else {
             newServer.setLocalServerUsername(
-                local_username_input.getText().toString().trim());
+                    local_username_input.getText().toString().trim());
             newServer.setLocalServerPassword(
-                local_password_input.getText().toString().trim());
+                    local_password_input.getText().toString().trim());
             newServer.setLocalServerUrl(
-                local_server_input.getText().toString().trim());
+                    local_server_input.getText().toString().trim());
             newServer.setLocalServerPort(
-                local_port_input.getText().toString().trim());
+                    local_port_input.getText().toString().trim());
             newServer.setLocalServerDirectory(
-                local_directory_input.getText().toString().trim());
+                    local_directory_input.getText().toString().trim());
             newServer.setLocalServerSecure(
-                getSpinnerDomoticzLocalSecureBoolean());
+                    getSpinnerDomoticzLocalSecureBoolean());
             newServer.setIsLocalServerAddressDifferent(true);
         }
 
@@ -502,13 +498,13 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
         Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
         String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_LOCATION_PERMS);
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
-            getActivity().getString(R.string.permission_desc_location), neededPermission, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (mPhoneConnectionUtil != null)
-                        mPhoneConnectionUtil.stopReceiver();
-                }
-            });
+                getActivity().getString(R.string.permission_desc_location), neededPermission, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (mPhoneConnectionUtil != null)
+                            mPhoneConnectionUtil.stopReceiver();
+                    }
+                });
         if (!alert.isShowing()) {
             alert.show();
         }

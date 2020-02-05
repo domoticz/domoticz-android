@@ -25,7 +25,7 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/primary">
+    android:background="?attr/recyclerBackground">
 
     <nl.hnogames.domoticz.ui.Backdrop.BackdropContainer
         android:id="@+id/backdropcontainer"
@@ -38,6 +38,7 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/backdropBackground"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -62,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:alpha="0.1"
-                    android:background="@color/white" />
+                    android:background="?attr/listviewRowBackground" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSortOn"
@@ -78,7 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:alpha="0.1"
-                    android:background="@color/white" />
+                    android:background="?attr/listviewRowBackground" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSortOff"
@@ -94,7 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:alpha="0.1"
-                    android:background="@color/white" />
+                    android:background="?attr/listviewRowBackground" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSortStatic"
@@ -128,7 +129,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:alpha="0.1"
-                    android:background="@color/white" />
+                    android:background="?attr/listviewRowBackground" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSortLogsNormal"
@@ -144,7 +145,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:alpha="0.1"
-                    android:background="@color/white" />
+                    android:background="?attr/listviewRowBackground" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSortLogsStatus"
@@ -160,7 +161,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:alpha="0.1"
-                    android:background="@color/white" />
+                    android:background="?attr/listviewRowBackground" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSortLogsError"
@@ -179,12 +180,13 @@
             android:id="@+id/bottomLayoutWrapper"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            app:cardBackgroundColor="@color/background_grey"
+            android:background="?attr/recyclerBackground"
             app:cardCornerRadius="15dp">
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:background="?attr/recyclerBackground"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -220,15 +222,17 @@
 
                         <RelativeLayout
                             android:layout_width="match_parent"
+                            android:layout_centerHorizontal="true"
                             android:layout_height="match_parent">
 
                             <ImageView
                                 android:id="@+id/errorImage"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
+                                android:tint="?attr/preferenceIconColor"
                                 android:contentDescription="@string/error_image_description"
-                                android:src="@drawable/sad_smiley" />
+                                android:src="@drawable/baseline_error_outline_white_36" />
 
                             <TextView
                                 android:id="@+id/errorTextOops"
@@ -253,6 +257,7 @@
                             <TextView
                                 android:id="@+id/errorTextMessage"
                                 android:layout_width="wrap_content"
+                                android:padding="20dp"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/errorTextWrong"
                                 android:layout_centerHorizontal="true"
@@ -268,7 +273,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/errorTextMessage"
                                 android:layout_centerHorizontal="true"
-                                android:text="@string/check_settings" />
+                                android:text="@string/check_settings"
+                                android:textColor="?attr/buttonTextColor" />
                         </RelativeLayout>
                     </ScrollView>
                 </RelativeLayout>
@@ -280,10 +286,12 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="0dp"
                     android:text="@string/filterOn_all"
+                    android:textColor="?attr/buttonTextColor"
                     android:textSize="10dp"
                     android:visibility="gone"
                     app:icon="@drawable/baseline_keyboard_arrow_down_black_18"
-                    app:iconGravity="end" />
+                    app:iconGravity="end"
+                    app:iconTint="?attr/buttonTextColor" />
 
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/swipe_refresh_layout"
@@ -292,10 +300,10 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/my_recycler_view"
-                        style="@style/background_recyclerview"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
+                        android:background="?attr/recyclerBackground"
                         android:scrollbars="vertical" />
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

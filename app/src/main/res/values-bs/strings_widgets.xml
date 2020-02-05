@@ -21,18 +21,18 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-  <!-- only temporarily to suppress the missing translations errors for now!! -->
-  <string name="pick_device_title">Odaberite uređaj</string>
-  <string name="choose_switch">Odaberite uređaj</string>
-  <string name="failed_to_get_securitypanel">Unutar prekidača nije pronađena sigurnosna ploča</string>
-  <string name="failed_to_get_switches">Dobivanje uređaja nije uspjelo</string>
-  <string name="failed_toggle_switch">Prebacivanje uređaja nije uspjelo</string>
-  <string name="switch_toggled">"Prekidači"</string>
-  <string name="text_loading">Učitavanje...</string>
-  <string name="text_go">IDI</string>
-  <string name="widget_background">Pozadina</string>
-  <string name="widget_dark">Tamno</string>
-  <string name="widget_light">Svijetlo</string>
-  <string name="widget_transparent_dark">Transparentno tamno</string>
-  <string name="widget_transparent_light">Transparentno svijetlo</string>
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="pick_device_title">Odaberite uređaj</string>
+    <string name="choose_switch">Odaberite uređaj</string>
+    <string name="failed_to_get_securitypanel">Unutar prekidača nije pronađena sigurnosna ploča</string>
+    <string name="failed_to_get_switches">Dobivanje uređaja nije uspjelo</string>
+    <string name="failed_toggle_switch">Prebacivanje uređaja nije uspjelo</string>
+    <string name="switch_toggled">"Prekidači"</string>
+    <string name="text_loading">Učitavanje...</string>
+    <string name="text_go">IDI</string>
+    <string name="widget_background">Pozadina</string>
+    <string name="widget_dark">Tamno</string>
+    <string name="widget_light">Svijetlo</string>
+    <string name="widget_transparent_dark">Transparentno tamno</string>
+    <string name="widget_transparent_light">Transparentno svijetlo</string>
 </resources>

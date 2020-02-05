@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
@@ -104,15 +103,6 @@ public class TemperatureWidgetAdapter extends BaseAdapter implements Filterable 
         convertView = setDefaultRowId(holder);
         convertView.setTag(holder);
 
-        if (mSharedPrefs.darkThemeEnabled()) {
-            if ((convertView.findViewById(R.id.card_global_wrapper)) != null)
-                convertView.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-            if ((convertView.findViewById(R.id.row_wrapper)) != null)
-                (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
-            if ((convertView.findViewById(R.id.row_global_wrapper)) != null)
-                (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-        }
-
         setDefaultRowData(deviceInfo, holder);
         return convertView;
     }
@@ -145,8 +135,8 @@ public class TemperatureWidgetAdapter extends BaseAdapter implements Filterable 
 
             if (holder.switch_battery_level != null) {
                 String batteryText = context.getString(R.string.temperature)
-                    + ": "
-                    + mDeviceInfo.getData();
+                        + ": "
+                        + mDeviceInfo.getData();
                 holder.switch_battery_level.setText(batteryText);
             }
         } else {
@@ -154,17 +144,17 @@ public class TemperatureWidgetAdapter extends BaseAdapter implements Filterable 
                 holder.signal_level.setVisibility(View.VISIBLE);
             if (holder.switch_battery_level != null) {
                 String batteryLevelText = context.getString(R.string.temperature)
-                    + ": "
-                    + temperature
-                    + " " + sign;
+                        + ": "
+                        + temperature
+                        + " " + sign;
                 holder.switch_battery_level.setText(batteryLevelText);
             }
 
             if (holder.signal_level != null) {
                 String signalText = context.getString(R.string.set_point)
-                    + ": "
-                    + mDeviceInfo.getSetPoint()
-                    + " " + sign;
+                        + ": "
+                        + mDeviceInfo.getSetPoint()
+                        + " " + sign;
                 holder.signal_level.setText(signalText);
             }
         }

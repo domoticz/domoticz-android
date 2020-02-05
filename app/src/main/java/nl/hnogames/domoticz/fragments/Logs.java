@@ -28,16 +28,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import java.util.ArrayList;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.adapters.LogAdapter;
-import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.utils.SerializableManager;
+import nl.hnogames.domoticz.adapters.LogAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
+import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticzapi.Containers.LogInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.LogsReceiver;

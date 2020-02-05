@@ -22,9 +22,12 @@
 package nl.hnogames.domoticz.preference;
 
 import android.content.Context;
-import android.preference.EditTextPreference;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.widget.EditText;
+
+import androidx.annotation.NonNull;
+import androidx.preference.EditTextPreference;
 
 public class EditTextIntegerPreference extends EditTextPreference {
 
@@ -32,17 +35,32 @@ public class EditTextIntegerPreference extends EditTextPreference {
 
     public EditTextIntegerPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        getEditText().setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
+        this.setOnBindEditTextListener(new OnBindEditTextListener() {
+            @Override
+            public void onBindEditText(@NonNull EditText editText) {
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
+            }
+        });
     }
 
     public EditTextIntegerPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        getEditText().setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
+        this.setOnBindEditTextListener(new OnBindEditTextListener() {
+            @Override
+            public void onBindEditText(@NonNull EditText editText) {
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
+            }
+        });
     }
 
     public EditTextIntegerPreference(Context context) {
         super(context);
-        getEditText().setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
+        this.setOnBindEditTextListener(new OnBindEditTextListener() {
+            @Override
+            public void onBindEditText(@NonNull EditText editText) {
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
+            }
+        });
     }
 
     private static Integer parseInteger(String text) {

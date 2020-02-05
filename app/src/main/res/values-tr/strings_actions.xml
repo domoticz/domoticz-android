@@ -30,4 +30,5 @@
     <string name="action_qrcode_scan">QR Kodu Tara</string>
     <string name="action_bluetooth_show">Show paired devices</string>
     <string name="action_speech">Ses tanıma</string>
+    <string name="send">Send</string>
 </resources>

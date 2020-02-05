@@ -26,13 +26,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 import com.triggertrap.seekarc.SeekArc;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -62,10 +61,9 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_temperature, false)
-            .negativeText(android.R.string.cancel)
-            .theme(mSharedPrefUtil.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-            .positiveText(android.R.string.ok)
-            .onAny(this);
+                .negativeText(android.R.string.cancel)
+                .positiveText(android.R.string.ok)
+                .onAny(this);
 
         ConfigInfo configInfo = new ServerUtil(mContext).getActiveServer().getConfigInfo(mContext);
         if (configInfo != null) {
@@ -92,11 +90,6 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
         Button bntPlus = view.findViewById(R.id.plus);
         Button btnMin = view.findViewById(R.id.min);
-
-        if (mSharedPrefUtil.darkThemeEnabled()) {
-            btnMin.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-            bntPlus.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-        }
 
         final String text = String.valueOf(currentTemperature);
         temperatureText.setText(text);

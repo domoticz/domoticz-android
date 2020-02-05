@@ -32,24 +32,26 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.MenuItemCompat;
-import nl.hnogames.domoticz.adapters.TemperatureWidgetAdapter;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.ftinc.scoop.Scoop;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.ArrayList;
+
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
+import nl.hnogames.domoticz.adapters.TemperatureWidgetAdapter;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.ui.PasswordDialog;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.TemperatureReceiver;
@@ -61,22 +63,18 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
 
     private final String TAG = this.getClass().getSimpleName();
     private final int iWelcomeResultCode = 885;
-
+    public CoordinatorLayout coordinatorLayout;
     int mAppWidgetId;
     private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
     private TemperatureWidgetAdapter adapter;
     private SearchView searchViewAction;
-    public CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
-        if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
-        else
-            setTheme(R.style.AppTheme);
 
+        Scoop.getInstance().apply(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.widget_configuration);
         setResult(RESULT_CANCELED);
@@ -158,7 +156,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
 
                             if (mDeviceInfo.isProtected()) {
                                 PasswordDialog passwordDialog = new PasswordDialog(
-                                    SmallTempWidgetConfigurationActivity.this, domoticz);
+                                        SmallTempWidgetConfigurationActivity.this, domoticz);
                                 passwordDialog.show();
                                 passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                     @Override
@@ -208,17 +206,17 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
 
     private void getBackground(final TemperatureInfo mSelectedTemperatureInfo, final String password, final String value) {
         new MaterialDialog.Builder(this)
-            .title(this.getString(R.string.widget_background))
-            .items(new String[]{this.getString(R.string.widget_dark), this.getString(R.string.widget_light), this.getString(R.string.widget_transparent_dark), this.getString(R.string.widget_transparent_light)})
-            .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                @Override
-                public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                    showAppWidget(mSelectedTemperatureInfo, password, value, getWidgetLayout(String.valueOf(text)));
-                    return true;
-                }
-            })
-            .positiveText(R.string.ok)
-            .show();
+                .title(this.getString(R.string.widget_background))
+                .items(new String[]{this.getString(R.string.widget_dark), this.getString(R.string.widget_light), this.getString(R.string.widget_transparent_dark), this.getString(R.string.widget_transparent_light)})
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        showAppWidget(mSelectedTemperatureInfo, password, value, getWidgetLayout(String.valueOf(text)));
+                        return true;
+                    }
+                })
+                .positiveText(R.string.ok)
+                .show();
     }
 
     private void showAppWidget(TemperatureInfo mSelectedSwitch, String password, String value, int layoutId) {
@@ -228,7 +226,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
         int idx = mSelectedSwitch.getIdx();
         if (extras != null) {
             mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
-                INVALID_APPWIDGET_ID);
+                    INVALID_APPWIDGET_ID);
 
             if (UsefulBits.isEmpty(mSelectedSwitch.getType())) {
                 Log.i(TAG, "Widget without a type saved");
@@ -239,7 +237,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
             }
 
             Intent startService = new Intent(SmallTempWidgetConfigurationActivity.this,
-                WidgetProviderSmallTemp.UpdateWidgetService.class);
+                    WidgetProviderSmallTemp.UpdateWidgetService.class);
             startService.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
             startService.setAction("FROM CONFIGURATION ACTIVITY");
             startService(startService);
@@ -267,7 +265,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_search, menu);
         MenuItem searchMenuItem = menu.findItem(R.id.search);
         searchViewAction = (SearchView) MenuItemCompat
-            .getActionView(searchMenuItem);
+                .getActionView(searchMenuItem);
         searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

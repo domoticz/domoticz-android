@@ -28,11 +28,9 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 
 public class TemperatureInfoDialog implements DialogInterface.OnDismissListener {
@@ -54,8 +52,7 @@ public class TemperatureInfoDialog implements DialogInterface.OnDismissListener 
         boolean wrapInScrollView = true;
         //noinspection ConstantConditions
         mdb.customView(layout, wrapInScrollView)
-            .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-            .positiveText(android.R.string.ok);
+                .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }
 

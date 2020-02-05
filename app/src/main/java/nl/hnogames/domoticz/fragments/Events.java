@@ -25,21 +25,22 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.adapters.EventsAdapter;
-import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.interfaces.EventsClickListener;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.adapters.EventsAdapter;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
+import nl.hnogames.domoticz.interfaces.EventsClickListener;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticzapi.Containers.EventInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;

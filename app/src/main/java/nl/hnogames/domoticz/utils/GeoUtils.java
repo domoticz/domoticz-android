@@ -27,8 +27,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.util.Log;
+
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
@@ -37,9 +38,7 @@ import com.google.android.gms.location.LocationServices;
 
 import java.util.List;
 
-import androidx.core.app.ActivityCompat;
 import nl.hnogames.domoticz.service.GeofenceBroadcastReceiver;
-import nl.hnogames.domoticz.service.GeofenceTransitionsIntentService;
 
 public class GeoUtils {
     public static boolean geofencesAlreadyRegistered = false;

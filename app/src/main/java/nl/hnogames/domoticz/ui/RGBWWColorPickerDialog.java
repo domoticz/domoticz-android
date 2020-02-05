@@ -29,7 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.skydoves.colorpickerview.ColorPickerView;
 import com.skydoves.colorpickerview.listeners.ColorListener;
@@ -54,8 +53,7 @@ public class RGBWWColorPickerDialog implements DialogInterface.OnDismissListener
         this.idx = idx;
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_rgbwwcolor, true)
-            .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
-            .positiveText(android.R.string.ok);
+                .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }
 

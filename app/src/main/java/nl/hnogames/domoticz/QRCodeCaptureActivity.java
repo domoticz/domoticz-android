@@ -31,8 +31,8 @@ import android.view.View;
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
-import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
+import nl.hnogames.domoticz.utils.UsefulBits;
 
 
 public class QRCodeCaptureActivity extends AppCompatAssistActivity implements ZXingScannerView.ResultHandler {
@@ -42,7 +42,7 @@ public class QRCodeCaptureActivity extends AppCompatAssistActivity implements ZX
     public void onCreate(Bundle state) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setSystemUiFlags(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
             setFullscreenFlags();
         }
 
@@ -60,7 +60,7 @@ public class QRCodeCaptureActivity extends AppCompatAssistActivity implements ZX
     private void setFullscreenFlags() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             int fullscreenFlags = View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                View.SYSTEM_UI_FLAG_FULLSCREEN;
+                    View.SYSTEM_UI_FLAG_FULLSCREEN;
 
             setSystemUiFlags(fullscreenFlags);
         }

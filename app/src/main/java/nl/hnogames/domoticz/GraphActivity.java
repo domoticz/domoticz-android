@@ -24,24 +24,30 @@ package nl.hnogames.domoticz;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import androidx.appcompat.widget.Toolbar;
+
+import com.ftinc.scoop.Scoop;
+
+import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.fragments.Graph;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 
 public class GraphActivity extends AppCompatAssistActivity {
+
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
-        if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
-        else
-            setTheme(R.style.AppTheme);
+
+        // Apply Scoop to the activity
+        Scoop.getInstance().apply(this);
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_graph);
 
         try {
             Bundle bundle = getIntent().getExtras();
@@ -56,11 +62,13 @@ public class GraphActivity extends AppCompatAssistActivity {
                 }
             }
 
+            toolbar = findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+
             Graph graph = new Graph();
             if (getSupportActionBar() != null)
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
-                graph).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main, graph).commit();
         } catch (Exception ex) {
             this.finish();
         }

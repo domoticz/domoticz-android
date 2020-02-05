@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/row_global_wrapper"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:layout_margin="5sp"
-              android:orientation="horizontal">
+    android:id="@+id/row_global_wrapper"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_margin="5sp"
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/rowIcon"
@@ -13,13 +13,13 @@
         android:layout_gravity="center_vertical"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:src="@drawable/defaultimage"/>
+        android:src="@drawable/defaultimage" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_gravity="center_vertical"
-                  android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
                 android:text="@string/text_loading"
-                android:textColor="@color/secondary_dark"/>
+                android:textColor="@color/secondary_dark" />
 
             <TextView
                 android:id="@+id/desc"
@@ -47,7 +47,7 @@
                 android:layout_alignParentLeft="true"
                 android:paddingLeft="5dp"
                 android:text="@string/text_loading"
-                android:textColor="@color/secondary_dark"/>
+                android:textColor="@color/secondary_dark" />
 
             <LinearLayout
                 android:id="@+id/linearLayout4"
@@ -66,7 +66,7 @@
                     android:layout_margin="5dp"
                     android:background="@drawable/button_status"
                     android:src="@drawable/ic_arrow_up"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp" />
 
                 <ImageButton
                     android:id="@+id/switch_button_stop"
@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_status"
                     android:src="@drawable/ic_stop"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp" />
 
                 <ImageButton
                     android:id="@+id/switch_button_down"
@@ -83,7 +83,7 @@
                     android:layout_margin="5dp"
                     android:background="@drawable/button_status"
                     android:src="@drawable/ic_arrow_down"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

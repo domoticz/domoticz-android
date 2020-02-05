@@ -146,6 +146,7 @@
     <string name="enable_notifications_title">Увімкнути сповіщення</string>
     <string name="enable_notifications">Увімкнути сповіщення на цьому пристрої</string>
     <string name="notification_screen_title">Параметри сповіщень</string>
+    <string name="notification_history">Notification history</string>
     <string name="notification_vibrate_title">Вібрація</string>
     <string name="notification_vibrate_on">Вібрація при надходженні сповіщення</string>
     <string name="notification_vibrate_off">Не вібрувати</string>
@@ -161,6 +162,13 @@
     <string name="alarm">Сигналізації</string>
     <string name="alarmtimer_title">Таймер</string>
     <string name="alarmtimer">Час на вихід</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Default</string>
+    <string name="theme_daynight">Day/Night</string>
+    <string name="theme_orange">Orange</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_blue">Blue</string>
+    <!-- Other -->
     <string name="default_values">Значення за замовчуванням</string>
     <string name="default_values_min_error">Значення Max повинна бути вище, ніж значення Min</string>
     <string name="default_values_max_error">Значення Max повинна бути вище, ніж значення Min</string>
@@ -203,4 +211,5 @@
     <string name="debug_test_text">Тест налагодження</string>
     <string name="restart_required_title">Потрібне перезавантаження</string>
     <string name="restart_now">Перезавантажити зараз?</string>
+    <string name="check_settings">Check your settings</string>
 </resources>

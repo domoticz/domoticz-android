@@ -29,16 +29,17 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 
-import androidx.annotation.Nullable;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.WidgetUtils;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -116,8 +117,8 @@ public class WidgetIntentService extends Service {
             return true;
 
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
-            (mExtendedStatusInfo.getSwitchType() == null ||
-                UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
+                (mExtendedStatusInfo.getSwitchType() == null ||
+                        UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
             switch (mExtendedStatusInfo.getType()) {
                 case DomoticzValues.Scene.Type.GROUP:
                     return true;
@@ -143,8 +144,8 @@ public class WidgetIntentService extends Service {
 
     private boolean isPushOnSwitch(DevicesInfo mExtendedStatusInfo) {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
-            (mExtendedStatusInfo.getSwitchType() == null ||
-                UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
+                (mExtendedStatusInfo.getSwitchType() == null ||
+                        UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
             switch (mExtendedStatusInfo.getType()) {
                 case DomoticzValues.Scene.Type.SCENE:
                     return true;
@@ -163,8 +164,8 @@ public class WidgetIntentService extends Service {
 
     private boolean isPushOffSwitch(DevicesInfo mExtendedStatusInfo) {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
-            (mExtendedStatusInfo.getSwitchType() == null ||
-                UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
+                (mExtendedStatusInfo.getSwitchType() == null ||
+                        UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
             return false;
         } else
             switch (mExtendedStatusInfo.getSwitchTypeVal()) {
@@ -338,8 +339,8 @@ public class WidgetIntentService extends Service {
 
             int jsonValue = 0;
             if (clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
-                clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) {
+                    clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
+                    clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED) {
                 if (checked) {
                     jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                     if (!UsefulBits.isEmpty(value)) {

@@ -6,9 +6,11 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.net.URLDecoder;
+import java.util.Date;
 import java.util.Map;
 
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.utils.GCMUtils;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -23,7 +25,7 @@ public class FCMMessageInstanceService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        if (remoteMessage == null || remoteMessage.getData() == null)
+        if (remoteMessage == null)
             return;
 
         Map data = remoteMessage.getData();
@@ -42,16 +44,14 @@ public class FCMMessageInstanceService extends FirebaseMessagingService {
             }
 
             if (!UsefulBits.isEmpty(subject) && !UsefulBits.isEmpty(body) &&
-                !body.equals(subject)) {
-
-                String deviceid = decode(data.containsKey("deviceid") ? data.get("deviceid").toString() : "");
-                if (!UsefulBits.isEmpty(deviceid) && isDigitsOnly(deviceid) && Integer.valueOf(deviceid) > 0)
-                    NotificationUtil.sendSimpleNotification(Integer.valueOf(deviceid), subject, body, prio, this);
+                    !body.equals(subject)) {
+                String deviceId = decode(data.containsKey("deviceid") ? data.get("deviceid").toString() : "");
+                if (!UsefulBits.isEmpty(deviceId) && isDigitsOnly(deviceId) && Integer.valueOf(deviceId) > 0)
+                    NotificationUtil.sendSimpleNotification(new NotificationInfo(Integer.valueOf(deviceId), subject, body, prio, new Date()), this);
                 else
-                    NotificationUtil.sendSimpleNotification(subject, body, prio, this);
-            } else {
-                NotificationUtil.sendSimpleNotification(this.getString(R.string.app_name_domoticz), message, prio, this);
-            }
+                    NotificationUtil.sendSimpleNotification(new NotificationInfo(-1, subject, body, prio, new Date()), this);
+            } else
+                NotificationUtil.sendSimpleNotification(new NotificationInfo(-1, this.getString(R.string.app_name_domoticz), message, prio, new Date()), this);
         }
     }
 

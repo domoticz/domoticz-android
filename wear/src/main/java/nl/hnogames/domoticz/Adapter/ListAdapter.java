@@ -22,12 +22,15 @@
 package nl.hnogames.domoticz.Adapter;
 
 import android.content.Context;
-import android.support.wearable.view.WearableListView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.wear.widget.WearableRecyclerView;
 
 import com.squareup.picasso.Picasso;
 
@@ -35,16 +38,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import nl.hnogames.domoticz.containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.containers.DevicesInfo;
 import nl.hnogames.domoticz.utils.WearUsefulBits;
 
-public class ListAdapter extends WearableListView.Adapter {
+public class ListAdapter extends WearableRecyclerView.Adapter {
     private final Context mContext;
     private final LayoutInflater mInflater;
     private ArrayList<DevicesInfo> mDataset;
     private Domoticz mDomoticz;
+
+    private static View.OnClickListener listener;
+    public void setOnClickListener(View.OnClickListener l)
+    {
+        listener = l;
+    }
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public ListAdapter(Context context, ArrayList<DevicesInfo> dataset) {
@@ -67,18 +76,14 @@ public class ListAdapter extends WearableListView.Adapter {
     // Create new views for list items
     // (invoked by the WearableListView's layout manager)
     @Override
-    public WearableListView.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                          int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                      int viewType) {
         return new ItemViewHolder(mInflater.inflate(R.layout.list_item, null));
     }
 
-    // Replace the contents of a list item
-    // Instead of creating new views, the list tries to recycle existing ones
-    // (invoked by the WearableListView's layout manager)
     @Override
-    public void onBindViewHolder(WearableListView.ViewHolder holder,
-                                 int position) {
-        // retrieve the text view
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+// retrieve the text view
         ItemViewHolder itemHolder = (ItemViewHolder) holder;
         TextView view = itemHolder.textView;
         TextView status = itemHolder.statusView;
@@ -115,14 +120,12 @@ public class ListAdapter extends WearableListView.Adapter {
 
         String imageType = mDataset.get(position).getTypeImg();
         if (imageType != null && imageType.length() > 0) {
-            Picasso.with(this.mContext).load(
-                    mDomoticz.getDrawableIcon(mDataset.get(position).getTypeImg(),
-                            mDataset.get(position).getType(),
-                            mDataset.get(position).getSwitchType(),
-                            mDataset.get(position).getStatusBoolean(),
-                            mDataset.get(position).getUseCustomImage(),
-                            mDataset.get(position).getImage()))
-                    .into(itemHolder.imageView);
+            Picasso.get().load(Domoticz.getDrawableIcon(mDataset.get(position).getTypeImg(),
+                    mDataset.get(position).getType(),
+                    mDataset.get(position).getSwitchType(),
+                    mDataset.get(position).getStatusBoolean(),
+                    mDataset.get(position).getUseCustomImage(),
+                    mDataset.get(position).getImage())).into(itemHolder.imageView);
 
             if (!mDataset.get(position).getStatusBoolean())
                 itemHolder.imageView.setAlpha(0.5f);
@@ -142,17 +145,27 @@ public class ListAdapter extends WearableListView.Adapter {
     }
 
     // Provide a reference to the type of views you're using
-    public static class ItemViewHolder extends WearableListView.ViewHolder {
+    public static class ItemViewHolder extends RecyclerView.ViewHolder {
         private TextView textView;
         private TextView statusView;
         private ImageView imageView;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
+
+            // Attach a click listener to the entire row view
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null)
+                        listener.onClick(v);
+                }
+            });
+
             // find the text view within the custom item's layout
-            textView = (TextView) itemView.findViewById(R.id.name);
-            statusView = (TextView) itemView.findViewById(R.id.status);
-            imageView = (ImageView) itemView.findViewById(R.id.circle);
+            textView = itemView.findViewById(R.id.name);
+            statusView = itemView.findViewById(R.id.status);
+            imageView = itemView.findViewById(R.id.circle);
         }
     }
 }

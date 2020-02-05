@@ -26,23 +26,24 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.adapters.UserVariablesAdapter;
-import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.interfaces.UserVariablesClickListener;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.adapters.UserVariablesAdapter;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
+import nl.hnogames.domoticz.interfaces.UserVariablesClickListener;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Containers.UserVariableInfo;
 import nl.hnogames.domoticzapi.Interfaces.UserVariablesReceiver;
@@ -160,19 +161,19 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
             return;
         }
         new MaterialDialog.Builder(mContext)
-            .title(R.string.title_vars)
-            .content(clickedVar.getName() + " -> " + clickedVar.getTypeValue())
-            .inputType(InputType.TYPE_CLASS_TEXT)
-            .input(null, clickedVar.getValue(), new MaterialDialog.InputCallback() {
-                @Override
-                public void onInput(MaterialDialog dialog, CharSequence input) {
-                    if (validateInput(String.valueOf(input), clickedVar.getType())) {
-                        updateUserVariable(String.valueOf(input), clickedVar);
-                    } else {
-                        UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input), Snackbar.LENGTH_SHORT);
+                .title(R.string.title_vars)
+                .content(clickedVar.getName() + " -> " + clickedVar.getTypeValue())
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .input(null, clickedVar.getValue(), new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        if (validateInput(String.valueOf(input), clickedVar.getType())) {
+                            updateUserVariable(String.valueOf(input), clickedVar);
+                        } else {
+                            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input), Snackbar.LENGTH_SHORT);
+                        }
                     }
-                }
-            }).show();
+                }).show();
     }
 
     private boolean validateInput(String input, String type) {

@@ -27,13 +27,17 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
 import androidx.fragment.app.Fragment;
+
+import com.ftinc.scoop.Scoop;
+
+import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.welcome.SetupServerSettings;
 import nl.hnogames.domoticz.welcome.WelcomePage3;
-import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 
 public class ServerSettingsActivity extends AppCompatAssistActivity {
 
@@ -45,19 +49,23 @@ public class ServerSettingsActivity extends AppCompatAssistActivity {
     private String updateName = "";
     private boolean addNew = false;
     private boolean activeServer = false;
+    private Toolbar toolbar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
-        if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
-        else
-            setTheme(R.style.AppTheme);
+        // Apply Scoop to the activity
+        Scoop.getInstance().apply(this);
+
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_graph);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -75,8 +83,8 @@ public class ServerSettingsActivity extends AppCompatAssistActivity {
         if (!addNew && UsefulBits.isEmpty(updateName)) {
             Fragment serverSettings = WelcomePage3.newInstance(SETTINGS);
             getSupportFragmentManager().beginTransaction()
-                .replace(android.R.id.content, serverSettings)
-                .commit();
+                    .replace(R.id.main, serverSettings)
+                    .commit();
         } else {
             SetupServerSettings serverSettings = SetupServerSettings.newInstance(SETTINGS);
 
@@ -88,15 +96,14 @@ public class ServerSettingsActivity extends AppCompatAssistActivity {
             }
 
             getSupportFragmentManager().beginTransaction()
-                .replace(android.R.id.content, serverSettings)
-                .commit();
+                    .replace(R.id.main, serverSettings)
+                    .commit();
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
             case android.R.id.home:
                 if (!addNew)
                     NavUtils.navigateUpFromSameTask(this);
@@ -127,17 +134,17 @@ public class ServerSettingsActivity extends AppCompatAssistActivity {
     public void onBackPressed() {
         if (addNew) {
             new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle(getString(R.string.dont_save_new_server))
-                .setMessage(R.string.are_you_sure)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ServerCancel();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .show();
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle(getString(R.string.dont_save_new_server))
+                    .setMessage(R.string.are_you_sure)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ServerCancel();
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .show();
         } else
             super.onBackPressed();
     }

@@ -35,9 +35,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
+import com.ftinc.scoop.Scoop;
 import com.google.android.material.snackbar.Snackbar;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
@@ -46,10 +51,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import androidx.annotation.NonNull;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
 import hugo.weaving.DebugLog;
+import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.BluetoothInfo;
 import nl.hnogames.domoticz.interfaces.BluetoothClickListener;
 import nl.hnogames.domoticz.ui.SwitchDialog;
@@ -57,8 +61,6 @@ import nl.hnogames.domoticz.utils.DeviceUtils;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -74,23 +76,23 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
     private nl.hnogames.domoticz.adapters.BluetoothAdapter adapter;
     private PermissionHelper permissionHelper;
     private BluetoothAdapter mBluetoothAdapter;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
-        if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
-        else
-            setTheme(R.style.AppTheme);
+        Scoop.getInstance().apply(this);
+
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
         permissionHelper = PermissionHelper.getInstance(this);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_bluetooth_settings);
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
-        if (mSharedPrefs.darkThemeEnabled()) {
-            coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
-        }
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.category_bluetooth);
@@ -115,40 +117,37 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
         }
 
         new AlertDialog.Builder(this)
-            .setSingleChoiceItems(items, 0, null)
-            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    dialog.dismiss();
-                    int position = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                    final String Bluetooth_ID = bluetoothDevices.get(position);
+                .setSingleChoiceItems(items, 0, null)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                        int position = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                        final String Bluetooth_ID = bluetoothDevices.get(position);
 
-                    boolean newTagFound = true;
-                    if (BluetoothList != null && BluetoothList.size() > 0) {
-                        for (BluetoothInfo n : BluetoothList) {
-                            if (n.getId().equals(Bluetooth_ID))
-                                newTagFound = false;
+                        boolean newTagFound = true;
+                        if (BluetoothList != null && BluetoothList.size() > 0) {
+                            for (BluetoothInfo n : BluetoothList) {
+                                if (n.getId().equals(Bluetooth_ID))
+                                    newTagFound = false;
+                            }
+                        }
+
+                        if (newTagFound) {
+                            UsefulBits.showSnackbar(BluetoothSettingsActivity.this, coordinatorLayout, getString(R.string.bluetooth_saved) + ": " + Bluetooth_ID, Snackbar.LENGTH_SHORT);
+                            BluetoothInfo BluetoothInfo = new BluetoothInfo();
+                            BluetoothInfo.setId(Bluetooth_ID);
+                            BluetoothInfo.setName(String.valueOf(Bluetooth_ID));
+                            updateBluetooth(BluetoothInfo);
+                        } else {
+                            UsefulBits.showSnackbar(BluetoothSettingsActivity.this, coordinatorLayout, R.string.bluetooth_exists, Snackbar.LENGTH_SHORT);
                         }
                     }
-
-                    if (newTagFound) {
-                        UsefulBits.showSnackbar(BluetoothSettingsActivity.this, coordinatorLayout, getString(R.string.bluetooth_saved) + ": " + Bluetooth_ID, Snackbar.LENGTH_SHORT);
-                        BluetoothInfo BluetoothInfo = new BluetoothInfo();
-                        BluetoothInfo.setId(Bluetooth_ID);
-                        BluetoothInfo.setName(String.valueOf(Bluetooth_ID));
-                        updateBluetooth(BluetoothInfo);
-                    } else {
-                        UsefulBits.showSnackbar(BluetoothSettingsActivity.this, coordinatorLayout, R.string.bluetooth_exists, Snackbar.LENGTH_SHORT);
-                    }
-                }
-            })
-            .show();
+                })
+                .show();
     }
 
     private void createListView() {
         ListView listView = findViewById(R.id.listView);
-        if (mSharedPrefs.darkThemeEnabled()) {
-            listView.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
-        }
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
         listView.setAdapter(animationAdapter);
@@ -184,19 +183,19 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
             @DebugLog
             public void onError(Exception error) {
                 UsefulBits.showSnackbarWithAction(BluetoothSettingsActivity.this, coordinatorLayout, BluetoothSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
-                    null, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            getSwitchesAndShowSwitchesDialog(qrInfo);
-                        }
-                    }, BluetoothSettingsActivity.this.getString(R.string.retry));
+                        null, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getSwitchesAndShowSwitchesDialog(qrInfo);
+                            }
+                        }, BluetoothSettingsActivity.this.getString(R.string.retry));
             }
         }, 0, "all");
     }
 
     private void showSwitchesDialog(
-        final BluetoothInfo BluetoothInfo,
-        final ArrayList<DevicesInfo> switches) {
+            final BluetoothInfo BluetoothInfo,
+            final ArrayList<DevicesInfo> switches) {
 
         final ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
         for (DevicesInfo d : switches) {
@@ -205,9 +204,9 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
         }
 
         SwitchDialog infoDialog = new SwitchDialog(
-            BluetoothSettingsActivity.this, supportedSwitches,
-            R.layout.dialog_switch_logs,
-            domoticz);
+                BluetoothSettingsActivity.this, supportedSwitches,
+                R.layout.dialog_switch_logs,
+                domoticz);
 
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
@@ -237,16 +236,16 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
     private void showSelectorDialog(final BluetoothInfo BluetoothInfo, DevicesInfo selector) {
         final ArrayList<String> levelNames = selector.getLevelNames();
         new MaterialDialog.Builder(this)
-            .title(R.string.selector_value)
-            .items(levelNames)
-            .itemsCallback(new MaterialDialog.ListCallback() {
-                @Override
-                public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                    BluetoothInfo.setValue(String.valueOf(text));
-                    updateBluetooth(BluetoothInfo);
-                }
-            })
-            .show();
+                .title(R.string.selector_value)
+                .items(levelNames)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        BluetoothInfo.setValue(String.valueOf(text));
+                        updateBluetooth(BluetoothInfo);
+                    }
+                })
+                .show();
     }
 
     public void updateBluetooth(BluetoothInfo BluetoothInfo) {
@@ -272,21 +271,21 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
 
     private boolean showNoDeviceAttachedDialog(final BluetoothInfo BluetoothInfo) {
         new MaterialDialog.Builder(this)
-            .title(R.string.noSwitchSelected_title)
-            .content(getString(R.string.noSwitchSelected_explanation_bluetooth)
-                + UsefulBits.newLine()
-                + UsefulBits.newLine()
-                + getString(R.string.noSwitchSelected_connectOneNow))
-            .positiveText(R.string.yes)
-            .negativeText(R.string.no)
-            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    getSwitchesAndShowSwitchesDialog(BluetoothInfo);
-                    result = true;
-                }
-            })
-            .show();
+                .title(R.string.noSwitchSelected_title)
+                .content(getString(R.string.noSwitchSelected_explanation_bluetooth)
+                        + UsefulBits.newLine()
+                        + UsefulBits.newLine()
+                        + getString(R.string.noSwitchSelected_connectOneNow))
+                .positiveText(R.string.yes)
+                .negativeText(R.string.no)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        getSwitchesAndShowSwitchesDialog(BluetoothInfo);
+                        result = true;
+                    }
+                })
+                .show();
         return result;
     }
 
@@ -313,7 +312,7 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
 
         // Show snackbar with undo option
         String text = String.format(getString(R.string.something_deleted),
-            getString(R.string.bluetooth));
+                getString(R.string.bluetooth));
 
         UsefulBits.showSnackbarWithAction(this, coordinatorLayout, text, Snackbar.LENGTH_SHORT, new Snackbar.Callback() {
             @Override

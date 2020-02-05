@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+
 import nl.hnogames.domoticz.R;
 
 public class BackdropContainer extends FrameLayout implements BackdropActions {
@@ -61,7 +62,7 @@ public class BackdropContainer extends FrameLayout implements BackdropActions {
     public void build() {
         if (checkTotalview()) {
             toolbarIconClick = new ToolbarIconClick(context, getChildAt(1), getBackview(), mMenuicon,
-                mCloseicon, height, interpolator, duration);
+                    mCloseicon, height, interpolator, duration);
             if (toolbar != null) {
                 toolbar.setNavigationOnClickListener(toolbarIconClick);
             }

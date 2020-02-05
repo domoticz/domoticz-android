@@ -25,13 +25,14 @@ import android.content.Context;
 import android.os.Bundle;
 
 import hugo.weaving.DebugLog;
-import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 
 public class Loading extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
 
     @Override
-    public void onConnectionFailed() {}
+    public void onConnectionFailed() {
+    }
 
     @Override
     @DebugLog

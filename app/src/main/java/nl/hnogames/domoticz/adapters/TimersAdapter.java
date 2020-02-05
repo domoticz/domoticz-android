@@ -32,7 +32,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -82,15 +81,6 @@ public class TimersAdapter extends BaseAdapter {
                 layoutResourceId = R.layout.timer_row;
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 convertView = inflater.inflate(layoutResourceId, parent, false);
-
-                if (mSharedPrefs.darkThemeEnabled()) {
-                    if ((convertView.findViewById(R.id.card_global_wrapper)) != null)
-                        convertView.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-                    if ((convertView.findViewById(R.id.row_wrapper)) != null)
-                        (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
-                    if ((convertView.findViewById(R.id.row_global_wrapper)) != null)
-                        (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-                }
 
                 holder.switch_name = convertView.findViewById(R.id.switch_name);
                 holder.switch_status = convertView.findViewById(R.id.switch_battery_level);
@@ -170,19 +160,19 @@ public class TimersAdapter extends BaseAdapter {
 
                 if (mSwitchTimerInfo.getDate() != null && mSwitchTimerInfo.getDate().length() > 0)
                     holder.switch_name.setText(String.format("%s | %s",
-                        holder.switch_name.getText(), mSwitchTimerInfo.getDate()));
+                            holder.switch_name.getText(), mSwitchTimerInfo.getDate()));
                 else if (mSwitchTimerInfo.getMonthDay() > 0)
                     days = String.format("%s %d", context.getString(R.string.button_status_day).toLowerCase(), mSwitchTimerInfo.getMonthDay());
                 else {
                     if (mSwitchTimerInfo.getDays() == 128)
                         holder.switch_name.setText(String.format("%s | %s",
-                            holder.switch_name.getText(), context.getString(R.string.timer_every_days)));
+                                holder.switch_name.getText(), context.getString(R.string.timer_every_days)));
                     else if (mSwitchTimerInfo.getDays() == 512)
                         holder.switch_name.setText(String.format("%s | %s",
-                            holder.switch_name.getText(), context.getString(R.string.timer_weekend)));
+                                holder.switch_name.getText(), context.getString(R.string.timer_weekend)));
                     else if (mSwitchTimerInfo.getDays() == 256)
                         holder.switch_name.setText(String.format("%s | %s",
-                            holder.switch_name.getText(), context.getString(R.string.timer_working_days)));
+                                holder.switch_name.getText(), context.getString(R.string.timer_working_days)));
 
                     if (mSwitchTimerInfo.getOccurence() > 0) {
                         if (mSwitchTimerInfo.getOccurence() == 1)
@@ -216,9 +206,9 @@ public class TimersAdapter extends BaseAdapter {
 
                 if (!UsefulBits.isEmpty(occurence) || !UsefulBits.isEmpty(days) || !UsefulBits.isEmpty(month))
                     holder.switch_name.setText(String.format("%s | %s %s %s",
-                        holder.switch_name.getText(), occurence != null ? occurence.toLowerCase() : null,
-                        days != null ? days.toLowerCase() : null,
-                        month != null ? month.toLowerCase() : null));
+                            holder.switch_name.getText(), occurence != null ? occurence.toLowerCase() : null,
+                            days != null ? days.toLowerCase() : null,
+                            month != null ? month.toLowerCase() : null));
                 else
                     holder.switch_name.setText(String.format("%s", holder.switch_name.getText().toString().toLowerCase()));
                 if (mSwitchTimerInfo.getRandomness())
