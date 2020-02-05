@@ -21,10 +21,10 @@
   ~  under the License.
   -->
 <resources>
-    <string name="bluetooth_not_supported">Bluetooth is not supported on this device</string>
-    <string name="bluetooth_register">Connect a bluetooth device</string>
-    <string name="bluetooth_found">New bluetooth device found</string>
-    <string name="bluetooth_edit">Edit bluetooth device</string>
+    <string name="bluetooth_not_supported">Устройството не поддържа Bluetooth</string>
+    <string name="bluetooth_register">Свържете Bluetooth устройство</string>
+    <string name="bluetooth_found">Открито е ново Bluetooth устройство</string>
+    <string name="bluetooth_edit">Редактиране на Bluetooth устройство</string>
     <string name="bluetooth_name">Give this bluetooth device a proper name. </string>
     <string name="bluetooth_desc">Check the list of paired bluetooth devices. </string>
     <string name="bluetooth_exists">Bluetooth already configured on Domoticz. </string>

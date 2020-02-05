@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -21,16 +20,16 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        android:padding="10dp"/>
+        android:padding="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/temperature"
                 android:textColor="@color/material_blue_600"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_set_point"
@@ -59,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/set_point"
                 android:textColor="@color/material_pink_600"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_humidity"
@@ -67,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/humidity"
                 android:textColor="@color/material_orange_600"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_barometer"
@@ -75,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:text="Barometer"
                 android:textColor="@color/material_green_600"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_counter"
@@ -83,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:text="Counter"
                 android:textColor="@color/material_indigo_600"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_powerusage"
@@ -91,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:text="Power Usage"
                 android:textColor="@color/material_yellow_600"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_powerdeliv"
@@ -99,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:text="Power Delivery"
                 android:textColor="@color/material_deep_purple_600"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_percentage"
@@ -107,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:text="Value"
                 android:textColor="@color/material_yellow_600"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_percentage2"
@@ -115,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:text="Value 2"
                 android:textColor="@color/material_orange_600"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_direction"
@@ -123,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/direction"
                 android:textColor="@color/material_deep_teal_500"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_sunpower"
@@ -131,7 +130,7 @@
                 android:layout_height="wrap_content"
                 android:text="Sunpower"
                 android:textColor="@color/material_deep_purple_600"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_speed"
@@ -139,7 +138,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/speed"
                 android:textColor="@color/material_amber_600"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_usage"
@@ -147,7 +146,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/usage"
                 android:textColor="@color/material_orange_600"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_rain"
@@ -155,7 +154,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/rain"
                 android:textColor="@color/material_light_green_600"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_co2"
@@ -163,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/co2"
                 android:textColor="@color/material_blue_600"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_co2min"
@@ -171,7 +170,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/co2min"
                 android:textColor="@color/material_light_green_600"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_co2max"
@@ -179,7 +178,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/co2max"
                 android:textColor="@color/md_red_400"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_Lux"
@@ -187,7 +186,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Lux"
                 android:textColor="@color/material_blue_600"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_Luxmin"
@@ -195,7 +194,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Luxmin"
                 android:textColor="@color/material_light_green_600"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_Luxmax"
@@ -203,7 +202,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Luxmax"
                 android:textColor="@color/md_red_400"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/legend_LuxAvg"
@@ -211,7 +210,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/LuxAvg"
                 android:textColor="@color/md_yellow_400"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/row_global_wrapper"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:background="@drawable/appwidget_dark_bg_clickable"
-              android:orientation="horizontal">
+    android:id="@+id/row_global_wrapper"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/appwidget_dark_bg_clickable"
+    android:orientation="horizontal">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -18,7 +18,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/defaultimage"/>
+            android:src="@drawable/defaultimage" />
 
         <TextView
             android:id="@+id/title"
@@ -28,7 +28,7 @@
             android:layout_below="@+id/rowIcon"
             android:layout_centerHorizontal="true"
             android:clickable="false"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/desc"
@@ -38,7 +38,7 @@
             android:layout_below="@+id/title"
             android:layout_centerHorizontal="true"
             android:clickable="false"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
     </RelativeLayout>
 </LinearLayout>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -21,10 +20,10 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -38,7 +37,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingLeft="0dp"
-            android:text="@string/now"/>
+            android:text="@string/now" />
 
         <LinearLayout
             android:id="@+id/clockLayout"
@@ -64,8 +63,7 @@
                 app:indeterminateSpeed="2"
                 app:minutes="20"
                 app:pointerWidth="thin"
-                app:timeSetDuration="400"
-                />
+                app:timeSetDuration="400" />
 
             <TextView
                 android:id="@+id/clockText"
@@ -73,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:paddingLeft="0dp"/>
+                android:paddingLeft="0dp" />
         </LinearLayout>
 
     </RelativeLayout>
@@ -91,7 +89,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingLeft="0dp"
-            android:text="@string/sunrise"/>
+            android:text="@string/sunrise" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -116,8 +114,7 @@
                 app:indeterminateSpeed="2"
                 app:minutes="20"
                 app:pointerWidth="thin"
-                app:timeSetDuration="400"
-                />
+                app:timeSetDuration="400" />
 
             <TextView
                 android:id="@+id/sunriseText"
@@ -125,7 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:paddingLeft="0dp"/>
+                android:paddingLeft="0dp" />
         </LinearLayout>
 
     </RelativeLayout>
@@ -144,7 +141,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingLeft="0dp"
-            android:text="@string/sunset"/>
+            android:text="@string/sunset" />
 
         <LinearLayout
             android:id="@+id/sunsetLayout"
@@ -170,8 +167,7 @@
                 app:indeterminateSpeed="2"
                 app:minutes="20"
                 app:pointerWidth="thin"
-                app:timeSetDuration="400"
-                />
+                app:timeSetDuration="400" />
 
             <TextView
                 android:id="@+id/sunsetText"
@@ -179,7 +175,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:paddingLeft="0dp"/>
+                android:paddingLeft="0dp" />
         </LinearLayout>
 
     </RelativeLayout>
@@ -198,7 +194,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingLeft="0dp"
-            android:text="@string/astrTwilightStart"/>
+            android:text="@string/astrTwilightStart" />
 
         <LinearLayout
             android:id="@+id/astrTwilightStartLayout"
@@ -225,8 +221,7 @@
                 app:indeterminateSpeed="2"
                 app:minutes="20"
                 app:pointerWidth="thin"
-                app:timeSetDuration="400"
-                />
+                app:timeSetDuration="400" />
 
             <TextView
                 android:id="@+id/astrTwilightStartText"
@@ -234,7 +229,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:paddingLeft="0dp"/>
+                android:paddingLeft="0dp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -251,7 +246,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingLeft="0dp"
-            android:text="@string/astrTwilightEnd"/>
+            android:text="@string/astrTwilightEnd" />
 
         <LinearLayout
             android:id="@+id/astrTwilightEndLayout"
@@ -278,8 +273,7 @@
                 app:indeterminateSpeed="2"
                 app:minutes="20"
                 app:pointerWidth="thin"
-                app:timeSetDuration="400"
-                />
+                app:timeSetDuration="400" />
 
             <TextView
                 android:id="@+id/astrTwilightEndText"
@@ -287,7 +281,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:paddingLeft="0dp"/>
+                android:paddingLeft="0dp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -304,7 +298,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingLeft="0dp"
-            android:text="@string/civTwilightStart"/>
+            android:text="@string/civTwilightStart" />
 
         <LinearLayout
             android:id="@+id/civTwilightStartLayout"
@@ -330,8 +324,7 @@
                 app:indeterminateSpeed="2"
                 app:minutes="20"
                 app:pointerWidth="thin"
-                app:timeSetDuration="400"
-                />
+                app:timeSetDuration="400" />
 
             <TextView
                 android:id="@+id/civTwilightStartText"
@@ -339,7 +332,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:paddingLeft="0dp"/>
+                android:paddingLeft="0dp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -356,7 +349,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingLeft="0dp"
-            android:text="@string/civTwilightEnd"/>
+            android:text="@string/civTwilightEnd" />
 
         <LinearLayout
             android:id="@+id/civTwilightEndLayout"
@@ -382,8 +375,7 @@
                 app:indeterminateSpeed="2"
                 app:minutes="20"
                 app:pointerWidth="thin"
-                app:timeSetDuration="400"
-                />
+                app:timeSetDuration="400" />
 
             <TextView
                 android:id="@+id/civTwilightEndText"
@@ -391,7 +383,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:paddingLeft="0dp"/>
+                android:paddingLeft="0dp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -408,7 +400,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingLeft="0dp"
-            android:text="@string/nautTwilightStart"/>
+            android:text="@string/nautTwilightStart" />
 
         <LinearLayout
             android:id="@+id/nautTwilightStartLayout"
@@ -434,8 +426,7 @@
                 app:indeterminateSpeed="2"
                 app:minutes="20"
                 app:pointerWidth="thin"
-                app:timeSetDuration="400"
-                />
+                app:timeSetDuration="400" />
 
             <TextView
                 android:id="@+id/nautTwilightStartText"
@@ -443,7 +434,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:paddingLeft="0dp"/>
+                android:paddingLeft="0dp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -460,7 +451,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingLeft="0dp"
-            android:text="@string/nautTwilightEnd"/>
+            android:text="@string/nautTwilightEnd" />
 
         <LinearLayout
             android:id="@+id/nautTwilightEndLayout"
@@ -486,8 +477,7 @@
                 app:indeterminateSpeed="2"
                 app:minutes="20"
                 app:pointerWidth="thin"
-                app:timeSetDuration="400"
-                />
+                app:timeSetDuration="400" />
 
             <TextView
                 android:id="@+id/nautTwilightEndText"
@@ -495,7 +485,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:paddingLeft="0dp"/>
+                android:paddingLeft="0dp" />
         </LinearLayout>
     </RelativeLayout>
 

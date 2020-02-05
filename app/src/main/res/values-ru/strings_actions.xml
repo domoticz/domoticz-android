@@ -30,4 +30,5 @@
     <string name="action_qrcode_scan">Отсканировать QR-код</string>
     <string name="action_bluetooth_show">Показать подключенные устройства</string>
     <string name="action_speech">Распознавание речи</string>
+    <string name="send">Send</string>
 </resources>
