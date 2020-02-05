@@ -96,10 +96,7 @@ public class ExtendedStatusInfo {
         }
         try {
             if (row.has("CustomImage")) {
-                if (row.getInt("CustomImage") > 0)
-                    useCustomImage = true;
-                else
-                    useCustomImage = false;
+                useCustomImage = row.getInt("CustomImage") > 0;
             } else
                 useCustomImage = false;
         } catch (Exception e) {

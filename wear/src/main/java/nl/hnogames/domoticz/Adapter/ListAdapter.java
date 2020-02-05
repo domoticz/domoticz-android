@@ -38,9 +38,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import nl.hnogames.domoticz.containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.containers.DevicesInfo;
 import nl.hnogames.domoticz.utils.WearUsefulBits;
 
 public class ListAdapter extends WearableRecyclerView.Adapter {
@@ -48,6 +48,12 @@ public class ListAdapter extends WearableRecyclerView.Adapter {
     private final LayoutInflater mInflater;
     private ArrayList<DevicesInfo> mDataset;
     private Domoticz mDomoticz;
+
+    private static View.OnClickListener listener;
+    public void setOnClickListener(View.OnClickListener l)
+    {
+        listener = l;
+    }
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public ListAdapter(Context context, ArrayList<DevicesInfo> dataset) {
@@ -114,7 +120,7 @@ public class ListAdapter extends WearableRecyclerView.Adapter {
 
         String imageType = mDataset.get(position).getTypeImg();
         if (imageType != null && imageType.length() > 0) {
-            Picasso.get().load(mDomoticz.getDrawableIcon(mDataset.get(position).getTypeImg(),
+            Picasso.get().load(Domoticz.getDrawableIcon(mDataset.get(position).getTypeImg(),
                     mDataset.get(position).getType(),
                     mDataset.get(position).getSwitchType(),
                     mDataset.get(position).getStatusBoolean(),
@@ -146,6 +152,16 @@ public class ListAdapter extends WearableRecyclerView.Adapter {
 
         public ItemViewHolder(View itemView) {
             super(itemView);
+
+            // Attach a click listener to the entire row view
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener != null)
+                        listener.onClick(v);
+                }
+            });
+
             // find the text view within the custom item's layout
             textView = itemView.findViewById(R.id.name);
             statusView = itemView.findViewById(R.id.status);
