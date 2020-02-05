@@ -29,6 +29,10 @@ import android.preference.PreferenceManager;
 import android.support.wearable.view.WearableListView;
 import android.util.Log;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.wear.widget.WearableLinearLayoutManager;
+import androidx.wear.widget.WearableRecyclerView;
+
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
@@ -44,13 +48,11 @@ import nl.hnogames.domoticz.containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.app.DomoticzActivity;
 
-public class WearActivity extends DomoticzActivity
-        implements WearableListView.ClickListener,
-        MessageApi.MessageListener,
+public class WearActivity extends DomoticzActivity implements MessageApi.MessageListener,
         GoogleApiClient.ConnectionCallbacks {
 
     private ArrayList<DevicesInfo> switches = null;
-    private WearableListView listView;
+    private WearableRecyclerView listView;
     private ListAdapter adapter;
     private Domoticz mDomoticz;
 
@@ -60,9 +62,14 @@ public class WearActivity extends DomoticzActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         mDomoticz = new Domoticz();
-        listView = (WearableListView) findViewById(R.id.wearable_list);
+
+        listView = findViewById(R.id.wearable_list);
+        listView.setLayoutManager(new WearableLinearLayoutManager(WearActivity.this));
+        listView.setEdgeItemsCenteringEnabled(true);
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String switchesRawData = prefs.getString(PREF_SWITCH, "");
+
         if (switchesRawData != null && switchesRawData.length() > 0)
             createListView(new Gson().fromJson(switchesRawData, String[].class));
     }
@@ -86,11 +93,10 @@ public class WearActivity extends DomoticzActivity
         Log.v("WEAR", "Parsing information: " + switches.toString());
         adapter = new ListAdapter(this, switches);
         listView.setAdapter(adapter);
-        listView.setClickListener(this);
+        //listView.setClickListener(this);
     }
 
-    // WearableListView click listener
-    @Override
+
     public void onClick(WearableListView.ViewHolder v) {
         Integer tag = (Integer) v.itemView.getTag();
         DevicesInfo clickedDevice = switches.get(tag);
@@ -118,10 +124,6 @@ public class WearActivity extends DomoticzActivity
             intent.putExtra("SWITCH", sendData);
             startActivity(intent);
         }
-    }
-
-    @Override
-    public void onTopEmptyRegionClick() {
     }
 
     @Override

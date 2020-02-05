@@ -60,7 +60,6 @@ public class SendActivity extends DomoticzActivity implements
                 ConfirmationActivity.SUCCESS_ANIMATION);
         intent.putExtra(ConfirmationActivity.EXTRA_MESSAGE, getString(R.string.triggered));
         startActivity(intent);
-
         sendMessage(SEND_SWITCH, selectedSwitch);
         this.finish();
     }
