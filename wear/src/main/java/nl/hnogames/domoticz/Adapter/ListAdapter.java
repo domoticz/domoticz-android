@@ -115,14 +115,12 @@ public class ListAdapter extends WearableListView.Adapter {
 
         String imageType = mDataset.get(position).getTypeImg();
         if (imageType != null && imageType.length() > 0) {
-            Picasso.with(this.mContext).load(
-                    mDomoticz.getDrawableIcon(mDataset.get(position).getTypeImg(),
-                            mDataset.get(position).getType(),
-                            mDataset.get(position).getSwitchType(),
-                            mDataset.get(position).getStatusBoolean(),
-                            mDataset.get(position).getUseCustomImage(),
-                            mDataset.get(position).getImage()))
-                    .into(itemHolder.imageView);
+            Picasso.get().load(mDomoticz.getDrawableIcon(mDataset.get(position).getTypeImg(),
+                    mDataset.get(position).getType(),
+                    mDataset.get(position).getSwitchType(),
+                    mDataset.get(position).getStatusBoolean(),
+                    mDataset.get(position).getUseCustomImage(),
+                    mDataset.get(position).getImage())).into(itemHolder.imageView);
 
             if (!mDataset.get(position).getStatusBoolean())
                 itemHolder.imageView.setAlpha(0.5f);
