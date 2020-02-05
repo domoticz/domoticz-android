@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -21,10 +20,10 @@
   -->
 
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:configure="nl.hnogames.domoticz.Widgets.WidgetConfigurationActivity"
-                    android:initialLayout="@layout/widget_layout"
-                    android:minWidth="220dp"
-                    android:minHeight="40dp"
-                    android:previewImage="@drawable/widgetpreview"
-                    android:resizeMode="horizontal|vertical"
-                    android:updatePeriodMillis="1000000"/>
+    android:configure="nl.hnogames.domoticz.widgets.WidgetConfigurationActivity"
+    android:initialLayout="@layout/widget_layout"
+    android:minWidth="220dp"
+    android:minHeight="40dp"
+    android:previewImage="@drawable/widgetpreview"
+    android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="1000000" />

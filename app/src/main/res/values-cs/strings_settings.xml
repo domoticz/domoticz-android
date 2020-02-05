@@ -64,8 +64,8 @@
     <string name="always_on_on">Vždy uzamknout obrazovku</string>
     <string name="always_on_off">Nikdy nezamykat obrazovku</string>
     <string name="always_auto_refresh">Obnovovat automaticky</string>
-    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
-    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_on">Obnovovat stav zařízení každých několik vteřin</string>
+    <string name="always_auto_refresh_off">Neobnovovat stav zařízení každých několik vteřin</string>
     <string name="switch_buttons_title">Přepínače</string>
     <string name="switch_buttons_on">Zobrazit přepínače se zap/vyp přepínačem</string>
     <string name="switch_buttons_off">Zobrazit přepínače se zap/vyp tlačítky</string>
@@ -146,6 +146,7 @@
     <string name="enable_notifications_title">Povolit oznámení</string>
     <string name="enable_notifications">Povolit oznámení na tomto zařízení</string>
     <string name="notification_screen_title">Nastavení oznámení</string>
+    <string name="notification_history">Notification history</string>
     <string name="notification_vibrate_title">Vibrovat</string>
     <string name="notification_vibrate_on">Vibrovat při doručení oznámení</string>
     <string name="notification_vibrate_off">Nevibrovat</string>
@@ -161,6 +162,13 @@
     <string name="alarm">Alarm</string>
     <string name="alarmtimer_title">Časovač alarmu</string>
     <string name="alarmtimer">Počet sekund do alarmu</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Default</string>
+    <string name="theme_daynight">Day/Night</string>
+    <string name="theme_orange">Orange</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_blue">Blue</string>
+    <!-- Other -->
     <string name="default_values">Výchozí hodnoty</string>
     <string name="default_values_min_error">Maximální hodnota by měla být vyšší než minimální hodnota</string>
     <string name="default_values_max_error">Maximální hodnota by měla být vyšší než minimální hodnota</string>
@@ -203,4 +211,5 @@
     <string name="debug_test_text">Zkouška ladění</string>
     <string name="restart_required_title">Je vyžadován restart</string>
     <string name="restart_now">Chcete nyní restartovat?</string>
+    <string name="check_settings">Check your settings</string>
 </resources>

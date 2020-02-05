@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -21,16 +20,16 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/row_global_wrapper"
-                style="@style/background_listview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/row_global_wrapper"
+    style="@style/background_listview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants">
 
     <LinearLayout
         android:id="@+id/row_wrapper"
-        style="@style/listview_row"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
@@ -46,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical" />
 
         <RelativeLayout
             android:layout_width="253dp"
@@ -58,7 +57,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                tools:text="Location name"/>
+                tools:text="Location name" />
 
             <TextView
                 android:id="@+id/location_radius"
@@ -68,7 +67,7 @@
                 android:layout_below="@+id/location_name"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
-                tools:text="Radius (meter): 120"/>
+                tools:text="Radius (meter): 120" />
 
             <TextView
                 android:id="@+id/location_connectedSwitch"
@@ -77,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/location_radius"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"/>
+                android:layout_alignParentLeft="true" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -101,7 +100,8 @@
             android:layout_gravity="center_vertical|right"
             android:background="@drawable/button_status"
             android:text="@string/delete_short"
-            android:textSize="10dp"/>
+            android:textColor="?attr/buttonTextColor"
+            android:textSize="10dp" />
 
     </LinearLayout>
 </RelativeLayout>
