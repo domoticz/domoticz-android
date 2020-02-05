@@ -23,6 +23,7 @@ package nl.hnogames.domoticz.app;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -38,32 +39,32 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+import nl.hnogames.domoticz.Interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.ui.Backdrop.BackdropContainer;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticz.UI.Backdrop.BackdropContainer;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -82,8 +83,6 @@ public class DomoticzDashboardFragment extends Fragment {
     public BackdropContainer backdropContainer;
     public MaterialCardView bottomLayoutWrapper;
     public MaterialButton collapseSortButton, sortAll, sortOn, sortOff, sortStatic, btnCheckSettings;
-    boolean isTablet = false;
-    boolean isPortrait = false;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private TextView debugText;
@@ -94,6 +93,8 @@ public class DomoticzDashboardFragment extends Fragment {
     private int SCROLL_THRESHOLD = 600;
     private boolean controlsVisible = true;
     private boolean backdropShown = false;
+    boolean isTablet = false;
+    boolean isPortrait = false;
 
     public DomoticzDashboardFragment() {
     }
@@ -101,11 +102,47 @@ public class DomoticzDashboardFragment extends Fragment {
     public void setTheme() {
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getActivity());
+        if (mSharedPrefs.darkThemeEnabled()) {
+            if (gridView != null)
+                gridView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
+            if ((root.findViewById(R.id.debugLayout)) != null)
+                (root.findViewById(R.id.debugLayout)).setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
+            if ((root.findViewById(R.id.coordinatorLayout)) != null)
+                (root.findViewById(R.id.coordinatorLayout)).setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
+            if (root.findViewById(R.id.errorImage) != null)
+                ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.sad_smiley_dark));
+            if ((root.findViewById(R.id.btnCheckSettings)) != null)
+                ((MaterialButton)root.findViewById(R.id.btnCheckSettings)).setTextColor(getResources().getColor(R.color.white));
+            if ((root.findViewById(R.id.errorLayout)) != null)
+                (root.findViewById(R.id.errorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
+            if (bottomLayoutWrapper != null)
+                bottomLayoutWrapper.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
+            if (collapseSortButton != null) {
+                int[][] states = new int[][]{
+                    new int[]{android.R.attr.state_enabled}, // enabled
+                    new int[]{-android.R.attr.state_enabled}, // disabled
+                    new int[]{-android.R.attr.state_checked}, // unchecked
+                    new int[]{android.R.attr.state_pressed}  // pressed
+                };
+
+                int[] colors = new int[]{
+                    R.color.primary, R.color.primary, R.color.primary, R.color.primary
+                };
+
+                ColorStateList newStates = new ColorStateList(states, colors);
+                collapseSortButton.setTextColor(ContextCompat.getColor(getContext(), R.color.primary));
+                collapseSortButton.setIconTint(newStates);
+            }
+            mSwipeRefreshLayout.setColorSchemeResources(
+                R.color.secondary,
+                R.color.secondary_dark,
+                R.color.background_dark);
+        }
     }
 
     @DebugLog
     public void hideViews() {
-        if (isTablet)
+        if(isTablet)
             return;
         if (backdropShown)
             return;
@@ -117,7 +154,7 @@ public class DomoticzDashboardFragment extends Fragment {
 
     @DebugLog
     public void showViews() {
-        if (isTablet)
+        if(isTablet)
             return;
         if (getActivity() instanceof MainActivity)
             ((MainActivity) getActivity()).showViews();
@@ -250,9 +287,9 @@ public class DomoticzDashboardFragment extends Fragment {
 
         backdropContainer = root.findViewById(R.id.backdropcontainer);
         backdropContainer
-                .dropInterpolator(new LinearInterpolator())
-                .dropHeight(this.getResources().getDimensionPixelSize(R.dimen.sneek_height))
-                .build();
+            .dropInterpolator(new LinearInterpolator())
+            .dropHeight(this.getResources().getDimensionPixelSize(R.dimen.sneek_height))
+            .build();
 
         //setting up our OnScrollListener
         gridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -378,7 +415,7 @@ public class DomoticzDashboardFragment extends Fragment {
             listener = (DomoticzFragmentListener) fragment;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                    fragment.toString() + " must implement DomoticzFragmentListener");
+                fragment.toString() + " must implement DomoticzFragmentListener");
         }
     }
 
@@ -509,7 +546,7 @@ public class DomoticzDashboardFragment extends Fragment {
                         debugText.setText(temp);
                     }
                 } else throw new RuntimeException(
-                        "Layout should have a TextView defined with the ID \"debugText\"");
+                    "Layout should have a TextView defined with the ID \"debugText\"");
             }
         }
     }
@@ -523,7 +560,7 @@ public class DomoticzDashboardFragment extends Fragment {
             TextView errorTextMessage = root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-                "Layout should have a RelativeLayout defined with the ID of errorLayout");
+            "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     public void setMessage(String message) {
@@ -535,6 +572,8 @@ public class DomoticzDashboardFragment extends Fragment {
             settingsButton.setVisibility(View.GONE);
 
             ImageView errorImage = root.findViewById(R.id.errorImage);
+            errorImage.setImageResource(R.drawable.empty);
+            errorImage.setAlpha(0.5f);
             errorImage.setVisibility(View.VISIBLE);
 
             TextView errorTextWrong = root.findViewById(R.id.errorTextWrong);
@@ -543,14 +582,14 @@ public class DomoticzDashboardFragment extends Fragment {
             TextView errorTextMessage = root.findViewById(R.id.errorTextMessage);
             errorTextMessage.setText(message);
         } else throw new RuntimeException(
-                "Layout should have a RelativeLayout defined with the ID of errorLayout");
+            "Layout should have a RelativeLayout defined with the ID of errorLayout");
     }
 
     private void hideListView() {
         if (gridView != null) {
             gridView.setVisibility(View.GONE);
         } else throw new RuntimeException(
-                "Layout should have a ListView defined with the ID of listView");
+            "Layout should have a ListView defined with the ID of listView");
     }
 
     private void showDebugLayout() {

@@ -27,25 +27,6 @@
     <attr name="dynamicEntryValuesProvider" format="string"/>
     <attr name="selectAllValuesByDefault" format="boolean"/>
 
-    <attr name="recyclerBackground" format="color" />
-    <attr name="listviewBackground" format="color" />
-    <attr name="listviewRowBackground" format="color" />
-    <attr name="backdropBackground" format="color" />
-    <attr name="buttonTextColor" format="color" />
-    <attr name="toolbarBackground" format="color" />
-    <attr name="toolbarTextColor" format="color" />
-    <attr name="graphTextColor" format="color" />
-    <attr name="wizardCardColor" format="color" />
-    <attr name="wizardTitleColor" format="color" />
-    <attr name="temperatureTextColor" format="color" />
-    <attr name="preferenceIconColor" format="color" />
-    <attr name="incomingDefaultBubbleColor" format="color" />
-    <attr name="incomingTextColor" format="color" />
-    <attr name="outcomingDefaultBubbleColor" format="color" />
-    <attr name="outcomingTextColor" format="color" />
-    <attr name="editTextBackgroundColor" format="color" />
-    <attr name="editTextTextColor" format="color" />
-
     <declare-styleable name="CustomListPreference">
         <attr name="lockedValues"/>
         <attr name="lockedValuesDependencyKeys"/>

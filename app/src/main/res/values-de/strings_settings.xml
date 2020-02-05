@@ -146,7 +146,6 @@
     <string name="enable_notifications_title">Benachrichtigungen aktivieren</string>
     <string name="enable_notifications">Aktivieren von Benachrichtigungen auf diesem Gerät</string>
     <string name="notification_screen_title">Benachrichtungseinstellungen</string>
-    <string name="notification_history">Notification history</string>
     <string name="notification_vibrate_title">Vibrieren</string>
     <string name="notification_vibrate_on">Vibrieren bei einer Benachrichtigung</string>
     <string name="notification_vibrate_off">Nicht Vibrieren</string>
@@ -162,13 +161,6 @@
     <string name="alarm">Alarm</string>
     <string name="alarmtimer_title">Alarmtimer</string>
     <string name="alarmtimer">Sekunden bis zum Alarm</string>
-    <!-- Theme properties -->
-    <string name="theme_default">Default</string>
-    <string name="theme_daynight">Day/Night</string>
-    <string name="theme_orange">Orange</string>
-    <string name="theme_pink">Pink</string>
-    <string name="theme_blue">Blue</string>
-    <!-- Other -->
     <string name="default_values">Standardwerte</string>
     <string name="default_values_min_error">Maximalwert sollte größer als der Minimalwert sein</string>
     <string name="default_values_max_error">Maximalwert sollte größer als der Minimalwert sein</string>
@@ -211,5 +203,4 @@
     <string name="debug_test_text">Debugging Test</string>
     <string name="restart_required_title">Neustart erforderlich</string>
     <string name="restart_now">Jetzt neu starten?</string>
-    <string name="check_settings">Check your settings</string>
 </resources>

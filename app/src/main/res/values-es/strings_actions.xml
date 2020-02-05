@@ -30,5 +30,4 @@
     <string name="action_qrcode_scan">Escanear Código QR</string>
     <string name="action_bluetooth_show">Mostrar dispositivos vinculados</string>
     <string name="action_speech">Reconocimiento de voz</string>
-    <string name="send">Send</string>
 </resources>

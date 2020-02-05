@@ -146,7 +146,6 @@
     <string name="enable_notifications_title">Értesítések engedélyezése</string>
     <string name="enable_notifications">Engedélyezi az értesítéseket ezen az eszközön</string>
     <string name="notification_screen_title">Értesítési beálllítások</string>
-    <string name="notification_history">Notification history</string>
     <string name="notification_vibrate_title">Rezgés</string>
     <string name="notification_vibrate_on">Rezgés értesítésnél</string>
     <string name="notification_vibrate_off">Ne rezegjen</string>
@@ -162,13 +161,6 @@
     <string name="alarm">Riasztás</string>
     <string name="alarmtimer_title">Riasztás időzítő</string>
     <string name="alarmtimer">A riasztás ideje másodpercben</string>
-    <!-- Theme properties -->
-    <string name="theme_default">Default</string>
-    <string name="theme_daynight">Day/Night</string>
-    <string name="theme_orange">Orange</string>
-    <string name="theme_pink">Pink</string>
-    <string name="theme_blue">Blue</string>
-    <!-- Other -->
     <string name="default_values">Alap értékek</string>
     <string name="default_values_min_error">A Maximális értéknek nagyobbnak kell lennie a Minimumnál</string>
     <string name="default_values_max_error">A Maximális értéknek nagyobbnak kell lennie a Minimumnál</string>
@@ -211,5 +203,4 @@
     <string name="debug_test_text">Hibakeresés teszt</string>
     <string name="restart_required_title">Újraindítás szükséges</string>
     <string name="restart_now">Újraindítás most?</string>
-    <string name="check_settings">Check your settings</string>
 </resources>

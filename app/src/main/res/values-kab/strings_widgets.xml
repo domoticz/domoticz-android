@@ -21,18 +21,18 @@
   ~  under the License.
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-    <!-- only temporarily to suppress the missing translations errors for now!! -->
-    <string name="pick_device_title">Fren allal</string>
-    <string name="choose_switch">Afran n wallal</string>
-    <string name="failed_to_get_securitypanel">Ur yelli tiffin n ugalis sddaw isenfalen innek</string>
-    <string name="failed_to_get_switches">Dawezɣi ad ḥelliḍ ibenkan </string>
-    <string name="failed_toggle_switch">Dawezɣi att seqluqel-eḍ allal</string>
-    <string name="switch_toggled">"Switch device"</string>
-    <string name="text_loading">Tacaṛin</string>
-    <string name="text_go">Eddu</string>
-    <string name="widget_background">Tawennaṭ</string>
-    <string name="widget_dark">Aqesḥan</string>
-    <string name="widget_light">Tafat</string>
-    <string name="widget_transparent_dark">Aqesḥan tissuseɣt</string>
-    <string name="widget_transparent_light">Tafat tissuseɣt</string>
+  <!-- only temporarily to suppress the missing translations errors for now!! -->
+  <string name="pick_device_title">Fren allal</string>
+  <string name="choose_switch">Afran n wallal</string>
+  <string name="failed_to_get_securitypanel">Ur yelli tiffin n ugalis sddaw isenfalen innek</string>
+  <string name="failed_to_get_switches">Dawezɣi ad ḥelliḍ ibenkan </string>
+  <string name="failed_toggle_switch">Dawezɣi att seqluqel-eḍ allal</string>
+  <string name="switch_toggled">"Switch device"</string>
+  <string name="text_loading">Tacaṛin</string>
+  <string name="text_go">Eddu</string>
+  <string name="widget_background">Tawennaṭ</string>
+  <string name="widget_dark">Aqesḥan</string>
+  <string name="widget_light">Tafat</string>
+  <string name="widget_transparent_dark">Aqesḥan tissuseɣt</string>
+  <string name="widget_transparent_light">Tafat tissuseɣt</string>
 </resources>

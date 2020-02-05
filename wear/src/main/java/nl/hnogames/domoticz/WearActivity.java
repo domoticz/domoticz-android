@@ -26,11 +26,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.wearable.view.WearableListView;
 import android.util.Log;
-import android.view.View;
-
-import androidx.wear.widget.WearableLinearLayoutManager;
-import androidx.wear.widget.WearableRecyclerView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageApi;
@@ -43,15 +40,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.Adapter.ListAdapter;
+import nl.hnogames.domoticz.Containers.DevicesInfo;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.app.DomoticzActivity;
-import nl.hnogames.domoticz.containers.DevicesInfo;
 
-public class WearActivity extends DomoticzActivity implements MessageApi.MessageListener,
+public class WearActivity extends DomoticzActivity
+        implements WearableListView.ClickListener,
+        MessageApi.MessageListener,
         GoogleApiClient.ConnectionCallbacks {
 
     private ArrayList<DevicesInfo> switches = null;
-    private WearableRecyclerView listView;
+    private WearableListView listView;
     private ListAdapter adapter;
     private Domoticz mDomoticz;
 
@@ -61,14 +60,9 @@ public class WearActivity extends DomoticzActivity implements MessageApi.Message
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         mDomoticz = new Domoticz();
-
-        listView = findViewById(R.id.wearable_list);
-        listView.setLayoutManager(new WearableLinearLayoutManager(WearActivity.this));
-        listView.setEdgeItemsCenteringEnabled(true);
-
+        listView = (WearableListView) findViewById(R.id.wearable_list);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String switchesRawData = prefs.getString(PREF_SWITCH, "");
-
         if (switchesRawData != null && switchesRawData.length() > 0)
             createListView(new Gson().fromJson(switchesRawData, String[].class));
     }
@@ -91,18 +85,16 @@ public class WearActivity extends DomoticzActivity implements MessageApi.Message
 
         Log.v("WEAR", "Parsing information: " + switches.toString());
         adapter = new ListAdapter(this, switches);
-        adapter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Integer tag = (Integer) v.getTag();
-                DevicesInfo clickedDevice = switches.get(tag);
-                ProcessDeviceClick(tag, clickedDevice);
-            }
-        });
         listView.setAdapter(adapter);
+        listView.setClickListener(this);
     }
 
-    private void ProcessDeviceClick(Integer tag, DevicesInfo clickedDevice) {
+    // WearableListView click listener
+    @Override
+    public void onClick(WearableListView.ViewHolder v) {
+        Integer tag = (Integer) v.itemView.getTag();
+        DevicesInfo clickedDevice = switches.get(tag);
+
         int switchTypeVal = clickedDevice.getSwitchTypeVal();
         String switchType = clickedDevice.getSwitchType();
 
@@ -110,13 +102,13 @@ public class WearActivity extends DomoticzActivity implements MessageApi.Message
         if ((mDomoticz.getWearSupportedSwitchesValues().contains(switchTypeVal) &&
                 mDomoticz.getWearSupportedSwitchesNames().contains(switchType)) ||
                 (clickedDevice.getType().equals(Domoticz.Scene.Type.GROUP) || clickedDevice.getType().equals(Domoticz.Scene.Type.SCENE))) {
-            Intent intent = new Intent(WearActivity.this, SendActivity.class);
+            Intent intent = new Intent(this, SendActivity.class);
             String sendData = "";
 
             try {
                 JSONObject switchJSON = switches.get(tag).getJsonObject();
                 if (switchJSON.has("nameValuePairs"))
-                    sendData = switchJSON.getString("nameValuePairs");
+                    sendData = switchJSON.getString("nameValuePairs").toString();
                 else
                     sendData = switchJSON.toString();
             } catch (JSONException e) {
@@ -126,6 +118,10 @@ public class WearActivity extends DomoticzActivity implements MessageApi.Message
             intent.putExtra("SWITCH", sendData);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onTopEmptyRegionClick() {
     }
 
     @Override

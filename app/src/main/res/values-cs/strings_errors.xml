@@ -7,5 +7,5 @@
     <string name="error_server">Chyba serveru</string>
     <string name="error_network">Chyba sítě, kódu chyby %1$d</string>
     <string name="error_parse">Chyba parsování</string>
-    <string name="error_notConnected">Chyba: chybí funkční připojení k síti</string>
+    <string name="error_notConnected">Chyba: chybí funkční připojení k nějaké síti</string>
 </resources>

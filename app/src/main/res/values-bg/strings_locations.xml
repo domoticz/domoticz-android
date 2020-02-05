@@ -40,7 +40,7 @@
     <string name="not_available">Липсва</string>
     <string name="no_valid_latLong">Невалидна географска ширина и дължина</string>
     <string name="starting_geofence_service">Стартиране на услугата Geofence</string>
-    <string name="could_not_find_location">Не може да се намери местоположение, моля опитайте отново.</string>
+    <string name="could_not_find_location">Could not find location, please try again.</string>
     <string name="google_play_services_unavailable">Google Play услугите са недостъпни.</string>
     <string name="location_not_found">Няма намерено местоположение.</string>
     <string name="geofence">Geofencing</string>
@@ -61,5 +61,5 @@
     <string name="geofence_not_available">Geofence service is not available now</string>
     <string name="geofence_too_many_geofences">App registered too many geofences</string>
     <string name="geofence_too_many_pending_intents">Too many PendingIntents provided</string>
-    <string name="unknown_geofence_error">Неизвестна грешка</string>
+    <string name="unknown_geofence_error">Unknown error</string>
 </resources>

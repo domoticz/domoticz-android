@@ -146,7 +146,6 @@
     <string name="enable_notifications_title">Ota ilmoitukset käyttöön</string>
     <string name="enable_notifications">Ota ilmoitukset käyttöön tässä laitteessa</string>
     <string name="notification_screen_title">Ilmoitusasetukset</string>
-    <string name="notification_history">Notification history</string>
     <string name="notification_vibrate_title">Värinä</string>
     <string name="notification_vibrate_on">Värise, kun ilmoitus saapuu</string>
     <string name="notification_vibrate_off">Värinä pois</string>
@@ -162,13 +161,6 @@
     <string name="alarm">Hälytykset</string>
     <string name="alarmtimer_title">Hälytysajastin</string>
     <string name="alarmtimer">Hälytyksen kesto sekunteina</string>
-    <!-- Theme properties -->
-    <string name="theme_default">Default</string>
-    <string name="theme_daynight">Day/Night</string>
-    <string name="theme_orange">Orange</string>
-    <string name="theme_pink">Pink</string>
-    <string name="theme_blue">Blue</string>
-    <!-- Other -->
     <string name="default_values">Oletusarvot</string>
     <string name="default_values_min_error">Maksimiarvon pitää olla suurempi kuin minimiarvon</string>
     <string name="default_values_max_error">Maksimiarvon pitää olla suurempi kuin minimiarvon</string>
@@ -211,5 +203,4 @@
     <string name="debug_test_text">Virheenkorjaustesti</string>
     <string name="restart_required_title">Uudelleenkäynnistys tarvitaan</string>
     <string name="restart_now">Käynnistä uudelleen nyt?</string>
-    <string name="check_settings">Check your settings</string>
 </resources>

@@ -24,27 +24,20 @@ package nl.hnogames.domoticz;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import androidx.appcompat.widget.Toolbar;
-
-import com.ftinc.scoop.Scoop;
-
+import nl.hnogames.domoticz.Fragments.Camera;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
-import nl.hnogames.domoticz.fragments.Camera;
 
 public class CameraActivity extends AppCompatAssistActivity {
 
-    private Toolbar toolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        // Apply Scoop to the activity
-        Scoop.getInstance().apply(this);
+        if (new SharedPrefUtil(this).darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+        else
+            setTheme(R.style.AppTheme);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph);
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle == null)
@@ -61,8 +54,8 @@ public class CameraActivity extends AppCompatAssistActivity {
             Camera camera = new Camera();
             if (getSupportActionBar() != null)
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportFragmentManager().beginTransaction().replace(R.id.main,
-                    camera).commit();
+            getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
+                camera).commit();
             camera.setImage(imageUrl);
         }
     }

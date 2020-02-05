@@ -41,18 +41,18 @@
     <string-array name="empty_array" translatable="false"></string-array>
 
     <string-array name="drawer_fragments" translatable="false">
-        <item>nl.hnogames.domoticz.fragments.Wizard</item>
-        <item>nl.hnogames.domoticz.fragments.Dashboard</item>
-        <item>nl.hnogames.domoticz.fragments.Scenes</item>
-        <item>nl.hnogames.domoticz.fragments.Switches</item>
-        <item>nl.hnogames.domoticz.fragments.Utilities</item>
-        <item>nl.hnogames.domoticz.fragments.Temperature</item>
-        <item>nl.hnogames.domoticz.fragments.Weather</item>
-        <item>nl.hnogames.domoticz.fragments.Cameras</item>
-        <item>nl.hnogames.domoticz.fragments.Plans</item>
-        <item>nl.hnogames.domoticz.fragments.Logs</item>
-        <item>nl.hnogames.domoticz.fragments.Events</item>
-        <item>nl.hnogames.domoticz.fragments.UserVariables</item>
+        <item>nl.hnogames.domoticz.Fragments.Wizard</item>
+        <item>nl.hnogames.domoticz.Fragments.Dashboard</item>
+        <item>nl.hnogames.domoticz.Fragments.Scenes</item>
+        <item>nl.hnogames.domoticz.Fragments.Switches</item>
+        <item>nl.hnogames.domoticz.Fragments.Utilities</item>
+        <item>nl.hnogames.domoticz.Fragments.Temperature</item>
+        <item>nl.hnogames.domoticz.Fragments.Weather</item>
+        <item>nl.hnogames.domoticz.Fragments.Cameras</item>
+        <item>nl.hnogames.domoticz.Fragments.Plans</item>
+        <item>nl.hnogames.domoticz.Fragments.Logs</item>
+        <item>nl.hnogames.domoticz.Fragments.Events</item>
+        <item>nl.hnogames.domoticz.Fragments.UserVariables</item>
     </string-array>
 
     <array name="drawer_icons" translatable="false">

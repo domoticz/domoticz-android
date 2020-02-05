@@ -30,5 +30,4 @@
     <string name="action_qrcode_scan">סרוק קוד QR</string>
     <string name="action_bluetooth_show">Show paired devices</string>
     <string name="action_speech">זיהוי קולי</string>
-    <string name="send">Send</string>
 </resources>

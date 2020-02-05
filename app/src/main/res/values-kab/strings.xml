@@ -33,8 +33,8 @@
     <string name="button_state_off">Insa</string>
     <string name="button_state_closed">Imdel</string>
     <string name="button_state_open">Ldi</string>
-    <string name="button_state_lock">Sekkeṛ</string>
-    <string name="button_state_unlock">Kkes askker</string>
+    <string name="button_state_lock">Lock</string>
+    <string name="button_state_unlock">Unlock</string>
     <string name="button_status_log">Aɣmis</string>
     <string name="button_status_day">Ass</string>
     <string name="button_status_week">Amalas</string>
@@ -45,11 +45,11 @@
     <string name="button_color">Ini</string>
     <string name="button_arm">Ḥarj</string>
     <string name="button_disarm">Senqer</string>
-    <string name="button_state_full_light">Tuget n tafat</string>
-    <string name="button_state_night">Taftilt n yiḍ</string>
-    <string name="sunrise">Alluy n yiṭij</string>
-    <string name="sunset">Ɣelluy n yiṭij</string>
-    <string name="now">Tura</string>
+    <string name="button_state_full_light">Full light</string>
+    <string name="button_state_night">Night light</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="now">Now</string>
     <string name="astrTwilightStart">Astronomical twilight start</string>
     <string name="astrTwilightEnd">Astronomical twilight end</string>
     <string name="civTwilightStart">Civil twilight start</string>
@@ -126,11 +126,11 @@
     <string name="continue_question">An-kemmel?</string>
     <string name="cant_remove_default_server">Dawezɣi tukksa n uqeddac s lexṣas</string>
     <string name="restart_required_msg">Iw akken aslugen n tutlayt ad ddun,yesefkk askar n wasnas</string>
-    <string name="filter_all">Akk</string>
-    <string name="filter_normal">Amagnu</string>
-    <string name="filter_status">Iẓuyar</string>
-    <string name="filter_error">Tuccḍa</string>
-    <string name="use_demo_setup">Seqdec tawila n waskan</string>
+    <string name="filter_all">All</string>
+    <string name="filter_normal">Normal</string>
+    <string name="filter_status">Status</string>
+    <string name="filter_error">Error</string>
+    <string name="use_demo_setup">Use demo setup</string>
     <string name="auto_refresh_time">Refresh timer</string>
     <string name="set_auto_refresh_time">Set a specific timer for the auto refresh in seconds.</string>
 </resources>

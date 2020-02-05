@@ -24,19 +24,15 @@ package nl.hnogames.domoticz;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentTransaction;
-
-import com.ftinc.scoop.Scoop;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
+import androidx.fragment.app.FragmentTransaction;
 import hugo.weaving.DebugLog;
+import nl.hnogames.domoticz.Fragments.Dashboard;
+import nl.hnogames.domoticz.Utils.SharedPrefUtil;
+import nl.hnogames.domoticz.Utils.UsefulBits;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
-import nl.hnogames.domoticz.fragments.Dashboard;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
@@ -45,13 +41,12 @@ public class PlanActivity extends AppCompatAssistActivity {
     private Timer autoRefreshTimer = null;
     private Dashboard dash;
     private SharedPrefUtil mSharedPrefs;
-    private Toolbar toolbar;
 
     @DebugLog
     public ConfigInfo getConfig() {
         return mServerUtil != null && mServerUtil.getActiveServer() != null ?
-                mServerUtil.getActiveServer().getConfigInfo(this) :
-                null;
+            mServerUtil.getActiveServer().getConfigInfo(this) :
+            null;
     }
 
     private void setupAutoRefresh() {
@@ -76,17 +71,14 @@ public class PlanActivity extends AppCompatAssistActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
-        // Apply Scoop to the activity
-        Scoop.getInstance().apply(this);
-
+        if (mSharedPrefs.darkThemeEnabled())
+            setTheme(R.style.AppThemeDark);
+        else
+            setTheme(R.style.AppTheme);
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_graph);
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -102,7 +94,7 @@ public class PlanActivity extends AppCompatAssistActivity {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-            tx.replace(R.id.main, dash);
+            tx.replace(android.R.id.content, dash);
             tx.commit();
             setupAutoRefresh();
         } else this.finish();
