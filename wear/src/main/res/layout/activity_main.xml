@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -26,4 +25,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SplashActivity"
-    tools:deviceIds="wear"></android.support.wearable.view.WatchViewStub>
+    tools:deviceIds="wear" />

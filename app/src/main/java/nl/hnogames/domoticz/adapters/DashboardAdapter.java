@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,6 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.squareup.picasso.Picasso;
@@ -170,21 +170,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             row = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.dashboard_row, parent, false);
 
-        if (mSharedPrefs.darkThemeEnabled()) {
-            if ((row.findViewById(R.id.card_global_wrapper)) != null)
-                row.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-            if ((row.findViewById(R.id.row_wrapper)) != null)
-                (row.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
-            if ((row.findViewById(R.id.row_global_wrapper)) != null)
-                (row.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-
-            if ((row.findViewById(R.id.on_button)) != null)
-                ((MaterialButton) row.findViewById(R.id.on_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
-            if ((row.findViewById(R.id.off_button)) != null)
-                ((MaterialButton) row.findViewById(R.id.off_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
-            if ((row.findViewById(R.id.color_button)) != null)
-                ((MaterialButton) row.findViewById(R.id.color_button)).setTextColor(ContextCompat.getColor(context, R.color.white));
-        }
         return new DataObjectHolder(row);
     }
 
@@ -193,12 +178,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (filteredData != null && filteredData.size() >= position) {
             DevicesInfo extendedStatusInfo = filteredData.get(position);
 
-            if (!this.mSharedPrefs.darkThemeEnabled()) {
-                holder.pieView.setInnerBackgroundColor(ContextCompat.getColor(context, R.color.white));
-                holder.pieView.setTextColor(ContextCompat.getColor(context, R.color.black));
-            }
             holder.pieView.setPercentageTextSize(16);
             holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
+
+            TypedValue pieBackgroundValue = new TypedValue();
+            TypedValue temperatureValue = new TypedValue();
+            Resources.Theme theme = context.getTheme();
+            theme.resolveAttribute(R.attr.listviewRowBackground, pieBackgroundValue, true);
+            theme.resolveAttribute(R.attr.temperatureTextColor, temperatureValue, true);
+            holder.pieView.setInnerBackgroundColor(pieBackgroundValue.data);
+            holder.pieView.setTextColor(temperatureValue.data);
 
             setSwitchRowData(extendedStatusInfo, holder);
 
@@ -493,8 +482,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.switch_battery_level.append(", " + context.getString(R.string.humidity) + ": " + mDeviceInfo.getHumidityStatus());
             }
 
-            if(mDeviceInfo.getTypeImg().equals("temperature"))
-            {
+            if (mDeviceInfo.getTypeImg().equals("temperature")) {
                 if ((!UsefulBits.isEmpty(tempSign) && tempSign.equals("C") && mDeviceInfo.getTemperature() < 0) ||
                         (!UsefulBits.isEmpty(tempSign) && tempSign.equals("F") && mDeviceInfo.getTemperature() < 30)) {
                     Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
@@ -511,8 +499,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             false,
                             null)).into(holder.iconRow);
                 }
-            }
-            else{
+            } else {
                 Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                         mDeviceInfo.getType(),
                         mDeviceInfo.getSubType(),

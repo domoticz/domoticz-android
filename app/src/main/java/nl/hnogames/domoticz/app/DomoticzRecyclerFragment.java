@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.app;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -43,7 +42,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -106,44 +104,6 @@ public class DomoticzRecyclerFragment extends Fragment {
     public void setTheme() {
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getActivity());
-
-        if (mSharedPrefs.darkThemeEnabled()) {
-            if (gridView != null)
-                gridView.setBackgroundColor(getResources().getColor(R.color.background_dark));
-            if ((root.findViewById(R.id.debugLayout)) != null)
-                (root.findViewById(R.id.debugLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
-            if ((root.findViewById(R.id.coordinatorLayout)) != null)
-                (root.findViewById(R.id.coordinatorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
-            if (root.findViewById(R.id.errorImage) != null)
-                ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(getResources().getDrawable(R.drawable.sad_smiley_dark));
-            if ((root.findViewById(R.id.errorLayout)) != null)
-                (root.findViewById(R.id.errorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
-            if ((root.findViewById(R.id.btnCheckSettings)) != null)
-                ((MaterialButton) root.findViewById(R.id.btnCheckSettings)).setTextColor(getResources().getColor(R.color.white));
-
-            if (bottomLayoutWrapper != null)
-                bottomLayoutWrapper.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background_dark));
-            if (collapseSortButton != null) {
-                int[][] states = new int[][]{
-                        new int[]{android.R.attr.state_enabled}, // enabled
-                        new int[]{-android.R.attr.state_enabled}, // disabled
-                        new int[]{-android.R.attr.state_checked}, // unchecked
-                        new int[]{android.R.attr.state_pressed}  // pressed
-                };
-
-                int[] colors = new int[]{
-                        R.color.primary, R.color.primary, R.color.primary, R.color.primary
-                };
-
-                ColorStateList newStates = new ColorStateList(states, colors);
-                collapseSortButton.setTextColor(ContextCompat.getColor(getContext(), R.color.primary));
-                collapseSortButton.setIconTint(newStates);
-            }
-            mSwipeRefreshLayout.setColorSchemeResources(
-                    R.color.secondary,
-                    R.color.secondary_dark,
-                    R.color.background_dark);
-        }
     }
 
     public ConfigInfo getServerConfigInfo(Context context) {
@@ -465,11 +425,9 @@ public class DomoticzRecyclerFragment extends Fragment {
      * @param error Exception
      */
     public void errorHandling(Exception error) {
-
         showSpinner(false);
         error.printStackTrace();
         String errorMessage = mDomoticz.getErrorMessage(error);
-
         if (mPhoneConnectionUtil == null)
             mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
@@ -539,8 +497,6 @@ public class DomoticzRecyclerFragment extends Fragment {
             settingsButton.setVisibility(View.GONE);
 
             ImageView errorImage = root.findViewById(R.id.errorImage);
-            errorImage.setImageResource(R.drawable.empty);
-            errorImage.setAlpha(0.5f);
             errorImage.setVisibility(View.VISIBLE);
 
             TextView errorTextWrong = root.findViewById(R.id.errorTextWrong);

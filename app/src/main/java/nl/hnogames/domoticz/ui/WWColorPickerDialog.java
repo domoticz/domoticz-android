@@ -27,7 +27,6 @@ import android.view.View;
 import android.widget.SeekBar;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -46,7 +45,6 @@ public class WWColorPickerDialog implements DialogInterface.OnDismissListener {
         this.idx = idx;
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_wwcolor, true)
-                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }

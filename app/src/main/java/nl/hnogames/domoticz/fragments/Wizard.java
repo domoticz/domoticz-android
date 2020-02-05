@@ -23,10 +23,12 @@ package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +56,6 @@ import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 
 public class Wizard extends Fragment {
-
     private final String WELCOME = "WELCOME_CARD";
     private final String FAVORITE = "FAVORITE_CARD";
     private final String GEOFENCE = "GEOFENCE_CARD";
@@ -84,15 +85,9 @@ public class Wizard extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-
         root = (ViewGroup) inflater.inflate(R.layout.fragment_wizard, null);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_wizard);
         mSharedPrefs = new SharedPrefUtil(getActivity());
-
-        if (mSharedPrefs.darkThemeEnabled()) {
-            if ((root.findViewById(R.id.wizard_relativeLayout)) != null)
-                (root.findViewById(R.id.wizard_relativeLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
-        }
         createCards();
         return root;
     }
@@ -147,15 +142,15 @@ public class Wizard extends Fragment {
     }
 
     public List<Card> generateCards(List<String> cardsToGenerate) {
-        int blueColor = ContextCompat.getColor(context, R.color.md_material_blue_600);
-        int otherColor = ContextCompat.getColor(context, R.color.md_white_1000);
-        int titleColorLight = Color.WHITE;
-        int titleColorOther = Color.GRAY;
+        TypedValue cardValue = new TypedValue();
+        TypedValue titleValue = new TypedValue();
+        Resources.Theme theme = context.getTheme();
+        theme.resolveAttribute(R.attr.wizardCardColor, cardValue, true);
+        theme.resolveAttribute(R.attr.wizardTitleColor, titleValue, true);
 
-        if (mSharedPrefs.darkThemeEnabled()) {
-            titleColorOther = Color.WHITE;
-            otherColor = Color.parseColor("#3F3F3F");
-        }
+        int blueColor = ContextCompat.getColor(context, R.color.md_material_blue_600);
+        int otherColor = cardValue.data;
+        int titleColor = titleValue.data;
 
         List<Card> cards = new ArrayList<>();
         for (String card : cardsToGenerate) {
@@ -166,14 +161,14 @@ public class Wizard extends Fragment {
                         .withProvider(new CardProvider())
                         .setLayout(R.layout.material_welcome_card_layout)
                         .setTitle(context.getString(R.string.wizard_welcome))
-                        .setTitleColor(titleColorLight)
+                        .setTitleColor(Color.WHITE)
                         .setDescription(context.getString(R.string.wizard_welcome_description))
-                        .setDescriptionColor(titleColorLight)
-                        .setSubtitleColor(titleColorLight)
+                        .setDescriptionColor(Color.WHITE)
+                        .setSubtitleColor(Color.WHITE)
                         .setBackgroundColor(blueColor)
                         .addAction(R.id.ok_button, new WelcomeButtonAction(context)
                                 .setText(context.getString(R.string.wizard_button_nice))
-                                .setTextColor(titleColorLight)
+                                .setTextColor(Color.WHITE)
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     @DebugLog
@@ -191,7 +186,7 @@ public class Wizard extends Fragment {
                         .setLayout(R.layout.material_basic_buttons_card)
                         .setBackgroundColor(otherColor)
                         .setTitle(context.getString(R.string.wizard_favorites))
-                        .setTitleColor(titleColorOther)
+                        .setTitleColor(titleColor)
                         .setDescription(context.getString(R.string.wizard_favorites_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_switches))
@@ -223,7 +218,7 @@ public class Wizard extends Fragment {
                         .withProvider(new CardProvider())
                         .setLayout(R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_startup))
-                        .setTitleColor(titleColorOther)
+                        .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_startup_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
@@ -256,7 +251,7 @@ public class Wizard extends Fragment {
                         .withProvider(new CardProvider())
                         .setLayout(R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_geo))
-                        .setTitleColor(titleColorOther)
+                        .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_geo_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
@@ -289,7 +284,7 @@ public class Wizard extends Fragment {
                         .withProvider(new CardProvider())
                         .setLayout(R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_nfc))
-                        .setTitleColor(titleColorOther)
+                        .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_nfc_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
@@ -354,7 +349,7 @@ public class Wizard extends Fragment {
                         .withProvider(new CardProvider())
                         .setLayout(R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.bluetooth))
-                        .setTitleColor(titleColorOther)
+                        .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_bluetooth_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
@@ -417,10 +412,10 @@ public class Wizard extends Fragment {
                         .setTag(WEAR)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setTitleColor(titleColorOther)
+                        .setTitleColor(titleColor)
                         .setLayout(R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_wear))
-                        .setTitleColor(titleColorOther)
+                        .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_wear_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
@@ -454,7 +449,7 @@ public class Wizard extends Fragment {
                         .setLayout(R.layout.material_basic_buttons_card)
                         .setBackgroundColor(otherColor)
                         .setTitle(context.getString(R.string.wizard_auto))
-                        .setTitleColor(titleColorOther)
+                        .setTitleColor(titleColor)
                         .setDescription(context.getString(R.string.wizard_auto_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
@@ -487,7 +482,7 @@ public class Wizard extends Fragment {
                         .setLayout(R.layout.material_basic_buttons_card)
                         .setBackgroundColor(otherColor)
                         .setTitle(context.getString(R.string.category_help))
-                        .setTitleColor(titleColorOther)
+                        .setTitleColor(titleColor)
                         .setDescription(context.getString(R.string.translate_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.ok))
@@ -521,7 +516,7 @@ public class Wizard extends Fragment {
                         .withProvider(new CardProvider())
                         .setLayout(R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_notifications))
-                        .setTitleColor(titleColorOther)
+                        .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_notifications_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
@@ -554,7 +549,7 @@ public class Wizard extends Fragment {
                         .withProvider(new CardProvider())
                         .setLayout(R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_multiserver))
-                        .setTitleColor(titleColorOther)
+                        .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_multiserver_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
@@ -587,7 +582,7 @@ public class Wizard extends Fragment {
                         .withProvider(new CardProvider())
                         .setLayout(R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_graph))
-                        .setTitleColor(titleColorOther)
+                        .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_graph_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
@@ -620,7 +615,7 @@ public class Wizard extends Fragment {
                         .withProvider(new CardProvider())
                         .setLayout(R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_filter))
-                        .setTitleColor(titleColorOther)
+                        .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_filter_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
@@ -653,7 +648,7 @@ public class Wizard extends Fragment {
                         .withProvider(new CardProvider())
                         .setLayout(R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_widgets))
-                        .setTitleColor(titleColorOther)
+                        .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_widgets_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
@@ -687,7 +682,7 @@ public class Wizard extends Fragment {
                         .withProvider(new CardProvider())
                         .setLayout(R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_menuitem))
-                        .setTitleColor(titleColorOther)
+                        .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_menuitem_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)

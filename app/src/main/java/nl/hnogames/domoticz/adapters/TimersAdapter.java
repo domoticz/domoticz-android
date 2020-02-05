@@ -30,8 +30,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
@@ -83,15 +81,6 @@ public class TimersAdapter extends BaseAdapter {
                 layoutResourceId = R.layout.timer_row;
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
                 convertView = inflater.inflate(layoutResourceId, parent, false);
-
-                if (mSharedPrefs.darkThemeEnabled()) {
-                    if ((convertView.findViewById(R.id.card_global_wrapper)) != null)
-                        convertView.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-                    if ((convertView.findViewById(R.id.row_wrapper)) != null)
-                        (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
-                    if ((convertView.findViewById(R.id.row_global_wrapper)) != null)
-                        (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-                }
 
                 holder.switch_name = convertView.findViewById(R.id.switch_name);
                 holder.switch_status = convertView.findViewById(R.id.switch_battery_level);

@@ -29,12 +29,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 
@@ -56,7 +54,6 @@ public class SwitchDialog implements DialogInterface.OnDismissListener {
 
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(layout, true)
-                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .negativeText(android.R.string.cancel);
         mdb.dismissListener(this);
     }

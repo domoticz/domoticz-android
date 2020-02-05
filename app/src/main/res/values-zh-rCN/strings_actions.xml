@@ -30,4 +30,5 @@
     <string name="action_qrcode_scan">扫描二维码</string>
     <string name="action_bluetooth_show">Show paired devices</string>
     <string name="action_speech">语音识别</string>
+    <string name="send">Send</string>
 </resources>

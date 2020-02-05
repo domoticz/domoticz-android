@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -20,17 +19,18 @@
   ~  under the License.
   -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@+id/coordinatorLayout" xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/coordinatorLayout"
 
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:foreground="?android:attr/selectableItemBackground"
-              android:minHeight="?android:attr/listPreferredItemHeight"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="vertical">
 
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -42,11 +42,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.ftinc.scoop.Scoop;
 import com.google.android.material.snackbar.Snackbar;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
@@ -90,24 +91,23 @@ public class NFCSettingsActivity extends AppCompatAssistActivity implements NFCC
     private ArrayList<NFCInfo> nfcList;
     private NFCAdapter adapter;
     private boolean busyWithTag = false;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
-        if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
-        else
-            setTheme(R.style.AppTheme);
+
+        // Apply Scoop to the activity
+        Scoop.getInstance().apply(this);
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfc_settings);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
-        if (mSharedPrefs.darkThemeEnabled()) {
-            coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
-        }
 
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.category_nfc);
@@ -165,6 +165,7 @@ public class NFCSettingsActivity extends AppCompatAssistActivity implements NFCC
 
     @Override
     protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         if (intent != null && intent.getAction() != null && intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED) && !busyWithTag) {
             boolean newTagFound = true;
             busyWithTag = true;
@@ -204,9 +205,6 @@ public class NFCSettingsActivity extends AppCompatAssistActivity implements NFCC
 
     private void createListView() {
         ListView listView = findViewById(R.id.listView);
-        if (mSharedPrefs.darkThemeEnabled()) {
-            listView.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
-        }
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
         listView.setAdapter(animationAdapter);

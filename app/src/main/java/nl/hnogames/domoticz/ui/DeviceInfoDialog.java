@@ -31,7 +31,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -74,7 +73,6 @@ public class DeviceInfoDialog implements DialogInterface.OnDismissListener {
         boolean wrapInScrollView = true;
         //noinspection ConstantConditions
         mdb.customView(layout, wrapInScrollView)
-                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .positiveText(android.R.string.ok);
         mdb.dismissListener(this);
     }

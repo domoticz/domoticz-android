@@ -465,10 +465,6 @@ public class UsefulBits {
             @Override
             @DebugLog
             public void onError(Exception error) {
-                if (error != null && domoticz != null)
-                    showSimpleToast(context, String.format(
-                            context.getString(R.string.error_couldNotCheckForConfig),
-                            domoticz.getErrorMessage(error)), Toast.LENGTH_SHORT);
                 if (receiver != null)
                     receiver.onError(error);
             }

@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.app;
 import android.app.Application;
 import android.content.Context;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.multidex.MultiDex;
@@ -34,6 +35,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.Volley;
+import com.ftinc.scoop.Scoop;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -65,14 +67,22 @@ public class AppController extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        Shortbread.create(this);
+
         mInstance = this;
+        Shortbread.create(this);
+        Scoop.waffleCone()
+                .addFlavor(getString(R.string.theme_default), R.style.AppThemeDefault, true)
+                .addDayNightFlavor(getString(R.string.theme_daynight), R.style.AppThemeMain)
+                .addFlavor(getString(R.string.theme_orange), R.style.AppThemeAlt1Main)
+                .addFlavor(getString(R.string.theme_pink), R.style.AppThemeAlt2Main)
+                .addFlavor(getString(R.string.theme_blue), R.style.AppThemeAlt3Main)
+                .setSharedPreferences(PreferenceManager.getDefaultSharedPreferences(this))
+                .initialize();
     }
 
     @SuppressWarnings("TryWithIdenticalCatches")
     public RequestQueue getRequestQueue() {
         SSLContext sc;
-
         if (mRequestQueue == null) {
             Context context = getApplicationContext();
             try {

@@ -38,6 +38,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.MenuItemCompat;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.ftinc.scoop.Scoop;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -78,11 +79,8 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
-        if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
-        else
-            setTheme(R.style.AppTheme);
 
+        Scoop.getInstance().apply(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.widget_configuration);
         setResult(RESULT_CANCELED);

@@ -32,8 +32,6 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -104,15 +102,6 @@ public class TemperatureWidgetAdapter extends BaseAdapter implements Filterable 
         holder = new ViewHolder();
         convertView = setDefaultRowId(holder);
         convertView.setTag(holder);
-
-        if (mSharedPrefs.darkThemeEnabled()) {
-            if ((convertView.findViewById(R.id.card_global_wrapper)) != null)
-                convertView.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-            if ((convertView.findViewById(R.id.row_wrapper)) != null)
-                (convertView.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(context, R.color.card_background_dark));
-            if ((convertView.findViewById(R.id.row_global_wrapper)) != null)
-                (convertView.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(context, R.color.card_background_dark));
-        }
 
         setDefaultRowData(deviceInfo, holder);
         return convertView;

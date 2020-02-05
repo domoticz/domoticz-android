@@ -30,8 +30,6 @@ import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 
 public class Error extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
-    private Context mContext;
-
     @Override
     public void onConnectionFailed() {
     }
@@ -41,7 +39,6 @@ public class Error extends DomoticzRecyclerFragment implements DomoticzFragmentL
     public void onAttach(Context context) {
         super.onAttach(context);
         onAttachFragment(this);
-        mContext = context;
     }
 
     @Override

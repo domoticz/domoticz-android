@@ -22,7 +22,6 @@
               xmlns:ads="http://schemas.android.com/apk/res-auto"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
-              style="@style/background_recyclerview"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
@@ -33,19 +32,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="7"
+			  android:background="?attr/recyclerBackground"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/primary_dark"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+            android:background="?attr/toolbarBackground"
+            android:theme="@style/AppThemeToolbarStyle" />
 
         <com.github.zagum.speechrecognitionview.RecognitionProgressView
             android:id="@+id/recognition_view"
-            style="@style/background_recyclerview"
+            android:background="?attr/recyclerBackground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -70,7 +69,6 @@
         android:layout_weight="1"
         android:gravity="bottom"
         android:orientation="vertical">
-
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView"
             android:layout_width="wrap_content"

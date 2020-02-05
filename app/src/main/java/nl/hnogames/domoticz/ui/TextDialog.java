@@ -28,10 +28,8 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
 
 public class TextDialog implements
         DialogInterface.OnDismissListener,
@@ -53,8 +51,7 @@ public class TextDialog implements
         this.context = context;
 
         mdb = new MaterialDialog.Builder(context);
-        mdb.customView(R.layout.dialog_text, true).negativeText(android.R.string.cancel)
-                .theme((new SharedPrefUtil(context)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT);
+        mdb.customView(R.layout.dialog_text, true).negativeText(android.R.string.cancel);
         mdb.dismissListener(this);
         mdb.cancelListener(this);
         mdb.onPositive(this);

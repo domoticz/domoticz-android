@@ -23,18 +23,13 @@ package nl.hnogames.domoticz.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.text.InputType;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
-import androidx.core.content.ContextCompat;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -62,7 +57,6 @@ public class FingerprintPasswordDialog implements DialogInterface.OnDismissListe
         mdb.customView(R.layout.dialog_password, true)
                 .positiveText(android.R.string.ok)
                 .negativeText(android.R.string.cancel)
-                .theme(mSharedPrefs.darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
@@ -87,14 +81,6 @@ public class FingerprintPasswordDialog implements DialogInterface.OnDismissListe
 
         editPassword = view.findViewById(R.id.password);
         showPassword = view.findViewById(R.id.showpassword);
-
-        if (mSharedPrefs.darkThemeEnabled()) {
-            showPassword.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-            editPassword.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-            int[][] states = new int[][]{new int[]{android.R.attr.state_activated}, new int[]{-android.R.attr.state_activated}};
-            int[] colors = new int[]{Color.WHITE, Color.WHITE};
-            editPassword.setTextColor(new ColorStateList(states, colors));
-        }
 
         showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

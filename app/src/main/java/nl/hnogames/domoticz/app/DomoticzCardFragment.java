@@ -78,25 +78,6 @@ public class DomoticzCardFragment extends Fragment {
     public void setTheme() {
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getActivity());
-        if (mSharedPrefs.darkThemeEnabled()) {
-            if (root.findViewById(R.id.my_recycler_view) != null)
-                (root.findViewById(R.id.my_recycler_view)).setBackgroundColor(getResources().getColor(R.color.background_dark));
-            if ((root.findViewById(R.id.debugLayout)) != null)
-                (root.findViewById(R.id.debugLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
-            if ((root.findViewById(R.id.coordinatorLayout)) != null)
-                (root.findViewById(R.id.coordinatorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
-            if ((root.findViewById(R.id.errorLayout)) != null)
-                (root.findViewById(R.id.errorLayout)).setBackgroundColor(getResources().getColor(R.color.background_dark));
-            if (root.findViewById(R.id.errorImage) != null)
-                ((ImageView) root.findViewById(R.id.errorImage)).setImageDrawable(getResources().getDrawable(R.drawable.sad_smiley_dark));
-            if ((root.findViewById(R.id.btnCheckSettings)) != null)
-                ((MaterialButton) root.findViewById(R.id.btnCheckSettings)).setTextColor(getResources().getColor(R.color.white));
-            if (mSwipeRefreshLayout != null)
-                mSwipeRefreshLayout.setColorSchemeResources(
-                        R.color.secondary,
-                        R.color.secondary_dark,
-                        R.color.background_dark);
-        }
     }
 
     public ServerUtil getServerUtil() {
@@ -273,8 +254,6 @@ public class DomoticzCardFragment extends Fragment {
             settingsButton.setVisibility(View.GONE);
 
             ImageView errorImage = root.findViewById(R.id.errorImage);
-            errorImage.setImageResource(R.drawable.empty);
-            errorImage.setAlpha(0.5f);
             errorImage.setVisibility(View.VISIBLE);
 
             TextView errorTextWrong = root.findViewById(R.id.errorTextWrong);

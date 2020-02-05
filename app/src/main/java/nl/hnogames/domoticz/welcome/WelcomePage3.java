@@ -104,11 +104,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
         }
         mSharedPrefs = new SharedPrefUtil(getActivity());
         permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
-
-        if (mSharedPrefs.darkThemeEnabled())
-            v = inflater.inflate(R.layout.fragment_welcome3_dark, container, false);
-        else
-            v = inflater.inflate(R.layout.fragment_welcome3, container, false);
+        v = inflater.inflate(R.layout.fragment_welcome3, container, false);
 
         mServerUtil = new ServerUtil(getActivity());
 

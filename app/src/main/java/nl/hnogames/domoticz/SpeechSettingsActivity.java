@@ -35,12 +35,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
+import com.ftinc.scoop.Scoop;
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
 import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter;
 import com.google.android.material.snackbar.Snackbar;
@@ -80,25 +82,24 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
     private RecognitionProgressView recognitionProgressView;
     private RecognitionListenerAdapter recognitionListener;
     private boolean listeningSpeechRecognition = false;
+    private Toolbar toolbar;
 
     private PermissionHelper permissionHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
-        if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
-        else
-            setTheme(R.style.AppTheme);
+        // Apply Scoop to the activity
+        Scoop.getInstance().apply(this);
+
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
         permissionHelper = PermissionHelper.getInstance(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speech_settings);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
-        if (mSharedPrefs.darkThemeEnabled()) {
-            coordinatorLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
-        }
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -115,9 +116,6 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
 
     private void createListView() {
         ListView listView = findViewById(R.id.listView);
-        if (mSharedPrefs.darkThemeEnabled()) {
-            listView.setBackgroundColor(ContextCompat.getColor(this, R.color.background_dark));
-        }
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
         listView.setAdapter(animationAdapter);

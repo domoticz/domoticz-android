@@ -21,16 +21,16 @@
   ~  under the License.
   -->
 <resources>
-    <string name="bluetooth_not_supported">Bluetooth is not supported on this device</string>
-    <string name="bluetooth_register">Connect a bluetooth device</string>
-    <string name="bluetooth_found">New bluetooth device found</string>
-    <string name="bluetooth_edit">Edit bluetooth device</string>
-    <string name="bluetooth_name">Give this bluetooth device a proper name. </string>
-    <string name="bluetooth_desc">Check the list of paired bluetooth devices. </string>
-    <string name="bluetooth_exists">Bluetooth already configured on Domoticz. </string>
-    <string name="bluetooth_turned_off">Bluetooth needs to be turned on in your device settings. </string>
-    <string name="bluetooth_saved">Saved a new bluetooth device connection. </string>
+    <string name="bluetooth_not_supported">Toto zariadenie nepodporuje Bluetooth</string>
+    <string name="bluetooth_register">Pripojiť Bluetooth zariadenie</string>
+    <string name="bluetooth_found">Nájdené Bluetooth zariadenie</string>
+    <string name="bluetooth_edit">Upraviť Bluetooth zariadenie</string>
+    <string name="bluetooth_name">Pomenujte Bluetooth zariadenie. </string>
+    <string name="bluetooth_desc">Skontrolujte zoznam spárovaných Bluetooth zariadení. </string>
+    <string name="bluetooth_exists">Bluetooth je už nastavené v Domoticz. </string>
+    <string name="bluetooth_turned_off">Zapnite bluetooth v nastaveniach zariadenia. </string>
+    <string name="bluetooth_saved">Nové Bluetooth zariadenie pridané. </string>
     <string name="bluetooth">Bluetooth</string>
-    <string name="bluetooth_disabled">Bluetooth automation disabled, please setup via settings.</string>
-    <string name="noSwitchSelected_explanation_bluetooth">For a bluetooth device to automate something in Domoticz, a switch should be linked to an bluetooth</string>
+    <string name="bluetooth_disabled">Bluetooth je vypnuté.</string>
+    <string name="noSwitchSelected_explanation_bluetooth">Pre automatizáciu Bluetooth je potrebné prepojiť zariadenie s vypínačom</string>
 </resources>

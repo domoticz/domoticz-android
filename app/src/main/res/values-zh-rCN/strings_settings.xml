@@ -146,6 +146,7 @@
     <string name="enable_notifications_title">启用通知</string>
     <string name="enable_notifications">在此设备上启用通知</string>
     <string name="notification_screen_title">通知设置</string>
+    <string name="notification_history">Notification history</string>
     <string name="notification_vibrate_title">振动</string>
     <string name="notification_vibrate_on">收到通知时振动</string>
     <string name="notification_vibrate_off">不振动</string>
@@ -161,6 +162,13 @@
     <string name="alarm">警报</string>
     <string name="alarmtimer_title">定时警报</string>
     <string name="alarmtimer">警报的时间的秒数</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Default</string>
+    <string name="theme_daynight">Day/Night</string>
+    <string name="theme_orange">Orange</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_blue">Blue</string>
+    <!-- Other -->
     <string name="default_values">默认值</string>
     <string name="default_values_min_error">最大值应大于最小值</string>
     <string name="default_values_max_error">最大值应大于最小值</string>
@@ -203,4 +211,5 @@
     <string name="debug_test_text">调试测试</string>
     <string name="restart_required_title">需要重启</string>
     <string name="restart_now">现在重新启动吗？</string>
+    <string name="check_settings">Check your settings</string>
 </resources>

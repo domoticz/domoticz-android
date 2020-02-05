@@ -26,10 +26,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
 
 public class SimpleTextDialog {
 
@@ -49,7 +47,6 @@ public class SimpleTextDialog {
 
         //noinspection ConstantConditions
         mdb.customView(R.layout.dialog_text, wrapInScrollView)
-                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .positiveText(android.R.string.ok);
     }
 

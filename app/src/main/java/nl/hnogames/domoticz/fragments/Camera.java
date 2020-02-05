@@ -60,9 +60,6 @@ public class Camera extends Fragment {
                              Bundle savedInstanceState) {
         RelativeLayout group = (RelativeLayout) inflater.inflate(R.layout.camera_default, null);
 
-        if (mSharedPrefs.darkThemeEnabled())
-            group.findViewById(R.id.row_global_wrapper).setBackgroundColor(getResources().getColor(R.color.background_dark));
-
         root = group.findViewById(R.id.image);
         root.getController().getSettings()
                 .setFitMethod(Settings.Fit.VERTICAL)

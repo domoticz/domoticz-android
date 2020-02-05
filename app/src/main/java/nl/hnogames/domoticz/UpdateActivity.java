@@ -28,11 +28,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.ftinc.scoop.Scoop;
 import com.google.android.material.snackbar.Snackbar;
 
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
@@ -64,20 +66,22 @@ public class UpdateActivity extends AppCompatAssistActivity {
     private TextView updateSummary;
     private ServerUtil serverUtil;
     private SharedPrefUtil mSharedPrefs;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
-        if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
-        else
-            setTheme(R.style.AppTheme);
+        // Apply Scoop to the activity
+        Scoop.getInstance().apply(this);
+
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);

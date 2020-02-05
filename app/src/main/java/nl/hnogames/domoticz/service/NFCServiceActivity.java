@@ -27,11 +27,12 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ftinc.scoop.Scoop;
+
 import java.util.ArrayList;
 
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.NFCSettingsActivity;
-import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.NFCInfo;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -51,8 +52,7 @@ public class NFCServiceActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
-        if (mSharedPrefs.darkThemeEnabled())
-            setTheme(R.style.AppThemeDark);
+        Scoop.getInstance().apply(this);
 
         super.onCreate(savedInstanceState);
         if (mSharedPrefs.isNFCEnabled()) {

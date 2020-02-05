@@ -45,7 +45,7 @@ public class SendActivity extends DomoticzActivity implements
         Bundle extras = getIntent().getExtras();
         selectedSwitch = extras.getString("SWITCH", "");
 
-        delayedConfirmationView = (DelayedConfirmationView) findViewById(R.id.delayed_confirm);
+        delayedConfirmationView = findViewById(R.id.delayed_confirm);
         delayedConfirmationView.setListener(this);
         delayedConfirmationView.setImageResource(R.drawable.ic_stop);
         delayedConfirmationView.setTotalTimeMs(3000);
@@ -60,7 +60,6 @@ public class SendActivity extends DomoticzActivity implements
                 ConfirmationActivity.SUCCESS_ANIMATION);
         intent.putExtra(ConfirmationActivity.EXTRA_MESSAGE, getString(R.string.triggered));
         startActivity(intent);
-
         sendMessage(SEND_SWITCH, selectedSwitch);
         this.finish();
     }

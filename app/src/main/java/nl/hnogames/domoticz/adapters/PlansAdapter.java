@@ -28,7 +28,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -98,15 +97,6 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.plan_row, parent, false);
-
-        if (mSharedPrefs.darkThemeEnabled()) {
-            if ((view.findViewById(R.id.card_global_wrapper)) != null)
-                view.findViewById(R.id.card_global_wrapper).setBackgroundColor(ContextCompat.getColor(mContext, R.color.card_background_dark));
-            if ((view.findViewById(R.id.row_wrapper)) != null)
-                (view.findViewById(R.id.row_wrapper)).setBackground(ContextCompat.getDrawable(mContext, R.color.card_background_dark));
-            if ((view.findViewById(R.id.row_global_wrapper)) != null)
-                (view.findViewById(R.id.row_global_wrapper)).setBackgroundColor(ContextCompat.getColor(mContext, R.color.card_background_dark));
-        }
 
         return new DataObjectHolder(view);
     }

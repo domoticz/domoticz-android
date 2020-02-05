@@ -26,13 +26,11 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.NotificationsAdapter;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.NotificationInfo;
 
 public class NotificationInfoDialog {
@@ -48,7 +46,6 @@ public class NotificationInfoDialog {
 
         mdb = new MaterialDialog.Builder(mContext);
         mdb.customView(R.layout.dialog_switch_timer, true)
-                .theme((new SharedPrefUtil(mContext)).darkThemeEnabled() ? Theme.DARK : Theme.LIGHT)
                 .positiveText(android.R.string.ok);
     }
 

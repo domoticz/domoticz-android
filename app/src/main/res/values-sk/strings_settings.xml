@@ -146,6 +146,7 @@
     <string name="enable_notifications_title">Povoliť oznámenia</string>
     <string name="enable_notifications">Povoliť oznámenia na tomto zariadení</string>
     <string name="notification_screen_title">Nastavenia oznámení</string>
+    <string name="notification_history">Notification history</string>
     <string name="notification_vibrate_title">Vibrovanie</string>
     <string name="notification_vibrate_on">Vibrovať pri prijatí oznámenia</string>
     <string name="notification_vibrate_off">Nevibrovať</string>
@@ -161,6 +162,13 @@
     <string name="alarm">Hlásenia</string>
     <string name="alarmtimer_title">Časovač hlásení</string>
     <string name="alarmtimer">Trvanie hlásenia</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Default</string>
+    <string name="theme_daynight">Day/Night</string>
+    <string name="theme_orange">Orange</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_blue">Blue</string>
+    <!-- Other -->
     <string name="default_values">Default values</string>
     <string name="default_values_min_error">Max value should be higher than Min value</string>
     <string name="default_values_max_error">Max value should be higher than Min value</string>
@@ -203,4 +211,5 @@
     <string name="debug_test_text">Test ladenia</string>
     <string name="restart_required_title">Vyžaduje sa reštart</string>
     <string name="restart_now">Reštartovať teraz?</string>
+    <string name="check_settings">Check your settings</string>
 </resources>

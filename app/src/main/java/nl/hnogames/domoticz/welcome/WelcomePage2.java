@@ -47,7 +47,6 @@ import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 
 public class WelcomePage2 extends Fragment implements OnPermissionCallback {
-
     private File SettingsFile;
     private PermissionFragmentHelper permissionFragmentHelper;
 

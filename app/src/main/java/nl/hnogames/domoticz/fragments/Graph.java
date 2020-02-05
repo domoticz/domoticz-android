@@ -23,9 +23,10 @@ package nl.hnogames.domoticz.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -125,7 +126,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             range = data.getString("RANGE");
             type = data.getString("TYPE");
             axisYLabel = data.getString("TITLE");
-            steps = data.getInt("STEPS", 1);
+            //steps = data.getInt("STEPS", 1); For now we dont look at the steps anymore
         }
     }
 
@@ -141,16 +142,14 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         XAxis xAxis = chart.getXAxis();
         YAxis yAxis = chart.getAxisLeft();
 
-        if (mSharedPrefs.darkThemeEnabled()) {
-            xAxis.setTextColor(Color.WHITE);
-            yAxis.setTextColor(Color.WHITE);
-            chart.getLegend().setTextColor(Color.WHITE);
-            //chart.setBackgroundColor(getResources().getColor(R.color.cardview_dark_background));
-            chart.setDrawGridBackground(true);
-        } else {
-            //chart.setBackgroundColor(Color.WHITE);
-            chart.setDrawGridBackground(true);
-        }
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = context.getTheme();
+        theme.resolveAttribute(R.attr.graphTextColor, typedValue, true);
+        xAxis.setTextColor(typedValue.data);
+        yAxis.setTextColor(typedValue.data);
+        chart.getLegend().setTextColor(typedValue.data);
+
+        chart.setDrawGridBackground(true);
 
         chart.getDescription().setEnabled(false);
         xAxis.setDrawGridLines(false); // no grid lines
