@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.utils;
 import android.util.Base64;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 public class WearUsefulBits {
 
@@ -61,11 +62,7 @@ public class WearUsefulBits {
      */
     public static String decodeBase64(String text) {
         byte[] data = Base64.decode(text, Base64.DEFAULT);
-        try {
-            return new String(data, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            return null;
-        }
+        return new String(data, StandardCharsets.UTF_8);
     }
 
     /**
@@ -73,10 +70,6 @@ public class WearUsefulBits {
      * @return encode base 64 text
      */
     public static String encodeBase64(String text) {
-        try {
-            return Base64.encodeToString(text.getBytes("UTF-8"), Base64.DEFAULT);
-        } catch (UnsupportedEncodingException e) {
-            return null;
-        }
+        return Base64.encodeToString(text.getBytes(StandardCharsets.UTF_8), Base64.DEFAULT);
     }
 }

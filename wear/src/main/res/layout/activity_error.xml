@@ -19,39 +19,33 @@
   ~  under the License.
   -->
 
-<android.support.wearable.view.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/diag_content_side_padding">
 
-    <ScrollView
+    <RelativeLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:id="@+id/layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/domoticzLogo"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/domoticz_logo" />
 
-            <ImageView
-                android:id="@+id/domoticzLogo"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/domoticz_logo" />
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/domoticzLogo"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:paddingTop="10dp"
+            android:text="@string/when_you_add_switches_to_your_dashboard_they_show_up_here"
+            android:textColor="@color/white" />
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/domoticzLogo"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:paddingTop="10dp"
-                android:text="When you add switches to your dashboard they show up here. \n\nScenes and Groups are not supported yet!"
-                android:textColor="@color/white" />
-
-        </RelativeLayout>
-    </ScrollView>
-
-</android.support.wearable.view.BoxInsetLayout>
+</ScrollView>

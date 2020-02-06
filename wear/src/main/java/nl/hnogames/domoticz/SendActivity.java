@@ -27,6 +27,7 @@ import android.support.wearable.activity.ConfirmationActivity;
 import android.view.View;
 
 import androidx.wear.widget.CircularProgressLayout;
+
 import nl.hnogames.domoticz.app.DomoticzActivity;
 
 public class SendActivity extends DomoticzActivity implements androidx.wear.widget.CircularProgressLayout.OnTimerFinishedListener, View.OnClickListener {
