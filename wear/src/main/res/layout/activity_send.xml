@@ -37,6 +37,7 @@
             android:id="@+id/image_view"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:tint="@color/white"
             android:contentDescription="@string/stop"
             android:src="@drawable/ic_stop" />
     </androidx.wear.widget.CircularProgressLayout>
