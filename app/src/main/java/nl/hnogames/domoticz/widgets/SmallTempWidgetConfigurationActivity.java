@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.MenuItemCompat;
 
@@ -69,6 +70,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
     private Domoticz domoticz;
     private TemperatureWidgetAdapter adapter;
     private SearchView searchViewAction;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,9 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
 
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
         domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         this.setTitle(getString(R.string.pick_device_title));
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);

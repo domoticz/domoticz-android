@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -85,7 +86,6 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
         if (domoticz == null)
             domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
-
         txtStatus = this.findViewById(R.id.status);
         txtTitle = this.findViewById(R.id.title);
         btnConfig = this.findViewById(R.id.checkpin);
