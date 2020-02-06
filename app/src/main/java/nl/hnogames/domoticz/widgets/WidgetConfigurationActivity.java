@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.MenuItemCompat;
 
@@ -75,18 +76,21 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
     private Domoticz domoticz;
     private WidgetsAdapter adapter;
     private SearchView searchViewAction;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPrefs = new SharedPrefUtil(this);
-
         Scoop.getInstance().apply(this);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.widget_configuration);
         setResult(RESULT_CANCELED);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
         domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         this.setTitle(getString(R.string.pick_device_title));
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);

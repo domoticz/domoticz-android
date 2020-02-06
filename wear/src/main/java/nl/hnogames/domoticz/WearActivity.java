@@ -29,11 +29,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 
-import androidx.wear.widget.WearableLinearLayoutManager;
-import androidx.wear.widget.WearableRecyclerView;
-
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.MessageClient;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.gson.Gson;
 
@@ -41,18 +38,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import androidx.wear.widget.WearableLinearLayoutManager;
+import androidx.wear.widget.WearableRecyclerView;
 import nl.hnogames.domoticz.Adapter.ListAdapter;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.app.DomoticzActivity;
 import nl.hnogames.domoticz.containers.DevicesInfo;
+import nl.hnogames.domoticz.utils.WearUsefulBits;
 
-public class WearActivity extends DomoticzActivity implements MessageApi.MessageListener,
+public class WearActivity extends DomoticzActivity implements MessageClient.OnMessageReceivedListener,
         GoogleApiClient.ConnectionCallbacks {
 
     private ArrayList<DevicesInfo> switches = null;
     private WearableRecyclerView listView;
-    private ListAdapter adapter;
     private Domoticz mDomoticz;
 
     // Sample dataset for the list
@@ -69,8 +69,9 @@ public class WearActivity extends DomoticzActivity implements MessageApi.Message
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String switchesRawData = prefs.getString(PREF_SWITCH, "");
 
-        if (switchesRawData != null && switchesRawData.length() > 0)
+        if (!WearUsefulBits.isEmpty(switchesRawData)) {
             createListView(new Gson().fromJson(switchesRawData, String[].class));
+        }
     }
 
     @Override
@@ -90,7 +91,7 @@ public class WearActivity extends DomoticzActivity implements MessageApi.Message
         }
 
         Log.v("WEAR", "Parsing information: " + switches.toString());
-        adapter = new ListAdapter(this, switches);
+        ListAdapter adapter = new ListAdapter(this, switches);
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +131,7 @@ public class WearActivity extends DomoticzActivity implements MessageApi.Message
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-        Log.d(TAG, "Receive: " + messageEvent.getPath() + " - " + messageEvent.getData());
+        Log.d(TAG, "Receive: " + messageEvent.getPath() + " - " + Arrays.toString(messageEvent.getData()));
         if (messageEvent.getPath().equalsIgnoreCase(SEND_DATA)) {
             String[] rawData = new Gson().fromJson(new String(messageEvent.getData()), String[].class);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);

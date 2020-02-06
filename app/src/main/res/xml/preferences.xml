@@ -145,15 +145,6 @@
             android:title="@string/geofencing_configure" />
     </PreferenceCategory>
 
-    <!--<PreferenceCategory android:title="@string/wizard_widgets">
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="enableWidgets"
-            android:summaryOff="@string/widget_description"
-            android:summaryOn="@string/widget_description"
-            android:title="@string/category_widgets"/>
-    </PreferenceCategory>-->
-
     <PreferenceCategory android:title="@string/category_nfc" android:icon="@drawable/baseline_nfc_white_24">
         <SwitchPreference
             android:defaultValue="false"
@@ -215,6 +206,15 @@
             android:dependency="enableSecurity"
             android:key="SecuritySettings"
             android:title="@string/setup_fingerprints" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/wizard_widgets" android:icon="@drawable/outline_widgets_white_24">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enableWidgets"
+            android:summaryOff="@string/widget_description"
+            android:summaryOn="@string/widget_description"
+            android:title="@string/category_widgets"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_language" android:icon="@drawable/baseline_language_white_24">

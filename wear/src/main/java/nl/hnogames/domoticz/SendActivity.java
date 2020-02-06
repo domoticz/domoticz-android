@@ -21,19 +21,17 @@
 
 package nl.hnogames.domoticz;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.wearable.activity.ConfirmationActivity;
-import android.support.wearable.view.DelayedConfirmationView;
 import android.view.View;
 
+import androidx.wear.widget.CircularProgressLayout;
 import nl.hnogames.domoticz.app.DomoticzActivity;
 
-public class SendActivity extends DomoticzActivity implements
-        DelayedConfirmationView.DelayedConfirmationListener {
+public class SendActivity extends DomoticzActivity implements androidx.wear.widget.CircularProgressLayout.OnTimerFinishedListener, View.OnClickListener {
 
-    private DelayedConfirmationView delayedConfirmationView;
+    private androidx.wear.widget.CircularProgressLayout circularProgress;
     private String selectedSwitch = "";
 
     // Sample dataset for the list
@@ -43,18 +41,18 @@ public class SendActivity extends DomoticzActivity implements
         setContentView(R.layout.activity_send);
 
         Bundle extras = getIntent().getExtras();
-        selectedSwitch = extras.getString("SWITCH", "");
+        if (extras != null)
+            selectedSwitch = extras.getString("SWITCH", "");
 
-        delayedConfirmationView = findViewById(R.id.delayed_confirm);
-        delayedConfirmationView.setListener(this);
-        delayedConfirmationView.setImageResource(R.drawable.ic_stop);
-        delayedConfirmationView.setTotalTimeMs(3000);
-        delayedConfirmationView.start();
+        circularProgress = findViewById(R.id.delayed_confirm);
+        circularProgress.setOnTimerFinishedListener(this);
+        circularProgress.setOnClickListener(this);
+        circularProgress.setTotalTime(3000);
+        circularProgress.startTimer();
     }
 
     @Override
-    public void onTimerFinished(View view) {
-        //process message
+    public void onTimerFinished(CircularProgressLayout layout) {
         Intent intent = new Intent(this, ConfirmationActivity.class);
         intent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE,
                 ConfirmationActivity.SUCCESS_ANIMATION);
@@ -65,8 +63,11 @@ public class SendActivity extends DomoticzActivity implements
     }
 
     @Override
-    public void onTimerSelected(View view) {
-        delayedConfirmationView.reset();
-        this.finish();
+    public void onClick(View view) {
+        if (view.equals(circularProgress)) {
+            // User canceled, abort the action
+            circularProgress.stopTimer();
+            this.finish();
+        }
     }
 }
