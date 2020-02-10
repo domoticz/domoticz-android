@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.wear.widget.WearableLinearLayoutManager;
 
 public class CustomScrollingLayoutCallback extends WearableLinearLayoutManager.LayoutCallback {
-    /** How much should we scale the icon at most. */
+    /**
+     * How much should we scale the icon at most.
+     */
     private static final float MAX_ICON_PROGRESS = 0.65f;
 
     private float progressToCenter;

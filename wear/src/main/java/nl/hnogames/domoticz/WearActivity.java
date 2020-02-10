@@ -43,7 +43,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import nl.hnogames.domoticz.Adapter.CustomScrollingLayoutCallback;
 import nl.hnogames.domoticz.Adapter.ListAdapter;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.app.DomoticzActivity;

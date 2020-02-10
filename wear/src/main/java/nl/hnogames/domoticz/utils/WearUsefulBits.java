@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.utils;
 
 import android.util.Base64;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 public class WearUsefulBits {
