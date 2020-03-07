@@ -64,19 +64,6 @@
             android:name="android.support.wearable.activity.ConfirmationActivity">
         </activity>
 
-        <!--
-        <service
-            android:label="@string/app_name"
-            android:icon="@drawable/ic_launcher"
-            android:name="nl.hnogames.domoticz.service.MyTileProviderService"
-            android:permission="com.google.android.wearable.permission.BIND_TILE_PROVIDER"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.android.clockwork.ACTION_TILE_UPDATE_REQUEST" />
-            </intent-filter>
-        </service>
-        -->
-
         <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="false" />

@@ -27,7 +27,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
-    implementation 'com.google.firebase:firebase-core:17.2.2'
+    implementation 'com.google.firebase:firebase-core:17.2.3'
     implementation 'com.google.firebase:firebase-crash:16.2.1'
 
     implementation 'com.nineoldandroids:library:2.4.0'

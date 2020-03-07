@@ -1,4 +1,3 @@
 include ':app', ':wear', ':SeekArc_library', ':domoticzapi', ':materialList', ':easygcm-lib'
 include ':libs:MemorizingTrustManager'
-include ':libs:unofficialtileapi'
 project(':SeekArc_library').projectDir = new File('libs/SeekArc_library')
