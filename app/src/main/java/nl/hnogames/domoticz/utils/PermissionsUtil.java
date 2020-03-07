@@ -65,7 +65,7 @@ public class PermissionsUtil {
     };
     //these permissions are needed for fingerprint
     public static final String[] INITIAL_FINGERPRINT_PERMS = {
-            Manifest.permission.USE_FINGERPRINT
+            Manifest.permission.USE_BIOMETRIC
     };
 
     //This range is from 0 to 255!!
@@ -85,11 +85,11 @@ public class PermissionsUtil {
     }
 
     public static boolean canAccessStorage(Context context) {
-        return (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context));
+        return (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context) && hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE, context));
     }
 
     public static boolean canAccessFingerprint(Context context) {
-        return (hasPermission(Manifest.permission.USE_FINGERPRINT, context));
+        return (hasPermission(Manifest.permission.USE_BIOMETRIC, context));
     }
 
     public static boolean canAccessCamera(Context context) {

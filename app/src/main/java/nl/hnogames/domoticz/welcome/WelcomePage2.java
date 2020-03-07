@@ -67,15 +67,12 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
             @Override
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!PermissionsUtil.canAccessStorage(getActivity())) {
-                        permissionFragmentHelper
-                                .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
-                    } else {
+                    if (!PermissionsUtil.canAccessStorage(getActivity()))
+                        permissionFragmentHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                    else
                         importSettings();
-                    }
-                } else {
+                } else
                     importSettings();
-                }
             }
         });
 
