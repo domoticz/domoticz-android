@@ -214,7 +214,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 (mDeviceInfo.getSwitchType() == null)) {
             if (mDeviceInfo.getType() != null && mDeviceInfo.getType().equals("sunrise")) {
                 setButtons(holder, Buttons.CLOCK);
-                setClockRowData(mDeviceInfo, holder);
+                setClockRowData(holder);
             } else if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
                 setButtons(holder, Buttons.BUTTON_ON);
                 setThermostatRowData(mDeviceInfo, holder);
@@ -774,28 +774,34 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     /**
      * Set the data for the clock row
      *
-     * @param mDeviceInfo Device info
      * @param holder      Holder to use
      */
-    private void setClockRowData(DevicesInfo mDeviceInfo, DataObjectHolder holder) {
-        if (this.sunriseInfo != null) {
-            String sunrise = sunriseInfo.getSunrise();
-            holder.sunrise.setHours(Integer.valueOf(sunrise.substring(0, sunrise.indexOf(":"))));
-            holder.sunrise.setMinutes(Integer.valueOf(sunrise.substring(sunrise.indexOf(":") + 1)));
+    private void setClockRowData(DataObjectHolder holder) {
+        try {
+            if (this.sunriseInfo != null) {
+                String sunrise = sunriseInfo.getSunrise();
+                if (!UsefulBits.isEmpty(sunrise) && sunrise.indexOf(":") > 0) {
+                    holder.sunrise.setHours(Integer.valueOf(sunrise.substring(0, sunrise.indexOf(":"))));
+                    holder.sunrise.setMinutes(Integer.valueOf(sunrise.substring(sunrise.indexOf(":") + 1)));
+                    holder.sunriseText.setText(sunrise);
+                }
 
-            String sunset = sunriseInfo.getSunset();
-            holder.sunset.setHours(Integer.valueOf(sunset.substring(0, sunset.indexOf(":"))));
-            holder.sunset.setMinutes(Integer.valueOf(sunset.substring(sunset.indexOf(":") + 1)));
+                String sunset = sunriseInfo.getSunset();
+                if (!UsefulBits.isEmpty(sunset) && sunset.indexOf(":") > 0) {
+                    holder.sunset.setHours(Integer.valueOf(sunset.substring(0, sunset.indexOf(":"))));
+                    holder.sunset.setMinutes(Integer.valueOf(sunset.substring(sunset.indexOf(":") + 1)));
+                    holder.sunsetText.setText(sunset);
+                }
 
-            String current = sunriseInfo.getServerTime();
-            current = current.substring((current.indexOf(":") - 2), (current.indexOf(":") + 3));
-            holder.clock.setHours(Integer.valueOf(current.substring(0, current.indexOf(":"))));
-            holder.clock.setMinutes(Integer.valueOf(current.substring(current.indexOf(":") + 1)));
-
-            holder.clockText.setText(current);
-            holder.sunriseText.setText(sunrise);
-            holder.sunsetText.setText(sunset);
-        }
+                String current = sunriseInfo.getServerTime();
+                if (!UsefulBits.isEmpty(current) && current.indexOf(":") > 0) {
+                    current = current.substring((current.indexOf(":") - 2), (current.indexOf(":") + 3));
+                    holder.clock.setHours(Integer.valueOf(current.substring(0, current.indexOf(":"))));
+                    holder.clock.setMinutes(Integer.valueOf(current.substring(current.indexOf(":") + 1)));
+                    holder.clockText.setText(current);
+                }
+            }
+        }catch (Exception ignored){}
     }
 
     /**
