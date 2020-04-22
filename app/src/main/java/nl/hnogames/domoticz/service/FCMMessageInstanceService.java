@@ -14,6 +14,7 @@ import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.utils.GCMUtils;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticzapi.DomoticzValues;
 
 import static android.text.TextUtils.isDigitsOnly;
 
