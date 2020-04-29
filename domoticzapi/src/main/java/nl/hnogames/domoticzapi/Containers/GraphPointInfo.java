@@ -30,28 +30,24 @@ import org.json.JSONObject;
 @SuppressWarnings("unused")
 public class GraphPointInfo {
 
+    boolean hasTemperatureRange = false;
+    boolean hasPercentageRange = false;
     private JSONObject jsonObject;
     private String dateTime;
     private String hu;
     private String ba;
     private float se = Float.NaN;
-
     private float te = Float.NaN;
     private float ta = Float.NaN;
     private float tm = Float.NaN;
-    boolean hasTemperatureRange = false;
-
     private String v;
     private String v2;
     private String r1;
     private String r2;
     private String eg;//energie levering
     private String eu;//energie usage
-
     private String vMin;
     private String vMax;
-    boolean hasPercentageRange = false;
-
     private String c;
     private String di;
     private String gu;
@@ -77,9 +73,8 @@ public class GraphPointInfo {
             ta = (float) row.optDouble("ta");
             if (row.has("tm"))
                 tm = (float) row.optDouble("tm");
-        }
-        else
-            hasTemperatureRange=false;
+        } else
+            hasTemperatureRange = false;
         if (row.has("se"))
             se = (float) row.optDouble("se");
         if (row.has("d"))
@@ -87,7 +82,7 @@ public class GraphPointInfo {
         if (row.has("v"))
             v = row.getString("v");
         else if (row.has("v_avg")) {
-            hasPercentageRange=true;
+            hasPercentageRange = true;
             v = row.getString("v_avg");
             vMin = row.getString("v_min");
             vMax = row.getString("v_max");
@@ -154,12 +149,15 @@ public class GraphPointInfo {
     public String getLux() {
         return lux;
     }
+
     public String getLuxMin() {
         return lux_min;
     }
+
     public String getLuxMax() {
         return lux_max;
     }
+
     public String getLuxAvg() {
         return lux_avg;
     }
@@ -167,6 +165,7 @@ public class GraphPointInfo {
     public String getValue() {
         return v;
     }
+
     public String getSecondValue() {
         return v2;
     }
@@ -174,6 +173,7 @@ public class GraphPointInfo {
     public String getPowerReturn() {
         return r1;
     }
+
     public String getSecondPowerReturn() {
         return r2;
     }
@@ -181,6 +181,7 @@ public class GraphPointInfo {
     public String getPowerUsage() {
         return eu;
     }
+
     public String getPowerDelivery() {
         return eg;
     }
@@ -188,15 +189,17 @@ public class GraphPointInfo {
     public String getValueMin() {
         return vMin;
     }
+
     public String getValueMax() {
         return vMax;
     }
+
     public boolean hasValueRange() {
         return hasPercentageRange;
     }
 
     public float getTemperature() {
-        if(!hasTemperatureRange)
+        if (!hasTemperatureRange)
             return te;
         else
             return ta;

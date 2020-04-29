@@ -21,14 +21,14 @@
 
 package nl.hnogames.domoticzapi.Containers;
 
-import androidx.annotation.NonNull;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import androidx.annotation.NonNull;
 
 public class SceneInfo implements Comparable, Serializable {
 
@@ -77,6 +77,7 @@ public class SceneInfo implements Comparable, Serializable {
     public String getDescription() {
         return Description;
     }
+
     public void setDescription(String description) {
         Description = description;
     }

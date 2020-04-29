@@ -21,12 +21,10 @@
 
 package nl.hnogames.domoticzapi.Interfaces;
 
-import java.util.ArrayList;
+import org.json.JSONObject;
 
-import nl.hnogames.domoticzapi.Containers.LogInfo;
-
-public interface LogsReceiver {
-    void onReceiveLogs(ArrayList<LogInfo> mLogInfos);
+public interface VolleyErrorListener {
+    void onDone(JSONObject response);
 
     void onError(Exception error);
 }

@@ -367,7 +367,9 @@ public class ServerInfo {
             if (serializedServerInfoObject != null && serializedServerInfoObject instanceof ConfigInfo) {
                 return (ConfigInfo) serializedServerInfoObject;
             } else return null;
-        }catch(Exception ex){return null;}
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     /**

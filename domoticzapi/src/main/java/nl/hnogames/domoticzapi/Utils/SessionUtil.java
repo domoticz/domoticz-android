@@ -64,7 +64,7 @@ public class SessionUtil {
     public final void checkSessionCookie(Map<String, String> headers) {
         if (headers.containsKey(SET_COOKIE_KEY)
                 && (headers.get(SET_COOKIE_KEY).startsWith(OLD_SESSION_COOKIE) || headers.get(SET_COOKIE_KEY).startsWith(NEW_SESSION_COOKIE))) {
-            if(headers.get(SET_COOKIE_KEY).startsWith(NEW_SESSION_COOKIE))
+            if (headers.get(SET_COOKIE_KEY).startsWith(NEW_SESSION_COOKIE))
                 SESSION_COOKIE = NEW_SESSION_COOKIE;
 
             String cookie = headers.get(SET_COOKIE_KEY);

@@ -33,11 +33,11 @@ import nl.hnogames.domoticzapi.R;
 public class LoginInfo implements Serializable {
     // private JSONObject jsonObject;
     private int Rights;
-	private String Status;
-	private String Title;
-	private String User;
-	private String Version;
-	
+    private String Status;
+    private String Title;
+    private String User;
+    private String Version;
+
     public LoginInfo(JSONObject row) throws JSONException {
         // this.setJsonObject(row);
         if (row.has("rights"))

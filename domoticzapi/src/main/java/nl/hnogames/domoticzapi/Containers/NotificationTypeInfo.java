@@ -22,6 +22,7 @@
 package nl.hnogames.domoticzapi.Containers;
 
 import com.google.gson.GsonBuilder;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 

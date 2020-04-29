@@ -80,8 +80,10 @@ import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
+import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
+import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 import static android.content.Context.KEYGUARD_SERVICE;
@@ -223,19 +225,29 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         androidx.preference.Preference openNotificationSettings = findPreference("openNotificationSettings");
 
         if (mConfigInfo == null) {
-            UsefulBits.getServerConfigForActiveServer(mContext, new ConfigReceiver() {
+            mDomoticz.checkLogin(new LoginReceiver() {
                 @Override
-                @DebugLog
-                public void onReceiveConfig(ConfigInfo settings) {
-                    mConfigInfo = settings;
-                    setupDefaultValues();
+                public void OnReceive(LoginInfo mLoginInfo) {
+                    UsefulBits.getServerConfigForActiveServer(mContext, mLoginInfo, new ConfigReceiver() {
+                        @Override
+                        @DebugLog
+                        public void onReceiveConfig(ConfigInfo settings) {
+                            mConfigInfo = settings;
+                            setupDefaultValues();
+                        }
+
+                        @Override
+                        @DebugLog
+                        public void onError(Exception error) {
+                        }
+                    }, mServerUtil.getActiveServer().getConfigInfo(mContext));
                 }
 
                 @Override
-                @DebugLog
                 public void onError(Exception error) {
                 }
-            }, mServerUtil.getActiveServer().getConfigInfo(mContext));
+            });
+
         } else {
             setupDefaultValues();
         }
@@ -359,17 +371,26 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             fetchServerConfig.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(androidx.preference.Preference preference) {
-                    UsefulBits.getServerConfigForActiveServer(mContext, new ConfigReceiver() {
+                    mDomoticz.checkLogin(new LoginReceiver() {
                         @Override
-                        public void onReceiveConfig(ConfigInfo settings) {
-                            showSnackbar(mContext.getString(R.string.fetched_server_config_success));
+                        public void OnReceive(LoginInfo mLoginInfo) {
+                            UsefulBits.getServerConfigForActiveServer(mContext, mLoginInfo, new ConfigReceiver() {
+                                @Override
+                                public void onReceiveConfig(ConfigInfo settings) {
+                                    showSnackbar(mContext.getString(R.string.fetched_server_config_success));
+                                }
+
+                                @Override
+                                public void onError(Exception error) {
+                                    showSnackbar(mContext.getString(R.string.fetched_server_config_failed));
+                                }
+                            }, null);
                         }
 
                         @Override
                         public void onError(Exception error) {
-                            showSnackbar(mContext.getString(R.string.fetched_server_config_failed));
                         }
-                    }, null);
+                    });
                     return true;
                 }
             });

@@ -27,17 +27,6 @@ import nl.hnogames.domoticzapi.Containers.DevicesInfo;
  * Created by m.heinis on 8/5/2016.
  */
 public class DomoticzValues {
-
-    public interface Authentication {
-        String USERNAME = "username";
-        String PASSWORD = "password";
-
-        interface Method {
-            String AUTH_METHOD_LOGIN_FORM = "Login form";
-            String AUTH_METHOD_BASIC_AUTHENTICATION = "Basic authentication";
-        }
-    }
-
     /**
      * Checks if the device has a stop button
      *
@@ -61,6 +50,11 @@ public class DomoticzValues {
                 (mDeviceInfo.getSubType().contains("ASP"));
     }
 
+    public interface Authentication {
+        String USERNAME = "username";
+        String PASSWORD = "password";
+    }
+
     public interface Result {
         String ERROR = "ERR";
         String OK = "OK";
@@ -80,7 +74,7 @@ public class DomoticzValues {
         }
 
         interface Hardware {
-           String EVOHOME = "evohome";
+            String EVOHOME = "evohome";
         }
 
         interface Dimmer {

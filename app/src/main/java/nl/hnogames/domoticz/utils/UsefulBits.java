@@ -72,6 +72,7 @@ import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.service.TaskService;
 import nl.hnogames.domoticzapi.Containers.AuthInfo;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
+import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.AuthReceiver;
@@ -433,10 +434,9 @@ public class UsefulBits {
      * Get's the config from the server data but only if it's older then 5 days
      *
      * @param context Context
-     * @param forced  Force update the config
      */
     @DebugLog
-    public static void getServerConfigForActiveServer(final Context context, final ConfigReceiver receiver, final ConfigInfo currentConfig) {
+    public static void getServerConfigForActiveServer(final Context context, final LoginInfo loginInfo, final ConfigReceiver receiver, final ConfigInfo currentConfig) {
         final ServerUtil mServerUtil = new ServerUtil(context);
         final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
 
@@ -445,21 +445,8 @@ public class UsefulBits {
             @Override
             @DebugLog
             public void onReceiveConfig(final ConfigInfo configInfo) {
-                if (configInfo != null) {
-                    domoticz.getUserAuthenticationRights(new AuthReceiver() {
-                        @Override
-                        @DebugLog
-                        public void onReceiveAuthentication(AuthInfo auth) {
-                            GetServerUserInfo(domoticz, auth, mServerUtil, context, configInfo, currentConfig, receiver);
-                        }
-
-                        @Override
-                        @DebugLog
-                        public void onError(Exception error) {
-                            GetServerUserInfo(domoticz, null, mServerUtil, context, configInfo, currentConfig, receiver);
-                        }
-                    });
-                }
+                if (configInfo != null)
+                    GetServerUserInfo(domoticz, loginInfo, mServerUtil, context, configInfo, currentConfig, receiver);
             }
 
             @Override
@@ -471,20 +458,22 @@ public class UsefulBits {
         });
     }
 
-    public static void GetServerUserInfo(final Domoticz domoticz, final AuthInfo auth, final ServerUtil mServerUtil, final Context context, final ConfigInfo configInfo, final ConfigInfo currentConfig, final ConfigReceiver receiver) {
+    public static void GetServerUserInfo(final Domoticz domoticz, final LoginInfo loginInfo, final ServerUtil mServerUtil, final Context context, final ConfigInfo configInfo, final ConfigInfo currentConfig, final ConfigReceiver receiver) {
         if (domoticz == null)
             return;
 
         ArrayList<UserInfo> mDetailUserInfo = new ArrayList<>();
         UserInfo currentUser = new UserInfo(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
                 UsefulBits.getMd5String(domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD)),
-                auth != null ? auth.getRights() : 0);
+                loginInfo != null ? loginInfo.getRights() : 0);
+
         if (currentConfig != null && currentConfig.getUsers() != null) {
             for (UserInfo user : currentConfig.getUsers()) {
                 if (!user.getUsername().equals(currentUser.getUsername()))
                     mDetailUserInfo.add(user);
             }
         }
+
         mDetailUserInfo.add(currentUser);
         configInfo.setUsers(mDetailUserInfo);
         mServerUtil.getActiveServer().setConfigInfo(context, configInfo);
@@ -499,11 +488,13 @@ public class UsefulBits {
                     //also add current user
                     UserInfo currentUser = new UserInfo(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
                             UsefulBits.getMd5String(domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD)),
-                            auth != null ? auth.getRights() : 0);
+                            loginInfo != null ? loginInfo.getRights() : 0);
+
                     for (UserInfo user : mUserInfo) {
                         if (!user.getUsername().equals(currentUser.getUsername()))
                             mDetailUserInfo.add(user);
                     }
+
                     mDetailUserInfo.add(currentUser);
                     configInfo.setUsers(mDetailUserInfo);
                     mServerUtil.getActiveServer().setConfigInfo(context, configInfo);

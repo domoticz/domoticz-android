@@ -21,8 +21,6 @@
 
 package nl.hnogames.domoticzapi.Containers;
 
-import androidx.annotation.NonNull;
-
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -34,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
 
+import androidx.annotation.NonNull;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.UsefulBits;
 
@@ -167,7 +166,7 @@ public class DevicesInfo implements Comparable, Serializable {
             Image = row.getString("Image");
         if (row.has("LevelNames")) {
             LevelNames = row.getString("LevelNames");
-            if(UsefulBits.isBase64Encoded(LevelNames))
+            if (UsefulBits.isBase64Encoded(LevelNames))
                 LevelNames = UsefulBits.decodeBase64(LevelNames);
         }
 
@@ -321,6 +320,7 @@ public class DevicesInfo implements Comparable, Serializable {
     public String getUsage() {
         return Usage;
     }
+
     public String getUsageDeliv() {
         return UsageDeliv;
     }

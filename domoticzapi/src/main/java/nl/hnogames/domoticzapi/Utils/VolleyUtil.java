@@ -23,7 +23,6 @@ package nl.hnogames.domoticzapi.Utils;
 
 import android.content.Context;
 import android.util.Log;
-import android.util.TypedValue;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;

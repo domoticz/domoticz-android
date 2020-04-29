@@ -110,7 +110,7 @@ public class SwitchTimerInfo {
 
     public char[] getDaysBinary() {
         String binary = Integer.toBinaryString(Days);
-        if(!UsefulBits.isEmpty(binary))
+        if (!UsefulBits.isEmpty(binary))
             return binary.toCharArray();
         else return null;
     }

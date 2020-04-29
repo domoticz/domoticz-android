@@ -28,5 +28,6 @@ import nl.hnogames.domoticzapi.Containers.VersionInfo;
  */
 public interface VersionReceiver {
     void onReceiveVersion(VersionInfo version);
+
     void onError(Exception error);
 }

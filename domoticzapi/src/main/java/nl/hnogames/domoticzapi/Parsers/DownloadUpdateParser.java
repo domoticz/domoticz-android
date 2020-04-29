@@ -23,12 +23,8 @@ package nl.hnogames.domoticzapi.Parsers;
 
 import android.util.Log;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import nl.hnogames.domoticzapi.Interfaces.DownloadUpdateServerReceiver;
 import nl.hnogames.domoticzapi.Interfaces.JSONParserInterface;
-import nl.hnogames.domoticzapi.Interfaces.UpdateDownloadReadyReceiver;
 import nl.hnogames.domoticzapi.Utils.UsefulBits;
 
 public class DownloadUpdateParser implements JSONParserInterface {
@@ -44,7 +40,7 @@ public class DownloadUpdateParser implements JSONParserInterface {
     @Override
     public void parseResult(String result) {
         try {
-            if(!UsefulBits.isEmpty(result) && result.contains("ERR"))
+            if (!UsefulBits.isEmpty(result) && result.contains("ERR"))
                 receiver.onDownloadStarted(false);
             else
                 receiver.onDownloadStarted(true);

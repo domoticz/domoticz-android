@@ -40,16 +40,6 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.biometric.BiometricPrompt;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.MenuItemCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.ftinc.scoop.Scoop;
@@ -87,6 +77,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.biometric.BiometricPrompt;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import hotchemi.android.rate.AppRate;
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
@@ -112,12 +111,14 @@ import nl.hnogames.domoticz.utils.WidgetUtils;
 import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 import shortbread.Shortcut;
@@ -338,34 +339,45 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 if (domoticz == null)
                     domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
 
-                //mConfigInfo = mServerUtil.getActiveServer().getConfigInfo(this);
                 if (!fromVoiceWidget && !fromQRCodeWidget) {
-                    UsefulBits.getServerConfigForActiveServer(MainActivity.this, new ConfigReceiver() {
+                    // Refresh login token
+                    domoticz.checkLogin(new LoginReceiver() {
                         @Override
-                        @DebugLog
-                        public void onReceiveConfig(ConfigInfo settings) {
-                            if (MainActivity.this.mConfigInfo == null || settings == null || !MainActivity.this.mConfigInfo.toString().equals(settings.toString())) {
-                                MainActivity.this.mConfigInfo = settings;
-                                SerializableManager.saveSerializable(MainActivity.this, settings, "ConfigInfo");
+                        public void OnReceive(LoginInfo mLoginInfo) {
+                            UsefulBits.getServerConfigForActiveServer(MainActivity.this, mLoginInfo, new ConfigReceiver() {
+                                @Override
+                                @DebugLog
+                                public void onReceiveConfig(ConfigInfo settings) {
+                                    if (MainActivity.this.mConfigInfo == null || settings == null || !MainActivity.this.mConfigInfo.toString().equals(settings.toString())) {
+                                        MainActivity.this.mConfigInfo = settings;
+                                        SerializableManager.saveSerializable(MainActivity.this, settings, "ConfigInfo");
 
-                                setupMobileDevice();
-                                setScheduledTasks();
+                                        setupMobileDevice();
+                                        setScheduledTasks();
 
-                                WidgetUtils.RefreshWidgets(MainActivity.this);
-                                drawNavigationMenu(mConfigInfo);
-                                if (!fromShortcut)
-                                    addFragment(false);
-                            }
+                                        WidgetUtils.RefreshWidgets(MainActivity.this);
+                                        drawNavigationMenu(mConfigInfo);
+                                        if (!fromShortcut)
+                                            addFragment(false);
+                                    }
+                                }
+
+                                @Override
+                                @DebugLog
+                                public void onError(Exception error) {
+                                    configException = error;
+                                    if (!fromShortcut)
+                                        addFragment(true);
+                                }
+                            }, mConfigInfo);
                         }
 
                         @Override
-                        @DebugLog
                         public void onError(Exception error) {
                             configException = error;
-                            if (!fromShortcut)
-                                addFragment(true);
+                            addFragment(true);
                         }
-                    }, mConfigInfo);
+                    });
                 }
                 if (mSharedPrefs.isStartupSecurityEnabled()) {
                     biometricPrompt.authenticate(promptInfo);

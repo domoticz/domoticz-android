@@ -26,7 +26,6 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticzapi.Containers.VersionInfo;
 import nl.hnogames.domoticzapi.Interfaces.JSONParserInterface;
 import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;

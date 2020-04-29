@@ -53,9 +53,10 @@ public class TaskService extends GcmTaskService {
     public int onRunTask(TaskParams taskParams) {
         String tag = taskParams.getTag();
         if (tag.equals(UsefulBits.TASK_TAG_PERIODIC) || tag.equals("TEST")) {
-            final boolean forceUpdate = true;                                     // Force update
+            final boolean forceUpdate = true;
+            // Force update
             //noinspection ConstantConditions
-            UsefulBits.getServerConfigForActiveServer(this, null, null);
+            UsefulBits.getServerConfigForActiveServer(this, null, null, null);
             //noinspection ConstantConditions
             UsefulBits.checkDownloadedLanguage(this, null, forceUpdate, true);
             resetGeofenceService(this);

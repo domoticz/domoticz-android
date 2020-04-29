@@ -22,8 +22,10 @@
 package nl.hnogames.domoticzapi.Parsers;
 
 import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import nl.hnogames.domoticzapi.Containers.SunRiseInfo;
 import nl.hnogames.domoticzapi.Interfaces.JSONParserInterface;
 import nl.hnogames.domoticzapi.Interfaces.SunRiseReceiver;
@@ -39,7 +41,7 @@ public class SunRiseParser implements JSONParserInterface {
     @Override
     public void parseResult(String result) {
         try {
-            sunriseReceiver.onReceive(new SunRiseInfo( new JSONObject(result)));
+            sunriseReceiver.onReceive(new SunRiseInfo(new JSONObject(result)));
         } catch (JSONException e) {
             Log.e(TAG, "SunRiseParser JSON exception");
             e.printStackTrace();

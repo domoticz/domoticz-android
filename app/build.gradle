@@ -194,6 +194,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-ads:19.1.0"
     implementation 'com.google.android.ads.consent:consent-library:1.0.8'
     implementation "com.github.nisrulz:recyclerviewhelper:27.1.1"
+    implementation "org.altbeacon:android-beacon-library:2.17"
 
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
