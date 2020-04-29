@@ -1,0 +1,18 @@
+<resources>
+    <string name="beacon_not_supported">Beacon is not supported on this device</string>
+    <string name="beacon_register">Connect a Beacon device</string>
+    <string name="beacon_found">New Beacon device found</string>
+    <string name="beacon_edit">Edit Beacon device</string>
+    <string name="beacon_name">Give this Beacon device a proper name. </string>
+    <string name="beacon_desc">Check the list of paired Beacon devices. </string>
+    <string name="beacon_exists">Beacon already configured on Domoticz. </string>
+    <string name="beacon_turned_off">Beacon needs to be turned on in your device settings. </string>
+    <string name="beacon_saved">Saved a new Beacon device connection. </string>
+    <string name="action_beacon_show">Add new Beacon</string>
+    <string name="beacon">Beacon</string>
+    <string name="beacon_disabled">Beacon automation disabled, please setup via settings. </string>
+    <string name="noSwitchSelected_explanation_beacon">For a Beacon device to automate something in Domoticz, a switch should be linked to an Beacon. </string>
+    <string name="beacon_UUID" >UUID</string>
+    <string name="beacon_major" >Marjor (optional)</string>
+    <string name="beacon_minor" >Minor (optional)</string>
+</resources>

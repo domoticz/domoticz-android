@@ -52,6 +52,7 @@ import java.util.Set;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.containers.BeaconInfo;
 import nl.hnogames.domoticz.containers.BluetoothInfo;
 import nl.hnogames.domoticz.containers.LocationInfo;
 import nl.hnogames.domoticz.containers.NFCInfo;
@@ -74,6 +75,7 @@ public class SharedPrefUtil {
     private static final String PREF_CUSTOM_AUTO = "enableAutoNotifications";
     private static final String PREF_ENABLE_NFC = "enableNFC";
     private static final String PREF_ENABLE_Bluetooth = "enableBluetooth";
+    private static final String PREF_ENABLE_BEACON = "enableBeacon";
     private static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
     private static final String PREF_ALWAYS_ON = "alwayson";
     private static final String PREF_AUTO_REFRESH = "autorefresh";
@@ -89,6 +91,7 @@ public class SharedPrefUtil {
     private static final String PREF_NAVIGATION_ITEMS = "show_nav_items";
     private static final String PREF_NFC_TAGS = "nfc_tags";
     private static final String PREF_BLUETOOTH = "bluetooth";
+    private static final String PREF_BEACON = "beacon";
     private static final String PREF_QR_CODES = "qr_codes";
     private static final String PREF_SPEECH_COMMANDS = "speech_commands";
     private static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
@@ -902,6 +905,10 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_ENABLE_Bluetooth, false);
     }
 
+    public boolean isBeaconEnabled() {
+        return prefs.getBoolean(PREF_ENABLE_BEACON, false);
+    }
+
     //public boolean isServerUpdateAvailable() {
     //    return prefs.getBoolean(PREF_UPDATE_SERVER_AVAILABLE, false);
     //}
@@ -990,16 +997,32 @@ public class SharedPrefUtil {
     }
 
     public ArrayList<BluetoothInfo> getBluetoothList() {
-        ArrayList<BluetoothInfo> oReturnValue = new ArrayList<>();
+        ArrayList<BluetoothInfo> oReturnValue;
         List<BluetoothInfo> Bluetooths;
         if (prefs.contains(PREF_BLUETOOTH)) {
             String jsonBluetooths = prefs.getString(PREF_BLUETOOTH, null);
             BluetoothInfo[] item = gson.fromJson(jsonBluetooths,
                     BluetoothInfo[].class);
             Bluetooths = Arrays.asList(item);
-            for (BluetoothInfo n : Bluetooths) {
-                oReturnValue.add(n);
-            }
+            oReturnValue = new ArrayList<>(Bluetooths);
+        } else
+            return null;
+        return oReturnValue;
+    }
+
+    public void saveBeaconList(List<BeaconInfo> list) {
+        editor.putString(PREF_BEACON, gson.toJson(list));
+        editor.commit();
+    }
+
+    public ArrayList<BeaconInfo> getBeaconList() {
+        ArrayList<BeaconInfo> oReturnValue;
+        List<BeaconInfo> beacons;
+        if (prefs.contains(PREF_BEACON)) {
+            String jsonBeacons = prefs.getString(PREF_BEACON, null);
+            BeaconInfo[] item = gson.fromJson(jsonBeacons, BeaconInfo[].class);
+            beacons = Arrays.asList(item);
+            oReturnValue = new ArrayList<>(beacons);
         } else
             return null;
         return oReturnValue;

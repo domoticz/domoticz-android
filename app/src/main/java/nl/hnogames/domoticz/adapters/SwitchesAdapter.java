@@ -1373,8 +1373,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 String percentage = calculateDimPercentage(seekBar.getMax(), progress);
-                TextView switch_dimmer_level = seekBar.getRootView()
-                        .findViewById(mDeviceInfo.getIdx() + ID_TEXTVIEW);
+                TextView switch_dimmer_level = seekBar.getRootView().findViewById(mDeviceInfo.getIdx() + ID_TEXTVIEW);
                 if (switch_dimmer_level != null)
                     switch_dimmer_level.setText(percentage);
             }

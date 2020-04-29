@@ -326,11 +326,20 @@
             android:name="nl.hnogames.domoticz.BluetoothSettingsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/category_bluetooth"
-            android:parentActivityName="nl.hnogames.domoticz.SettingsActivity"
-            android:resizeableActivity="true">
+            android:parentActivityName="nl.hnogames.domoticz.SettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="nl.hnogames.domoticz.BluetoothSettingsActivity" />
+                android:value="nl.hnogames.domoticz.SettingsActivity" />
+        </activity>
+
+        <activity
+            android:name="nl.hnogames.domoticz.BeaconSettingsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/category_bluetooth"
+            android:parentActivityName="nl.hnogames.domoticz.SettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nl.hnogames.domoticz.SettingsActivity" />
         </activity>
 
         <activity

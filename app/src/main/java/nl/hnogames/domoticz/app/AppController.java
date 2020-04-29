@@ -42,6 +42,10 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.security.ProviderInstaller;
 
+import org.altbeacon.beacon.BeaconManager;
+import org.altbeacon.beacon.powersave.BackgroundPowerSaver;
+import org.altbeacon.beacon.startup.RegionBootstrap;
+
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
@@ -59,7 +63,6 @@ public class AppController extends MultiDexApplication {
     int socketTimeout = 1000 * 5;               // 5 seconds
     private RequestQueue mRequestQueue;
     private Tracker mTracker;
-
     public static synchronized AppController getInstance() {
         return mInstance;
     }
@@ -67,7 +70,6 @@ public class AppController extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-
         mInstance = this;
         Shortbread.create(this);
         Scoop.waffleCone()

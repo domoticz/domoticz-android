@@ -195,6 +195,17 @@
             android:title="@string/bluetooth_settings" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/beacon" android:icon="@drawable/baseline_wifi_tethering_black_24">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enableBeacon"
+            android:title="@string/enable_beacon" />
+        <Preference
+            android:dependency="enableBeacon"
+            android:key="beacon_settings"
+            android:title="@string/beacon_settings" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/category_startup_security" android:icon="@drawable/baseline_fingerprint_white_24">
         <SwitchPreference
             android:defaultValue="false"

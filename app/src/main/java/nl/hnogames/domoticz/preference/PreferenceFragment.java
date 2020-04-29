@@ -63,6 +63,7 @@ import java.io.File;
 import java.util.HashSet;
 
 import hugo.weaving.DebugLog;
+import nl.hnogames.domoticz.BeaconSettingsActivity;
 import nl.hnogames.domoticz.BluetoothSettingsActivity;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.GeoSettingsActivity;
@@ -205,10 +206,12 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         androidx.preference.Preference NFCPreference = findPreference("nfc_settings");
         androidx.preference.Preference QRCodePreference = findPreference("qrcode_settings");
         androidx.preference.Preference BluetoothPreference = findPreference("bluetooth_settings");
+        androidx.preference.Preference BeaconPreference = findPreference("beacon_settings");
         androidx.preference.Preference SpeechPreference = findPreference("speech_settings");
         androidx.preference.SwitchPreference EnableNFCPreference = findPreference("enableNFC");
         androidx.preference.SwitchPreference EnableQRCodePreference = findPreference("enableQRCode");
         androidx.preference.SwitchPreference EnableBluetoothPreference = findPreference("enableBluetooth");
+        androidx.preference.SwitchPreference EnableBeaconPreference = findPreference("enableBeacon");
         androidx.preference.SwitchPreference EnableSpeechPreference = findPreference("enableSpeech");
         androidx.preference.SwitchPreference EnableTalkBackPreference = findPreference("talkBack");
         MultiSelectListPreference drawerItems = findPreference("show_nav_items");
@@ -448,6 +451,18 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 }
             });
 
+        if (EnableBeaconPreference != null)
+            EnableBeaconPreference.setOnPreferenceChangeListener(new androidx.preference.Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(androidx.preference.Preference preference, Object newValue) {
+                    if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                        showPremiumSnackbar(getString(R.string.beacon));
+                        return false;
+                    }
+                    return true;
+                }
+            });
+
         if (EnableQRCodePreference != null)
             EnableQRCodePreference.setOnPreferenceChangeListener(new androidx.preference.Preference.OnPreferenceChangeListener() {
                 @Override
@@ -524,6 +539,21 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                         return false;
                     } else {
                         Intent intent = new Intent(mContext, BluetoothSettingsActivity.class);
+                        startActivity(intent);
+                        return true;
+                    }
+                }
+            });
+
+        if (BeaconPreference != null)
+            BeaconPreference.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(androidx.preference.Preference preference) {
+                    if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                        showPremiumSnackbar(getString(R.string.beacon));
+                        return false;
+                    } else {
+                        Intent intent = new Intent(mContext, BeaconSettingsActivity.class);
                         startActivity(intent);
                         return true;
                     }
