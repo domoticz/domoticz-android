@@ -4,15 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.JobIntentService;
-
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
 import java.util.ArrayList;
 import java.util.Date;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.LocationInfo;
@@ -65,7 +64,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                 if (Geofence.GEOFENCE_TRANSITION_ENTER == transitionType || Geofence.GEOFENCE_TRANSITION_DWELL == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound =
-                                mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                                mSharedPrefs.getLocation(Integer.parseInt(geofence.getRequestId()));
                         Log.d(TAG, "Triggered entering a geofence location: "
                                 + locationFound.getName());
 
@@ -81,7 +80,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                 } else if (Geofence.GEOFENCE_TRANSITION_EXIT == transitionType) {
                     for (Geofence geofence : geoFenceEvent.getTriggeringGeofences()) {
                         LocationInfo locationFound
-                                = mSharedPrefs.getLocation(Integer.valueOf(geofence.getRequestId()));
+                                = mSharedPrefs.getLocation(Integer.parseInt(geofence.getRequestId()));
                         Log.d(TAG, "Triggered leaving a geofence location: "
                                 + locationFound.getName());
 

@@ -1,18 +1,25 @@
 <resources>
-    <string name="beacon_not_supported">Beacon is not supported on this device</string>
-    <string name="beacon_register">Connect a Beacon device</string>
-    <string name="beacon_found">New Beacon device found</string>
-    <string name="beacon_edit">Edit Beacon device</string>
-    <string name="beacon_name">Give this Beacon device a proper name. </string>
-    <string name="beacon_desc">Check the list of paired Beacon devices. </string>
+    <string name="beacon_not_supported">Beacons are not supported on this device</string>
+    <string name="beacon_register">Connect a beacon</string>
+    <string name="beacon_found">New beacon found</string>
+    <string name="beacon_edit">Edit beacon</string>
+    <string name="beacon_name">Give this beacon a proper name. </string>
+    <string name="beacon_desc">Check the list of paired beacon devices. </string>
     <string name="beacon_exists">Beacon already configured on Domoticz. </string>
-    <string name="beacon_turned_off">Beacon needs to be turned on in your device settings. </string>
-    <string name="beacon_saved">Saved a new Beacon device connection. </string>
-    <string name="action_beacon_show">Add new Beacon</string>
+    <string name="beacon_turned_off">Bluetooth needs to be turned on in your device settings. </string>
+    <string name="beacon_saved">Saved a new beacon connection. </string>
+    <string name="action_beacon_show">Add new beacon</string>
     <string name="beacon">Beacon</string>
     <string name="beacon_disabled">Beacon automation disabled, please setup via settings. </string>
-    <string name="noSwitchSelected_explanation_beacon">For a Beacon device to automate something in Domoticz, a switch should be linked to an Beacon. </string>
+    <string name="noSwitchSelected_explanation_beacon">For a Beacon device to automate something in Domoticz, a switch should be linked to an beacon. </string>
     <string name="beacon_UUID" >UUID</string>
-    <string name="beacon_major" >Marjor (optional)</string>
+    <string name="beacon_major" >Major (optional)</string>
     <string name="beacon_minor" >Minor (optional)</string>
+    <string name="beacon_scan">Beacon</string>
+    <string name="beacon_scan_desc" >Scanning for beacons</string>
+    <string name="beacon_notifications" >Enable notifications for entering and leaving a beacon region.</string>
+    <string name="beacon_entering">"Entering %1$s"</string>
+    <string name="beacon_leaving">Leaving  %1$s</string>
+    <string name="beacon_entering_text">Entering one of the beacons</string>
+    <string name="beacon_leaving_text">Leaving one of the beacons</string>
 </resources>

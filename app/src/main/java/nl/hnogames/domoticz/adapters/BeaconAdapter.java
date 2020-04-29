@@ -114,7 +114,7 @@ public class BeaconAdapter extends BaseAdapter {
         if (!UsefulBits.isEmpty(mBeaconInfo.getValue()))
             holder.beacon_switch_idx.setText(holder.beacon_switch_idx.getText() + " - " + mBeaconInfo.getValue());
 
-        holder.beacon_uuid.setText( mBeaconInfo.getId());
+        holder.beacon_uuid.setText(mBeaconInfo.getId());
         holder.beacon_major.setText(context.getString(R.string.beacon_major) + ": " + mBeaconInfo.getMajor());
         holder.beacon_minor.setText(context.getString(R.string.beacon_minor) + ": " + mBeaconInfo.getMinor());
 

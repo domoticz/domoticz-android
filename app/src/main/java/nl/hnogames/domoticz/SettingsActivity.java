@@ -25,10 +25,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import androidx.appcompat.widget.Toolbar;
-
 import com.ftinc.scoop.Scoop;
 
+import androidx.appcompat.widget.Toolbar;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.preference.PreferenceFragment;
 import nl.hnogames.domoticz.ui.ScoopSettingsActivity;

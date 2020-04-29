@@ -44,6 +44,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.fastaccess.permission.base.PermissionHelper;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.io.File;
+import java.util.HashSet;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -53,15 +61,6 @@ import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.fastaccess.permission.base.PermissionHelper;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.io.File;
-import java.util.HashSet;
-
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.BeaconSettingsActivity;
 import nl.hnogames.domoticz.BluetoothSettingsActivity;
@@ -459,6 +458,11 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                         showPremiumSnackbar(getString(R.string.beacon));
                         return false;
                     }
+
+                    if(((boolean)newValue) == false)
+                        AppController.getInstance().StopBeaconScanning();
+                    else
+                        AppController.getInstance().StartBeaconScanning();
                     return true;
                 }
             });

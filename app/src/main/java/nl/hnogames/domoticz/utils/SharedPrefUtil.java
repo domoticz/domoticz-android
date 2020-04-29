@@ -97,6 +97,7 @@ public class SharedPrefUtil {
     private static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
     private static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
     private static final String PREF_GEOFENCE_NOTIFICATIONS_ENABLED = "geofence_notifications_enabled";
+    private static final String PREF_BEACON_NOTIFICATIONS_ENABLED = "beacon_notifications_enabled";
     private static final String PREF_SPEECH_ENABLED = "enableSpeech";
     private static final String PREF_QRCODE_ENABLED = "enableQRCode";
     private static final String PREF_GEOFENCE_STARTED = "geofence_started";
@@ -949,6 +950,10 @@ public class SharedPrefUtil {
         editor.commit();
     }
 
+    public boolean isBeaconNotificationsEnabled() {
+        return prefs.getBoolean(PREF_BEACON_NOTIFICATIONS_ENABLED, false);
+    }
+
     public boolean isTalkBackEnabled() {
         return prefs.getBoolean(PREF_TALK_BACK, false);
     }
@@ -1110,6 +1115,15 @@ public class SharedPrefUtil {
         List<LocationInfo> locations = getLocations();
         for (LocationInfo l : locations) {
             if (l.getID() == id)
+                return l;
+        }
+        return null;
+    }
+
+    public BeaconInfo getBeacon(String name) {
+        List<BeaconInfo> beacons = getBeaconList();
+        for (BeaconInfo l : beacons) {
+            if (l.getName().equals(name))
                 return l;
         }
         return null;

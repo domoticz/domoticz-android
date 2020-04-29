@@ -21,10 +21,6 @@
 
 package nl.hnogames.domoticz;
 
-import android.app.AlertDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,10 +32,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
@@ -49,21 +41,18 @@ import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationA
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.adapters.BeaconAdapter;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.BeaconInfo;
-import nl.hnogames.domoticz.containers.BluetoothInfo;
-import nl.hnogames.domoticz.containers.NFCInfo;
 import nl.hnogames.domoticz.interfaces.BeaconClickListener;
-import nl.hnogames.domoticz.interfaces.BluetoothClickListener;
 import nl.hnogames.domoticz.ui.AddBeaconDialog;
 import nl.hnogames.domoticz.ui.SwitchDialog;
-import nl.hnogames.domoticz.ui.SwitchInfoDialog;
 import nl.hnogames.domoticz.utils.DeviceUtils;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -343,14 +332,13 @@ public class BeaconSettingsActivity extends AppCompatPermissionsActivity impleme
                 return true;
             case R.id.action_beacon_show:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (PermissionsUtil.canAccessBluetooth(this)) {
+                    if (PermissionsUtil.canAccessBluetooth(this) && PermissionsUtil.canAccessLocation(this)) {
                         showBeacons();
                     } else {
-                        permissionHelper.request(PermissionsUtil.INITIAL_BLUETOOTH_PERMS);
+                        permissionHelper.request(PermissionsUtil.INITIAL_BEACON_PERMS);
                     }
-                } else {
+                } else
                     showBeacons();
-                }
                 return true;
         }
 
@@ -373,7 +361,7 @@ public class BeaconSettingsActivity extends AppCompatPermissionsActivity impleme
     @Override
     public void onPermissionGranted(@NonNull String[] permissionName) {
         Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
-        if (PermissionsUtil.canAccessBluetooth(this)) {
+        if (PermissionsUtil.canAccessBluetooth(this) && PermissionsUtil.canAccessLocation(this)) {
             showBeacons();
         }
     }

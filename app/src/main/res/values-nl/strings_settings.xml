@@ -117,6 +117,8 @@
     <string name="qrcode_enable_settings">QR-Code scanner inschakelen</string>
     <string name="bluetooth_settings">Stel bluetooth apparaten in</string>
     <string name="enable_bluetooth">Inschakelen van de bluetooth functionaliteit</string>
+    <string name="beacon_settings">Beacons configureren</string>
+    <string name="enable_beacon">Beacon scanner/functionaliteit inschakelen</string>
     <string name="translate_description">U kunt onze vertalingen beter maken, of zelfs nieuwe talen toe voegen aan deze applicatie via ons Crowdin project</string>
     <string name="translate_title">Vertalingen</string>
     <string name="security_settings">Beveiligingsinstellingen</string>
@@ -146,6 +148,7 @@
     <string name="enable_notifications">Notificaties op dit apparaat inschakelen</string>
     <string name="notification_screen_title">Notificatie instellingen</string>
     <string name="notification_history">Notificatie geschiedenis</string>
+    <string name="notification_inbox">Inbox</string>
     <string name="notification_vibrate_title">Trillen</string>
     <string name="notification_vibrate_on">Trillen bij het ontvangen van een notificatie</string>
     <string name="notification_vibrate_off">Niet trillen bij het ontvangen van een notificatie</string>

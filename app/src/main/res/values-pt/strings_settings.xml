@@ -117,6 +117,8 @@
     <string name="qrcode_enable_settings">Habilitar a funcionalidade de códigos QR</string>
     <string name="bluetooth_settings">Configurar dispositivos Bluetooth</string>
     <string name="enable_bluetooth">Ativar funcionalidade Bluetooth</string>
+    <string name="beacon_settings">Setup Beacons</string>
+    <string name="enable_beacon">Enable Beacon functionality</string>
     <string name="translate_description">Você pode ajudar a melhorar as nossas traduções e até adicionar novas línguas a este aplicativo através do nosso projeto Crowdin</string>
     <string name="translate_title">Traduções</string>
     <string name="security_settings">Configuração de segurança</string>
@@ -146,6 +148,7 @@
     <string name="enable_notifications">Habilitar notificações neste dispositivo</string>
     <string name="notification_screen_title">Definições de notificação</string>
     <string name="notification_history">Histórico de notificações</string>
+    <string name="notification_inbox">Inbox</string>
     <string name="notification_vibrate_title">Vibrar</string>
     <string name="notification_vibrate_on">Vibrar quando uma notificação é recebida</string>
     <string name="notification_vibrate_off">Não vibrar</string>

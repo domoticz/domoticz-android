@@ -22,30 +22,17 @@
 package nl.hnogames.domoticz.ui;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatEditText;
-import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.BeaconInfo;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Domoticz;
-import nl.hnogames.domoticzapi.DomoticzValues;
-import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 public class AddBeaconDialog {
     private final MaterialDialog.Builder mdb;
@@ -54,10 +41,6 @@ public class AddBeaconDialog {
     private AppCompatEditText major;
     private AppCompatEditText minor;
     private OnDoneListener listener;
-
-    public interface OnDoneListener {
-        void onAdded(BeaconInfo beacon);
-    }
 
     public AddBeaconDialog(final Context mContext, OnDoneListener l) {
         this.mContext = mContext;
@@ -71,22 +54,22 @@ public class AddBeaconDialog {
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         String UUID = String.valueOf(uuid.getText());
                         String Major = String.valueOf(major.getText());
-                        if(UsefulBits.isEmpty(Major))
+                        if (UsefulBits.isEmpty(Major))
                             Major = "0";
                         String Minor = String.valueOf(minor.getText());
-                        if(UsefulBits.isEmpty(Minor))
+                        if (UsefulBits.isEmpty(Minor))
                             Minor = "0";
 
-                            if(UsefulBits.isEmpty(UUID))
-                                Toast.makeText(mContext, "The UUID is mandatory", Toast.LENGTH_LONG).show();
-                            else{
-                                BeaconInfo beacon = new BeaconInfo();
-                                beacon.setId(UUID);
-                                beacon.setMinor(Integer.parseInt(Minor));
-                                beacon.setMajor(Integer.parseInt(Major));
-                                if(listener != null)
-                                    listener.onAdded(beacon);
-                            }
+                        if (UsefulBits.isEmpty(UUID))
+                            Toast.makeText(mContext, "The UUID is mandatory", Toast.LENGTH_LONG).show();
+                        else {
+                            BeaconInfo beacon = new BeaconInfo();
+                            beacon.setId(UUID);
+                            beacon.setMinor(Integer.parseInt(Minor));
+                            beacon.setMajor(Integer.parseInt(Major));
+                            if (listener != null)
+                                listener.onAdded(beacon);
+                        }
                     }
                 })
                 .negativeText(android.R.string.cancel);
@@ -100,5 +83,9 @@ public class AddBeaconDialog {
         major = view.findViewById(R.id.major);
         minor = view.findViewById(R.id.minor);
         md.show();
+    }
+
+    public interface OnDoneListener {
+        void onAdded(BeaconInfo beacon);
     }
 }

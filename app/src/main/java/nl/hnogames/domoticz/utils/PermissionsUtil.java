@@ -26,12 +26,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
-
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.PermissionHelper;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.R;
 
 public class PermissionsUtil {
@@ -66,6 +65,13 @@ public class PermissionsUtil {
     //these permissions are needed for fingerprint
     public static final String[] INITIAL_FINGERPRINT_PERMS = {
             Manifest.permission.USE_BIOMETRIC
+    };
+    //these permissions are needed for beacons
+    public static final String[] INITIAL_BEACON_PERMS = {
+            Manifest.permission.BLUETOOTH,
+            Manifest.permission.BLUETOOTH_ADMIN,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
     };
 
     //This range is from 0 to 255!!

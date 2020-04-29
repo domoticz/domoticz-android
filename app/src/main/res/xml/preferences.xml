@@ -200,6 +200,11 @@
             android:defaultValue="false"
             android:key="enableBeacon"
             android:title="@string/enable_beacon" />
+        <SwitchPreference
+            android:dependency="enableBeacon"
+            android:defaultValue="false"
+            android:key="beacon_notifications_enabled"
+            android:title="@string/beacon_notifications" />
         <Preference
             android:dependency="enableBeacon"
             android:key="beacon_settings"
