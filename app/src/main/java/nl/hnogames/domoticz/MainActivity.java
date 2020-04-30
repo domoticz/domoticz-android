@@ -53,6 +53,7 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -77,6 +78,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -135,6 +137,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private String TAG = MainActivity.class.getSimpleName();
     private ServerUtil mServerUtil;
     private SearchView searchViewAction;
+    private CollapsingToolbarLayout toolbarLayout;
+    public CoordinatorLayout coordinatorLayout;
     private Toolbar toolbar;
     private ArrayList<String> stackFragments = new ArrayList<>();
     private Domoticz domoticz;
@@ -195,7 +199,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
             ((AdView) findViewById(R.id.adView)).loadAd(adRequest);
         } else {
             setContentView(R.layout.activity_newmain_paid);
-            (findViewById(R.id.adView)).setVisibility(View.GONE);
+            //(findViewById(R.id.adView)).setVisibility(View.GONE);
         }
 
         if (savedInstanceState == null) {
@@ -207,7 +211,18 @@ public class MainActivity extends AppCompatPermissionsActivity {
         }
 
         toolbar = findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
+        toolbarLayout = findViewById(R.id.collapsingToolbar);
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = this.getTheme();
+        theme.resolveAttribute(R.attr.toolbarTextColor, typedValue, true);
+        @ColorInt int color = typedValue.data;
+        toolbarLayout.setCollapsedTitleTextColor(color);
+        toolbarLayout.setExpandedTitleColor(color);
+
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
+
         if (!UsefulBits.checkPlayServicesAvailable(this))
             this.finish();
 
@@ -219,6 +234,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
         } else {
             new GeoUtils(this, this).AddGeofences();
             initScreen();
+        }
+    }
+
+    public void setActionbar(String title) {
+        if(toolbarLayout != null) {
+                      toolbarLayout.setTitle(title);
+            toolbarLayout.animate();
         }
     }
 
@@ -455,16 +477,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
         permissionHelper.onActivityForResult(requestCode);
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    public void hideViews() {
-        toolbar.animate().translationY(-toolbar.getHeight()).setInterpolator(new AccelerateInterpolator(2));
-        toolbar.setVisibility(View.GONE);
-        toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
-    }
-
-    public void showViews() {
-        toolbar.setVisibility(View.VISIBLE);
     }
 
     private void handleSwitch(final int idx, final String password, final int inputJSONAction, final String value, final boolean isSceneOrGroup) {
@@ -1507,7 +1519,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 stopCameraTimer();
                 invalidateOptionsMenu();
             }
-            showViews();
         }
     }
 

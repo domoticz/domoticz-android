@@ -83,8 +83,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     }
 
     public void SetTitle(String title) {
-        if (getActionBar() != null)
-            getActionBar().setTitle(title);
+        setActionbar(title);
     }
 
     @Override

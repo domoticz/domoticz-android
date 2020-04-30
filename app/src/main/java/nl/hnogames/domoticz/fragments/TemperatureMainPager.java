@@ -70,12 +70,10 @@ public class TemperatureMainPager extends RefreshFragment implements DomoticzFra
                     .instantiateItem(vpPager, vpPager.getCurrentItem());
             if (f instanceof DomoticzRecyclerFragment) {
                 ((DomoticzRecyclerFragment) f).refreshFragment();
-                ((DomoticzRecyclerFragment) f).showViews();
             } else if (f instanceof DomoticzCardFragment) {
                 ((DomoticzCardFragment) f).refreshFragment();
             } else if (f instanceof DomoticzDashboardFragment) {
                 ((DomoticzDashboardFragment) f).refreshFragment();
-                ((DomoticzDashboardFragment) f).showViews();
             } else if (f instanceof RefreshFragment) {
                 ((RefreshFragment) f).RefreshFragment();
             }

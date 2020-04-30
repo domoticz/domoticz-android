@@ -36,11 +36,13 @@
             android:layout_toLeftOf="@+id/linearLayout5"
             android:hint="@string/security_pin">
 
-            <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/securitypin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:background="?attr/editTextBackgroundColor"
+                android:inputType="number"
+                android:textColor="?attr/editTextTextColor" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout

@@ -42,7 +42,6 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -106,8 +105,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         super.onAttach(context);
         onAttachFragment(this);
         mContext = context;
-        if (getActionBar() != null)
-            getActionBar().setTitle(getString(R.string.title_dashboard));
+        setActionbar(getString(R.string.title_dashboard));
     }
 
     @Override
@@ -169,9 +167,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
         if (getView() != null) {
             if (planName != null && planName.length() > 0)
-                if (getActionBar() != null)
-                    getActionBar().setTitle(planName + "");
-
+                setActionbar(planName + "");
             processDashboard();
         }
     }
@@ -427,7 +423,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             @Override
             @DebugLog
             public void onError(Exception error) {
-                errorHandling(error, coordinatorLayout);
+                errorHandling(error);
             }
         });
     }
@@ -523,7 +519,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         if (getActivity() instanceof MainActivity)
                             ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
                     } else
-                        errorHandling(error, coordinatorLayout);
+                        errorHandling(error);
                 }
             });
         }
@@ -635,7 +631,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     if (getActivity() instanceof MainActivity)
                         ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
                 } else
-                    errorHandling(error, coordinatorLayout);
+                    errorHandling(error);
             }
         });
     }
@@ -988,7 +984,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                                         @Override
                                         @DebugLog
                                         public void onError(Exception error) {
-                                            errorHandling(error, coordinatorLayout);
+                                            errorHandling(error);
                                         }
                                     });
                         }
@@ -1026,7 +1022,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 @Override
                 @DebugLog
                 public void onError(Exception error) {
-                    errorHandling(error, coordinatorLayout);
+                    errorHandling(error);
                 }
             };
 
@@ -1210,7 +1206,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                             if (getActivity() instanceof MainActivity)
                                 ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
                         } else
-                            errorHandling(error, coordinatorLayout);
+                            errorHandling(error);
                     }
                 });
     }
@@ -1373,8 +1369,6 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
     private void setDimmerState(DevicesInfo clickedSwitch, int value, final boolean selector, final String password) {
         if (clickedSwitch != null) {
-
-
             UserInfo user = getCurrentUser(mContext, mDomoticz);
             if (user != null && user.getRights() <= 0) {
                 UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
@@ -1416,7 +1410,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         if (getActivity() instanceof MainActivity)
                             ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
                     } else
-                        errorHandling(error, coordinatorLayout);
+                        errorHandling(error);
                 }
             });
         }
@@ -1430,13 +1424,13 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
     @Override
     @DebugLog
-    public void errorHandling(Exception error, CoordinatorLayout coordinatorLayout) {
+    public void errorHandling(Exception error) {
         if (error != null) {
             // Let's check if were still attached to an activity
             if (isAdded()) {
                 if (mSwipeRefreshLayout != null)
                     mSwipeRefreshLayout.setRefreshing(false);
-                super.errorHandling(error, this.coordinatorLayout);
+                super.errorHandling(error);
             }
         }
     }
@@ -1480,7 +1474,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 @Override
                 @DebugLog
                 public void onError(Exception error) {
-                    errorHandling(error, coordinatorLayout);
+                    errorHandling(error);
                 }
             }, planID, null);
         }

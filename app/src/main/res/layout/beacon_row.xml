@@ -63,21 +63,21 @@
                 style="@style/row_body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/beacon_name"/>
+                android:layout_below="@id/beacon_name" />
 
             <TextView
                 android:id="@+id/beacon_major"
                 style="@style/row_body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/beacon_uuid"/>
+                android:layout_below="@id/beacon_uuid" />
 
             <TextView
                 android:id="@+id/beacon_minor"
                 style="@style/row_body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/beacon_major"/>
+                android:layout_below="@id/beacon_major" />
 
             <TextView
                 android:id="@+id/beacon_switchidx"

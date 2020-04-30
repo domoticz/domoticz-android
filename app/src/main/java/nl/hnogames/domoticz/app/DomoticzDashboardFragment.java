@@ -38,23 +38,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
@@ -73,25 +68,22 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 public class DomoticzDashboardFragment extends Fragment {
     public RecyclerView gridView;
     public SwipeRefreshLayout mSwipeRefreshLayout;
-    public CoordinatorLayout coordinatorLayout;
     public Domoticz mDomoticz;
     public SharedPrefUtil mSharedPrefs;
     public PhoneConnectionUtil mPhoneConnectionUtil;
+    public CoordinatorLayout coordinatorLayout;
     public LinearLayout lySortDevices;
     public BackdropContainer backdropContainer;
     public MaterialCardView bottomLayoutWrapper;
     public MaterialButton collapseSortButton, sortAll, sortOn, sortOff, sortStatic, btnCheckSettings;
-    boolean isTablet = false;
-    boolean isPortrait = false;
+    private boolean isTablet = false;
+    private boolean isPortrait = false;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private TextView debugText;
     private boolean debug;
     private ViewGroup root;
     private String sort = "";
-    private int scrolledDistance = 0;
-    private int SCROLL_THRESHOLD = 600;
-    private boolean controlsVisible = true;
     private boolean backdropShown = false;
 
     public DomoticzDashboardFragment() {
@@ -100,28 +92,6 @@ public class DomoticzDashboardFragment extends Fragment {
     public void setTheme() {
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getActivity());
-    }
-
-    @DebugLog
-    public void hideViews() {
-        if (isTablet)
-            return;
-        if (backdropShown)
-            return;
-        if (getActivity() instanceof MainActivity)
-            ((MainActivity) getActivity()).hideViews();
-        controlsVisible = false;
-        scrolledDistance = 0;
-    }
-
-    @DebugLog
-    public void showViews() {
-        if (isTablet)
-            return;
-        if (getActivity() instanceof MainActivity)
-            ((MainActivity) getActivity()).showViews();
-        controlsVisible = true;
-        scrolledDistance = 0;
     }
 
     public String getSort() {
@@ -176,12 +146,14 @@ public class DomoticzDashboardFragment extends Fragment {
             mSharedPrefs = new SharedPrefUtil(getContext());
 
         setGridViewLayout();
-        coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
         bottomLayoutWrapper = root.findViewById(R.id.bottomLayoutWrapper);
         lySortDevices = root.findViewById(R.id.lySortDevices);
         collapseSortButton = root.findViewById(R.id.btnSortCollapse);
         collapseSortButton.setVisibility(View.VISIBLE);
+        if (getActivity() instanceof MainActivity)
+            coordinatorLayout = ((MainActivity) getActivity()).coordinatorLayout;
+
         if (collapseSortButton != null) {
             collapseSortButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -252,48 +224,10 @@ public class DomoticzDashboardFragment extends Fragment {
                 .dropInterpolator(new LinearInterpolator())
                 .dropHeight(this.getResources().getDimensionPixelSize(R.dimen.sneek_height))
                 .build();
-
-        //setting up our OnScrollListener
-        gridView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int firstVisibleItem = 0;
-                try {
-                    firstVisibleItem = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-                } catch (Exception ex) {
-                    int[] firstVisibleItems = null;
-                    firstVisibleItems = ((StaggeredGridLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPositions(firstVisibleItems);
-                    if (firstVisibleItems != null)
-                        firstVisibleItem = firstVisibleItems[0];
-                }
-                if (firstVisibleItem == 0) {
-                    if (!controlsVisible) {
-                        showViews();
-                    }
-                } else {
-                    if (scrolledDistance > SCROLL_THRESHOLD && controlsVisible) {
-                        hideViews();
-                    } else if (scrolledDistance < -SCROLL_THRESHOLD && !controlsVisible) {
-                        showViews();
-                    }
-                }
-                if ((controlsVisible && dy > 0) || (!controlsVisible && dy < 0)) {
-                    scrolledDistance += dy;
-                }
-            }
-        });
     }
 
     public void setGridViewLayout() {
         try {
-
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
                 isPortrait = true;
 
@@ -394,7 +328,6 @@ public class DomoticzDashboardFragment extends Fragment {
     public void toggleBackDrop() {
         if (!backdropShown) {
             if (backdropContainer != null) {
-                showViews();
                 backdropContainer.showBackview();
                 backdropShown = true;
                 collapseSortButton.setIconResource(R.drawable.baseline_keyboard_arrow_up_black_18);
@@ -447,20 +380,9 @@ public class DomoticzDashboardFragment extends Fragment {
     /**
      * Handles the error messages
      *
-     * @param error Exception
+     * @param error             Exception
      */
     public void errorHandling(Exception error) {
-        errorHandling(error, null);
-    }
-
-    /**
-     * Handles the error messages
-     *
-     * @param error             Exception
-     * @param coordinatorLayout
-     */
-    public void errorHandling(Exception error, CoordinatorLayout coordinatorLayout) {
-
         showSpinner(false);
         error.printStackTrace();
         String errorMessage = mDomoticz.getErrorMessage(error);
@@ -482,8 +404,9 @@ public class DomoticzDashboardFragment extends Fragment {
         }
     }
 
-    public ActionBar getActionBar() {
-        return ((AppCompatActivity) getActivity()).getSupportActionBar();
+    public void setActionbar(String title) {
+        if (getActivity() instanceof MainActivity)
+            ((MainActivity) getActivity()).setActionbar(title);
     }
 
     private void setErrorMessage(String message) {

@@ -133,8 +133,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         onAttachFragment(this);
         this.context = context;
         mSharedPrefs = new SharedPrefUtil(context);
-        if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_cameras);
+        setActionbar(getString(R.string.title_cameras));
     }
 
     @Override

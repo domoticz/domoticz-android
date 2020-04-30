@@ -104,8 +104,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         onAttachFragment(this);
         mContext = context;
         mSharedPrefs = new SharedPrefUtil(mContext);
-        if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_plans);
+        setActionbar(getString(R.string.title_plans));
     }
 
     @Override
@@ -122,10 +121,6 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
                 super.errorHandling(error, coordinatorLayout);
             }
         }
-    }
-
-    public ActionBar getActionBar() {
-        return getActivity() != null ? ((AppCompatActivity) getActivity()).getSupportActionBar() : null;
     }
 
     @Override

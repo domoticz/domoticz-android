@@ -29,14 +29,14 @@
     <com.stfalcon.chatkit.messages.MessagesList
         android:id="@+id/messagesList"
         android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         app:incomingDefaultBubbleColor="?attr/incomingDefaultBubbleColor"
-        app:incomingTextColor="?attr/incomingTextColor"
         app:incomingDefaultBubblePressedColor="?attr/incomingDefaultBubbleColor"
         app:incomingDefaultBubbleSelectedColor="?attr/incomingDefaultBubbleColor"
+        app:incomingTextColor="?attr/incomingTextColor"
         app:outcomingDefaultBubbleColor="?attr/outcomingDefaultBubbleColor"
-        app:outcomingTextColor="?attr/outcomingTextColor"
         app:outcomingDefaultBubblePressedColor="?attr/incomingDefaultBubbleColor"
         app:outcomingDefaultBubbleSelectedColor="?attr/incomingDefaultBubbleColor"
-        android:layout_height="fill_parent"/>
+        app:outcomingTextColor="?attr/outcomingTextColor" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

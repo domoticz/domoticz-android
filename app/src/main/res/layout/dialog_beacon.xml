@@ -20,47 +20,56 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_uuid"
         android:layout_width="match_parent"
-        app:placeholderText="c5eac9cc-4643-4e2c-a368-a7f3d5a34341"
         android:layout_height="wrap_content"
-        android:hint="@string/beacon_UUID">
-        <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
+        android:hint="@string/beacon_UUID"
+        app:placeholderText="c5eac9cc-4643-4e2c-a368-a7f3d5a34341">
+
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/uuid"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="?attr/editTextBackgroundColor"
+            android:textColor="?attr/editTextTextColor" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_major"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:placeholderText="0"
-        android:hint="@string/beacon_major">
-        <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
+        android:hint="@string/beacon_major"
+        app:placeholderText="0">
+
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/major"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/editTextBackgroundColor"
             android:inputType="number"
-            android:layout_height="wrap_content" />
+            android:textColor="?attr/editTextTextColor" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_minor"
         android:layout_width="match_parent"
-        app:placeholderText="0"
         android:layout_height="wrap_content"
-        android:hint="@string/beacon_minor">
-        <androidx.appcompat.widget.AppCompatEditText android:background="?attr/editTextBackgroundColor" android:textColor="?attr/editTextTextColor"
+        android:hint="@string/beacon_minor"
+        app:placeholderText="0">
+
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/minor"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/editTextBackgroundColor"
             android:inputType="number"
-            android:layout_height="wrap_content" />
+            android:textColor="?attr/editTextTextColor" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

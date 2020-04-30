@@ -95,8 +95,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         super.onAttach(context);
         onAttachFragment(this);
         mContext = context;
-        if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_utilities);
+        setActionbar(getString(R.string.title_utilities));
         initAnimation();
     }
 

@@ -74,6 +74,11 @@ public class DomoticzCardFragment extends Fragment {
     public void refreshFragment() {
     }
 
+    public void setActionbar(String title) {
+        if (getActivity() instanceof MainActivity)
+            ((MainActivity) getActivity()).setActionbar(title);
+    }
+
     public void setTheme() {
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getActivity());
@@ -92,9 +97,9 @@ public class DomoticzCardFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_cameras, null);
-        coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
+        if (getActivity() instanceof MainActivity)
+            coordinatorLayout = ((MainActivity) getActivity()).coordinatorLayout;
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
-
         btnCheckSettings = root.findViewById(R.id.btnCheckSettings);
         if (btnCheckSettings != null) {
             btnCheckSettings.setOnClickListener(new View.OnClickListener() {
