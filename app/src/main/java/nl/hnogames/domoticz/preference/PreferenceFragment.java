@@ -460,7 +460,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                         return false;
                     }
 
-                    if(((boolean)newValue) == false)
+                    if(!((boolean) newValue))
                         AppController.getInstance().StopBeaconScanning();
                     else {
                         try {

@@ -139,7 +139,7 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
                 beaconManager.stopMonitoringBeaconsInRegion(new Region(b.getName(), Identifier.parse(b.getId()), Identifier.parse(String.valueOf(b.getMajor())), Identifier.parse(String.valueOf(b.getMinor()))));
             }
             beaconManager.unbind(this);
-        } catch (RemoteException e) {
+        } catch (Exception e) {
             if (e.getMessage() != null)
                 Log.e("BeaconManager", e.getMessage());
         }
@@ -258,12 +258,20 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
     @Override
     public void onBeaconServiceConnect() {
         try {
+            int counter = 0;
             beaconManager.addMonitorNotifier(this);
             List<BeaconInfo> beacons = mSharedPrefs.getBeaconList();
-            for (BeaconInfo b : beacons) {
-                beaconManager.startMonitoringBeaconsInRegion(new Region(b.getName(), Identifier.parse(b.getId()), Identifier.parse(String.valueOf(b.getMajor())), Identifier.parse(String.valueOf(b.getMinor()))));
+            if(beacons != null) {
+                for (BeaconInfo b : beacons) {
+                    if(b.isEnabled()) {
+                        counter++;
+                        beaconManager.startMonitoringBeaconsInRegion(new Region(b.getName(), Identifier.parse(b.getId()), Identifier.parse(String.valueOf(b.getMajor())), Identifier.parse(String.valueOf(b.getMinor()))));
+                    }
+                }
             }
-        } catch (RemoteException e) {
+            if(counter == 0)
+                StopBeaconScanning();
+        } catch (Exception e) {
             if (e.getMessage() != null)
                 Log.e("BeaconManager", e.getMessage());
         }

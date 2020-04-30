@@ -24,6 +24,7 @@ package nl.hnogames.domoticz;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
@@ -244,6 +245,13 @@ public class BeaconSettingsActivity extends AppCompatPermissionsActivity impleme
         mSharedPrefs.saveBeaconList(beaconList);
         adapter.data = beaconList;
         adapter.notifyDataSetChanged();
+
+        try {
+            AppController.getInstance().StopBeaconScanning();
+            AppController.getInstance().StartBeaconScanning();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean showNoDeviceAttachedDialog(final BeaconInfo BeaconInfo) {
