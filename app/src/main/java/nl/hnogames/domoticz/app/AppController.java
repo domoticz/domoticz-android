@@ -119,8 +119,15 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
                 .setSharedPreferences(PreferenceManager.getDefaultSharedPreferences(this))
                 .initialize();
 
-        if (mSharedPrefs.isBeaconEnabled())
-            StartBeaconScanning();
+        if (mSharedPrefs.isBeaconEnabled()) {
+            try {
+                StartBeaconScanning();
+            } catch (RemoteException e) {
+                if(e.getMessage()!= null)
+                    Log.e("BeaconManager", e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
 
     public void StopBeaconScanning() {
@@ -138,8 +145,7 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
         }
     }
 
-    public void StartBeaconScanning() {
-        backgroundPowerSaver = new BackgroundPowerSaver(this);
+    public void StartBeaconScanning() throws RemoteException {
         createNotificationChannel(
                 BACKGROUND_NOTIFICATION_CHANNEL_ID,
                 R.string.beacon_scan,
@@ -165,10 +171,13 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
 
         beaconManager.enableForegroundServiceScanning(mBuilder.build(), 997755);
         beaconManager.setEnableScheduledScanJobs(false);
-        beaconManager.setBackgroundBetweenScanPeriod(1L);
-        beaconManager.setBackgroundScanPeriod(1100L);
-        beaconManager.setForegroundBetweenScanPeriod(1100L);
-        beaconManager.setForegroundScanPeriod(1L);
+        beaconManager.setForegroundScanPeriod(30000L);
+        beaconManager.setForegroundBetweenScanPeriod(10000l);
+        beaconManager.setBackgroundBetweenScanPeriod(10000l);
+        beaconManager.setBackgroundScanPeriod(30000L);
+        beaconManager.updateScanPeriods();
+        backgroundPowerSaver = new BackgroundPowerSaver(this);
+
         beaconManager.setRssiFilterImplClass(RunningAverageRssiFilter.class);
         RunningAverageRssiFilter.setSampleExpirationMilliseconds(10000L);
         beaconManager.bind(this);

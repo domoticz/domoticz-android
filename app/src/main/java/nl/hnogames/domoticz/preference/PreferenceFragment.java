@@ -39,6 +39,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -461,8 +462,13 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
                     if(((boolean)newValue) == false)
                         AppController.getInstance().StopBeaconScanning();
-                    else
-                        AppController.getInstance().StartBeaconScanning();
+                    else {
+                        try {
+                            AppController.getInstance().StartBeaconScanning();
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     return true;
                 }
             });
