@@ -117,8 +117,17 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                getSwitchesAndShowSwitchesDialog(qrcodeList.get(position));
-
+                QRCodeInfo qrCode = qrcodeList.get(position);
+                if(qrCode.getSwitchIdx()>0) {
+                    qrCode.setSwitchIdx(0);
+                    qrCode.setSwitchName(null);
+                    qrCode.setSwitchPassword(null);
+                    updateQRCode(qrCode);
+                    UsefulBits.showSnackbar(QRCodeSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
+                    adapter.notifyDataSetChanged();
+                }
+                else
+                    getSwitchesAndShowSwitchesDialog(qrCode);
                 return true;
             }
         });

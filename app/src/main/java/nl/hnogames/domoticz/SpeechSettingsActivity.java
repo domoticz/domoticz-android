@@ -127,7 +127,17 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                getSwitchesAndShowSwitchesDialog(SpeechList.get(position));
+                SpeechInfo speech = SpeechList.get(position);
+                if(speech.getSwitchIdx()>0) {
+                    speech.setSwitchIdx(0);
+                    speech.setSwitchName(null);
+                    speech.setSwitchPassword(null);
+                    updateSpeech(speech);
+                    UsefulBits.showSnackbar(SpeechSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
+                    adapter.notifyDataSetChanged();
+                }
+                else
+                    getSwitchesAndShowSwitchesDialog(speech);
                 return true;
             }
         });

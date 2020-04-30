@@ -138,7 +138,17 @@ public class BeaconSettingsActivity extends AppCompatPermissionsActivity impleme
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                getSwitchesAndShowSwitchesDialog(beaconList.get(position));
+                BeaconInfo beacon = beaconList.get(position);
+                if(beacon.getSwitchIdx()>0) {
+                    beacon.setSwitchIdx(0);
+                    beacon.setSwitchName(null);
+                    beacon.setSwitchPassword(null);
+                    updateBeacon(beacon);
+                    UsefulBits.showSnackbar(BeaconSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
+                    adapter.notifyDataSetChanged();
+                }
+                else
+                    getSwitchesAndShowSwitchesDialog(beaconList.get(position));
                 return true;
             }
         });

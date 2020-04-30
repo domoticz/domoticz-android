@@ -116,6 +116,7 @@
     <string name="switch_off">Turning switch off</string>
     <string name="switch_night">Turning switch to night light</string>
     <string name="switch_full">Turning switch to full light</string>
+    <string name="switch_connection_removed">Switch connection removed.</string>
 
     <string name="blind_up">Turning blind up</string>
     <string name="blind_down">Turning blind down</string>

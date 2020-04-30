@@ -159,7 +159,17 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                getSwitchesAndShowSwitchesDialog(BluetoothList.get(position));
+                BluetoothInfo bluetooth = BluetoothList.get(position);
+                if(bluetooth.getSwitchIdx()>0) {
+                    bluetooth.setSwitchIdx(0);
+                    bluetooth.setSwitchName(null);
+                    bluetooth.setSwitchPassword(null);
+                    updateBluetooth(bluetooth);
+                    UsefulBits.showSnackbar(BluetoothSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
+                    adapter.notifyDataSetChanged();
+                }
+                else
+                    getSwitchesAndShowSwitchesDialog(bluetooth);
                 return true;
             }
         });
@@ -377,6 +387,7 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
 
     /* Called when the second activity's finishes */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         permissionHelper.onActivityForResult(requestCode);
     }
 
