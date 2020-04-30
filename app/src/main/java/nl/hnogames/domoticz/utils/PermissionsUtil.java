@@ -25,10 +25,12 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.os.Build;
 
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.PermissionHelper;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.R;
@@ -38,8 +40,14 @@ public class PermissionsUtil {
     //these permissions are needed for Wifi scanning
     public static final String[] INITIAL_LOCATION_PERMS = {
             Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
     };
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    public static final String[] BACKGROUND_LOCATION_PERMS = {
+            Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+    };
+
     //these permissions are needed for storing camera images
     public static final String[] INITIAL_STORAGE_PERMS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -90,10 +98,16 @@ public class PermissionsUtil {
         return (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION, context));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    public static boolean canAccessBackgroundLocation(Context context) {
+        return (hasPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION, context));
+    }
+
     public static boolean canAccessStorage(Context context) {
         return (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context) && hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE, context));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     public static boolean canAccessFingerprint(Context context) {
         return (hasPermission(Manifest.permission.USE_BIOMETRIC, context));
     }

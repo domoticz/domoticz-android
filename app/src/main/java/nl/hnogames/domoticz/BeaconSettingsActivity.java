@@ -333,15 +333,20 @@ public class BeaconSettingsActivity extends AppCompatPermissionsActivity impleme
             case R.id.action_beacon_show:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (PermissionsUtil.canAccessBluetooth(this) && PermissionsUtil.canAccessLocation(this)) {
-                        showBeacons();
-                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            if (PermissionsUtil.canAccessBackgroundLocation(this))
+                                showBeacons();
+                            else
+                                permissionHelper.request(PermissionsUtil.BACKGROUND_LOCATION_PERMS);
+                        }
+                        else
+                            showBeacons();
+                    } else
                         permissionHelper.request(PermissionsUtil.INITIAL_BEACON_PERMS);
-                    }
                 } else
                     showBeacons();
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -362,7 +367,14 @@ public class BeaconSettingsActivity extends AppCompatPermissionsActivity impleme
     public void onPermissionGranted(@NonNull String[] permissionName) {
         Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
         if (PermissionsUtil.canAccessBluetooth(this) && PermissionsUtil.canAccessLocation(this)) {
-            showBeacons();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                if (PermissionsUtil.canAccessBackgroundLocation(this))
+                    showBeacons();
+                else
+                    permissionHelper.request(PermissionsUtil.BACKGROUND_LOCATION_PERMS);
+            }
+            else
+                showBeacons();
         }
     }
 }

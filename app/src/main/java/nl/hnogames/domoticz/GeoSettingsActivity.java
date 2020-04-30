@@ -131,20 +131,22 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                         if (!PermissionsUtil.canAccessLocation(GeoSettingsActivity.this)) {
                             geoSwitch.setChecked(false);
                             geoNotificationSwitch.setEnabled(false);
-                            permissionHelper
-                                    .request(PermissionsUtil.INITIAL_LOCATION_PERMS);
+                            permissionHelper.request(PermissionsUtil.INITIAL_LOCATION_PERMS);
                         } else {
                             if (!PermissionsUtil.canAccessStorage(GeoSettingsActivity.this)) {
                                 geoSwitch.setChecked(false);
                                 geoNotificationSwitch.setEnabled(false);
-                                permissionHelper
-                                        .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                                permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                             } else {
-                                //all settings are correct
-                                mSharedPrefs.setGeofenceEnabled(true);
-                                geoNotificationSwitch.setEnabled(true);
-                                oGeoUtils.AddGeofences();
-                                invalidateOptionsMenu();
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !PermissionsUtil.canAccessBackgroundLocation(GeoSettingsActivity.this))
+                                    permissionHelper.request(PermissionsUtil.BACKGROUND_LOCATION_PERMS);
+                                else {
+//all settings are correct
+                                    mSharedPrefs.setGeofenceEnabled(true);
+                                    geoNotificationSwitch.setEnabled(true);
+                                    oGeoUtils.AddGeofences();
+                                    invalidateOptionsMenu();
+                                }
                             }
                         }
                     } else {
@@ -545,9 +547,13 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
         Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
         if (PermissionsUtil.canAccessLocation(GeoSettingsActivity.this)) {
             if (PermissionsUtil.canAccessStorage(GeoSettingsActivity.this)) {
-                mSharedPrefs.setGeofenceEnabled(true);
-                oGeoUtils.AddGeofences();
-                invalidateOptionsMenu();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !PermissionsUtil.canAccessBackgroundLocation(GeoSettingsActivity.this))
+                    permissionHelper.request(PermissionsUtil.BACKGROUND_LOCATION_PERMS);
+                else {
+                    mSharedPrefs.setGeofenceEnabled(true);
+                    oGeoUtils.AddGeofences();
+                    invalidateOptionsMenu();
+                }
             } else {
                 permissionHelper
                         .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
