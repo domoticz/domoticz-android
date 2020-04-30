@@ -220,6 +220,7 @@ public class NFCSettingsActivity extends AppCompatAssistActivity implements NFCC
                 if(nfcDevice.getSwitchIdx()>0) {
                     nfcDevice.setSwitchIdx(0);
                     nfcDevice.setSwitchName(null);
+                    nfcDevice.setValue(null);
                     nfcDevice.setSwitchPassword(null);
                     updateNFC(nfcDevice);
                     UsefulBits.showSnackbar(NFCSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);

@@ -163,6 +163,7 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
                 if(bluetooth.getSwitchIdx()>0) {
                     bluetooth.setSwitchIdx(0);
                     bluetooth.setSwitchName(null);
+                    bluetooth.setValue(null);
                     bluetooth.setSwitchPassword(null);
                     updateBluetooth(bluetooth);
                     UsefulBits.showSnackbar(BluetoothSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);

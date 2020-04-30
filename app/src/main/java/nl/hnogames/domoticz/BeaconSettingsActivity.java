@@ -143,6 +143,7 @@ public class BeaconSettingsActivity extends AppCompatPermissionsActivity impleme
                     beacon.setSwitchIdx(0);
                     beacon.setSwitchName(null);
                     beacon.setSwitchPassword(null);
+                    beacon.setValue(null);
                     updateBeacon(beacon);
                     UsefulBits.showSnackbar(BeaconSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
                     adapter.notifyDataSetChanged();

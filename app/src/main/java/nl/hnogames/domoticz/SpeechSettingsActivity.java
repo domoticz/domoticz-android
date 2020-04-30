@@ -132,6 +132,7 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
                     speech.setSwitchIdx(0);
                     speech.setSwitchName(null);
                     speech.setSwitchPassword(null);
+                    speech.setValue(null);
                     updateSpeech(speech);
                     UsefulBits.showSnackbar(SpeechSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
                     adapter.notifyDataSetChanged();

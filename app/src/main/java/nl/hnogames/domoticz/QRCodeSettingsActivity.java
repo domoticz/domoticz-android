@@ -121,6 +121,7 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
                 if(qrCode.getSwitchIdx()>0) {
                     qrCode.setSwitchIdx(0);
                     qrCode.setSwitchName(null);
+                    qrCode.setValue(null);
                     qrCode.setSwitchPassword(null);
                     updateQRCode(qrCode);
                     UsefulBits.showSnackbar(QRCodeSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);

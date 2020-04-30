@@ -283,9 +283,9 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                 if(location.getSwitchIdx()>0) {
                     location.setSwitchIdx(0);
                     location.setSwitchName(null);
+                    location.setValue(null);
                     location.setSwitchPassword(null);
                     mSharedPrefs.updateLocation(location);
-
                     UsefulBits.showSnackbar(GeoSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
                     adapter.notifyDataSetChanged();
                 }
