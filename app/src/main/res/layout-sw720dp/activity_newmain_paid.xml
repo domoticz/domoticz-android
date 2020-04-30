@@ -32,35 +32,37 @@
             android:id="@+id/recognition_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity ="center"
+            android:layout_gravity="center"
             android:background="?attr/recyclerBackground"
             android:visibility="gone" />
+        <TextView
+            android:id="@+id/tabletLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:fitsSystemWindows="true"
-            android:layout_height="180dp">
+            android:layout_height="140dp">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/collapsingToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-                android:fitsSystemWindows="true"
-                app:contentScrim="?attr/toolbarBackground"
                 android:background="?attr/toolbarBackground"
-                app:expandedTitleMarginStart="48dp"
-                app:expandedTitleMarginEnd="55dp">
+                app:contentScrim="?attr/toolbarBackground"
+                app:expandedTitleMarginEnd="50dp"
+                app:expandedTitleMarginStart="38dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
                     android:background="?attr/toolbarBackground"
-                    app:layout_collapseMode="pin"
                     android:theme="@style/AppThemeToolbarStyle"
-                    android:layout_height="?attr/actionBarSize"/>
-
+                    app:layout_collapseMode="pin" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -68,22 +70,19 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             android:scrollbars="none"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                 <FrameLayout
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <FrameLayout
                     android:id="@+id/main"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-                <!-- TextView used to detect if this tablet layout is used -->
-                <TextView
-                    android:id="@+id/tabletLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"/>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

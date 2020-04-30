@@ -150,9 +150,9 @@
                             android:text="@string/button_state_off"
                             android:textColor="?attr/buttonTextColor"
                             android:textSize="10dp" />
+
                     </LinearLayout>
                 </RelativeLayout>
-
             </LinearLayout>
         </LinearLayout>
 
