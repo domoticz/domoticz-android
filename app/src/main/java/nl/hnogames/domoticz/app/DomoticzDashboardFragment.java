@@ -75,7 +75,7 @@ public class DomoticzDashboardFragment extends Fragment {
     public LinearLayout lySortDevices;
     public BackdropContainer backdropContainer;
     public MaterialCardView bottomLayoutWrapper;
-    public MaterialButton collapseSortButton, sortAll, sortOn, sortOff, sortStatic, btnCheckSettings;
+    public MaterialButton sortAll, sortOn, sortOff, sortStatic, btnCheckSettings;
     private boolean isTablet = false;
     private boolean isPortrait = false;
     private DomoticzFragmentListener listener;
@@ -136,7 +136,6 @@ public class DomoticzDashboardFragment extends Fragment {
 
     public void sortFragment(String sort) {
         this.sort = sort;
-        collapseSortButton.setText(sort);
         refreshFragment();
     }
 
@@ -149,19 +148,8 @@ public class DomoticzDashboardFragment extends Fragment {
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
         bottomLayoutWrapper = root.findViewById(R.id.bottomLayoutWrapper);
         lySortDevices = root.findViewById(R.id.lySortDevices);
-        collapseSortButton = root.findViewById(R.id.btnSortCollapse);
-        collapseSortButton.setVisibility(View.VISIBLE);
         if (getActivity() instanceof MainActivity)
             coordinatorLayout = ((MainActivity) getActivity()).coordinatorLayout;
-
-        if (collapseSortButton != null) {
-            collapseSortButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toggleBackDrop();
-                }
-            });
-        }
 
         sortStatic = root.findViewById(R.id.btnSortStatic);
         if (sortStatic != null) {
@@ -330,13 +318,11 @@ public class DomoticzDashboardFragment extends Fragment {
             if (backdropContainer != null) {
                 backdropContainer.showBackview();
                 backdropShown = true;
-                collapseSortButton.setIconResource(R.drawable.baseline_keyboard_arrow_up_black_18);
             }
         } else {
             if (backdropContainer != null) {
                 backdropContainer.closeBackview();
                 backdropShown = false;
-                collapseSortButton.setIconResource(R.drawable.baseline_keyboard_arrow_down_black_18);
             }
         }
     }
@@ -407,6 +393,13 @@ public class DomoticzDashboardFragment extends Fragment {
     public void setActionbar(String title) {
         if (getActivity() instanceof MainActivity)
             ((MainActivity) getActivity()).setActionbar(title);
+    }
+
+    public void setSortFab(boolean visible) {
+        if (getActivity() instanceof MainActivity) {
+            if(((MainActivity) getActivity()).fabSort != null)
+            ((MainActivity) getActivity()).fabSort.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
     }
 
     private void setErrorMessage(String message) {

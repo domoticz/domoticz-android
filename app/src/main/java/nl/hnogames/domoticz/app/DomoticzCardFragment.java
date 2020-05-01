@@ -79,6 +79,13 @@ public class DomoticzCardFragment extends Fragment {
             ((MainActivity) getActivity()).setActionbar(title);
     }
 
+    public void setSortFab(boolean visible) {
+        if (getActivity() instanceof MainActivity) {
+            if(((MainActivity) getActivity()).fabSort != null)
+                ((MainActivity) getActivity()).fabSort.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
+    }
+
     public void setTheme() {
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getActivity());

@@ -69,6 +69,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
         onAttachFragment(this);
         mContext = context;
         SetTitle(getString(R.string.title_logs));
+        setSortFab(true);
     }
 
     @Override
@@ -76,8 +77,6 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        collapseSortButton.setText(getString(R.string.filter_all));
-        collapseSortButton.setVisibility(View.VISIBLE);
         lySortLogs.setVisibility(View.VISIBLE);
         return view;
     }

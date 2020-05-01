@@ -54,6 +54,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -139,6 +140,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private SearchView searchViewAction;
     private CollapsingToolbarLayout toolbarLayout;
     public CoordinatorLayout coordinatorLayout;
+    public FloatingActionButton fabSort;
     private Toolbar toolbar;
     private ArrayList<String> stackFragments = new ArrayList<>();
     private Domoticz domoticz;
@@ -211,18 +213,29 @@ public class MainActivity extends AppCompatPermissionsActivity {
         }
 
         toolbar = findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
+
         toolbarLayout = findViewById(R.id.collapsingToolbar);
+        fabSort = findViewById(R.id.fabSort);
+        fabSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment f = latestFragment;
+                if (f instanceof DomoticzRecyclerFragment) {
+                    ((DomoticzRecyclerFragment) f).toggleBackDrop();
+                } else if (f instanceof DomoticzDashboardFragment) {
+                    ((DomoticzDashboardFragment) f).toggleBackDrop();
+                }
+            }
+        });
+
         TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = this.getTheme();
-        theme.resolveAttribute(R.attr.toolbarTextColor, typedValue, true);
+        getTheme().resolveAttribute(R.attr.toolbarTextColor, typedValue, true);
         @ColorInt int color = typedValue.data;
         toolbarLayout.setCollapsedTitleTextColor(color);
         toolbarLayout.setExpandedTitleColor(color);
 
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
-
         if (!UsefulBits.checkPlayServicesAvailable(this))
             this.finish();
 

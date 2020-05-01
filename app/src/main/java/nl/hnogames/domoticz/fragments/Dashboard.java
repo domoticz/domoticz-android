@@ -106,6 +106,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         onAttachFragment(this);
         mContext = context;
         setActionbar(getString(R.string.title_dashboard));
+        setSortFab(true);
     }
 
     @Override
@@ -113,7 +114,6 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        collapseSortButton.setVisibility(View.VISIBLE);
         lySortDevices.setVisibility(View.VISIBLE);
         return view;
     }

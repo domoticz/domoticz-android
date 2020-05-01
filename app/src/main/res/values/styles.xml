@@ -81,6 +81,8 @@
         <item name="preferenceIconColor">@color/primary_accent</item>
         <item name="editTextBackgroundColor">@color/white</item>
         <item name="editTextTextColor">@color/grey_900</item>
+        <item name="floatingActionBar">@color/material_drawer_background</item>
+        <item name="floatingActionBarText">@color/grey_900</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/white</item>
@@ -145,6 +147,8 @@
         <item name="preferenceIconColor">@color/primary_accent</item>
         <item name="editTextBackgroundColor">@color/white</item>
         <item name="editTextTextColor">@color/grey_900</item>
+        <item name="floatingActionBar">@color/material_drawer_background</item>
+        <item name="floatingActionBarText">@color/grey_900</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/white</item>
@@ -206,6 +210,8 @@
         <item name="preferenceIconColor">@color/white</item>
         <item name="editTextBackgroundColor">@color/secondary</item>
         <item name="editTextTextColor">@color/white</item>
+        <item name="floatingActionBar">@color/alt1_accent</item>
+        <item name="floatingActionBarText">@color/white</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/grey_900</item>
@@ -230,6 +236,8 @@
         <item name="alertDialogTheme">@style/AlertDialogDarkTheme</item>
         <item name="android:actionBarStyle">@style/AppThemeDarkActionBar</item>
         <item name="actionBarStyle">@style/AppThemeDarkActionBar</item>
+        <item name="floatingActionBar">@color/alt2_accent</item>
+        <item name="floatingActionBarText">@color/white</item>
 
         <!-- MaterialDrawer specific values -->
         <item name="material_drawer_background">@color/alt2_dark</item>
@@ -331,6 +339,8 @@
         <item name="preferenceIconColor">@color/alt3</item>
         <item name="editTextBackgroundColor">@color/white</item>
         <item name="editTextTextColor">@color/alt3</item>
+        <item name="floatingActionBar">@color/alt3</item>
+        <item name="floatingActionBarText">@color/white</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/white</item>

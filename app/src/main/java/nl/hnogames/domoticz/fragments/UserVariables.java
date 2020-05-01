@@ -76,6 +76,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
         onAttachFragment(this);
         mContext = context;
         setActionbar(getString(R.string.title_vars));
+        setSortFab(false);
     }
 
     @Override

@@ -278,20 +278,6 @@
                     </ScrollView>
                 </RelativeLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSortCollapse"
-                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="0dp"
-                    android:text="@string/filterOn_all"
-                    android:textColor="?attr/buttonTextColor"
-                    android:textSize="10dp"
-                    android:visibility="gone"
-                    app:icon="@drawable/baseline_keyboard_arrow_down_black_18"
-                    app:iconGravity="end"
-                    app:iconTint="?attr/buttonTextColor" />
-
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/swipe_refresh_layout"
                     android:layout_width="match_parent"

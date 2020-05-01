@@ -91,6 +91,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         mContext = context;
         initAnimation();
         setActionbar(getString(R.string.title_scenes));
+        setSortFab(true);
     }
 
     @Override
@@ -98,7 +99,6 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        collapseSortButton.setVisibility(View.VISIBLE);
         lySortDevices.setVisibility(View.VISIBLE);
         return view;
     }

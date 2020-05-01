@@ -74,6 +74,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
         onAttachFragment(this);
         mContext = context;
         setActionbar(getString(R.string.title_events));
+        setSortFab(false);
     }
 
     @Override

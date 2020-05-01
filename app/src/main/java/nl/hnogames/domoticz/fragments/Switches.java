@@ -118,6 +118,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         mContext = context;
         initAnimation();
         setActionbar(getString(R.string.title_switches));
+        setSortFab(true);
     }
 
     @Override
@@ -125,7 +126,6 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        collapseSortButton.setVisibility(View.VISIBLE);
         lySortDevices.setVisibility(View.VISIBLE);
         return view;
     }

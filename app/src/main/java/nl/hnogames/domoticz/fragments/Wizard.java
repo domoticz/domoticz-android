@@ -85,10 +85,21 @@ public class Wizard extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_wizard, null);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.title_wizard);
         mSharedPrefs = new SharedPrefUtil(getActivity());
         createCards();
         return root;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        onAttachFragment(this);
+        if (getActivity() instanceof MainActivity)
+            ((MainActivity) getActivity()).setActionbar(getString(R.string.title_wizard));
+        if (getActivity() instanceof MainActivity) {
+            if(((MainActivity) getActivity()).fabSort != null)
+                ((MainActivity) getActivity()).fabSort.setVisibility(View.GONE);
+        }
     }
 
     private void createCards() {
