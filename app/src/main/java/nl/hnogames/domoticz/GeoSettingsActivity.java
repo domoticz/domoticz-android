@@ -33,11 +33,6 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
@@ -53,6 +48,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.adapters.LocationAdapter;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
@@ -132,20 +131,22 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                         if (!PermissionsUtil.canAccessLocation(GeoSettingsActivity.this)) {
                             geoSwitch.setChecked(false);
                             geoNotificationSwitch.setEnabled(false);
-                            permissionHelper
-                                    .request(PermissionsUtil.INITIAL_LOCATION_PERMS);
+                            permissionHelper.request(PermissionsUtil.INITIAL_LOCATION_PERMS);
                         } else {
                             if (!PermissionsUtil.canAccessStorage(GeoSettingsActivity.this)) {
                                 geoSwitch.setChecked(false);
                                 geoNotificationSwitch.setEnabled(false);
-                                permissionHelper
-                                        .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                                permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                             } else {
-                                //all settings are correct
-                                mSharedPrefs.setGeofenceEnabled(true);
-                                geoNotificationSwitch.setEnabled(true);
-                                oGeoUtils.AddGeofences();
-                                invalidateOptionsMenu();
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !PermissionsUtil.canAccessBackgroundLocation(GeoSettingsActivity.this))
+                                    permissionHelper.request(PermissionsUtil.BACKGROUND_LOCATION_PERMS);
+                                else {
+//all settings are correct
+                                    mSharedPrefs.setGeofenceEnabled(true);
+                                    geoNotificationSwitch.setEnabled(true);
+                                    oGeoUtils.AddGeofences();
+                                    invalidateOptionsMenu();
+                                }
                             }
                         }
                     } else {
@@ -278,7 +279,18 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                getSwitchesAndShowSwitchesDialog(locations.get(position));
+                LocationInfo location = locations.get(position);
+                if(location.getSwitchIdx()>0) {
+                    location.setSwitchIdx(0);
+                    location.setSwitchName(null);
+                    location.setValue(null);
+                    location.setSwitchPassword(null);
+                    mSharedPrefs.updateLocation(location);
+                    UsefulBits.showSnackbar(GeoSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
+                    adapter.notifyDataSetChanged();
+                }
+                else
+                    getSwitchesAndShowSwitchesDialog(locations.get(position));
                 return true;
             }
         });
@@ -546,9 +558,13 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
         Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
         if (PermissionsUtil.canAccessLocation(GeoSettingsActivity.this)) {
             if (PermissionsUtil.canAccessStorage(GeoSettingsActivity.this)) {
-                mSharedPrefs.setGeofenceEnabled(true);
-                oGeoUtils.AddGeofences();
-                invalidateOptionsMenu();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !PermissionsUtil.canAccessBackgroundLocation(GeoSettingsActivity.this))
+                    permissionHelper.request(PermissionsUtil.BACKGROUND_LOCATION_PERMS);
+                else {
+                    mSharedPrefs.setGeofenceEnabled(true);
+                    oGeoUtils.AddGeofences();
+                    invalidateOptionsMenu();
+                }
             } else {
                 permissionHelper
                         .request(PermissionsUtil.INITIAL_STORAGE_PERMS);

@@ -29,15 +29,14 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.widget.LinearLayout;
 
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.GraphActivity;
@@ -94,8 +93,8 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         onAttachFragment(this);
         mContext = context;
         initAnimation();
-        if (getActionBar() != null)
-            getActionBar().setTitle(getString(R.string.title_weather));
+        setActionbar(getString(R.string.title_weather));
+        setSortFab(false);
     }
 
     @Override

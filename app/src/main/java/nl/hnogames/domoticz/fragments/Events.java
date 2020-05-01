@@ -25,12 +25,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.MainActivity;
@@ -74,8 +73,8 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
         super.onAttach(context);
         onAttachFragment(this);
         mContext = context;
-        if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_events);
+        setActionbar(getString(R.string.title_events));
+        setSortFab(false);
     }
 
     @Override

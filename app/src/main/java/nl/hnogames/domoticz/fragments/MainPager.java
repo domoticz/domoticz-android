@@ -30,15 +30,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
@@ -71,12 +70,10 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
                     .instantiateItem(vpPager, vpPager.getCurrentItem());
             if (f instanceof DomoticzRecyclerFragment) {
                 ((DomoticzRecyclerFragment) f).refreshFragment();
-                ((DomoticzRecyclerFragment) f).showViews();
             } else if (f instanceof DomoticzCardFragment) {
                 ((DomoticzCardFragment) f).refreshFragment();
             } else if (f instanceof DomoticzDashboardFragment) {
                 ((DomoticzDashboardFragment) f).refreshFragment();
-                ((DomoticzDashboardFragment) f).showViews();
             } else if (f instanceof RefreshFragment) {
                 ((RefreshFragment) f).RefreshFragment();
             }

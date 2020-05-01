@@ -33,13 +33,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.MainActivity;
@@ -91,8 +90,8 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         onAttachFragment(this);
         mContext = context;
         initAnimation();
-        if (getActionBar() != null)
-            getActionBar().setTitle(getString(R.string.title_scenes));
+        setActionbar(getString(R.string.title_scenes));
+        setSortFab(true);
     }
 
     @Override
@@ -100,7 +99,6 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        collapseSortButton.setVisibility(View.VISIBLE);
         lySortDevices.setVisibility(View.VISIBLE);
         return view;
     }

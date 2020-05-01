@@ -63,7 +63,7 @@ public class ServerUtil {
      */
     public ServerUtil(Context mContext) {
         this.mContext = mContext;
-        if(mContext != null) {
+        if (mContext != null) {
             GsonBuilder gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
             gson = gsonBuilder.create();
 

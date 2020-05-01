@@ -73,6 +73,8 @@
         <item name="preferenceIconColor">@color/white</item>
         <item name="editTextBackgroundColor">@color/secondary</item>
         <item name="editTextTextColor">@color/white</item>
+        <item name="floatingActionBar">@color/secondary_accent</item>
+        <item name="floatingActionBarText">@color/white</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/secondary</item>

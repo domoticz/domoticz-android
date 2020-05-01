@@ -26,14 +26,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.MainActivity;
@@ -76,8 +75,8 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
         super.onAttach(context);
         onAttachFragment(this);
         mContext = context;
-        if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_vars);
+        setActionbar(getString(R.string.title_vars));
+        setSortFab(false);
     }
 
     @Override

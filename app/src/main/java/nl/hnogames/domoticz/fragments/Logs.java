@@ -28,10 +28,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import java.util.ArrayList;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.R;
@@ -70,6 +69,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
         onAttachFragment(this);
         mContext = context;
         SetTitle(getString(R.string.title_logs));
+        setSortFab(true);
     }
 
     @Override
@@ -77,15 +77,12 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        collapseSortButton.setText(getString(R.string.filter_all));
-        collapseSortButton.setVisibility(View.VISIBLE);
         lySortLogs.setVisibility(View.VISIBLE);
         return view;
     }
 
     public void SetTitle(String title) {
-        if (getActionBar() != null)
-            getActionBar().setTitle(title);
+        setActionbar(title);
     }
 
     @Override

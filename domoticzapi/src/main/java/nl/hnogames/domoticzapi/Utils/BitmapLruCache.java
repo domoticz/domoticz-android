@@ -22,9 +22,10 @@
 package nl.hnogames.domoticzapi.Utils;
 
 import android.graphics.Bitmap;
-import androidx.collection.LruCache;
 
 import com.android.volley.toolbox.ImageLoader;
+
+import androidx.collection.LruCache;
 
 public class BitmapLruCache
         extends LruCache<String, Bitmap>

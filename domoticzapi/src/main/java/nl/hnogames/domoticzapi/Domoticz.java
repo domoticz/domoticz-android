@@ -25,12 +25,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Environment;
-import androidx.annotation.Nullable;
-
 import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,8 +44,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import androidx.annotation.Nullable;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
 import nl.hnogames.domoticzapi.Containers.UserVariableInfo;
@@ -55,6 +58,7 @@ import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.DownloadUpdateServerReceiver;
 import nl.hnogames.domoticzapi.Interfaces.EventReceiver;
 import nl.hnogames.domoticzapi.Interfaces.GraphDataReceiver;
+import nl.hnogames.domoticzapi.Interfaces.JSONParserInterface;
 import nl.hnogames.domoticzapi.Interfaces.LanguageReceiver;
 import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
 import nl.hnogames.domoticzapi.Interfaces.LogsReceiver;
@@ -78,6 +82,7 @@ import nl.hnogames.domoticzapi.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.UsersReceiver;
 import nl.hnogames.domoticzapi.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
+import nl.hnogames.domoticzapi.Interfaces.VolleyErrorListener;
 import nl.hnogames.domoticzapi.Interfaces.WeatherReceiver;
 import nl.hnogames.domoticzapi.Interfaces.WifiSSIDListener;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
@@ -130,13 +135,11 @@ public class Domoticz {
 
     public static final String DOMOTICZ_DEFAULT_SERVER = "DEFAULT";
     private static final String TAG = "DomoticzAPI";
-
-    private ServerUtil mServerUtil;
-    private PhoneConnectionUtil mPhoneConnectionUtil;
     private final SessionUtil mSessionUtil;
     private final DomoticzUrls mDomoticzUrls;
     private final RequestQueue queue;
-
+    private ServerUtil mServerUtil;
+    private PhoneConnectionUtil mPhoneConnectionUtil;
     private Context mContext;
 
     public Domoticz(Context mContext, RequestQueue queue) {
@@ -146,7 +149,7 @@ public class Domoticz {
         this.mServerUtil = new ServerUtil(mContext);
         this.mDomoticzUrls = new DomoticzUrls(this);
 
-        if(!getServerUtil().getActiveServer().getUseOnlyLocal()) {
+        if (!getServerUtil().getActiveServer().getUseOnlyLocal()) {
             mPhoneConnectionUtil = new PhoneConnectionUtil(mContext, new WifiSSIDListener() {
                 @Override
                 public void ReceiveSSIDs(CharSequence[] entries) {
@@ -158,13 +161,14 @@ public class Domoticz {
     public ServerUtil getServerUtil() {
         return mServerUtil;
     }
+
     public SessionUtil getSessionUtil() {
         return mSessionUtil;
     }
 
     public boolean isUserOnLocalWifi() {
         boolean userIsLocal = false;
-        if(getServerUtil().getActiveServer().getUseOnlyLocal())
+        if (getServerUtil().getActiveServer().getUseOnlyLocal())
             return true;
         else {
             if (getServerUtil().getActiveServer().getIsLocalServerAddressDifferent()) {
@@ -176,7 +180,10 @@ public class Domoticz {
                         // Remove quotes from current SSID read out
                         currentSsid = currentSsid.substring(1, currentSsid.length() - 1);
                         for (String ssid : localSsid) {
-                            if (ssid.equals(currentSsid)) userIsLocal = true;
+                            if (ssid.equals(currentSsid)) {
+                                userIsLocal = true;
+                                break;
+                            }
                         }
                     }
                 }
@@ -190,7 +197,7 @@ public class Domoticz {
         HashMap<String, String> stringHashMap = new HashMap<>();
         stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
         stringHashMap.put("Domoticz local port", server.getLocalServerPort());
-        if(!getServerUtil().getActiveServer().getUseOnlyLocal()) {
+        if (!getServerUtil().getActiveServer().getUseOnlyLocal()) {
             stringHashMap.put("Domoticz remote URL", server.getRemoteServerUrl());
             stringHashMap.put("Domoticz remote port", server.getRemoteServerPort());
         }
@@ -206,19 +213,17 @@ public class Domoticz {
     public String isConnectionDataComplete(ServerInfo server, boolean validatePorts) {
         HashMap<String, String> stringHashMap = new HashMap<>();
         stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
-        if(!getServerUtil().getActiveServer().getUseOnlyLocal())
+        if (!getServerUtil().getActiveServer().getUseOnlyLocal())
             stringHashMap.put("Domoticz remote URL", server.getRemoteServerUrl());
         if (validatePorts) {
             stringHashMap.put("Domoticz local port", server.getLocalServerPort());
-            if(!getServerUtil().getActiveServer().getUseOnlyLocal())
+            if (!getServerUtil().getActiveServer().getUseOnlyLocal())
                 stringHashMap.put("Domoticz remote port", server.getRemoteServerPort());
         }
         for (Map.Entry<String, String> entry : stringHashMap.entrySet()) {
-
             if (UsefulBits.isEmpty(entry.getValue())) {
                 return (entry.getKey() + " is empty");
             }
-
         }
         return null;
     }
@@ -229,12 +234,10 @@ public class Domoticz {
         stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
         stringHashMap.put("Domoticz remote URL", server.getRemoteServerUrl());
         for (Map.Entry<String, String> entry : stringHashMap.entrySet()) {
-
             if (entry.getValue().toLowerCase().startsWith("http")) {
                 result = false;
                 break;
             }
-
         }
         return result;
     }
@@ -257,18 +260,14 @@ public class Domoticz {
             case DomoticzValues.Device.Type.Value.DIMMER:
                 return true;
         }
-        switch (testSwitch.getType()) {
-            case DomoticzValues.Scene.Type.GROUP:
-                return true;
-        }
-
+        if (DomoticzValues.Scene.Type.GROUP.equals(testSwitch.getType()))
+            return true;
         return false;
     }
 
     public boolean isOnOffScene(SceneInfo testSwitch) {
-        switch (testSwitch.getType()) {
-            case DomoticzValues.Scene.Type.GROUP:
-                return true;
+        if (DomoticzValues.Scene.Type.GROUP.equals(testSwitch.getType())) {
+            return true;
         }
         return false;
     }
@@ -367,21 +366,7 @@ public class Domoticz {
     public void getUserAuthenticationRights(AuthReceiver receiver) {
         AuthParser parser = new AuthParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.AUTH);
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, false, 0, queue);
-    }
-
-
-    public interface Authentication {
-        String USERNAME = "username";
-        String PASSWORD = "password";
-
-        interface Method {
-            String AUTH_METHOD_LOGIN_FORM = "Login form";
-            String AUTH_METHOD_BASIC_AUTHENTICATION = "Basic authentication";
-        }
+        GetRequest(parser, url);
     }
 
     public void setUserCredentials(String username, String password) {
@@ -400,10 +385,7 @@ public class Domoticz {
     public void GetNotificationSystems(NotificationTypesReceiver receiver) {
         NotificationTypesParser parser = new NotificationTypesParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NOTIFICATIONTYPES);
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, false, 1, queue);
+        GetRequest(parser, url);
     }
 
     public void SendNotification(String Subject, String Body, String SubSystem, SendNotificationReceiver receiver) {
@@ -412,10 +394,7 @@ public class Domoticz {
         url += "&subject=" + Subject;
         url += "&body=" + Body;
         url += "&subsystem=" + SubSystem;
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, false, 1, queue);
+        GetRequest(parser, url);
     }
 
     /**
@@ -430,13 +409,9 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.ADD_MOBILE_DEVICE);
         url += "&uuid=" + DeviceId;
         url += "&senderid=" + SenderId;
-        url += "&name=" + Build.MODEL.replace(" ","");
+        url += "&name=" + Build.MODEL.replace(" ", "");
         url += "&devicetype=Android" + Build.VERSION.SDK_INT;
-
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, false, 1, queue);
+        GetRequest(parser, url);
     }
 
     /**
@@ -450,10 +425,7 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CLEAN_MOBILE_DEVICE);
         url += "&uuid=" + DeviceId;
 
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, false, 1, queue);
+        GetRequest(parser, url);
     }
 
     /**
@@ -464,10 +436,7 @@ public class Domoticz {
     public void getSunRise(SunRiseReceiver receiver) {
         SunRiseParser parser = new SunRiseParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SUNRISE);
-        RequestUtil.makeJsonGetRequest(parser,
-            getUserCredentials(Authentication.USERNAME),
-            getUserCredentials(Authentication.PASSWORD),
-            url, getSessionUtil(), true, 3, queue);
+        GetRequest(parser, url);
     }
 
     /**
@@ -478,10 +447,7 @@ public class Domoticz {
     public void getServerVersion(VersionReceiver receiver) {
         VersionParser parser = new VersionParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.VERSION);
-        RequestUtil.makeJsonGetRequest(parser,
-            getUserCredentials(Authentication.USERNAME),
-            getUserCredentials(Authentication.PASSWORD),
-            url, getSessionUtil(), true, 3, queue);
+        GetRequest(parser, url);
     }
 
     public String getSnapshotUrl(CameraInfo camera) {
@@ -496,10 +462,7 @@ public class Domoticz {
     public void getUpdate(UpdateVersionReceiver receiver) {
         UpdateVersionParser parser = new UpdateVersionParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE);
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, false, 1, queue);
+        GetRequest(parser, url);
     }
 
     /**
@@ -510,10 +473,7 @@ public class Domoticz {
     public void getDownloadUpdate(DownloadUpdateServerReceiver receiver) {
         DownloadUpdateParser parser = new DownloadUpdateParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE_DOWNLOAD_UPDATE);
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, false, 1, queue);
+        GetRequest(parser, url);
     }
 
     /**
@@ -524,10 +484,7 @@ public class Domoticz {
     public void getUpdateDownloadReady(UpdateDownloadReadyReceiver receiver) {
         UpdateDownloadReadyParser parser = new UpdateDownloadReadyParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE_DOWNLOAD_READY);
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, false, 1, queue);
+        GetRequest(parser, url);
     }
 
     /**
@@ -538,10 +495,8 @@ public class Domoticz {
     public void updateDomoticzServer(@Nullable UpdateDomoticzServerReceiver receiver) {
         UpdateDomoticzServerParser parser = new UpdateDomoticzServerParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE_DOMOTICZ_SERVER);
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetRequest(parser,
+                url);
     }
 
     public void checkLogin(LoginReceiver loginReceiver) {
@@ -552,13 +507,10 @@ public class Domoticz {
         Log.v(TAG, "Url: " + url);
 
         try {
-            Map<String,String> params = new HashMap<>();
+            Map<String, String> params = new HashMap<>();
             params.put("username", URLEncoder.encode(username, "UTF-8"));
             params.put("password", URLEncoder.encode(password, "UTF-8"));
-
-            RequestUtil.makeJsonPostRequest(parser,
-                    null, null,
-                    url, null, params, mSessionUtil, true, 3, queue);
+            PostRequest(parser, url, params);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -579,107 +531,85 @@ public class Domoticz {
         }
 
         Log.v(TAG, "Url: " + url);
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetRequest(parser,
+                url);
     }
 
     public void getSwitches(SwitchesReceiver switchesReceiver) {
         SwitchesParser parser = new SwitchesParser(switchesReceiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SWITCHES);
-        RequestUtil.makeJsonGetResultRequest(parser,
-            getUserCredentials(Authentication.USERNAME),
-            getUserCredentials(Authentication.PASSWORD),
-            url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
     public void getSwitchLogs(int idx, SwitchLogReceiver switchesReceiver) {
         SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SWITCHLOG) + String.valueOf(idx);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SWITCHLOG) + idx;
 
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
     public void getTextLogs(int idx, SwitchLogReceiver switchesReceiver) {
         SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.TEXTLOG) + String.valueOf(idx);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.TEXTLOG) + idx;
 
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
     public void getSceneLogs(int idx, SwitchLogReceiver switchesReceiver) {
         SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SCENELOG) + String.valueOf(idx);
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SCENELOG) + idx;
+        GetResultRequest(parser,
+                url);
     }
 
 
     public void getScenes(ScenesReceiver receiver) {
         ScenesParser parser = new ScenesParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SCENES);
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
     public void getScene(ScenesReceiver receiver, int idx) {
         ScenesParser parser = new ScenesParser(receiver, idx);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SCENES);
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
     public void getPlans(PlansReceiver receiver) {
         PlanParser parser = new PlanParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.PLANS);
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
     public void getCameras(CameraReceiver receiver) {
         CameraParser parser = new CameraParser(receiver, this);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CAMERAS);
 
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
 
     public void getSwitchTimers(int idx, SwitchTimerReceiver switchesReceiver) {
         SwitchTimerParser parser = new SwitchTimerParser(switchesReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SWITCHTIMER) + String.valueOf(idx);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SWITCHTIMER) + idx;
 
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
     public void getNotifications(int idx, NotificationReceiver notificationReceiver) {
         NotificationsParser parser = new NotificationsParser(notificationReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NOTIFICATIONS) + String.valueOf(idx);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NOTIFICATIONS) + idx;
 
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -693,16 +623,13 @@ public class Domoticz {
         url += "&seccode=" + seccode;
 
         Log.v(TAG, "Action: " + url);
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetRequest(parser, url);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
-    public void setUserVariableValue(  String newValue,
-                                       UserVariableInfo var,
-                                       setCommandReceiver receiver) {
+    public void setUserVariableValue(String newValue,
+                                     UserVariableInfo var,
+                                     setCommandReceiver receiver) {
         setCommandParser parser = new setCommandParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATEVAR);
         url += "&idx=" + var.getIdx();
@@ -711,10 +638,7 @@ public class Domoticz {
         url += "&vvalue=" + newValue;
 
         Log.v(TAG, "Action: " + url);
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetRequest(parser, url);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -729,10 +653,8 @@ public class Domoticz {
         url += UsefulBits.isEmpty(password) ? "&passcode=" : "&passcode=" + password;
 
         Log.v(TAG, "Action: " + url);
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetRequest(parser,
+                url);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -755,34 +677,30 @@ public class Domoticz {
             url += "&passcode=" + password;
         }
         Log.v(TAG, "Action: " + url);
-        RequestUtil.makeJsonGetRequest(parser,
-            getUserCredentials(Authentication.USERNAME),
-            getUserCredentials(Authentication.PASSWORD),
-            url, mSessionUtil, true, 3, queue);
+        GetRequest(parser,
+                url);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
     public void setWWColorAction(int idx,
                                  int cw,
                                  int ww,
-                                  int brightness,
-                                  String password,
-                                  setCommandReceiver receiver) {
+                                 int brightness,
+                                 String password,
+                                 setCommandReceiver receiver) {
         setCommandParser parser = new setCommandParser(receiver);
 
         String url = mDomoticzUrls.constructSetUrl(DomoticzValues.Json.Url.Set.WWCOLOR, idx, DomoticzValues.Device.Dimmer.Action.WWCOLOR, 0);
         url = url.replace("%ww%", String.valueOf(ww))
-            .replace("%cw%", String.valueOf(cw))
-            .replace("%bright%", String.valueOf(brightness));
+                .replace("%cw%", String.valueOf(cw))
+                .replace("%bright%", String.valueOf(brightness));
 
         if (!UsefulBits.isEmpty(password)) {
             url += "&passcode=" + password;
         }
         Log.v(TAG, "Action: " + url);
-        RequestUtil.makeJsonGetRequest(parser,
-            getUserCredentials(Authentication.USERNAME),
-            getUserCredentials(Authentication.PASSWORD),
-            url, mSessionUtil, true, 3, queue);
+        GetRequest(parser,
+                url);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -799,31 +717,9 @@ public class Domoticz {
         }
         Log.v(TAG, "Action: " + url);
         setCommandParser parser = new setCommandParser(receiver);
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetRequest(parser,
+                url);
     }
-
-
-    /*
-    @DebugLog
- public void setEventAction(int id,
-                               String xmlStatement,
-                               int jsonUrl,
-                               int jsonAction,
-                               long value,
-                               setCommandReceiver receiver) {
-        setCommandParser parser = new setCommandParser(receiver);
-        String url = constructSetUrl(jsonUrl, id, jsonAction, value);
-        url += Uri.encode(xmlStatement);
-        Log.v(TAG, "Action: " + url);
-        RequestUtil.makeJsonPutRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3);
-    }*/
-
 
     public void setDeviceUsed(int id,
                               String name,
@@ -841,51 +737,40 @@ public class Domoticz {
         url += "&used=true";
 
         Log.v(TAG, "Action: " + url);
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetRequest(parser,
+                url);
     }
 
     public void getStatus(int idx, StatusReceiver receiver) {
         StatusInfoParser parser = new StatusInfoParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Get.STATUS) + String.valueOf(idx);
-
         Log.v(TAG, url);
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
     public void getUtilities(UtilitiesReceiver receiver) {
         UtilitiesParser parser = new UtilitiesParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UTILITIES);
         Log.v(TAG, url);
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
     public void getSettings(SettingsReceiver receiver) {
         SettingsParser parser = new SettingsParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SETTINGS);
         Log.v(TAG, url);
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 2, queue);
+        GetRequest(parser,
+                url);
     }
 
     public void getConfig(ConfigReceiver receiver) {
         ConfigParser parser = new ConfigParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CONFIG);
         Log.v(TAG, url);
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 2, queue);
+        GetRequest(parser,
+                url);
     }
 
     public void getLanguageStringsFromServer(String language, LanguageReceiver receiver) {
@@ -893,30 +778,24 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LANGUAGE);
         Log.v(TAG, url);
         url += language + ".json";
-        RequestUtil.makeJsonGetRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 2, queue);
+        GetRequest(parser,
+                url);
     }
 
     public void getTemperatures(TemperatureReceiver receiver) {
         TemperaturesParser parser = new TemperaturesParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.TEMPERATURE);
         Log.v(TAG, url);
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
     public void getWeathers(WeatherReceiver receiver) {
         WeatherParser parser = new WeatherParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.WEATHER);
         Log.v(TAG, url);
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
     public void getFavorites(DevicesReceiver receiver, int plan, String filter) {
@@ -929,10 +808,7 @@ public class Domoticz {
             url += "&plan=" + plan;
 
         Log.v(TAG, url);
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser, url);
     }
 
     public void getDevices(DevicesReceiver receiver, int plan, String filter) {
@@ -945,10 +821,8 @@ public class Domoticz {
             url += "&plan=" + plan;
 
         Log.v(TAG, url);
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
     public void getDevice(DevicesReceiver receiver, int idx, boolean scene_or_group) {
@@ -956,60 +830,45 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.DEVICES);
 
         Log.i("DEVICE", "url: " + url);
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
     public void getLogs(LogsReceiver receiver, int logLevel) {
         LogsParser parser = new LogsParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LOG) + logLevel;
         Log.i("Logs", "url: " + url);
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
     public void getUserVariables(UserVariablesReceiver receiver) {
         UserVariablesParser parser = new UserVariablesParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.USERVARIABLES);
         Log.i("USERVARIABLES", "url: " + url);
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
     public void getUsers(UsersReceiver receiver) {
         UsersParser parser = new UsersParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.USERS);
         Log.i("USERS", "url: " + url);
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser,
+                url);
     }
 
     public void LogOff() {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LOGOFF);
         Log.i("LOGOFF", "url: " + url);
-        RequestUtil.makeJsonGetRequest(new LogOffParser(),
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetRequest(new LogOffParser(), url);
     }
 
     public void getEvents(EventReceiver receiver) {
         EventsParser parser = new EventsParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.EVENTS);
-
         Log.i("EVENTS", "url: " + url);
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser, url);
     }
 
     public void getGraphData(int idx, String range, String type, GraphDataReceiver receiver) {
@@ -1017,18 +876,164 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.GRAPH) + String.valueOf(idx);
         url += DomoticzValues.Url.Log.GRAPH_RANGE + range;
         url += DomoticzValues.Url.Log.GRAPH_TYPE + type;
-
         Log.i("GRAPH", "url: " + url);
-        RequestUtil.makeJsonGetResultRequest(parser,
-                getUserCredentials(Authentication.USERNAME),
-                getUserCredentials(Authentication.PASSWORD),
-                url, mSessionUtil, true, 3, queue);
+        GetResultRequest(parser, url);
     }
 
-    private String snapshot_file_path = "/Domoticz/SnapShot";
+    private void GetRequest(@Nullable final JSONParserInterface parser,
+                            final String url) {
+        final VolleyErrorListener defaultListener = new VolleyErrorListener() {
+            @Override
+            public void onDone(JSONObject response) {
+                if (parser != null)
+                    parser.parseResult(response.toString());
+            }
+
+            @Override
+            public void onError(Exception error) {
+                if (parser != null)
+                    parser.onError(error);
+            }
+        };
+
+        VolleyErrorListener listener = new VolleyErrorListener() {
+            @Override
+            public void onDone(JSONObject response) {
+                if (parser != null)
+                    parser.parseResult(response.toString());
+            }
+
+            @Override
+            public void onError(Exception error) {
+                //retry after login
+                checkLogin(new LoginReceiver() {
+                    @Override
+                    public void OnReceive(LoginInfo mLoginInfo) {
+                        RequestUtil.makeJsonGetRequest(defaultListener, url, mSessionUtil, queue);
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        if (parser != null)
+                            parser.onError(error);
+                    }
+                });
+            }
+        };
+
+        RequestUtil.makeJsonGetRequest(listener,
+                url, mSessionUtil, queue);
+    }
+
+    private void GetResultRequest(@Nullable final JSONParserInterface parser,
+                                  final String url) {
+        final VolleyErrorListener defaultListener = new VolleyErrorListener() {
+            @Override
+            public void onDone(JSONObject response) {
+                try {
+                    String jsonString = response.getString(DomoticzValues.Json.Field.RESULT);
+                    if (parser != null)
+                        parser.parseResult(jsonString);
+                } catch (JSONException e) {
+                    if (parser != null)
+                        parser.onError(e);
+                }
+            }
+
+            @Override
+            public void onError(Exception error) {
+                if (parser != null)
+                    parser.onError(error);
+            }
+        };
+
+        VolleyErrorListener listener = new VolleyErrorListener() {
+            @Override
+            public void onDone(JSONObject response) {
+                try {
+                    String jsonString = response.getString(DomoticzValues.Json.Field.RESULT);
+                    if (parser != null)
+                        parser.parseResult(jsonString);
+                } catch (JSONException e) {
+                    if (parser != null)
+                        parser.onError(e);
+                }
+            }
+
+            @Override
+            public void onError(Exception error) {
+                //retry after login
+                checkLogin(new LoginReceiver() {
+                    @Override
+                    public void OnReceive(LoginInfo mLoginInfo) {
+                        RequestUtil.makeJsonGetResultRequest(defaultListener,
+                                url, mSessionUtil, queue);
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        if (parser != null)
+                            parser.onError(error);
+                    }
+                });
+            }
+        };
+
+        RequestUtil.makeJsonGetResultRequest(listener,
+                url, mSessionUtil, queue);
+    }
+
+    private void PostRequest(@Nullable final JSONParserInterface parser,
+                             final String url,
+                             final Map<String, String> params) {
+        final VolleyErrorListener defaultListener = new VolleyErrorListener() {
+            @Override
+            public void onDone(JSONObject response) {
+                if (parser != null)
+                    parser.parseResult(response.toString());
+            }
+
+            @Override
+            public void onError(Exception error) {
+                if (parser != null)
+                    parser.onError(error);
+            }
+        };
+
+        VolleyErrorListener listener = new VolleyErrorListener() {
+            @Override
+            public void onDone(JSONObject response) {
+                if (parser != null)
+                    parser.parseResult(response.toString());
+            }
+
+            @Override
+            public void onError(Exception error) {
+                //retry after login
+                checkLogin(new LoginReceiver() {
+                    @Override
+                    public void OnReceive(LoginInfo mLoginInfo) {
+                        RequestUtil.makeJsonPostRequest(defaultListener,
+                                url, params, mSessionUtil, queue);
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        if (parser != null)
+                            parser.onError(error);
+                    }
+                });
+            }
+        };
+
+        RequestUtil.makeJsonPostRequest(listener,
+                url, params, mSessionUtil, queue);
+    }
+
     public File saveSnapShot(Bitmap bitmap, String name) {
+        String snapshot_file_path = "/Domoticz/SnapShot";
         String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                this.snapshot_file_path;
+                snapshot_file_path;
         File dir = new File(file_path);
         if (!dir.exists())
             dir.mkdirs();
@@ -1047,4 +1052,13 @@ public class Domoticz {
         return null;
     }
 
+    public interface Authentication {
+        String USERNAME = "username";
+        String PASSWORD = "password";
+
+        interface Method {
+            String AUTH_METHOD_LOGIN_FORM = "Login form";
+            String AUTH_METHOD_BASIC_AUTHENTICATION = "Basic authentication";
+        }
+    }
 }

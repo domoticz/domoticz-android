@@ -32,10 +32,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
@@ -46,6 +42,9 @@ import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationA
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.adapters.QRCodeAdapter;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
@@ -118,8 +117,18 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                getSwitchesAndShowSwitchesDialog(qrcodeList.get(position));
-
+                QRCodeInfo qrCode = qrcodeList.get(position);
+                if(qrCode.getSwitchIdx()>0) {
+                    qrCode.setSwitchIdx(0);
+                    qrCode.setSwitchName(null);
+                    qrCode.setValue(null);
+                    qrCode.setSwitchPassword(null);
+                    updateQRCode(qrCode);
+                    UsefulBits.showSnackbar(QRCodeSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
+                    adapter.notifyDataSetChanged();
+                }
+                else
+                    getSwitchesAndShowSwitchesDialog(qrCode);
                 return true;
             }
         });

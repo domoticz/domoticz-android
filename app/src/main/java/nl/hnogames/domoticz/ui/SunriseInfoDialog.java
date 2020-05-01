@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.SunRiseInfo;
 import rm.com.clocks.ClockImageView;
 
@@ -70,52 +71,76 @@ public class SunriseInfoDialog {
     }
 
     private void SetData() {
-        String s1 = info.getSunrise();
-        sunrise.setHours(Integer.valueOf(s1.substring(0, s1.indexOf(":"))));
-        sunrise.setMinutes(Integer.valueOf(s1.substring(s1.indexOf(":") + 1)));
+        if (info == null)
+            return;
 
-        String s2 = info.getSunset();
-        sunset.setHours(Integer.valueOf(s2.substring(0, s2.indexOf(":"))));
-        sunset.setMinutes(Integer.valueOf(s2.substring(s2.indexOf(":") + 1)));
+        try {
+            String s1 = info.getSunrise();
+            if (!UsefulBits.isEmpty(s1) && s1.indexOf(":") > 0) {
+                sunrise.setHours(Integer.valueOf(s1.substring(0, s1.indexOf(":"))));
+                sunrise.setMinutes(Integer.valueOf(s1.substring(s1.indexOf(":") + 1)));
+            }
 
-        String s3 = info.getAstrTwilightStart();
-        astrTwilightStart.setHours(Integer.valueOf(s3.substring(0, s3.indexOf(":"))));
-        astrTwilightStart.setMinutes(Integer.valueOf(s3.substring(s3.indexOf(":") + 1)));
+            String s2 = info.getSunset();
+            if (!UsefulBits.isEmpty(s2) && s2.indexOf(":") > 0) {
+                sunset.setHours(Integer.valueOf(s2.substring(0, s2.indexOf(":"))));
+                sunset.setMinutes(Integer.valueOf(s2.substring(s2.indexOf(":") + 1)));
+            }
 
-        String s4 = info.getAstrTwilightEnd();
-        astrTwilightEnd.setHours(Integer.valueOf(s4.substring(0, s4.indexOf(":"))));
-        astrTwilightEnd.setMinutes(Integer.valueOf(s4.substring(s4.indexOf(":") + 1)));
+            String s3 = info.getAstrTwilightStart();
+            if (!UsefulBits.isEmpty(s3) && s3.indexOf(":") > 0) {
+                astrTwilightStart.setHours(Integer.valueOf(s3.substring(0, s3.indexOf(":"))));
+                astrTwilightStart.setMinutes(Integer.valueOf(s3.substring(s3.indexOf(":") + 1)));
+            }
 
-        String s5 = info.getCivTwilightStart();
-        civTwilightStart.setHours(Integer.valueOf(s5.substring(0, s5.indexOf(":"))));
-        civTwilightStart.setMinutes(Integer.valueOf(s5.substring(s5.indexOf(":") + 1)));
+            String s4 = info.getAstrTwilightEnd();
+            if (!UsefulBits.isEmpty(s4) && s4.indexOf(":") > 0) {
+                astrTwilightEnd.setHours(Integer.valueOf(s4.substring(0, s4.indexOf(":"))));
+                astrTwilightEnd.setMinutes(Integer.valueOf(s4.substring(s4.indexOf(":") + 1)));
+            }
 
-        String s6 = info.getCivTwilightEnd();
-        civTwilightEnd.setHours(Integer.valueOf(s6.substring(0, s6.indexOf(":"))));
-        civTwilightEnd.setMinutes(Integer.valueOf(s6.substring(s6.indexOf(":") + 1)));
+            String s5 = info.getCivTwilightStart();
+            if (!UsefulBits.isEmpty(s5) && s5.indexOf(":") > 0) {
+                civTwilightStart.setHours(Integer.valueOf(s5.substring(0, s5.indexOf(":"))));
+                civTwilightStart.setMinutes(Integer.valueOf(s5.substring(s5.indexOf(":") + 1)));
+            }
 
-        String s7 = info.getNautTwilightStart();
-        nautTwilightStart.setHours(Integer.valueOf(s7.substring(0, s7.indexOf(":"))));
-        nautTwilightStart.setMinutes(Integer.valueOf(s7.substring(s7.indexOf(":") + 1)));
+            String s6 = info.getCivTwilightEnd();
+            if (!UsefulBits.isEmpty(s6) && s6.indexOf(":") > 0) {
+                civTwilightEnd.setHours(Integer.valueOf(s6.substring(0, s6.indexOf(":"))));
+                civTwilightEnd.setMinutes(Integer.valueOf(s6.substring(s6.indexOf(":") + 1)));
+            }
 
-        String s8 = info.getNautTwilightEnd();
-        nautTwilightEnd.setHours(Integer.valueOf(s8.substring(0, s8.indexOf(":"))));
-        nautTwilightEnd.setMinutes(Integer.valueOf(s8.substring(s8.indexOf(":") + 1)));
+            String s7 = info.getNautTwilightStart();
+            if (!UsefulBits.isEmpty(s7) && s7.indexOf(":") > 0) {
+                nautTwilightStart.setHours(Integer.valueOf(s7.substring(0, s7.indexOf(":"))));
+                nautTwilightStart.setMinutes(Integer.valueOf(s7.substring(s7.indexOf(":") + 1)));
+            }
 
-        String current = info.getServerTime();
-        current = current.substring((current.indexOf(":") - 2), (current.indexOf(":") + 3));
-        clock.setHours(Integer.valueOf(current.substring(0, current.indexOf(":"))));
-        clock.setMinutes(Integer.valueOf(current.substring(current.indexOf(":") + 1)));
+            String s8 = info.getNautTwilightEnd();
+            if (!UsefulBits.isEmpty(s8) && s8.indexOf(":") > 0) {
+                nautTwilightEnd.setHours(Integer.valueOf(s8.substring(0, s8.indexOf(":"))));
+                nautTwilightEnd.setMinutes(Integer.valueOf(s8.substring(s8.indexOf(":") + 1)));
+            }
 
-        clockText.setText(current);
-        sunriseText.setText(s1);
-        sunsetText.setText(s2);
-        astrTwilightStartText.setText(s3);
-        astrTwilightEndText.setText(s4);
-        civTwilightStartText.setText(s5);
-        civTwilightEndText.setText(s6);
-        nautTwilightStartText.setText(s7);
-        nautTwilightEndText.setText(s8);
+            String current = info.getServerTime();
+            if (!UsefulBits.isEmpty(current) && current.indexOf(":") > 0) {
+                current = current.substring((current.indexOf(":") - 2), (current.indexOf(":") + 3));
+                clock.setHours(Integer.valueOf(current.substring(0, current.indexOf(":"))));
+                clock.setMinutes(Integer.valueOf(current.substring(current.indexOf(":") + 1)));
+            }
+
+            clockText.setText(current);
+            sunriseText.setText(s1);
+            sunsetText.setText(s2);
+            astrTwilightStartText.setText(s3);
+            astrTwilightEndText.setText(s4);
+            civTwilightStartText.setText(s5);
+            civTwilightEndText.setText(s6);
+            nautTwilightStartText.setText(s7);
+            nautTwilightEndText.setText(s8);
+        } catch (Exception ignored) {
+        }
     }
 
     private void InitViews(View view) {

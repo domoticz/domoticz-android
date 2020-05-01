@@ -25,17 +25,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:deviceIds="wear">
-        <androidx.wear.widget.CircularProgressLayout
-            android:id="@+id/delayed_confirm"
-            android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/image_view"
-                android:src="@drawable/ic_stop"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:contentDescription="@string/stop" />
-        </androidx.wear.widget.CircularProgressLayout>
+
+    <androidx.wear.widget.CircularProgressLayout
+        android:id="@+id/delayed_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:contentDescription="@string/stop"
+            android:src="@drawable/ic_stop"
+            android:tint="@color/white" />
+    </androidx.wear.widget.CircularProgressLayout>
 </LinearLayout>

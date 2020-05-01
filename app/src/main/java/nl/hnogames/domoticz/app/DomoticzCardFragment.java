@@ -32,18 +32,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.List;
-
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
@@ -75,6 +74,18 @@ public class DomoticzCardFragment extends Fragment {
     public void refreshFragment() {
     }
 
+    public void setActionbar(String title) {
+        if (getActivity() instanceof MainActivity)
+            ((MainActivity) getActivity()).setActionbar(title);
+    }
+
+    public void setSortFab(boolean visible) {
+        if (getActivity() instanceof MainActivity) {
+            if(((MainActivity) getActivity()).fabSort != null)
+                ((MainActivity) getActivity()).fabSort.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
+    }
+
     public void setTheme() {
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getActivity());
@@ -93,9 +104,9 @@ public class DomoticzCardFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_cameras, null);
-        coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
+        if (getActivity() instanceof MainActivity)
+            coordinatorLayout = ((MainActivity) getActivity()).coordinatorLayout;
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
-
         btnCheckSettings = root.findViewById(R.id.btnCheckSettings);
         if (btnCheckSettings != null) {
             btnCheckSettings.setOnClickListener(new View.OnClickListener() {

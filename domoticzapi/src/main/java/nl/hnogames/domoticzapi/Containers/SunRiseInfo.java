@@ -21,14 +21,10 @@
 
 package nl.hnogames.domoticzapi.Containers;
 
-import android.content.Context;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-
-import nl.hnogames.domoticzapi.R;
 
 public class SunRiseInfo implements Serializable {
     private String AstrTwilightEnd;

@@ -81,6 +81,8 @@
         <item name="preferenceIconColor">@color/primary_accent</item>
         <item name="editTextBackgroundColor">@color/white</item>
         <item name="editTextTextColor">@color/grey_900</item>
+        <item name="floatingActionBar">@color/material_drawer_background</item>
+        <item name="floatingActionBarText">@color/grey_900</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/white</item>
@@ -145,6 +147,8 @@
         <item name="preferenceIconColor">@color/primary_accent</item>
         <item name="editTextBackgroundColor">@color/white</item>
         <item name="editTextTextColor">@color/grey_900</item>
+        <item name="floatingActionBar">@color/material_drawer_background</item>
+        <item name="floatingActionBarText">@color/grey_900</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/white</item>
@@ -206,6 +210,8 @@
         <item name="preferenceIconColor">@color/white</item>
         <item name="editTextBackgroundColor">@color/secondary</item>
         <item name="editTextTextColor">@color/white</item>
+        <item name="floatingActionBar">@color/alt1_accent</item>
+        <item name="floatingActionBarText">@color/white</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/grey_900</item>
@@ -230,6 +236,8 @@
         <item name="alertDialogTheme">@style/AlertDialogDarkTheme</item>
         <item name="android:actionBarStyle">@style/AppThemeDarkActionBar</item>
         <item name="actionBarStyle">@style/AppThemeDarkActionBar</item>
+        <item name="floatingActionBar">@color/alt2_accent</item>
+        <item name="floatingActionBarText">@color/white</item>
 
         <!-- MaterialDrawer specific values -->
         <item name="material_drawer_background">@color/alt2_dark</item>
@@ -331,6 +339,8 @@
         <item name="preferenceIconColor">@color/alt3</item>
         <item name="editTextBackgroundColor">@color/white</item>
         <item name="editTextTextColor">@color/alt3</item>
+        <item name="floatingActionBar">@color/alt3</item>
+        <item name="floatingActionBarText">@color/white</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/white</item>
@@ -458,58 +468,42 @@
         <item name="android:layout_marginBottom">5dp</item>
     </style>
 
-    <style name="row_name" parent="@style/TextAppearance.AppCompat.Title">
+    <style name="row_name" parent="Base.TextAppearance.AppCompat.Body2">
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingLeft">10dp</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">normal</item>
         <item name="android:layout_marginBottom">5dp</item>
     </style>
 
-    <style name="row_dash_name" parent="@style/TextAppearance.AppCompat.Title">
+    <style name="row_dash_name" parent="Base.TextAppearance.AppCompat.Body2">
         <item name="android:paddingTop">10dp</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">normal</item>
         <item name="android:layout_marginBottom">5dp</item>
     </style>
 
-    <style name="row_name_micro" parent="@style/TextAppearance.AppCompat.Subhead">
+    <style name="row_name_micro" parent="Base.TextAppearance.AppCompat.Caption">
         <item name="android:paddingLeft">10dp</item>
-        <item name="android:textSize">10sp</item>
-        <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="row_name_small" parent="@style/TextAppearance.AppCompat.Subhead">
+    <style name="row_name_small" parent="Base.TextAppearance.AppCompat.Body2">
         <item name="android:paddingLeft">10dp</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="row_body1" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:paddingLeft">10dp</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:textStyle">normal</item>
         <item name="android:layout_marginBottom">2dp</item>
     </style>
 
     <style name="row_body2" parent="@style/TextAppearance.AppCompat.Body2">
         <item name="android:paddingBottom">10dp</item>
         <item name="android:paddingLeft">10dp</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">italic</item>
         <item name="android:layout_marginBottom">2dp</item>
     </style>
 
     <style name="row_dash_body1" parent="@style/TextAppearance.AppCompat.Body1">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">normal</item>
         <item name="android:layout_marginBottom">2dp</item>
     </style>
 
-    <style name="row_dash_body2" parent="@style/TextAppearance.AppCompat.Body1">
+    <style name="row_dash_body2" parent="Base.TextAppearance.AppCompat.Body2">
         <item name="android:paddingBottom">10dp</item>
-        <item name="android:textSize">8sp</item>
-        <item name="android:textStyle">italic</item>
         <item name="android:layout_marginBottom">2dp</item>
     </style>
 

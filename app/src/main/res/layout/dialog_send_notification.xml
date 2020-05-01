@@ -46,8 +46,8 @@
                 style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textNoSuggestions"
                 android:background="?attr/editTextBackgroundColor"
+                android:inputType="textNoSuggestions"
                 android:textColor="?attr/editTextTextColor" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,9 +63,9 @@
                 style="@style/Widget.MaterialComponents.TextInputEditText.FilledBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textNoSuggestions"
                 android:background="?attr/editTextBackgroundColor"
-                android:textColor="?attr/editTextTextColor"/>
+                android:inputType="textNoSuggestions"
+                android:textColor="?attr/editTextTextColor" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -80,6 +80,6 @@
             android:id="@+id/notification_systems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"/>
+            android:layout_marginBottom="15dp" />
     </LinearLayout>
 </ScrollView>

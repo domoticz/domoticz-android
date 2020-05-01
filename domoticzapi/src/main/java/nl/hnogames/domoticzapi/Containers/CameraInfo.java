@@ -21,12 +21,12 @@
 
 package nl.hnogames.domoticzapi.Containers;
 
-import androidx.annotation.NonNull;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+
+import androidx.annotation.NonNull;
 
 public class CameraInfo implements Comparable, Serializable {
     private String jsonObject;
@@ -98,8 +98,9 @@ public class CameraInfo implements Comparable, Serializable {
     }
 
     public String getTotalImageURL() {
-        return "http://" + Address + ":"+Port + "/" + ImageURL;
+        return "http://" + Address + ":" + Port + "/" + ImageURL;
     }
+
     public String getImageURL() {
         return ImageURL;
     }

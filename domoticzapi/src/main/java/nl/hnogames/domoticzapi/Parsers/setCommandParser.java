@@ -37,14 +37,14 @@ public class setCommandParser implements JSONParserInterface {
 
     @Override
     public void parseResult(String result) {
-        if(setCommandReceiver!=null)
+        if (setCommandReceiver != null)
             setCommandReceiver.onReceiveResult(result);
     }
 
     @Override
     public void onError(Exception error) {
         Log.d(TAG, "setCommandParser onError");
-        if(setCommandReceiver!=null)
+        if (setCommandReceiver != null)
             setCommandReceiver.onError(error);
     }
 }

@@ -41,10 +41,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.ftinc.scoop.Scoop;
@@ -53,6 +49,9 @@ import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationA
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.adapters.NFCAdapter;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
@@ -217,7 +216,18 @@ public class NFCSettingsActivity extends AppCompatAssistActivity implements NFCC
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                getSwitchesAndShowSwitchesDialog(nfcList.get(position));
+                NFCInfo nfcDevice = nfcList.get(position);
+                if(nfcDevice.getSwitchIdx()>0) {
+                    nfcDevice.setSwitchIdx(0);
+                    nfcDevice.setSwitchName(null);
+                    nfcDevice.setValue(null);
+                    nfcDevice.setSwitchPassword(null);
+                    updateNFC(nfcDevice);
+                    UsefulBits.showSnackbar(NFCSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
+                    adapter.notifyDataSetChanged();
+                }
+                else
+                    getSwitchesAndShowSwitchesDialog(nfcDevice);
                 return true;
             }
         });

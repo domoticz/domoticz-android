@@ -29,6 +29,9 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 
+import androidx.wear.widget.WearableLinearLayoutManager;
+import androidx.wear.widget.WearableRecyclerView;
+
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.MessageClient;
 import com.google.android.gms.wearable.MessageEvent;
@@ -40,8 +43,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import androidx.wear.widget.WearableLinearLayoutManager;
-import androidx.wear.widget.WearableRecyclerView;
 import nl.hnogames.domoticz.Adapter.ListAdapter;
 import nl.hnogames.domoticz.Domoticz.Domoticz;
 import nl.hnogames.domoticz.app.DomoticzActivity;
@@ -101,6 +102,7 @@ public class WearActivity extends DomoticzActivity implements MessageClient.OnMe
             }
         });
         listView.setAdapter(adapter);
+        listView.requestFocus();
     }
 
     private void ProcessDeviceClick(Integer tag, DevicesInfo clickedDevice) {

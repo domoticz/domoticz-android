@@ -23,6 +23,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="nl.hnogames.domoticz">
 
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="nl.hnogames.domoticz.premium.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.android.vending.CHECK_LICENSE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
@@ -69,65 +92,13 @@
         android:name="nl.hnogames.domoticz.premium.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="nl.hnogames.domoticz.premium.permission.MAPS_RECEIVE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.NFC" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
-    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="com.android.vending.CHECK_LICENSE" />
-
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-
-    <uses-permission
-        android:name="android.permission.RECEIVE_SMS"
-        tools:node="remove" />
-    <uses-permission
-        android:name="android.permission.READ_SMS"
-        tools:node="remove" />
-    <uses-permission
-        android:name="android.permission.SEND_SMS"
-        tools:node="remove" />
-    <uses-permission
-        android:name="android.permission.WRITE_SMS"
-        tools:node="remove" />
-    <uses-permission
-        android:name="android.permission.RECEIVE_WAP_PUSH"
-        tools:node="remove" />
-    <uses-permission
-        android:name="android.permission.RECEIVE_MMS"
-        tools:node="remove" />
-    <uses-permission
-        android:name="android.permission.READ_CALL_LOG"
-        tools:node="remove" />
-    <uses-permission
-        android:name="android.permission.WRITE_CALL_LOG"
-        tools:node="remove" />
-    <uses-permission
-        android:name="android.permission.PROCESS_OUTGOING_CALLS"
-        tools:node="remove" />
-
     <application
         android:name="nl.hnogames.domoticz.app.AppController"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name_domoticz"
         android:theme="@style/AppThemeDefault"
         android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
         tools:replace="android:icon, android:label, android:theme, android:name">
 
         <activity android:name="nl.hnogames.domoticz.service.NFCServiceActivity">
@@ -359,11 +330,20 @@
             android:name="nl.hnogames.domoticz.BluetoothSettingsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/category_bluetooth"
-            android:parentActivityName="nl.hnogames.domoticz.SettingsActivity"
-            android:resizeableActivity="true">
+            android:parentActivityName="nl.hnogames.domoticz.SettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="nl.hnogames.domoticz.BluetoothSettingsActivity" />
+                android:value="nl.hnogames.domoticz.SettingsActivity" />
+        </activity>
+
+        <activity
+            android:name="nl.hnogames.domoticz.BeaconSettingsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/category_bluetooth"
+            android:parentActivityName="nl.hnogames.domoticz.SettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nl.hnogames.domoticz.SettingsActivity" />
         </activity>
 
         <activity
