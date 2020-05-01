@@ -403,7 +403,6 @@ public class DomoticzDashboardFragment extends Fragment {
     }
 
     private void setErrorMessage(String message) {
-
         if (debug) addDebugText(message);
         else {
             Logger(fragmentName, message);
