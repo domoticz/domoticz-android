@@ -79,8 +79,8 @@ public class DomoticzRecyclerFragment extends Fragment {
     public MaterialCardView bottomLayoutWrapper;
     public MaterialButton sortAll, sortOn, sortOff, sortStatic, sortLogsAll, sortLogsNormal, sortLogsError, sortLogsStatus;
     public MaterialButton btnCheckSettings;
-    private boolean isTablet = false;
-    private boolean isPortrait = false;
+    public boolean isTablet = false;
+    public boolean isPortrait = false;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private TextView debugText;
