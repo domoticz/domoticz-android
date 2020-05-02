@@ -102,6 +102,7 @@
     <string name="switch_off">Izklop stikala</string>
     <string name="switch_night">Turning switch to night light</string>
     <string name="switch_full">Turning switch to full light</string>
+    <string name="switch_connection_removed">Switch connection removed.</string>
     <string name="blind_up">Dvig rolet</string>
     <string name="blind_down">Spust rolet</string>
     <string name="blind_stop">Ustavi rolete</string>
@@ -132,4 +133,5 @@
     <string name="use_demo_setup">Use demo setup</string>
     <string name="auto_refresh_time">Refresh timer</string>
     <string name="set_auto_refresh_time">Set a specific timer for the auto refresh in seconds.</string>
+    <string name="error_authentication_basicauth">IMPORTANT: Please check if your Domoticz system uses Login Page as the authentication method. Basic Auth is going to be removed from Domoticz from next update!</string>
 </resources>

@@ -48,6 +48,7 @@
     <string name="wizard_menuitem_description">Most már eltávolíthatja a Varázslót a navigációs menüből!</string>
     <string name="wizard_nfc">NFC</string>
     <string name="wizard_nfc_description">Kapcsolókat lehet vezérelni NFC-n keresztül!</string>
+    <string name="wizard_bluetooth_description">You are able to toggle switches via Bluetooth connections!</string>
     <string name="wizard_qrcode">QR kód</string>
     <string name="wizard_qrcode_description">Kapcsolók vezérlése QR kód (vagy vonalkód) segítségével!</string>
     <string name="wizard_speech">Hangutasítások</string>
@@ -58,4 +59,5 @@
     <string name="wizard_button_wizard">Eltávolítás</string>
     <string name="wizard_button_utilities">Vegyes</string>
     <string name="wizard_button_done">Kész</string>
+    <string name="wizard_beacon_description">Toggle switches by scanning for beacons!</string>
 </resources>
