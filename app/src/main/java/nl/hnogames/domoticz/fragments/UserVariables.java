@@ -55,6 +55,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     private UserVariablesAdapter adapter;
     private Context mContext;
     private String filter = "";
+    private boolean itemDecorationAdded = false;
     private SlideInBottomAnimationAdapter alphaSlideIn;
 
     @Override
@@ -123,8 +124,10 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
                 adapter.notifyDataSetChanged();
                 alphaSlideIn.notifyDataSetChanged();
             }
-            if(!isTablet)
+            if(!isTablet && !itemDecorationAdded) {
                 gridView.addItemDecoration(new MarginItemDecoration(20));
+                itemDecorationAdded = true;
+            }
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override

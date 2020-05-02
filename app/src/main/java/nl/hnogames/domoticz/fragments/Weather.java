@@ -71,6 +71,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
     private ArrayList<WeatherInfo> mWeatherInfoList;
+    private boolean itemDecorationAdded = false;
     private SlideInBottomAnimationAdapter alphaSlideIn;
     private ItemTouchHelper mItemTouchHelper;
 
@@ -166,8 +167,10 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
             alphaSlideIn.notifyDataSetChanged();
         }
 
-        if(!isTablet)
+        if(!isTablet && !itemDecorationAdded) {
             gridView.addItemDecoration(new MarginItemDecoration(20));
+            itemDecorationAdded = true;
+        }
         if (mItemTouchHelper == null) {
             mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
                     false));

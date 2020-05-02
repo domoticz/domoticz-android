@@ -93,6 +93,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     private Parcelable state = null;
     private boolean busy = false;
     private String filter = "";
+    private boolean itemDecorationAdded = false;
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
     private SlideInBottomAnimationAdapter alphaSlideIn;
@@ -243,8 +244,10 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                     adapter.notifyDataSetChanged();
                     alphaSlideIn.notifyDataSetChanged();
                 }
-                if(!isTablet)
+                if(!isTablet && !itemDecorationAdded) {
                     gridView.addItemDecoration(new MarginItemDecoration(20));
+                    itemDecorationAdded = true;
+                }
 
                 if (mItemTouchHelper == null) {
                     mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,

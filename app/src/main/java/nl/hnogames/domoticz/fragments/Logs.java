@@ -49,6 +49,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     private Context mContext;
     private String filter = "";
     private SlideInBottomAnimationAdapter alphaSlideIn;
+    private boolean itemDecorationAdded = false;
 
     @Override
     public void onConnectionFailed() {
@@ -130,8 +131,10 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                 alphaSlideIn.notifyDataSetChanged();
             }
 
-            if(!isTablet)
+            if(!isTablet && !itemDecorationAdded) {
                 gridView.addItemDecoration(new MarginItemDecoration(20));
+                itemDecorationAdded = true;
+            }
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override

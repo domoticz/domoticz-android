@@ -71,6 +71,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     private double thermostatSetPointValue;
     private UtilityAdapter adapter;
     private Context mContext;
+    private boolean itemDecorationAdded = false;
     private String filter = "";
     private LinearLayout lExtraPanel = null;
     private SlideInBottomAnimationAdapter alphaSlideIn;
@@ -178,9 +179,10 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 if (mItemTouchHelper != null)
                     mItemTouchHelper.attachToRecyclerView(null);
             }
-            if(!isTablet)
+            if(!isTablet && !itemDecorationAdded) {
                 gridView.addItemDecoration(new MarginItemDecoration(20));
-
+                itemDecorationAdded = true;
+            }
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override

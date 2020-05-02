@@ -93,6 +93,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     private String filter = "";
     private ItemTouchHelper mItemTouchHelper;
     private SlideInBottomAnimationAdapter alphaSlideIn;
+    private boolean itemDecorationAdded = false;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -307,8 +308,10 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     gridView.getLayoutManager().onRestoreInstanceState(state);
                 }
 
-                if(!isTablet)
+                if(!isTablet && !itemDecorationAdded) {
                     gridView.addItemDecoration(new MarginItemDecoration(20));
+                    itemDecorationAdded = true;
+                }
 
                 if (mItemTouchHelper == null) {
                     mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
