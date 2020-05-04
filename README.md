@@ -51,8 +51,7 @@ You can download Domoticz from the Google Play Store. There is a premium and fre
 -----
 |  |  |  |
 | ------------- | ------------- | ------------- |
-|  ![1](https://user-images.githubusercontent.com/14561640/51106118-28c0fb00-17eb-11e9-9930-8ed8537b37f3.png) | ![2](https://user-images.githubusercontent.com/14561640/51106119-28c0fb00-17eb-11e9-8e79-6db1c2303422.png)  | ![3](https://user-images.githubusercontent.com/14561640/51106120-28c0fb00-17eb-11e9-98e1-1beb7b0198ea.png) |  
-|  ![4](https://user-images.githubusercontent.com/14561640/51106121-28c0fb00-17eb-11e9-8025-7c52fc9281b0.png) | ![5](https://user-images.githubusercontent.com/14561640/51106124-29599180-17eb-11e9-8fc0-1b967569ab0d.png)  |
+|  ![1](https://user-images.githubusercontent.com/14561640/80979846-27747100-8e28-11ea-89fa-bcdd0ac0d0d5.jpg) | ![2](https://user-images.githubusercontent.com/14561640/80979925-4115b880-8e28-11ea-8dc0-8c1e2315a7f0.jpg)  | ![3](https://user-images.githubusercontent.com/14561640/80979946-496df380-8e28-11ea-8495-b7eaa02cb988.jpg) |  
 
 
 
