@@ -20,7 +20,7 @@ Features:
 - [NFC & QR Codes](#nfc--qr-codes)
 - [Biometric](#biometric)
 - [Floorplan](#floorplan)
-- [Dark Theme](#dark-theme)
+- [Themes](#dark-theme)
 
 Credits:
 - [Credits](#credits)
@@ -101,13 +101,12 @@ Use your devices within your floorplans
 
 
 
-# Dark Theme
+# Themes
 -----
-The app is light and dark themed..  
-
-|  |  |
-| ------------- | ------------- | 
-|  ![dark_theme_1](https://user-images.githubusercontent.com/14561640/51105649-e0eda400-17e9-11e9-80f6-f69e93022e73.png)  |   ![dark_theme_2](https://user-images.githubusercontent.com/14561640/51105651-e0eda400-17e9-11e9-84d9-be83fa89a09c.png)  |
+We have theme support for multi themes, including day/night cycles. You can also choose to use your system default settings on night/day preferences.
+|  |  |  |
+| ------------- | ------------- |  ------------- | 
+|  ![dark_theme_1](https://user-images.githubusercontent.com/14561640/80980237-aec1e480-8e28-11ea-80ad-26d7a1f16dca.jpg)  |   ![dark_theme_2](https://user-images.githubusercontent.com/14561640/80980242-b08ba800-8e28-11ea-86ed-05b8dbe4834c.jpg)  |![dark_theme_3](https://user-images.githubusercontent.com/14561640/80980247-b1bcd500-8e28-11ea-9822-38424adf246a.jpg)  |
 
 
 
