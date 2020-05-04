@@ -75,6 +75,7 @@
         <item name="editTextTextColor">@color/white</item>
         <item name="floatingActionBar">@color/secondary_accent</item>
         <item name="floatingActionBarText">@color/white</item>
+        <item name="highlightColor">@color/secondary_accent</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/secondary</item>

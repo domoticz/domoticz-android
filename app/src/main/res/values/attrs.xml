@@ -47,6 +47,7 @@
     <attr name="editTextTextColor" format="color" />
     <attr name="floatingActionBar" format="color" />
     <attr name="floatingActionBarText" format="color" />
+    <attr name="highlightColor" format="color" />
 
     <declare-styleable name="CustomListPreference">
         <attr name="lockedValues"/>

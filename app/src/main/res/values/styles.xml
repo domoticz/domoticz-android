@@ -83,6 +83,7 @@
         <item name="editTextTextColor">@color/grey_900</item>
         <item name="floatingActionBar">@color/material_drawer_background</item>
         <item name="floatingActionBarText">@color/grey_900</item>
+        <item name="highlightColor">@color/primary_accent</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/white</item>
@@ -149,6 +150,7 @@
         <item name="editTextTextColor">@color/grey_900</item>
         <item name="floatingActionBar">@color/material_drawer_background</item>
         <item name="floatingActionBarText">@color/grey_900</item>
+        <item name="highlightColor">@color/primary_accent</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/white</item>
@@ -212,6 +214,7 @@
         <item name="editTextTextColor">@color/white</item>
         <item name="floatingActionBar">@color/alt1_accent</item>
         <item name="floatingActionBarText">@color/white</item>
+        <item name="highlightColor">@color/alt1_accent</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/grey_900</item>
@@ -275,6 +278,7 @@
         <item name="preferenceIconColor">@color/white</item>
         <item name="editTextBackgroundColor">@color/alt2</item>
         <item name="editTextTextColor">@color/white</item>
+        <item name="highlightColor">@color/alt2_accent</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/alt2</item>
@@ -341,12 +345,77 @@
         <item name="editTextTextColor">@color/alt3</item>
         <item name="floatingActionBar">@color/alt3</item>
         <item name="floatingActionBarText">@color/white</item>
+        <item name="highlightColor">@color/alt3_accent</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/white</item>
         <item name="incomingTextColor">@color/black</item>
         <item name="outcomingDefaultBubbleColor">@color/white</item>
         <item name="outcomingTextColor">@color/alt3</item>
+    </style>
+
+    <style name="AppThemeAlt4Main" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/alt4_accent</item>
+        <item name="colorPrimaryDark">@color/alt4_dark</item>
+        <item name="colorAccent">@color/alt4_accent</item>
+
+        <item name="md_background_color">@color/alt4_dark</item>
+        <item name="android:windowBackground">@color/alt4_dark</item>
+        <item name="android:buttonBarButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButton</item>
+        <item name="materialAlertDialogTheme">@style/AlertDialogDarkTheme</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogDarkTheme</item>
+        <item name="alertDialogTheme">@style/AlertDialogDarkTheme</item>
+        <item name="android:actionBarStyle">@style/AppThemeDarkActionBar</item>
+        <item name="actionBarStyle">@style/AppThemeDarkActionBar</item>
+
+        <!-- MaterialDrawer specific values -->
+        <item name="material_drawer_background">@color/alt4_dark</item>
+        <item name="material_drawer_primary_text">@color/white</item>
+        <item name="material_drawer_primary_icon">@color/white</item>
+        <item name="material_drawer_secondary_text">@color/white</item>
+        <item name="material_drawer_hint_text">@color/white</item>
+        <item name="material_drawer_divider">@color/alt4</item>
+        <item name="material_drawer_selected">@color/alt4_dark</item>
+        <item name="material_drawer_selected_text">@color/alt4_accent</item>
+        <item name="material_drawer_header_selection_text">@color/white</item>
+
+        <!-- Style to use for Snackbars in this theme. -->
+        <item name="snackbarStyle">@style/snackbarDarkStyle</item>
+        <item name="snackbarButtonStyle">@style/snackbarDarkButton</item>
+        <item name="snackbarTextViewStyle">@style/snackbarDarkText</item>
+
+        <!-- Needed for the theme activity -->
+        <item name="colorControlHighlight">@color/alt4_accent</item>
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="toolbarItemTint">@color/white</item>
+
+        <!-- Custom values -->
+        <item name="toolbarTextColor">@color/white</item>
+        <item name="toolbarBackground">@color/alt4</item>
+        <item name="recyclerBackground">@color/alt4_dark</item>
+        <item name="listviewRowBackground">@color/alt4</item>
+        <item name="backdropBackground">@color/alt4</item>
+        <item name="buttonTextColor">@color/alt4_accent</item>
+        <item name="graphTextColor">@color/white</item>
+        <item name="wizardCardColor">@color/alt4</item>
+        <item name="wizardTitleColor">@color/white</item>
+        <item name="temperatureTextColor">@color/white</item>
+        <item name="preferenceIconColor">@color/white</item>
+        <item name="editTextBackgroundColor">@color/alt4</item>
+        <item name="editTextTextColor">@color/white</item>
+        <item name="floatingActionBar">@color/alt4_accent</item>
+        <item name="floatingActionBarText">@color/white</item>
+        <item name="highlightColor">@color/alt4_accent</item>
+
+        <!-- notification history -->
+        <item name="incomingDefaultBubbleColor">@color/grey_900</item>
+        <item name="incomingTextColor">@color/white</item>
+        <item name="outcomingDefaultBubbleColor">@color/alt4_accent</item>
+        <item name="outcomingTextColor">@color/white</item>
     </style>
 
     <!-- Dialog themes -->
