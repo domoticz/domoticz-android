@@ -345,7 +345,7 @@
         <item name="editTextTextColor">@color/alt3</item>
         <item name="floatingActionBar">@color/alt3</item>
         <item name="floatingActionBarText">@color/white</item>
-        <item name="highlightColor">@color/alt3_accent</item>
+        <item name="highlightColor">@color/alt3</item>
 
         <!-- notification history -->
         <item name="incomingDefaultBubbleColor">@color/white</item>
@@ -408,7 +408,7 @@
         <item name="editTextBackgroundColor">@color/alt4</item>
         <item name="editTextTextColor">@color/white</item>
         <item name="floatingActionBar">@color/alt4_accent</item>
-        <item name="floatingActionBarText">@color/white</item>
+        <item name="floatingActionBarText">@color/alt4</item>
         <item name="highlightColor">@color/alt4_accent</item>
 
         <!-- notification history -->

@@ -20,6 +20,7 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/row_global_wrapper"
     style="@style/background_listview"
     android:layout_width="fill_parent"
@@ -33,13 +34,16 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
+        style="@style/Widget.MaterialComponents.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_gravity="end|bottom"
-        android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
-        android:src="@android:drawable/ic_menu_share" />
+        android:layout_gravity="end|bottom"
+        app:tint="?attr/floatingActionBarText"
+        app:backgroundTint="?attr/floatingActionBar"
+        android:src="@drawable/baseline_share_white_24" />
 
 </RelativeLayout>
