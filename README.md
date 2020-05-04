@@ -17,7 +17,7 @@ Features:
 - [Geofencing](#geofencing)
 - [NFC & QR Codes](#nfc--qr-codes)
 - [Bluetooth](#bluetooth)
-- [Beacons](#beacon)
+- [Beacons](#beacons)
 - [Speech](#speech)
 - [Widgets](#widgets)
 - [Android Wear](#android-wear)
@@ -68,21 +68,6 @@ Add (one or multiple) Geofences and connect a switch to it which will be trigger
 
 
 
-# Widgets
------
-See more information and toggle switches right from your home screen!  
-![widget](https://user-images.githubusercontent.com/14561640/51105992-d7b10700-17ea-11e9-9c6f-c361ca3aec7f.png)
-
-
-
-# Android Wear
------
-Toggle switches with your Android Wear device!
-All Android Wear devices are supported.  
-![wear](https://cloud.githubusercontent.com/assets/14561640/11994714/ae6705ba-aa43-11e5-8e0c-5586607cdc6d.png)
-
-
-
 # NFC & QR Codes
 -----
 This app has the option to scan NFC or QR codes and connect them to a switch!  
@@ -127,6 +112,21 @@ We have theme support for multi themes, including day/night cycles. You can also
 |  |  |  |
 | ------------- | ------------- |  ------------- | 
 |  ![dark_theme_1](https://user-images.githubusercontent.com/14561640/80980237-aec1e480-8e28-11ea-80ad-26d7a1f16dca.jpg)  |   ![dark_theme_2](https://user-images.githubusercontent.com/14561640/80980242-b08ba800-8e28-11ea-86ed-05b8dbe4834c.jpg)  |![dark_theme_3](https://user-images.githubusercontent.com/14561640/80980247-b1bcd500-8e28-11ea-9822-38424adf246a.jpg)  |
+
+
+
+# Widgets
+-----
+See more information and toggle switches right from your home screen!  
+![widget](https://user-images.githubusercontent.com/14561640/51105992-d7b10700-17ea-11e9-9c6f-c361ca3aec7f.png)
+
+
+
+# Android Wear
+-----
+Toggle switches with your Android Wear device!
+All Android Wear devices are supported.  
+![wear](https://cloud.githubusercontent.com/assets/14561640/11994714/ae6705ba-aa43-11e5-8e0c-5586607cdc6d.png)
 
 
 
