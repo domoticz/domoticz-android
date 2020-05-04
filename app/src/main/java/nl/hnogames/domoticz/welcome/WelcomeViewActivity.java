@@ -65,6 +65,7 @@ public class WelcomeViewActivity extends AppIntro2 {
 
     public void setDemoAccount() {
         ServerUtil mServerUtil = new ServerUtil(this);
+        mServerUtil.getActiveServer().setServerName("Demo");
         mServerUtil.getActiveServer().setRemoteServerUsername("admin");
         mServerUtil.getActiveServer().setRemoteServerPassword("D@m@t1czCl0ud");
         mServerUtil.getActiveServer().setRemoteServerUrl("gandalf.domoticz.com");
