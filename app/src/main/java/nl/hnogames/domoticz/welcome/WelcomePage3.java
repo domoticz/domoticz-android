@@ -69,7 +69,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     private SharedPrefUtil mSharedPrefs;
     private ServerUtil mServerUtil;
 
-    private AppCompatEditText remote_server_input, remote_port_input,
+    private AppCompatEditText server_name_input, remote_server_input, remote_port_input,
             remote_username_input, remote_password_input,
             remote_directory_input, local_server_input, local_password_input,
             local_username_input, local_port_input, local_directory_input;
@@ -123,6 +123,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     }
 
     private void getLayoutReferences() {
+        server_name_input = v.findViewById(R.id.server_name_input);
         remote_server_input = v.findViewById(R.id.remote_server_input);
         remote_port_input = v.findViewById(R.id.remote_port_input);
         remote_username_input = v.findViewById(R.id.remote_username_input);
@@ -210,6 +211,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     }
 
     private void setPreferenceValues() {
+        server_name_input.setText(mServerUtil.getActiveServer().getServerName());
         remote_username_input.setText(mServerUtil.getActiveServer().getRemoteServerUsername());
         remote_password_input.setText(mServerUtil.getActiveServer().getRemoteServerPassword());
         remote_server_input.setText(mServerUtil.getActiveServer().getRemoteServerUrl());
@@ -347,6 +349,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
             mServerUtil.getActiveServer().setIsLocalServerAddressDifferent(true);
         }
 
+        mServerUtil.getActiveServer().setServerName(server_name_input.getText().toString());
         mServerUtil.getActiveServer().setLocalServerSsid(local_wifi_spinner.getSelectedStrings());
         mServerUtil.saveDomoticzServers(true);
     }

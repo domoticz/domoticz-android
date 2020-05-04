@@ -133,7 +133,6 @@ public class Domoticz {
     public static final int DOMOTICZ_FAKE_ID = 99999;
     public static final String HIDDEN_CHARACTER = "$";
 
-    public static final String DOMOTICZ_DEFAULT_SERVER = "DEFAULT";
     private static final String TAG = "DomoticzAPI";
     private final SessionUtil mSessionUtil;
     private final DomoticzUrls mDomoticzUrls;
@@ -195,6 +194,7 @@ public class Domoticz {
     public boolean isConnectionDataComplete(ServerInfo server) {
         boolean result = true;
         HashMap<String, String> stringHashMap = new HashMap<>();
+        stringHashMap.put("Server name", server.getServerName());
         stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
         stringHashMap.put("Domoticz local port", server.getLocalServerPort());
         if (!getServerUtil().getActiveServer().getUseOnlyLocal()) {
@@ -212,6 +212,7 @@ public class Domoticz {
 
     public String isConnectionDataComplete(ServerInfo server, boolean validatePorts) {
         HashMap<String, String> stringHashMap = new HashMap<>();
+        stringHashMap.put("Server name", server.getServerName());
         stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
         if (!getServerUtil().getActiveServer().getUseOnlyLocal())
             stringHashMap.put("Domoticz remote URL", server.getRemoteServerUrl());

@@ -71,7 +71,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     boolean activeServerChanged = false;
     private SharedPrefUtil mSharedPrefs;
     private ServerUtil mServerUtil;
-
+    private String updateServerName;
     private AppCompatEditText remote_server_input, remote_port_input,
             remote_username_input, remote_password_input,
             remote_directory_input, local_server_input, local_password_input,
@@ -108,7 +108,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
 
         Bundle extras = getArguments();
         if (extras != null) {
-            String updateServerName = extras.getString("SERVERNAME");
+            updateServerName = extras.getString("SERVERNAME");
             if (!UsefulBits.isEmpty(updateServerName)) {
                 newServer = mServerUtil.getServerInfo(updateServerName);
             }
@@ -235,8 +235,10 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
 
         final Domoticz mDomoticz = new Domoticz(getActivity(), AppController.getInstance().getRequestQueue());
         String status = mDomoticz.isConnectionDataComplete(newServer, false);
-
-        if (!UsefulBits.isEmpty(status)) {
+        if (UsefulBits.isEmpty(mServerUtil.getActiveServer().getServerName())) {
+            showErrorPopup(getString(R.string.welcome_msg_connectionDataIncompleteName) + "\n\n"
+                    + getString(R.string.welcome_msg_correctOnPreviousPage));
+        } else if (!UsefulBits.isEmpty(status)) {
             showErrorPopup(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n" + status + "\n\n"
                     + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else if (!mDomoticz.isUrlValid(newServer)) {
@@ -423,7 +425,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
                 showErrorPopup("Server name must be unique!");
             }
         } else {
-            mServerUtil.putServerInList(newServer);
+            mServerUtil.putServerInList(updateServerName, newServer);
             mServerUtil.saveDomoticzServers(false);
             ((ServerSettingsActivity) getActivity()).ServerAdded(true);
             if (activeServerChanged)

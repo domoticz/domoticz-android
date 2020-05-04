@@ -45,7 +45,7 @@ public class ServerInfo {
     @Expose
     private String SERVER_UNIQUE_ID;
     @Expose
-    private String SERVER_NAME = Domoticz.DOMOTICZ_DEFAULT_SERVER;
+    private String SERVER_NAME = "";
     @Expose
     private String REMOTE_SERVER_USERNAME = "";
     @Expose
