@@ -15,12 +15,15 @@ This is a Android app for Domoticz and is available for download in the Play Sto
 
 Features:
 - [Geofencing](#geofencing)
+- [NFC & QR Codes](#nfc--qr-codes)
+- [Bluetooth](#bluetooth)
+- [Beacons](#beacon)
+- [Speech](#speech)
 - [Widgets](#widgets)
 - [Android Wear](#android-wear)
-- [NFC & QR Codes](#nfc--qr-codes)
 - [Biometric](#biometric)
 - [Floorplan](#floorplan)
-- [Themes](#dark-theme)
+- [Themes](#themes)
 
 Credits:
 - [Credits](#credits)
@@ -85,6 +88,23 @@ All Android Wear devices are supported.
 This app has the option to scan NFC or QR codes and connect them to a switch!  
 ![nfc](https://user-images.githubusercontent.com/14561640/51105729-16928d00-17ea-11e9-9e85-97386717abdd.png)
 
+
+# Bluetooth
+-----
+This app has the option to toggle a switch based on an active Bluetooth connection 
+![bluetooth](https://user-images.githubusercontent.com/14561640/80981260-03199400-8e2a-11ea-98cf-46cfe928377a.jpg)
+
+
+# Speech
+-----
+Register speech commando's and connect them to specific switches to toggle
+![speech](https://user-images.githubusercontent.com/14561640/80981239-fbf28600-8e29-11ea-90fc-02a6d8379afa.jpg)
+
+
+# Beacons
+-----
+This app can scan for beacons (iBeacon/AltBeacon for example) and toggle a switch when a beacon is nearby
+![beacons](https://user-images.githubusercontent.com/14561640/80981220-f5640e80-8e29-11ea-88f5-f1e450189cf6.jpg)
 
 
 # Biometric
