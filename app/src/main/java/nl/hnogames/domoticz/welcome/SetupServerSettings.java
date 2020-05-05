@@ -165,7 +165,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
                         .input(null, null, new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
+                                Set<String> ssidFromPrefs = newServer.getLocalServerSsid();
                                 final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
                                 if (ssidFromPrefs != null) {
                                     if (ssidFromPrefs.size() > 0) {
@@ -176,7 +176,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
                                 }
 
                                 ssidListFromPrefs.add(String.valueOf(input));
-                                mServerUtil.getActiveServer().setLocalServerSsid(ssidListFromPrefs);
+                                newServer.setLocalServerSsid(ssidListFromPrefs);
                                 setSsid_spinner();
                             }
                         }).show();
@@ -235,7 +235,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
 
         final Domoticz mDomoticz = new Domoticz(getActivity(), AppController.getInstance().getRequestQueue());
         String status = mDomoticz.isConnectionDataComplete(newServer, false);
-        if (UsefulBits.isEmpty(mServerUtil.getActiveServer().getServerName())) {
+        if (UsefulBits.isEmpty(newServer.getServerName())) {
             showErrorPopup(getString(R.string.welcome_msg_connectionDataIncompleteName) + "\n\n"
                     + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else if (!UsefulBits.isEmpty(status)) {
@@ -296,7 +296,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     }
 
     private void setSsid_spinner() {
-        Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
+        Set<String> ssidFromPrefs = newServer.getLocalServerSsid();
         final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
         //noinspection SpellCheckingInspection
         final ArrayList<String> ssids = new ArrayList<>();
