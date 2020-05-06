@@ -48,6 +48,7 @@
     <string name="wizard_menuitem_description">Vous pouvez maintenant supprimer cet Assistant dans le menu de navigation !</string>
     <string name="wizard_nfc">NFC</string>
     <string name="wizard_nfc_description">Vous pouvez utiliser NFC avec les interrupteurs</string>
+    <string name="wizard_bluetooth_description">You are able to toggle switches via Bluetooth connections!</string>
     <string name="wizard_qrcode">QR Code</string>
     <string name="wizard_qrcode_description">Changer l\'état d\'un interrupteur en scannant un QR Code (ou code-barre)!</string>
     <string name="wizard_speech">Commandes vocales</string>
@@ -58,4 +59,5 @@
     <string name="wizard_button_wizard">Supprimer</string>
     <string name="wizard_button_utilities">Mesures</string>
     <string name="wizard_button_done">Ok</string>
+    <string name="wizard_beacon_description">Toggle switches by scanning for beacons!</string>
 </resources>

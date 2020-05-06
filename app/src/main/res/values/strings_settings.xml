@@ -192,6 +192,7 @@
     <string name="theme_orange">Orange</string>
     <string name="theme_pink">Pink</string>
     <string name="theme_blue">Blue</string>
+    <string name="theme_green">Green</string>
 
     <!-- Other -->
     <string name="default_values">Default values</string>

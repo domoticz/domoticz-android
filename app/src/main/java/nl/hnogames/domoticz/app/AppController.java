@@ -116,6 +116,7 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
                 .addFlavor(getString(R.string.theme_orange), R.style.AppThemeAlt1Main)
                 .addFlavor(getString(R.string.theme_pink), R.style.AppThemeAlt2Main)
                 .addFlavor(getString(R.string.theme_blue), R.style.AppThemeAlt3Main)
+                .addFlavor(getString(R.string.theme_green), R.style.AppThemeAlt4Main)
                 .setSharedPreferences(PreferenceManager.getDefaultSharedPreferences(this))
                 .initialize();
 
@@ -146,42 +147,53 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
     }
 
     public void StartBeaconScanning() throws RemoteException {
-        createNotificationChannel(
-                BACKGROUND_NOTIFICATION_CHANNEL_ID,
-                R.string.beacon_scan,
-                R.string.beacon_scan_desc
-        );
+        try {
+            createNotificationChannel(
+                    BACKGROUND_NOTIFICATION_CHANNEL_ID,
+                    R.string.beacon_scan,
+                    R.string.beacon_scan_desc
+            );
 
-        beaconManager = org.altbeacon.beacon.BeaconManager.getInstanceForApplication(this);
-        beaconManager.getBeaconParsers().clear();
-        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(IBEACON_LAYOUT));
-        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(ALTBEACON_LAYOUT));
-        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(EDDYSTONE_LAYOUT));
-        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(EDDYSTONE2_LAYOUT));
-        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(EDDYSTONE3_LAYOUT));
+            beaconManager = org.altbeacon.beacon.BeaconManager.getInstanceForApplication(this);
+            beaconManager.getBeaconParsers().clear();
+            beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(IBEACON_LAYOUT));
+            beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(ALTBEACON_LAYOUT));
+            beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(EDDYSTONE_LAYOUT));
+            beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(EDDYSTONE2_LAYOUT));
+            beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(EDDYSTONE3_LAYOUT));
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, BACKGROUND_NOTIFICATION_CHANNEL_ID);
-        mBuilder.setSmallIcon(R.drawable.domoticz_white);
-        mBuilder.setContentTitle(this.getString(R.string.beacon_scan_desc));
-        Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
-        );
-        mBuilder.setContentIntent(pendingIntent);
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, BACKGROUND_NOTIFICATION_CHANNEL_ID);
+            mBuilder.setSmallIcon(R.drawable.domoticz_white);
+            mBuilder.setContentTitle(this.getString(R.string.beacon_scan_desc));
+            Intent intent = new Intent(this, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(
+                    this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
+            );
+            mBuilder.setContentIntent(pendingIntent);
 
-        beaconManager.enableForegroundServiceScanning(mBuilder.build(), 997755);
-        beaconManager.setEnableScheduledScanJobs(false);
-        beaconManager.setForegroundScanPeriod(30000L);
-        beaconManager.setForegroundBetweenScanPeriod(10000l);
-        beaconManager.setBackgroundBetweenScanPeriod(10000l);
-        beaconManager.setBackgroundScanPeriod(30000L);
-        beaconManager.updateScanPeriods();
-        backgroundPowerSaver = new BackgroundPowerSaver(this);
+            try {
+                beaconManager.enableForegroundServiceScanning(mBuilder.build(), 997755);
+            }
+           catch (Exception ex){
+                    Log.e("BeaconManager", ex.getMessage());
+                }
 
-        beaconManager.setRssiFilterImplClass(RunningAverageRssiFilter.class);
-        RunningAverageRssiFilter.setSampleExpirationMilliseconds(10000L);
-        beaconManager.bind(this);
-        beaconManager.setDebug(true);
+            beaconManager.setEnableScheduledScanJobs(false);
+            beaconManager.setForegroundScanPeriod(30000L);
+            beaconManager.setForegroundBetweenScanPeriod(10000l);
+            beaconManager.setBackgroundBetweenScanPeriod(10000l);
+            beaconManager.setBackgroundScanPeriod(30000L);
+            beaconManager.updateScanPeriods();
+            backgroundPowerSaver = new BackgroundPowerSaver(this);
+
+            beaconManager.setRssiFilterImplClass(RunningAverageRssiFilter.class);
+            RunningAverageRssiFilter.setSampleExpirationMilliseconds(10000L);
+            beaconManager.bind(this);
+            beaconManager.setDebug(true);
+        }
+        catch (Exception ex){
+            Log.e("BeaconManager", ex.getMessage());
+        }
     }
 
     private void createNotificationChannel(String notification_channel, int resIdName, int resIdDescription) {

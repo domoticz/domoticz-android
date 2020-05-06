@@ -219,7 +219,7 @@ public class ServerUtil {
      */
     public void saveDomoticzServers(boolean saveActiveServer) {
         if (saveActiveServer)
-            putServerInList(mActiveServer);
+            putServerInList(mActiveServer.getServerName(), mActiveServer);
 
         String activeServer = gson.toJson(mActiveServer);
         String serversSettings = gson.toJson(mServerList);
@@ -236,7 +236,7 @@ public class ServerUtil {
      *
      * @param server ServerInfo object to be saved
      */
-    public void putServerInList(ServerInfo server) {
+    public void putServerInList(String serverNameToUpdate, ServerInfo server) {
         if (server != null) {
             if (mServerList == null) {
                 mServerList = new ArrayList<>();
@@ -245,7 +245,7 @@ public class ServerUtil {
                 boolean found = false;
                 int i = 0;
                 for (ServerInfo s : mServerList) {
-                    if (s.getServerName().equals(server.getServerName())) {
+                    if (s.getServerName().equals(serverNameToUpdate)) {
                         found = true;
                         break;
                     }
@@ -285,7 +285,6 @@ public class ServerUtil {
         if (server == null || mServerList == null || mServerList.size() <= 0)
             return;
 
-        if (!server.getServerName().equals(Domoticz.DOMOTICZ_DEFAULT_SERVER)) {
             boolean found = false;
             int i = 0;
             for (ServerInfo s : mServerList) {
@@ -298,7 +297,6 @@ public class ServerUtil {
             if (found) {
                 mServerList.remove(i);
             }
-        }
         saveDomoticzServers(false);
     }
 
@@ -364,7 +362,7 @@ public class ServerUtil {
      * @param server ServerInfo to be saved
      */
     public void updateServerInfo(ServerInfo server) {
-        putServerInList(server);
+        putServerInList(server.getServerName(), server);
         saveDomoticzServers(false);
     }
 

@@ -45,7 +45,7 @@
             android:paddingRight="30dp"
             seekarc:arcColor="@color/material_red_400"
             seekarc:clockwise="true"
-            seekarc:progressColor="@color/material_orange_600"
+            seekarc:progressColor="?attr/highlightColor"
             seekarc:progressMax="20"
             seekarc:rotation="180"
             seekarc:showClockface="false"

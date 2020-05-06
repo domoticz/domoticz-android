@@ -45,6 +45,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.UtilityAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.UtilityClickListener;
@@ -70,6 +71,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     private double thermostatSetPointValue;
     private UtilityAdapter adapter;
     private Context mContext;
+    private boolean itemDecorationAdded = false;
     private String filter = "";
     private LinearLayout lExtraPanel = null;
     private SlideInBottomAnimationAdapter alphaSlideIn;
@@ -177,7 +179,10 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 if (mItemTouchHelper != null)
                     mItemTouchHelper.attachToRecyclerView(null);
             }
-
+            if(!isTablet && !itemDecorationAdded) {
+                gridView.addItemDecoration(new MarginItemDecoration(20));
+                itemDecorationAdded = true;
+            }
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override

@@ -36,6 +36,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.EventsAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.EventsClickListener;
 import nl.hnogames.domoticz.utils.SerializableManager;
@@ -53,6 +54,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     private Context mContext;
     private String filter = "";
     private SlideInBottomAnimationAdapter alphaSlideIn;
+    private boolean itemDecorationAdded = false;
 
     @Override
     @DebugLog
@@ -147,6 +149,10 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
                 });
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
+                if(!isTablet && !itemDecorationAdded) {
+                    gridView.addItemDecoration(new MarginItemDecoration(20));
+                    itemDecorationAdded = true;
+                }
             } else {
                 adapter.setData(mEventInfos);
                 adapter.notifyDataSetChanged();

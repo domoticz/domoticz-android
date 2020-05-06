@@ -44,6 +44,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.WeatherAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.WeatherClickListener;
@@ -70,6 +71,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
     private ArrayList<WeatherInfo> mWeatherInfoList;
+    private boolean itemDecorationAdded = false;
     private SlideInBottomAnimationAdapter alphaSlideIn;
     private ItemTouchHelper mItemTouchHelper;
 
@@ -165,6 +167,10 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
             alphaSlideIn.notifyDataSetChanged();
         }
 
+        if(!isTablet && !itemDecorationAdded) {
+            gridView.addItemDecoration(new MarginItemDecoration(20));
+            itemDecorationAdded = true;
+        }
         if (mItemTouchHelper == null) {
             mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
                     false));

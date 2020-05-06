@@ -44,6 +44,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.TemperatureAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.TemperatureClickListener;
@@ -69,6 +70,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     private static final String TAG = Temperature.class.getSimpleName();
     private Context mContext;
     private TemperatureAdapter adapter;
+    private boolean itemDecorationAdded = false;
     private String filter = "";
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
@@ -178,6 +180,10 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                     mItemTouchHelper.attachToRecyclerView(null);
             }
 
+            if(!isTablet && !itemDecorationAdded) {
+                gridView.addItemDecoration(new MarginItemDecoration(20));
+                itemDecorationAdded = true;
+            }
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override

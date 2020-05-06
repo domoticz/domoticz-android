@@ -102,6 +102,7 @@
     <string name="switch_off">Vypnout přepínač</string>
     <string name="switch_night">Otáčením přepínače na noční světlo</string>
     <string name="switch_full">Otáčením přepínače do plného světla</string>
+    <string name="switch_connection_removed">Switch connection removed.</string>
     <string name="blind_up">Vytáhnout žaluzie</string>
     <string name="blind_down">Stáhnout žaluzie</string>
     <string name="blind_stop">Zastavit žaluzie</string>
@@ -132,4 +133,5 @@
     <string name="use_demo_setup">Použít ukázkové nastavení</string>
     <string name="auto_refresh_time">Obnovit časovač</string>
     <string name="set_auto_refresh_time">Nastavit specifický časovač pro automatickou obnovu v sekundách.</string>
+    <string name="error_authentication_basicauth">IMPORTANT: Please check if your Domoticz system uses Login Page as the authentication method. Basic Auth is going to be removed from Domoticz from next update!</string>
 </resources>

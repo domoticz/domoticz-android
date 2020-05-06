@@ -51,6 +51,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.DashboardAdapter;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
+import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.switchesClickListener;
@@ -92,6 +93,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     private String filter = "";
     private ItemTouchHelper mItemTouchHelper;
     private SlideInBottomAnimationAdapter alphaSlideIn;
+    private boolean itemDecorationAdded = false;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -304,6 +306,11 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 }
                 if (state != null) {
                     gridView.getLayoutManager().onRestoreInstanceState(state);
+                }
+
+                if(!isTablet && !itemDecorationAdded) {
+                    gridView.addItemDecoration(new MarginItemDecoration(20));
+                    itemDecorationAdded = true;
                 }
 
                 if (mItemTouchHelper == null) {

@@ -70,6 +70,7 @@ public class Wizard extends Fragment {
     private final String QRCODE = "QRCODE_CARD";
     private final String FINISH = "FINISH";
     private final String SPEECH = "SPEECH";
+    private final String BEACON = "BEACON";
     private final String AUTO = "AUTO";
     private final String LANGUAGE = "LANGUAGE";
 
@@ -143,6 +144,7 @@ public class Wizard extends Fragment {
         if (!mSharedPrefs.isCardCompleted(NFC)) cardsToGenerate.add(NFC);
         if (!mSharedPrefs.isCardCompleted(BLUETOOTH)) cardsToGenerate.add(BLUETOOTH);
         if (!mSharedPrefs.isCardCompleted(SPEECH)) cardsToGenerate.add(SPEECH);
+        if (!mSharedPrefs.isCardCompleted(BEACON)) cardsToGenerate.add(BEACON);
         if (!mSharedPrefs.isCardCompleted(AUTO)) cardsToGenerate.add(AUTO);
         if (!mSharedPrefs.isCardCompleted(LANGUAGE)) cardsToGenerate.add(LANGUAGE);
 
@@ -151,14 +153,14 @@ public class Wizard extends Fragment {
         mListView.getAdapter().addAll(cards);
     }
 
-    public List<Card> generateCards(List<String> cardsToGenerate) {
+    private List<Card> generateCards(List<String> cardsToGenerate) {
         TypedValue cardValue = new TypedValue();
         TypedValue titleValue = new TypedValue();
         Resources.Theme theme = context.getTheme();
         theme.resolveAttribute(R.attr.wizardCardColor, cardValue, true);
         theme.resolveAttribute(R.attr.wizardTitleColor, titleValue, true);
 
-        int blueColor = ContextCompat.getColor(context, R.color.md_material_blue_600);
+        int blueColor = ContextCompat.getColor(context, R.color.blue_600);
         int otherColor = cardValue.data;
         int titleColor = titleValue.data;
 
@@ -200,7 +202,7 @@ public class Wizard extends Fragment {
                         .setDescription(context.getString(R.string.wizard_favorites_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_switches))
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     @DebugLog
@@ -233,7 +235,7 @@ public class Wizard extends Fragment {
                         .setDescription(context.getString(R.string.wizard_startup_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     @DebugLog
@@ -266,7 +268,7 @@ public class Wizard extends Fragment {
                         .setDescription(context.getString(R.string.wizard_geo_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     @DebugLog
@@ -299,7 +301,7 @@ public class Wizard extends Fragment {
                         .setDescription(context.getString(R.string.wizard_nfc_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     @DebugLog
@@ -331,7 +333,7 @@ public class Wizard extends Fragment {
                         .setDescription(context.getString(R.string.wizard_qrcode_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     @DebugLog
@@ -364,7 +366,7 @@ public class Wizard extends Fragment {
                         .setDescription(context.getString(R.string.wizard_bluetooth_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     @DebugLog
@@ -396,7 +398,39 @@ public class Wizard extends Fragment {
                         .setDescription(context.getString(R.string.wizard_speech_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_done))
+                                .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    @DebugLog
+                                    public void onActionClicked(View view, Card card) {
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build());
+            }
+            if (card.equalsIgnoreCase(BEACON)) {
+                cards.add(new Card.Builder(context)
+                        .setTag(BEACON)
+                        .setDismissible()
+                        .withProvider(new CardProvider())
+                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setTitle(context.getString(R.string.beacon))
+                        .setBackgroundColor(otherColor)
+                        .setDescription(context.getString(R.string.wizard_beacon_description))
+                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                                .setText(context.getString(R.string.wizard_button_settings))
+                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     @DebugLog
@@ -430,7 +464,7 @@ public class Wizard extends Fragment {
                         .setDescription(context.getString(R.string.wizard_wear_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     @DebugLog
@@ -463,7 +497,7 @@ public class Wizard extends Fragment {
                         .setDescription(context.getString(R.string.wizard_auto_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     @DebugLog
@@ -496,7 +530,7 @@ public class Wizard extends Fragment {
                         .setDescription(context.getString(R.string.translate_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.ok))
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     @DebugLog
@@ -531,7 +565,7 @@ public class Wizard extends Fragment {
                         .setDescription(context.getString(R.string.wizard_notifications_description))
                         .addAction(R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     @DebugLog

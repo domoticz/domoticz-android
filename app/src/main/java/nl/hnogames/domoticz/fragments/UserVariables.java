@@ -39,6 +39,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.UserVariablesAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.UserVariablesClickListener;
 import nl.hnogames.domoticz.utils.SerializableManager;
@@ -54,6 +55,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     private UserVariablesAdapter adapter;
     private Context mContext;
     private String filter = "";
+    private boolean itemDecorationAdded = false;
     private SlideInBottomAnimationAdapter alphaSlideIn;
 
     @Override
@@ -121,6 +123,10 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
                 adapter.setData(mUserVariableInfos);
                 adapter.notifyDataSetChanged();
                 alphaSlideIn.notifyDataSetChanged();
+            }
+            if(!isTablet && !itemDecorationAdded) {
+                gridView.addItemDecoration(new MarginItemDecoration(20));
+                itemDecorationAdded = true;
             }
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

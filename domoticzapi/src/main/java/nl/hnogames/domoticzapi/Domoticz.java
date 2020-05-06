@@ -133,7 +133,6 @@ public class Domoticz {
     public static final int DOMOTICZ_FAKE_ID = 99999;
     public static final String HIDDEN_CHARACTER = "$";
 
-    public static final String DOMOTICZ_DEFAULT_SERVER = "DEFAULT";
     private static final String TAG = "DomoticzAPI";
     private final SessionUtil mSessionUtil;
     private final DomoticzUrls mDomoticzUrls;
@@ -195,6 +194,7 @@ public class Domoticz {
     public boolean isConnectionDataComplete(ServerInfo server) {
         boolean result = true;
         HashMap<String, String> stringHashMap = new HashMap<>();
+        stringHashMap.put("Server name", server.getServerName());
         stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
         stringHashMap.put("Domoticz local port", server.getLocalServerPort());
         if (!getServerUtil().getActiveServer().getUseOnlyLocal()) {
@@ -212,6 +212,7 @@ public class Domoticz {
 
     public String isConnectionDataComplete(ServerInfo server, boolean validatePorts) {
         HashMap<String, String> stringHashMap = new HashMap<>();
+        stringHashMap.put("Server name", server.getServerName());
         stringHashMap.put("Domoticz local URL", server.getLocalServerUrl());
         if (!getServerUtil().getActiveServer().getUseOnlyLocal())
             stringHashMap.put("Domoticz remote URL", server.getRemoteServerUrl());
@@ -366,7 +367,7 @@ public class Domoticz {
     public void getUserAuthenticationRights(AuthReceiver receiver) {
         AuthParser parser = new AuthParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.AUTH);
-        GetRequest(parser, url);
+        GetRequest(parser, url, true);
     }
 
     public void setUserCredentials(String username, String password) {
@@ -385,7 +386,7 @@ public class Domoticz {
     public void GetNotificationSystems(NotificationTypesReceiver receiver) {
         NotificationTypesParser parser = new NotificationTypesParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NOTIFICATIONTYPES);
-        GetRequest(parser, url);
+        GetRequest(parser, url, true);
     }
 
     public void SendNotification(String Subject, String Body, String SubSystem, SendNotificationReceiver receiver) {
@@ -394,7 +395,7 @@ public class Domoticz {
         url += "&subject=" + Subject;
         url += "&body=" + Body;
         url += "&subsystem=" + SubSystem;
-        GetRequest(parser, url);
+        GetRequest(parser, url, true);
     }
 
     /**
@@ -411,7 +412,7 @@ public class Domoticz {
         url += "&senderid=" + SenderId;
         url += "&name=" + Build.MODEL.replace(" ", "");
         url += "&devicetype=Android" + Build.VERSION.SDK_INT;
-        GetRequest(parser, url);
+        GetRequest(parser, url, true);
     }
 
     /**
@@ -425,7 +426,7 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CLEAN_MOBILE_DEVICE);
         url += "&uuid=" + DeviceId;
 
-        GetRequest(parser, url);
+        GetRequest(parser, url, true);
     }
 
     /**
@@ -436,7 +437,7 @@ public class Domoticz {
     public void getSunRise(SunRiseReceiver receiver) {
         SunRiseParser parser = new SunRiseParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SUNRISE);
-        GetRequest(parser, url);
+        GetRequest(parser, url, true);
     }
 
     /**
@@ -447,7 +448,7 @@ public class Domoticz {
     public void getServerVersion(VersionReceiver receiver) {
         VersionParser parser = new VersionParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.VERSION);
-        GetRequest(parser, url);
+        GetRequest(parser, url, true);
     }
 
     public String getSnapshotUrl(CameraInfo camera) {
@@ -462,7 +463,7 @@ public class Domoticz {
     public void getUpdate(UpdateVersionReceiver receiver) {
         UpdateVersionParser parser = new UpdateVersionParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE);
-        GetRequest(parser, url);
+        GetRequest(parser, url, true);
     }
 
     /**
@@ -473,7 +474,7 @@ public class Domoticz {
     public void getDownloadUpdate(DownloadUpdateServerReceiver receiver) {
         DownloadUpdateParser parser = new DownloadUpdateParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE_DOWNLOAD_UPDATE);
-        GetRequest(parser, url);
+        GetRequest(parser, url, true);
     }
 
     /**
@@ -484,7 +485,7 @@ public class Domoticz {
     public void getUpdateDownloadReady(UpdateDownloadReadyReceiver receiver) {
         UpdateDownloadReadyParser parser = new UpdateDownloadReadyParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE_DOWNLOAD_READY);
-        GetRequest(parser, url);
+        GetRequest(parser, url, true);
     }
 
     /**
@@ -496,7 +497,7 @@ public class Domoticz {
         UpdateDomoticzServerParser parser = new UpdateDomoticzServerParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE_DOMOTICZ_SERVER);
         GetRequest(parser,
-                url);
+                url, true);
     }
 
     public void checkLogin(LoginReceiver loginReceiver) {
@@ -510,7 +511,7 @@ public class Domoticz {
             Map<String, String> params = new HashMap<>();
             params.put("username", URLEncoder.encode(username, "UTF-8"));
             params.put("password", URLEncoder.encode(password, "UTF-8"));
-            PostRequest(parser, url, params);
+            PostRequest(parser, url, params, false);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -532,14 +533,14 @@ public class Domoticz {
 
         Log.v(TAG, "Url: " + url);
         GetRequest(parser,
-                url);
+                url, false);
     }
 
     public void getSwitches(SwitchesReceiver switchesReceiver) {
         SwitchesParser parser = new SwitchesParser(switchesReceiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SWITCHES);
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
     public void getSwitchLogs(int idx, SwitchLogReceiver switchesReceiver) {
@@ -547,7 +548,7 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SWITCHLOG) + idx;
 
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
     public void getTextLogs(int idx, SwitchLogReceiver switchesReceiver) {
@@ -555,14 +556,14 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.TEXTLOG) + idx;
 
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
     public void getSceneLogs(int idx, SwitchLogReceiver switchesReceiver) {
         SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SCENELOG) + idx;
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
 
@@ -570,21 +571,21 @@ public class Domoticz {
         ScenesParser parser = new ScenesParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SCENES);
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
     public void getScene(ScenesReceiver receiver, int idx) {
         ScenesParser parser = new ScenesParser(receiver, idx);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SCENES);
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
     public void getPlans(PlansReceiver receiver) {
         PlanParser parser = new PlanParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.PLANS);
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
     public void getCameras(CameraReceiver receiver) {
@@ -592,7 +593,7 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CAMERAS);
 
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
 
@@ -601,7 +602,7 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SWITCHTIMER) + idx;
 
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
     public void getNotifications(int idx, NotificationReceiver notificationReceiver) {
@@ -609,7 +610,7 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NOTIFICATIONS) + idx;
 
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -623,7 +624,7 @@ public class Domoticz {
         url += "&seccode=" + seccode;
 
         Log.v(TAG, "Action: " + url);
-        GetRequest(parser, url);
+        GetRequest(parser, url, true);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -638,7 +639,7 @@ public class Domoticz {
         url += "&vvalue=" + newValue;
 
         Log.v(TAG, "Action: " + url);
-        GetRequest(parser, url);
+        GetRequest(parser, url, true);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -654,7 +655,7 @@ public class Domoticz {
 
         Log.v(TAG, "Action: " + url);
         GetRequest(parser,
-                url);
+                url, true);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -678,7 +679,7 @@ public class Domoticz {
         }
         Log.v(TAG, "Action: " + url);
         GetRequest(parser,
-                url);
+                url, true);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -700,7 +701,7 @@ public class Domoticz {
         }
         Log.v(TAG, "Action: " + url);
         GetRequest(parser,
-                url);
+                url, true);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -718,7 +719,7 @@ public class Domoticz {
         Log.v(TAG, "Action: " + url);
         setCommandParser parser = new setCommandParser(receiver);
         GetRequest(parser,
-                url);
+                url, true);
     }
 
     public void setDeviceUsed(int id,
@@ -738,7 +739,7 @@ public class Domoticz {
 
         Log.v(TAG, "Action: " + url);
         GetRequest(parser,
-                url);
+                url, true);
     }
 
     public void getStatus(int idx, StatusReceiver receiver) {
@@ -746,7 +747,7 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Get.STATUS) + String.valueOf(idx);
         Log.v(TAG, url);
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
     public void getUtilities(UtilitiesReceiver receiver) {
@@ -754,7 +755,7 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UTILITIES);
         Log.v(TAG, url);
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
     public void getSettings(SettingsReceiver receiver) {
@@ -762,7 +763,7 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SETTINGS);
         Log.v(TAG, url);
         GetRequest(parser,
-                url);
+                url, true);
     }
 
     public void getConfig(ConfigReceiver receiver) {
@@ -770,7 +771,7 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CONFIG);
         Log.v(TAG, url);
         GetRequest(parser,
-                url);
+                url, true);
     }
 
     public void getLanguageStringsFromServer(String language, LanguageReceiver receiver) {
@@ -779,7 +780,7 @@ public class Domoticz {
         Log.v(TAG, url);
         url += language + ".json";
         GetRequest(parser,
-                url);
+                url, true);
     }
 
     public void getTemperatures(TemperatureReceiver receiver) {
@@ -787,7 +788,7 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.TEMPERATURE);
         Log.v(TAG, url);
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
     public void getWeathers(WeatherReceiver receiver) {
@@ -795,7 +796,7 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.WEATHER);
         Log.v(TAG, url);
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
     public void getFavorites(DevicesReceiver receiver, int plan, String filter) {
@@ -808,7 +809,7 @@ public class Domoticz {
             url += "&plan=" + plan;
 
         Log.v(TAG, url);
-        GetResultRequest(parser, url);
+        GetResultRequest(parser, url, true);
     }
 
     public void getDevices(DevicesReceiver receiver, int plan, String filter) {
@@ -822,7 +823,7 @@ public class Domoticz {
 
         Log.v(TAG, url);
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
     public void getDevice(DevicesReceiver receiver, int idx, boolean scene_or_group) {
@@ -831,7 +832,7 @@ public class Domoticz {
 
         Log.i("DEVICE", "url: " + url);
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
     public void getLogs(LogsReceiver receiver, int logLevel) {
@@ -839,7 +840,7 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LOG) + logLevel;
         Log.i("Logs", "url: " + url);
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
     public void getUserVariables(UserVariablesReceiver receiver) {
@@ -847,7 +848,7 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.USERVARIABLES);
         Log.i("USERVARIABLES", "url: " + url);
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
     public void getUsers(UsersReceiver receiver) {
@@ -855,20 +856,20 @@ public class Domoticz {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.USERS);
         Log.i("USERS", "url: " + url);
         GetResultRequest(parser,
-                url);
+                url, true);
     }
 
     public void LogOff() {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LOGOFF);
         Log.i("LOGOFF", "url: " + url);
-        GetRequest(new LogOffParser(), url);
+        GetRequest(new LogOffParser(), url, false);
     }
 
     public void getEvents(EventReceiver receiver) {
         EventsParser parser = new EventsParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.EVENTS);
         Log.i("EVENTS", "url: " + url);
-        GetResultRequest(parser, url);
+        GetResultRequest(parser, url, true);
     }
 
     public void getGraphData(int idx, String range, String type, GraphDataReceiver receiver) {
@@ -877,11 +878,12 @@ public class Domoticz {
         url += DomoticzValues.Url.Log.GRAPH_RANGE + range;
         url += DomoticzValues.Url.Log.GRAPH_TYPE + type;
         Log.i("GRAPH", "url: " + url);
-        GetResultRequest(parser, url);
+        GetResultRequest(parser, url, true);
     }
 
     private void GetRequest(@Nullable final JSONParserInterface parser,
-                            final String url) {
+                            final String url,
+                            boolean retry) {
         final VolleyErrorListener defaultListener = new VolleyErrorListener() {
             @Override
             public void onDone(JSONObject response) {
@@ -921,12 +923,13 @@ public class Domoticz {
             }
         };
 
-        RequestUtil.makeJsonGetRequest(listener,
+        RequestUtil.makeJsonGetRequest(retry ? listener : defaultListener,
                 url, mSessionUtil, queue);
     }
 
     private void GetResultRequest(@Nullable final JSONParserInterface parser,
-                                  final String url) {
+                                  final String url,
+                                  boolean retry) {
         final VolleyErrorListener defaultListener = new VolleyErrorListener() {
             @Override
             public void onDone(JSONObject response) {
@@ -979,13 +982,14 @@ public class Domoticz {
             }
         };
 
-        RequestUtil.makeJsonGetResultRequest(listener,
+        RequestUtil.makeJsonGetResultRequest(retry ? listener : defaultListener,
                 url, mSessionUtil, queue);
     }
 
     private void PostRequest(@Nullable final JSONParserInterface parser,
                              final String url,
-                             final Map<String, String> params) {
+                             final Map<String, String> params,
+    boolean retry) {
         final VolleyErrorListener defaultListener = new VolleyErrorListener() {
             @Override
             public void onDone(JSONObject response) {
@@ -1026,7 +1030,7 @@ public class Domoticz {
             }
         };
 
-        RequestUtil.makeJsonPostRequest(listener,
+        RequestUtil.makeJsonPostRequest(retry ? listener : defaultListener,
                 url, params, mSessionUtil, queue);
     }
 

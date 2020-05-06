@@ -36,6 +36,7 @@ import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.LogAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticzapi.Containers.LogInfo;
@@ -48,6 +49,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     private Context mContext;
     private String filter = "";
     private SlideInBottomAnimationAdapter alphaSlideIn;
+    private boolean itemDecorationAdded = false;
 
     @Override
     public void onConnectionFailed() {
@@ -129,6 +131,10 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                 alphaSlideIn.notifyDataSetChanged();
             }
 
+            if(!isTablet && !itemDecorationAdded) {
+                gridView.addItemDecoration(new MarginItemDecoration(20));
+                itemDecorationAdded = true;
+            }
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override

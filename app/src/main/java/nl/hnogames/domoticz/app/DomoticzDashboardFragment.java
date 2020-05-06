@@ -76,8 +76,8 @@ public class DomoticzDashboardFragment extends Fragment {
     public BackdropContainer backdropContainer;
     public MaterialCardView bottomLayoutWrapper;
     public MaterialButton sortAll, sortOn, sortOff, sortStatic, btnCheckSettings;
-    private boolean isTablet = false;
-    private boolean isPortrait = false;
+    public boolean isTablet = false;
+    public boolean isPortrait = false;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private TextView debugText;
@@ -403,7 +403,6 @@ public class DomoticzDashboardFragment extends Fragment {
     }
 
     private void setErrorMessage(String message) {
-
         if (debug) addDebugText(message);
         else {
             Logger(fragmentName, message);

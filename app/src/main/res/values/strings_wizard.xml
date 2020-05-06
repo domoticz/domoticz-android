@@ -77,5 +77,6 @@
     <string name="wizard_button_wizard">Remove</string>
     <string name="wizard_button_utilities">Utilities</string>
     <string name="wizard_button_done">Done</string>
+    <string name="wizard_beacon_description">Toggle switches by scanning for beacons!</string>
 
 </resources>

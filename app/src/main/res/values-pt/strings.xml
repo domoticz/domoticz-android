@@ -102,6 +102,7 @@
     <string name="switch_off">Desligando o interruptor</string>
     <string name="switch_night">Turning switch to night light</string>
     <string name="switch_full">Turning switch to full light</string>
+    <string name="switch_connection_removed">Switch connection removed.</string>
     <string name="blind_up">Abrindo persiana</string>
     <string name="blind_down">Fechando persiana</string>
     <string name="blind_stop">Parar persiana</string>
@@ -132,4 +133,5 @@
     <string name="use_demo_setup">Utilizar dados de demonstração</string>
     <string name="auto_refresh_time">Atualizar temporizador</string>
     <string name="set_auto_refresh_time">Defina um temporizador específico em segundos para a atualização automática.</string>
+    <string name="error_authentication_basicauth">IMPORTANT: Please check if your Domoticz system uses Login Page as the authentication method. Basic Auth is going to be removed from Domoticz from next update!</string>
 </resources>

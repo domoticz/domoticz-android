@@ -36,6 +36,10 @@
     <color name="alt2_dark">#1D2733</color>
     <color name="alt2_accent">#F7304D</color>
 
+    <color name="alt4">#272A33</color>
+    <color name="alt4_dark">#21242B</color>
+    <color name="alt4_accent">#59DEC3</color>
+
     <color name="alt3">#1E2E52</color>
     <color name="alt3_dark">#1D2733</color>
     <color name="alt3_accent">#2196F3</color>

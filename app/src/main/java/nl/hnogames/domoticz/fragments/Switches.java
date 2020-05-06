@@ -53,6 +53,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.SwitchesAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.switchesClickListener;
@@ -92,6 +93,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     private Parcelable state = null;
     private boolean busy = false;
     private String filter = "";
+    private boolean itemDecorationAdded = false;
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
     private SlideInBottomAnimationAdapter alphaSlideIn;
@@ -241,6 +243,10 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                     adapter.setData(supportedSwitches);
                     adapter.notifyDataSetChanged();
                     alphaSlideIn.notifyDataSetChanged();
+                }
+                if(!isTablet && !itemDecorationAdded) {
+                    gridView.addItemDecoration(new MarginItemDecoration(20));
+                    itemDecorationAdded = true;
                 }
 
                 if (mItemTouchHelper == null) {
