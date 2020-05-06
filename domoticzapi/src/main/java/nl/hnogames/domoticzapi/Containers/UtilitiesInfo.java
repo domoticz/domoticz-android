@@ -21,14 +21,14 @@
 
 package nl.hnogames.domoticzapi.Containers;
 
-import androidx.annotation.NonNull;
-
 import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+
+import androidx.annotation.NonNull;
 
 public class UtilitiesInfo implements Comparable, Serializable {
 
@@ -69,7 +69,7 @@ public class UtilitiesInfo implements Comparable, Serializable {
         if (row.has("SetPoint")) {
             try {
                 setPoint = Double.parseDouble(row.getString("SetPoint"));
-            }catch(Exception ignored){
+            } catch (Exception ignored) {
                 setPoint = 0;
             }
         }

@@ -36,9 +36,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.skydoves.colorpickerview.ColorEnvelope;
@@ -48,12 +45,15 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.SwitchesAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.switchesClickListener;
@@ -93,6 +93,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     private Parcelable state = null;
     private boolean busy = false;
     private String filter = "";
+    private boolean itemDecorationAdded = false;
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
     private SlideInBottomAnimationAdapter alphaSlideIn;
@@ -118,8 +119,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         onAttachFragment(this);
         mContext = context;
         initAnimation();
-        if (getActionBar() != null)
-            getActionBar().setTitle(getString(R.string.title_switches));
+        setActionbar(getString(R.string.title_switches));
+        setSortFab(true);
     }
 
     @Override
@@ -127,7 +128,6 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        collapseSortButton.setVisibility(View.VISIBLE);
         lySortDevices.setVisibility(View.VISIBLE);
         return view;
     }
@@ -243,6 +243,10 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                     adapter.setData(supportedSwitches);
                     adapter.notifyDataSetChanged();
                     alphaSlideIn.notifyDataSetChanged();
+                }
+                if(!isTablet && !itemDecorationAdded) {
+                    gridView.addItemDecoration(new MarginItemDecoration(20));
+                    itemDecorationAdded = true;
                 }
 
                 if (mItemTouchHelper == null) {

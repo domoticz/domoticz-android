@@ -25,9 +25,6 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatEditText;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -35,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatEditText;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.utils.DeviceUtils;
@@ -104,9 +103,9 @@ public class SendNotificationDialog {
         systems = view.findViewById(R.id.notification_systems);
 
         List<String> subSystems = new ArrayList<>();
-        subSystems.add("gcm");//default value for mobile
+        subSystems.add("fcm"); // default value for mobile
         for (NotificationTypeInfo t : info)
-            if (!t.equals("gcm"))
+            if (!t.equals("fcm"))
                 subSystems.add(t.getName());
         systems.setItems(subSystems);
         systems.setSelection(0);

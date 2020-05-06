@@ -45,7 +45,7 @@ public class ServerInfo {
     @Expose
     private String SERVER_UNIQUE_ID;
     @Expose
-    private String SERVER_NAME = Domoticz.DOMOTICZ_DEFAULT_SERVER;
+    private String SERVER_NAME = "";
     @Expose
     private String REMOTE_SERVER_USERNAME = "";
     @Expose
@@ -367,7 +367,9 @@ public class ServerInfo {
             if (serializedServerInfoObject != null && serializedServerInfoObject instanceof ConfigInfo) {
                 return (ConfigInfo) serializedServerInfoObject;
             } else return null;
-        }catch(Exception ex){return null;}
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     /**

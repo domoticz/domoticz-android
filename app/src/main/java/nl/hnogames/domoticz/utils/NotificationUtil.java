@@ -35,13 +35,12 @@ import android.os.Build;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.RemoteInput;
-
 import java.util.Calendar;
 import java.util.List;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.RemoteInput;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.NotificationHistoryActivity;
 import nl.hnogames.domoticz.R;

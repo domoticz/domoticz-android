@@ -94,19 +94,6 @@ public class PicassoUtil {
         return size;
     }
 
-    public Picasso getPicasso(Context context, final String username, final String password) {
-        OkHttpClient okHttpClient = providesOkHttpClient(context, new LoggingInterceptor.Builder()
-                .loggable(BuildConfig.DEBUG)
-                .setLevel(Level.BASIC)
-                .log(Platform.INFO)
-                .request("Request")
-                .response("Response")
-                .build(), username, password);
-        OkHttp3Downloader okHttpDownloader = providesPicassoOkHttpClient(okHttpClient);
-        Picasso picasso = providesCustomPicasso(context, okHttpDownloader);
-        return picasso;
-    }
-
     public Picasso getPicasso(Context context, final String cookie) {
         OkHttpClient okHttpClient = providesOkHttpClient(context, new LoggingInterceptor.Builder()
                 .loggable(BuildConfig.DEBUG)
@@ -136,102 +123,6 @@ public class PicassoUtil {
 
     public OkHttp3Downloader providesPicassoOkHttpClient(OkHttpClient okHttpClient) {
         return new OkHttp3Downloader(okHttpClient);
-    }
-
-    public OkHttpClient providesOkHttpClient(Context context, Interceptor loggingInterceptor) {
-        File cacheDir = createDefaultCacheDir(context, BIG_CACHE_PATH);
-        long cacheSize = calculateDiskCacheSize(cacheDir);
-        // Create a trust manager that does not validate certificate chains
-        final TrustManager[] trustAllCerts = new TrustManager[]{
-                new X509TrustManager() {
-                    @Override
-                    public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                    }
-
-                    @Override
-                    public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                    }
-
-                    @Override
-                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                        return new java.security.cert.X509Certificate[]{};
-                    }
-                }
-        };
-
-        SSLSocketFactory sslSocketFactory = null;
-        // Install the all-trusting trust manager
-        final SSLContext sslContext;
-        try {
-            sslContext = SSLContext.getInstance("SSL");
-
-            if (sslContext != null) {
-                sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-                // Create an ssl socket factory with our all-trusting manager
-                sslSocketFactory = sslContext.getSocketFactory();
-            }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        }
-        return new OkHttpClient.Builder()
-                .protocols(Arrays.asList(Protocol.HTTP_1_1))
-                .hostnameVerifier(new TrustAllHostnameVerifier())
-                .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
-                .addNetworkInterceptor(new DefaultHeadersInterceptor(context))
-                .addInterceptor(new DefaultHeadersInterceptor(context))
-                .addInterceptor(loggingInterceptor)
-                //.cache(new Cache(cacheDir, cacheSize))
-                .build();
-    }
-
-    public OkHttpClient providesOkHttpClient(Context context, Interceptor loggingInterceptor, String username, String password) {
-        File cacheDir = createDefaultCacheDir(context, BIG_CACHE_PATH);
-        long cacheSize = calculateDiskCacheSize(cacheDir);
-        // Create a trust manager that does not validate certificate chains
-        final TrustManager[] trustAllCerts = new TrustManager[]{
-                new X509TrustManager() {
-                    @Override
-                    public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                    }
-
-                    @Override
-                    public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                    }
-
-                    @Override
-                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                        return new java.security.cert.X509Certificate[]{};
-                    }
-                }
-        };
-
-        SSLSocketFactory sslSocketFactory = null;
-        // Install the all-trusting trust manager
-        final SSLContext sslContext;
-        try {
-            sslContext = SSLContext.getInstance("SSL");
-
-            if (sslContext != null) {
-                sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-                // Create an ssl socket factory with our all-trusting manager
-                sslSocketFactory = sslContext.getSocketFactory();
-            }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        }
-        return new OkHttpClient.Builder()
-                .protocols(Arrays.asList(Protocol.HTTP_1_1))
-                .hostnameVerifier(new TrustAllHostnameVerifier())
-                .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
-                .addNetworkInterceptor(new DefaultHeadersInterceptor(context, username, password))
-                .addInterceptor(new DefaultHeadersInterceptor(context, username, password))
-                .addInterceptor(loggingInterceptor)
-                //.cache(new Cache(cacheDir, cacheSize))
-                .build();
     }
 
     public OkHttpClient providesOkHttpClient(Context context, Interceptor loggingInterceptor, String cookie) {

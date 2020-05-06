@@ -173,7 +173,7 @@ public class UsefulBits {
      * @param text to be validated
      * @return if the text is base 64 encoded or not
      */
-    public static boolean isBase64Encoded(String text){
+    public static boolean isBase64Encoded(String text) {
         return text.matches("^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$");
     }
 
@@ -181,7 +181,7 @@ public class UsefulBits {
      * @param text input value
      * @return decode base 64 text
      */
-    public static String decodeBase64(String text){
+    public static String decodeBase64(String text) {
         byte[] data = Base64.decode(text, Base64.DEFAULT);
         try {
             return new String(data, "UTF-8");
@@ -194,7 +194,7 @@ public class UsefulBits {
      * @param text input value
      * @return encode base 64 text
      */
-    public static String encodeBase64(String text){
+    public static String encodeBase64(String text) {
         try {
             return Base64.encodeToString(text.getBytes("UTF-8"), Base64.DEFAULT);
         } catch (UnsupportedEncodingException e) {

@@ -21,12 +21,12 @@
 
 package nl.hnogames.domoticzapi.Containers;
 
-import androidx.annotation.NonNull;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+
+import androidx.annotation.NonNull;
 
 public class UserVariableInfo implements Comparable, Serializable {
     String jsonObject;
@@ -64,8 +64,7 @@ public class UserVariableInfo implements Comparable, Serializable {
     }
 
     public String getTypeValue() {
-        switch (getType())
-        {
+        switch (getType()) {
             case "0":
                 return "Integer";
             case "1":

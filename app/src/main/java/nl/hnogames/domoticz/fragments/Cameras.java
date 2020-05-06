@@ -35,6 +35,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fastaccess.permission.base.PermissionFragmentHelper;
+import com.fastaccess.permission.base.callback.OnPermissionCallback;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -44,15 +52,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.fastaccess.permission.base.PermissionFragmentHelper;
-import com.fastaccess.permission.base.callback.OnPermissionCallback;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.CameraActivity;
@@ -60,6 +59,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.CamerasAdapter;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
+import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
@@ -134,8 +134,8 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         onAttachFragment(this);
         this.context = context;
         mSharedPrefs = new SharedPrefUtil(context);
-        if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_cameras);
+        setActionbar(getString(R.string.title_cameras));
+        setSortFab(false);
     }
 
     @Override

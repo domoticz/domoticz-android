@@ -39,10 +39,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.fastaccess.permission.base.PermissionHelper;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.io.File;
+import java.util.HashSet;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -53,16 +62,8 @@ import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.fastaccess.permission.base.PermissionHelper;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.io.File;
-import java.util.HashSet;
-
 import hugo.weaving.DebugLog;
+import nl.hnogames.domoticz.BeaconSettingsActivity;
 import nl.hnogames.domoticz.BluetoothSettingsActivity;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.GeoSettingsActivity;
@@ -80,8 +81,10 @@ import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
+import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
+import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 import static android.content.Context.KEYGUARD_SERVICE;
@@ -203,10 +206,12 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         androidx.preference.Preference NFCPreference = findPreference("nfc_settings");
         androidx.preference.Preference QRCodePreference = findPreference("qrcode_settings");
         androidx.preference.Preference BluetoothPreference = findPreference("bluetooth_settings");
+        androidx.preference.Preference BeaconPreference = findPreference("beacon_settings");
         androidx.preference.Preference SpeechPreference = findPreference("speech_settings");
         androidx.preference.SwitchPreference EnableNFCPreference = findPreference("enableNFC");
         androidx.preference.SwitchPreference EnableQRCodePreference = findPreference("enableQRCode");
         androidx.preference.SwitchPreference EnableBluetoothPreference = findPreference("enableBluetooth");
+        androidx.preference.SwitchPreference EnableBeaconPreference = findPreference("enableBeacon");
         androidx.preference.SwitchPreference EnableSpeechPreference = findPreference("enableSpeech");
         androidx.preference.SwitchPreference EnableTalkBackPreference = findPreference("talkBack");
         MultiSelectListPreference drawerItems = findPreference("show_nav_items");
@@ -223,19 +228,29 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         androidx.preference.Preference openNotificationSettings = findPreference("openNotificationSettings");
 
         if (mConfigInfo == null) {
-            UsefulBits.getServerConfigForActiveServer(mContext, new ConfigReceiver() {
+            mDomoticz.checkLogin(new LoginReceiver() {
                 @Override
-                @DebugLog
-                public void onReceiveConfig(ConfigInfo settings) {
-                    mConfigInfo = settings;
-                    setupDefaultValues();
+                public void OnReceive(LoginInfo mLoginInfo) {
+                    UsefulBits.getServerConfigForActiveServer(mContext, mLoginInfo, new ConfigReceiver() {
+                        @Override
+                        @DebugLog
+                        public void onReceiveConfig(ConfigInfo settings) {
+                            mConfigInfo = settings;
+                            setupDefaultValues();
+                        }
+
+                        @Override
+                        @DebugLog
+                        public void onError(Exception error) {
+                        }
+                    }, mServerUtil.getActiveServer().getConfigInfo(mContext));
                 }
 
                 @Override
-                @DebugLog
                 public void onError(Exception error) {
                 }
-            }, mServerUtil.getActiveServer().getConfigInfo(mContext));
+            });
+
         } else {
             setupDefaultValues();
         }
@@ -359,17 +374,26 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             fetchServerConfig.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(androidx.preference.Preference preference) {
-                    UsefulBits.getServerConfigForActiveServer(mContext, new ConfigReceiver() {
+                    mDomoticz.checkLogin(new LoginReceiver() {
                         @Override
-                        public void onReceiveConfig(ConfigInfo settings) {
-                            showSnackbar(mContext.getString(R.string.fetched_server_config_success));
+                        public void OnReceive(LoginInfo mLoginInfo) {
+                            UsefulBits.getServerConfigForActiveServer(mContext, mLoginInfo, new ConfigReceiver() {
+                                @Override
+                                public void onReceiveConfig(ConfigInfo settings) {
+                                    showSnackbar(mContext.getString(R.string.fetched_server_config_success));
+                                }
+
+                                @Override
+                                public void onError(Exception error) {
+                                    showSnackbar(mContext.getString(R.string.fetched_server_config_failed));
+                                }
+                            }, null);
                         }
 
                         @Override
                         public void onError(Exception error) {
-                            showSnackbar(mContext.getString(R.string.fetched_server_config_failed));
                         }
-                    }, null);
+                    });
                     return true;
                 }
             });
@@ -422,6 +446,28 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                     if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                         showPremiumSnackbar(getString(R.string.category_bluetooth));
                         return false;
+                    }
+                    return true;
+                }
+            });
+
+        if (EnableBeaconPreference != null)
+            EnableBeaconPreference.setOnPreferenceChangeListener(new androidx.preference.Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(androidx.preference.Preference preference, Object newValue) {
+                    if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                        showPremiumSnackbar(getString(R.string.beacon));
+                        return false;
+                    }
+
+                    if(!((boolean) newValue))
+                        AppController.getInstance().StopBeaconScanning();
+                    else {
+                        try {
+                            AppController.getInstance().StartBeaconScanning();
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
                     }
                     return true;
                 }
@@ -503,6 +549,21 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                         return false;
                     } else {
                         Intent intent = new Intent(mContext, BluetoothSettingsActivity.class);
+                        startActivity(intent);
+                        return true;
+                    }
+                }
+            });
+
+        if (BeaconPreference != null)
+            BeaconPreference.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(androidx.preference.Preference preference) {
+                    if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                        showPremiumSnackbar(getString(R.string.beacon));
+                        return false;
+                    } else {
+                        Intent intent = new Intent(mContext, BeaconSettingsActivity.class);
                         startActivity(intent);
                         return true;
                     }

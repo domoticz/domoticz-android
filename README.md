@@ -15,12 +15,15 @@ This is a Android app for Domoticz and is available for download in the Play Sto
 
 Features:
 - [Geofencing](#geofencing)
+- [NFC & QR Codes](#nfc--qr-codes)
+- [Bluetooth](#bluetooth)
+- [Beacons](#beacons)
+- [Speech](#speech)
 - [Widgets](#widgets)
 - [Android Wear](#android-wear)
-- [NFC & QR Codes](#nfc--qr-codes)
 - [Biometric](#biometric)
 - [Floorplan](#floorplan)
-- [Dark Theme](#dark-theme)
+- [Themes](#themes)
 
 Credits:
 - [Credits](#credits)
@@ -51,8 +54,7 @@ You can download Domoticz from the Google Play Store. There is a premium and fre
 -----
 |  |  |  |
 | ------------- | ------------- | ------------- |
-|  ![1](https://user-images.githubusercontent.com/14561640/51106118-28c0fb00-17eb-11e9-9930-8ed8537b37f3.png) | ![2](https://user-images.githubusercontent.com/14561640/51106119-28c0fb00-17eb-11e9-8e79-6db1c2303422.png)  | ![3](https://user-images.githubusercontent.com/14561640/51106120-28c0fb00-17eb-11e9-98e1-1beb7b0198ea.png) |  
-|  ![4](https://user-images.githubusercontent.com/14561640/51106121-28c0fb00-17eb-11e9-8025-7c52fc9281b0.png) | ![5](https://user-images.githubusercontent.com/14561640/51106124-29599180-17eb-11e9-8fc0-1b967569ab0d.png)  |
+|  ![1](https://user-images.githubusercontent.com/14561640/80979846-27747100-8e28-11ea-89fa-bcdd0ac0d0d5.jpg) | ![2](https://user-images.githubusercontent.com/14561640/80979925-4115b880-8e28-11ea-8dc0-8c1e2315a7f0.jpg)  | ![3](https://user-images.githubusercontent.com/14561640/80979946-496df380-8e28-11ea-8495-b7eaa02cb988.jpg) |  
 
 
 
@@ -66,26 +68,28 @@ Add (one or multiple) Geofences and connect a switch to it which will be trigger
 
 
 
-# Widgets
------
-See more information and toggle switches right from your home screen!  
-![widget](https://user-images.githubusercontent.com/14561640/51105992-d7b10700-17ea-11e9-9c6f-c361ca3aec7f.png)
-
-
-
-# Android Wear
------
-Toggle switches with your Android Wear device!
-All Android Wear devices are supported.  
-![wear](https://cloud.githubusercontent.com/assets/14561640/11994714/ae6705ba-aa43-11e5-8e0c-5586607cdc6d.png)
-
-
-
 # NFC & QR Codes
 -----
 This app has the option to scan NFC or QR codes and connect them to a switch!  
 ![nfc](https://user-images.githubusercontent.com/14561640/51105729-16928d00-17ea-11e9-9e85-97386717abdd.png)
 
+
+# Bluetooth
+-----
+This app has the option to toggle a switch based on an active Bluetooth connection 
+![bluetooth](https://user-images.githubusercontent.com/14561640/80981260-03199400-8e2a-11ea-98cf-46cfe928377a.jpg)
+
+
+# Speech
+-----
+Register speech commando's and connect them to specific switches to toggle
+![speech](https://user-images.githubusercontent.com/14561640/80981239-fbf28600-8e29-11ea-90fc-02a6d8379afa.jpg)
+
+
+# Beacons
+-----
+This app can scan for beacons (iBeacon/AltBeacon for example) and toggle a switch when a beacon is nearby
+![beacons](https://user-images.githubusercontent.com/14561640/80981220-f5640e80-8e29-11ea-88f5-f1e450189cf6.jpg)
 
 
 # Biometric
@@ -102,13 +106,27 @@ Use your devices within your floorplans
 
 
 
-# Dark Theme
+# Themes
 -----
-The app is light and dark themed..  
+We have theme support for multi themes, including day/night cycles. You can also choose to use your system default settings on night/day preferences.
+|  |  |  |
+| ------------- | ------------- |  ------------- | 
+|  ![dark_theme_1](https://user-images.githubusercontent.com/14561640/80980237-aec1e480-8e28-11ea-80ad-26d7a1f16dca.jpg)  |   ![dark_theme_2](https://user-images.githubusercontent.com/14561640/80980242-b08ba800-8e28-11ea-86ed-05b8dbe4834c.jpg)  |![dark_theme_3](https://user-images.githubusercontent.com/14561640/80980247-b1bcd500-8e28-11ea-9822-38424adf246a.jpg)  |
 
-|  |  |
-| ------------- | ------------- | 
-|  ![dark_theme_1](https://user-images.githubusercontent.com/14561640/51105649-e0eda400-17e9-11e9-80f6-f69e93022e73.png)  |   ![dark_theme_2](https://user-images.githubusercontent.com/14561640/51105651-e0eda400-17e9-11e9-84d9-be83fa89a09c.png)  |
+
+
+# Widgets
+-----
+See more information and toggle switches right from your home screen!  
+![widget](https://user-images.githubusercontent.com/14561640/51105992-d7b10700-17ea-11e9-9c6f-c361ca3aec7f.png)
+
+
+
+# Android Wear
+-----
+Toggle switches with your Android Wear device!
+All Android Wear devices are supported.  
+![wear](https://cloud.githubusercontent.com/assets/14561640/11994714/ae6705ba-aa43-11e5-8e0c-5586607cdc6d.png)
 
 
 

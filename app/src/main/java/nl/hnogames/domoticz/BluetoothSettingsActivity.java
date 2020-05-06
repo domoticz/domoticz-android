@@ -35,10 +35,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
@@ -51,6 +47,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.app.AppController;
@@ -160,7 +159,18 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                getSwitchesAndShowSwitchesDialog(BluetoothList.get(position));
+                BluetoothInfo bluetooth = BluetoothList.get(position);
+                if(bluetooth.getSwitchIdx()>0) {
+                    bluetooth.setSwitchIdx(0);
+                    bluetooth.setSwitchName(null);
+                    bluetooth.setValue(null);
+                    bluetooth.setSwitchPassword(null);
+                    updateBluetooth(bluetooth);
+                    UsefulBits.showSnackbar(BluetoothSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
+                    adapter.notifyDataSetChanged();
+                }
+                else
+                    getSwitchesAndShowSwitchesDialog(bluetooth);
                 return true;
             }
         });
@@ -378,6 +388,7 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
 
     /* Called when the second activity's finishes */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         permissionHelper.onActivityForResult(requestCode);
     }
 

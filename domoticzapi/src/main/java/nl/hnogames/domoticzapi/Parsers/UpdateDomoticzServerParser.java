@@ -21,12 +21,12 @@
 
 package nl.hnogames.domoticzapi.Parsers;
 
-import androidx.annotation.Nullable;
 import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import androidx.annotation.Nullable;
 import nl.hnogames.domoticzapi.Interfaces.JSONParserInterface;
 import nl.hnogames.domoticzapi.Interfaces.UpdateDomoticzServerReceiver;
 import nl.hnogames.domoticzapi.Utils.UsefulBits;

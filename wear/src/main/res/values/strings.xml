@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sending_message">Sending Message</string>
+    <string name="stop">Stop</string>
+    <string name="loading">Loading...</string>
+    <string name="when_you_add_switches_to_your_dashboard_they_show_up_here">When you add switches to your dashboard they show up here.!</string>
+</resources>

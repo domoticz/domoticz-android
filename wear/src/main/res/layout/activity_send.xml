@@ -19,27 +19,26 @@
   ~  under the License.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:deviceIds="wear">
 
-    <android.support.wearable.view.DelayedConfirmationView
+    <androidx.wear.widget.CircularProgressLayout
         android:id="@+id/delayed_confirm"
-        style="@style/ActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/ic_stop" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center">
 
-    <TextView
-        style="@style/TextView.Small.Light.Action"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/delayed_confirm"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
-        android:text="Sending Message" />
-
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:contentDescription="@string/stop"
+            android:src="@drawable/ic_stop"
+            android:tint="@color/white" />
+    </androidx.wear.widget.CircularProgressLayout>
+</LinearLayout>

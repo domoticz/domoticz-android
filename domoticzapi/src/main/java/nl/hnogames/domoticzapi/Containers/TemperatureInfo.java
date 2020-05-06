@@ -21,14 +21,14 @@
 
 package nl.hnogames.domoticzapi.Containers;
 
-import androidx.annotation.NonNull;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import androidx.annotation.NonNull;
 
 public class TemperatureInfo implements Comparable, Serializable {
 
@@ -65,7 +65,7 @@ public class TemperatureInfo implements Comparable, Serializable {
         try {
             if (row.has("Temp"))
                 Temp = row.getDouble("Temp");
-        }catch(Exception ex){
+        } catch (Exception ex) {
             Temp = 0;
         }
 
@@ -216,6 +216,10 @@ public class TemperatureInfo implements Comparable, Serializable {
         return LastUpdate;
     }
 
+    public void setLastUpdate(String lastUpdate) {
+        LastUpdate = lastUpdate;
+    }
+
     public Date getLastUpdateDateTime() {
         //Time format: 2016-01-30 12:48:37
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -225,10 +229,6 @@ public class TemperatureInfo implements Comparable, Serializable {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public void setLastUpdate(String lastUpdate) {
-        LastUpdate = lastUpdate;
     }
 
     public String getJsonObject() {

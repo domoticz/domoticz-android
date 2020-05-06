@@ -28,15 +28,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import java.util.ArrayList;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.LogAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticzapi.Containers.LogInfo;
@@ -49,6 +49,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     private Context mContext;
     private String filter = "";
     private SlideInBottomAnimationAdapter alphaSlideIn;
+    private boolean itemDecorationAdded = false;
 
     @Override
     public void onConnectionFailed() {
@@ -70,6 +71,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
         onAttachFragment(this);
         mContext = context;
         SetTitle(getString(R.string.title_logs));
+        setSortFab(true);
     }
 
     @Override
@@ -77,15 +79,12 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        collapseSortButton.setText(getString(R.string.filter_all));
-        collapseSortButton.setVisibility(View.VISIBLE);
         lySortLogs.setVisibility(View.VISIBLE);
         return view;
     }
 
     public void SetTitle(String title) {
-        if (getActionBar() != null)
-            getActionBar().setTitle(title);
+        setActionbar(title);
     }
 
     @Override
@@ -132,6 +131,10 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                 alphaSlideIn.notifyDataSetChanged();
             }
 
+            if(!isTablet && !itemDecorationAdded) {
+                gridView.addItemDecoration(new MarginItemDecoration(20));
+                itemDecorationAdded = true;
+            }
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override

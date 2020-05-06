@@ -44,16 +44,11 @@ import nl.hnogames.domoticz.containers.DevicesInfo;
 import nl.hnogames.domoticz.utils.WearUsefulBits;
 
 public class ListAdapter extends WearableRecyclerView.Adapter {
+    private static View.OnClickListener listener;
     private final Context mContext;
     private final LayoutInflater mInflater;
     private ArrayList<DevicesInfo> mDataset;
     private Domoticz mDomoticz;
-
-    private static View.OnClickListener listener;
-    public void setOnClickListener(View.OnClickListener l)
-    {
-        listener = l;
-    }
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public ListAdapter(Context context, ArrayList<DevicesInfo> dataset) {
@@ -61,6 +56,10 @@ public class ListAdapter extends WearableRecyclerView.Adapter {
         mDomoticz = new Domoticz();
         mInflater = LayoutInflater.from(context);
         setData(dataset);
+    }
+
+    public void setOnClickListener(View.OnClickListener l) {
+        listener = l;
     }
 
     public void setData(ArrayList<DevicesInfo> dataset) {
@@ -157,7 +156,7 @@ public class ListAdapter extends WearableRecyclerView.Adapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(listener != null)
+                    if (listener != null)
                         listener.onClick(v);
                 }
             });

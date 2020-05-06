@@ -25,18 +25,18 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.EventsAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
+import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.EventsClickListener;
 import nl.hnogames.domoticz.utils.SerializableManager;
@@ -54,6 +54,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     private Context mContext;
     private String filter = "";
     private SlideInBottomAnimationAdapter alphaSlideIn;
+    private boolean itemDecorationAdded = false;
 
     @Override
     @DebugLog
@@ -74,8 +75,8 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
         super.onAttach(context);
         onAttachFragment(this);
         mContext = context;
-        if (getActionBar() != null)
-            getActionBar().setTitle(R.string.title_events);
+        setActionbar(getString(R.string.title_events));
+        setSortFab(false);
     }
 
     @Override
@@ -148,6 +149,10 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
                 });
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
+                if(!isTablet && !itemDecorationAdded) {
+                    gridView.addItemDecoration(new MarginItemDecoration(20));
+                    itemDecorationAdded = true;
+                }
             } else {
                 adapter.setData(mEventInfos);
                 adapter.notifyDataSetChanged();

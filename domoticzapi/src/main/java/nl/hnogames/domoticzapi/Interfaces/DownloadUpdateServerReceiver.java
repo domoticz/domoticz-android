@@ -26,5 +26,6 @@ package nl.hnogames.domoticzapi.Interfaces;
  */
 public interface DownloadUpdateServerReceiver {
     void onDownloadStarted(boolean updateSuccess);
+
     void onError(Exception error);
 }

@@ -59,7 +59,6 @@ public class WearMessageListenerService extends WearableListenerService implemen
     private Domoticz domoticz;
     private SharedPrefUtil mSharedPrefs;
     private ArrayList<DevicesInfo> extendedStatusSwitches;
-
     private int currentSwitch = 1;
 
     public static void sendMessage(final String path, final String text) {

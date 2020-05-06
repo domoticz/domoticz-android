@@ -61,7 +61,7 @@ public class DomoticzUrls {
                 break;
 
             case DomoticzValues.Scene.Action.OFF:
-                actionUrl =DomoticzValues. Url.Action.OFF;
+                actionUrl = DomoticzValues.Url.Action.OFF;
                 break;
 
             case DomoticzValues.Device.Switch.Action.ON:
@@ -73,7 +73,7 @@ public class DomoticzUrls {
                 break;
 
             case DomoticzValues.Device.Blind.Action.UP:
-                actionUrl =DomoticzValues. Url.Action.UP;
+                actionUrl = DomoticzValues.Url.Action.UP;
                 break;
 
             case DomoticzValues.Device.Blind.Action.STOP:
@@ -220,20 +220,20 @@ public class DomoticzUrls {
             case DomoticzValues.Json.Url.Set.WWCOLOR:
                 url = DomoticzValues.Url.System.RGBCOLOR;
                 jsonUrl = url
-                    + String.valueOf(idx)
-                    + actionUrl;
+                        + String.valueOf(idx)
+                        + actionUrl;
                 break;
 
             case DomoticzValues.Json.Url.Set.NIGHTLIGHT:
                 url = DomoticzValues.Url.System.NIGHTLIGHT;
                 jsonUrl = url
-                    + String.valueOf(idx);
+                        + String.valueOf(idx);
                 break;
 
             case DomoticzValues.Json.Url.Set.FULLLIGHT:
                 url = DomoticzValues.Url.System.FULLLIGHT;
                 jsonUrl = url
-                    + String.valueOf(idx);
+                        + String.valueOf(idx);
                 break;
 
             case DomoticzValues.Json.Url.Set.EVENTS_UPDATE_STATUS:
@@ -246,7 +246,7 @@ public class DomoticzUrls {
 
         String fullString = buildUrl.append(protocol)
                 .append(baseUrl)
-                .append(!port.equals("80") ? ":" + port: "")
+                .append(!port.equals("80") ? ":" + port : "")
                 .append(directory.isEmpty() ? "" : "/" + directory)
                 .append(jsonUrl).toString();
 
@@ -283,18 +283,17 @@ public class DomoticzUrls {
         }
         jsonUrl = getJsonGetUrl(jsonGetUrl);
 
-        if(!withPass) {
+        if (!withPass) {
             return buildUrl.append(protocol)
                     .append(url)
-                    .append(!port.equals("80") ? ":" + port: "")
+                    .append(!port.equals("80") ? ":" + port : "")
                     .append(directory.isEmpty() ? "" : "/" + directory)
                     .append(jsonUrl).toString();
-        }
-        else{
+        } else {
             return buildUrl.append(protocol)
                     .append(username).append(":").append(password).append("@")
                     .append(url)
-                    .append(!port.equals("80") ? ":" + port: "")
+                    .append(!port.equals("80") ? ":" + port : "")
                     .append(directory.isEmpty() ? "" : "/" + directory)
                     .append(jsonUrl).toString();
         }

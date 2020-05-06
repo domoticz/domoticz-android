@@ -23,10 +23,9 @@ package nl.hnogames.domoticz;
 
 import android.os.Bundle;
 
-import androidx.appcompat.widget.Toolbar;
-
 import com.ftinc.scoop.Scoop;
 
+import androidx.appcompat.widget.Toolbar;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.fragments.NotificationHistory;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;

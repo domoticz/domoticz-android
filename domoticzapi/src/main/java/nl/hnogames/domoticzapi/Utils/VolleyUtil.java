@@ -23,7 +23,6 @@ package nl.hnogames.domoticzapi.Utils;
 
 import android.content.Context;
 import android.util.Log;
-import android.util.TypedValue;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -55,7 +54,7 @@ public class VolleyUtil {
 
         if (volleyError instanceof AuthFailureError) {
             Log.e(TAG, "Authentication failure");
-            errorMessage = mContext.getString(R.string.error_authentication);
+            errorMessage = mContext.getString(R.string.error_authentication) + "\r\n\r\n" + mContext.getString(R.string.error_authentication_basicauth);
 
         } else if (volleyError instanceof TimeoutError || volleyError instanceof NoConnectionError) {
             Log.e(TAG, "Timeout or no connection");

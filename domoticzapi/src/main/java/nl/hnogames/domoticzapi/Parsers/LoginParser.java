@@ -43,7 +43,7 @@ public class LoginParser implements JSONParserInterface {
     public void parseResult(String result) {
         try {
             JSONObject jsonObject = new JSONObject(result);
-			LoginInfo info = new LoginInfo(jsonObject);
+            LoginInfo info = new LoginInfo(jsonObject);
             if (info == null)
                 onError(new NullPointerException(
                         "Not logged in Domoticz."));

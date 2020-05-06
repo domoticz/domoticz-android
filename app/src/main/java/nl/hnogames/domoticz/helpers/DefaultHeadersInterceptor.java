@@ -1,21 +1,15 @@
 package nl.hnogames.domoticz.helpers;
 
-
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-
 import java.io.IOException;
-
-import okhttp3.Credentials;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class DefaultHeadersInterceptor implements Interceptor {
     private Context mContext;
-    private String sUsername;
-    private String sPassword;
     private boolean useBasicAuth = false;
     private String sCookie;
     private boolean useCookie = false;
@@ -24,17 +18,8 @@ public class DefaultHeadersInterceptor implements Interceptor {
         this.mContext = context;
     }
 
-    public DefaultHeadersInterceptor(Context context, String username, String password) {
-        this.mContext = context;
-
-        useBasicAuth = true;
-        this.sUsername = username;
-        this.sPassword = password;
-    }
-
     public DefaultHeadersInterceptor(Context context, String cookie) {
         this.mContext = context;
-
         useCookie = true;
         this.sCookie = cookie;
     }
@@ -50,8 +35,8 @@ public class DefaultHeadersInterceptor implements Interceptor {
                 .header("Accept-Encoding", "gzip, deflate, br")
                 //.header("X-Client-Id", getPackageName() + "-" + getVersionName() + "-" + getVersionCode() + "-" + getBuildType())
                 .header("User-Agent", getPackageName() + "-" + getVersionName() + "-" + getVersionCode() + "-" + getBuildType());
-        if (useBasicAuth)
-            builder.header("Authorization", Credentials.basic(sUsername, sPassword));
+        //if (useBasicAuth)
+        //    builder.header("Authorization", Credentials.basic(sUsername, sPassword));
         if (useCookie)
             builder.header("Cookie", sCookie);
         return chain.proceed(builder.build());

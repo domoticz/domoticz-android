@@ -40,16 +40,6 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.biometric.BiometricPrompt;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.MenuItemCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.ftinc.scoop.Scoop;
@@ -63,6 +53,8 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -87,6 +79,16 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.biometric.BiometricPrompt;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import hotchemi.android.rate.AppRate;
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
@@ -108,15 +110,18 @@ import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.TalkBackUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticz.utils.WidgetUtils;
 import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 import shortbread.Shortcut;
@@ -133,6 +138,9 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private String TAG = MainActivity.class.getSimpleName();
     private ServerUtil mServerUtil;
     private SearchView searchViewAction;
+    private CollapsingToolbarLayout toolbarLayout;
+    public CoordinatorLayout coordinatorLayout;
+    public FloatingActionButton fabSort;
     private Toolbar toolbar;
     private ArrayList<String> stackFragments = new ArrayList<>();
     private Domoticz domoticz;
@@ -193,7 +201,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
             ((AdView) findViewById(R.id.adView)).loadAd(adRequest);
         } else {
             setContentView(R.layout.activity_newmain_paid);
-            (findViewById(R.id.adView)).setVisibility(View.GONE);
+            //(findViewById(R.id.adView)).setVisibility(View.GONE);
         }
 
         if (savedInstanceState == null) {
@@ -206,6 +214,28 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        toolbarLayout = findViewById(R.id.collapsingToolbar);
+        fabSort = findViewById(R.id.fabSort);
+        fabSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment f = latestFragment;
+                if (f instanceof DomoticzRecyclerFragment) {
+                    ((DomoticzRecyclerFragment) f).toggleBackDrop();
+                } else if (f instanceof DomoticzDashboardFragment) {
+                    ((DomoticzDashboardFragment) f).toggleBackDrop();
+                }
+            }
+        });
+
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(R.attr.toolbarTextColor, typedValue, true);
+        @ColorInt int color = typedValue.data;
+        toolbarLayout.setCollapsedTitleTextColor(color);
+        toolbarLayout.setExpandedTitleColor(color);
+
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
         if (!UsefulBits.checkPlayServicesAvailable(this))
             this.finish();
 
@@ -217,6 +247,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
         } else {
             new GeoUtils(this, this).AddGeofences();
             initScreen();
+        }
+    }
+
+    public void setActionbar(String title) {
+        if(toolbarLayout != null) {
+                      toolbarLayout.setTitle(title);
+            toolbarLayout.animate();
         }
     }
 
@@ -337,34 +374,45 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 if (domoticz == null)
                     domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
 
-                //mConfigInfo = mServerUtil.getActiveServer().getConfigInfo(this);
                 if (!fromVoiceWidget && !fromQRCodeWidget) {
-                    UsefulBits.getServerConfigForActiveServer(MainActivity.this, new ConfigReceiver() {
+                    // Refresh login token
+                    domoticz.checkLogin(new LoginReceiver() {
                         @Override
-                        @DebugLog
-                        public void onReceiveConfig(ConfigInfo settings) {
-                            if (MainActivity.this.mConfigInfo == null || settings == null || !MainActivity.this.mConfigInfo.toString().equals(settings.toString())) {
-                                MainActivity.this.mConfigInfo = settings;
-                                SerializableManager.saveSerializable(MainActivity.this, settings, "ConfigInfo");
+                        public void OnReceive(LoginInfo mLoginInfo) {
+                            UsefulBits.getServerConfigForActiveServer(MainActivity.this, mLoginInfo, new ConfigReceiver() {
+                                @Override
+                                @DebugLog
+                                public void onReceiveConfig(ConfigInfo settings) {
+                                    if (MainActivity.this.mConfigInfo == null || settings == null || !MainActivity.this.mConfigInfo.toString().equals(settings.toString())) {
+                                        MainActivity.this.mConfigInfo = settings;
+                                        SerializableManager.saveSerializable(MainActivity.this, settings, "ConfigInfo");
 
-                                setupMobileDevice();
-                                setScheduledTasks();
+                                        setupMobileDevice();
+                                        setScheduledTasks();
 
-                                //WidgetUtils.RefreshWidgets(MainActivity.this);
-                                drawNavigationMenu(mConfigInfo);
-                                if (!fromShortcut)
-                                    addFragment(false);
-                            }
+                                        WidgetUtils.RefreshWidgets(MainActivity.this);
+                                        drawNavigationMenu(mConfigInfo);
+                                        if (!fromShortcut)
+                                            addFragment(false);
+                                    }
+                                }
+
+                                @Override
+                                @DebugLog
+                                public void onError(Exception error) {
+                                    configException = error;
+                                    if (!fromShortcut)
+                                        addFragment(true);
+                                }
+                            }, mConfigInfo);
                         }
 
                         @Override
-                        @DebugLog
                         public void onError(Exception error) {
                             configException = error;
-                            if (!fromShortcut)
-                                addFragment(true);
+                            addFragment(true);
                         }
-                    }, mConfigInfo);
+                    });
                 }
                 if (mSharedPrefs.isStartupSecurityEnabled()) {
                     biometricPrompt.authenticate(promptInfo);
@@ -442,16 +490,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
         permissionHelper.onActivityForResult(requestCode);
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    public void hideViews() {
-        toolbar.animate().translationY(-toolbar.getHeight()).setInterpolator(new AccelerateInterpolator(2));
-        toolbar.setVisibility(View.GONE);
-        toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
-    }
-
-    public void showViews() {
-        toolbar.setVisibility(View.VISIBLE);
     }
 
     private void handleSwitch(final int idx, final String password, final int inputJSONAction, final String value, final boolean isSceneOrGroup) {
@@ -1494,7 +1532,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 stopCameraTimer();
                 invalidateOptionsMenu();
             }
-            showViews();
         }
     }
 

@@ -38,11 +38,6 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.fragment.app.Fragment;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
@@ -52,6 +47,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ServerSettingsActivity;
 import nl.hnogames.domoticz.app.AppController;
@@ -72,7 +71,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     boolean activeServerChanged = false;
     private SharedPrefUtil mSharedPrefs;
     private ServerUtil mServerUtil;
-
+    private String updateServerName;
     private AppCompatEditText remote_server_input, remote_port_input,
             remote_username_input, remote_password_input,
             remote_directory_input, local_server_input, local_password_input,
@@ -109,10 +108,11 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
 
         Bundle extras = getArguments();
         if (extras != null) {
-            String updateServerName = extras.getString("SERVERNAME");
-            if (!UsefulBits.isEmpty(updateServerName)) {
+            updateServerName = extras.getString("SERVERNAME");
+            if (!UsefulBits.isEmpty(updateServerName))
                 newServer = mServerUtil.getServerInfo(updateServerName);
-            }
+            else
+                newServer = new ServerInfo();
             activeServerChanged = extras.getBoolean("SERVERACTIVE", false);
         }
     }
@@ -166,7 +166,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
                         .input(null, null, new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
+                                Set<String> ssidFromPrefs = newServer.getLocalServerSsid();
                                 final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
                                 if (ssidFromPrefs != null) {
                                     if (ssidFromPrefs.size() > 0) {
@@ -177,7 +177,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
                                 }
 
                                 ssidListFromPrefs.add(String.valueOf(input));
-                                mServerUtil.getActiveServer().setLocalServerSsid(ssidListFromPrefs);
+                                newServer.setLocalServerSsid(ssidListFromPrefs);
                                 setSsid_spinner();
                             }
                         }).show();
@@ -236,8 +236,10 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
 
         final Domoticz mDomoticz = new Domoticz(getActivity(), AppController.getInstance().getRequestQueue());
         String status = mDomoticz.isConnectionDataComplete(newServer, false);
-
-        if (!UsefulBits.isEmpty(status)) {
+        if (UsefulBits.isEmpty(newServer.getServerName())) {
+            showErrorPopup(getString(R.string.welcome_msg_connectionDataIncompleteName) + "\n\n"
+                    + getString(R.string.welcome_msg_correctOnPreviousPage));
+        } else if (!UsefulBits.isEmpty(status)) {
             showErrorPopup(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n" + status + "\n\n"
                     + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else if (!mDomoticz.isUrlValid(newServer)) {
@@ -295,21 +297,23 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     }
 
     private void setSsid_spinner() {
-        Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
         final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
-        //noinspection SpellCheckingInspection
         final ArrayList<String> ssids = new ArrayList<>();
-        if (ssidFromPrefs != null) {
-            if (ssidFromPrefs.size() > 0) {
-                for (String wifi : ssidFromPrefs) {
-                    ssids.add(wifi);
-                    ssidListFromPrefs.add(wifi);
-                }
+        if(newServer != null) {
+            Set<String> ssidFromPrefs = newServer.getLocalServerSsid();
+             //noinspection SpellCheckingInspection
+            if (ssidFromPrefs != null) {
+                if (ssidFromPrefs.size() > 0) {
+                    for (String wifi : ssidFromPrefs) {
+                        ssids.add(wifi);
+                        ssidListFromPrefs.add(wifi);
+                    }
 
-                //quickly set the values
-                local_wifi_spinner.setTitle(R.string.welcome_ssid_spinner_prompt);
-                local_wifi_spinner.setItems(ssids);
-                local_wifi_spinner.setSelection(ssidListFromPrefs);
+                    //quickly set the values
+                    local_wifi_spinner.setTitle(R.string.welcome_ssid_spinner_prompt);
+                    local_wifi_spinner.setItems(ssids);
+                    local_wifi_spinner.setSelection(ssidListFromPrefs);
+                }
             }
         }
 
@@ -333,7 +337,6 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
                     }
                     local_wifi_spinner.setTitle(R.string.welcome_ssid_spinner_prompt);
                     local_wifi_spinner.setItems(ssids);
-
                     local_wifi_spinner.setSelection(ssidListFromPrefs);
                 }
                 mPhoneConnectionUtil.stopReceiver();
@@ -424,7 +427,7 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
                 showErrorPopup("Server name must be unique!");
             }
         } else {
-            mServerUtil.putServerInList(newServer);
+            mServerUtil.putServerInList(updateServerName, newServer);
             mServerUtil.saveDomoticzServers(false);
             ((ServerSettingsActivity) getActivity()).ServerAdded(true);
             if (activeServerChanged)

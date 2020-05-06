@@ -19,35 +19,21 @@
   ~  under the License.
   -->
 
-<android.support.wearable.view.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_background"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/splash_background">
 
-    <RelativeLayout
-        android:id="@+id/main_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/splash_background">
+    <TextView
+        android:id="@+id/name_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:text="@string/loading"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp" />
 
-        <RelativeLayout
-            android:id="@+id/relative_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp">
-
-            <TextView
-                android:id="@+id/name_value"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:layout_centerHorizontal="true"
-                android:gravity="bottom"
-                android:text="Loading!!"
-                android:textColor="#FFFFFF"
-                android:textSize="15sp" />
-
-        </RelativeLayout>
-
-    </RelativeLayout>
-
-
-</android.support.wearable.view.BoxInsetLayout>
+</RelativeLayout>

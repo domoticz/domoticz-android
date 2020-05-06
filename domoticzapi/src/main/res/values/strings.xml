@@ -127,5 +127,6 @@
     <string name="continue_question">Continue?</string>
     <string name="cant_remove_default_server">Can\'t remove the default server</string>
     <string name="restart_required_msg">For the language settings to become to effect an application restart is required</string>
+    <string name="error_authentication_basicauth">IMPORTANT: Please check if your Domoticz system uses Login Page as the authentication method. Basic Auth is going to be removed from Domoticz from next update!</string>
 
 </resources>

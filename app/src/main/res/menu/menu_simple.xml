@@ -26,7 +26,7 @@
 
     <item
         android:id="@+id/action_speech"
-        android:icon="@drawable/baseline_mic_none_white_24"
+        android:icon="@drawable/baseline_mic_white_24"
         android:orderInCategory="99"
         android:title="@string/action_speech"
         android:visible="false"

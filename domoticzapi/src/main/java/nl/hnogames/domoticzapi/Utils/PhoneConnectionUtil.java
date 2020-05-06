@@ -48,7 +48,7 @@ public class PhoneConnectionUtil {
     private AtomicBoolean unregistered;
 
     public PhoneConnectionUtil(Context mContext, final WifiSSIDListener listener) {
-        if(mContext == null)
+        if (mContext == null)
             return;
         this.mContext = mContext;
         wifiManager = (WifiManager) mContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -59,7 +59,7 @@ public class PhoneConnectionUtil {
     }
 
     public PhoneConnectionUtil(Context mContext) {
-        if(mContext == null)
+        if (mContext == null)
             return;
         this.mContext = mContext;
         wifiManager = (WifiManager) mContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -144,8 +144,7 @@ public class PhoneConnectionUtil {
                     = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activeNetworkInfo = connectivityManager != null ? connectivityManager.getActiveNetworkInfo() : null;
             return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-        }catch(Exception ex)
-        {
+        } catch (Exception ex) {
             return false;
         }
     }

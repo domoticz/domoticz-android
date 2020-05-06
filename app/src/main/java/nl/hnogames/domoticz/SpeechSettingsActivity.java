@@ -34,11 +34,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
@@ -52,6 +47,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.adapters.SpeechAdapter;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
@@ -128,7 +127,18 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                getSwitchesAndShowSwitchesDialog(SpeechList.get(position));
+                SpeechInfo speech = SpeechList.get(position);
+                if(speech.getSwitchIdx()>0) {
+                    speech.setSwitchIdx(0);
+                    speech.setSwitchName(null);
+                    speech.setSwitchPassword(null);
+                    speech.setValue(null);
+                    updateSpeech(speech);
+                    UsefulBits.showSnackbar(SpeechSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
+                    adapter.notifyDataSetChanged();
+                }
+                else
+                    getSwitchesAndShowSwitchesDialog(speech);
                 return true;
             }
         });

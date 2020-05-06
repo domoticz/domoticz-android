@@ -24,10 +24,9 @@ package nl.hnogames.domoticz;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import androidx.appcompat.widget.Toolbar;
-
 import com.ftinc.scoop.Scoop;
 
+import androidx.appcompat.widget.Toolbar;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.fragments.Graph;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;

@@ -21,8 +21,6 @@
 
 package nl.hnogames.domoticzapi.Containers;
 
-import com.google.gson.Gson;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -255,26 +253,26 @@ public class ConfigInfo implements Serializable {
     public String toString() {
         int userCount = mUsers != null ? mUsers.size() : 0;
         String userInfo = "UserInfos{";
-        for (UserInfo u: mUsers)
-            userInfo +=  u.toString();
-        userInfo+= '}';
+        for (UserInfo u : mUsers)
+            userInfo += u.toString();
+        userInfo += '}';
 
         return "ConfigInfo{" +
-            "DegreeDaysBaseTemperature='" + DegreeDaysBaseTemperature + '\'' +
-            "FiveMinuteHistoryDays='" + FiveMinuteHistoryDays + '\'' +
-            "Latitude='" + Latitude + '\'' +
-            "Longitude='" + Longitude + '\'' +
-            "TempScale='" + TempScale + '\'' +
-            "TempSign='" + TempSign + '\'' +
-            "WindScale='" + WindScale + '\'' +
-            "WindSign='" + WindSign + '\'' +
+                "DegreeDaysBaseTemperature='" + DegreeDaysBaseTemperature + '\'' +
+                "FiveMinuteHistoryDays='" + FiveMinuteHistoryDays + '\'' +
+                "Latitude='" + Latitude + '\'' +
+                "Longitude='" + Longitude + '\'' +
+                "TempScale='" + TempScale + '\'' +
+                "TempSign='" + TempSign + '\'' +
+                "WindScale='" + WindScale + '\'' +
+                "WindSign='" + WindSign + '\'' +
                 "UserCount='" + userCount + '\'' +
                 "UserInfo='" + userInfo + '\'' +
-            "EnableTabLights='" + EnableTabLights + '\'' +
-            "EnableTabScenes='" + EnableTabScenes + '\'' +
-            "EnableTabTemp='" + EnableTabTemp + '\'' +
-            "EnableTabWeather='" + EnableTabWeather + '\'' +
-            "ShowUpdatedEffect='" + ShowUpdatedEffect + '\'' +
-            '}';
+                "EnableTabLights='" + EnableTabLights + '\'' +
+                "EnableTabScenes='" + EnableTabScenes + '\'' +
+                "EnableTabTemp='" + EnableTabTemp + '\'' +
+                "EnableTabWeather='" + EnableTabWeather + '\'' +
+                "ShowUpdatedEffect='" + ShowUpdatedEffect + '\'' +
+                '}';
     }
 }

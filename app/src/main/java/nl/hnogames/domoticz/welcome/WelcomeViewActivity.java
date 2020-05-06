@@ -25,13 +25,12 @@ package nl.hnogames.domoticz.welcome;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.github.paolorotolo.appintro.AppIntro2;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import com.github.paolorotolo.appintro.model.SliderPage;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -66,6 +65,7 @@ public class WelcomeViewActivity extends AppIntro2 {
 
     public void setDemoAccount() {
         ServerUtil mServerUtil = new ServerUtil(this);
+        mServerUtil.getActiveServer().setServerName("Demo");
         mServerUtil.getActiveServer().setRemoteServerUsername("admin");
         mServerUtil.getActiveServer().setRemoteServerPassword("D@m@t1czCl0ud");
         mServerUtil.getActiveServer().setRemoteServerUrl("gandalf.domoticz.com");
