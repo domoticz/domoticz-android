@@ -109,9 +109,10 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
         Bundle extras = getArguments();
         if (extras != null) {
             updateServerName = extras.getString("SERVERNAME");
-            if (!UsefulBits.isEmpty(updateServerName)) {
+            if (!UsefulBits.isEmpty(updateServerName))
                 newServer = mServerUtil.getServerInfo(updateServerName);
-            }
+            else
+                newServer = new ServerInfo();
             activeServerChanged = extras.getBoolean("SERVERACTIVE", false);
         }
     }
@@ -296,21 +297,23 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     }
 
     private void setSsid_spinner() {
-        Set<String> ssidFromPrefs = newServer.getLocalServerSsid();
         final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
-        //noinspection SpellCheckingInspection
         final ArrayList<String> ssids = new ArrayList<>();
-        if (ssidFromPrefs != null) {
-            if (ssidFromPrefs.size() > 0) {
-                for (String wifi : ssidFromPrefs) {
-                    ssids.add(wifi);
-                    ssidListFromPrefs.add(wifi);
-                }
+        if(newServer != null) {
+            Set<String> ssidFromPrefs = newServer.getLocalServerSsid();
+             //noinspection SpellCheckingInspection
+            if (ssidFromPrefs != null) {
+                if (ssidFromPrefs.size() > 0) {
+                    for (String wifi : ssidFromPrefs) {
+                        ssids.add(wifi);
+                        ssidListFromPrefs.add(wifi);
+                    }
 
-                //quickly set the values
-                local_wifi_spinner.setTitle(R.string.welcome_ssid_spinner_prompt);
-                local_wifi_spinner.setItems(ssids);
-                local_wifi_spinner.setSelection(ssidListFromPrefs);
+                    //quickly set the values
+                    local_wifi_spinner.setTitle(R.string.welcome_ssid_spinner_prompt);
+                    local_wifi_spinner.setItems(ssids);
+                    local_wifi_spinner.setSelection(ssidListFromPrefs);
+                }
             }
         }
 
@@ -334,7 +337,6 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
                     }
                     local_wifi_spinner.setTitle(R.string.welcome_ssid_spinner_prompt);
                     local_wifi_spinner.setItems(ssids);
-
                     local_wifi_spinner.setSelection(ssidListFromPrefs);
                 }
                 mPhoneConnectionUtil.stopReceiver();
