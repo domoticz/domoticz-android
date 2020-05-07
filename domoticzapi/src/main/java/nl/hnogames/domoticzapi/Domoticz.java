@@ -51,7 +51,6 @@ import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
 import nl.hnogames.domoticzapi.Containers.UserVariableInfo;
-import nl.hnogames.domoticzapi.Interfaces.AuthReceiver;
 import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
 import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
@@ -86,7 +85,6 @@ import nl.hnogames.domoticzapi.Interfaces.VolleyErrorListener;
 import nl.hnogames.domoticzapi.Interfaces.WeatherReceiver;
 import nl.hnogames.domoticzapi.Interfaces.WifiSSIDListener;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticzapi.Parsers.AuthParser;
 import nl.hnogames.domoticzapi.Parsers.CameraParser;
 import nl.hnogames.domoticzapi.Parsers.ConfigParser;
 import nl.hnogames.domoticzapi.Parsers.DevicesParser;
@@ -364,8 +362,8 @@ public class Domoticz {
      *
      * @param receiver to get the callback on
      */
-    public void getUserAuthenticationRights(AuthReceiver receiver) {
-        AuthParser parser = new AuthParser(receiver);
+    public void getUserAuthenticationRights(LoginReceiver receiver) {
+        LoginParser parser = new LoginParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.AUTH);
         GetRequest(parser, url, true);
     }
@@ -640,8 +638,7 @@ public class Domoticz {
         url += UsefulBits.isEmpty(password) ? "&passcode=" : "&passcode=" + password;
 
         Log.v(TAG, "Action: " + url);
-        GetRequest(parser,
-                url, true);
+        GetRequest(parser, url, true);
     }
 
     @SuppressWarnings("SpellCheckingInspection")

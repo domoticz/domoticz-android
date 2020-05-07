@@ -92,6 +92,10 @@ public class LoginInfo implements Serializable {
         Status = status;
     }
 
+    public String getUser() {
+        return User;
+    }
+
     public String getVersion() {
         return Version;
     }
