@@ -501,8 +501,13 @@ public class Domoticz {
     }
 
     public void checkLogin(LoginReceiver loginReceiver) {
-        String username = UsefulBits.encodeBase64(getUserCredentials(Authentication.USERNAME));
-        String password = UsefulBits.getMd5String(getUserCredentials(Authentication.PASSWORD));
+        String baseUsername = getUserCredentials(Authentication.USERNAME);
+        String basePassword = getUserCredentials(Authentication.PASSWORD);
+        if(UsefulBits.isEmpty(baseUsername)||UsefulBits.isEmpty(basePassword))
+            loginReceiver.OnReceive(new LoginInfo());
+
+        String username = UsefulBits.encodeBase64(baseUsername);
+        String password = UsefulBits.getMd5String(basePassword);
         LoginParser parser = new LoginParser(loginReceiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NEWCHECKLOGIN);
         Log.v(TAG, "Url: " + url);
@@ -518,9 +523,13 @@ public class Domoticz {
     }
 
     public void checkLogin_oldMethod(LoginReceiver loginReceiver) {
-        String username = UsefulBits.encodeBase64(getUserCredentials(Authentication.USERNAME));
-        String password = UsefulBits.getMd5String(getUserCredentials(Authentication.PASSWORD));
+        String baseUsername = getUserCredentials(Authentication.USERNAME);
+        String basePassword = getUserCredentials(Authentication.PASSWORD);
+        if(UsefulBits.isEmpty(baseUsername)||UsefulBits.isEmpty(basePassword))
+            loginReceiver.OnReceive(new LoginInfo());
 
+        String username = UsefulBits.encodeBase64(baseUsername);
+        String password = UsefulBits.getMd5String(basePassword);
         LoginParser parser = new LoginParser(loginReceiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CHECKLOGIN);
 
@@ -532,8 +541,7 @@ public class Domoticz {
         }
 
         Log.v(TAG, "Url: " + url);
-        GetRequest(parser,
-                url, false);
+        GetRequest(parser, url, false);
     }
 
     public void getSwitches(SwitchesReceiver switchesReceiver) {
@@ -861,6 +869,7 @@ public class Domoticz {
 
     public void LogOff() {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LOGOFF);
+        mSessionUtil.clearSessionCookie();
         Log.i("LOGOFF", "url: " + url);
         GetRequest(new LogOffParser(), url, false);
     }
