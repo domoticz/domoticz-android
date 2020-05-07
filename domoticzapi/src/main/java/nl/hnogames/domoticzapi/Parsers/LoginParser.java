@@ -42,15 +42,18 @@ public class LoginParser implements JSONParserInterface {
     @Override
     public void parseResult(String result) {
         try {
-            JSONObject jsonObject = new JSONObject(result);
-            LoginInfo info = new LoginInfo(jsonObject);
-            if (info == null)
-                onError(new NullPointerException(
-                        "Not logged in Domoticz."));
-            else
-                loginReceiver.OnReceive(info);
-
-        } catch (JSONException e) {
+            if(result == null)
+                loginReceiver.OnReceive(new LoginInfo());
+            else {
+                JSONObject jsonObject = new JSONObject(result);
+                LoginInfo info = new LoginInfo(jsonObject);
+                if (info == null)
+                    onError(new NullPointerException(
+                            "Not logged in Domoticz."));
+                else
+                    loginReceiver.OnReceive(info);
+            }
+        } catch (Exception e) {
             Log.e(TAG, "LoginParser JSON exception");
             e.printStackTrace();
             loginReceiver.onError(e);

@@ -994,7 +994,7 @@ public class Domoticz {
             @Override
             public void onDone(JSONObject response) {
                 if (parser != null)
-                    parser.parseResult(response.toString());
+                    parser.parseResult(response!= null ? response.toString() : null);
             }
 
             @Override
@@ -1008,7 +1008,7 @@ public class Domoticz {
             @Override
             public void onDone(JSONObject response) {
                 if (parser != null)
-                    parser.parseResult(response.toString());
+                    parser.parseResult(response!= null ? response.toString() : null);
             }
 
             @Override

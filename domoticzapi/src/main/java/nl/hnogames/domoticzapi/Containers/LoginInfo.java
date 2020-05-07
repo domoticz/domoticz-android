@@ -38,6 +38,8 @@ public class LoginInfo implements Serializable {
     private String User;
     private String Version;
 
+    public LoginInfo(){}
+
     public LoginInfo(JSONObject row) throws JSONException {
         // this.setJsonObject(row);
         if (row.has("rights"))

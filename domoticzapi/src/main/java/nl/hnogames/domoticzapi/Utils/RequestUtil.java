@@ -167,8 +167,9 @@ public class RequestUtil {
                                         if (listener != null)
                                             listener.onDone(response);
                                     }
-                                } catch (JSONException ignored) {
-                                }
+                                } catch (JSONException ignored) {}
+                                if (listener != null)
+                                    listener.onDone(null);
                             }
                         }, new Response.ErrorListener() {
 
