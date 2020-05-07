@@ -509,28 +509,6 @@ public class Domoticz {
         String username = UsefulBits.encodeBase64(baseUsername);
         String password = UsefulBits.getMd5String(basePassword);
         LoginParser parser = new LoginParser(loginReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NEWCHECKLOGIN);
-        Log.v(TAG, "Url: " + url);
-
-        try {
-            Map<String, String> params = new HashMap<>();
-            params.put("username", URLEncoder.encode(username, "UTF-8"));
-            params.put("password", URLEncoder.encode(password, "UTF-8"));
-            PostRequest(parser, url, params, false);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void checkLogin_oldMethod(LoginReceiver loginReceiver) {
-        String baseUsername = getUserCredentials(Authentication.USERNAME);
-        String basePassword = getUserCredentials(Authentication.PASSWORD);
-        if(UsefulBits.isEmpty(baseUsername)||UsefulBits.isEmpty(basePassword))
-            loginReceiver.OnReceive(new LoginInfo());
-
-        String username = UsefulBits.encodeBase64(baseUsername);
-        String password = UsefulBits.getMd5String(basePassword);
-        LoginParser parser = new LoginParser(loginReceiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CHECKLOGIN);
 
         try {
