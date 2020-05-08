@@ -753,8 +753,7 @@ public class Domoticz {
         ConfigParser parser = new ConfigParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CONFIG);
         Log.v(TAG, url);
-        GetRequest(parser,
-                url, true);
+        GetRequest(parser, url, true);
     }
 
     public void getLanguageStringsFromServer(String language, LanguageReceiver receiver) {

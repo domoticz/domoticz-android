@@ -47,7 +47,6 @@ import nl.hnogames.domoticzapi.Interfaces.VolleyErrorListener;
 
 public class RequestUtil {
     private static final String TAG = RequestUtil.class.getSimpleName();
-
     public static void makeJsonGetRequest(@Nullable final VolleyErrorListener listener,
                                           final String url,
                                           final SessionUtil sessionUtil,
@@ -167,7 +166,8 @@ public class RequestUtil {
                                         if (listener != null)
                                             listener.onDone(response);
                                     }
-                                } catch (JSONException ignored) {}
+                                } catch (JSONException ignored) {
+                                }
                                 if (listener != null)
                                     listener.onDone(null);
                             }

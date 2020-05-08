@@ -35,8 +35,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -446,7 +444,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 if (!fromShortcut)
                     addFragment(true);
             }
-        }, mConfigInfo);
+        }, mConfigInfo, getServerUtil());
     }
 
     public void ShowLoading() {
