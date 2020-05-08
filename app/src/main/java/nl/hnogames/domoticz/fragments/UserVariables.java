@@ -159,7 +159,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     public void onUserVariableClick(final UserVariableInfo clickedVar) {
         UserInfo user = getCurrentUser(mContext, mDomoticz);
         if (user != null && user.getRights() <= 1) {
-            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
+            UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
             refreshFragment();
@@ -175,7 +175,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
                         if (validateInput(String.valueOf(input), clickedVar.getType())) {
                             updateUserVariable(String.valueOf(input), clickedVar);
                         } else {
-                            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input), Snackbar.LENGTH_SHORT);
+                            UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.var_input), Snackbar.LENGTH_SHORT);
                         }
                     }
                 }).show();
@@ -212,7 +212,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
 
             @Override
             public void onError(Exception error) {
-                UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.var_input_error), Snackbar.LENGTH_SHORT);
+                UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.var_input_error), Snackbar.LENGTH_SHORT);
             }
         });
         return true;

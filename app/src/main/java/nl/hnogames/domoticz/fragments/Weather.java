@@ -219,7 +219,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
 
         UserInfo user = getCurrentUser(mContext, mDomoticz);
         if (user != null && user.getRights() <= 1) {
-            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
+            UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
             refreshFragment();
@@ -228,11 +228,11 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         if (isFavorite) {
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.favorite_added);
-            UsefulBits.showSnackbar(mContext, coordinatorLayout, mWeatherInfo.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT);
+            UsefulBits.showSnackbar(mContext, frameLayout, mWeatherInfo.getName() + " " + mContext.getString(R.string.favorite_added), Snackbar.LENGTH_SHORT);
         } else {
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.favorite_removed);
-            UsefulBits.showSnackbar(mContext, coordinatorLayout, mWeatherInfo.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT);
+            UsefulBits.showSnackbar(mContext, frameLayout, mWeatherInfo.getName() + " " + mContext.getString(R.string.favorite_removed), Snackbar.LENGTH_SHORT);
         }
 
         int jsonAction;

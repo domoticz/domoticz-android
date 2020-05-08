@@ -547,7 +547,7 @@ public class UsefulBits {
     }
 
     @DebugLog
-    public static void showSnackbar(final Context context, CoordinatorLayout coordinatorLayout, final int message_resource_id, int length) {
+    public static void showSnackbar(final Context context, View coordinatorLayout, final int message_resource_id, int length) {
         try {
             if (context != null && coordinatorLayout != null)
                 showSnackbar(context, coordinatorLayout, context.getString(message_resource_id), length);
@@ -556,7 +556,7 @@ public class UsefulBits {
     }
 
     @DebugLog
-    public static void showSnackbar(Context context, CoordinatorLayout coordinatorLayout, final String message, int length) {
+    public static void showSnackbar(Context context, View coordinatorLayout, final String message, int length) {
         try {
             if (context != null && coordinatorLayout != null && !UsefulBits.isEmpty(message))
                 Snackbar.make(coordinatorLayout, message, length).show();
@@ -565,7 +565,7 @@ public class UsefulBits {
     }
 
     @DebugLog
-    public static void showSnackbarWithAction(Context context, CoordinatorLayout coordinatorLayout, final String message, int length,
+    public static void showSnackbarWithAction(Context context, View coordinatorLayout, final String message, int length,
                                               Snackbar.Callback callback,
                                               View.OnClickListener onclickListener, String actiontext) {
         try {

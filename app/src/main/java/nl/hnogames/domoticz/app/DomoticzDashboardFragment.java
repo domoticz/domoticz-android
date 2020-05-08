@@ -71,7 +71,7 @@ public class DomoticzDashboardFragment extends Fragment {
     public Domoticz mDomoticz;
     public SharedPrefUtil mSharedPrefs;
     public PhoneConnectionUtil mPhoneConnectionUtil;
-    public CoordinatorLayout coordinatorLayout;
+    public View frameLayout;
     public LinearLayout lySortDevices;
     public BackdropContainer backdropContainer;
     public MaterialCardView bottomLayoutWrapper;
@@ -149,7 +149,7 @@ public class DomoticzDashboardFragment extends Fragment {
         bottomLayoutWrapper = root.findViewById(R.id.bottomLayoutWrapper);
         lySortDevices = root.findViewById(R.id.lySortDevices);
         if (getActivity() instanceof MainActivity)
-            coordinatorLayout = ((MainActivity) getActivity()).coordinatorLayout;
+            frameLayout = ((MainActivity) getActivity()).frameLayout;
 
         sortStatic = root.findViewById(R.id.btnSortStatic);
         if (sortStatic != null) {
@@ -382,8 +382,8 @@ public class DomoticzDashboardFragment extends Fragment {
                 setErrorMessage(errorMessage);
             }
         } else {
-            if (coordinatorLayout != null) {
-                UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+            if (frameLayout != null) {
+                UsefulBits.showSnackbar(getContext(), frameLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
                 if (getActivity() instanceof MainActivity)
                     ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
             }

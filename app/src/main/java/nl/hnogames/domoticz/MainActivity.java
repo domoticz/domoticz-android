@@ -35,6 +35,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -82,7 +83,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.biometric.BiometricPrompt;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private ServerUtil mServerUtil;
     private SearchView searchViewAction;
     private CollapsingToolbarLayout toolbarLayout;
-    public CoordinatorLayout coordinatorLayout;
+    public FrameLayout frameLayout;
     public FloatingActionButton fabSort;
     private Toolbar toolbar;
     private ArrayList<String> stackFragments = new ArrayList<>();
@@ -233,7 +233,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         toolbarLayout.setCollapsedTitleTextColor(color);
         toolbarLayout.setExpandedTitleColor(color);
 
-        coordinatorLayout = findViewById(R.id.coordinatorLayout);
+        frameLayout = findViewById(R.id.main);
         if (!UsefulBits.checkPlayServicesAvailable(this))
             this.finish();
 
@@ -299,13 +299,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
             @DebugLog
             public void onDismiss(String password) {
                 if (UsefulBits.isEmpty(password)) {
-                    UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                    UsefulBits.showSnackbar(MainActivity.this, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                     Talk(R.string.security_wrong_code);
                 } else {
                     if (password.equals(domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD)))
                         return;
                     else {
-                        UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                        UsefulBits.showSnackbar(MainActivity.this, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                         Talk(R.string.security_wrong_code);
                     }
                 }
@@ -891,8 +891,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     public boolean onProfileChanged(View view, final IProfile profile, boolean current) {
                         if (!current) {
                             if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-                                if (getFragmentCoordinatorLayout() != null) {
-                                    Snackbar.make(getFragmentCoordinatorLayout(), getString(R.string.category_account) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
+                                if (frameLayout != null) {
+                                    Snackbar.make(frameLayout, getString(R.string.category_account) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
                                             .setAction(R.string.upgrade, new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View view) {
@@ -911,7 +911,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                                     @DebugLog
                                     public void onDismiss(String password) {
                                         if (UsefulBits.isEmpty(password)) {
-                                            UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                            UsefulBits.showSnackbar(MainActivity.this, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                                             Talk(R.string.security_wrong_code);
                                             drawNavigationMenu(finalConfig);
                                         } else {
@@ -923,7 +923,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                                                         domoticz.setUserCredentials(user.getUsername(), password);
                                                         initScreen();
                                                     } else {
-                                                        UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                                        UsefulBits.showSnackbar(MainActivity.this, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                                                         drawNavigationMenu(finalConfig);
                                                     }
                                                 }
@@ -1435,28 +1435,10 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     private void showSnackbar(String message) {
-        CoordinatorLayout layout = getFragmentCoordinatorLayout();
-        if (layout != null)
-            UsefulBits.showSnackbar(this, layout, message, Snackbar.LENGTH_SHORT);
+        if (frameLayout != null)
+            UsefulBits.showSnackbar(this, frameLayout, message, Snackbar.LENGTH_SHORT);
         else
             Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    @DebugLog
-    public CoordinatorLayout getFragmentCoordinatorLayout() {
-        CoordinatorLayout layout = null;
-        try {
-            Fragment f = latestFragment;
-            if (f != null) {
-                View v = f.getView();
-                if (v != null)
-                    layout = v.findViewById(R.id.coordinatorLayout);
-            }
-        } catch (Exception ex) {
-            Log.e(TAG, "Unable to get the coordinator layout of visible fragment");
-            ex.printStackTrace();
-        }
-        return layout;
     }
 
     private void stopCameraTimer() {

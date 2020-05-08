@@ -123,7 +123,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
                     public void onEventClick(final int idx, boolean action) {
                         UserInfo user = getCurrentUser(mContext, mDomoticz);
                         if (user != null && user.getRights() <= 1) {
-                            UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
+                            UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
                             if (getActivity() instanceof MainActivity)
                                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
                             refreshFragment();

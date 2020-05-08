@@ -139,11 +139,11 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     }
 
     @Override
-    public void errorHandling(Exception error, CoordinatorLayout coordinatorLayout) {
+    public void errorHandling(Exception error, View frameLayout) {
         if (error != null) {
             // Let's check if were still attached to an activity
             if (isAdded()) {
-                super.errorHandling(error, coordinatorLayout);
+                super.errorHandling(error, frameLayout);
             }
         }
     }
@@ -196,11 +196,11 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                                 processImage(savePic, cameraTitle.getText().toString());
                             }
                         } catch (Exception ex) {
-                            errorHandling(ex, coordinatorLayout);
+                            errorHandling(ex, frameLayout);
                         }
                     } else {
-                        if (coordinatorLayout != null) {
-                            UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+                        if (frameLayout != null) {
+                            UsefulBits.showSnackbar(getContext(), frameLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
                             if (getActivity() instanceof MainActivity)
                                 ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
                         }
@@ -321,14 +321,14 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
 
                         @Override
                         public void onError(Exception error) {
-                            errorHandling(error, coordinatorLayout);
+                            errorHandling(error, frameLayout);
                         }
                     });
                 }
 
                 @Override
                 public void onError(Exception error) {
-                    errorHandling(error, coordinatorLayout);
+                    errorHandling(error, frameLayout);
                 }
             });
         }
