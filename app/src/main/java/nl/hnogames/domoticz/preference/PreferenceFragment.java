@@ -243,7 +243,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                         @DebugLog
                         public void onError(Exception error) {
                         }
-                    }, mServerUtil.getActiveServer().getConfigInfo(mContext));
+                    }, mServerUtil.getActiveServer().getConfigInfo(mContext), mServerUtil);
                 }
 
                 @Override
@@ -387,7 +387,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                                 public void onError(Exception error) {
                                     showSnackbar(mContext.getString(R.string.fetched_server_config_failed));
                                 }
-                            }, null);
+                            }, null, mServerUtil);
                         }
 
                         @Override

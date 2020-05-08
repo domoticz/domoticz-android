@@ -24,28 +24,19 @@ package nl.hnogames.domoticzapi.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 import java.util.Map;
 
 public class SessionUtil {
-
     private static final String SET_COOKIE_KEY = "Set-Cookie";
     private static final String COOKIE_KEY = "Cookie";
-    private static final String OLD_SESSION_COOKIE = "DMZSID";
+    private static final String OLD_SESSION_COOKIE = "SID";
     private static final String NEW_SESSION_COOKIE = "DMZSID";
     private static final String COOKIE_EXPIRE_KEY = "CookieExpire";
     private static final String PREF_SESSION_COOKIE = "SID";
-    private static String SESSION_COOKIE = "SID";
-    private Context mContext;
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
 
     public SessionUtil(Context mContext) {
-        this.mContext = mContext;
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         editor = prefs.edit();
     }
@@ -62,18 +53,14 @@ public class SessionUtil {
      * @param headers Response Headers.
      */
     public final void checkSessionCookie(Map<String, String> headers) {
-        if (headers.containsKey(SET_COOKIE_KEY)
-                && (headers.get(SET_COOKIE_KEY).startsWith(OLD_SESSION_COOKIE) || headers.get(SET_COOKIE_KEY).startsWith(NEW_SESSION_COOKIE))) {
-            if (headers.get(SET_COOKIE_KEY).startsWith(NEW_SESSION_COOKIE))
-                SESSION_COOKIE = NEW_SESSION_COOKIE;
-
+        if (headers.containsKey(SET_COOKIE_KEY) &&
+                (headers.get(SET_COOKIE_KEY).startsWith(OLD_SESSION_COOKIE) || headers.get(SET_COOKIE_KEY).startsWith(NEW_SESSION_COOKIE))) {
             String cookie = headers.get(SET_COOKIE_KEY);
             String expires = "";
 
             if (cookie.length() > 0) {
                 String[] splitCookie = cookie.split(";");
-                String[] splitSessionId = splitCookie[0].split("=");
-                cookie = splitSessionId[1];
+                cookie = splitCookie[0];
                 editor.putString(PREF_SESSION_COOKIE, cookie);
                 editor.commit();
 
@@ -89,24 +76,6 @@ public class SessionUtil {
         }
     }
 
-    public Calendar parseStringToDate(String expires) {
-
-        if (UsefulBits.isEmpty(expires)) return null;
-
-        expires = expires.trim();
-
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z", Locale.US);
-
-        try {
-            cal.setTime(sdf.parse(expires));
-            return cal;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     /**
      * Adds session cookie to headers if exists.
      *
@@ -114,25 +83,14 @@ public class SessionUtil {
      */
     public final void addSessionCookie(Map<String, String> headers) {
         String sessionId = prefs.getString(PREF_SESSION_COOKIE, "");
-        String expires = prefs.getString(COOKIE_EXPIRE_KEY, "");
-
-        Calendar calExpired = parseStringToDate(expires);
-        if (calExpired != null) {
-            Calendar calNow = Calendar.getInstance();
-            if (calExpired.after(calNow)) {
-                //session id still valid!
-                if (sessionId.length() > 0) {
-                    StringBuilder builder = new StringBuilder();
-                    builder.append(SESSION_COOKIE);
-                    builder.append("=");
-                    builder.append(sessionId);
-                    if (headers.containsKey(COOKIE_KEY)) {
-                        builder.append("; ");
-                        builder.append(headers.get(COOKIE_KEY));
-                    }
-                    headers.put(COOKIE_KEY, builder.toString());
-                }
+        if (sessionId.length() > 0) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(sessionId);
+            if (headers.containsKey(COOKIE_KEY)) {
+                builder.append("; ");
+                builder.append(headers.get(COOKIE_KEY));
             }
+            headers.put(COOKIE_KEY, builder.toString());
         }
     }
 
@@ -140,23 +98,6 @@ public class SessionUtil {
      * Get session cookie to headers if exists.
      */
     public final String getSessionCookie() {
-        String sessionId = prefs.getString(PREF_SESSION_COOKIE, "");
-        String expires = prefs.getString(COOKIE_EXPIRE_KEY, "");
-
-        Calendar calExpired = parseStringToDate(expires);
-        if (calExpired != null) {
-            Calendar calNow = Calendar.getInstance();
-            if (calExpired.after(calNow)) {
-                //session id still valid!
-                if (sessionId.length() > 0) {
-                    StringBuilder builder = new StringBuilder();
-                    builder.append(SESSION_COOKIE);
-                    builder.append("=");
-                    builder.append(sessionId);
-                    return builder.toString();
-                }
-            }
-        }
-        return null;
+        return prefs.getString(PREF_SESSION_COOKIE, "");
     }
 }

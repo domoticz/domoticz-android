@@ -51,7 +51,6 @@ import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
 import nl.hnogames.domoticzapi.Containers.UserVariableInfo;
-import nl.hnogames.domoticzapi.Interfaces.AuthReceiver;
 import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
 import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
@@ -86,7 +85,6 @@ import nl.hnogames.domoticzapi.Interfaces.VolleyErrorListener;
 import nl.hnogames.domoticzapi.Interfaces.WeatherReceiver;
 import nl.hnogames.domoticzapi.Interfaces.WifiSSIDListener;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticzapi.Parsers.AuthParser;
 import nl.hnogames.domoticzapi.Parsers.CameraParser;
 import nl.hnogames.domoticzapi.Parsers.ConfigParser;
 import nl.hnogames.domoticzapi.Parsers.DevicesParser;
@@ -364,8 +362,8 @@ public class Domoticz {
      *
      * @param receiver to get the callback on
      */
-    public void getUserAuthenticationRights(AuthReceiver receiver) {
-        AuthParser parser = new AuthParser(receiver);
+    public void getUserAuthenticationRights(LoginReceiver receiver) {
+        LoginParser parser = new LoginParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.AUTH);
         GetRequest(parser, url, true);
     }
@@ -501,26 +499,13 @@ public class Domoticz {
     }
 
     public void checkLogin(LoginReceiver loginReceiver) {
-        String username = UsefulBits.encodeBase64(getUserCredentials(Authentication.USERNAME));
-        String password = UsefulBits.getMd5String(getUserCredentials(Authentication.PASSWORD));
-        LoginParser parser = new LoginParser(loginReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NEWCHECKLOGIN);
-        Log.v(TAG, "Url: " + url);
+        String baseUsername = getUserCredentials(Authentication.USERNAME);
+        String basePassword = getUserCredentials(Authentication.PASSWORD);
+        if(UsefulBits.isEmpty(baseUsername)||UsefulBits.isEmpty(basePassword))
+            loginReceiver.OnReceive(new LoginInfo());
 
-        try {
-            Map<String, String> params = new HashMap<>();
-            params.put("username", URLEncoder.encode(username, "UTF-8"));
-            params.put("password", URLEncoder.encode(password, "UTF-8"));
-            PostRequest(parser, url, params, false);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void checkLogin_oldMethod(LoginReceiver loginReceiver) {
-        String username = UsefulBits.encodeBase64(getUserCredentials(Authentication.USERNAME));
-        String password = UsefulBits.getMd5String(getUserCredentials(Authentication.PASSWORD));
-
+        String username = UsefulBits.encodeBase64(baseUsername);
+        String password = UsefulBits.getMd5String(basePassword);
         LoginParser parser = new LoginParser(loginReceiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CHECKLOGIN);
 
@@ -532,8 +517,7 @@ public class Domoticz {
         }
 
         Log.v(TAG, "Url: " + url);
-        GetRequest(parser,
-                url, false);
+        GetRequest(parser, url, false);
     }
 
     public void getSwitches(SwitchesReceiver switchesReceiver) {
@@ -654,8 +638,7 @@ public class Domoticz {
         url += UsefulBits.isEmpty(password) ? "&passcode=" : "&passcode=" + password;
 
         Log.v(TAG, "Action: " + url);
-        GetRequest(parser,
-                url, true);
+        GetRequest(parser, url, true);
     }
 
     @SuppressWarnings("SpellCheckingInspection")
@@ -770,8 +753,7 @@ public class Domoticz {
         ConfigParser parser = new ConfigParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CONFIG);
         Log.v(TAG, url);
-        GetRequest(parser,
-                url, true);
+        GetRequest(parser, url, true);
     }
 
     public void getLanguageStringsFromServer(String language, LanguageReceiver receiver) {
@@ -861,6 +843,7 @@ public class Domoticz {
 
     public void LogOff() {
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LOGOFF);
+        mSessionUtil.clearSessionCookie();
         Log.i("LOGOFF", "url: " + url);
         GetRequest(new LogOffParser(), url, false);
     }
@@ -994,7 +977,7 @@ public class Domoticz {
             @Override
             public void onDone(JSONObject response) {
                 if (parser != null)
-                    parser.parseResult(response.toString());
+                    parser.parseResult(response!= null ? response.toString() : null);
             }
 
             @Override
@@ -1008,7 +991,7 @@ public class Domoticz {
             @Override
             public void onDone(JSONObject response) {
                 if (parser != null)
-                    parser.parseResult(response.toString());
+                    parser.parseResult(response!= null ? response.toString() : null);
             }
 
             @Override
