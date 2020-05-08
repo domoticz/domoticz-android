@@ -499,6 +499,7 @@ public class Domoticz {
     }
 
     public void checkLogin(LoginReceiver loginReceiver) {
+        mSessionUtil.clearSessionCookie();
         String baseUsername = getUserCredentials(Authentication.USERNAME);
         String basePassword = getUserCredentials(Authentication.PASSWORD);
         if(UsefulBits.isEmpty(baseUsername)||UsefulBits.isEmpty(basePassword))
