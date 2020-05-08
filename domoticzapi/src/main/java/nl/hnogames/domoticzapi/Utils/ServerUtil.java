@@ -39,7 +39,6 @@ import java.util.List;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
 import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 
 public class ServerUtil {
 
@@ -285,18 +284,18 @@ public class ServerUtil {
         if (server == null || mServerList == null || mServerList.size() <= 0)
             return;
 
-            boolean found = false;
-            int i = 0;
-            for (ServerInfo s : mServerList) {
-                if (s.getServerName().equals(server.getServerName())) {
-                    found = true;
-                    break;
-                }
-                i++;
+        boolean found = false;
+        int i = 0;
+        for (ServerInfo s : mServerList) {
+            if (s.getServerName().equals(server.getServerName())) {
+                found = true;
+                break;
             }
-            if (found) {
-                mServerList.remove(i);
-            }
+            i++;
+        }
+        if (found) {
+            mServerList.remove(i);
+        }
         saveDomoticzServers(false);
     }
 

@@ -35,8 +35,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -371,49 +369,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 startActivityForResult(welcomeWizard, iWelcomeResultCode);
                 mSharedPrefs.setFirstStart(false);
             } else {
-                if (domoticz == null)
-                    domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
-
-                if (!fromVoiceWidget && !fromQRCodeWidget) {
-                    // Refresh login token
-                    domoticz.checkLogin(new LoginReceiver() {
-                        @Override
-                        public void OnReceive(LoginInfo mLoginInfo) {
-                            UsefulBits.getServerConfigForActiveServer(MainActivity.this, mLoginInfo, new ConfigReceiver() {
-                                @Override
-                                @DebugLog
-                                public void onReceiveConfig(ConfigInfo settings) {
-                                    if (MainActivity.this.mConfigInfo == null || settings == null || !MainActivity.this.mConfigInfo.toString().equals(settings.toString())) {
-                                        MainActivity.this.mConfigInfo = settings;
-                                        SerializableManager.saveSerializable(MainActivity.this, settings, "ConfigInfo");
-
-                                        setupMobileDevice();
-                                        setScheduledTasks();
-
-                                        WidgetUtils.RefreshWidgets(MainActivity.this);
-                                        drawNavigationMenu(mConfigInfo);
-                                        if (!fromShortcut)
-                                            addFragment(false);
-                                    }
-                                }
-
-                                @Override
-                                @DebugLog
-                                public void onError(Exception error) {
-                                    configException = error;
-                                    if (!fromShortcut)
-                                        addFragment(true);
-                                }
-                            }, mConfigInfo);
-                        }
-
-                        @Override
-                        public void onError(Exception error) {
-                            configException = error;
-                            addFragment(true);
-                        }
-                    });
-                }
+                GetDomoticzAuthAndConfig();
                 if (mSharedPrefs.isStartupSecurityEnabled()) {
                     biometricPrompt.authenticate(promptInfo);
                 }
@@ -424,6 +380,71 @@ public class MainActivity extends AppCompatPermissionsActivity {
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
+    }
+
+    private void GetDomoticzAuthAndConfig() {
+        if (domoticz == null)
+            domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
+        if (!fromVoiceWidget && !fromQRCodeWidget) {
+            // Refresh login token
+            domoticz.checkLogin(new LoginReceiver() {
+                @Override
+                public void OnReceive(LoginInfo mLoginInfo) {
+                    if(mLoginInfo == null || mLoginInfo.getStatus() == null)
+                    {
+                        domoticz.getUserAuthenticationRights(new LoginReceiver() {
+                            @Override
+                            public void OnReceive(LoginInfo mLoginInfo) {
+                                GetServerConfig(mLoginInfo);
+                            }
+
+                            @Override
+                            public void onError(Exception error) {
+                                configException = error;
+                                addFragment(true);
+                            }
+                        });
+                    }
+                    else
+                        GetServerConfig(mLoginInfo);
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    configException = error;
+                    addFragment(true);
+                }
+            });
+        }
+    }
+
+    private void GetServerConfig(LoginInfo mLoginInfo) {
+        UsefulBits.getServerConfigForActiveServer(MainActivity.this, mLoginInfo, new ConfigReceiver() {
+            @Override
+            @DebugLog
+            public void onReceiveConfig(ConfigInfo settings) {
+                if (MainActivity.this.mConfigInfo == null || settings == null || !MainActivity.this.mConfigInfo.toString().equals(settings.toString())) {
+                    MainActivity.this.mConfigInfo = settings;
+                    SerializableManager.saveSerializable(MainActivity.this, settings, "ConfigInfo");
+
+                    setupMobileDevice();
+                    setScheduledTasks();
+
+                    WidgetUtils.RefreshWidgets(MainActivity.this);
+                    drawNavigationMenu(mConfigInfo);
+                    if (!fromShortcut)
+                        addFragment(false);
+                }
+            }
+
+            @Override
+            @DebugLog
+            public void onError(Exception error) {
+                configException = error;
+                if (!fromShortcut)
+                    addFragment(true);
+            }
+        }, mConfigInfo, getServerUtil());
     }
 
     public void ShowLoading() {

@@ -433,17 +433,18 @@ public class UsefulBits {
      * @param context Context
      */
     @DebugLog
-    public static void getServerConfigForActiveServer(final Context context, final LoginInfo loginInfo, final ConfigReceiver receiver, final ConfigInfo currentConfig) {
-        final ServerUtil mServerUtil = new ServerUtil(context);
+    public static void getServerConfigForActiveServer(final Context context, final LoginInfo loginInfo, final ConfigReceiver receiver, final ConfigInfo currentConfig, final ServerUtil serverUtil) {
+        ServerUtil mServerUtil = serverUtil;
+        if (mServerUtil == null)
+            mServerUtil = new ServerUtil(context);
         final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
-
-        // Get Domoticz server configuration
+        final ServerUtil finalMServerUtil = mServerUtil;
         domoticz.getConfig(new ConfigReceiver() {
             @Override
             @DebugLog
             public void onReceiveConfig(final ConfigInfo configInfo) {
                 if (configInfo != null)
-                    GetServerUserInfo(domoticz, loginInfo, mServerUtil, context, configInfo, currentConfig, receiver);
+                    GetServerUserInfo(domoticz, loginInfo, finalMServerUtil, context, configInfo, currentConfig, receiver);
             }
 
             @Override

@@ -56,7 +56,7 @@ public class TaskService extends GcmTaskService {
             final boolean forceUpdate = true;
             // Force update
             //noinspection ConstantConditions
-            UsefulBits.getServerConfigForActiveServer(this, null, null, null);
+            UsefulBits.getServerConfigForActiveServer(this, null, null, null, null);
             //noinspection ConstantConditions
             UsefulBits.checkDownloadedLanguage(this, null, forceUpdate, true);
             resetGeofenceService(this);
