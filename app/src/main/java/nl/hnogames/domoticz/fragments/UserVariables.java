@@ -124,7 +124,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
                 adapter.notifyDataSetChanged();
                 alphaSlideIn.notifyDataSetChanged();
             }
-            if(!isTablet && !itemDecorationAdded) {
+            if (!isTablet && !itemDecorationAdded) {
                 gridView.addItemDecoration(new MarginItemDecoration(20));
                 itemDecorationAdded = true;
             }

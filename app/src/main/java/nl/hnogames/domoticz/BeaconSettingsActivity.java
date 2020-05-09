@@ -139,7 +139,7 @@ public class BeaconSettingsActivity extends AppCompatPermissionsActivity impleme
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 BeaconInfo beacon = beaconList.get(position);
-                if(beacon.getSwitchIdx()>0) {
+                if (beacon.getSwitchIdx() > 0) {
                     beacon.setSwitchIdx(0);
                     beacon.setSwitchName(null);
                     beacon.setSwitchPassword(null);
@@ -147,8 +147,7 @@ public class BeaconSettingsActivity extends AppCompatPermissionsActivity impleme
                     updateBeacon(beacon);
                     UsefulBits.showSnackbar(BeaconSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
                     adapter.notifyDataSetChanged();
-                }
-                else
+                } else
                     getSwitchesAndShowSwitchesDialog(beaconList.get(position));
                 return true;
             }
@@ -357,8 +356,7 @@ public class BeaconSettingsActivity extends AppCompatPermissionsActivity impleme
                                 showBeacons();
                             else
                                 permissionHelper.request(PermissionsUtil.BACKGROUND_LOCATION_PERMS);
-                        }
-                        else
+                        } else
                             showBeacons();
                     } else
                         permissionHelper.request(PermissionsUtil.INITIAL_BEACON_PERMS);
@@ -391,8 +389,7 @@ public class BeaconSettingsActivity extends AppCompatPermissionsActivity impleme
                     showBeacons();
                 else
                     permissionHelper.request(PermissionsUtil.BACKGROUND_LOCATION_PERMS);
-            }
-            else
+            } else
                 showBeacons();
         }
     }

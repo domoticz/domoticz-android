@@ -39,7 +39,6 @@ import java.util.List;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -81,7 +80,7 @@ public class DomoticzCardFragment extends Fragment {
 
     public void setSortFab(boolean visible) {
         if (getActivity() instanceof MainActivity) {
-            if(((MainActivity) getActivity()).fabSort != null)
+            if (((MainActivity) getActivity()).fabSort != null)
                 ((MainActivity) getActivity()).fabSort.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
     }

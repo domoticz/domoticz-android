@@ -299,9 +299,9 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     private void setSsid_spinner() {
         final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
         final ArrayList<String> ssids = new ArrayList<>();
-        if(newServer != null) {
+        if (newServer != null) {
             Set<String> ssidFromPrefs = newServer.getLocalServerSsid();
-             //noinspection SpellCheckingInspection
+            //noinspection SpellCheckingInspection
             if (ssidFromPrefs != null) {
                 if (ssidFromPrefs.size() > 0) {
                     for (String wifi : ssidFromPrefs) {

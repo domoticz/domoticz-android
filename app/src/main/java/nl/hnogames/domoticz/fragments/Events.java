@@ -149,7 +149,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
                 });
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
-                if(!isTablet && !itemDecorationAdded) {
+                if (!isTablet && !itemDecorationAdded) {
                     gridView.addItemDecoration(new MarginItemDecoration(20));
                     itemDecorationAdded = true;
                 }

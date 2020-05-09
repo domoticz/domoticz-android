@@ -132,13 +132,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private final int iSettingsResultCode = 995;
     public boolean onPhone;
     public Exception configException;
+    public FrameLayout frameLayout;
+    public FloatingActionButton fabSort;
     private SharedPrefUtil mSharedPrefs;
     private String TAG = MainActivity.class.getSimpleName();
     private ServerUtil mServerUtil;
     private SearchView searchViewAction;
     private CollapsingToolbarLayout toolbarLayout;
-    public FrameLayout frameLayout;
-    public FloatingActionButton fabSort;
     private Toolbar toolbar;
     private ArrayList<String> stackFragments = new ArrayList<>();
     private Domoticz domoticz;
@@ -249,8 +249,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     public void setActionbar(String title) {
-        if(toolbarLayout != null) {
-                      toolbarLayout.setTitle(title);
+        if (toolbarLayout != null) {
+            toolbarLayout.setTitle(title);
             toolbarLayout.animate();
         }
     }
@@ -369,11 +369,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 startActivityForResult(welcomeWizard, iWelcomeResultCode);
                 mSharedPrefs.setFirstStart(false);
             } else {
-                GetDomoticzAuthAndConfig();
-                if (mSharedPrefs.isStartupSecurityEnabled()) {
-                    biometricPrompt.authenticate(promptInfo);
+                if (!fromVoiceWidget && !fromQRCodeWidget) {
+                    GetDomoticzAuthAndConfig();
+                    if (mSharedPrefs.isStartupSecurityEnabled()) {
+                        biometricPrompt.authenticate(promptInfo);
+                    }
+                    drawNavigationMenu(null);
                 }
-                drawNavigationMenu(null);
             }
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
@@ -385,37 +387,30 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private void GetDomoticzAuthAndConfig() {
         if (domoticz == null)
             domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
-        if (!fromVoiceWidget && !fromQRCodeWidget) {
-            // Refresh login token
-            domoticz.checkLogin(new LoginReceiver() {
-                @Override
-                public void OnReceive(LoginInfo mLoginInfo) {
-                    if(mLoginInfo == null || mLoginInfo.getStatus() == null)
-                    {
-                        domoticz.getUserAuthenticationRights(new LoginReceiver() {
-                            @Override
-                            public void OnReceive(LoginInfo mLoginInfo) {
-                                GetServerConfig(mLoginInfo);
-                            }
-
-                            @Override
-                            public void onError(Exception error) {
-                                configException = error;
-                                addFragment(true);
-                            }
-                        });
-                    }
-                    else
+        // Refresh login token
+        domoticz.checkLogin(new LoginReceiver() {
+            @Override
+            public void OnReceive(LoginInfo logInfo) {
+                domoticz.getUserAuthenticationRights(new LoginReceiver() {
+                    @Override
+                    public void OnReceive(LoginInfo mLoginInfo) {
                         GetServerConfig(mLoginInfo);
-                }
+                    }
 
-                @Override
-                public void onError(Exception error) {
-                    configException = error;
-                    addFragment(true);
-                }
-            });
-        }
+                    @Override
+                    public void onError(Exception error) {
+                        configException = error;
+                        addFragment(true);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Exception error) {
+                configException = error;
+                addFragment(true);
+            }
+        });
     }
 
     private void GetServerConfig(LoginInfo mLoginInfo) {
@@ -427,13 +422,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     MainActivity.this.mConfigInfo = settings;
                     SerializableManager.saveSerializable(MainActivity.this, settings, "ConfigInfo");
 
-                    setupMobileDevice();
-                    setScheduledTasks();
-
-                    WidgetUtils.RefreshWidgets(MainActivity.this);
                     drawNavigationMenu(mConfigInfo);
                     if (!fromShortcut)
                         addFragment(false);
+
+                    setupMobileDevice();
+                    setScheduledTasks();
+                    WidgetUtils.RefreshWidgets(MainActivity.this);
                 }
             }
 

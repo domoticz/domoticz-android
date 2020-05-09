@@ -180,7 +180,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                     mItemTouchHelper.attachToRecyclerView(null);
             }
 
-            if(!isTablet && !itemDecorationAdded) {
+            if (!isTablet && !itemDecorationAdded) {
                 gridView.addItemDecoration(new MarginItemDecoration(20));
                 itemDecorationAdded = true;
             }

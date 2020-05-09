@@ -37,7 +37,7 @@ android {
         defaultConfig {
             versionCode version_Code
             versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
-            minSdkVersion 16
+            minSdkVersion 19
             targetSdkVersion 29
             multiDexEnabled true
             wearAppUnbundled true

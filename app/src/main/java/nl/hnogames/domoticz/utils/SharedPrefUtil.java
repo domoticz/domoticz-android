@@ -1141,7 +1141,6 @@ public class SharedPrefUtil {
         List<LocationInfo> locations = getLocations();
         if (locations == null)
             locations = new ArrayList<>();
-
         int i = 0;
         for (LocationInfo l : locations) {
             if (l.getID() == location.getID()) {

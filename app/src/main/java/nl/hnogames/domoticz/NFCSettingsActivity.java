@@ -217,7 +217,7 @@ public class NFCSettingsActivity extends AppCompatAssistActivity implements NFCC
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 NFCInfo nfcDevice = nfcList.get(position);
-                if(nfcDevice.getSwitchIdx()>0) {
+                if (nfcDevice.getSwitchIdx() > 0) {
                     nfcDevice.setSwitchIdx(0);
                     nfcDevice.setSwitchName(null);
                     nfcDevice.setValue(null);
@@ -225,8 +225,7 @@ public class NFCSettingsActivity extends AppCompatAssistActivity implements NFCC
                     updateNFC(nfcDevice);
                     UsefulBits.showSnackbar(NFCSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
                     adapter.notifyDataSetChanged();
-                }
-                else
+                } else
                     getSwitchesAndShowSwitchesDialog(nfcDevice);
                 return true;
             }

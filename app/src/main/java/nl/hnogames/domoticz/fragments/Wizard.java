@@ -45,7 +45,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import hugo.weaving.DebugLog;
@@ -98,7 +97,7 @@ public class Wizard extends Fragment {
         if (getActivity() instanceof MainActivity)
             ((MainActivity) getActivity()).setActionbar(getString(R.string.title_wizard));
         if (getActivity() instanceof MainActivity) {
-            if(((MainActivity) getActivity()).fabSort != null)
+            if (((MainActivity) getActivity()).fabSort != null)
                 ((MainActivity) getActivity()).fabSort.setVisibility(View.GONE);
         }
     }

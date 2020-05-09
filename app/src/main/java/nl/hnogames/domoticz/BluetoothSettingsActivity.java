@@ -160,7 +160,7 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 BluetoothInfo bluetooth = BluetoothList.get(position);
-                if(bluetooth.getSwitchIdx()>0) {
+                if (bluetooth.getSwitchIdx() > 0) {
                     bluetooth.setSwitchIdx(0);
                     bluetooth.setSwitchName(null);
                     bluetooth.setValue(null);
@@ -168,8 +168,7 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
                     updateBluetooth(bluetooth);
                     UsefulBits.showSnackbar(BluetoothSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
                     adapter.notifyDataSetChanged();
-                }
-                else
+                } else
                     getSwitchesAndShowSwitchesDialog(bluetooth);
                 return true;
             }

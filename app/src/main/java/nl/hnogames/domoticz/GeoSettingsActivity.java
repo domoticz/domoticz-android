@@ -280,7 +280,7 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 LocationInfo location = locations.get(position);
-                if(location.getSwitchIdx()>0) {
+                if (location.getSwitchIdx() > 0) {
                     location.setSwitchIdx(0);
                     location.setSwitchName(null);
                     location.setValue(null);
@@ -288,8 +288,7 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                     mSharedPrefs.updateLocation(location);
                     UsefulBits.showSnackbar(GeoSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
                     adapter.notifyDataSetChanged();
-                }
-                else
+                } else
                     getSwitchesAndShowSwitchesDialog(locations.get(position));
                 return true;
             }

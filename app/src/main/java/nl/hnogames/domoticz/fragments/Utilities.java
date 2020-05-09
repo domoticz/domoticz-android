@@ -179,7 +179,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 if (mItemTouchHelper != null)
                     mItemTouchHelper.attachToRecyclerView(null);
             }
-            if(!isTablet && !itemDecorationAdded) {
+            if (!isTablet && !itemDecorationAdded) {
                 gridView.addItemDecoration(new MarginItemDecoration(20));
                 itemDecorationAdded = true;
             }

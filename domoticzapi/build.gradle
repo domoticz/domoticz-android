@@ -54,7 +54,7 @@ android {
         defaultConfig {
             versionCode version_Code
             versionName "${versionMajor}.${versionMinor}.${versionPatch}"
-            minSdkVersion 16
+            minSdkVersion 19
             targetSdkVersion 29
         }
     }
