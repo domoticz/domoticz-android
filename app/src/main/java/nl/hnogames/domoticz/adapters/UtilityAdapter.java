@@ -250,10 +250,17 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             }
         }
         if (mUtilitiesInfo.getCounterToday() != null && mUtilitiesInfo.getCounterToday().length() > 0)
-            holder.data.append(" " + context.getString(R.string.today) + ": " + mUtilitiesInfo.getCounterToday());
+            holder.data.append("\r\n" + context.getString(R.string.today) + ": " + mUtilitiesInfo.getCounterToday());
         if (mUtilitiesInfo.getCounter() != null && mUtilitiesInfo.getCounter().length() > 0 &&
                 !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
             holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounter());
+
+        if (mUtilitiesInfo.getCounterDelivToday() != null && mUtilitiesInfo.getCounterDelivToday().length() > 0) {
+            holder.data.append("\r\n" + context.getString(R.string.delivery) + " " + context.getString(R.string.today) + ": " + mUtilitiesInfo.getCounterDelivToday());
+            if (mUtilitiesInfo.getCounterDeliv() != null && mUtilitiesInfo.getCounterDeliv().length() > 0 &&
+                    !mUtilitiesInfo.getCounterDeliv().equals(mUtilitiesInfo.getData()))
+                holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounterDeliv());
+        }
 
         holder.dayButton.setId(mUtilitiesInfo.getIdx());
         holder.dayButton.setOnClickListener(new View.OnClickListener() {

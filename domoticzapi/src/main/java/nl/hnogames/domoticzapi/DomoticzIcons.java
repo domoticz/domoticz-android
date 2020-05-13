@@ -137,8 +137,12 @@ public class DomoticzIcons {
                 else
                     return R.drawable.cooling;
             case "counter":
-                if (Type != null && Type.length() > 0 && Type.equals("P1 Smart Meter"))
-                    return R.drawable.wall;
+                if (Type != null && Type.length() > 0 && Type.contains("Smart Meter")) {
+                    if(switchType != null && switchType.length() > 0 && switchType.contains("Gas"))
+                        return R.drawable.gas;
+                    else
+                        return R.drawable.meter;
+                }
                 else
                     return R.drawable.up;
             case "visibility":

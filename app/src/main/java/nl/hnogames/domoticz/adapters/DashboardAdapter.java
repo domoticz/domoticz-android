@@ -403,6 +403,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.signal_level.setText(text);
             }
 
+            boolean setAlphaIcon = true;
             if (holder.switch_battery_level != null) {
                 text = context.getString(R.string.status)
                         + ": "
@@ -410,6 +411,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.switch_battery_level.setText(text);
                 if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0) {
                     try {
+                        setAlphaIcon = false;
                         int usage = Integer.parseInt(mDeviceInfo.getUsage().replace("Watt", "").trim());
                         if (mDeviceInfo.getUsageDeliv() != null && mDeviceInfo.getUsageDeliv().length() > 0) {
                             int usagedel = Integer.parseInt(mDeviceInfo.getUsageDeliv().replace("Watt", "").trim());
@@ -425,22 +427,37 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     }
                 }
 
-                if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0)
-                    holder.switch_battery_level.append(" " + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
+                if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0) {
+                    setAlphaIcon = false;
+                    holder.switch_battery_level.append("\r\n" + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
+                }
                 if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&
                         !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
                     holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
+
+                if (mDeviceInfo.getCounterDelivToday() != null && mDeviceInfo.getCounterDelivToday().length() > 0) {
+                    setAlphaIcon = false;
+                    holder.switch_battery_level.append("\r\n" + context.getString(R.string.delivery) + " " + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterDelivToday());
+                    if (mDeviceInfo.getCounterDeliv() != null && mDeviceInfo.getCounterDeliv().length() > 0 &&
+                            !mDeviceInfo.getCounterDeliv().equals(mDeviceInfo.getData()))
+                        holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounterDeliv());
+                }
+
                 if (mDeviceInfo.getType() != null && mDeviceInfo.getType().length() > 0 &&
                         mDeviceInfo.getType().equals("Wind")) {
+                    setAlphaIcon = false;
                     text = context.getString(R.string.direction) + " " + mDeviceInfo.getDirection() + " " + mDeviceInfo.getDirectionStr();
                     holder.switch_battery_level.setText(text);
                 }
                 if (!UsefulBits.isEmpty(mDeviceInfo.getRain())) {
+                    setAlphaIcon = false;
                     text = context.getString(R.string.rain) + ": " + mDeviceInfo.getRain();
                     holder.switch_battery_level.setText(text);
                 }
-                if (!UsefulBits.isEmpty(mDeviceInfo.getRainRate()))
+                if (!UsefulBits.isEmpty(mDeviceInfo.getRainRate())) {
+                    setAlphaIcon = false;
                     holder.switch_battery_level.append(", " + context.getString(R.string.rainrate) + ": " + mDeviceInfo.getRainRate());
+                }
                 if (!UsefulBits.isEmpty(mDeviceInfo.getForecastStr()))
                     holder.switch_battery_level.setText(mDeviceInfo.getForecastStr());
                 if (!UsefulBits.isEmpty(mDeviceInfo.getSpeed()))
@@ -450,6 +467,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
                 if ((mDeviceInfo.getType() != null && mDeviceInfo.getType().equals(DomoticzValues.Device.Type.Value.TEMP)) ||
                         !Double.isNaN(mDeviceInfo.getTemperature())) {
+                    setAlphaIcon = false;
                     holder.switch_battery_level.append(", " + context.getString(R.string.temp) + ": " + mDeviceInfo.getTemperature() + " " + tempSign);
                     holder.pieView.setVisibility(View.VISIBLE);
                     double temp = mDeviceInfo.getTemperature();
@@ -481,7 +499,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.switch_battery_level.append(", " + context.getString(R.string.humidity) + ": " + mDeviceInfo.getHumidityStatus());
             }
 
+            if (mDeviceInfo.getTypeImg().equals("counter") || mDeviceInfo.getTypeImg().equals("current"))
+                setAlphaIcon = false;
             if (mDeviceInfo.getTypeImg().equals("temperature")) {
+                setAlphaIcon = false;
                 if ((!UsefulBits.isEmpty(tempSign) && tempSign.equals("C") && mDeviceInfo.getTemperature() < 0) ||
                         (!UsefulBits.isEmpty(tempSign) && tempSign.equals("F") && mDeviceInfo.getTemperature() < 30)) {
                     Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
@@ -508,10 +529,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             }
 
             holder.iconRow.setAlpha(1f);
-            if (!mDeviceInfo.getStatusBoolean())
-                holder.iconRow.setAlpha(0.5f);
-            else
-                holder.iconRow.setAlpha(1f);
+            if(setAlphaIcon) {
+                if (!mDeviceInfo.getStatusBoolean())
+                    holder.iconRow.setAlpha(0.5f);
+                else
+                    holder.iconRow.setAlpha(1f);
+            }
         } catch (Exception ex) {
             Log.e("ADAPTER", ex.getMessage());
         }

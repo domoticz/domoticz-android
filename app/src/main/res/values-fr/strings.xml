@@ -71,7 +71,7 @@
     <string name="action_success">Action succes</string>
     <string name="action_failed">Action échec</string>
     <string name="action_unknown">Action resultat inconnu</string>
-    <string name="choose_status">Choisissez l\'État</string>
+    <string name="choose_status">Choisissez l\'état</string>
     <string name="normal">Normal</string>
     <string name="economy">Économie</string>
     <string name="away">Absent</string>
@@ -102,7 +102,7 @@
     <string name="switch_off">Éteindre</string>
     <string name="switch_night">Basculer vers la lumière nocturne</string>
     <string name="switch_full">Basculer vers la lumière maximale</string>
-    <string name="switch_connection_removed">Switch connection removed.</string>
+    <string name="switch_connection_removed">Liaison à l\'interrupteur supprimée.</string>
     <string name="blind_up">Ouvrir les stores</string>
     <string name="blind_down">Fermer les stores</string>
     <string name="blind_stop">Arrêter les stores</string>
@@ -133,5 +133,5 @@
     <string name="use_demo_setup">Utiliser la configuration de démonstration</string>
     <string name="auto_refresh_time">Intervalle d\'actualisation</string>
     <string name="set_auto_refresh_time">Définir un intervalle de temps en secondes pour l\'actualisation automatique</string>
-    <string name="error_authentication_basicauth">IMPORTANT: Please check if your Domoticz system uses Login Page as the authentication method. Basic Auth is going to be removed from Domoticz from next update!</string>
+    <string name="error_authentication_basicauth">IMPORTANT : Veuillez vérifier si votre système Domoticz utilise la page de connexion comme méthode d\'authentification. L\'authentification basique va être retirée de Domoticz lors de la prochaine mise à jour !</string>
 </resources>

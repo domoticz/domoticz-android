@@ -49,6 +49,8 @@ public class UtilitiesInfo implements Comparable, Serializable {
     private String TypeImg;
     private String CounterToday;
     private String Counter;
+    private String CounterDelivToday;
+    private String CounterDeliv;
     private String Usage;
     private String UsageDeliv;
     private int signalLevel;
@@ -85,6 +87,10 @@ public class UtilitiesInfo implements Comparable, Serializable {
             Counter = row.getString("Counter");
         if (row.has("CounterToday"))
             CounterToday = row.getString("CounterToday");
+        if (row.has("CounterDeliv"))
+            CounterDeliv = row.getString("CounterDeliv");
+        if (row.has("CounterDelivToday"))
+            CounterDelivToday = row.getString("CounterDelivToday");
         if (row.has("Usage"))
             Usage = row.getString("Usage");
         if (row.has("UsageDeliv"))
@@ -140,10 +146,6 @@ public class UtilitiesInfo implements Comparable, Serializable {
         return Description;
     }
 
-    public String getCounter() {
-        return Counter;
-    }
-
     public String getUsage() {
         return Usage;
     }
@@ -152,8 +154,20 @@ public class UtilitiesInfo implements Comparable, Serializable {
         return UsageDeliv;
     }
 
+    public String getCounter() {
+        return Counter;
+    }
+
     public String getCounterToday() {
         return CounterToday;
+    }
+
+    public String getCounterDeliv() {
+        return CounterDeliv;
+    }
+
+    public String getCounterDelivToday() {
+        return CounterDelivToday;
     }
 
     public String getTypeImg() {

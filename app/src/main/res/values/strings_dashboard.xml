@@ -25,6 +25,7 @@
 
     <string name="title_dashboard">Dashboard</string>
 
+    <string name="delivery">Delivery</string>
     <string name="usage">Usage</string>
     <string name="today">Today</string>
     <string name="total">Total</string>
