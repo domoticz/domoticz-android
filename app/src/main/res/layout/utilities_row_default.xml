@@ -83,25 +83,25 @@
                     tools:text="Utility name" />
 
                 <TextView
-                    android:id="@+id/utilities_hardware"
-                    style="@style/row_body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/utilities_name"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
-                    android:text="@string/hardware" />
-
-                <TextView
                     android:id="@+id/utilities_data"
                     style="@style/row_body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/utilities_hardware"
+                    android:layout_below="@+id/utilities_name"
                     android:layout_marginBottom="5dp"
                     android:text="@string/data"
-                    android:textSize="8sp"
                     android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/utilities_hardware"
+                    style="@style/row_body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/utilities_data"
+                    android:textSize="8sp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/hardware" />
             </LinearLayout>
 
             <LinearLayout

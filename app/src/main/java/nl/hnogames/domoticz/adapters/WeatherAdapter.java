@@ -134,7 +134,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.weather_row_default, parent, false);
-
         return new DataObjectHolder(view);
     }
 

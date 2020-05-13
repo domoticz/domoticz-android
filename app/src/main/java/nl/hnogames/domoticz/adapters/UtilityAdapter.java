@@ -387,8 +387,8 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             }
         });
         holder.name.setText(mUtilitiesInfo.getName());
-        holder.data.setText(mUtilitiesInfo.getLastUpdate());
-        holder.hardware.setText(context.getString(R.string.set_point) + ": " + setPoint);
+        holder.hardware.setText(mUtilitiesInfo.getLastUpdate());
+        holder.data.setText(context.getString(R.string.set_point) + ": " + setPoint);
         Picasso.get().load(DomoticzIcons.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
     }
 
