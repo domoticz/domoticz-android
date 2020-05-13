@@ -341,6 +341,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 .replace("Lux", "counter")
                 .replace("BWR102", "counter")
                 .replace("Sound Level", "counter")
+                .replace("Moisture", "counter")
                 .replace("Managed Counter", "counter")
                 .replace("Pressure", "counter")
                 .replace("Custom Sensor", "Percentage")
