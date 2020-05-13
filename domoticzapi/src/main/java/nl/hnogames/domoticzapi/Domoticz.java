@@ -895,7 +895,11 @@ public class Domoticz {
                 checkLogin(new LoginReceiver() {
                     @Override
                     public void OnReceive(LoginInfo mLoginInfo) {
-                        RequestUtil.makeJsonGetRequest(defaultListener, url, mSessionUtil, queue);
+                        RequestUtil.makeJsonGetRequest(defaultListener, url, mSessionUtil,
+                                getUserCredentials(Authentication.USERNAME),
+                                getUserCredentials(Authentication.PASSWORD),
+                                false,
+                                queue);
                     }
 
                     @Override
@@ -908,7 +912,10 @@ public class Domoticz {
         };
 
         RequestUtil.makeJsonGetRequest(retry ? listener : defaultListener,
-                url, mSessionUtil, queue);
+                url, mSessionUtil,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                false, queue);
     }
 
     private void GetResultRequest(@Nullable final JSONParserInterface parser,
@@ -954,7 +961,10 @@ public class Domoticz {
                     @Override
                     public void OnReceive(LoginInfo mLoginInfo) {
                         RequestUtil.makeJsonGetResultRequest(defaultListener,
-                                url, mSessionUtil, queue);
+                                url, mSessionUtil,
+                                getUserCredentials(Authentication.USERNAME),
+                                getUserCredentials(Authentication.PASSWORD),
+                                false, queue);
                     }
 
                     @Override
@@ -967,7 +977,10 @@ public class Domoticz {
         };
 
         RequestUtil.makeJsonGetResultRequest(retry ? listener : defaultListener,
-                url, mSessionUtil, queue);
+                url, mSessionUtil,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                false, queue);
     }
 
     private void PostRequest(@Nullable final JSONParserInterface parser,
@@ -1002,7 +1015,10 @@ public class Domoticz {
                     @Override
                     public void OnReceive(LoginInfo mLoginInfo) {
                         RequestUtil.makeJsonPostRequest(defaultListener,
-                                url, params, mSessionUtil, queue);
+                                url, params, mSessionUtil,
+                                getUserCredentials(Authentication.USERNAME),
+                                getUserCredentials(Authentication.PASSWORD),
+                                false, queue);
                     }
 
                     @Override
@@ -1015,7 +1031,11 @@ public class Domoticz {
         };
 
         RequestUtil.makeJsonPostRequest(retry ? listener : defaultListener,
-                url, params, mSessionUtil, queue);
+                url, params, mSessionUtil,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                false,
+                queue);
     }
 
     public File saveSnapShot(Bitmap bitmap, String name) {

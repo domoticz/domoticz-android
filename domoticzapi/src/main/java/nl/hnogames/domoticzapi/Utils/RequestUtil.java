@@ -21,6 +21,7 @@
 
 package nl.hnogames.domoticzapi.Utils;
 
+import android.util.Base64;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -50,6 +51,9 @@ public class RequestUtil {
     public static void makeJsonGetRequest(@Nullable final VolleyErrorListener listener,
                                           final String url,
                                           final SessionUtil sessionUtil,
+                                          final String username,
+                                          final String password,
+                                          final boolean useBasicAuth,
                                           final RequestQueue queue) {
 
         JsonObjectRequest jsonObjReq =
@@ -64,9 +68,20 @@ public class RequestUtil {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        errorHandling(volleyError);
-                        if (listener != null)
-                            listener.onError(volleyError);
+                        if (useBasicAuth) {
+                            errorHandling(volleyError);
+                            if (listener != null)
+                                listener.onError(volleyError);
+                        } else {
+                            //try again with basic auth
+                            makeJsonGetRequest(listener,
+                                    url,
+                                    sessionUtil,
+                                    username,
+                                    password,
+                                    true,
+                                    queue);
+                        }
                     }
                 }) {
 
@@ -78,7 +93,7 @@ public class RequestUtil {
                             headers = new HashMap<>();
                         }
                         sessionUtil.addSessionCookie(headers);
-                        return headers;
+                        return useBasicAuth ? createBasicAuthHeader(username, password, headers) : headers;
                     }
 
                     @Override
@@ -98,6 +113,9 @@ public class RequestUtil {
     public static void makeJsonGetResultRequest(@Nullable final VolleyErrorListener listener,
                                                 final String url,
                                                 final SessionUtil sessionUtil,
+                                                final String username,
+                                                final String password,
+                                                final boolean useBasicAuth,
                                                 final RequestQueue queue) {
 
         JsonObjectRequest jsonObjReq =
@@ -113,9 +131,20 @@ public class RequestUtil {
 
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        errorHandling(volleyError);
-                        if (listener != null)
-                            listener.onError(volleyError);
+                        if (useBasicAuth) {
+                            errorHandling(volleyError);
+                            if (listener != null)
+                                listener.onError(volleyError);
+                        } else {
+                            //try again with basic auth
+                            makeJsonGetResultRequest(listener,
+                                    url,
+                                    sessionUtil,
+                                    username,
+                                    password,
+                                    true,
+                                    queue);
+                        }
                     }
                 }) {
 
@@ -127,7 +156,7 @@ public class RequestUtil {
                             headers = new HashMap<>();
                         }
                         sessionUtil.addSessionCookie(headers);
-                        return headers;
+                        return useBasicAuth ? createBasicAuthHeader(username, password, headers) : headers;
                     }
 
                     @Override
@@ -148,6 +177,9 @@ public class RequestUtil {
                                            final String url,
                                            final Map<String, String> params,
                                            final SessionUtil sessionUtil,
+                                           final String username,
+                                           final String password,
+                                           final boolean useBasicAuth,
                                            final RequestQueue queue) {
 
         StringRequest jsonObjReq =
@@ -175,9 +207,21 @@ public class RequestUtil {
 
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        errorHandling(volleyError);
-                        if (listener != null)
-                            listener.onError(volleyError);
+                        if (useBasicAuth) {
+                            errorHandling(volleyError);
+                            if (listener != null)
+                                listener.onError(volleyError);
+                        } else {
+                            //try again with basic auth
+                            makeJsonPostRequest(listener,
+                                    url,
+                                    params,
+                                    sessionUtil,
+                                    username,
+                                    password,
+                                    true,
+                                    queue);
+                        }
                     }
                 }) {
                     @Override
@@ -195,7 +239,7 @@ public class RequestUtil {
                         }
 
                         sessionUtil.addSessionCookie(headers);
-                        return headers;
+                        return useBasicAuth ? createBasicAuthHeader(username, password, headers) : headers;
                     }
 
                     @Override
@@ -207,6 +251,27 @@ public class RequestUtil {
 
         // Adding request to request queue
         addToRequestQueue(jsonObjReq, queue);
+    }
+
+    /**
+     * Method to create a basic HTTP base64 encrypted authentication header
+     *
+     * @param username Username
+     * @param password Password
+     * @return Base64 encrypted header map
+     */
+    public static Map<String, String> createBasicAuthHeader(String username, String password, Map<String, String> headerMap) {
+
+        if (headerMap == null)
+            headerMap = new HashMap<>();
+
+        if(!UsefulBits.isEmpty(username)) {
+            String credentials = username + ":" + password;
+            String base64EncodedCredentials =
+                    Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+            headerMap.put("Authorization", "Basic " + base64EncodedCredentials);
+        }
+        return headerMap;
     }
 
     /**
