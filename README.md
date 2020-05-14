@@ -131,9 +131,10 @@ All Android Wear devices are supported.
 
 # Donation
 
-If you like to support the Domoticz apps, you could always buy me a cup of coffee! 
-(Thanks!)
+If you like to support the Domoticz apps, you could always buy me a cup of coffee!   
+(Thanks!)  
 [![PayPal donate button](https://img.shields.io/badge/paypal-donate-yellow.svg)](https://www.paypal.me/markheinis)
+
 
 
 # Credits
