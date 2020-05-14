@@ -437,7 +437,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
                 if (mDeviceInfo.getCounterDelivToday() != null && mDeviceInfo.getCounterDelivToday().length() > 0) {
                     setAlphaIcon = false;
-                    holder.switch_battery_level.append("\r\n" + context.getString(R.string.delivery) + " " + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterDelivToday());
+                    holder.switch_battery_level.append("\r\n" + context.getString(R.string.delivery) + ": " + mDeviceInfo.getCounterDelivToday());
                     if (mDeviceInfo.getCounterDeliv() != null && mDeviceInfo.getCounterDeliv().length() > 0 &&
                             !mDeviceInfo.getCounterDeliv().equals(mDeviceInfo.getData()))
                         holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounterDeliv());

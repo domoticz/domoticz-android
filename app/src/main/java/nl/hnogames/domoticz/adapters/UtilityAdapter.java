@@ -193,6 +193,12 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             holder.data.append(" " + context.getString(R.string.today) + ": " + mUtilitiesInfo.getCounterToday());
         if (mUtilitiesInfo.getCounter() != null && mUtilitiesInfo.getCounter().length() > 0 && !mUtilitiesInfo.getCounter().equals(mUtilitiesInfo.getData()))
             holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounter());
+        if (mUtilitiesInfo.getCounterDelivToday() != null && mUtilitiesInfo.getCounterDelivToday().length() > 0) {
+            holder.data.append("\r\n" + context.getString(R.string.delivery) + ": " + mUtilitiesInfo.getCounterDelivToday());
+            if (mUtilitiesInfo.getCounterDeliv() != null && mUtilitiesInfo.getCounterDeliv().length() > 0 &&
+                    !mUtilitiesInfo.getCounterDeliv().equals(mUtilitiesInfo.getData()))
+                holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounterDeliv());
+        }
 
         if (holder.likeButton != null) {
             holder.likeButton.setId(mUtilitiesInfo.getIdx());
@@ -256,7 +262,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounter());
 
         if (mUtilitiesInfo.getCounterDelivToday() != null && mUtilitiesInfo.getCounterDelivToday().length() > 0) {
-            holder.data.append("\r\n" + context.getString(R.string.delivery) + " " + context.getString(R.string.today) + ": " + mUtilitiesInfo.getCounterDelivToday());
+            holder.data.append("\r\n" + context.getString(R.string.delivery) + ": " + mUtilitiesInfo.getCounterDelivToday());
             if (mUtilitiesInfo.getCounterDeliv() != null && mUtilitiesInfo.getCounterDeliv().length() > 0 &&
                     !mUtilitiesInfo.getCounterDeliv().equals(mUtilitiesInfo.getData()))
                 holder.data.append(" " + context.getString(R.string.total) + ": " + mUtilitiesInfo.getCounterDeliv());
