@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.Nullable;
+import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.VolleyErrorListener;
 
@@ -62,6 +63,8 @@ public class RequestUtil {
 
                     @Override
                     public void onResponse(JSONObject response) {
+                        if(useBasicAuth)
+                            Domoticz.BasicAuthDetected = useBasicAuth;
                         if (listener != null)
                             listener.onDone(response);
                     }
@@ -124,6 +127,8 @@ public class RequestUtil {
 
                     @Override
                     public void onResponse(JSONObject response) {
+                        if(useBasicAuth)
+                            Domoticz.BasicAuthDetected = useBasicAuth;
                         if (listener != null)
                             listener.onDone(response);
                     }
@@ -187,6 +192,8 @@ public class RequestUtil {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String jsonObject) {
+                                if(useBasicAuth)
+                                    Domoticz.BasicAuthDetected = useBasicAuth;
                                 String jsonString;
 
                                 try {

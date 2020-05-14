@@ -138,6 +138,7 @@ public class Domoticz {
     private ServerUtil mServerUtil;
     private PhoneConnectionUtil mPhoneConnectionUtil;
     private Context mContext;
+    public static boolean BasicAuthDetected = false;
 
     public Domoticz(Context mContext, RequestQueue queue) {
         this.mContext = mContext;
@@ -898,7 +899,7 @@ public class Domoticz {
                         RequestUtil.makeJsonGetRequest(defaultListener, url, mSessionUtil,
                                 getUserCredentials(Authentication.USERNAME),
                                 getUserCredentials(Authentication.PASSWORD),
-                                false,
+                                BasicAuthDetected,
                                 queue);
                     }
 
@@ -915,7 +916,7 @@ public class Domoticz {
                 url, mSessionUtil,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                false, queue);
+                BasicAuthDetected, queue);
     }
 
     private void GetResultRequest(@Nullable final JSONParserInterface parser,
@@ -964,7 +965,7 @@ public class Domoticz {
                                 url, mSessionUtil,
                                 getUserCredentials(Authentication.USERNAME),
                                 getUserCredentials(Authentication.PASSWORD),
-                                false, queue);
+                                BasicAuthDetected, queue);
                     }
 
                     @Override
@@ -980,7 +981,7 @@ public class Domoticz {
                 url, mSessionUtil,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                false, queue);
+                BasicAuthDetected, queue);
     }
 
     private void PostRequest(@Nullable final JSONParserInterface parser,
@@ -1018,7 +1019,7 @@ public class Domoticz {
                                 url, params, mSessionUtil,
                                 getUserCredentials(Authentication.USERNAME),
                                 getUserCredentials(Authentication.PASSWORD),
-                                false, queue);
+                                BasicAuthDetected, queue);
                     }
 
                     @Override
@@ -1034,7 +1035,7 @@ public class Domoticz {
                 url, params, mSessionUtil,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),
-                false,
+                BasicAuthDetected,
                 queue);
     }
 
