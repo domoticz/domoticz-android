@@ -1036,7 +1036,7 @@ public class Domoticz {
                     @Override
                     public void OnReceive(LoginInfo mLoginInfo) {
                         if (parser != null)
-                            parser.parseResult(mLoginInfo.getJson().toString());
+                            parser.parseResult(mLoginInfo != null && mLoginInfo.getJson() != null ? mLoginInfo.getJson().toString() : null);
                     }
 
                     @Override
