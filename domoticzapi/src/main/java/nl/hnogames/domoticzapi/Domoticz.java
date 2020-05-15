@@ -382,6 +382,13 @@ public class Domoticz {
         }
     }
 
+    public void AddLog(String message, setCommandReceiver receiver) {
+        setCommandParser parser = new setCommandParser(receiver);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Set.LOG);
+        url = url + message;
+        GetRequest(parser, url, true);
+    }
+
     public void GetNotificationSystems(NotificationTypesReceiver receiver) {
         NotificationTypesParser parser = new NotificationTypesParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NOTIFICATIONTYPES);

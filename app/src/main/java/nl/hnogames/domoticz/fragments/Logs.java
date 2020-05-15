@@ -162,7 +162,6 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
             if (isAdded()) {
                 if (mSwipeRefreshLayout != null)
                     mSwipeRefreshLayout.setRefreshing(false);
-
                 super.errorHandling(error);
             }
         }
