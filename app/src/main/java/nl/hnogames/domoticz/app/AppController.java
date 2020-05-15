@@ -321,11 +321,6 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
     public void didDetermineStateForRegion(int state, Region region) {
         String s = state == 0 ? "Out of distance" : "In distance";
         Log.i("BeaconManager", s + " " + region.getUniqueId());
-        //if (state == 1) {
-        //    didEnterRegion(region);
-        //} else {
-        //    didExitRegion(region);
-        //}
     }
 
     private void handleSwitch(final Context context, final int idx, final String password, final boolean checked, final String value, final boolean isSceneOrGroup) {
