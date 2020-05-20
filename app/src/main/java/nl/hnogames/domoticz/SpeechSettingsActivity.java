@@ -51,7 +51,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
-import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.adapters.SpeechAdapter;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.app.AppController;
@@ -163,18 +162,18 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
     private void getSwitchesAndShowSwitchesDialog(final SpeechInfo qrInfo) {
         domoticz.getDevices(new DevicesReceiver() {
             @Override
-            @DebugLog
+
             public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
                 showSwitchesDialog(qrInfo, switches);
             }
 
             @Override
-            @DebugLog
+
             public void onReceiveDevice(DevicesInfo mDevicesInfo) {
             }
 
             @Override
-            @DebugLog
+
             public void onError(Exception error) {
                 UsefulBits.showSnackbarWithAction(SpeechSettingsActivity.this, coordinatorLayout, SpeechSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
                         null, new View.OnClickListener() {

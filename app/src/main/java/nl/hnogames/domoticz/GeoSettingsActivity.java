@@ -52,7 +52,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.adapters.LocationAdapter;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.app.AppController;
@@ -344,18 +343,18 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
     private void getSwitchesAndShowSwitchesDialog(final LocationInfo locationInfo) {
         domoticz.getDevices(new DevicesReceiver() {
             @Override
-            @DebugLog
+
             public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
                 showSwitchesDialog(locationInfo, switches);
             }
 
             @Override
-            @DebugLog
+
             public void onReceiveDevice(DevicesInfo mDevicesInfo) {
             }
 
             @Override
-            @DebugLog
+
             public void onError(Exception error) {
                 UsefulBits.showSnackbarWithAction(GeoSettingsActivity.this, coordinatorLayout, GeoSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
                         null, new View.OnClickListener() {

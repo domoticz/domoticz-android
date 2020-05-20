@@ -35,7 +35,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
-import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -190,7 +189,6 @@ public class SwitchInfoDialog implements DialogInterface.OnDismissListener {
                     passwordDialog.show();
                     passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                         @Override
-                        @DebugLog
                         public void onDismiss(String password) {
                             setAction(DomoticzValues.Json.Url.Set.NIGHTLIGHT, DomoticzValues.Device.Switch.Action.ON, password);
                             Toast.makeText(mContext, mContext.getString(R.string.switch_night) + ": " + mSwitch.getName(), Toast.LENGTH_SHORT);
@@ -215,7 +213,6 @@ public class SwitchInfoDialog implements DialogInterface.OnDismissListener {
                     passwordDialog.show();
                     passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                         @Override
-                        @DebugLog
                         public void onDismiss(String password) {
                             setAction(DomoticzValues.Json.Url.Set.FULLLIGHT, DomoticzValues.Device.Switch.Action.ON, password);
                             Toast.makeText(mContext, mContext.getString(R.string.switch_full) + ": " + mSwitch.getName(), Toast.LENGTH_SHORT);
@@ -237,7 +234,7 @@ public class SwitchInfoDialog implements DialogInterface.OnDismissListener {
         isChanged = true;
         mDomoticz.setAction(mSwitch.getIdx(), jsonUrl, actionUrl, 0, password, new setCommandReceiver() {
             @Override
-            @DebugLog
+
             public void onReceiveResult(String result) {
             }
 

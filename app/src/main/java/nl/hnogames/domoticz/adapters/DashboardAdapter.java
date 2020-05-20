@@ -529,7 +529,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             }
 
             holder.iconRow.setAlpha(1f);
-            if(setAlphaIcon) {
+            if (setAlphaIcon) {
                 if (!mDeviceInfo.getStatusBoolean())
                     holder.iconRow.setAlpha(0.5f);
                 else

@@ -31,7 +31,6 @@ import java.util.TimerTask;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
-import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.fragments.Dashboard;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -46,7 +45,7 @@ public class PlanActivity extends AppCompatAssistActivity {
     private SharedPrefUtil mSharedPrefs;
     private Toolbar toolbar;
 
-    @DebugLog
+
     public ConfigInfo getConfig() {
         return mServerUtil != null && mServerUtil.getActiveServer() != null ?
                 mServerUtil.getActiveServer().getConfigInfo(this) :
@@ -58,11 +57,10 @@ public class PlanActivity extends AppCompatAssistActivity {
             autoRefreshTimer = new Timer("autorefresh", true);
             autoRefreshTimer.scheduleAtFixedRate(new TimerTask() {
                 @Override
-                @DebugLog
+
                 public void run() {
                     runOnUiThread(new Runnable() {
                         @Override
-                        @DebugLog
                         public void run() {
                             dash.refreshFragment();
                         }
@@ -132,28 +130,28 @@ public class PlanActivity extends AppCompatAssistActivity {
     }
 
     @Override
-    @DebugLog
+
     public void onDestroy() {
         stopAutoRefreshTimer();
         super.onDestroy();
     }
 
     @Override
-    @DebugLog
+
     public void onPause() {
         stopAutoRefreshTimer();
         super.onPause();
     }
 
     @Override
-    @DebugLog
+
     public void onBackPressed() {
         stopAutoRefreshTimer();
         this.finish();
     }
 
     @Override
-    @DebugLog
+
     public void onResume() {
         super.onResume();
         setupAutoRefresh();

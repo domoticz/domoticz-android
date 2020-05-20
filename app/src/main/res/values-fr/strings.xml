@@ -98,6 +98,7 @@
     <string name="retry">Réessayer</string>
     <string name="undo">Annuler</string>
     <string name="something_deleted">%1$s supprimé</string>
+    <string name="remove_last_server">You can\'t remove the last server in the list.</string>
     <string name="switch_on">Allumer</string>
     <string name="switch_off">Éteindre</string>
     <string name="switch_night">Basculer vers la lumière nocturne</string>
@@ -134,4 +135,8 @@
     <string name="auto_refresh_time">Intervalle d\'actualisation</string>
     <string name="set_auto_refresh_time">Définir un intervalle de temps en secondes pour l\'actualisation automatique</string>
     <string name="error_authentication_basicauth">IMPORTANT : Veuillez vérifier si votre système Domoticz utilise la page de connexion comme méthode d\'authentification. L\'authentification basique va être retirée de Domoticz lors de la prochaine mise à jour !</string>
+    <string name="category_other">Other</string>
+    <string name="tasker_title">Setup automation rules with Tasker for Domoticz</string>
+    <string name="category_tasker">Tasker</string>
+    <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
 </resources>

@@ -30,7 +30,6 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
@@ -57,7 +56,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     private boolean itemDecorationAdded = false;
 
     @Override
-    @DebugLog
+
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
@@ -70,7 +69,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     @Override
-    @DebugLog
+
     public void onAttach(Context context) {
         super.onAttach(context);
         onAttachFragment(this);
@@ -86,7 +85,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     @Override
-    @DebugLog
+
     public void Filter(String text) {
         filter = text;
         try {
@@ -99,7 +98,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     @Override
-    @DebugLog
+
     public void onConnectionOk() {
         super.showSpinner(true);
         processEvents();
@@ -119,7 +118,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
             if (adapter == null) {
                 adapter = new EventsAdapter(mContext, mDomoticz, mEventInfos, new EventsClickListener() {
                     @Override
-                    @DebugLog
+
                     public void onEventClick(final int idx, boolean action) {
                         UserInfo user = getCurrentUser(mContext, mDomoticz);
                         if (user != null && user.getRights() <= 1) {
@@ -134,13 +133,11 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
                         int jsonUrl = DomoticzValues.Json.Url.Set.EVENTS_UPDATE_STATUS;
                         mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
                             @Override
-                            @DebugLog
                             public void onReceiveResult(String result) {
                                 successHandling(result, false);
                             }
 
                             @Override
-                            @DebugLog
                             public void onError(Exception error) {
                                 errorHandling(error);
                             }
@@ -161,7 +158,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
-                @DebugLog
+
                 public void onRefresh() {
                     processEvents();
                 }
@@ -172,7 +169,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     @Override
-    @DebugLog
+
     public void errorHandling(Exception error) {
         if (error != null) {
             // Let's check if were still attached to an activity
@@ -207,7 +204,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
 
             mDomoticz.getEvents(new EventReceiver() {
                 @Override
-                @DebugLog
+
                 public void onReceiveEvents(final ArrayList<EventInfo> mEventInfos) {
                     successHandling(mEventInfos.toString(), false);
                     SerializableManager.saveSerializable(mContext, mEventInfos, "Events");
@@ -215,7 +212,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
                 }
 
                 @Override
-                @DebugLog
+
                 public void onError(Exception error) {
                     errorHandling(error);
                 }

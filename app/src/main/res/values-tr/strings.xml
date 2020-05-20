@@ -98,6 +98,7 @@
     <string name="retry">Tekrar dene</string>
     <string name="undo">Geri</string>
     <string name="something_deleted">%1$s silindi</string>
+    <string name="remove_last_server">You can\'t remove the last server in the list.</string>
     <string name="switch_on">Anahtar açma</string>
     <string name="switch_off">Anahtarı kapatma</string>
     <string name="switch_night">Turning switch to night light</string>
@@ -134,4 +135,8 @@
     <string name="auto_refresh_time">Refresh timer</string>
     <string name="set_auto_refresh_time">Set a specific timer for the auto refresh in seconds.</string>
     <string name="error_authentication_basicauth">IMPORTANT: Please check if your Domoticz system uses Login Page as the authentication method. Basic Auth is going to be removed from Domoticz from next update!</string>
+    <string name="category_other">Other</string>
+    <string name="tasker_title">Setup automation rules with Tasker for Domoticz</string>
+    <string name="category_tasker">Tasker</string>
+    <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
 </resources>

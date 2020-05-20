@@ -31,7 +31,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.LogAdapter;
@@ -57,7 +56,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     }
 
     @Override
-    @DebugLog
+
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
@@ -65,7 +64,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     }
 
     @Override
-    @DebugLog
+
     public void onAttach(Context context) {
         super.onAttach(context);
         onAttachFragment(this);
@@ -94,7 +93,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     }
 
     @Override
-    @DebugLog
+
     public void Filter(String text) {
         filter = text;
         try {
@@ -107,7 +106,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     }
 
     @Override
-    @DebugLog
+
     public void onConnectionOk() {
         super.showSpinner(true);
         processLogs();
@@ -138,7 +137,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
-                @DebugLog
+
                 public void onRefresh() {
                     processLogs();
                 }
@@ -149,13 +148,13 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     }
 
     @Override
-    @DebugLog
+
     public void onPause() {
         super.onPause();
     }
 
     @Override
-    @DebugLog
+
     public void errorHandling(Exception error) {
         if (error != null) {
             // Let's check if were still attached to an activity
@@ -197,7 +196,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
 
                 mDomoticz.getLogs(new LogsReceiver() {
                     @Override
-                    @DebugLog
+
                     public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {
                         successHandling(mLogInfos.toString(), false);
                         SerializableManager.saveSerializable(mContext, mLogInfos, "Logs");
@@ -205,7 +204,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                     }
 
                     @Override
-                    @DebugLog
+
                     public void onError(Exception error) {
                         errorHandling(error);
                     }

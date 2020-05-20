@@ -43,7 +43,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
-import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.NotificationInfo;
@@ -75,7 +74,7 @@ public class NotificationHistory extends Fragment {
     private List<NotificationInfo> notifications;
 
     @Override
-    @DebugLog
+
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
@@ -154,13 +153,13 @@ public class NotificationHistory extends Fragment {
             searchViewAction = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
             searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
-                @DebugLog
+
                 public boolean onQueryTextSubmit(String query) {
                     return false;
                 }
 
                 @Override
-                @DebugLog
+
                 public boolean onQueryTextChange(String newText) {
                     if (notifications != null && notifications.size() > 0) {
                         List<NotificationInfo> filtered = new ArrayList<>();
