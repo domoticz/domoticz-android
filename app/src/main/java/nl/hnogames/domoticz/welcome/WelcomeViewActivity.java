@@ -31,6 +31,7 @@ import com.github.paolorotolo.appintro.model.SliderPage;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -54,8 +55,8 @@ public class WelcomeViewActivity extends AppIntro2 {
         SliderPage sliderPage = new SliderPage();
         sliderPage.setTitle(getString(R.string.wizard_welcome));
         sliderPage.setDescription(getString(R.string.welcome_info_domoticz));
-        sliderPage.setImageDrawable(R.drawable.domoticz);
         sliderPage.setBgColor(R.color.black);
+        sliderPage.setImageDrawable(R.drawable.domoticz);
 
         addSlide(AppIntroFragment.newInstance(sliderPage));
         addSlide(WelcomePage2.newInstance());
