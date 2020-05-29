@@ -68,6 +68,8 @@ public class DevicesInfo implements Comparable, Serializable {
     private String switchType;
     private String CounterToday;
     private String Counter;
+    private String CounterDelivToday;
+    private String CounterDeliv;
     private String LevelNames;
     private String Usage;
     private String UsageDeliv;
@@ -172,6 +174,10 @@ public class DevicesInfo implements Comparable, Serializable {
 
         if (row.has("CounterToday"))
             CounterToday = row.getString("CounterToday");
+        if (row.has("CounterDeliv"))
+            CounterDeliv = row.getString("CounterDeliv");
+        if (row.has("CounterDelivToday"))
+            CounterDelivToday = row.getString("CounterDelivToday");
 
         if (row.has("Usage"))
             Usage = row.getString("Usage");
@@ -299,6 +305,14 @@ public class DevicesInfo implements Comparable, Serializable {
     public void setFavoriteBoolean(boolean favorite) {
         if (favorite) this.Favorite = 1;
         else this.Favorite = 0;
+    }
+
+    public String getCounterDeliv() {
+        return CounterDeliv;
+    }
+
+    public String getCounterDelivToday() {
+        return CounterDelivToday;
     }
 
     public double getTemperature() {

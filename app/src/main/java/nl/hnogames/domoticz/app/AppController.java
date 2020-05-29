@@ -92,13 +92,13 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
     private static final String BACKGROUND_NOTIFICATION_CHANNEL_ID = "6516581";
 
     private static AppController mInstance;
+    public BeaconManager beaconManager;
     int socketTimeout = 1000 * 5;               // 5 seconds
     private RequestQueue mRequestQueue;
     private Tracker mTracker;
     private SharedPrefUtil mSharedPrefs;
     private Domoticz domoticz;
     private BackgroundPowerSaver backgroundPowerSaver;
-    public BeaconManager beaconManager;
 
     public static synchronized AppController getInstance() {
         return mInstance;
@@ -124,7 +124,7 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
             try {
                 StartBeaconScanning();
             } catch (RemoteException e) {
-                if(e.getMessage()!= null)
+                if (e.getMessage() != null)
                     Log.e("BeaconManager", e.getMessage());
                 e.printStackTrace();
             }
@@ -173,10 +173,9 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
 
             try {
                 beaconManager.enableForegroundServiceScanning(mBuilder.build(), 997755);
+            } catch (Exception ex) {
+                Log.e("BeaconManager", ex.getMessage());
             }
-           catch (Exception ex){
-                    Log.e("BeaconManager", ex.getMessage());
-                }
 
             beaconManager.setEnableScheduledScanJobs(false);
             beaconManager.setForegroundScanPeriod(30000L);
@@ -190,8 +189,7 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
             RunningAverageRssiFilter.setSampleExpirationMilliseconds(10000L);
             beaconManager.bind(this);
             beaconManager.setDebug(true);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             Log.e("BeaconManager", ex.getMessage());
         }
     }
@@ -273,15 +271,15 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
             int counter = 0;
             beaconManager.addMonitorNotifier(this);
             List<BeaconInfo> beacons = mSharedPrefs.getBeaconList();
-            if(beacons != null) {
+            if (beacons != null) {
                 for (BeaconInfo b : beacons) {
-                    if(b.isEnabled()) {
+                    if (b.isEnabled()) {
                         counter++;
                         beaconManager.startMonitoringBeaconsInRegion(new Region(b.getName(), Identifier.parse(b.getId()), Identifier.parse(String.valueOf(b.getMajor())), Identifier.parse(String.valueOf(b.getMinor()))));
                     }
                 }
             }
-            if(counter == 0)
+            if (counter == 0)
                 StopBeaconScanning();
         } catch (Exception e) {
             if (e.getMessage() != null)
@@ -323,11 +321,6 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
     public void didDetermineStateForRegion(int state, Region region) {
         String s = state == 0 ? "Out of distance" : "In distance";
         Log.i("BeaconManager", s + " " + region.getUniqueId());
-        //if (state == 1) {
-        //    didEnterRegion(region);
-        //} else {
-        //    didExitRegion(region);
-        //}
     }
 
     private void handleSwitch(final Context context, final int idx, final String password, final boolean checked, final String value, final boolean isSceneOrGroup) {

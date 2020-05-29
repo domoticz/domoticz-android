@@ -45,7 +45,6 @@ import java.util.Arrays;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.adapters.QRCodeAdapter;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.app.AppController;
@@ -118,7 +117,7 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 QRCodeInfo qrCode = qrcodeList.get(position);
-                if(qrCode.getSwitchIdx()>0) {
+                if (qrCode.getSwitchIdx() > 0) {
                     qrCode.setSwitchIdx(0);
                     qrCode.setSwitchName(null);
                     qrCode.setValue(null);
@@ -126,8 +125,7 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
                     updateQRCode(qrCode);
                     UsefulBits.showSnackbar(QRCodeSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
                     adapter.notifyDataSetChanged();
-                }
-                else
+                } else
                     getSwitchesAndShowSwitchesDialog(qrCode);
                 return true;
             }
@@ -154,18 +152,18 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
     private void getSwitchesAndShowSwitchesDialog(final QRCodeInfo qrInfo) {
         domoticz.getDevices(new DevicesReceiver() {
             @Override
-            @DebugLog
+
             public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
                 showSwitchesDialog(qrInfo, switches);
             }
 
             @Override
-            @DebugLog
+
             public void onReceiveDevice(DevicesInfo mDevicesInfo) {
             }
 
             @Override
-            @DebugLog
+
             public void onError(Exception error) {
                 UsefulBits.showSnackbarWithAction(QRCodeSettingsActivity.this, coordinatorLayout, QRCodeSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
                         null, new View.OnClickListener() {

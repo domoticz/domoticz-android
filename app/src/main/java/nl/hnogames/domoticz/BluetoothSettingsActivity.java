@@ -50,7 +50,6 @@ import java.util.Set;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.BluetoothInfo;
@@ -160,7 +159,7 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 BluetoothInfo bluetooth = BluetoothList.get(position);
-                if(bluetooth.getSwitchIdx()>0) {
+                if (bluetooth.getSwitchIdx() > 0) {
                     bluetooth.setSwitchIdx(0);
                     bluetooth.setSwitchName(null);
                     bluetooth.setValue(null);
@@ -168,8 +167,7 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
                     updateBluetooth(bluetooth);
                     UsefulBits.showSnackbar(BluetoothSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
                     adapter.notifyDataSetChanged();
-                }
-                else
+                } else
                     getSwitchesAndShowSwitchesDialog(bluetooth);
                 return true;
             }
@@ -179,18 +177,18 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
     private void getSwitchesAndShowSwitchesDialog(final BluetoothInfo qrInfo) {
         domoticz.getDevices(new DevicesReceiver() {
             @Override
-            @DebugLog
+
             public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
                 showSwitchesDialog(qrInfo, switches);
             }
 
             @Override
-            @DebugLog
+
             public void onReceiveDevice(DevicesInfo mDevicesInfo) {
             }
 
             @Override
-            @DebugLog
+
             public void onError(Exception error) {
                 UsefulBits.showSnackbarWithAction(BluetoothSettingsActivity.this, coordinatorLayout, BluetoothSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
                         null, new View.OnClickListener() {

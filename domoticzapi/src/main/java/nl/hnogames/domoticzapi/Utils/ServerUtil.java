@@ -39,6 +39,7 @@ import java.util.List;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
 import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
+import nl.hnogames.domoticzapi.Domoticz;
 
 public class ServerUtil {
 
@@ -272,6 +273,7 @@ public class ServerUtil {
      */
     public void setActiveServer(ServerInfo mActiveServer) {
         this.mActiveServer = mActiveServer;
+        Domoticz.BasicAuthDetected = false;
         saveDomoticzServers(false);
     }
 

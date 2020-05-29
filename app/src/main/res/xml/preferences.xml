@@ -291,6 +291,15 @@
             android:title="@string/reset_settings" />
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="@string/category_other" android:icon="@drawable/baseline_whatshot_white_24"
+        android:title="@string/category_other">
+        <Preference
+            android:key="tasker_settings"
+            android:title="@string/category_tasker"
+            android:summary="@string/tasker_title" />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/category_info" android:icon="@drawable/baseline_info_white_24">
         <Preference
             android:key="version"

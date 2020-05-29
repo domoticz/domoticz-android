@@ -138,6 +138,7 @@ public class Domoticz {
     private ServerUtil mServerUtil;
     private PhoneConnectionUtil mPhoneConnectionUtil;
     private Context mContext;
+    public static boolean BasicAuthDetected = false;
 
     public Domoticz(Context mContext, RequestQueue queue) {
         this.mContext = mContext;
@@ -381,6 +382,13 @@ public class Domoticz {
         }
     }
 
+    public void AddLog(String message, setCommandReceiver receiver) {
+        setCommandParser parser = new setCommandParser(receiver);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Set.LOG);
+        url = url + message;
+        GetRequest(parser, url, true);
+    }
+
     public void GetNotificationSystems(NotificationTypesReceiver receiver) {
         NotificationTypesParser parser = new NotificationTypesParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NOTIFICATIONTYPES);
@@ -499,6 +507,29 @@ public class Domoticz {
     }
 
     public void checkLogin(LoginReceiver loginReceiver) {
+        mSessionUtil.clearSessionCookie();
+        String baseUsername = getUserCredentials(Authentication.USERNAME);
+        String basePassword = getUserCredentials(Authentication.PASSWORD);
+        if(UsefulBits.isEmpty(baseUsername)||UsefulBits.isEmpty(basePassword))
+            loginReceiver.OnReceive(new LoginInfo());
+
+        String username = UsefulBits.encodeBase64(getUserCredentials(Authentication.USERNAME));
+        String password = UsefulBits.getMd5String(getUserCredentials(Authentication.PASSWORD));
+        LoginParser parser = new LoginParser(loginReceiver);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NEWCHECKLOGIN);
+        Log.v(TAG, "Url: " + url);
+
+        try {
+            Map<String, String> params = new HashMap<>();
+            params.put("username", URLEncoder.encode(username, "UTF-8"));
+            params.put("password", URLEncoder.encode(password, "UTF-8"));
+            LoginPostRequest(parser, url, params, true);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void checkLoginOld(LoginReceiver loginReceiver) {
         String baseUsername = getUserCredentials(Authentication.USERNAME);
         String basePassword = getUserCredentials(Authentication.PASSWORD);
         if(UsefulBits.isEmpty(baseUsername)||UsefulBits.isEmpty(basePassword))
@@ -523,8 +554,7 @@ public class Domoticz {
     public void getSwitches(SwitchesReceiver switchesReceiver) {
         SwitchesParser parser = new SwitchesParser(switchesReceiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SWITCHES);
-        GetResultRequest(parser,
-                url, true);
+        GetResultRequest(parser, url, true);
     }
 
     public void getSwitchLogs(int idx, SwitchLogReceiver switchesReceiver) {
@@ -894,7 +924,11 @@ public class Domoticz {
                 checkLogin(new LoginReceiver() {
                     @Override
                     public void OnReceive(LoginInfo mLoginInfo) {
-                        RequestUtil.makeJsonGetRequest(defaultListener, url, mSessionUtil, queue);
+                        RequestUtil.makeJsonGetRequest(defaultListener, url, mSessionUtil,
+                                getUserCredentials(Authentication.USERNAME),
+                                getUserCredentials(Authentication.PASSWORD),
+                                BasicAuthDetected,
+                                queue);
                     }
 
                     @Override
@@ -907,7 +941,10 @@ public class Domoticz {
         };
 
         RequestUtil.makeJsonGetRequest(retry ? listener : defaultListener,
-                url, mSessionUtil, queue);
+                url, mSessionUtil,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                BasicAuthDetected, queue);
     }
 
     private void GetResultRequest(@Nullable final JSONParserInterface parser,
@@ -953,7 +990,10 @@ public class Domoticz {
                     @Override
                     public void OnReceive(LoginInfo mLoginInfo) {
                         RequestUtil.makeJsonGetResultRequest(defaultListener,
-                                url, mSessionUtil, queue);
+                                url, mSessionUtil,
+                                getUserCredentials(Authentication.USERNAME),
+                                getUserCredentials(Authentication.PASSWORD),
+                                BasicAuthDetected, queue);
                     }
 
                     @Override
@@ -966,7 +1006,61 @@ public class Domoticz {
         };
 
         RequestUtil.makeJsonGetResultRequest(retry ? listener : defaultListener,
-                url, mSessionUtil, queue);
+                url, mSessionUtil,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                BasicAuthDetected, queue);
+    }
+
+    private void LoginPostRequest(@Nullable final JSONParserInterface parser,
+                              final String url,
+                              final Map<String, String> params,
+                              boolean retry) {
+        final VolleyErrorListener defaultListener = new VolleyErrorListener() {
+            @Override
+            public void onDone(JSONObject response) {
+                if (parser != null)
+                    parser.parseResult(response!= null ? response.toString() : null);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                if (parser != null)
+                    parser.onError(error);
+            }
+        };
+
+        VolleyErrorListener listener = new VolleyErrorListener() {
+            @Override
+            public void onDone(JSONObject response) {
+                if (parser != null)
+                    parser.parseResult(response!= null ? response.toString() : null);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                checkLoginOld(new LoginReceiver() {
+                    @Override
+                    public void OnReceive(LoginInfo mLoginInfo) {
+                        if (parser != null)
+                            parser.parseResult(mLoginInfo != null && mLoginInfo.getJson() != null ? mLoginInfo.getJson().toString() : null);
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        if (parser != null)
+                            parser.onError(error);
+                    }
+                });
+            }
+        };
+
+        RequestUtil.makeJsonPostRequest(retry ? listener : defaultListener,
+                url, params, mSessionUtil,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                BasicAuthDetected,
+                queue);
     }
 
     private void PostRequest(@Nullable final JSONParserInterface parser,
@@ -1001,7 +1095,10 @@ public class Domoticz {
                     @Override
                     public void OnReceive(LoginInfo mLoginInfo) {
                         RequestUtil.makeJsonPostRequest(defaultListener,
-                                url, params, mSessionUtil, queue);
+                                url, params, mSessionUtil,
+                                getUserCredentials(Authentication.USERNAME),
+                                getUserCredentials(Authentication.PASSWORD),
+                                BasicAuthDetected, queue);
                     }
 
                     @Override
@@ -1014,7 +1111,11 @@ public class Domoticz {
         };
 
         RequestUtil.makeJsonPostRequest(retry ? listener : defaultListener,
-                url, params, mSessionUtil, queue);
+                url, params, mSessionUtil,
+                getUserCredentials(Authentication.USERNAME),
+                getUserCredentials(Authentication.PASSWORD),
+                BasicAuthDetected,
+                queue);
     }
 
     public File saveSnapShot(Bitmap bitmap, String name) {

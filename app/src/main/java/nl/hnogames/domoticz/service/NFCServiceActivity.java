@@ -30,7 +30,6 @@ import com.ftinc.scoop.Scoop;
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
-import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.NFCSettingsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.NFCInfo;
@@ -149,7 +148,7 @@ public class NFCServiceActivity extends AppCompatActivity {
 
                 domoticz.setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
                     @Override
-                    @DebugLog
+
                     public void onReceiveResult(String result) {
                         if (!UsefulBits.isEmpty(result))
                             Log.d(TAG, result);
@@ -157,7 +156,7 @@ public class NFCServiceActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    @DebugLog
+
                     public void onError(Exception error) {
                         if (error != null && !UsefulBits.isEmpty(error.getMessage()))
                             Log.d(TAG, error.getMessage());

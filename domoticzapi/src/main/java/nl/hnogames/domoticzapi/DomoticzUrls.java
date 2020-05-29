@@ -162,7 +162,7 @@ public class DomoticzUrls {
         }
 
         switch (jsonSetUrl) {
-            case DomoticzValues.Json.Url.Set.SCENES:
+             case DomoticzValues.Json.Url.Set.SCENES:
                 url = DomoticzValues.Url.Scene.GET;
                 jsonUrl = url
                         + String.valueOf(idx)
@@ -326,7 +326,9 @@ public class DomoticzUrls {
             case DomoticzValues.Json.Url.Request.LOG:
                 url = DomoticzValues.Url.Log.GET_LOG;
                 break;
-
+            case DomoticzValues.Json.Url.Set.LOG:
+                url = DomoticzValues.Url.System.LOG;
+                break;
             case DomoticzValues.Json.Url.Request.DASHBOARD:
                 url = DomoticzValues.Url.Category.DASHBOARD;
                 break;

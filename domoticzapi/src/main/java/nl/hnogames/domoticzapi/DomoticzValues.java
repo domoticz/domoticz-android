@@ -316,6 +316,7 @@ public class DomoticzValues {
                 int NIGHTLIGHT = 111;
                 int WWCOLOR = 112;
                 int KELVIN = 113;
+                int LOG = 114;
             }
         }
 
@@ -525,6 +526,7 @@ public class DomoticzValues {
             String USERS = "/json.htm?type=users";
             String AUTH = "/json.htm?type=command&param=getauth";
             String LOGOFF = "/json.htm?type=command&param=dologout";
+            String LOG = "/json.htm?type=command&param=addlogmessage&message=";
         }
 
         interface Event {

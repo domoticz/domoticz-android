@@ -44,9 +44,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -73,7 +70,7 @@ public class DomoticzRecyclerFragment extends Fragment {
     public Domoticz mDomoticz;
     public SharedPrefUtil mSharedPrefs;
     public PhoneConnectionUtil mPhoneConnectionUtil;
-    public CoordinatorLayout coordinatorLayout;
+    public View frameLayout;
     public LinearLayout lySortDevices, lySortLogs;
     public BackdropContainer backdropContainer;
     public MaterialCardView bottomLayoutWrapper;
@@ -157,7 +154,7 @@ public class DomoticzRecyclerFragment extends Fragment {
             }
         };
         if (getActivity() instanceof MainActivity)
-            coordinatorLayout = ((MainActivity) getActivity()).coordinatorLayout;
+            frameLayout = ((MainActivity) getActivity()).frameLayout;
 
         lySortDevices = root.findViewById(R.id.lySortDevices);
         lySortLogs = root.findViewById(R.id.lySortLogs);
@@ -214,7 +211,7 @@ public class DomoticzRecyclerFragment extends Fragment {
 
     public void setSortFab(boolean visible) {
         if (getActivity() instanceof MainActivity) {
-            if(((MainActivity) getActivity()).fabSort != null)
+            if (((MainActivity) getActivity()).fabSort != null)
                 ((MainActivity) getActivity()).fabSort.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
     }
@@ -368,8 +365,8 @@ public class DomoticzRecyclerFragment extends Fragment {
                 setErrorMessage(errorMessage);
             }
         } else {
-            if (coordinatorLayout != null) {
-                UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+            if (frameLayout != null) {
+                UsefulBits.showSnackbar(getContext(), frameLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
                 if (getActivity() instanceof MainActivity)
                     ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
             }

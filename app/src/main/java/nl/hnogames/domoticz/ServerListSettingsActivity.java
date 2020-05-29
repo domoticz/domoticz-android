@@ -44,7 +44,6 @@ import nl.hnogames.domoticz.interfaces.ServerClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 
@@ -133,12 +132,11 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
     }
 
     private void showRemoveSnackbar(final ServerInfo serverInfo) {
-        if(mServerList.size()>1) {
+        if (mServerList.size() > 1) {
             removeServerFromListView(serverInfo);
             removeServerFromSettings(serverInfo);
             UsefulBits.showSnackbar(this, coordinatorLayout, String.format(getString(R.string.something_deleted), getString(R.string.server)), Snackbar.LENGTH_SHORT);
-        }
-        else
+        } else
             UsefulBits.showSnackbar(this, coordinatorLayout, getString(R.string.remove_last_server), Snackbar.LENGTH_SHORT);
     }
 

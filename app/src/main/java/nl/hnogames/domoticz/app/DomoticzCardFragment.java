@@ -39,7 +39,6 @@ import java.util.List;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -57,7 +56,7 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 public class DomoticzCardFragment extends Fragment {
 
     public Domoticz mDomoticz;
-    public CoordinatorLayout coordinatorLayout;
+    public View frameLayout;
     public PhoneConnectionUtil mPhoneConnectionUtil;
     public SwipeRefreshLayout mSwipeRefreshLayout;
     public MaterialButton btnCheckSettings;
@@ -81,7 +80,7 @@ public class DomoticzCardFragment extends Fragment {
 
     public void setSortFab(boolean visible) {
         if (getActivity() instanceof MainActivity) {
-            if(((MainActivity) getActivity()).fabSort != null)
+            if (((MainActivity) getActivity()).fabSort != null)
                 ((MainActivity) getActivity()).fabSort.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
     }
@@ -105,7 +104,7 @@ public class DomoticzCardFragment extends Fragment {
                              Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_cameras, null);
         if (getActivity() instanceof MainActivity)
-            coordinatorLayout = ((MainActivity) getActivity()).coordinatorLayout;
+            frameLayout = ((MainActivity) getActivity()).frameLayout;
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
         btnCheckSettings = root.findViewById(R.id.btnCheckSettings);
         if (btnCheckSettings != null) {
@@ -194,7 +193,7 @@ public class DomoticzCardFragment extends Fragment {
      *
      * @param error Exception
      */
-    public void errorHandling(Exception error, CoordinatorLayout coordinatorLayout) {
+    public void errorHandling(Exception error, View frameLayout) {
 
         String errorMessage = mDomoticz.getErrorMessage(error);
         if (mPhoneConnectionUtil == null)
@@ -207,8 +206,8 @@ public class DomoticzCardFragment extends Fragment {
                 setErrorMessage(errorMessage);
             }
         } else {
-            if (coordinatorLayout != null) {
-                UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+            if (frameLayout != null) {
+                UsefulBits.showSnackbar(getContext(), frameLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
                 if (getActivity() instanceof MainActivity)
                     ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
             }

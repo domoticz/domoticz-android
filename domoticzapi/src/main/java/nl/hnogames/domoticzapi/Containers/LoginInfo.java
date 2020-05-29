@@ -37,10 +37,12 @@ public class LoginInfo implements Serializable {
     private String Title;
     private String User;
     private String Version;
+    private JSONObject json;
 
     public LoginInfo(){}
 
     public LoginInfo(JSONObject row) throws JSONException {
+        json = row;
         // this.setJsonObject(row);
         if (row.has("rights"))
             Rights = row.getInt("rights");
@@ -102,5 +104,13 @@ public class LoginInfo implements Serializable {
 
     public void setVersion(String version) {
         Version = version;
+    }
+
+    public JSONObject getJson() {
+        return json;
+    }
+
+    public void setJson(JSONObject json) {
+        this.json = json;
     }
 }
