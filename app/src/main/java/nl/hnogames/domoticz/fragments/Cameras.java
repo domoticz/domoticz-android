@@ -47,19 +47,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import hugo.weaving.DebugLog;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.CameraActivity;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.CamerasAdapter;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
-import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
@@ -139,11 +136,11 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     }
 
     @Override
-    public void errorHandling(Exception error, CoordinatorLayout coordinatorLayout) {
+    public void errorHandling(Exception error, View frameLayout) {
         if (error != null) {
             // Let's check if were still attached to an activity
             if (isAdded()) {
-                super.errorHandling(error, coordinatorLayout);
+                super.errorHandling(error, frameLayout);
             }
         }
     }
@@ -196,11 +193,11 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                                 processImage(savePic, cameraTitle.getText().toString());
                             }
                         } catch (Exception ex) {
-                            errorHandling(ex, coordinatorLayout);
+                            errorHandling(ex, frameLayout);
                         }
                     } else {
-                        if (coordinatorLayout != null) {
-                            UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+                        if (frameLayout != null) {
+                            UsefulBits.showSnackbar(getContext(), frameLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
                             if (getActivity() instanceof MainActivity)
                                 ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
                         }
@@ -230,7 +227,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         mSwipeRefreshLayout.setRefreshing(false);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            @DebugLog
+
             public void onRefresh() {
                 getCameras();
             }
@@ -321,14 +318,14 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
 
                         @Override
                         public void onError(Exception error) {
-                            errorHandling(error, coordinatorLayout);
+                            errorHandling(error, frameLayout);
                         }
                     });
                 }
 
                 @Override
                 public void onError(Exception error) {
-                    errorHandling(error, coordinatorLayout);
+                    errorHandling(error, frameLayout);
                 }
             });
         }

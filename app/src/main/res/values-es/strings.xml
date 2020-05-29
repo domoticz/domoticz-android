@@ -98,6 +98,7 @@
     <string name="retry">Reintentar</string>
     <string name="undo">Deshacer</string>
     <string name="something_deleted">%1$s ha sido eliminado</string>
+    <string name="remove_last_server">You can\'t remove the last server in the list.</string>
     <string name="switch_on">Encender el interruptor</string>
     <string name="switch_off">Apagar el interruptor</string>
     <string name="switch_night">Interruptor para luz de noche</string>
@@ -134,4 +135,8 @@
     <string name="auto_refresh_time">Tiempo de auto refresco</string>
     <string name="set_auto_refresh_time">Configurar frecuencia de auto refresco en segundos.</string>
     <string name="error_authentication_basicauth">IMPORTANT: Please check if your Domoticz system uses Login Page as the authentication method. Basic Auth is going to be removed from Domoticz from next update!</string>
+    <string name="category_other">Other</string>
+    <string name="tasker_title">Setup automation rules with Tasker for Domoticz</string>
+    <string name="category_tasker">Tasker</string>
+    <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
 </resources>

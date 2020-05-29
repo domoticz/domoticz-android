@@ -62,7 +62,6 @@ import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
-import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.BeaconSettingsActivity;
 import nl.hnogames.domoticz.BluetoothSettingsActivity;
 import nl.hnogames.domoticz.BuildConfig;
@@ -219,6 +218,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         @SuppressWarnings("SpellCheckingInspection") androidx.preference.SwitchPreference RefreshScreenPreference = findPreference("autorefresh");
         @SuppressWarnings("SpellCheckingInspection") androidx.preference.PreferenceScreen preferenceScreen = findPreference("settingsscreen");
         androidx.preference.PreferenceCategory premiumCategory = findPreference("premium_category");
+        androidx.preference.Preference taskerPreference = findPreference("tasker_settings");
         androidx.preference.Preference premiumPreference = findPreference("premium_settings");
         androidx.preference.Preference ThemePreference = findPreference("darkTheme");
         androidx.preference.SwitchPreference ClockPreference = findPreference("dashboardShowClock");
@@ -233,14 +233,12 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 public void OnReceive(LoginInfo mLoginInfo) {
                     UsefulBits.getServerConfigForActiveServer(mContext, mLoginInfo, new ConfigReceiver() {
                         @Override
-                        @DebugLog
                         public void onReceiveConfig(ConfigInfo settings) {
                             mConfigInfo = settings;
                             setupDefaultValues();
                         }
 
                         @Override
-                        @DebugLog
                         public void onError(Exception error) {
                         }
                     }, mServerUtil.getActiveServer().getConfigInfo(mContext), mServerUtil);
@@ -460,7 +458,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                         return false;
                     }
 
-                    if(!((boolean) newValue))
+                    if (!((boolean) newValue))
                         AppController.getInstance().StopBeaconScanning();
                     else {
                         try {
@@ -675,6 +673,19 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                     }
                 });
         }
+
+        if (taskerPreference != null)
+            taskerPreference.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(androidx.preference.Preference preference) {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=nl.hnogames.domoticz.tasker")));
+                    } catch (android.content.ActivityNotFoundException ignored) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=nl.hnogames.domoticz.tasker")));
+                    }
+                    return true;
+                }
+            });
 
         if (translateApplication != null)
             translateApplication.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {

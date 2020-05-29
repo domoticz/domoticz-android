@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MarginItemDecoration extends RecyclerView.ItemDecoration {
     private final int edgePadding;
+
     public MarginItemDecoration(int edgePadding) {
         this.edgePadding = edgePadding;
     }

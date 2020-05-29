@@ -117,8 +117,8 @@
     <string name="qrcode_enable_settings">Activer la fonctionnalité de QR Code</string>
     <string name="bluetooth_settings">Configurer les périphériques Bluetooth</string>
     <string name="enable_bluetooth">Activez la fonctionnalité Bluetooth</string>
-    <string name="beacon_settings">Setup Beacons</string>
-    <string name="enable_beacon">Enable Beacon functionality</string>
+    <string name="beacon_settings">Configurez des balises</string>
+    <string name="enable_beacon">Activer la fonctionnalité balises</string>
     <string name="translate_description">Vous pouvez aider à améliorer nos traductions, et même ajouter de nouvelles langues à cette application via notre projet Crowdin</string>
     <string name="translate_title">Traductions</string>
     <string name="security_settings">Configurer la sécurité</string>
@@ -148,7 +148,7 @@
     <string name="enable_notifications">Activer les notifications sur ce dispositif</string>
     <string name="notification_screen_title">Paramètre de notification</string>
     <string name="notification_history">Historique de notification</string>
-    <string name="notification_inbox">Inbox</string>
+    <string name="notification_inbox">Boite reception</string>
     <string name="notification_vibrate_title">Vibrer</string>
     <string name="notification_vibrate_on">Vibrer lorsqu\'une notification est reçue</string>
     <string name="notification_vibrate_off">Ne pas vibrer</string>
@@ -213,5 +213,5 @@
     <string name="debug_test_text">Débogage</string>
     <string name="restart_required_title">Redémarrage requis</string>
     <string name="restart_now">Redémarrer maintenant ?</string>
-    <string name="check_settings">Check your settings</string>
+    <string name="check_settings">Vérifiez vos réglages</string>
 </resources>

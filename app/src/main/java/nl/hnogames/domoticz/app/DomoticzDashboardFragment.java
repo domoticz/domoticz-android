@@ -38,13 +38,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -71,7 +70,7 @@ public class DomoticzDashboardFragment extends Fragment {
     public Domoticz mDomoticz;
     public SharedPrefUtil mSharedPrefs;
     public PhoneConnectionUtil mPhoneConnectionUtil;
-    public CoordinatorLayout coordinatorLayout;
+    public View frameLayout;
     public LinearLayout lySortDevices;
     public BackdropContainer backdropContainer;
     public MaterialCardView bottomLayoutWrapper;
@@ -149,7 +148,7 @@ public class DomoticzDashboardFragment extends Fragment {
         bottomLayoutWrapper = root.findViewById(R.id.bottomLayoutWrapper);
         lySortDevices = root.findViewById(R.id.lySortDevices);
         if (getActivity() instanceof MainActivity)
-            coordinatorLayout = ((MainActivity) getActivity()).coordinatorLayout;
+            frameLayout = ((MainActivity) getActivity()).frameLayout;
 
         sortStatic = root.findViewById(R.id.btnSortStatic);
         if (sortStatic != null) {
@@ -366,7 +365,7 @@ public class DomoticzDashboardFragment extends Fragment {
     /**
      * Handles the error messages
      *
-     * @param error             Exception
+     * @param error Exception
      */
     public void errorHandling(Exception error) {
         showSpinner(false);
@@ -382,8 +381,8 @@ public class DomoticzDashboardFragment extends Fragment {
                 setErrorMessage(errorMessage);
             }
         } else {
-            if (coordinatorLayout != null) {
-                UsefulBits.showSnackbar(getContext(), coordinatorLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+            if (frameLayout != null) {
+                UsefulBits.showSnackbar(getContext(), frameLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
                 if (getActivity() instanceof MainActivity)
                     ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
             }
@@ -397,8 +396,8 @@ public class DomoticzDashboardFragment extends Fragment {
 
     public void setSortFab(boolean visible) {
         if (getActivity() instanceof MainActivity) {
-            if(((MainActivity) getActivity()).fabSort != null)
-            ((MainActivity) getActivity()).fabSort.setVisibility(visible ? View.VISIBLE : View.GONE);
+            if (((MainActivity) getActivity()).fabSort != null)
+                ((MainActivity) getActivity()).fabSort.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
     }
 

@@ -156,5 +156,9 @@
     <string name="set_auto_refresh_time">Set a specific timer for the auto refresh in seconds.</string>
 
     <string name="error_authentication_basicauth">IMPORTANT: Please check if your Domoticz system uses Login Page as the authentication method. Basic Auth is going to be removed from Domoticz from next update!</string>
+    <string name="category_other" >Other</string>
+    <string name="tasker_title" >Setup automation rules with Tasker for Domoticz</string>
+    <string name="category_tasker" >Tasker</string>
+    <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
 
 </resources>

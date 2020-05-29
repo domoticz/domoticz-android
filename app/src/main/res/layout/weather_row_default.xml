@@ -94,22 +94,23 @@
                             tools:text="Utility name" />
 
                         <TextView
-                            android:id="@+id/weather_hardware"
-                            style="@style/row_body1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="Hardware" />
-
-                        <TextView
                             android:id="@+id/weather_data"
                             style="@style/row_body1"
                             android:layout_width="wrap_content"
+                            android:layout_below="@id/weather_name"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/weather_hardware"
                             android:layout_marginBottom="5dp"
-                            android:textSize="8sp"
                             android:textStyle="italic"
                             tools:text="189.00 S, Speed: 3.1m/s, Temp: 10 C, Chill: 10,5 C" />
+
+                        <TextView
+                            android:id="@+id/weather_hardware"
+                            style="@style/row_body1"
+                            android:layout_below="@id/weather_data"
+                            android:layout_width="wrap_content"
+                            android:textSize="8sp"
+                            android:layout_height="wrap_content"
+                            tools:text="Hardware" />
                     </LinearLayout>
 
                     <LinearLayout

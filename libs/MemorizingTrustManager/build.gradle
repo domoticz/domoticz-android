@@ -22,7 +22,7 @@ android {
 	buildToolsVersion "29.0.2"
 	//noinspection GroovyAssignabilityCheck
 	defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 19
 		targetSdkVersion 29
 	}
 

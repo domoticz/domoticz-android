@@ -51,7 +51,6 @@
             android:orientation="horizontal"
             android:padding="10dp">
 
-
             <ImageView
                 android:id="@+id/widget_info_icon"
                 android:layout_width="wrap_content"

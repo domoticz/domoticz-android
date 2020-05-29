@@ -98,6 +98,7 @@
     <string name="retry">Försök igen</string>
     <string name="undo">Ångra</string>
     <string name="something_deleted">%1$s togs bort</string>
+    <string name="remove_last_server">You can\'t remove the last server in the list.</string>
     <string name="switch_on">Slår på brytare</string>
     <string name="switch_off">Slår av brytare</string>
     <string name="switch_night">Växla om till nattljus</string>
@@ -134,4 +135,8 @@
     <string name="auto_refresh_time">Uppdatera timer</string>
     <string name="set_auto_refresh_time">Ange en specifik timer för automatisk uppdatering på några sekunder.</string>
     <string name="error_authentication_basicauth">IMPORTANT: Please check if your Domoticz system uses Login Page as the authentication method. Basic Auth is going to be removed from Domoticz from next update!</string>
+    <string name="category_other">Other</string>
+    <string name="tasker_title">Setup automation rules with Tasker for Domoticz</string>
+    <string name="category_tasker">Tasker</string>
+    <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
 </resources>

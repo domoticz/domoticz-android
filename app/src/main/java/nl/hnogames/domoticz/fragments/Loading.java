@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.fragments;
 import android.content.Context;
 import android.os.Bundle;
 
-import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 
@@ -35,7 +34,7 @@ public class Loading extends DomoticzRecyclerFragment implements DomoticzFragmen
     }
 
     @Override
-    @DebugLog
+
     public void onAttach(Context context) {
         super.onAttach(context);
         onAttachFragment(this);
@@ -48,7 +47,7 @@ public class Loading extends DomoticzRecyclerFragment implements DomoticzFragmen
     }
 
     @Override
-    @DebugLog
+
     public void onConnectionOk() {
         super.showSpinner(true);
         if (mSwipeRefreshLayout != null)
@@ -56,7 +55,7 @@ public class Loading extends DomoticzRecyclerFragment implements DomoticzFragmen
     }
 
     @Override
-    @DebugLog
+
     public void errorHandling(Exception error) {
         if (error != null) {
             // Let's check if were still attached to an activity

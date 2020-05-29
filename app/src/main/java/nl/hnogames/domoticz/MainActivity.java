@@ -35,6 +35,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -82,13 +83,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.biometric.BiometricPrompt;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import hotchemi.android.rate.AppRate;
-import hugo.weaving.DebugLog;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
@@ -124,7 +123,7 @@ import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 import shortbread.Shortcut;
 
-@DebugLog
+
 public class MainActivity extends AppCompatPermissionsActivity {
     private static TalkBackUtil oTalkBackUtil;
     private final int iQRResultCode = 775;
@@ -132,13 +131,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private final int iSettingsResultCode = 995;
     public boolean onPhone;
     public Exception configException;
+    public FrameLayout frameLayout;
+    public FloatingActionButton fabSort;
     private SharedPrefUtil mSharedPrefs;
     private String TAG = MainActivity.class.getSimpleName();
     private ServerUtil mServerUtil;
     private SearchView searchViewAction;
     private CollapsingToolbarLayout toolbarLayout;
-    public CoordinatorLayout coordinatorLayout;
-    public FloatingActionButton fabSort;
     private Toolbar toolbar;
     private ArrayList<String> stackFragments = new ArrayList<>();
     private Domoticz domoticz;
@@ -158,14 +157,14 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
 
-    @DebugLog
+
     public ServerUtil getServerUtil() {
         if (mServerUtil == null)
             mServerUtil = new ServerUtil(this);
         return mServerUtil;
     }
 
-    @DebugLog
+
     public ConfigInfo getConfig() {
         return mConfigInfo;
     }
@@ -233,7 +232,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         toolbarLayout.setCollapsedTitleTextColor(color);
         toolbarLayout.setExpandedTitleColor(color);
 
-        coordinatorLayout = findViewById(R.id.coordinatorLayout);
+        frameLayout = findViewById(R.id.main);
         if (!UsefulBits.checkPlayServicesAvailable(this))
             this.finish();
 
@@ -249,8 +248,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     public void setActionbar(String title) {
-        if(toolbarLayout != null) {
-                      toolbarLayout.setTitle(title);
+        if (toolbarLayout != null) {
+            toolbarLayout.setTitle(title);
             toolbarLayout.animate();
         }
     }
@@ -263,7 +262,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 if (errorCode == 13) {
                     runOnUiThread(new Runnable() {
                         @Override
-                        @DebugLog
                         public void run() {
                             FallbackSecurity();
                         }
@@ -296,16 +294,16 @@ public class MainActivity extends AppCompatPermissionsActivity {
         passwordDialog.show();
         passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
             @Override
-            @DebugLog
+
             public void onDismiss(String password) {
                 if (UsefulBits.isEmpty(password)) {
-                    UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                    UsefulBits.showSnackbar(MainActivity.this, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                     Talk(R.string.security_wrong_code);
                 } else {
                     if (password.equals(domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD)))
                         return;
                     else {
-                        UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                        UsefulBits.showSnackbar(MainActivity.this, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                         Talk(R.string.security_wrong_code);
                     }
                 }
@@ -347,7 +345,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         Talk(this.getString(message));
     }
 
-    @DebugLog
+
     public void initScreen() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             ShowLoading();
@@ -369,11 +367,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 startActivityForResult(welcomeWizard, iWelcomeResultCode);
                 mSharedPrefs.setFirstStart(false);
             } else {
-                GetDomoticzAuthAndConfig();
-                if (mSharedPrefs.isStartupSecurityEnabled()) {
-                    biometricPrompt.authenticate(promptInfo);
+                if (!fromVoiceWidget && !fromQRCodeWidget) {
+                    GetDomoticzAuthAndConfig();
+                    if (mSharedPrefs.isStartupSecurityEnabled()) {
+                        biometricPrompt.authenticate(promptInfo);
+                    }
+                    drawNavigationMenu(null);
                 }
-                drawNavigationMenu(null);
             }
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
@@ -385,60 +385,53 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private void GetDomoticzAuthAndConfig() {
         if (domoticz == null)
             domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
-        if (!fromVoiceWidget && !fromQRCodeWidget) {
-            // Refresh login token
-            domoticz.checkLogin(new LoginReceiver() {
-                @Override
-                public void OnReceive(LoginInfo mLoginInfo) {
-                    if(mLoginInfo == null || mLoginInfo.getStatus() == null)
-                    {
-                        domoticz.getUserAuthenticationRights(new LoginReceiver() {
-                            @Override
-                            public void OnReceive(LoginInfo mLoginInfo) {
-                                GetServerConfig(mLoginInfo);
-                            }
-
-                            @Override
-                            public void onError(Exception error) {
-                                configException = error;
-                                addFragment(true);
-                            }
-                        });
-                    }
-                    else
+        // Refresh login token
+        domoticz.checkLogin(new LoginReceiver() {
+            @Override
+            public void OnReceive(LoginInfo logInfo) {
+                domoticz.getUserAuthenticationRights(new LoginReceiver() {
+                    @Override
+                    public void OnReceive(LoginInfo mLoginInfo) {
                         GetServerConfig(mLoginInfo);
-                }
+                    }
 
-                @Override
-                public void onError(Exception error) {
-                    configException = error;
-                    addFragment(true);
-                }
-            });
-        }
+                    @Override
+                    public void onError(Exception error) {
+                        configException = error;
+                        addFragment(true);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(Exception error) {
+                configException = error;
+                addFragment(true);
+            }
+        });
     }
 
     private void GetServerConfig(LoginInfo mLoginInfo) {
         UsefulBits.getServerConfigForActiveServer(MainActivity.this, mLoginInfo, new ConfigReceiver() {
             @Override
-            @DebugLog
+
             public void onReceiveConfig(ConfigInfo settings) {
                 if (MainActivity.this.mConfigInfo == null || settings == null || !MainActivity.this.mConfigInfo.toString().equals(settings.toString())) {
                     MainActivity.this.mConfigInfo = settings;
                     SerializableManager.saveSerializable(MainActivity.this, settings, "ConfigInfo");
 
-                    setupMobileDevice();
-                    setScheduledTasks();
-
-                    WidgetUtils.RefreshWidgets(MainActivity.this);
                     drawNavigationMenu(mConfigInfo);
                     if (!fromShortcut)
                         addFragment(false);
+
+                    setupMobileDevice();
+                    setScheduledTasks();
+                    WidgetUtils.RefreshWidgets(MainActivity.this);
                 }
             }
 
             @Override
-            @DebugLog
+
             public void onError(Exception error) {
                 configException = error;
                 if (!fromShortcut)
@@ -624,7 +617,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
                 domoticz.setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
                     @Override
-                    @DebugLog
+
                     public void onReceiveResult(String result) {
                         Log.d(TAG, result);
                         if (fromQRCodeWidget)
@@ -632,7 +625,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     }
 
                     @Override
-                    @DebugLog
+
                     public void onError(Exception error) {
                         if (fromQRCodeWidget)
                             MainActivity.this.finish();
@@ -668,7 +661,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         return jsonValue;
     }
 
-    @DebugLog
+
     public void refreshFragment() {
         Fragment f = latestFragment;
         if (f instanceof DomoticzRecyclerFragment) {
@@ -681,21 +674,21 @@ public class MainActivity extends AppCompatPermissionsActivity {
             ((RefreshFragment) f).RefreshFragment();
     }
 
-    @DebugLog
+
     public void removeFragmentStack(String fragment) {
         if (stackFragments != null) {
             stackFragments.remove(fragment);
         }
     }
 
-    @DebugLog
+
     public void clearFragmentStack() {
         if (stackFragments != null) {
             stackFragments.clear();
         }
     }
 
-    @DebugLog
+
     public void addFragmentStack(String fragment) {
         int screenIndex = mSharedPrefs.getStartupScreenIndex();
         if (fragment.equals(getResources().getStringArray(R.array.drawer_fragments)[screenIndex])) {
@@ -721,13 +714,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     @Override
-    @DebugLog
+
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
-    @DebugLog
+
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         Fragment f = latestFragment;
@@ -738,7 +731,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         }
     }
 
-    @DebugLog
+
     public void changeFragment(String fragment, boolean keepInStack) {
         try {
             FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
@@ -784,11 +777,10 @@ public class MainActivity extends AppCompatPermissionsActivity {
             autoRefreshTimer = new Timer("autorefresh", true);
             autoRefreshTimer.scheduleAtFixedRate(new TimerTask() {
                 @Override
-                @DebugLog
+
                 public void run() {
                     runOnUiThread(new Runnable() {
                         @Override
-                        @DebugLog
                         public void run() {
                             refreshFragment();
                         }
@@ -860,7 +852,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         }
     }
 
-    @DebugLog
+
     public void drawNavigationMenu(final ConfigInfo mConfig) {
         ConfigInfo config = mConfig;
         List<String> allUsers = new ArrayList<>();
@@ -887,12 +879,12 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 .withOnlyMainProfileImageVisible(true)
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
-                    @DebugLog
+
                     public boolean onProfileChanged(View view, final IProfile profile, boolean current) {
                         if (!current) {
                             if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-                                if (getFragmentCoordinatorLayout() != null) {
-                                    Snackbar.make(getFragmentCoordinatorLayout(), getString(R.string.category_account) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
+                                if (frameLayout != null) {
+                                    Snackbar.make(frameLayout, getString(R.string.category_account) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
                                             .setAction(R.string.upgrade, new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View view) {
@@ -908,10 +900,9 @@ public class MainActivity extends AppCompatPermissionsActivity {
                                 passwordDialog.show();
                                 passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                     @Override
-                                    @DebugLog
                                     public void onDismiss(String password) {
                                         if (UsefulBits.isEmpty(password)) {
-                                            UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                            UsefulBits.showSnackbar(MainActivity.this, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                                             Talk(R.string.security_wrong_code);
                                             drawNavigationMenu(finalConfig);
                                         } else {
@@ -923,7 +914,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                                                         domoticz.setUserCredentials(user.getUsername(), password);
                                                         initScreen();
                                                     } else {
-                                                        UsefulBits.showSnackbar(MainActivity.this, getFragmentCoordinatorLayout(), R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                                        UsefulBits.showSnackbar(MainActivity.this, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                                                         drawNavigationMenu(finalConfig);
                                                     }
                                                 }
@@ -965,7 +956,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 .withDrawerItems(getDrawerItems())
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
-                    @DebugLog
+
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if (drawerItem != null) {
                             if (searchViewAction != null) {
@@ -1072,7 +1063,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     @Override
-    @DebugLog
+
     public boolean onCreateOptionsMenu(Menu menu) {
         Fragment f = latestFragment;
 
@@ -1092,13 +1083,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 searchViewAction = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
                 searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
-                    @DebugLog
+
                     public boolean onQueryTextSubmit(String query) {
                         return false;
                     }
 
                     @Override
-                    @DebugLog
+
                     public boolean onQueryTextChange(String newText) {
                         Fragment n = latestFragment;
                         if (n instanceof DomoticzDashboardFragment) {
@@ -1168,7 +1159,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
     @SuppressWarnings("SimplifiableIfStatement")
     @Override
-    @DebugLog
+
     public boolean onOptionsItemSelected(MenuItem item) {
         try {
             switch (item.getItemId()) {
@@ -1209,11 +1200,9 @@ public class MainActivity extends AppCompatPermissionsActivity {
                         cameraRefreshTimer = new Timer("camera", true);
                         cameraRefreshTimer.scheduleAtFixedRate(new TimerTask() {
                             @Override
-                            @DebugLog
                             public void run() {
                                 runOnUiThread(new Runnable() {
                                     @Override
-                                    @DebugLog
                                     public void run() {
                                         //call refresh fragment
                                         Fragment f = latestFragment;
@@ -1259,7 +1248,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
                                     R.layout.dialog_switch_logs, null);
                     infoDialog.onDismissListener(new SortDialog.DismissListener() {
                         @Override
-                        @DebugLog
                         public void onDismiss(String selectedSort) {
                             Log.i(TAG, "Sorting: " + selectedSort);
                             Fragment f = latestFragment;
@@ -1296,7 +1284,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         recognitionProgressView.stop();
     }
 
-    @DebugLog
+
     private void showSpeechResults(Bundle results) {
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
@@ -1385,7 +1373,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
             this.finish();
     }
 
-    @DebugLog
+
     public void showServerDialog() {
         String[] serverNames = new String[mServerUtil.getServerList().size()];
         int count = 0;
@@ -1405,7 +1393,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 .items(serverNames)
                 .itemsCallbackSingleChoice(selectionId, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
-                    @DebugLog
+
                     public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                         try {
                             for (ServerInfo s : mServerUtil.getEnabledServerList()) {
@@ -1435,28 +1423,10 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     private void showSnackbar(String message) {
-        CoordinatorLayout layout = getFragmentCoordinatorLayout();
-        if (layout != null)
-            UsefulBits.showSnackbar(this, layout, message, Snackbar.LENGTH_SHORT);
+        if (frameLayout != null)
+            UsefulBits.showSnackbar(this, frameLayout, message, Snackbar.LENGTH_SHORT);
         else
             Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    @DebugLog
-    public CoordinatorLayout getFragmentCoordinatorLayout() {
-        CoordinatorLayout layout = null;
-        try {
-            Fragment f = latestFragment;
-            if (f != null) {
-                View v = f.getView();
-                if (v != null)
-                    layout = v.findViewById(R.id.coordinatorLayout);
-            }
-        } catch (Exception ex) {
-            Log.e(TAG, "Unable to get the coordinator layout of visible fragment");
-            ex.printStackTrace();
-        }
-        return layout;
     }
 
     private void stopCameraTimer() {
@@ -1476,7 +1446,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     @Override
-    @DebugLog
+
     public void onResume() {
         super.onResume();
 
@@ -1488,7 +1458,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     @Override
-    @DebugLog
+
     public void onDestroy() {
         if (oTalkBackUtil != null) {
             oTalkBackUtil.Stop();
@@ -1500,7 +1470,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         super.onDestroy();
     }
 
-    @DebugLog
+
     public void clearSearch() {
         if (searchViewAction != null) {
             searchViewAction.setQuery("", false);
@@ -1510,7 +1480,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     @Override
-    @DebugLog
+
     public void onPause() {
         if (listeningSpeechRecognition) {
             stopRecognition();
@@ -1526,7 +1496,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     @Override
-    @DebugLog
+
     public void onBackPressed() {
         if (listeningSpeechRecognition) {
             stopRecognition();
