@@ -63,7 +63,8 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
         this.refreshTimer = refreshTimer;
         this.domoticz = domoticz;
 
-        picasso = new PicassoUtil().getPicasso(mContext, domoticz.getSessionUtil().getSessionCookie());
+        picasso = new PicassoUtil().getPicasso(mContext, domoticz.getSessionUtil().getSessionCookie(),
+                domoticz.getUserCredentials(Domoticz.Authentication.USERNAME), domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD));
         if (mCustomSorting == null)
             mCustomSorting = mSharedPrefs.getSortingList("cameras");
         setData(data);

@@ -27,7 +27,10 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import nl.hnogames.domoticz.BuildConfig;
+import nl.hnogames.domoticz.helpers.BasicAuthInterceptor;
 import nl.hnogames.domoticz.helpers.DefaultHeadersInterceptor;
+import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.Utils.RequestUtil;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
@@ -94,14 +97,14 @@ public class PicassoUtil {
         return size;
     }
 
-    public Picasso getPicasso(Context context, final String cookie) {
+    public Picasso getPicasso(Context context, final String cookie, String username, String password) {
         OkHttpClient okHttpClient = providesOkHttpClient(context, new LoggingInterceptor.Builder()
                 .loggable(BuildConfig.DEBUG)
                 .setLevel(Level.BASIC)
                 .log(Platform.INFO)
                 .request("Request")
                 .response("Response")
-                .build(), cookie);
+                .build(), cookie, username, password);
         OkHttp3Downloader okHttpDownloader = providesPicassoOkHttpClient(okHttpClient);
         Picasso picasso = providesCustomPicasso(context, okHttpDownloader);
         return picasso;
@@ -125,7 +128,7 @@ public class PicassoUtil {
         return new OkHttp3Downloader(okHttpClient);
     }
 
-    public OkHttpClient providesOkHttpClient(Context context, Interceptor loggingInterceptor, String cookie) {
+    public OkHttpClient providesOkHttpClient(Context context, Interceptor loggingInterceptor, String cookie, String username, String password) {
         File cacheDir = createDefaultCacheDir(context, BIG_CACHE_PATH);
         long cacheSize = calculateDiskCacheSize(cacheDir);
         // Create a trust manager that does not validate certificate chains
@@ -163,15 +166,27 @@ public class PicassoUtil {
             e.printStackTrace();
         }
 
-        return new OkHttpClient.Builder()
-                .protocols(Arrays.asList(Protocol.HTTP_1_1))
-                .hostnameVerifier(new TrustAllHostnameVerifier())
-                .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
-                .addNetworkInterceptor(new DefaultHeadersInterceptor(context, cookie))
-                .addInterceptor(new DefaultHeadersInterceptor(context, cookie))
-                .addInterceptor(loggingInterceptor)
-                //.cache(new Cache(cacheDir, cacheSize))
-                .build();
+        if(Domoticz.BasicAuthDetected)
+        {
+            return new OkHttpClient.Builder()
+                    .protocols(Arrays.asList(Protocol.HTTP_1_1))
+                    .hostnameVerifier(new TrustAllHostnameVerifier())
+                    .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
+                    .addNetworkInterceptor(new BasicAuthInterceptor(username, password))
+                    .addInterceptor(new BasicAuthInterceptor(username, password))
+                    .addInterceptor(loggingInterceptor)
+                    .build();
+        }
+        else {
+            return new OkHttpClient.Builder()
+                    .protocols(Arrays.asList(Protocol.HTTP_1_1))
+                    .hostnameVerifier(new TrustAllHostnameVerifier())
+                    .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
+                    .addNetworkInterceptor(new DefaultHeadersInterceptor(context, cookie))
+                    .addInterceptor(new DefaultHeadersInterceptor(context, cookie))
+                    .addInterceptor(loggingInterceptor)
+                    .build();
+        }
     }
 
     @SuppressLint("BadHostnameVerifier")
