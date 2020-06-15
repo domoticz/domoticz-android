@@ -31,7 +31,6 @@ import com.github.paolorotolo.appintro.model.SliderPage;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;

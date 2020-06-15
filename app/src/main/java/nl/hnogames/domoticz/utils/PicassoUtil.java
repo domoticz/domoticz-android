@@ -27,10 +27,8 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import nl.hnogames.domoticz.BuildConfig;
-import nl.hnogames.domoticz.helpers.BasicAuthInterceptor;
 import nl.hnogames.domoticz.helpers.DefaultHeadersInterceptor;
 import nl.hnogames.domoticzapi.Domoticz;
-import nl.hnogames.domoticzapi.Utils.RequestUtil;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
@@ -166,27 +164,14 @@ public class PicassoUtil {
             e.printStackTrace();
         }
 
-        if(Domoticz.BasicAuthDetected)
-        {
-            return new OkHttpClient.Builder()
-                    .protocols(Arrays.asList(Protocol.HTTP_1_1))
-                    .hostnameVerifier(new TrustAllHostnameVerifier())
-                    .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
-                    .addNetworkInterceptor(new BasicAuthInterceptor(username, password))
-                    .addInterceptor(new BasicAuthInterceptor(username, password))
-                    .addInterceptor(loggingInterceptor)
-                    .build();
-        }
-        else {
-            return new OkHttpClient.Builder()
-                    .protocols(Arrays.asList(Protocol.HTTP_1_1))
-                    .hostnameVerifier(new TrustAllHostnameVerifier())
-                    .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
-                    .addNetworkInterceptor(new DefaultHeadersInterceptor(context, cookie))
-                    .addInterceptor(new DefaultHeadersInterceptor(context, cookie))
-                    .addInterceptor(loggingInterceptor)
-                    .build();
-        }
+        return new OkHttpClient.Builder()
+                .protocols(Arrays.asList(Protocol.HTTP_1_1))
+                .hostnameVerifier(new TrustAllHostnameVerifier())
+                .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
+                .addNetworkInterceptor(new DefaultHeadersInterceptor(context, cookie, username, password, Domoticz.BasicAuthDetected))
+                .addInterceptor(new DefaultHeadersInterceptor(context, cookie, username, password, Domoticz.BasicAuthDetected))
+                .addInterceptor(loggingInterceptor)
+                .build();
     }
 
     @SuppressLint("BadHostnameVerifier")

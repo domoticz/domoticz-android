@@ -156,14 +156,12 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private ConfigInfo mConfigInfo;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
-
-
+    
     public ServerUtil getServerUtil() {
         if (mServerUtil == null)
             mServerUtil = new ServerUtil(this);
         return mServerUtil;
     }
-
 
     public ConfigInfo getConfig() {
         return mConfigInfo;

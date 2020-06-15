@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 
 import java.io.IOException;
 
+import okhttp3.Credentials;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -14,16 +15,17 @@ public class DefaultHeadersInterceptor implements Interceptor {
     private Context mContext;
     private boolean useBasicAuth = false;
     private String sCookie;
+    private String sUsername;
+    private String sPassword;
     private boolean useCookie = false;
 
-    public DefaultHeadersInterceptor(Context context) {
-        this.mContext = context;
-    }
-
-    public DefaultHeadersInterceptor(Context context, String cookie) {
+    public DefaultHeadersInterceptor(Context context, String cookie, String username, String password, boolean addBasicAuth) {
         this.mContext = context;
         useCookie = true;
         this.sCookie = cookie;
+        this.sUsername = username;
+        this.sPassword = password;
+        this.useBasicAuth = addBasicAuth;
     }
 
     @Override
@@ -37,8 +39,8 @@ public class DefaultHeadersInterceptor implements Interceptor {
                 .header("Accept-Encoding", "gzip, deflate, br")
                 //.header("X-Client-Id", getPackageName() + "-" + getVersionName() + "-" + getVersionCode() + "-" + getBuildType())
                 .header("User-Agent", getPackageName() + "-" + getVersionName() + "-" + getVersionCode() + "-" + getBuildType());
-        //if (useBasicAuth)
-        //    builder.header("Authorization", Credentials.basic(sUsername, sPassword));
+        if (useBasicAuth)
+            builder.header("Authorization", Credentials.basic(sUsername, sPassword));
         if (useCookie)
             builder.header("Cookie", sCookie);
         return chain.proceed(builder.build());
