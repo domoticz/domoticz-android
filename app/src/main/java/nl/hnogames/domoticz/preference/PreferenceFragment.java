@@ -75,16 +75,15 @@ import nl.hnogames.domoticz.ServerSettingsActivity;
 import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.SpeechSettingsActivity;
 import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.ui.SimpleTextDialog;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.LoginInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
-import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 import static android.content.Context.KEYGUARD_SERVICE;
 
@@ -99,9 +98,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     private SharedPrefUtil mSharedPrefs;
     private File SettingsFile;
     private Context mContext;
-    private Domoticz mDomoticz;
     private ConfigInfo mConfigInfo;
-    private ServerUtil mServerUtil;
     private PermissionHelper permissionHelper;
 
     private static void tintIcons(Preference preference, int color) {
@@ -135,10 +132,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         mContext = getActivity();
 
-        mServerUtil = new ServerUtil(mContext);
         mSharedPrefs = new SharedPrefUtil(mContext);
-        mDomoticz = new Domoticz(mContext, AppController.getInstance().getRequestQueue());
-        mConfigInfo = mServerUtil.getActiveServer().getConfigInfo(mContext);
+        mConfigInfo = StaticHelper.getServerUtil(getActivity()).getActiveServer().getConfigInfo(mContext);
 
         UsefulBits.checkAPK(mContext, mSharedPrefs);
 
@@ -228,7 +223,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         androidx.preference.Preference openNotificationSettings = findPreference("openNotificationSettings");
 
         if (mConfigInfo == null) {
-            mDomoticz.checkLogin(new LoginReceiver() {
+            StaticHelper.getDomoticz(mContext).checkLogin(new LoginReceiver() {
                 @Override
                 public void OnReceive(LoginInfo mLoginInfo) {
                     UsefulBits.getServerConfigForActiveServer(mContext, mLoginInfo, new ConfigReceiver() {
@@ -241,7 +236,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                         @Override
                         public void onError(Exception error) {
                         }
-                    }, mServerUtil.getActiveServer().getConfigInfo(mContext), mServerUtil);
+                    }, StaticHelper.getServerUtil(mContext).getActiveServer().getConfigInfo(mContext));
                 }
 
                 @Override
@@ -372,7 +367,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             fetchServerConfig.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(androidx.preference.Preference preference) {
-                    mDomoticz.checkLogin(new LoginReceiver() {
+                    StaticHelper.getDomoticz(mContext).checkLogin(new LoginReceiver() {
                         @Override
                         public void OnReceive(LoginInfo mLoginInfo) {
                             UsefulBits.getServerConfigForActiveServer(mContext, mLoginInfo, new ConfigReceiver() {
@@ -385,7 +380,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                                 public void onError(Exception error) {
                                     showSnackbar(mContext.getString(R.string.fetched_server_config_failed));
                                 }
-                            }, null, mServerUtil);
+                            }, null);
                         }
 
                         @Override

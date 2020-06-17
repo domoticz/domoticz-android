@@ -32,15 +32,13 @@ import java.util.ArrayList;
 
 import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.VersionInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
-import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class WelcomePage4 extends Fragment {
 
@@ -77,25 +75,22 @@ public class WelcomePage4 extends Fragment {
     }
 
     private void checkConnectionData() {
-        ServerUtil mServerUtil = new ServerUtil(getActivity());
-        final Domoticz mDomoticz = new Domoticz(getActivity(), AppController.getInstance().getRequestQueue());
-
-        if (UsefulBits.isEmpty(mServerUtil.getActiveServer().getServerName())) {
+        if (UsefulBits.isEmpty(StaticHelper.getServerUtil(getContext()).getActiveServer().getServerName())) {
             setResultText(getString(R.string.welcome_msg_connectionDataIncompleteName) + "\n\n"
                     + getString(R.string.welcome_msg_correctOnPreviousPage));
-        } else if (!mDomoticz.isConnectionDataComplete(mServerUtil.getActiveServer())) {
+        } else if (!StaticHelper.getDomoticz(getContext()).isConnectionDataComplete(StaticHelper.getServerUtil(getContext()).getActiveServer())) {
             setResultText(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n"
                     + getString(R.string.welcome_msg_correctOnPreviousPage));
-        } else if (!mDomoticz.isUrlValid(mServerUtil.getActiveServer())) {
+        } else if (!StaticHelper.getDomoticz(getContext()).isUrlValid(StaticHelper.getServerUtil(getContext()).getActiveServer())) {
             setResultText(getString(R.string.welcome_msg_connectionDataInvalid) + "\n\n"
                     + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else {
-            mDomoticz.getServerVersion(new VersionReceiver() {
+            StaticHelper.getDomoticz(getContext()).getServerVersion(new VersionReceiver() {
                 @Override
                 public void onReceiveVersion(VersionInfo version) {
                     if (isAdded()) {
                         tempText = getString(R.string.welcome_msg_serverVersion) + ": " + version.getVersion();
-                        mDomoticz.getDevices(new DevicesReceiver() {
+                        StaticHelper.getDomoticz(getContext()).getDevices(new DevicesReceiver() {
                             @Override
                             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
                                 if (isAdded()) {
@@ -122,7 +117,7 @@ public class WelcomePage4 extends Fragment {
                 @Override
                 public void onError(Exception error) {
                     if (isAdded())
-                        setErrorText(mDomoticz.getErrorMessage(error));
+                        setErrorText(StaticHelper.getDomoticz(getContext()).getErrorMessage(error));
                 }
             });
         }

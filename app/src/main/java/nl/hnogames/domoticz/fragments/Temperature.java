@@ -45,6 +45,7 @@ import nl.hnogames.domoticz.adapters.TemperatureAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.TemperatureClickListener;
 import nl.hnogames.domoticz.ui.ScheduledTemperatureDialog;
@@ -159,7 +160,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     private void createListView(ArrayList<TemperatureInfo> mTemperatureInfos) {
         if (getView() != null) {
             if (adapter == null) {
-                adapter = new TemperatureAdapter(mContext, mDomoticz, getServerUtil(), mTemperatureInfos, this);
+                adapter = new TemperatureAdapter(mContext, StaticHelper.getDomoticz(mContext), getServerUtil(), mTemperatureInfos, this);
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
             } else {
@@ -216,7 +217,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     }
 
     private void changeFavorite(final TemperatureInfo mTemperatureInfo, final boolean isFavorite) {
-        UserInfo user = getCurrentUser(mContext, mDomoticz);
+        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
         if (user != null && user.getRights() <= 1) {
             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
@@ -244,7 +245,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         if (isFavorite) jsonAction = DomoticzValues.Device.Favorite.ON;
         else jsonAction = DomoticzValues.Device.Favorite.OFF;
 
-        mDomoticz.setAction(mTemperatureInfo.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
+        StaticHelper.getDomoticz(mContext).setAction(mTemperatureInfo.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
 
             public void onReceiveResult(String result) {
@@ -297,7 +298,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         addDebugText("onSetClick");
         final int idx = t.getIdx();
 
-        UserInfo user = getCurrentUser(mContext, mDomoticz);
+        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
         if (user != null && user.getRights() <= 0) {
             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
@@ -346,7 +347,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                             "&mode=" + PERMANENT_OVERRIDE;
 
                     // add query parameters
-                    mDomoticz.setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
+                    StaticHelper.getDomoticz(mContext).setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
                 } else if (dialogAction == DialogAction.NEUTRAL && evohomeZone) {
                     addDebugText("Set idx " + idx + " to Auto");
 
@@ -354,7 +355,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                             "&mode=" + AUTO;
 
                     // add query parameters
-                    mDomoticz.setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
+                    StaticHelper.getDomoticz(mContext).setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
                 } else {
                     addDebugText("Not updating idx " + idx);
                 }
@@ -437,7 +438,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
             if (cacheTemperatures != null)
                 createListView(cacheTemperatures);
 
-            mDomoticz.getTemperatures(new TemperatureReceiver() {
+            StaticHelper.getDomoticz(mContext).getTemperatures(new TemperatureReceiver() {
                 @Override
 
                 public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {

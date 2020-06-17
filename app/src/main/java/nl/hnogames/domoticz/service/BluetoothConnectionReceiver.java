@@ -10,20 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.BluetoothInfo;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.WidgetUtils;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 public class BluetoothConnectionReceiver extends BroadcastReceiver {
     private SharedPrefUtil mSharedPrefs;
-    private Domoticz domoticz;
 
     public BluetoothConnectionReceiver() {
     }
@@ -57,10 +55,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
     }
 
     private void handleSwitch(final Context context, final int idx, final String password, final boolean checked, final String value, final boolean isSceneOrGroup) {
-        if (domoticz == null)
-            domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
-
-        domoticz.getDevice(new DevicesReceiver() {
+        StaticHelper.getDomoticz(context).getDevice(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
             }
@@ -111,7 +106,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
                     if (mDevicesInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
                         jsonAction = DomoticzValues.Scene.Action.ON;
                 }
-                domoticz.setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
+                StaticHelper.getDomoticz(context).setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
                     @Override
                     public void onReceiveResult(String result) {
                         WidgetUtils.RefreshWidgets(context);

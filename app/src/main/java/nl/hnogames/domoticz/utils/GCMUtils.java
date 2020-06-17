@@ -3,8 +3,7 @@ package nl.hnogames.domoticz.utils;
 import android.content.Context;
 import android.util.Log;
 
-import nl.hnogames.domoticz.app.AppController;
-import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
 
 /**
@@ -17,8 +16,7 @@ public class GCMUtils {
         if (UsefulBits.isEmpty(sender_id) || UsefulBits.isEmpty(UUID))
             return;
 
-        final Domoticz mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
-        mDomoticz.CleanMobileDevice(UUID, new MobileDeviceReceiver() {
+        StaticHelper.getDomoticz(context).CleanMobileDevice(UUID, new MobileDeviceReceiver() {
             @Override
             public void onSuccess() {
                 // Previous id cleaned
@@ -34,8 +32,7 @@ public class GCMUtils {
     }
 
     private static void registerMobileForGCM(Context context, String UUID, String senderid) {
-        final Domoticz mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
-        mDomoticz.AddMobileDevice(UUID, senderid, new MobileDeviceReceiver() {
+        StaticHelper.getDomoticz(context).AddMobileDevice(UUID, senderid, new MobileDeviceReceiver() {
             @Override
             public void onSuccess() {
                 Log.i("GCM", "Device registered on Domoticz");

@@ -58,6 +58,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.CamerasAdapter;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SerializableManager;
@@ -114,7 +115,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     }
 
     private void processImage(Bitmap savePic, String title) {
-        File dir = mDomoticz.saveSnapShot(savePic, title);
+        File dir = StaticHelper.getDomoticz(context).saveSnapShot(savePic, title);
         if (dir != null) {
             Intent intent = new Intent(context, CameraActivity.class);
             //noinspection SpellCheckingInspection
@@ -174,7 +175,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         }
 
         if (mAdapter == null) {
-            mAdapter = new CamerasAdapter(Cameras, context, mDomoticz, refreshTimer);
+            mAdapter = new CamerasAdapter(Cameras, context, StaticHelper.getDomoticz(context), refreshTimer);
             mAdapter.setOnItemClickListener(new CamerasAdapter.onClickListener() {
                 @Override
                 public void onItemClick(int position, View v) {
@@ -305,10 +306,10 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         protected void onPostExecute(Boolean result) {
             if (cacheCameras != null)
                 createListView(cacheCameras);
-            mDomoticz.checkLogin(new LoginReceiver() {
+            StaticHelper.getDomoticz(context).checkLogin(new LoginReceiver() {
                 @Override
                 public void OnReceive(LoginInfo mLoginInfo) {
-                    mDomoticz.getCameras(new CameraReceiver() {
+                    StaticHelper.getDomoticz(context).getCameras(new CameraReceiver() {
                         @Override
                         public void OnReceiveCameras(ArrayList<CameraInfo> Cameras) {
                             successHandling(Cameras.toString(), false);

@@ -54,8 +54,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import nl.hnogames.domoticz.adapters.LocationAdapter;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.LocationInfo;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.LocationClickListener;
 import nl.hnogames.domoticz.ui.SwitchDialog;
 import nl.hnogames.domoticz.utils.DeviceUtils;
@@ -64,7 +64,6 @@ import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
@@ -75,7 +74,6 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
     private static final String LOCATION_ADDRESS = "location_address";
     boolean result = false;
     private SharedPrefUtil mSharedPrefs;
-    private Domoticz domoticz;
     private ArrayList<LocationInfo> locations;
     private LocationAdapter adapter;
     private GeoUtils oGeoUtils;
@@ -107,7 +105,6 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.geofence);
 
-        domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
         oGeoUtils.AddGeofences();
@@ -193,7 +190,7 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
         SwitchDialog infoDialog = new SwitchDialog(
                 GeoSettingsActivity.this, supportedSwitches,
                 R.layout.dialog_switch_logs,
-                domoticz);
+                StaticHelper.getDomoticz(GeoSettingsActivity.this));
 
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override
@@ -341,7 +338,7 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
     }
 
     private void getSwitchesAndShowSwitchesDialog(final LocationInfo locationInfo) {
-        domoticz.getDevices(new DevicesReceiver() {
+        StaticHelper.getDomoticz(GeoSettingsActivity.this).getDevices(new DevicesReceiver() {
             @Override
 
             public void onReceiveDevices(ArrayList<DevicesInfo> switches) {

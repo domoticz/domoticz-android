@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.ihsanbal.logging.Level;
 import com.ihsanbal.logging.LoggingInterceptor;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
@@ -117,7 +118,6 @@ public class PicassoUtil {
                     }
                 })
                 .downloader(okHttpDownloader)
-                //.memoryCache(new LruCache(context))
                 .executor(Executors.newSingleThreadExecutor())//avoid OutOfMemoryError
                 .build();
     }

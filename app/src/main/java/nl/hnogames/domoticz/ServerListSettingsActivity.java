@@ -40,11 +40,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import nl.hnogames.domoticz.adapters.ServerAdapter;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.ServerClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
-import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 
 public class ServerListSettingsActivity extends AppCompatAssistActivity {
@@ -55,7 +55,6 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
 
     @SuppressWarnings("unused")
     private String TAG = ServerListSettingsActivity.class.getSimpleName();
-    private ServerUtil mServerUtil;
     private CoordinatorLayout coordinatorLayout;
     private ServerAdapter adapter;
     private ArrayList<ServerInfo> mServerList;
@@ -84,13 +83,12 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
     }
 
     private void createListView() {
-        mServerUtil = new ServerUtil(this);
-        mServerList = mServerUtil.getServerList();
+        mServerList = StaticHelper.getServerUtil(getApplicationContext()).getServerList();
         adapter = new ServerAdapter(this, mServerList, new ServerClickListener() {
             @Override
             public boolean onEnableClick(ServerInfo server, boolean checked) {
                 server.setEnabled(checked);
-                mServerUtil.updateServerInfo(server);
+                StaticHelper.getServerUtil(getApplicationContext()).updateServerInfo(server);
                 return false;
             }
 
@@ -111,7 +109,7 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
                 boolean active = false;
                 for (ServerInfo s : mServerList) {
                     if (s.getServerName().equals(servername)) {
-                        if (mServerUtil.getActiveServer().getServerName().equals(servername)) {
+                        if (StaticHelper.getServerUtil(getApplicationContext()).getActiveServer().getServerName().equals(servername)) {
                             active = true;
                             break;
                         }
@@ -146,7 +144,7 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
     }
 
     private void removeServerFromSettings(ServerInfo serverInfo) {
-        mServerUtil.removeServer(serverInfo);
+        StaticHelper.getServerUtil(getApplicationContext()).removeServer(serverInfo);
     }
 
     private void addServerToListView(ServerInfo serverInfo) {

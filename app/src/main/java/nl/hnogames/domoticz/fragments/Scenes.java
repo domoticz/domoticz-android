@@ -46,6 +46,7 @@ import nl.hnogames.domoticz.adapters.SceneAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.ui.PasswordDialog;
@@ -187,18 +188,18 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                         //UsefulBits.showSnackbar(mContext, coordinatorLayout, mContext.getString(R.string.filter_on) + ": " + super.getSort(), Snackbar.LENGTH_SHORT);
                         if (getActivity() instanceof MainActivity)
                             ((MainActivity) getActivity()).Talk(R.string.filter_on);
-                        if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && s.getStatusInBoolean()) && mDomoticz.isOnOffScene(s))
+                        if ((super.getSort().equals(getContext().getString(R.string.filterOn_on)) && s.getStatusInBoolean()) && StaticHelper.getDomoticz(mContext).isOnOffScene(s))
                             supportedScenes.add(s);
-                        if ((super.getSort().equals(getContext().getString(R.string.filterOn_off)) && !s.getStatusInBoolean()) && mDomoticz.isOnOffScene(s))
+                        if ((super.getSort().equals(getContext().getString(R.string.filterOn_off)) && !s.getStatusInBoolean()) && StaticHelper.getDomoticz(mContext).isOnOffScene(s))
                             supportedScenes.add(s);
-                        if ((super.getSort().equals(getContext().getString(R.string.filterOn_static))) && !mDomoticz.isOnOffScene(s))
+                        if ((super.getSort().equals(getContext().getString(R.string.filterOn_static))) && !StaticHelper.getDomoticz(mContext).isOnOffScene(s))
                             supportedScenes.add(s);
                     }
                 }
             }
 
             if (adapter == null) {
-                adapter = new SceneAdapter(mContext, mDomoticz, supportedScenes, listener);
+                adapter = new SceneAdapter(mContext, StaticHelper.getDomoticz(mContext), supportedScenes, listener);
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
             } else {
@@ -271,7 +272,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     private void changeFavorite(final SceneInfo mSceneInfo, final boolean isFavorite) {
-        UserInfo user = getCurrentUser(mContext, mDomoticz);
+        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
         if (user != null && user.getRights() <= 1) {
             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
@@ -299,7 +300,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         if (isFavorite) jsonAction = DomoticzValues.Device.Favorite.ON;
         else jsonAction = DomoticzValues.Device.Favorite.OFF;
 
-        mDomoticz.setAction(mSceneInfo.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
+        StaticHelper.getDomoticz(mContext).setAction(mSceneInfo.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
 
             public void onReceiveResult(String result) {
@@ -325,7 +326,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         final SceneInfo clickedScene = getScene(idx);
         if (clickedScene.isProtected()) {
             PasswordDialog passwordDialog = new PasswordDialog(
-                    getActivity(), mDomoticz);
+                    getActivity(), StaticHelper.getDomoticz(mContext));
             passwordDialog.show();
             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                 @Override
@@ -352,7 +353,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     @Override
 
     public void onLogButtonClick(int idx) {
-        mDomoticz.getSceneLogs(idx, new SwitchLogReceiver() {
+        StaticHelper.getDomoticz(mContext).getSceneLogs(idx, new SwitchLogReceiver() {
             @Override
 
             public void onReceiveSwitches(ArrayList<SwitchLogInfo> switchesLogs) {
@@ -426,7 +427,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         }
 
 
-        UserInfo user = getCurrentUser(mContext, mDomoticz);
+        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
         if (user != null && user.getRights() <= 0) {
             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
@@ -441,7 +442,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         if (action) jsonAction = DomoticzValues.Scene.Action.ON;
         else jsonAction = DomoticzValues.Scene.Action.OFF;
 
-        mDomoticz.setAction(clickedScene.getIdx(), jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
+        StaticHelper.getDomoticz(mContext).setAction(clickedScene.getIdx(), jsonUrl, jsonAction, 0, password, new setCommandReceiver() {
             @Override
 
             public void onReceiveResult(String result) {
@@ -505,7 +506,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             if (cacheSwitches != null)
                 createListView(cacheSwitches);
 
-            mDomoticz.getScenes(new ScenesReceiver() {
+            StaticHelper.getDomoticz(mContext).getScenes(new ScenesReceiver() {
                 @Override
 
                 public void onReceiveScenes(ArrayList<SceneInfo> scenes) {

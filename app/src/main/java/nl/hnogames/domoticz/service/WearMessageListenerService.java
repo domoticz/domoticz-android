@@ -38,7 +38,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -56,7 +56,6 @@ public class WearMessageListenerService extends WearableListenerService implemen
     private static final String ERROR_NO_SWITCHES = "NO_SWITCHES";
     private static final String SEND_SWITCH = "/send_switch";
     private static GoogleApiClient mApiClient;
-    private Domoticz domoticz;
     private SharedPrefUtil mSharedPrefs;
     private ArrayList<DevicesInfo> extendedStatusSwitches;
     private int currentSwitch = 1;
@@ -98,9 +97,6 @@ public class WearMessageListenerService extends WearableListenerService implemen
             String data = new String(messageEvent.getData());
             try {
                 DevicesInfo selectedSwitch = new DevicesInfo(new JSONObject(data));
-                if (domoticz == null)
-                    domoticz = new Domoticz(getApplicationContext(), AppController.getInstance().getRequestQueue());
-
                 if (selectedSwitch.getType() != null && (selectedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP) || selectedSwitch.getType().equals(DomoticzValues.Scene.Type.SCENE))) {
                     if (selectedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP))
                         onButtonClick(selectedSwitch, true);
@@ -148,10 +144,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
         extendedStatusSwitches = new ArrayList<>();
         currentSwitch = 1;
 
-        if (domoticz == null)
-            domoticz = new Domoticz(getApplicationContext(), AppController.getInstance().getRequestQueue());
-
-        domoticz.getDevices(new DevicesReceiver() {
+        StaticHelper.getDomoticz(getApplicationContext()).getDevices(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
                 extendedStatusSwitches = mDevicesInfo;
@@ -164,7 +157,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
             @Override
             public void onError(Exception error) {
-                String errorMessage = domoticz.getErrorMessage(error);
+                String errorMessage = StaticHelper.getDomoticz(getApplicationContext()).getErrorMessage(error);
                 Log.e(TAG, errorMessage);
             }
         }, 0, "all");
@@ -258,7 +251,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
             else jsonAction = DomoticzValues.Scene.Action.OFF;
         }
 
-        domoticz.setAction(toggledDevice.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
+        StaticHelper.getDomoticz(getApplicationContext()).setAction(toggledDevice.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
             }
@@ -282,7 +275,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
             else jsonAction = DomoticzValues.Scene.Action.OFF;
         }
 
-        domoticz.setAction(toggledDevice.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
+        StaticHelper.getDomoticz(getApplicationContext()).setAction(toggledDevice.getIdx(), jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
             }

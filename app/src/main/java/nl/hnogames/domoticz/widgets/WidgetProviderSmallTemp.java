@@ -36,12 +36,11 @@ import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
@@ -86,7 +85,6 @@ public class WidgetProviderSmallTemp extends AppWidgetProvider {
 
     public static class UpdateWidgetService extends Service {
         private RemoteViews views;
-        private Domoticz domoticz;
         private SharedPrefUtil mSharedPrefs;
 
         @Nullable
@@ -133,13 +131,11 @@ public class WidgetProviderSmallTemp extends AppWidgetProvider {
 
             if (mSharedPrefs == null)
                 mSharedPrefs = new SharedPrefUtil(this.getApplicationContext());
-            if (domoticz == null)
-                domoticz = new Domoticz(this.getApplicationContext(), AppController.getInstance().getRequestQueue());
 
             final int idx = mSharedPrefs.getSmallTempWidgetIDX(appWidgetId);
             views = new RemoteViews(packageName, mSharedPrefs.getSmallTempWidgetLayout(appWidgetId));
             appWidgetManager.updateAppWidget(appWidgetId, views);
-            domoticz.getDevice(new DevicesReceiver() {
+            StaticHelper.getDomoticz(getApplicationContext()).getDevice(new DevicesReceiver() {
                 @Override
                 public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
                 }
@@ -149,9 +145,9 @@ public class WidgetProviderSmallTemp extends AppWidgetProvider {
                     if (s != null) {
                         views = new RemoteViews(packageName, mSharedPrefs.getSmallTempWidgetLayout(appWidgetId));
                         final double temperature = s.getTemperature();
-                        String sign = domoticz.getServerUtil() != null && domoticz.getServerUtil().getActiveServer() != null
-                                && domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null ?
-                                domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getTempSign() : "C";
+                        String sign = StaticHelper.getDomoticz(getApplicationContext()).getServerUtil() != null && StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer() != null
+                                && StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null ?
+                                StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getTempSign() : "C";
 
                         String text = s.getData();
                         if (!Double.isNaN(temperature)) {
@@ -167,14 +163,14 @@ public class WidgetProviderSmallTemp extends AppWidgetProvider {
                             icon = (DomoticzIcons.getDrawableIcon(s.getTypeImg(),
                                     s.getType(),
                                     null,
-                                    domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null && s.getTemperature() > domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getDegreeDaysBaseTemperature(),
+                                    StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null && s.getTemperature() > StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getDegreeDaysBaseTemperature(),
                                     true,
                                     "Freezing"));
                         } else {
                             icon = (DomoticzIcons.getDrawableIcon(s.getTypeImg(),
                                     s.getType(),
                                     null,
-                                    domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null && s.getTemperature() > domoticz.getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getDegreeDaysBaseTemperature(),
+                                    StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null && s.getTemperature() > StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getDegreeDaysBaseTemperature(),
                                     false,
                                     null));
                         }

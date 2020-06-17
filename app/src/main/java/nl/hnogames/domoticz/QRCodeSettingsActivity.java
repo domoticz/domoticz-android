@@ -47,8 +47,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import nl.hnogames.domoticz.adapters.QRCodeAdapter;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.QRCodeInfo;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.QRCodeClickListener;
 import nl.hnogames.domoticz.ui.SwitchDialog;
 import nl.hnogames.domoticz.utils.DeviceUtils;
@@ -56,7 +56,6 @@ import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
@@ -65,7 +64,6 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
 
     boolean result = false;
     private SharedPrefUtil mSharedPrefs;
-    private Domoticz domoticz;
     private CoordinatorLayout coordinatorLayout;
     private ArrayList<QRCodeInfo> qrcodeList;
     private QRCodeAdapter adapter;
@@ -92,7 +90,6 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.category_QRCode);
 
-        domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         qrcodeList = mSharedPrefs.getQRCodeList();
         adapter = new QRCodeAdapter(this, qrcodeList, this);
 
@@ -150,7 +147,7 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
     }
 
     private void getSwitchesAndShowSwitchesDialog(final QRCodeInfo qrInfo) {
-        domoticz.getDevices(new DevicesReceiver() {
+        StaticHelper.getDomoticz(QRCodeSettingsActivity.this).getDevices(new DevicesReceiver() {
             @Override
 
             public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
@@ -189,7 +186,7 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
         SwitchDialog infoDialog = new SwitchDialog(
                 QRCodeSettingsActivity.this, supportedSwitches,
                 R.layout.dialog_switch_logs,
-                domoticz);
+                StaticHelper.getDomoticz(QRCodeSettingsActivity.this));
 
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override

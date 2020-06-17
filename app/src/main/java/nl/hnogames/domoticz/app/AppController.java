@@ -70,12 +70,12 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.BeaconInfo;
 import nl.hnogames.domoticz.containers.NotificationInfo;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.WidgetUtils;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
@@ -97,7 +97,6 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
     private RequestQueue mRequestQueue;
     private Tracker mTracker;
     private SharedPrefUtil mSharedPrefs;
-    private Domoticz domoticz;
     private BackgroundPowerSaver backgroundPowerSaver;
 
     public static synchronized AppController getInstance() {
@@ -324,10 +323,7 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
     }
 
     private void handleSwitch(final Context context, final int idx, final String password, final boolean checked, final String value, final boolean isSceneOrGroup) {
-        if (domoticz == null)
-            domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
-
-        domoticz.getDevice(new DevicesReceiver() {
+        StaticHelper.getDomoticz(context).getDevice(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
             }
@@ -378,7 +374,7 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
                     if (mDevicesInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
                         jsonAction = DomoticzValues.Scene.Action.ON;
                 }
-                domoticz.setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
+                StaticHelper.getDomoticz(context).setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
                     @Override
                     public void onReceiveResult(String result) {
                         WidgetUtils.RefreshWidgets(context);

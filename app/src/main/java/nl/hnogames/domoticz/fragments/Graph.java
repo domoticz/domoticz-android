@@ -59,12 +59,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.GraphPointInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.GraphDataReceiver;
 
 
@@ -74,7 +73,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     private static final String TAG = Graph.class.getSimpleName();
 
     private Context context;
-    private Domoticz mDomoticz;
 
     private int idx = 0;
     private String range = "day";
@@ -102,7 +100,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         super.onAttach(context);
         onAttachFragment(this);
         this.context = context;
-        mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         mSharedPrefs = new SharedPrefUtil(context);
     }
 
@@ -201,10 +198,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         new Thread() {
             @Override
             public void run() {
-                if (mDomoticz == null)
-                    mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
-
-                mDomoticz.getGraphData(idx, range, type, new GraphDataReceiver() {
+                StaticHelper.getDomoticz(context).getGraphData(idx, range, type, new GraphDataReceiver() {
                     @Override
 
                     public void onReceive(ArrayList<GraphPointInfo> grphPoints) {

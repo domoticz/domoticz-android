@@ -98,6 +98,7 @@ import nl.hnogames.domoticz.containers.QRCodeInfo;
 import nl.hnogames.domoticz.containers.SpeechInfo;
 import nl.hnogames.domoticz.fragments.Cameras;
 import nl.hnogames.domoticz.fragments.Logs;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.ui.PasswordDialog;
 import nl.hnogames.domoticz.ui.SortDialog;
 import nl.hnogames.domoticz.utils.GCMUtils;
@@ -120,7 +121,6 @@ import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticzapi.Utils.ServerUtil;
 import shortbread.Shortcut;
 
 
@@ -135,12 +135,10 @@ public class MainActivity extends AppCompatPermissionsActivity {
     public FloatingActionButton fabSort;
     private SharedPrefUtil mSharedPrefs;
     private String TAG = MainActivity.class.getSimpleName();
-    private ServerUtil mServerUtil;
     private SearchView searchViewAction;
     private CollapsingToolbarLayout toolbarLayout;
     private Toolbar toolbar;
     private ArrayList<String> stackFragments = new ArrayList<>();
-    private Domoticz domoticz;
     private Timer cameraRefreshTimer = null;
     private Timer autoRefreshTimer = null;
     private Fragment latestFragment = null;
@@ -156,12 +154,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private ConfigInfo mConfigInfo;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
-    
-    public ServerUtil getServerUtil() {
-        if (mServerUtil == null)
-            mServerUtil = new ServerUtil(this);
-        return mServerUtil;
-    }
 
     public ConfigInfo getConfig() {
         return mConfigInfo;
@@ -298,7 +290,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     UsefulBits.showSnackbar(MainActivity.this, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                     Talk(R.string.security_wrong_code);
                 } else {
-                    if (password.equals(domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD)))
+                    if (password.equals(StaticHelper.getDomoticz(MainActivity.this).getUserCredentials(Domoticz.Authentication.PASSWORD)))
                         return;
                     else {
                         UsefulBits.showSnackbar(MainActivity.this, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
@@ -355,8 +347,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
             if (usingTabletLayout == null)
                 onPhone = true;
 
-            mServerUtil = new ServerUtil(this);
-            if (mServerUtil.getActiveServer() != null && UsefulBits.isEmpty(mServerUtil.getActiveServer().getRemoteServerUrl())) {
+            if (StaticHelper.getServerUtil(this, true).getActiveServer() != null &&
+                    UsefulBits.isEmpty(StaticHelper.getServerUtil(this).getActiveServer().getRemoteServerUrl())) {
                 Toast.makeText(this, "Incorrect settings detected, please reconfigure this app.", Toast.LENGTH_LONG).show();
 
                 //incorrect settings detected
@@ -381,13 +373,11 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     private void GetDomoticzAuthAndConfig() {
-        if (domoticz == null)
-            domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         // Refresh login token
-        domoticz.checkLogin(new LoginReceiver() {
+        StaticHelper.getDomoticz(MainActivity.this, true).checkLogin(new LoginReceiver() {
             @Override
             public void OnReceive(LoginInfo logInfo) {
-                domoticz.getUserAuthenticationRights(new LoginReceiver() {
+                StaticHelper.getDomoticz(MainActivity.this).getUserAuthenticationRights(new LoginReceiver() {
                     @Override
                     public void OnReceive(LoginInfo mLoginInfo) {
                         GetServerConfig(mLoginInfo);
@@ -435,7 +425,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 if (!fromShortcut)
                     addFragment(true);
             }
-        }, mConfigInfo, getServerUtil());
+        }, mConfigInfo);
     }
 
     public void ShowLoading() {
@@ -457,7 +447,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     break;
                 case iSettingsResultCode:
                     this.recreate();
-                    mServerUtil = new ServerUtil(this);
                     SerializableManager.cleanAllSerializableObjects(this);
                     break;
                 case iQRResultCode:
@@ -505,10 +494,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     private void handleSwitch(final int idx, final String password, final int inputJSONAction, final String value, final boolean isSceneOrGroup) {
-        if (domoticz == null)
-            domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
-
-        domoticz.getDevice(new DevicesReceiver() {
+        StaticHelper.getDomoticz(MainActivity.this).getDevice(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
             }
@@ -613,7 +599,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                         jsonAction = DomoticzValues.Scene.Action.ON;
                 }
 
-                domoticz.setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
+                StaticHelper.getDomoticz(MainActivity.this).setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
                     @Override
 
                     public void onReceiveResult(String result) {
@@ -856,13 +842,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
         List<String> allUsers = new ArrayList<>();
 
         if (config == null)
-            config = mServerUtil.getActiveServer().getConfigInfo(this);
+            config = StaticHelper.getServerUtil(this).getActiveServer().getConfigInfo(this);
 
         ProfileDrawerItem loggedinAccount = new ProfileDrawerItem()
                 .withName("Logged in")
-                .withEmail(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME))
+                .withEmail(StaticHelper.getDomoticz(MainActivity.this).getUserCredentials(Domoticz.Authentication.USERNAME))
                 .withIcon(R.mipmap.ic_launcher);
-        allUsers.add(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME));
+        allUsers.add(StaticHelper.getDomoticz(MainActivity.this).getUserCredentials(Domoticz.Authentication.USERNAME));
 
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = getTheme();
@@ -908,8 +894,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
                                                 if (user.getUsername().equals(profile.getEmail().getText())) {
                                                     String md5Pass = UsefulBits.getMd5String(password);
                                                     if (md5Pass.equals(user.getPassword())) {
-                                                        domoticz.LogOff();
-                                                        domoticz.setUserCredentials(user.getUsername(), password);
+                                                        StaticHelper.getDomoticz(MainActivity.this).LogOff();
+                                                        StaticHelper.getDomoticz(MainActivity.this).setUserCredentials(user.getUsername(), password);
                                                         initScreen();
                                                     } else {
                                                         UsefulBits.showSnackbar(MainActivity.this, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
@@ -996,7 +982,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         try {
             if (mConfigInfo != null && mConfigInfo.getUsers() != null) {
                 for (UserInfo u : mConfigInfo.getUsers()) {
-                    if (u.getUsername().equals(domoticz.getUserCredentials(Domoticz.Authentication.USERNAME)))
+                    if (u.getUsername().equals(StaticHelper.getDomoticz(MainActivity.this).getUserCredentials(Domoticz.Authentication.USERNAME)))
                         user = u;
                 }
             }
@@ -1107,7 +1093,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
             if (mSharedPrefs.isMultiServerEnabled()) {
                 //set multi server actionbar item
                 MenuItem searchMenuItem = menu.findItem(R.id.action_switch_server);
-                if (searchMenuItem != null && mServerUtil != null && mServerUtil.getEnabledServerList() != null && mServerUtil.getEnabledServerList().size() > 1) {
+                if (searchMenuItem != null && StaticHelper.getServerUtil(this) != null && StaticHelper.getServerUtil(this).getEnabledServerList() != null && StaticHelper.getServerUtil(this).getEnabledServerList().size() > 1) {
                     searchMenuItem.setVisible(true);
                 } else if (searchMenuItem != null)
                     searchMenuItem.setVisible(false);
@@ -1373,14 +1359,14 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
 
     public void showServerDialog() {
-        String[] serverNames = new String[mServerUtil.getServerList().size()];
+        String[] serverNames = new String[StaticHelper.getServerUtil(this).getServerList().size()];
         int count = 0;
         int selectionId = -1;
 
-        for (ServerInfo s : mServerUtil.getEnabledServerList()) {
+        for (ServerInfo s : StaticHelper.getServerUtil(this).getEnabledServerList()) {
             serverNames[count] = s.getServerName();
-            if (mServerUtil.getActiveServer() != null &&
-                    mServerUtil.getActiveServer().getServerName().equals(s.getServerName()))
+            if (StaticHelper.getServerUtil(this).getActiveServer() != null &&
+                    StaticHelper.getServerUtil(this).getActiveServer().getServerName().equals(s.getServerName()))
                 selectionId = count;
             count++;
         }
@@ -1394,12 +1380,12 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
                     public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                         try {
-                            for (ServerInfo s : mServerUtil.getEnabledServerList()) {
+                            for (ServerInfo s : StaticHelper.getServerUtil(MainActivity.this).getEnabledServerList()) {
                                 if (s.getServerName() != null && s.getServerName().contentEquals(text)) {
                                     String message = String.format(getString(R.string.switch_to_server), s.getServerName());
                                     showSnackbar(message);
-                                    mServerUtil.setActiveServer(s);
-                                    domoticz.getSessionUtil().clearSessionCookie();
+                                    StaticHelper.getServerUtil(MainActivity.this).setActiveServer(s);
+                                    StaticHelper.getDomoticz(MainActivity.this).getSessionUtil().clearSessionCookie();
                                     MainActivity.this.recreate();
                                 }
                             }

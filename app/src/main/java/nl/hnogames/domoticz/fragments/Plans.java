@@ -46,6 +46,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.PlansAdapter;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -216,7 +217,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
             if (cachePlans != null)
                 createListView();
 
-            mDomoticz.getPlans(new PlansReceiver() {
+            StaticHelper.getDomoticz(mContext).getPlans(new PlansReceiver() {
                 @Override
                 public void OnReceivePlans(ArrayList<PlanInfo> plans) {
                     successHandling(plans.toString(), false);

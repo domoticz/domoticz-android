@@ -53,24 +53,21 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ServerSettingsActivity;
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.ui.MultiSelectionSpinner;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.WifiSSIDListener;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
-import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class SetupServerSettings extends Fragment implements OnPermissionCallback {
 
     private static final String INSTANCE = "INSTANCE";
     boolean activeServerChanged = false;
     private SharedPrefUtil mSharedPrefs;
-    private ServerUtil mServerUtil;
     private String updateServerName;
     private AppCompatEditText remote_server_input, remote_port_input,
             remote_username_input, remote_password_input,
@@ -102,15 +99,13 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (mServerUtil == null)
-            mServerUtil = new ServerUtil(context);
         mSharedPrefs = new SharedPrefUtil(context);
 
         Bundle extras = getArguments();
         if (extras != null) {
             updateServerName = extras.getString("SERVERNAME");
             if (!UsefulBits.isEmpty(updateServerName))
-                newServer = mServerUtil.getServerInfo(updateServerName);
+                newServer = StaticHelper.getServerUtil(context).getServerInfo(updateServerName);
             else
                 newServer = new ServerInfo();
             activeServerChanged = extras.getBoolean("SERVERACTIVE", false);
@@ -231,21 +226,17 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     private void checkConnectionData() {
         buildServerInfo();
 
-        if (mServerUtil == null)
-            mServerUtil = new ServerUtil(getActivity());
-
-        final Domoticz mDomoticz = new Domoticz(getActivity(), AppController.getInstance().getRequestQueue());
-        String status = mDomoticz.isConnectionDataComplete(newServer, false);
+        String status = StaticHelper.getDomoticz(getContext()).isConnectionDataComplete(newServer, false);
         if (UsefulBits.isEmpty(newServer.getServerName())) {
             showErrorPopup(getString(R.string.welcome_msg_connectionDataIncompleteName) + "\n\n"
                     + getString(R.string.welcome_msg_correctOnPreviousPage));
         } else if (!UsefulBits.isEmpty(status)) {
             showErrorPopup(getString(R.string.welcome_msg_connectionDataIncomplete) + "\n\n" + status + "\n\n"
                     + getString(R.string.welcome_msg_correctOnPreviousPage));
-        } else if (!mDomoticz.isUrlValid(newServer)) {
+        } else if (!StaticHelper.getDomoticz(getContext()).isUrlValid(newServer)) {
             showErrorPopup(getString(R.string.welcome_msg_connectionDataInvalid) + "\n\n"
                     + getString(R.string.welcome_msg_correctOnPreviousPage));
-        } else if (!isUpdateRequest && !mServerUtil.checkUniqueServerName(newServer)) {
+        } else if (!isUpdateRequest && !StaticHelper.getServerUtil(getContext()).checkUniqueServerName(newServer)) {
             showErrorPopup("Server name must be unique!");
         } else {
             writePreferenceValues();
@@ -421,17 +412,17 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     private void writePreferenceValues() {
         buildServerInfo();
         if (!isUpdateRequest) {
-            if (mServerUtil.addDomoticzServer(newServer)) {
+            if (StaticHelper.getServerUtil(getContext()).addDomoticzServer(newServer)) {
                 ((ServerSettingsActivity) getActivity()).ServerAdded(true);
             } else {
                 showErrorPopup("Server name must be unique!");
             }
         } else {
-            mServerUtil.putServerInList(updateServerName, newServer);
-            mServerUtil.saveDomoticzServers(false);
+            StaticHelper.getServerUtil(getContext()).putServerInList(updateServerName, newServer);
+            StaticHelper.getServerUtil(getContext()).saveDomoticzServers(false);
             ((ServerSettingsActivity) getActivity()).ServerAdded(true);
             if (activeServerChanged)
-                mServerUtil.setActiveServer(newServer);
+                StaticHelper.getServerUtil(getContext()).setActiveServer(newServer);
         }
     }
 

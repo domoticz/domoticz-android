@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -130,14 +131,14 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
                 if (holder.camera.getDrawable() == null) {
                     picasso.load(imageUrl)
                             .placeholder(R.drawable.placeholder)
-                            //.error(mSharedPrefs.darkThemeEnabled() ? R.drawable.baseline_error_outline_white_24 : R.drawable.baseline_error_outline_black_24)
+                            .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
                             .into(holder.camera);
                 } else
                     picasso.load(imageUrl)
                             .memoryPolicy(MemoryPolicy.NO_CACHE)
                             .noFade()
                             .noPlaceholder()
-                            //.error(mSharedPrefs.darkThemeEnabled() ? R.drawable.baseline_error_outline_white_24 : R.drawable.baseline_error_outline_black_24)
+                            .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
                             .into(holder.camera);
             } catch (Exception ex) {
                 Log.i("CameraAdapter", ex.getMessage());

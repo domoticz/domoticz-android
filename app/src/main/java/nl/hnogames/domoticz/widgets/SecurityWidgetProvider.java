@@ -38,12 +38,11 @@ import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
@@ -106,7 +105,6 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
         private static final int INVALID_IDX = 999999;
         private static SharedPrefUtil mSharedPrefs;
         private RemoteViews views;
-        private Domoticz domoticz;
 
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
@@ -152,11 +150,9 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
             }
 
             try {
-                if (domoticz == null)
-                    domoticz = new Domoticz(this.getApplicationContext(), AppController.getInstance().getRequestQueue());
                 final String password = mSharedPrefs.getSecurityWidgetPin(appWidgetId);
                 views = new RemoteViews(packageName, mSharedPrefs.getSecurityWidgetLayout(appWidgetId));
-                domoticz.getDevice(new DevicesReceiver() {
+                StaticHelper.getDomoticz(getApplicationContext()).getDevice(new DevicesReceiver() {
                     @Override
                     public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
                     }

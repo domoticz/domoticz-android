@@ -36,6 +36,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.LogAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticzapi.Containers.LogInfo;
@@ -121,7 +122,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     private void createListView(ArrayList<LogInfo> mLogInfos) {
         if (getView() != null) {
             if (adapter == null) {
-                adapter = new LogAdapter(mContext, mDomoticz, mLogInfos);
+                adapter = new LogAdapter(mContext, StaticHelper.getDomoticz(mContext), mLogInfos);
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
             } else {
@@ -194,7 +195,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                 if (getSort().equals(getString(R.string.filter_error)))
                     LogLevel = DomoticzValues.Log.LOGLEVEL.ERROR;
 
-                mDomoticz.getLogs(new LogsReceiver() {
+                StaticHelper.getDomoticz(mContext).getLogs(new LogsReceiver() {
                     @Override
 
                     public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {

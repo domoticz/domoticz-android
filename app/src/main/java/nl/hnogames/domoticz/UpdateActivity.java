@@ -37,18 +37,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
 import nl.hnogames.domoticzapi.Containers.VersionInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.DownloadUpdateServerReceiver;
 import nl.hnogames.domoticzapi.Interfaces.UpdateDomoticzServerReceiver;
 import nl.hnogames.domoticzapi.Interfaces.UpdateDownloadReadyReceiver;
 import nl.hnogames.domoticzapi.Interfaces.UpdateVersionReceiver;
 import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
-import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class UpdateActivity extends AppCompatAssistActivity {
 
@@ -56,14 +54,12 @@ public class UpdateActivity extends AppCompatAssistActivity {
     private final int SERVER_UPDATE_TIME = 3; // Time in minutes
     @SuppressWarnings("unused")
     private String TAG = UpdateActivity.class.getSimpleName();
-    private Domoticz mDomoticz;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private MaterialDialog progressDialog;
     private Button buttonUpdateServer;
     private TextView currentServerVersionValue;
     private TextView updateServerVersionValue;
     private TextView updateSummary;
-    private ServerUtil serverUtil;
     private SharedPrefUtil mSharedPrefs;
     private Toolbar toolbar;
 
@@ -86,9 +82,6 @@ public class UpdateActivity extends AppCompatAssistActivity {
             getSupportActionBar().setHomeButtonEnabled(true);
         }
 
-        serverUtil = new ServerUtil(this);
-        mDomoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
-
         initViews();
     }
 
@@ -106,18 +99,18 @@ public class UpdateActivity extends AppCompatAssistActivity {
         });
 
         // Get latest Domoticz server version
-        mDomoticz.getServerVersion(new VersionReceiver() {
+        StaticHelper.getDomoticz(UpdateActivity.this).getServerVersion(new VersionReceiver() {
             @Override
             public void onReceiveVersion(VersionInfo serverVersion) {
                 if (serverVersion == null)
                     return;
-                if (serverUtil.getActiveServer() != null &&
-                        serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null) {
+                if (StaticHelper.getServerUtil(getApplicationContext()).getActiveServer() != null &&
+                        StaticHelper.getServerUtil(getApplicationContext()).getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null) {
                     currentServerVersionValue.setText(serverVersion.getVersion());
 
-                    if (serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).isUpdateAvailable()) {
+                    if (StaticHelper.getServerUtil(getApplicationContext()).getActiveServer().getServerUpdateInfo(UpdateActivity.this).isUpdateAvailable()) {
                         updateSummary.setText(R.string.server_update_available);
-                        updateServerVersionValue.setText(serverUtil.getActiveServer()
+                        updateServerVersionValue.setText(StaticHelper.getServerUtil(getApplicationContext()).getActiveServer()
                                 .getServerUpdateInfo(UpdateActivity.this)
                                 .getUpdateRevisionNumber());
                     } else if (mSharedPrefs.isDebugEnabled()) {
@@ -133,7 +126,7 @@ public class UpdateActivity extends AppCompatAssistActivity {
                             showServerUpdateWarningDialog();
                         }
                     });
-                    if (!serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).isUpdateAvailable()
+                    if (!StaticHelper.getServerUtil(getApplicationContext()).getActiveServer().getServerUpdateInfo(UpdateActivity.this).isUpdateAvailable()
                             && !mSharedPrefs.isDebugEnabled())
                         buttonUpdateServer.setEnabled(false);
                 }
@@ -144,12 +137,12 @@ public class UpdateActivity extends AppCompatAssistActivity {
                 mSwipeRefreshLayout.setRefreshing(false);
                 String message = String.format(
                         getString(R.string.error_couldNotCheckForUpdates),
-                        mDomoticz.getErrorMessage(error));
+                        StaticHelper.getDomoticz(UpdateActivity.this).getErrorMessage(error));
                 showSnackbar(message);
-                if (serverUtil != null &&
-                        serverUtil.getActiveServer() != null &&
-                        serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
-                    serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setCurrentServerVersion("");
+                if (StaticHelper.getServerUtil(getApplicationContext()) != null &&
+                        StaticHelper.getServerUtil(getApplicationContext()).getActiveServer() != null &&
+                        StaticHelper.getServerUtil(getApplicationContext()).getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
+                    StaticHelper.getServerUtil(getApplicationContext()).getActiveServer().getServerUpdateInfo(UpdateActivity.this).setCurrentServerVersion("");
                 currentServerVersionValue.setText(R.string.not_available);
             }
         });
@@ -209,17 +202,17 @@ public class UpdateActivity extends AppCompatAssistActivity {
         };
         mCountDownTimer.start();
 
-        if (mSharedPrefs.isDebugEnabled() || serverUtil.getActiveServer().getServerUpdateInfo(this).isUpdateAvailable()) {
-            mDomoticz.getDownloadUpdate(new DownloadUpdateServerReceiver() {
+        if (mSharedPrefs.isDebugEnabled() || StaticHelper.getServerUtil(getApplicationContext()).getActiveServer().getServerUpdateInfo(this).isUpdateAvailable()) {
+            StaticHelper.getDomoticz(UpdateActivity.this).getDownloadUpdate(new DownloadUpdateServerReceiver() {
                 @Override
                 public void onDownloadStarted(boolean updateSuccess) {
                     if (updateSuccess) {
                         showSnackbar("Downloading the new update for the server");
-                        mDomoticz.getUpdateDownloadReady(new UpdateDownloadReadyReceiver() {
+                        StaticHelper.getDomoticz(UpdateActivity.this).getUpdateDownloadReady(new UpdateDownloadReadyReceiver() {
                             @Override
                             public void onUpdateDownloadReady(boolean downloadOk) {
                                 showSnackbar("Download finished, starting to update Domoticz");
-                                mDomoticz.updateDomoticzServer(new UpdateDomoticzServerReceiver() {
+                                StaticHelper.getDomoticz(UpdateActivity.this).updateDomoticzServer(new UpdateDomoticzServerReceiver() {
                                     @Override
                                     public void onUpdateFinish(boolean updateSuccess) {
                                         if (updateSuccess)
@@ -297,14 +290,14 @@ public class UpdateActivity extends AppCompatAssistActivity {
         mSwipeRefreshLayout.setRefreshing(true);
 
         // Get latest Domoticz version update
-        mDomoticz.getUpdate(new UpdateVersionReceiver() {
+        StaticHelper.getDomoticz(UpdateActivity.this).getUpdate(new UpdateVersionReceiver() {
             @Override
             public void onReceiveUpdate(ServerUpdateInfo serverUpdateInfo) {
                 // Write update version to shared preferences
                 boolean haveUpdate = serverUpdateInfo.isUpdateAvailable();
 
-                serverUtil.getActiveServer().setServerUpdateInfo(UpdateActivity.this, serverUpdateInfo);
-                serverUtil.saveDomoticzServers(false);
+                StaticHelper.getServerUtil(getApplicationContext()).getActiveServer().setServerUpdateInfo(UpdateActivity.this, serverUpdateInfo);
+                StaticHelper.getServerUtil(getApplicationContext()).saveDomoticzServers(false);
                 if (!mSharedPrefs.isDebugEnabled()) buttonUpdateServer.setEnabled(haveUpdate);
 
                 if (haveUpdate) {
@@ -319,9 +312,9 @@ public class UpdateActivity extends AppCompatAssistActivity {
             public void onError(Exception error) {
                 String message = String.format(
                         getString(R.string.error_couldNotCheckForUpdates),
-                        mDomoticz.getErrorMessage(error));
+                        StaticHelper.getDomoticz(UpdateActivity.this).getErrorMessage(error));
                 showSnackbar(message);
-                serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setUpdateRevisionNumber("");
+                StaticHelper.getServerUtil(getApplicationContext()).getActiveServer().getServerUpdateInfo(UpdateActivity.this).setUpdateRevisionNumber("");
                 updateServerVersionValue.setText(R.string.not_available);
 
                 mSwipeRefreshLayout.setRefreshing(false);
@@ -333,15 +326,15 @@ public class UpdateActivity extends AppCompatAssistActivity {
         mSwipeRefreshLayout.setRefreshing(true);
 
         // Get latest Domoticz server version
-        mDomoticz.getServerVersion(new VersionReceiver() {
+        StaticHelper.getDomoticz(UpdateActivity.this).getServerVersion(new VersionReceiver() {
             @Override
             public void onReceiveVersion(VersionInfo serverVersion) {
                 mSwipeRefreshLayout.setRefreshing(false);
                 if (serverVersion != null && !UsefulBits.isEmpty(serverVersion.getVersion())) {
-                    if (serverUtil != null &&
-                            serverUtil.getActiveServer() != null &&
-                            serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
-                        serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setCurrentServerVersion(serverVersion.getVersion());
+                    if (StaticHelper.getServerUtil(getApplicationContext()) != null &&
+                            StaticHelper.getServerUtil(getApplicationContext()).getActiveServer() != null &&
+                            StaticHelper.getServerUtil(getApplicationContext()).getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
+                        StaticHelper.getServerUtil(getApplicationContext()).getActiveServer().getServerUpdateInfo(UpdateActivity.this).setCurrentServerVersion(serverVersion.getVersion());
                     currentServerVersionValue.setText(serverVersion.getVersion());
                 } else currentServerVersionValue.setText(R.string.not_available);
             }
@@ -351,12 +344,12 @@ public class UpdateActivity extends AppCompatAssistActivity {
                 mSwipeRefreshLayout.setRefreshing(false);
                 String message = String.format(
                         getString(R.string.error_couldNotCheckForUpdates),
-                        mDomoticz.getErrorMessage(error));
+                        StaticHelper.getDomoticz(UpdateActivity.this).getErrorMessage(error));
                 showSnackbar(message);
-                if (serverUtil != null &&
-                        serverUtil.getActiveServer() != null &&
-                        serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
-                    serverUtil.getActiveServer().getServerUpdateInfo(UpdateActivity.this).setCurrentServerVersion("");
+                if (StaticHelper.getServerUtil(getApplicationContext()) != null &&
+                        StaticHelper.getServerUtil(getApplicationContext()).getActiveServer() != null &&
+                        StaticHelper.getServerUtil(getApplicationContext()).getActiveServer().getServerUpdateInfo(UpdateActivity.this) != null)
+                    StaticHelper.getServerUtil(getApplicationContext()).getActiveServer().getServerUpdateInfo(UpdateActivity.this).setCurrentServerVersion("");
                 currentServerVersionValue.setText(R.string.not_available);
             }
         });
