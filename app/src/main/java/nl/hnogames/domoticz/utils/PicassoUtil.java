@@ -101,8 +101,8 @@ public class PicassoUtil {
                 .loggable(BuildConfig.DEBUG)
                 .setLevel(Level.BASIC)
                 .log(Platform.INFO)
-                .request("Request")
-                .response("Response")
+                .request("Picasso Request")
+                .response("Picasso Response")
                 .build(), cookie, username, password);
         OkHttp3Downloader okHttpDownloader = providesPicassoOkHttpClient(okHttpClient);
         Picasso picasso = providesCustomPicasso(context, okHttpDownloader);
@@ -168,7 +168,7 @@ public class PicassoUtil {
                 .protocols(Arrays.asList(Protocol.HTTP_1_1))
                 .hostnameVerifier(new TrustAllHostnameVerifier())
                 .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
-                .addNetworkInterceptor(new DefaultHeadersInterceptor(context, cookie, username, password, Domoticz.BasicAuthDetected))
+                //.addNetworkInterceptor(new DefaultHeadersInterceptor(context, cookie, username, password, Domoticz.BasicAuthDetected))
                 .addInterceptor(new DefaultHeadersInterceptor(context, cookie, username, password, Domoticz.BasicAuthDetected))
                 .addInterceptor(loggingInterceptor)
                 .build();
