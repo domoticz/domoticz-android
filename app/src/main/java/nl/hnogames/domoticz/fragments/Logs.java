@@ -206,6 +206,10 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                     public void onError(Exception error) {
                         if (LogLevel == DomoticzValues.Log.LOGLEVEL.ALL)
                             errorHandling(error);
+                        else{
+                            successHandling(null, false);
+                            createListView(new ArrayList<LogInfo>());
+                        }
                     }
                 }, LogLevel);
             }

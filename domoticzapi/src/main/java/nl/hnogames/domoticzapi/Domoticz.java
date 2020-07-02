@@ -1003,7 +1003,7 @@ public class Domoticz {
             @Override
             public void onError(Exception error) {
                 if (parser != null)
-                    parser.onError(error);
+                    parser.parseResult(null); // Just continue.. we have basic auth failover
             }
         };
 
