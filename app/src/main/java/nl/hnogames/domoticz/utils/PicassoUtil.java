@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.ihsanbal.logging.Level;
 import com.ihsanbal.logging.LoggingInterceptor;
-import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
