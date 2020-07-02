@@ -57,7 +57,6 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     }
 
     @Override
-
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
@@ -65,7 +64,6 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     }
 
     @Override
-
     public void onAttach(Context context) {
         super.onAttach(context);
         onAttachFragment(this);
@@ -169,6 +167,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
 
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
         ArrayList<LogInfo> cacheLogs = null;
+        private int LogLevel;
 
         protected Boolean doInBackground(Boolean... geto) {
             if (mPhoneConnectionUtil == null)
@@ -187,7 +186,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                 if (cacheLogs != null)
                     createListView(cacheLogs);
 
-                int LogLevel = DomoticzValues.Log.LOGLEVEL.ALL; //Default
+                LogLevel = DomoticzValues.Log.LOGLEVEL.ALL;
                 if (getSort().equals(getString(R.string.filter_normal)))
                     LogLevel = DomoticzValues.Log.LOGLEVEL.NORMAL;
                 if (getSort().equals(getString(R.string.filter_status)))
@@ -197,7 +196,6 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
 
                 StaticHelper.getDomoticz(mContext).getLogs(new LogsReceiver() {
                     @Override
-
                     public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {
                         successHandling(mLogInfos.toString(), false);
                         SerializableManager.saveSerializable(mContext, mLogInfos, "Logs");
@@ -205,9 +203,9 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                     }
 
                     @Override
-
                     public void onError(Exception error) {
-                        errorHandling(error);
+                        if (LogLevel == DomoticzValues.Log.LOGLEVEL.ALL)
+                            errorHandling(error);
                     }
                 }, LogLevel);
             }
