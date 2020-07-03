@@ -128,7 +128,6 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                 adapter.notifyDataSetChanged();
                 alphaSlideIn.notifyDataSetChanged();
             }
-
             if (!isTablet && !itemDecorationAdded) {
                 gridView.addItemDecoration(new MarginItemDecoration(20));
                 itemDecorationAdded = true;

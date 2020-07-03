@@ -272,15 +272,6 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     private void changeFavorite(final SceneInfo mSceneInfo, final boolean isFavorite) {
-        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
-        if (user != null && user.getRights() <= 1) {
-            UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
-            if (getActivity() instanceof MainActivity)
-                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
-            refreshFragment();
-            return;
-        }
-
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mSceneInfo.getIdx() + " favorite to " + isFavorite);
 
@@ -311,15 +302,14 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             @Override
 
             public void onError(Exception error) {
-                // Domoticz always gives an error: ignore
-                errorHandling(error);
+                UsefulBits.showSnackbar(mContext, frameLayout, R.string.error_favorite, Snackbar.LENGTH_SHORT);
+                if (getActivity() instanceof MainActivity)
+                    ((MainActivity) getActivity()).Talk(R.string.error_favorite);
             }
         });
     }
 
-
     @Override
-
     public void onSceneClick(int idx, final boolean action) {
         addDebugText("onSceneClick");
         addDebugText("Set " + idx + " to " + action);
@@ -345,7 +335,6 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     @Override
-
     public void onLikeButtonClick(int idx, boolean checked) {
         changeFavorite(getScene(idx), checked);
     }
@@ -355,13 +344,11 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     public void onLogButtonClick(int idx) {
         StaticHelper.getDomoticz(mContext).getSceneLogs(idx, new SwitchLogReceiver() {
             @Override
-
             public void onReceiveSwitches(ArrayList<SwitchLogInfo> switchesLogs) {
                 showLogDialog(switchesLogs);
             }
 
             @Override
-
             public void onError(Exception error) {
                 UsefulBits.showSnackbar(mContext, frameLayout, R.string.error_logs, Snackbar.LENGTH_SHORT);
                 if (getActivity() instanceof MainActivity)
@@ -371,7 +358,6 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     @Override
-
     public void onItemClicked(View v, int position) {
         LinearLayout extra_panel = v.findViewById(R.id.extra_panel);
         if (extra_panel != null) {
@@ -426,16 +412,6 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.switch_off) + ": " + clickedScene.getName(), Snackbar.LENGTH_SHORT);
         }
 
-
-        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
-        if (user != null && user.getRights() <= 0) {
-            UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
-            if (getActivity() instanceof MainActivity)
-                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
-            refreshFragment();
-            return;
-        }
-
         int jsonAction;
         int jsonUrl = DomoticzValues.Json.Url.Set.SCENES;
 
@@ -458,7 +434,9 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             @Override
 
             public void onError(Exception error) {
-                errorHandling(error);
+                UsefulBits.showSnackbar(mContext, frameLayout, R.string.security_no_rights, Snackbar.LENGTH_SHORT);
+                if (getActivity() instanceof MainActivity)
+                    ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
             }
         });
     }

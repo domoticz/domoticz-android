@@ -217,15 +217,6 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     }
 
     private void changeFavorite(final TemperatureInfo mTemperatureInfo, final boolean isFavorite) {
-        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
-        if (user != null && user.getRights() <= 1) {
-            UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
-            if (getActivity() instanceof MainActivity)
-                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
-            refreshFragment();
-            return;
-        }
-
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mTemperatureInfo.getIdx() + " favorite to " + isFavorite);
 
@@ -256,7 +247,9 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
             @Override
 
             public void onError(Exception error) {
-                errorHandling(error);
+                UsefulBits.showSnackbar(mContext, frameLayout, R.string.error_favorite, Snackbar.LENGTH_SHORT);
+                if (getActivity() instanceof MainActivity)
+                    ((MainActivity) getActivity()).Talk(R.string.error_favorite);
             }
         });
     }
@@ -269,20 +262,17 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
             if (isAdded()) {
                 if (mSwipeRefreshLayout != null)
                     mSwipeRefreshLayout.setRefreshing(false);
-
                 super.errorHandling(error);
             }
         }
     }
 
     @Override
-
     public void onPause() {
         super.onPause();
     }
 
     @Override
-
     public void onLogClick(final TemperatureInfo temp, final String range) {
         Intent intent = new Intent(mContext, GraphActivity.class);
         intent.putExtra("IDX", temp.getIdx());
@@ -293,32 +283,22 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     }
 
     @Override
-
     public void onSetClick(final TemperatureInfo t) {
         addDebugText("onSetClick");
         final int idx = t.getIdx();
 
-        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
-        if (user != null && user.getRights() <= 0) {
-            UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
-            if (getActivity() instanceof MainActivity)
-                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
-            refreshFragment();
-            return;
-        }
-
         final setCommandReceiver commandReceiver = new setCommandReceiver() {
             @Override
-
             public void onReceiveResult(String result) {
                 successHandling(result, false);
                 processTemperature();
             }
 
             @Override
-
             public void onError(Exception error) {
-                errorHandling(error);
+                UsefulBits.showSnackbar(mContext, frameLayout, R.string.security_no_rights, Snackbar.LENGTH_SHORT);
+                if (getActivity() instanceof MainActivity)
+                    ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
             }
         };
 
@@ -342,18 +322,14 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
             public void onDialogAction(double newSetPoint, DialogAction dialogAction) {
                 if (dialogAction == DialogAction.POSITIVE) {
                     addDebugText("Set idx " + idx + " to " + newSetPoint);
-
                     String params = "&setpoint=" + newSetPoint +
                             "&mode=" + PERMANENT_OVERRIDE;
-
                     // add query parameters
                     StaticHelper.getDomoticz(mContext).setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
                 } else if (dialogAction == DialogAction.NEUTRAL && evohomeZone) {
                     addDebugText("Set idx " + idx + " to Auto");
-
                     String params = "&setpoint=" + newSetPoint +
                             "&mode=" + AUTO;
-
                     // add query parameters
                     StaticHelper.getDomoticz(mContext).setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
                 } else {
@@ -366,13 +342,11 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     }
 
     @Override
-
     public void onLikeButtonClick(int idx, boolean checked) {
         changeFavorite(getTemperature(idx), checked);
     }
 
     @Override
-
     public void onItemClicked(View v, int position) {
         LinearLayout extra_panel = v.findViewById(R.id.extra_panel);
         if (extra_panel != null) {
