@@ -32,7 +32,6 @@ import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.hardware.fingerprint.FingerprintManager;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Build;
@@ -54,6 +53,7 @@ import java.io.File;
 import java.util.HashSet;
 
 import androidx.annotation.NonNull;
+import androidx.biometric.BiometricManager;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.legacy.app.ActivityCompat;
@@ -737,16 +737,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                         if (!PermissionsUtil.canAccessFingerprint(mContext)) {
                             permissionHelper.request(PermissionsUtil.INITIAL_FINGERPRINT_PERMS);
                         } else {
-                            FingerprintManager fingerprintManager = (FingerprintManager) mContext.getSystemService(Context.FINGERPRINT_SERVICE);
-                            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
-                                return false;
-                            }
-                            if (fingerprintManager == null || !fingerprintManager.isHardwareDetected()) {
-                                return false;
-                            } else if (!fingerprintManager.hasEnrolledFingerprints()) {
-                                UsefulBits.showSimpleToast(mContext, getString(R.string.fingerprint_not_setup_in_android), Toast.LENGTH_LONG);
-                                return false;
-                            } else {
+                            BiometricManager biometricManager = BiometricManager.from(mContext);
+                            if (biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS){
                                 new MaterialDialog.Builder(mContext)
                                         .title(R.string.category_startup_security)
                                         .content(R.string.fingerprint_sure)
@@ -761,8 +753,11 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                                             }
                                         })
                                         .show();
-
                                 return false;
+                            }
+                            else {
+
+                                UsefulBits.showSimpleToast(mContext, getString(R.string.fingerprint_not_setup_in_android), Toast.LENGTH_LONG);
                             }
                         }
                     }
