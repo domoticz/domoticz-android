@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.adapters;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,20 +43,25 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.ColorInt;
 import androidx.recyclerview.widget.RecyclerView;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.switchesClickListener;
+import nl.hnogames.domoticz.utils.PicassoUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
@@ -83,7 +89,9 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     private SharedPrefUtil mSharedPrefs;
     private ConfigInfo mConfigInfo;
     private int lastPosition = -1;
+    private Picasso picasso;
     private ItemFilter mFilter = new ItemFilter();
+    private Domoticz domoticz;
 
 
     public SwitchesAdapter(Context context,
@@ -91,7 +99,14 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                            ArrayList<DevicesInfo> data,
                            switchesClickListener listener) {
         super();
+        this.domoticz = StaticHelper.getDomoticz(context);
+
         mSharedPrefs = new SharedPrefUtil(context);
+
+        picasso = new PicassoUtil().getPicasso(context,
+                domoticz.getSessionUtil().getSessionCookie(),
+                domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
+                domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD));
 
         this.context = context;
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
@@ -382,6 +397,40 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     throw new NullPointerException(
                             "No supported switch type defined in the adapter (setSwitchRowData)");
             }
+        }
+        SetCameraBackGround(mDeviceInfo, holder);
+    }
+
+    private void SetCameraBackGround(DevicesInfo mDeviceInfo, final SwitchesAdapter.DataObjectHolder holder)
+    {
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = context.getTheme();
+        theme.resolveAttribute(R.attr.listviewRowBackground, typedValue, true);
+        @ColorInt final int listviewRowBackground = typedValue.data;
+        if(mSharedPrefs.addCameraToDashboard() && mDeviceInfo.getUsedByCamera() && mDeviceInfo.getCameraIdx() >= 0)
+        {
+            holder.dummyImg.setVisibility(View.GONE);
+            holder.row_wrapper.setBackgroundColor(listviewRowBackground);
+            picasso.load(domoticz.getSnapshotUrl(mDeviceInfo.getCameraIdx()))
+                    .noFade()
+                    .noPlaceholder()
+                    .into(holder.dummyImg, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            holder.dummyImg.setVisibility(View.VISIBLE);
+                            holder.row_wrapper.setBackground(null);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            holder.dummyImg.setVisibility(View.GONE);
+                            holder.row_wrapper.setBackgroundColor(listviewRowBackground);
+                        }
+                    });
+        }
+        else {
+            holder.dummyImg.setVisibility(View.GONE);
+            holder.row_wrapper.setBackgroundColor(listviewRowBackground);
         }
     }
 
@@ -1870,8 +1919,9 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         ImageView iconRow, iconMode;
         SeekBar dimmer;
         Spinner spSelector;
-        LinearLayout extraPanel;
+        LinearLayout extraPanel, row_wrapper;
         ImageView infoIcon;
+        ImageView dummyImg;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -1879,7 +1929,9 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             buttonOn = itemView.findViewById(R.id.on_button);
             buttonOff = itemView.findViewById(R.id.off_button);
             buttonSetStatus = itemView.findViewById(R.id.set_button);
+            dummyImg = itemView.findViewById(R.id.dummyImg);
 
+            row_wrapper = itemView.findViewById(R.id.row_wrapper);
             onOffSwitch = itemView.findViewById(R.id.switch_button);
             signal_level = itemView.findViewById(R.id.switch_signal_level);
             iconRow = itemView.findViewById(R.id.rowIcon);
