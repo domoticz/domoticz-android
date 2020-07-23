@@ -695,16 +695,17 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         Resources.Theme theme = context.getTheme();
         theme.resolveAttribute(R.attr.listviewRowBackground, typedValue, true);
         @ColorInt final int listviewRowBackground = typedValue.data;
-
         if(mSharedPrefs.addCameraToDashboard() && mDeviceInfo.getUsedByCamera() && mDeviceInfo.getCameraIdx() >= 0)
         {
-            holder.dummyImg.setVisibility(View.VISIBLE);
+            holder.dummyImg.setVisibility(View.GONE);
+            holder.row_wrapper.setBackgroundColor(listviewRowBackground);
             picasso.load(domoticz.getSnapshotUrl(mDeviceInfo.getCameraIdx()))
                     .noFade()
                     .noPlaceholder()
                     .into(holder.dummyImg, new Callback() {
                         @Override
                         public void onSuccess() {
+                            holder.dummyImg.setVisibility(View.VISIBLE);
                             holder.row_wrapper.setBackground(null);
                         }
 
