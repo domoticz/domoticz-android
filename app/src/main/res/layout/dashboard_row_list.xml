@@ -40,9 +40,12 @@
         <ImageView
             android:id="@+id/dummyImg"
             android:layout_width="match_parent"
+            android:tintMode="src_atop"
+            android:tint="?attr/listviewRowTintBackground"
             android:layout_height="fill_parent"
-            android:layout_alignParentTop="true"
-            android:scaleType="fitXY" />
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:layout_alignParentTop="true"/>
 
         <LinearLayout
             android:id="@+id/row_global_wrapper"

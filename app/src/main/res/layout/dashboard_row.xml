@@ -41,9 +41,11 @@
             android:id="@+id/dummyImg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:tintMode="src_atop"
+            android:tint="?attr/listviewRowTintBackground"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
             android:visibility="gone"/>
 
         <LinearLayout

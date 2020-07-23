@@ -30,6 +30,7 @@
     <attr name="recyclerBackground" format="color" />
     <attr name="listviewBackground" format="color" />
     <attr name="listviewRowBackground" format="color" />
+    <attr name="listviewRowTintBackground" format="color" />
     <attr name="backdropBackground" format="color" />
     <attr name="buttonTextColor" format="color" />
     <attr name="toolbarBackground" format="color" />

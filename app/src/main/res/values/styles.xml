@@ -72,6 +72,8 @@
         <item name="toolbarTextColor">@color/white</item>
         <item name="recyclerBackground">@color/background_grey</item>
         <item name="listviewRowBackground">@color/white</item>
+        <item name="listviewRowTintBackground">@color/white60</item>
+
         <item name="backdropBackground">@color/primary</item>
         <item name="buttonTextColor">@color/primary_accent</item>
         <item name="graphTextColor">@color/grey_900</item>
@@ -139,6 +141,7 @@
         <item name="toolbarTextColor">@color/white</item>
         <item name="recyclerBackground">@color/background_grey</item>
         <item name="listviewRowBackground">@color/white</item>
+        <item name="listviewRowTintBackground">@color/white60</item>
         <item name="backdropBackground">@color/primary</item>
         <item name="buttonTextColor">@color/primary_accent</item>
         <item name="graphTextColor">@color/grey_900</item>
@@ -203,6 +206,7 @@
         <item name="toolbarBackground">@color/secondary</item>
         <item name="recyclerBackground">@color/secondary_dark</item>
         <item name="listviewRowBackground">@color/secondary</item>
+        <item name="listviewRowTintBackground">@color/secondary60</item>
         <item name="backdropBackground">@color/secondary</item>
         <item name="buttonTextColor">@color/alt1_accent</item>
         <item name="graphTextColor">@color/white</item>
@@ -269,6 +273,7 @@
         <item name="toolbarBackground">@color/alt2</item>
         <item name="recyclerBackground">@color/alt2_dark</item>
         <item name="listviewRowBackground">@color/alt2</item>
+        <item name="listviewRowTintBackground">@color/alt260</item>
         <item name="backdropBackground">@color/alt2</item>
         <item name="buttonTextColor">@color/alt2_accent</item>
         <item name="graphTextColor">@color/white</item>
@@ -334,6 +339,7 @@
         <item name="toolbarTextColor">@color/white</item>
         <item name="recyclerBackground">@color/alt3_background</item>
         <item name="listviewRowBackground">@color/white</item>
+        <item name="listviewRowTintBackground">@color/white60</item>
         <item name="backdropBackground">@color/alt3</item>
         <item name="buttonTextColor">@color/alt3</item>
         <item name="graphTextColor">@color/black</item>
@@ -398,6 +404,7 @@
         <item name="toolbarBackground">@color/alt4</item>
         <item name="recyclerBackground">@color/alt4_dark</item>
         <item name="listviewRowBackground">@color/alt4</item>
+        <item name="listviewRowTintBackground">@color/alt460</item>
         <item name="backdropBackground">@color/alt4</item>
         <item name="buttonTextColor">@color/alt4_accent</item>
         <item name="graphTextColor">@color/white</item>
