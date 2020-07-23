@@ -217,6 +217,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         androidx.preference.Preference premiumPreference = findPreference("premium_settings");
         androidx.preference.Preference ThemePreference = findPreference("darkTheme");
         androidx.preference.SwitchPreference ClockPreference = findPreference("dashboardShowClock");
+        androidx.preference.SwitchPreference CameraPreference = findPreference("dashboardShowCamera");
+
         androidx.preference.Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
         androidx.preference.SwitchPreference FingerPrintPreference = findPreference("enableSecurity");
         androidx.preference.SwitchPreference customSortProperty = findPreference("sortCustom");
@@ -325,6 +327,17 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 }
             });
 
+        if (CameraPreference != null)
+            CameraPreference.setOnPreferenceChangeListener(new androidx.preference.Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(androidx.preference.Preference preference, Object newValue) {
+                    if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                        showPremiumSnackbar(getString(R.string.dashboard_camera));
+                        return false;
+                    }
+                    return true;
+                }
+            });
 
         if (MultiServerPreference != null)
             MultiServerPreference.setOnPreferenceChangeListener(new androidx.preference.Preference.OnPreferenceChangeListener() {

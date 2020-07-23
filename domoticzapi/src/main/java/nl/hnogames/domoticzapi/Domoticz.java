@@ -458,7 +458,11 @@ public class Domoticz {
     }
 
     public String getSnapshotUrl(CameraInfo camera) {
-        return mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CAMERA) + camera.getIdx();
+        return getSnapshotUrl(camera.getIdx());
+    }
+
+    public String getSnapshotUrl(int idx) {
+        return mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CAMERA) + idx;
     }
 
     /**

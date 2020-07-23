@@ -43,12 +43,16 @@ import android.widget.TextView;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import az.plainpie.PieView;
@@ -56,12 +60,15 @@ import az.plainpie.animation.PieAngleAnimation;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.switchesClickListener;
+import nl.hnogames.domoticz.utils.PicassoUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SunRiseInfo;
+import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
@@ -90,7 +97,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     private ConfigInfo mConfigInfo;
     private ItemFilter mFilter = new ItemFilter();
     private SunRiseInfo sunriseInfo;
+    private Domoticz domoticz;
 
+    private Picasso picasso;
     public DashboardAdapter(Context context,
                             ServerUtil serverUtil,
                             ArrayList<DevicesInfo> data,
@@ -98,9 +107,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             boolean showAsList,
                             SunRiseInfo sunriseInfo) {
         super();
+        this.domoticz = StaticHelper.getDomoticz(context);
         this.showAsList = showAsList;
         this.sunriseInfo = sunriseInfo;
         mSharedPrefs = new SharedPrefUtil(context);
+
+        picasso = new PicassoUtil().getPicasso(context,
+                domoticz.getSessionUtil().getSessionCookie(),
+                domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
+                domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD));
+
         this.context = context;
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
         this.listener = listener;
@@ -368,6 +384,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             "No supported switch type defined in the adapter (setSwitchRowData)");
             }
         }
+
+        SetCameraBackGround(mDeviceInfo, holder);
     }
 
     /**
@@ -668,6 +686,38 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     handleLogButtonClick(v.getId());
                 }
             });
+        }
+    }
+
+    private void SetCameraBackGround(DevicesInfo mDeviceInfo, final DataObjectHolder holder)
+    {
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = context.getTheme();
+        theme.resolveAttribute(R.attr.listviewRowBackground, typedValue, true);
+        @ColorInt final int listviewRowBackground = typedValue.data;
+
+        if(mSharedPrefs.addCameraToDashboard() && mDeviceInfo.getUsedByCamera() && mDeviceInfo.getCameraIdx() >= 0)
+        {
+            holder.dummyImg.setVisibility(View.VISIBLE);
+            picasso.load(domoticz.getSnapshotUrl(mDeviceInfo.getCameraIdx()))
+                    .noFade()
+                    .noPlaceholder()
+                    .into(holder.dummyImg, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            holder.row_wrapper.setBackground(null);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            holder.dummyImg.setVisibility(View.GONE);
+                            holder.row_wrapper.setBackgroundColor(listviewRowBackground);
+                        }
+                    });
+        }
+        else {
+            holder.dummyImg.setVisibility(View.GONE);
+            holder.row_wrapper.setBackgroundColor(listviewRowBackground);
         }
     }
 
@@ -2054,8 +2104,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         Boolean isProtected;
         ImageView iconRow, iconMode;
         SeekBar dimmer;
+
+        ImageView dummyImg;
         Spinner spSelector;
-        LinearLayout extraPanel, clockLayoutWrapper;
+        LinearLayout extraPanel, clockLayoutWrapper, row_wrapper;
         RelativeLayout details;
         PieView pieView;
         ImageView infoIcon;
@@ -2089,6 +2141,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             buttonDown = itemView.findViewById(R.id.switch_button_down);
             buttonSet = itemView.findViewById(R.id.set_button);
 
+            row_wrapper = itemView.findViewById(R.id.row_wrapper);
             clockLayoutWrapper = itemView.findViewById(R.id.clockLayoutWrapper);
             clockText = itemView.findViewById(R.id.clockText);
             sunriseText = itemView.findViewById(R.id.sunriseText);
@@ -2099,6 +2152,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             clock = itemView.findViewById(R.id.clock);
             sunrise = itemView.findViewById(R.id.sunrise);
             sunset = itemView.findViewById(R.id.sunset);
+            dummyImg = itemView.findViewById(R.id.dummyImg);
 
             if (buttonLog != null)
                 buttonLog.setVisibility(View.GONE);
