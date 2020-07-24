@@ -22,6 +22,7 @@
 package nl.hnogames.domoticz.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -42,6 +44,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PicassoUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
@@ -116,30 +119,49 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DataObjectHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final DataObjectHolder holder, int position) {
         if (mDataset != null && mDataset.size() > 0) {
             CameraInfo cameraInfo = mDataset.get(position);
             String name = cameraInfo.getName();
             String address = cameraInfo.getAddress();
-            String imageUrl = cameraInfo.getSnapShotURL();
+            final String imageUrl = cameraInfo.getSnapShotURL();
 
             int numberOfDevices = cameraInfo.getDevices();
             try {
                 String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
                 holder.name.setText(name);
 
-                if (holder.camera.getDrawable() == null) {
+                Drawable cache = CameraUtil.getDrawable(imageUrl);
+                if (cache == null) {
                     picasso.load(imageUrl)
                             .placeholder(R.drawable.placeholder)
                             .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
-                            .into(holder.camera);
+                        .into(holder.camera, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            CameraUtil.setDrawable(imageUrl, holder.camera.getDrawable());
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                        }
+                    });
                 } else
                     picasso.load(imageUrl)
                             .memoryPolicy(MemoryPolicy.NO_CACHE)
                             .noFade()
-                            .noPlaceholder()
+                            .placeholder(cache)
                             .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
-                            .into(holder.camera);
+                            .into(holder.camera, new Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    CameraUtil.setDrawable(imageUrl, holder.camera.getDrawable());
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+                                }
+                            });
             } catch (Exception ex) {
                 Log.i("CameraAdapter", ex.getMessage());
             }

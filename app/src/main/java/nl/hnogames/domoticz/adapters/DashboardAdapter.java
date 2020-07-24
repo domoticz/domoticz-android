@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.adapters;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -62,6 +63,7 @@ import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.switchesClickListener;
+import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PicassoUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -98,6 +100,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     private ItemFilter mFilter = new ItemFilter();
     private SunRiseInfo sunriseInfo;
     private Domoticz domoticz;
+    @ColorInt private int listviewRowBackground;
 
     private Picasso picasso;
     public DashboardAdapter(Context context,
@@ -111,6 +114,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         this.showAsList = showAsList;
         this.sunriseInfo = sunriseInfo;
         mSharedPrefs = new SharedPrefUtil(context);
+
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = context.getTheme();
+        theme.resolveAttribute(R.attr.listviewRowBackground, typedValue, true);
+        listviewRowBackground = typedValue.data;
 
         picasso = new PicassoUtil().getPicasso(context,
                 domoticz.getSessionUtil().getSessionCookie(),
@@ -691,30 +699,47 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
     private void SetCameraBackGround(DevicesInfo mDeviceInfo, final DataObjectHolder holder)
     {
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = context.getTheme();
-        theme.resolveAttribute(R.attr.listviewRowBackground, typedValue, true);
-        @ColorInt final int listviewRowBackground = typedValue.data;
         if(mSharedPrefs.addCameraToDashboard() && mDeviceInfo.getUsedByCamera() && mDeviceInfo.getCameraIdx() >= 0)
         {
-            holder.dummyImg.setVisibility(View.GONE);
-            holder.row_wrapper.setBackgroundColor(listviewRowBackground);
-            picasso.load(domoticz.getSnapshotUrl(mDeviceInfo.getCameraIdx()))
-                    .noFade()
-                    .noPlaceholder()
-                    .into(holder.dummyImg, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            holder.dummyImg.setVisibility(View.VISIBLE);
-                            holder.row_wrapper.setBackground(null);
-                        }
+            final String imageUrl = domoticz.getSnapshotUrl(mDeviceInfo.getCameraIdx());
+            holder.dummyImg.setVisibility(View.VISIBLE);
+            holder.row_wrapper.setBackground(null);
+            Drawable cache = CameraUtil.getDrawable(imageUrl);
+            if (cache == null) {
+                picasso.load(imageUrl)
+                        .noPlaceholder()
+                        .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                        .into(holder.dummyImg, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                CameraUtil.setDrawable(imageUrl, holder.dummyImg.getDrawable());
+                            }
 
-                        @Override
-                        public void onError(Exception e) {
-                            holder.dummyImg.setVisibility(View.GONE);
-                            holder.row_wrapper.setBackgroundColor(listviewRowBackground);
-                        }
-                    });
+                            @Override
+                            public void onError(Exception e) {
+                                holder.dummyImg.setVisibility(View.GONE);
+                                holder.row_wrapper.setBackgroundColor(listviewRowBackground);
+                            }
+                        });
+            } else {
+                picasso.load(imageUrl)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .noFade()
+                        .placeholder(cache)
+                        .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                        .into(holder.dummyImg, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                CameraUtil.setDrawable(imageUrl, holder.dummyImg.getDrawable());
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                holder.dummyImg.setVisibility(View.GONE);
+                                holder.row_wrapper.setBackgroundColor(listviewRowBackground);
+                            }
+                        });
+            }
         }
         else {
             holder.dummyImg.setVisibility(View.GONE);

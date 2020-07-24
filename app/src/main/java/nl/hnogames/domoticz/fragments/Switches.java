@@ -390,6 +390,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         });
     }
 
+    
+
     @Override
     public void onLogButtonClick(int idx) {
         StaticHelper.getDomoticz(mContext).getSwitchLogs(idx, new SwitchLogReceiver() {
