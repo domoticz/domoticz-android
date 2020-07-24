@@ -21,6 +21,7 @@
 
 package nl.hnogames.domoticz.interfaces;
 
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
 public interface switchesClickListener {
@@ -58,4 +59,6 @@ public interface switchesClickListener {
     void onItemClicked(View v, int position);
 
     boolean onItemLongClicked(int idx);
+
+    void onCameraFullScreenClick(Drawable drawable);
 }

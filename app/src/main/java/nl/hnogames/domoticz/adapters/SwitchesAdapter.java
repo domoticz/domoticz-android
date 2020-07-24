@@ -417,8 +417,11 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             final String imageUrl = domoticz.getSnapshotUrl(mDeviceInfo.getCameraIdx());
             holder.dummyImg.setVisibility(View.VISIBLE);
             holder.row_wrapper.setBackground(null);
+
             Drawable cache = CameraUtil.getDrawable(imageUrl);
             if (cache == null) {
+                holder.full_screen_icon.setTag(null);
+                holder.full_screen_icon.setVisibility(View.GONE);
                 picasso.load(imageUrl)
                         .noPlaceholder()
                         .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
@@ -426,15 +429,20 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                             @Override
                             public void onSuccess() {
                                 CameraUtil.setDrawable(imageUrl, holder.dummyImg.getDrawable());
+                                holder.full_screen_icon.setTag(holder.dummyImg.getDrawable());
+                                holder.full_screen_icon.setVisibility(View.VISIBLE);
                             }
 
                             @Override
                             public void onError(Exception e) {
                                 holder.dummyImg.setVisibility(View.GONE);
                                 holder.row_wrapper.setBackgroundColor(listviewRowBackground);
+                                holder.full_screen_icon.setVisibility(View.GONE);
                             }
                         });
             } else {
+                holder.full_screen_icon.setTag(holder.dummyImg.getDrawable());
+                holder.full_screen_icon.setVisibility(View.VISIBLE);
                 picasso.load(imageUrl)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .noFade()
@@ -444,19 +452,31 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                             @Override
                             public void onSuccess() {
                                 CameraUtil.setDrawable(imageUrl, holder.dummyImg.getDrawable());
+                                holder.full_screen_icon.setTag(holder.dummyImg.getDrawable());
+                                holder.full_screen_icon.setVisibility(View.VISIBLE);
                             }
 
                             @Override
                             public void onError(Exception e) {
                                 holder.dummyImg.setVisibility(View.GONE);
                                 holder.row_wrapper.setBackgroundColor(listviewRowBackground);
+                                holder.full_screen_icon.setVisibility(View.GONE);
                             }
                         });
             }
         } else {
             holder.dummyImg.setVisibility(View.GONE);
             holder.row_wrapper.setBackgroundColor(listviewRowBackground);
+            holder.full_screen_icon.setVisibility(View.GONE);
         }
+
+        holder.full_screen_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(v.getTag() != null)
+                    listener.onCameraFullScreenClick((Drawable)v.getTag());
+            }
+        });
     }
 
     /**
@@ -1941,7 +1961,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         Chip buttonLog, buttonTimer, buttonNotifications;
         Boolean isProtected;
         LikeButton likeButton;
-        ImageView iconRow, iconMode;
+        ImageView iconRow, iconMode, full_screen_icon;
         SeekBar dimmer;
         Spinner spSelector;
         LinearLayout extraPanel, row_wrapper;
@@ -1962,6 +1982,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             iconRow = itemView.findViewById(R.id.rowIcon);
             switch_name = itemView.findViewById(R.id.switch_name);
             switch_battery_level = itemView.findViewById(R.id.switch_battery_level);
+            full_screen_icon = itemView.findViewById(R.id.full_screen_icon);
 
             switch_dimmer_level = itemView.findViewById(R.id.switch_dimmer_level);
             dimmerOnOffSwitch = itemView.findViewById(R.id.switch_dimmer_switch);

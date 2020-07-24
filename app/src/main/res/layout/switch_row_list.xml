@@ -32,276 +32,300 @@
     app:cardCornerRadius="5dp"
     app:cardElevation="1dp">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/row_global_wrapper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/recyclerBackground"
-        android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:id="@+id/dummyImg"
+            android:layout_width="match_parent"
+            android:tintMode="src_atop"
+            android:tint="?attr/listviewRowTintBackground"
+            android:layout_height="fill_parent"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:layout_alignParentTop="true"/>
 
         <LinearLayout
-            android:id="@+id/row_wrapper"
+            android:id="@+id/row_global_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/listviewRowBackground"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-
-            <ImageView
-                android:id="@+id/widget_info_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|start"
-                android:src="@drawable/outline_info_black_18"
-                android:tint="@color/md_grey_300" />
-
-            <ImageView
-                android:id="@+id/rowIcon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="-15dp"
-                android:contentDescription="@string/error_image_description"
-                android:paddingRight="5dp"
-                android:src="@drawable/clock48" />
+            android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/row_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:background="?attr/listviewRowBackground"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
-                <RelativeLayout
+                <ImageView
+                    android:id="@+id/widget_info_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|start"
+                    android:src="@drawable/outline_info_black_18"
+                    android:tint="@color/md_grey_300" />
+
+                <ImageView
+                    android:id="@+id/rowIcon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="-15dp"
+                    android:contentDescription="@string/error_image_description"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/clock48" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <RelativeLayout
-                        android:id="@+id/RelativeLayoutContentWrapper"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <LinearLayout
+                        <RelativeLayout
+                            android:id="@+id/RelativeLayoutContentWrapper"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_toStartOf="@+id/linearLayout7864"
-                            android:layout_toLeftOf="@+id/linearLayout7864"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/switch_name"
-                                style="@style/row_name"
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:layout_marginRight="35dp"
-                                android:text="Switch" />
-
-                            <TextView
-                                android:id="@+id/switch_battery_level"
-                                style="@style/row_body1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/switch_name"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentLeft="true"
-                                android:layout_toStartOf="@+id/linearLayout4"
-                                android:layout_toLeftOf="@+id/linearLayout4"
-                                android:gravity="center_vertical"
-                                android:text="@string/battery_level" />
-
-                            <TextView
-                                android:id="@+id/switch_signal_level"
-                                style="@style/row_body1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/switch_battery_level"
-                                android:layout_marginBottom="5dp"
-                                android:text="@string/signal_level"
-                                android:textSize="8sp"
-                                android:textStyle="italic" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/linearLayout4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical">
-
-                            <com.google.android.material.switchmaterial.SwitchMaterial
-                                android:id="@+id/switch_button"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                app:useMaterialThemeColors="false" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/set_button"
-                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                                android:layout_width="56dp"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_gravity="right"
-                                android:text="@string/set_temperature"
-                                android:textColor="?attr/buttonTextColor"
-                                android:textSize="10dp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/linearLayout7864"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical">
+                            android:layout_height="wrap_content">
 
                             <LinearLayout
-                                android:id="@+id/linearLayoutt"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
+                                android:layout_toStartOf="@+id/linearLayout7864"
+                                android:layout_toLeftOf="@+id/linearLayout7864"
                                 android:gravity="center_vertical"
-                                android:orientation="horizontal">
+                                android:orientation="vertical">
 
-                                <ImageView
-                                    android:id="@+id/switch_button_up"
-                                    android:layout_width="25dp"
-                                    android:layout_height="25dp"
-                                    android:layout_margin="7dp"
-                                    android:layout_marginTop="10dp"
-                                    android:src="@drawable/baseline_keyboard_arrow_up_black_24"
-                                    android:tint="@color/primary" />
+                                <TextView
+                                    android:id="@+id/switch_name"
+                                    style="@style/row_name"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginRight="35dp"
+                                    android:text="Switch" />
 
-                                <ImageView
-                                    android:id="@+id/switch_button_stop"
-                                    android:layout_width="25dp"
-                                    android:layout_height="25dp"
-                                    android:layout_margin="7dp"
-                                    android:layout_marginTop="10dp"
-                                    android:src="@drawable/baseline_stop_black_24"
-                                    android:tint="@color/primary" />
+                                <TextView
+                                    android:id="@+id/switch_battery_level"
+                                    style="@style/row_body1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/switch_name"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_toStartOf="@+id/linearLayout4"
+                                    android:layout_toLeftOf="@+id/linearLayout4"
+                                    android:gravity="center_vertical"
+                                    android:text="@string/battery_level" />
 
-                                <ImageView
-                                    android:id="@+id/switch_button_down"
-                                    android:layout_width="25dp"
-                                    android:layout_height="25dp"
-                                    android:layout_margin="7dp"
-                                    android:layout_marginTop="10dp"
-                                    android:src="@drawable/baseline_keyboard_arrow_down_black_24"
-                                    android:tint="@color/primary" />
-
+                                <TextView
+                                    android:id="@+id/switch_signal_level"
+                                    style="@style/row_body1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/switch_battery_level"
+                                    android:layout_marginBottom="5dp"
+                                    android:text="@string/signal_level"
+                                    android:textSize="8sp"
+                                    android:textStyle="italic" />
                             </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/switch_dimmer_level"
-                                android:layout_width="wrap_content"
-                                android:layout_height="22dp"
-                                android:layout_gravity="right"
-                                android:layout_marginRight="6dp"
-                                android:text="55%" />
-
-                            <Spinner
-                                android:id="@+id/spSelector"
-                                android:layout_width="129dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="bottom"
-                                android:minWidth="150dp" />
-
                             <LinearLayout
-                                android:id="@+id/linearLayout44"
+                                android:id="@+id/linearLayout4"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
                                 android:gravity="center_vertical"
-                                android:orientation="horizontal">
+                                android:orientation="vertical">
 
-                                <az.plainpie.PieView xmlns:plainpie="http://schemas.android.com/apk/res-auto"
-                                    android:id="@+id/pieView"
-                                    android:layout_width="72dp"
-                                    android:layout_height="73dp"
-                                    android:visibility="gone"
-                                    plainpie:inner_pie_padding="10"
-                                    plainpie:inner_text_visibility="true"
-                                    plainpie:percentage="75"
-                                    plainpie:percentage_size="15" />
-
-                                <com.google.android.material.button.MaterialButton
-                                    android:id="@+id/on_button"
-                                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                                    android:layout_width="60dp"
+                                <com.google.android.material.switchmaterial.SwitchMaterial
+                                    android:id="@+id/switch_button"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
-                                    android:text="@string/button_state_on"
-                                    android:textColor="?attr/buttonTextColor"
-                                    android:textSize="10dp" />
+                                    app:useMaterialThemeColors="false" />
 
                                 <com.google.android.material.button.MaterialButton
-                                    android:id="@+id/off_button"
+                                    android:id="@+id/set_button"
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                                    android:layout_width="60dp"
+                                    android:layout_width="56dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="7dp"
-                                    android:layout_weight="1"
-                                    android:text="@string/button_state_off"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_gravity="right"
+                                    android:text="@string/set_temperature"
                                     android:textColor="?attr/buttonTextColor"
                                     android:textSize="10dp" />
-
-                                <com.google.android.material.switchmaterial.SwitchMaterial
-                                    android:id="@+id/switch_dimmer_switch"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="right"
-                                    app:useMaterialThemeColors="false" />
                             </LinearLayout>
 
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/color_button"
-                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            <LinearLayout
+                                android:id="@+id/linearLayout7864"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:layout_gravity="right"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="5dp"
-                                android:text="@string/button_color"
-                                android:textColor="?attr/buttonTextColor"
-                                android:textSize="10dp" />
-                        </LinearLayout>
-                    </RelativeLayout>
+                                android:gravity="center_vertical"
+                                android:orientation="vertical">
 
-                    <SeekBar
-                        android:id="@+id/switch_dimmer"
-                        android:layout_width="129dp"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/RelativeLayoutContentWrapper"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="bottom"
-                        android:paddingTop="15dp" />
-                </RelativeLayout>
+                                <LinearLayout
+                                    android:id="@+id/linearLayoutt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:id="@+id/switch_button_up"
+                                        android:layout_width="25dp"
+                                        android:layout_height="25dp"
+                                        android:layout_margin="7dp"
+                                        android:layout_marginTop="10dp"
+                                        android:src="@drawable/baseline_keyboard_arrow_up_black_24"
+                                        android:tint="@color/primary" />
+
+                                    <ImageView
+                                        android:id="@+id/switch_button_stop"
+                                        android:layout_width="25dp"
+                                        android:layout_height="25dp"
+                                        android:layout_margin="7dp"
+                                        android:layout_marginTop="10dp"
+                                        android:src="@drawable/baseline_stop_black_24"
+                                        android:tint="@color/primary" />
+
+                                    <ImageView
+                                        android:id="@+id/switch_button_down"
+                                        android:layout_width="25dp"
+                                        android:layout_height="25dp"
+                                        android:layout_margin="7dp"
+                                        android:layout_marginTop="10dp"
+                                        android:src="@drawable/baseline_keyboard_arrow_down_black_24"
+                                        android:tint="@color/primary" />
+
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/switch_dimmer_level"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="22dp"
+                                    android:layout_gravity="right"
+                                    android:layout_marginRight="6dp"
+                                    android:text="55%" />
+
+                                <Spinner
+                                    android:id="@+id/spSelector"
+                                    android:layout_width="129dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="bottom"
+                                    android:minWidth="150dp" />
+
+                                <LinearLayout
+                                    android:id="@+id/linearLayout44"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal">
+
+                                    <az.plainpie.PieView xmlns:plainpie="http://schemas.android.com/apk/res-auto"
+                                        android:id="@+id/pieView"
+                                        android:layout_width="72dp"
+                                        android:layout_height="73dp"
+                                        android:visibility="gone"
+                                        plainpie:inner_pie_padding="10"
+                                        plainpie:inner_text_visibility="true"
+                                        plainpie:percentage="75"
+                                        plainpie:percentage_size="15" />
+
+                                    <com.google.android.material.button.MaterialButton
+                                        android:id="@+id/on_button"
+                                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                        android:layout_width="60dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_centerVertical="true"
+                                        android:text="@string/button_state_on"
+                                        android:textColor="?attr/buttonTextColor"
+                                        android:textSize="10dp" />
+
+                                    <com.google.android.material.button.MaterialButton
+                                        android:id="@+id/off_button"
+                                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                        android:layout_width="60dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="7dp"
+                                        android:layout_weight="1"
+                                        android:text="@string/button_state_off"
+                                        android:textColor="?attr/buttonTextColor"
+                                        android:textSize="10dp" />
+
+                                    <com.google.android.material.switchmaterial.SwitchMaterial
+                                        android:id="@+id/switch_dimmer_switch"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="right"
+                                        app:useMaterialThemeColors="false" />
+                                </LinearLayout>
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/color_button"
+                                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_gravity="right"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:text="@string/button_color"
+                                    android:textColor="?attr/buttonTextColor"
+                                    android:textSize="10dp" />
+                            </LinearLayout>
+                        </RelativeLayout>
+
+                        <SeekBar
+                            android:id="@+id/switch_dimmer"
+                            android:layout_width="129dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/RelativeLayoutContentWrapper"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="bottom"
+                            android:paddingTop="15dp" />
+                    </RelativeLayout>
+                </LinearLayout>
             </LinearLayout>
+
+            <include layout="@layout/log_timer_button_row_default" />
         </LinearLayout>
 
-        <include layout="@layout/log_timer_button_row_default" />
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/full_screen_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/baseline_fullscreen_white_24"
+            android:tint="@color/md_grey_300" />
+
+    </RelativeLayout>
 
 </com.google.android.material.card.MaterialCardView>

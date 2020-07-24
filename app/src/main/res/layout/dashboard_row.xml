@@ -429,6 +429,16 @@
             <include layout="@layout/log_timer_button_row_default" />
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/full_screen_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/baseline_fullscreen_white_24"
+            android:tint="@color/md_grey_300" />
+
     </RelativeLayout>
 
 </com.google.android.material.card.MaterialCardView>

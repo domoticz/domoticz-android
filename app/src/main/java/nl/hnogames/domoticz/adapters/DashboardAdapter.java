@@ -704,8 +704,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             final String imageUrl = domoticz.getSnapshotUrl(mDeviceInfo.getCameraIdx());
             holder.dummyImg.setVisibility(View.VISIBLE);
             holder.row_wrapper.setBackground(null);
+
             Drawable cache = CameraUtil.getDrawable(imageUrl);
             if (cache == null) {
+                holder.full_screen_icon.setTag(null);
+                holder.full_screen_icon.setVisibility(View.GONE);
                 picasso.load(imageUrl)
                         .noPlaceholder()
                         .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
@@ -713,15 +716,20 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             @Override
                             public void onSuccess() {
                                 CameraUtil.setDrawable(imageUrl, holder.dummyImg.getDrawable());
+                                holder.full_screen_icon.setTag(holder.dummyImg.getDrawable());
+                                holder.full_screen_icon.setVisibility(View.VISIBLE);
                             }
 
                             @Override
                             public void onError(Exception e) {
                                 holder.dummyImg.setVisibility(View.GONE);
                                 holder.row_wrapper.setBackgroundColor(listviewRowBackground);
+                                holder.full_screen_icon.setVisibility(View.GONE);
                             }
                         });
             } else {
+                holder.full_screen_icon.setTag(holder.dummyImg.getDrawable());
+                holder.full_screen_icon.setVisibility(View.VISIBLE);
                 picasso.load(imageUrl)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .noFade()
@@ -731,19 +739,31 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             @Override
                             public void onSuccess() {
                                 CameraUtil.setDrawable(imageUrl, holder.dummyImg.getDrawable());
+                                holder.full_screen_icon.setTag(holder.dummyImg.getDrawable());
+                                holder.full_screen_icon.setVisibility(View.VISIBLE);
                             }
 
                             @Override
                             public void onError(Exception e) {
                                 holder.dummyImg.setVisibility(View.GONE);
                                 holder.row_wrapper.setBackgroundColor(listviewRowBackground);
+                                holder.full_screen_icon.setVisibility(View.GONE);
                             }
                         });
             }
         } else {
             holder.dummyImg.setVisibility(View.GONE);
             holder.row_wrapper.setBackgroundColor(listviewRowBackground);
+            holder.full_screen_icon.setVisibility(View.GONE);
         }
+
+        holder.full_screen_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(v.getTag() != null)
+                    listener.onCameraFullScreenClick((Drawable)v.getTag());
+            }
+        });
     }
 
     /**
@@ -759,7 +779,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         holder.isProtected = mDeviceInfo.isProtected();
         if (holder.switch_name != null)
             holder.switch_name.setText(mDeviceInfo.getName());
-
         if (holder.signal_level != null) {
             text = context.getString(R.string.last_update)
                     + ": "
@@ -2135,7 +2154,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         LinearLayout extraPanel, clockLayoutWrapper, row_wrapper;
         RelativeLayout details;
         PieView pieView;
-        ImageView infoIcon;
+        ImageView infoIcon, full_screen_icon;
         ClockImageView clock, sunrise, sunset;
         LinearLayout clockLayout, sunriseLayout, sunsetLayout;
         TextView clockText, sunriseText, sunsetText;
@@ -2165,6 +2184,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             buttonStop = itemView.findViewById(R.id.switch_button_stop);
             buttonDown = itemView.findViewById(R.id.switch_button_down);
             buttonSet = itemView.findViewById(R.id.set_button);
+            full_screen_icon = itemView.findViewById(R.id.full_screen_icon);
 
             row_wrapper = itemView.findViewById(R.id.row_wrapper);
             clockLayoutWrapper = itemView.findViewById(R.id.clockLayoutWrapper);

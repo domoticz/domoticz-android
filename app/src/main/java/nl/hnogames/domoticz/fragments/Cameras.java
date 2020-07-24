@@ -60,6 +60,7 @@ import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
+import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -114,17 +115,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         new GetCachedDataTask().execute();
     }
 
-    private void processImage(Bitmap savePic, String title) {
-        File dir = StaticHelper.getDomoticz(context).saveSnapShot(savePic, title);
-        if (dir != null) {
-            Intent intent = new Intent(context, CameraActivity.class);
-            //noinspection SpellCheckingInspection
-            intent.putExtra("IMAGETITLE", title);
-            //noinspection SpellCheckingInspection
-            intent.putExtra("IMAGEURL", dir.getPath());
-            startActivity(intent);
-        }
-    }
+
 
     @Override
     public void onAttach(Context context) {
@@ -189,9 +180,9 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                                 if (!PermissionsUtil.canAccessStorage(context)) {
                                     permissionFragmentHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                                 } else
-                                    processImage(savePic, cameraTitle.getText().toString());
+                                    CameraUtil.ProcessImage(context, savePic, cameraTitle.getText().toString());
                             } else {
-                                processImage(savePic, cameraTitle.getText().toString());
+                                CameraUtil.ProcessImage(context, savePic, cameraTitle.getText().toString());
                             }
                         } catch (Exception ex) {
                             errorHandling(ex, frameLayout);

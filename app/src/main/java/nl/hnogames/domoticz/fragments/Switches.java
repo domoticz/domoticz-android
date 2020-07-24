@@ -23,8 +23,13 @@ package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -37,14 +42,19 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.fastaccess.permission.base.PermissionFragmentHelper;
+import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.google.android.material.snackbar.Snackbar;
 import com.skydoves.colorpickerview.ColorEnvelope;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
@@ -65,6 +75,8 @@ import nl.hnogames.domoticz.ui.SwitchInfoDialog;
 import nl.hnogames.domoticz.ui.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.ui.SwitchTimerInfoDialog;
 import nl.hnogames.domoticz.ui.WWColorPickerDialog;
+import nl.hnogames.domoticz.utils.CameraUtil;
+import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.WidgetUtils;
@@ -82,7 +94,7 @@ import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Switches extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
-        switchesClickListener {
+        switchesClickListener, OnPermissionCallback {
 
     @SuppressWarnings("unused")
     private static final String TAG = Switches.class.getSimpleName();
@@ -97,6 +109,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     private Animation animShow, animHide;
     private SlideInBottomAnimationAdapter alphaSlideIn;
     private ItemTouchHelper mItemTouchHelper;
+    private PermissionFragmentHelper permissionFragmentHelper;
 
     @Override
     public void onConnectionFailed() {
@@ -119,6 +132,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         mContext = context;
         initAnimation();
         setActionbar(getString(R.string.title_switches));
+        permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
         setSortFab(true);
     }
 
@@ -769,6 +783,31 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         return true;
     }
 
+    @Override
+    public void onCameraFullScreenClick(Drawable drawable) {
+        if (mPhoneConnectionUtil.isNetworkAvailable()) {
+            try {
+                Bitmap savePic = ((BitmapDrawable) drawable).getBitmap();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (!PermissionsUtil.canAccessStorage(mContext)) {
+                        permissionFragmentHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                    } else
+                        CameraUtil.ProcessImage(mContext, savePic, "");
+                } else {
+                    CameraUtil.ProcessImage(mContext, savePic, "");
+                }
+            } catch (Exception ex) {
+                errorHandling(ex);
+            }
+        } else {
+            if (frameLayout != null) {
+                UsefulBits.showSnackbar(getContext(), frameLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+                if (getActivity() instanceof MainActivity)
+                    ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
+            }
+        }
+    }
+
     private void setState(final int idx, int state, final String password) {
         StaticHelper.getDomoticz(mContext).setModalAction(idx,
                 state,
@@ -1150,6 +1189,58 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 super.errorHandling(error);
             }
         }
+    }
+
+    @Override
+    public void onPermissionDeclined(@NonNull String[] permissionName) {
+        Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
+        String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_STORAGE_PERMS);
+        StringBuilder builder = new StringBuilder(neededPermission.length);
+        if (neededPermission.length > 0) {
+            for (String permission : neededPermission) {
+                builder.append(permission).append("\n");
+            }
+        }
+        AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
+                getActivity().getString(R.string.permission_desc_storage), neededPermission);
+        if (!alert.isShowing()) {
+            alert.show();
+        }
+    }
+
+    @Override
+    public void onPermissionPreGranted(@NonNull String permissionsName) {
+        Log.i("onPermissionPreGranted", "Permission( " + permissionsName + " ) preGranted");
+    }
+
+    @Override
+    public void onPermissionNeedExplanation(@NonNull String permissionName) {
+        Log.i("NeedExplanation", "Permission( " + permissionName + " ) needs Explanation");
+    }
+
+    @Override
+    public void onPermissionReallyDeclined(@NonNull String permissionName) {
+        Log.i("ReallyDeclined", "Permission " + permissionName + " can only be granted from settingsScreen");
+    }
+
+    @Override
+    public void onNoPermissionNeeded() {
+        Log.i("onNoPermissionNeeded", "Permission(s) not needed");
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        permissionFragmentHelper.onActivityForResult(requestCode);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        permissionFragmentHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onPermissionGranted(@NonNull String[] permissionName) {
+        Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
     }
 
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
