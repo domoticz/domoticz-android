@@ -96,7 +96,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     private Picasso picasso;
     private ItemFilter mFilter = new ItemFilter();
     private Domoticz domoticz;
-    @ColorInt private int listviewRowBackground;
+    @ColorInt
+    private int listviewRowBackground;
 
 
     public SwitchesAdapter(Context context,
@@ -411,10 +412,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         SetCameraBackGround(mDeviceInfo, holder);
     }
 
-    private void SetCameraBackGround(DevicesInfo mDeviceInfo, final SwitchesAdapter.DataObjectHolder holder)
-    {
-        if(mSharedPrefs.addCameraToDashboard() && mDeviceInfo.getUsedByCamera() && mDeviceInfo.getCameraIdx() >= 0)
-        {
+    private void SetCameraBackGround(DevicesInfo mDeviceInfo, final SwitchesAdapter.DataObjectHolder holder) {
+        if (mSharedPrefs.addCameraToDashboard() && mDeviceInfo.getUsedByCamera() && mDeviceInfo.getCameraIdx() >= 0) {
             final String imageUrl = domoticz.getSnapshotUrl(mDeviceInfo.getCameraIdx());
             holder.dummyImg.setVisibility(View.VISIBLE);
             holder.row_wrapper.setBackground(null);
@@ -454,8 +453,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                             }
                         });
             }
-        }
-        else {
+        } else {
             holder.dummyImg.setVisibility(View.GONE);
             holder.row_wrapper.setBackgroundColor(listviewRowBackground);
         }

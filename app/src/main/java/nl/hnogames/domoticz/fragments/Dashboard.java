@@ -526,8 +526,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         UsefulBits.showSnackbar(mContext, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                         if (getActivity() instanceof MainActivity)
                             ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                    } else
-                    {
+                    } else {
                         UsefulBits.showSnackbar(mContext, frameLayout, R.string.security_no_rights, Snackbar.LENGTH_SHORT);
                         if (getActivity() instanceof MainActivity)
                             ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
@@ -632,8 +631,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     UsefulBits.showSnackbar(mContext, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                     if (getActivity() instanceof MainActivity)
                         ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                } else
-                {
+                } else {
                     UsefulBits.showSnackbar(mContext, frameLayout, R.string.security_no_rights, Snackbar.LENGTH_SHORT);
                     if (getActivity() instanceof MainActivity)
                         ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
@@ -941,9 +939,9 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
                                         @Override
                                         public void onError(Exception error) {
-                                                UsefulBits.showSnackbar(mContext, frameLayout, R.string.security_no_rights, Snackbar.LENGTH_SHORT);
-                                                if (getActivity() instanceof MainActivity)
-                                                    ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+                                            UsefulBits.showSnackbar(mContext, frameLayout, R.string.security_no_rights, Snackbar.LENGTH_SHORT);
+                                            if (getActivity() instanceof MainActivity)
+                                                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
                                         }
                                     });
                         }
@@ -1059,8 +1057,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                                 public void onCancel() {
                                 }
                             });
-                        }  else
-                        {
+                        } else {
                             UsefulBits.showSnackbar(mContext, frameLayout, R.string.security_no_rights, Snackbar.LENGTH_SHORT);
                             if (getActivity() instanceof MainActivity)
                                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
@@ -1129,8 +1126,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                             UsefulBits.showSnackbar(mContext, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                             if (getActivity() instanceof MainActivity)
                                 ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                        }  else
-                        {
+                        } else {
                             UsefulBits.showSnackbar(mContext, frameLayout, R.string.security_no_rights, Snackbar.LENGTH_SHORT);
                             if (getActivity() instanceof MainActivity)
                                 ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
@@ -1229,8 +1225,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     UsefulBits.showSnackbar(mContext, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                     if (getActivity() instanceof MainActivity)
                         ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                }  else
-                {
+                } else {
                     UsefulBits.showSnackbar(mContext, frameLayout, R.string.security_no_rights, Snackbar.LENGTH_SHORT);
                     if (getActivity() instanceof MainActivity)
                         ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
@@ -1323,8 +1318,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         UsefulBits.showSnackbar(mContext, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
                         if (getActivity() instanceof MainActivity)
                             ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
-                    }  else
-                    {
+                    } else {
                         UsefulBits.showSnackbar(mContext, frameLayout, R.string.security_no_rights, Snackbar.LENGTH_SHORT);
                         if (getActivity() instanceof MainActivity)
                             ((MainActivity) getActivity()).Talk(R.string.security_no_rights);

@@ -751,7 +751,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                             permissionHelper.request(PermissionsUtil.INITIAL_FINGERPRINT_PERMS);
                         } else {
                             BiometricManager biometricManager = BiometricManager.from(mContext);
-                            if (biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS){
+                            if (biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS) {
                                 new MaterialDialog.Builder(mContext)
                                         .title(R.string.category_startup_security)
                                         .content(R.string.fingerprint_sure)
@@ -767,8 +767,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                                         })
                                         .show();
                                 return false;
-                            }
-                            else {
+                            } else {
 
                                 UsefulBits.showSimpleToast(mContext, getString(R.string.fingerprint_not_setup_in_android), Toast.LENGTH_LONG);
                             }

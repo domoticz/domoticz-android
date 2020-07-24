@@ -136,16 +136,16 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
                     picasso.load(imageUrl)
                             .placeholder(R.drawable.placeholder)
                             .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
-                        .into(holder.camera, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            CameraUtil.setDrawable(imageUrl, holder.camera.getDrawable());
-                        }
+                            .into(holder.camera, new Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    CameraUtil.setDrawable(imageUrl, holder.camera.getDrawable());
+                                }
 
-                        @Override
-                        public void onError(Exception e) {
-                        }
-                    });
+                                @Override
+                                public void onError(Exception e) {
+                                }
+                            });
                 } else
                     picasso.load(imageUrl)
                             .memoryPolicy(MemoryPolicy.NO_CACHE)

@@ -100,9 +100,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     private ItemFilter mFilter = new ItemFilter();
     private SunRiseInfo sunriseInfo;
     private Domoticz domoticz;
-    @ColorInt private int listviewRowBackground;
+    @ColorInt
+    private int listviewRowBackground;
 
     private Picasso picasso;
+
     public DashboardAdapter(Context context,
                             ServerUtil serverUtil,
                             ArrayList<DevicesInfo> data,
@@ -697,10 +699,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
     }
 
-    private void SetCameraBackGround(DevicesInfo mDeviceInfo, final DataObjectHolder holder)
-    {
-        if(mSharedPrefs.addCameraToDashboard() && mDeviceInfo.getUsedByCamera() && mDeviceInfo.getCameraIdx() >= 0)
-        {
+    private void SetCameraBackGround(DevicesInfo mDeviceInfo, final DataObjectHolder holder) {
+        if (mSharedPrefs.addCameraToDashboard() && mDeviceInfo.getUsedByCamera() && mDeviceInfo.getCameraIdx() >= 0) {
             final String imageUrl = domoticz.getSnapshotUrl(mDeviceInfo.getCameraIdx());
             holder.dummyImg.setVisibility(View.VISIBLE);
             holder.row_wrapper.setBackground(null);
@@ -740,8 +740,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             }
                         });
             }
-        }
-        else {
+        } else {
             holder.dummyImg.setVisibility(View.GONE);
             holder.row_wrapper.setBackgroundColor(listviewRowBackground);
         }
