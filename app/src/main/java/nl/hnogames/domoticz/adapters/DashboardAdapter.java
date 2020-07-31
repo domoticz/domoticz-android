@@ -102,7 +102,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     private Domoticz domoticz;
     @ColorInt
     private int listviewRowBackground;
-
     private Picasso picasso;
 
     public DashboardAdapter(Context context,
@@ -706,8 +705,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.row_wrapper.setBackground(null);
 
             Drawable cache = CameraUtil.getDrawable(imageUrl);
+            holder.full_screen_icon.setTag(mDeviceInfo.getCameraIdx());
             if (cache == null) {
-                holder.full_screen_icon.setTag(null);
                 holder.full_screen_icon.setVisibility(View.GONE);
                 picasso.load(imageUrl)
                         .noPlaceholder()
@@ -716,7 +715,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             @Override
                             public void onSuccess() {
                                 CameraUtil.setDrawable(imageUrl, holder.dummyImg.getDrawable());
-                                holder.full_screen_icon.setTag(holder.dummyImg.getDrawable());
                                 holder.full_screen_icon.setVisibility(View.VISIBLE);
                             }
 
@@ -728,7 +726,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             }
                         });
             } else {
-                holder.full_screen_icon.setTag(holder.dummyImg.getDrawable());
                 holder.full_screen_icon.setVisibility(View.VISIBLE);
                 picasso.load(imageUrl)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -739,7 +736,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             @Override
                             public void onSuccess() {
                                 CameraUtil.setDrawable(imageUrl, holder.dummyImg.getDrawable());
-                                holder.full_screen_icon.setTag(holder.dummyImg.getDrawable());
                                 holder.full_screen_icon.setVisibility(View.VISIBLE);
                             }
 
@@ -760,8 +756,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         holder.full_screen_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v.getTag() != null)
-                    listener.onCameraFullScreenClick((Drawable)v.getTag());
+                if (v.getTag() != null)
+                    listener.onCameraFullScreenClick((int) v.getTag(), "Snapshot");
             }
         });
     }

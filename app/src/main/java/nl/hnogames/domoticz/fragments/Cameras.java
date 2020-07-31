@@ -23,23 +23,16 @@ package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
-import com.google.android.material.snackbar.Snackbar;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -52,8 +45,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.CameraActivity;
-import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.CamerasAdapter;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
@@ -64,7 +55,6 @@ import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
@@ -116,7 +106,6 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     }
 
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -153,7 +142,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         getCameras();
     }
 
-    private void createListView(ArrayList<CameraInfo> Cameras) {
+    private void createListView(final ArrayList<CameraInfo> Cameras) {
         if (getView() == null)
             return;
 
@@ -170,30 +159,8 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             mAdapter.setOnItemClickListener(new CamerasAdapter.onClickListener() {
                 @Override
                 public void onItemClick(int position, View v) {
-                    if (mPhoneConnectionUtil.isNetworkAvailable()) {
-                        try {
-                            ImageView cameraImage = v.findViewById(R.id.image);
-                            TextView cameraTitle = v.findViewById(R.id.name);
-                            Bitmap savePic = ((BitmapDrawable) cameraImage.getDrawable()).getBitmap();
-
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                if (!PermissionsUtil.canAccessStorage(context)) {
-                                    permissionFragmentHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
-                                } else
-                                    CameraUtil.ProcessImage(context, savePic, cameraTitle.getText().toString());
-                            } else {
-                                CameraUtil.ProcessImage(context, savePic, cameraTitle.getText().toString());
-                            }
-                        } catch (Exception ex) {
-                            errorHandling(ex, frameLayout);
-                        }
-                    } else {
-                        if (frameLayout != null) {
-                            UsefulBits.showSnackbar(getContext(), frameLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
-                            if (getActivity() instanceof MainActivity)
-                                ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
-                        }
-                    }
+                    CameraInfo camera = Cameras.get(position);
+                    CameraUtil.ProcessImage(context, camera.getIdx(), camera.getName());
                 }
             });
             alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);

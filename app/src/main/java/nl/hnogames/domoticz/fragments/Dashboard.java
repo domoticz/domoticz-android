@@ -24,20 +24,14 @@ package nl.hnogames.domoticz.fragments;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -88,7 +82,6 @@ import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SunRiseReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
-
 
 public class Dashboard extends DomoticzDashboardFragment implements DomoticzFragmentListener,
         switchesClickListener, OnPermissionCallback {
@@ -1121,28 +1114,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     }
 
     @Override
-    public void onCameraFullScreenClick(Drawable drawable) {
-        if (mPhoneConnectionUtil.isNetworkAvailable()) {
-            try {
-                Bitmap savePic = ((BitmapDrawable) drawable).getBitmap();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!PermissionsUtil.canAccessStorage(mContext)) {
-                        permissionFragmentHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
-                    } else
-                        CameraUtil.ProcessImage(mContext, savePic, "");
-                } else {
-                    CameraUtil.ProcessImage(mContext, savePic, "");
-                }
-            } catch (Exception ex) {
-                errorHandling(ex);
-            }
-        } else {
-            if (frameLayout != null) {
-                UsefulBits.showSnackbar(getContext(), frameLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
-                if (getActivity() instanceof MainActivity)
-                    ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
-            }
-        }
+    public void onCameraFullScreenClick(int idx, String name) {
+        CameraUtil.ProcessImage(mContext, idx, name);
     }
 
     private void setState(final int idx, int state, final String password) {

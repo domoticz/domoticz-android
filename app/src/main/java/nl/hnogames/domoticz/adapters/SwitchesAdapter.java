@@ -417,10 +417,10 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             final String imageUrl = domoticz.getSnapshotUrl(mDeviceInfo.getCameraIdx());
             holder.dummyImg.setVisibility(View.VISIBLE);
             holder.row_wrapper.setBackground(null);
+            holder.full_screen_icon.setTag(mDeviceInfo.getCameraIdx());
 
             Drawable cache = CameraUtil.getDrawable(imageUrl);
             if (cache == null) {
-                holder.full_screen_icon.setTag(null);
                 holder.full_screen_icon.setVisibility(View.GONE);
                 picasso.load(imageUrl)
                         .noPlaceholder()
@@ -429,7 +429,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                             @Override
                             public void onSuccess() {
                                 CameraUtil.setDrawable(imageUrl, holder.dummyImg.getDrawable());
-                                holder.full_screen_icon.setTag(holder.dummyImg.getDrawable());
                                 holder.full_screen_icon.setVisibility(View.VISIBLE);
                             }
 
@@ -441,7 +440,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                             }
                         });
             } else {
-                holder.full_screen_icon.setTag(holder.dummyImg.getDrawable());
                 holder.full_screen_icon.setVisibility(View.VISIBLE);
                 picasso.load(imageUrl)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -452,7 +450,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                             @Override
                             public void onSuccess() {
                                 CameraUtil.setDrawable(imageUrl, holder.dummyImg.getDrawable());
-                                holder.full_screen_icon.setTag(holder.dummyImg.getDrawable());
                                 holder.full_screen_icon.setVisibility(View.VISIBLE);
                             }
 
@@ -473,8 +470,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         holder.full_screen_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v.getTag() != null)
-                    listener.onCameraFullScreenClick((Drawable)v.getTag());
+                if (v.getTag() != null)
+                    listener.onCameraFullScreenClick((int) v.getTag(), "Snapshot");
             }
         });
     }
