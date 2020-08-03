@@ -116,6 +116,7 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
                 .addFlavor(getString(R.string.theme_pink), R.style.AppThemeAlt2Main)
                 .addFlavor(getString(R.string.theme_blue), R.style.AppThemeAlt3Main)
                 .addFlavor(getString(R.string.theme_green), R.style.AppThemeAlt4Main)
+                .addFlavor(getString(R.string.theme_dark_blue), R.style.AppThemeAlt5Main)
                 .setSharedPreferences(PreferenceManager.getDefaultSharedPreferences(this))
                 .initialize();
 

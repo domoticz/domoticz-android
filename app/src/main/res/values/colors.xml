@@ -34,6 +34,12 @@
     <color name="alt1_dark">#1B1C22</color>
     <color name="alt1_accent">#FB8C00</color>
 
+    <color name="alt5">#0094AE</color>
+    <color name="alt560">#a01B2120</color>
+    <color name="alt5_dark">#2C3534</color>
+    <color name="alt5_dark2">#1B2120</color>
+    <color name="alt5_accent">#0094AE</color>
+
     <color name="alt2">#253240</color>
     <color name="alt260">#a0253240</color>
     <color name="alt2_dark">#1D2733</color>

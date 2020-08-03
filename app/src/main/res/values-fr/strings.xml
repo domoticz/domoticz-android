@@ -27,12 +27,12 @@
     <string name="drawer_open">Ouvrir le menu</string>
     <string name="drawer_close">Fermer le menu</string>
     <string name="msg_please_wait">Patientez&#8230;</string>
-    <string name="changelog">Nouveautés</string>
+    <string name="changelog">Journal des changements </string>
     <string name="button_state_on">On</string>
     <string name="button_state_off">Off</string>
     <string name="button_state_closed">Fermé</string>
     <string name="button_state_open">Ouvert</string>
-    <string name="button_state_lock">Verrouiller</string>
+    <string name="button_state_lock">Verrouiller </string>
     <string name="button_state_unlock">Déverrouiller</string>
     <string name="button_status_log">Log</string>
     <string name="button_status_day">Jour</string>
@@ -64,9 +64,9 @@
     <string name="status">Statut</string>
     <string name="switch_rgb_wwcolor">Couleur RVB ou blanc chaud</string>
     <string name="set_point">Définir un point</string>
-    <string name="set_point_min">Configurez la valeur mini</string>
+    <string name="set_point_min">Définir la valeur minimale du point </string>
     <string name="set_point_min_description">Température minimum configurable sur votre thermostat</string>
-    <string name="set_point_max">Configurez la valeur max</string>
+    <string name="set_point_max">Définir la valeur maximale du point </string>
     <string name="set_point_max_description">Température maximum configurable sur votre thermostat</string>
     <string name="action_success">Action succes</string>
     <string name="action_failed">Action échec</string>
@@ -98,11 +98,11 @@
     <string name="retry">Réessayer</string>
     <string name="undo">Annuler</string>
     <string name="something_deleted">%1$s supprimé</string>
-    <string name="remove_last_server">You can\'t remove the last server in the list.</string>
+    <string name="remove_last_server">Vous ne pouvez pas supprimer le dernier serveur de la liste. </string>
     <string name="switch_on">Allumer</string>
     <string name="switch_off">Éteindre</string>
     <string name="switch_night">Basculer vers la lumière nocturne</string>
-    <string name="switch_full">Basculer vers la lumière maximale</string>
+    <string name="switch_full">Allumer en pleine lumière</string>
     <string name="switch_connection_removed">Liaison à l\'interrupteur supprimée.</string>
     <string name="blind_up">Ouvrir les stores</string>
     <string name="blind_down">Fermer les stores</string>
@@ -135,8 +135,8 @@
     <string name="auto_refresh_time">Intervalle d\'actualisation</string>
     <string name="set_auto_refresh_time">Définir un intervalle de temps en secondes pour l\'actualisation automatique</string>
     <string name="error_authentication_basicauth">IMPORTANT : Veuillez vérifier si votre système Domoticz utilise la page de connexion comme méthode d\'authentification. L\'authentification basique va être retirée de Domoticz lors de la prochaine mise à jour !</string>
-    <string name="category_other">Other</string>
-    <string name="tasker_title">Setup automation rules with Tasker for Domoticz</string>
+    <string name="category_other">Autre</string>
+    <string name="tasker_title">Configurer les règles d\'automatisation avec Tasker pour Domoticz</string>
     <string name="category_tasker">Tasker</string>
-    <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
+    <string name="wizard_widgets_tasker">Configurer les règles d\'automatisation avec Tasker pour Domoticz</string>
 </resources>
