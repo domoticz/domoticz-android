@@ -113,7 +113,7 @@ public class CameraActivity extends AppCompatAssistActivity {
                                 }
                             });
                         }
-                    }, 0, 2000);//schedule in 2 seconds
+                    }, 0, 1000);//schedule in 2 seconds
                 }
                 invalidateOptionsMenu();//set pause button
                 return true;

@@ -29,6 +29,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -40,18 +41,23 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.provider.Settings;
+import android.text.InputType;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.codekidlabs.storagechooser.StorageChooser;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.biometric.BiometricManager;
 import androidx.core.content.ContextCompat;
@@ -77,6 +83,7 @@ import nl.hnogames.domoticz.SpeechSettingsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.ui.SimpleTextDialog;
+import nl.hnogames.domoticz.utils.GeoUtils;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -96,7 +103,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     @SuppressWarnings("FieldCanBeLocal")
     private final String TAG_EXPORT = "Export Settings";
     private SharedPrefUtil mSharedPrefs;
-    private File SettingsFile;
     private Context mContext;
     private ConfigInfo mConfigInfo;
     private PermissionHelper permissionHelper;
@@ -137,12 +143,54 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         UsefulBits.checkAPK(mContext, mSharedPrefs);
 
+        SetStorageTheme();
         setIconColor();
         setPreferences();
         setStartUpScreenDefaultValue();
         handleImportExportButtons();
         handleInfoAndAbout();
         GetVersion();
+    }
+
+    private StorageChooser.Theme theme;
+    private void SetStorageTheme() {
+        theme = new StorageChooser.Theme(mContext);
+        int[] scheme = new int[16];
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme currentTheme = mContext.getTheme();
+        currentTheme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        scheme[0] = typedValue.data;// header background
+        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
+        scheme[1] = typedValue.data;// header text
+        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
+        scheme[2] = typedValue.data;//list bg
+        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
+        scheme[3] = typedValue.data;//storage list name text
+        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
+        scheme[4] = typedValue.data;//free space text
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[5] = typedValue.data;//memory bar
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[6] = typedValue.data;//folder tint
+        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
+        scheme[7] = typedValue.data;// list bg
+        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
+        scheme[8] = typedValue.data;//list text
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[9] = typedValue.data;//address bar tint
+        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
+        scheme[10] = typedValue.data;//folder hint tint
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[11] = typedValue.data;//elect button color
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[12] = typedValue.data;//select button color
+        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
+        scheme[13] = typedValue.data;//new folder layour bg
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[14] = typedValue.data;//fab multiselect color
+        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
+        scheme[15] = typedValue.data;//address bar bg
+        theme.setScheme(scheme);
     }
 
     private void setIconColor() {
@@ -863,14 +911,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void handleImportExportButtons() {
-        SettingsFile = new File(Environment.getExternalStorageDirectory(),
-                "/Domoticz/DomoticzSettings.txt");
-
-        final String sPath = SettingsFile.getPath().
-                substring(0, SettingsFile.getPath().lastIndexOf("/"));
-        //noinspection unused
-        boolean mkdirsResultIsOk = new File(sPath + "/").mkdirs();
-
         androidx.preference.Preference exportButton = findPreference("export_settings");
         if (exportButton != null)
             exportButton.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
@@ -906,20 +946,58 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void importSettings() {
-        Log.v(TAG_IMPORT, "Importing settings from: " + SettingsFile.getPath());
-        if (mSharedPrefs.loadSharedPreferencesFromFile(SettingsFile)) {
-            ((SettingsActivity) getActivity()).reloadSettings();
-            showSnackbar(mContext.getString(R.string.settings_imported));
-        } else
-            showSnackbar(mContext.getString(R.string.settings_import_failed));
+        StorageChooser chooser = new StorageChooser.Builder()
+                .withActivity(getActivity())
+                .withFragmentManager(getActivity().getFragmentManager())
+                .withMemoryBar(false)
+                .allowCustomPath(true)
+                .setType(StorageChooser.FILE_PICKER)
+                .setTheme(theme)
+                .build();
+        chooser.show();
+        chooser.setOnSelectListener(new StorageChooser.OnSelectListener() {
+            @Override
+            public void onSelect(String path) {
+                Log.v(TAG_IMPORT, "Importing settings from: " + path);
+                if (mSharedPrefs.loadSharedPreferencesFromFile(new File(path))) {
+                    ((SettingsActivity) getActivity()).reloadSettings();
+                    showSnackbar(mContext.getString(R.string.settings_imported));
+                } else
+                    showSnackbar(mContext.getString(R.string.settings_import_failed));
+            }
+        });
     }
 
     private void exportSettings() {
-        Log.v(TAG_EXPORT, "Exporting settings to: " + SettingsFile.getPath());
-        if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
-            showSnackbar(mContext.getString(R.string.settings_exported));
-        else
-            showSnackbar(mContext.getString(R.string.settings_export_failed));
+        StorageChooser chooser = new StorageChooser.Builder()
+                .withActivity(getActivity())
+                .withFragmentManager(getActivity().getFragmentManager())
+                .allowAddFolder(true)
+                .withMemoryBar(false)
+                .allowCustomPath(true)
+                .setType(StorageChooser.DIRECTORY_CHOOSER)
+                .setTheme(theme)
+                .build();
+        chooser.show();
+        chooser.setOnSelectListener(new StorageChooser.OnSelectListener() {
+            @Override
+            public void onSelect(final String path) {
+                new MaterialDialog.Builder(mContext)
+                        .title(R.string.save_as)
+                        .content(R.string.filename)
+                        .inputType(InputType.TYPE_CLASS_TEXT)
+                        .input("settings.txt", "settings.txt", new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                File newFile = new File(path, "/" + String.valueOf(input));
+                                if (mSharedPrefs.saveSharedPreferencesToFile(newFile))
+                                    showSnackbar(mContext.getString(R.string.settings_exported));
+                                else
+                                    showSnackbar(mContext.getString(R.string.settings_export_failed));
+                            }
+                        }).show();
+            }
+        });
     }
 
     private void setStartUpScreenDefaultValue() {

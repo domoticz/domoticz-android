@@ -27,6 +27,9 @@
     <string name="longitude">Longitude</string>
     <string name="latitude">Latitude</string>
     <string name="radius">Radius (meter)</string>
+    <string name="save_as">Save as</string>
+    <string name="filename">Filename</string>
+
     <string name="connectedSwitch">Connected switch</string>
     <string name="unable_to_get_switches">Unable to get all switches, please try again</string>
     <string name="delete_short">DEL</string>
