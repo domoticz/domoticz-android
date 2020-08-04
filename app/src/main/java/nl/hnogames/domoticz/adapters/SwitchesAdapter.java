@@ -418,10 +418,9 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             holder.dummyImg.setVisibility(View.VISIBLE);
             holder.row_wrapper.setBackground(null);
             holder.full_screen_icon.setTag(mDeviceInfo.getCameraIdx());
-
+            holder.full_screen_icon.setVisibility(View.GONE);
             Drawable cache = CameraUtil.getDrawable(imageUrl);
             if (cache == null) {
-                holder.full_screen_icon.setVisibility(View.GONE);
                 picasso.load(imageUrl)
                         .noPlaceholder()
                         .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
@@ -440,7 +439,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                             }
                         });
             } else {
-                holder.full_screen_icon.setVisibility(View.VISIBLE);
                 picasso.load(imageUrl)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .noFade()

@@ -706,8 +706,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
             Drawable cache = CameraUtil.getDrawable(imageUrl);
             holder.full_screen_icon.setTag(mDeviceInfo.getCameraIdx());
+            holder.full_screen_icon.setVisibility(View.GONE);
             if (cache == null) {
-                holder.full_screen_icon.setVisibility(View.GONE);
                 picasso.load(imageUrl)
                         .noPlaceholder()
                         .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
@@ -726,7 +726,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             }
                         });
             } else {
-                holder.full_screen_icon.setVisibility(View.VISIBLE);
                 picasso.load(imageUrl)
                         .memoryPolicy(MemoryPolicy.NO_CACHE)
                         .noFade()
