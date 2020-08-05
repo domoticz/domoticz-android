@@ -99,6 +99,7 @@ import nl.hnogames.domoticz.containers.QRCodeInfo;
 import nl.hnogames.domoticz.containers.SpeechInfo;
 import nl.hnogames.domoticz.fragments.Cameras;
 import nl.hnogames.domoticz.fragments.Logs;
+import nl.hnogames.domoticz.fragments.Temperature;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.ui.PasswordDialog;
 import nl.hnogames.domoticz.ui.SortDialog;
@@ -1062,7 +1063,10 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 else
                     getMenuInflater().inflate(R.menu.menu_camera, menu);
             } else if ((f instanceof DomoticzDashboardFragment) || (f instanceof DomoticzRecyclerFragment) || (f instanceof RefreshFragment)) {
-                getMenuInflater().inflate(R.menu.menu_main, menu);
+                if ((f instanceof Temperature))
+                    getMenuInflater().inflate(R.menu.menu_temperature, menu);
+                else
+                    getMenuInflater().inflate(R.menu.menu_main, menu);
 
                 MenuItem searchMenuItem = menu.findItem(R.id.search);
                 searchViewAction = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
@@ -1249,6 +1253,10 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     return true;
                 case R.id.action_switch_server:
                     showServerDialog();
+                    return true;
+                case R.id.action_graph:
+                    Intent tempGraphs = new Intent(this, TempGraphsActivity.class);
+                    startActivity(tempGraphs);
                     return true;
             }
         } catch (Exception ex) {

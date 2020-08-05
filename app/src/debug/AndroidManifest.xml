@@ -278,6 +278,17 @@
         </activity>
 
         <activity
+            android:name="nl.hnogames.domoticz.TempGraphsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/wizard_graph"
+            android:parentActivityName="nl.hnogames.domoticz.MainActivity"
+            android:resizeableActivity="true">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nl.hnogames.domoticz.MainActivity" />
+        </activity>
+
+        <activity
             android:name="nl.hnogames.domoticz.PlanActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/cameraActivity_name"

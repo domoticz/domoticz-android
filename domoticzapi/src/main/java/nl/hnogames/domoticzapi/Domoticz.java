@@ -869,10 +869,29 @@ public class Domoticz {
 
     public void getGraphData(int idx, String range, String type, GraphDataReceiver receiver) {
         GraphDataParser parser = new GraphDataParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.GRAPH) + String.valueOf(idx);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.GRAPH) + idx;
         url += DomoticzValues.Url.Log.GRAPH_RANGE + range;
         url += DomoticzValues.Url.Log.GRAPH_TYPE + type;
         Log.i("GRAPH", "url: " + url);
+        GetResultRequest(parser, url, true);
+    }
+
+    public void getTempGraphData(int idx, String range, int graphType,
+                                 boolean graphTemp, boolean graphChill, boolean graphHum, boolean graphBaro, boolean graphDew, boolean graphSet,
+                                 GraphDataReceiver receiver) {
+        GraphDataParser parser = new GraphDataParser(receiver);
+
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.TEMPGRAPHS) + idx;
+        url += "&range=" + range; //2020-07-29T2020-08-05
+        url += "&graphtype=" + graphType; //1
+        url += "&graphTemp=" + graphTemp; //true
+        url += "&graphChill=" + graphChill; //true
+        url += "&graphHum=" + graphHum; //true
+        url += "&graphBaro=" + graphBaro; //true
+        url += "&graphDew=" + graphDew; //true
+        url += "&graphSet=" + graphSet; //true
+
+        Log.i("GRAPHS", "url: " + url);
         GetResultRequest(parser, url, true);
     }
 

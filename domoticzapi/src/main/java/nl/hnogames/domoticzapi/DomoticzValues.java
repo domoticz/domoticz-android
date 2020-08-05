@@ -299,6 +299,7 @@ public class DomoticzValues {
                 int SUNRISE = 44;
                 int SEND_NOTIFICATION = 50;
                 int NOTIFICATIONTYPES = 51;
+                int TEMPGRAPHS = 52;
             }
 
             @SuppressWarnings("SpellCheckingInspection")
@@ -443,6 +444,7 @@ public class DomoticzValues {
         interface Temp {
             String GET = "/json.htm?type=command&param=udevice&idx=";
             String VALUE = "&nvalue=0&svalue=";
+            String GRAPH = "/json.htm?type=graph&sensor=temp&idx=";
         }
 
         @SuppressWarnings("SpellCheckingInspection")
