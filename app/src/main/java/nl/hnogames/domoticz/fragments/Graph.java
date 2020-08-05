@@ -43,6 +43,7 @@ import androidx.fragment.app.Fragment;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -135,6 +136,10 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         root = inflater.inflate(R.layout.dialog_graph, null);
 
         chart = root.findViewById(R.id.chart);
+        Legend legend = chart.getLegend();
+        legend.setWordWrapEnabled(true);
+        legend.setForm(Legend.LegendForm.CIRCLE);
+
         XAxis xAxis = chart.getXAxis();
         YAxis yAxis = chart.getAxisLeft();
 
@@ -144,9 +149,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         xAxis.setTextColor(typedValue.data);
         yAxis.setTextColor(typedValue.data);
         chart.getLegend().setTextColor(typedValue.data);
-
         chart.setDrawGridBackground(true);
-
         chart.getDescription().setEnabled(false);
         xAxis.setDrawGridLines(false); // no grid lines
         chart.getAxisRight().setEnabled(false); // no right axis
@@ -843,16 +846,13 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
-
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (lineLabels != null && lineLabels.size() > 1) {
+        if (lineLabels != null && lineLabels.size() > 1)
             inflater.inflate(R.menu.menu_graph_sort, menu);
-        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
-
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_sort:

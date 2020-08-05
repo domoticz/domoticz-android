@@ -40,6 +40,7 @@ import androidx.fragment.app.Fragment;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -61,30 +62,25 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.utils.MaterialColorPalette;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.GraphPointInfo;
 import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 import nl.hnogames.domoticzapi.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticzapi.Interfaces.TemperatureReceiver;
 
-
 public class TempGraphs extends Fragment implements DomoticzFragmentListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = TempGraphs.class.getSimpleName();
-
     private Context context;
     private ArrayList<TemperatureInfo> mTempInfos;
     private boolean graphTemp = true, graphChill = false, graphHum = false, graphBaro = false, graphDew = false, graphSet = false;
     private Integer[] selectedDevices;
-    private List<String> filterLabels;
     private HashMap<String, ArrayList<GraphPointInfo>> mGraphList;
     private LineChart chart;
     private View root;
     private Context mContext;
-    private SharedPrefUtil mSharedPrefs;
     private String range = "minutes";
+    private Integer[] selectedFilters;
 
     @Override
     public void onConnectionOk() {}
@@ -93,13 +89,11 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
     public void onConnectionFailed() {}
 
     @Override
-
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
         onAttachFragment(this);
         this.context = context;
-        mSharedPrefs = new SharedPrefUtil(context);
     }
 
     @Override
@@ -109,11 +103,56 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        GetTempDevices();
+    }
 
+    public void GetTypes()
+    {
+        if(selectedFilters == null) {
+            selectedFilters = new Integer[1];
+            selectedFilters[0] = 0;
+        }
+        String[] items = new String[4];
+        items[0]= getString(R.string.temperature);
+        items[1]= getString(R.string.set_point);
+        items[2]= getString(R.string.humidity);
+        items[3]= getString(R.string.barometer);
+        new MaterialDialog.Builder(context)
+                .title(context.getString(R.string.filter))
+                .items(items)
+                .itemsCallbackMultiChoice(selectedFilters, new MaterialDialog.ListCallbackMultiChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                        selectedFilters = which;
+                        if (text != null && text.length > 0) {
+                            graphTemp = false;
+                            for (CharSequence c: text) {
+                                String name = String.valueOf(c);
+                                if(name.equals(getString(R.string.temperature)))
+                                    graphTemp = true;
+                                if(name.equals(getString(R.string.set_point)))
+                                    graphSet = true;
+                                if(name.equals(getString(R.string.humidity)))
+                                    graphHum = true;
+                                if(name.equals(getString(R.string.barometer)))
+                                    graphBaro = true;
+                            }
+                            LoadData();
+                        } else
+                            Toast.makeText(context, context.getString(R.string.filter_graph_empty), Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                })
+                .positiveText(R.string.ok)
+                .negativeText(R.string.cancel)
+                .show();
+    }
+
+    public void GetTempDevices()
+    {
         StaticHelper.getDomoticz(mContext).getTemperatures(new TemperatureReceiver() {
             @Override
             public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
@@ -129,13 +168,9 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                             @Override
                             public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
                                 selectedDevices = which;
-                                mGraphList = new HashMap<>();
-                                if (which != null && which.length > 0) {
-                                    for (int c : which)
-                                        getGraphs(mTempInfos.get(c).getIdx(), mTempInfos.get(c).getName());
-                                } else {
-                                    Toast.makeText(context, context.getString(R.string.filter_graph_empty), Toast.LENGTH_SHORT).show();
-                                }
+                                LoadData();
+                                if(selectedFilters == null)
+                                    GetTypes();
                                 return true;
                             }
                         })
@@ -149,6 +184,17 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
         });
     }
 
+    public void LoadData()
+    {
+        mGraphList = new HashMap<>();
+        if (selectedDevices != null && selectedDevices.length > 0) {
+            for (int c : selectedDevices)
+                getGraphs(mTempInfos.get(c).getIdx(), mTempInfos.get(c).getName());
+        } else {
+            Toast.makeText(context, context.getString(R.string.filter_graph_empty), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @SuppressLint("InflateParams")
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -156,6 +202,9 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.dialog_temp_graphs, null);
         chart = root.findViewById(R.id.chart);
+        Legend legend = chart.getLegend();
+        legend.setWordWrapEnabled(true);
+        legend.setForm(Legend.LegendForm.CIRCLE);
 
         XAxis xAxis = chart.getXAxis();
         YAxis yAxis = chart.getAxisLeft();
@@ -229,13 +278,11 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                             if (columnData != null) {
                                 chart.setData(columnData);
                                 chart.invalidate(); // refresh
-
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         chart.setVisibility(View.VISIBLE);
                                         chart.animateX(1000);
-
                                         if (getActivity() != null)
                                             getActivity().invalidateOptionsMenu();
                                     }
@@ -391,11 +438,22 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            inflater.inflate(R.menu.menu_temp_graph_sort, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_sort:
+                GetTypes();
+                return true;
+            case R.id.action_set_chart_devices:
+                GetTempDevices();
+                return true;
+            default:
+                break;
+        }
         return false;
     }
 }
