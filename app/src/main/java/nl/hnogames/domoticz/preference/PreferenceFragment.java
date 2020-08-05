@@ -37,7 +37,6 @@ import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.provider.Settings;
@@ -47,17 +46,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.codekidlabs.storagechooser.StorageChooser;
-import com.fastaccess.permission.base.PermissionHelper;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.biometric.BiometricManager;
 import androidx.core.content.ContextCompat;
@@ -68,6 +56,16 @@ import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.codekidlabs.storagechooser.StorageChooser;
+import com.fastaccess.permission.base.PermissionHelper;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.io.File;
+import java.util.HashSet;
+
 import nl.hnogames.domoticz.BeaconSettingsActivity;
 import nl.hnogames.domoticz.BluetoothSettingsActivity;
 import nl.hnogames.domoticz.BuildConfig;
@@ -83,7 +81,6 @@ import nl.hnogames.domoticz.SpeechSettingsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.ui.SimpleTextDialog;
-import nl.hnogames.domoticz.utils.GeoUtils;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -106,6 +103,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     private Context mContext;
     private ConfigInfo mConfigInfo;
     private PermissionHelper permissionHelper;
+    private StorageChooser.Theme theme;
 
     private static void tintIcons(Preference preference, int color) {
         if (preference instanceof PreferenceGroup) {
@@ -152,7 +150,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         GetVersion();
     }
 
-    private StorageChooser.Theme theme;
     private void SetStorageTheme() {
         theme = new StorageChooser.Theme(mContext);
         int[] scheme = new int[16];
@@ -989,7 +986,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                         .input("settings.txt", "settings.txt", new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                File newFile = new File(path, "/" + String.valueOf(input));
+                                File newFile = new File(path, "/" + input);
                                 if (mSharedPrefs.saveSharedPreferencesToFile(newFile))
                                     showSnackbar(mContext.getString(R.string.settings_exported));
                                 else

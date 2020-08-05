@@ -350,14 +350,6 @@
                                     android:tint="@color/primary" />
                             </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/switch_dimmer_level"
-                                android:layout_width="wrap_content"
-                                android:layout_height="22dp"
-                                android:layout_gravity="right"
-                                android:layout_marginRight="6dp"
-                                android:text="55%" />
-
                             <Spinner
                                 android:id="@+id/spSelector"
                                 android:layout_width="129dp"
@@ -432,7 +424,7 @@
                         </LinearLayout>
                     </RelativeLayout>
 
-                    <SeekBar
+                    <com.google.android.material.slider.Slider
                         android:id="@+id/switch_dimmer"
                         android:layout_width="129dp"
                         android:layout_height="wrap_content"
@@ -460,6 +452,5 @@
         android:tint="@color/md_grey_300" />
 
     </RelativeLayout>
-
 
 </com.google.android.material.card.MaterialCardView>

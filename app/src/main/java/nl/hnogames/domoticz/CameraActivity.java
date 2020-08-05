@@ -25,12 +25,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.appcompat.widget.Toolbar;
+
 import com.ftinc.scoop.Scoop;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import androidx.appcompat.widget.Toolbar;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.fragments.Camera;
 

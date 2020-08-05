@@ -31,6 +31,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.ftinc.scoop.Flavor;
 import com.ftinc.scoop.R;
 import com.ftinc.scoop.Scoop;
@@ -39,10 +43,6 @@ import com.ftinc.scoop.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.ColorInt;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Project: ThemeEngineTest

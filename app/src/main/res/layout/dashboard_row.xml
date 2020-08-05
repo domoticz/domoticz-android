@@ -356,13 +356,7 @@
                                 android:orientation="vertical"
                                 android:paddingBottom="10dp">
 
-                                <TextView
-                                    android:id="@+id/switch_dimmer_level"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal" />
-
-                                <SeekBar
+                                <com.google.android.material.slider.Slider
                                     android:id="@+id/switch_dimmer"
                                     android:layout_width="129dp"
                                     android:layout_height="wrap_content"

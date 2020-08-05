@@ -25,11 +25,12 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
+import androidx.preference.MultiSelectListPreference;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import androidx.preference.MultiSelectListPreference;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 

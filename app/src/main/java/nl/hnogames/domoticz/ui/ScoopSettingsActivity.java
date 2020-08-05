@@ -28,15 +28,16 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.ftinc.scoop.Flavor;
-import com.ftinc.scoop.Scoop;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.ftinc.scoop.Flavor;
+import com.ftinc.scoop.Scoop;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.FlavorRecyclerAdapter;
 

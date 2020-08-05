@@ -449,8 +449,8 @@
         <item name="material_drawer_secondary_text">@color/white</item>
         <item name="material_drawer_hint_text">@color/white</item>
         <item name="material_drawer_divider">@color/alt5_dark</item>
-        <item name="material_drawer_selected">@color/alt5_dark</item>
-        <item name="material_drawer_selected_text">@color/alt5_dark</item>
+        <item name="material_drawer_selected">@color/alt5</item>
+        <item name="material_drawer_selected_text">@color/white</item>
         <item name="material_drawer_header_selection_text">@color/white</item>
 
         <!-- Style to use for Snackbars in this theme. -->

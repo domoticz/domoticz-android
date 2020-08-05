@@ -18,8 +18,7 @@ public class CameraUtil {
     }
 
     public static void setDrawable(String url, Drawable drawable) {
-        if (cameraCache.containsKey(url))
-            cameraCache.remove(url);
+        cameraCache.remove(url);
         cameraCache.put(url, drawable);
     }
 
