@@ -35,9 +35,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -48,16 +45,22 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.core.util.Pair;
+import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
@@ -82,11 +85,17 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
     private String range = "minutes";
     private Integer[] selectedFilters;
 
-    @Override
-    public void onConnectionOk() {}
+    private String firstDateStr = "";
+    private String endDateStr = "";
+    private Pair<Long, Long> selectionDates = null;
 
     @Override
-    public void onConnectionFailed() {}
+    public void onConnectionOk() {
+    }
+
+    @Override
+    public void onConnectionFailed() {
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -106,20 +115,34 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        SetDefaultDateRange();
         GetTempDevices();
     }
 
-    public void GetTypes()
-    {
-        if(selectedFilters == null) {
+    public void SetDefaultDateRange() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        Date currentTime = cal.getTime();
+        cal.add(Calendar.DATE, -5);
+        Date prefTime = cal.getTime();
+        selectionDates = new Pair<>(prefTime.getTime(), currentTime.getTime());
+
+        firstDateStr = sdf2.format(prefTime);
+        endDateStr = sdf2.format(currentTime);
+    }
+
+    public void GetTypes() {
+        if (selectedFilters == null) {
             selectedFilters = new Integer[1];
             selectedFilters[0] = 0;
         }
         String[] items = new String[4];
-        items[0]= getString(R.string.temperature);
-        items[1]= getString(R.string.set_point);
-        items[2]= getString(R.string.humidity);
-        items[3]= getString(R.string.barometer);
+        items[0] = getString(R.string.temperature);
+        items[1] = getString(R.string.set_point);
+        items[2] = getString(R.string.humidity);
+        items[3] = getString(R.string.barometer);
         new MaterialDialog.Builder(context)
                 .title(context.getString(R.string.filter))
                 .items(items)
@@ -129,15 +152,15 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                         selectedFilters = which;
                         if (text != null && text.length > 0) {
                             graphTemp = false;
-                            for (CharSequence c: text) {
+                            for (CharSequence c : text) {
                                 String name = String.valueOf(c);
-                                if(name.equals(getString(R.string.temperature)))
+                                if (name.equals(getString(R.string.temperature)))
                                     graphTemp = true;
-                                if(name.equals(getString(R.string.set_point)))
+                                if (name.equals(getString(R.string.set_point)))
                                     graphSet = true;
-                                if(name.equals(getString(R.string.humidity)))
+                                if (name.equals(getString(R.string.humidity)))
                                     graphHum = true;
-                                if(name.equals(getString(R.string.barometer)))
+                                if (name.equals(getString(R.string.barometer)))
                                     graphBaro = true;
                             }
                             LoadData();
@@ -151,14 +174,13 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                 .show();
     }
 
-    public void GetTempDevices()
-    {
+    public void GetTempDevices() {
         StaticHelper.getDomoticz(mContext).getTemperatures(new TemperatureReceiver() {
             @Override
             public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
                 mTempInfos = mTemperatureInfos;
                 String[] items = new String[mTempInfos.size()];
-                for(int i =0; i<mTempInfos.size(); i++)
+                for (int i = 0; i < mTempInfos.size(); i++)
                     items[i] = mTempInfos.get(i).getName();
 
                 new MaterialDialog.Builder(context)
@@ -169,7 +191,7 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                             public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
                                 selectedDevices = which;
                                 LoadData();
-                                if(selectedFilters == null)
+                                if (selectedFilters == null)
                                     GetTypes();
                                 return true;
                             }
@@ -180,12 +202,12 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
             }
 
             @Override
-            public void onError(Exception error) {}
+            public void onError(Exception error) {
+            }
         });
     }
 
-    public void LoadData()
-    {
+    public void LoadData() {
         mGraphList = new HashMap<>();
         if (selectedDevices != null && selectedDevices.length > 0) {
             for (int c : selectedDevices)
@@ -268,37 +290,37 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
         new Thread() {
             @Override
             public void run() {
-                StaticHelper.getDomoticz(context).getTempGraphData(idx, "2020-07-29T2020-08-05", 1,
-                graphTemp, graphChill, graphHum, graphBaro, graphDew, graphSet, new GraphDataReceiver() {
-                    @Override
-                    public void onReceive(ArrayList<GraphPointInfo> grphPoints) {
-                        try {
-                            mGraphList.put(name, grphPoints);
-                            LineData columnData = generateData(root);
-                            if (columnData != null) {
-                                chart.setData(columnData);
-                                chart.invalidate(); // refresh
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        chart.setVisibility(View.VISIBLE);
-                                        chart.animateX(1000);
-                                        if (getActivity() != null)
-                                            getActivity().invalidateOptionsMenu();
+                StaticHelper.getDomoticz(context).getTempGraphData(idx, firstDateStr + "T" + endDateStr, range.equals("day") ? 0 : 1,
+                        graphTemp, graphChill, graphHum, graphBaro, graphDew, graphSet, new GraphDataReceiver() {
+                            @Override
+                            public void onReceive(ArrayList<GraphPointInfo> grphPoints) {
+                                try {
+                                    mGraphList.put(name, grphPoints);
+                                    LineData columnData = generateData(root);
+                                    if (columnData != null) {
+                                        chart.setData(columnData);
+                                        chart.invalidate(); // refresh
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                chart.setVisibility(View.VISIBLE);
+                                                chart.animateX(1000);
+                                                if (getActivity() != null)
+                                                    getActivity().invalidateOptionsMenu();
+                                            }
+                                        });
                                     }
-                                });
+                                } catch (Exception ex) {
+                                    if (ex.getMessage() != null)
+                                        Log.e(this.getClass().getSimpleName(), ex.getMessage());
+                                }
                             }
-                        } catch (Exception ex) {
-                            if (ex.getMessage() != null)
-                                Log.e(this.getClass().getSimpleName(), ex.getMessage());
-                        }
-                    }
 
-                    @Override
+                            @Override
 
-                    public void onError(Exception ex) {
-                    }
-                });
+                            public void onError(Exception ex) {
+                            }
+                        });
             }
         }.start();
     }
@@ -326,51 +348,51 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                 Calendar mydate = Calendar.getInstance();
 
                 for (GraphPointInfo g : list.getValue()) {
+                    try {
                         try {
-                            try {
-                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-                                mydate.setTime(sdf.parse(g.getDateTime()));
-                            } catch (ParseException e) {
-                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                                mydate.setTime(sdf.parse(g.getDateTime()));
-                            }
-
-                            if (!Float.isNaN(g.getTemperature())) {
-                                addTemperature = true;
-                                valuest.add(new Entry(mydate.getTimeInMillis(), g.getTemperature()));
-
-                                if (g.hasTemperatureRange()) {
-                                    addTemperatureRange = true;
-                                    valuestMax.add(new Entry(mydate.getTimeInMillis(), g.getTemperatureMax()));
-                                    valuestMin.add(new Entry(mydate.getTimeInMillis(), g.getTemperatureMin()));
-                                }
-                            }
-
-                            if (!Float.isNaN(g.getSetPoint())) {
-                                addSetpoint = true;
-                                valuesse.add(new Entry(mydate.getTimeInMillis(), g.getSetPoint()));
-                            }
-
-                            if (g.getBarometer() != null && g.getBarometer().length() > 0) {
-                                addBarometer = true;
-                                try {
-                                    valuesba.add(new Entry(mydate.getTimeInMillis(), Integer.parseInt(g.getBarometer())));
-                                } catch (Exception ex) {
-                                    valuesba.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getBarometer())));
-                                }
-                            }
-
-                            if (g.getHumidity() != null && g.getHumidity().length() > 0) {
-                                addHumidity = true;
-                                try {
-                                    valueshu.add(new Entry(mydate.getTimeInMillis(), Integer.parseInt(g.getHumidity())));
-                                } catch (Exception ex) {
-                                    valuesba.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getHumidity())));
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                            mydate.setTime(sdf.parse(g.getDateTime()));
+                        } catch (ParseException e) {
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                            mydate.setTime(sdf.parse(g.getDateTime()));
                         }
+
+                        if (!Float.isNaN(g.getTemperature())) {
+                            addTemperature = true;
+                            valuest.add(new Entry(mydate.getTimeInMillis(), g.getTemperature()));
+
+                            if (g.hasTemperatureRange()) {
+                                addTemperatureRange = true;
+                                valuestMax.add(new Entry(mydate.getTimeInMillis(), g.getTemperatureMax()));
+                                valuestMin.add(new Entry(mydate.getTimeInMillis(), g.getTemperatureMin()));
+                            }
+                        }
+
+                        if (!Float.isNaN(g.getSetPoint())) {
+                            addSetpoint = true;
+                            valuesse.add(new Entry(mydate.getTimeInMillis(), g.getSetPoint()));
+                        }
+
+                        if (g.getBarometer() != null && g.getBarometer().length() > 0) {
+                            addBarometer = true;
+                            try {
+                                valuesba.add(new Entry(mydate.getTimeInMillis(), Integer.parseInt(g.getBarometer())));
+                            } catch (Exception ex) {
+                                valuesba.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getBarometer())));
+                            }
+                        }
+
+                        if (g.getHumidity() != null && g.getHumidity().length() > 0) {
+                            addHumidity = true;
+                            try {
+                                valueshu.add(new Entry(mydate.getTimeInMillis(), Integer.parseInt(g.getHumidity())));
+                            } catch (Exception ex) {
+                                valuesba.add(new Entry(mydate.getTimeInMillis(), Float.parseFloat(g.getHumidity())));
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 if (addTemperature) {
@@ -438,7 +460,7 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            inflater.inflate(R.menu.menu_temp_graph_sort, menu);
+        inflater.inflate(R.menu.menu_temp_graph_sort, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -450,6 +472,35 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                 return true;
             case R.id.action_set_chart_devices:
                 GetTempDevices();
+                return true;
+            case R.id.action_set_range:
+                MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.dateRangePicker();
+                CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
+                builder.setCalendarConstraints(constraintsBuilder.build());
+                if (selectionDates != null)
+                    builder.setSelection(selectionDates);
+                final MaterialDatePicker<Pair<Long, Long>> picker = builder.build();
+                picker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>>() {
+                    @Override
+                    public void onPositiveButtonClick(Pair<Long, Long> selection) {
+                        long firstDateLong = selection.first;
+                        Date firstDate = new Date(firstDateLong);
+                        long endDateLong = selection.second;
+                        Date endDate = new Date(endDateLong);
+                        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        firstDateStr = sdf2.format(firstDate);
+                        endDateStr = sdf2.format(endDate);
+                        if (firstDateStr.equals(endDateStr))
+                            range = "minutes";
+                        else
+                            range = "day";
+
+                        selectionDates = selection;
+                        picker.dismiss();
+                        LoadData();
+                    }
+                });
+                picker.show(getActivity().getSupportFragmentManager(), picker.toString());
                 return true;
             default:
                 break;

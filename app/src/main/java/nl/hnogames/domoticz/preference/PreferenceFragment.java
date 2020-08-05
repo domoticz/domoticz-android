@@ -46,6 +46,15 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.codekidlabs.storagechooser.StorageChooser;
+import com.fastaccess.permission.base.PermissionHelper;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.io.File;
+import java.util.HashSet;
+
 import androidx.annotation.NonNull;
 import androidx.biometric.BiometricManager;
 import androidx.core.content.ContextCompat;
@@ -56,16 +65,6 @@ import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.codekidlabs.storagechooser.StorageChooser;
-import com.fastaccess.permission.base.PermissionHelper;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.io.File;
-import java.util.HashSet;
-
 import nl.hnogames.domoticz.BeaconSettingsActivity;
 import nl.hnogames.domoticz.BluetoothSettingsActivity;
 import nl.hnogames.domoticz.BuildConfig;

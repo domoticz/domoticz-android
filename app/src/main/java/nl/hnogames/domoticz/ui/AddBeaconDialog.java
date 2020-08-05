@@ -25,12 +25,11 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatEditText;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatEditText;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.BeaconInfo;
 import nl.hnogames.domoticz.utils.UsefulBits;

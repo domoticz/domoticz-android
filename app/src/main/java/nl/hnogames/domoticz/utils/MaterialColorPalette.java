@@ -1,6 +1,7 @@
 package nl.hnogames.domoticz.utils;
 
 import android.graphics.Color;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,53 +56,10 @@ public class MaterialColorPalette {
         MATERIAL_PALETTES.add(new MaterialColorPalette(BLUE_GREY_500));
     }
 
-    public static int getRandomColor(String key) {
-        return MATERIAL_PALETTES.get(RANDOM.nextInt(MATERIAL_PALETTES.size())).getColor(key);
-    }
-
-    /**
-     * Lighten or darken a color
-     *
-     * @param color
-     *     color value
-     * @param percent
-     *     -1.0 to 1.0
-     * @return new shaded color
-     * @see #shadeColor(String, double)
-     */
-    public static int shadeColor(int color, double percent) {
-        return shadeColor(String.format("#%06X", (0xFFFFFF & color)), percent); // ignores alpha channel
-    }
-
-    /**
-     * Lighten or darken a color
-     *
-     * @param color
-     *     7 character string representing the color.
-     * @param percent
-     *     -1.0 to 1.0
-     * @return new shaded color
-     * @see #shadeColor(int, double)
-     */
-    public static int shadeColor(String color, double percent) {
-        // based off http://stackoverflow.com/a/13542669/1048340
-        long f = Long.parseLong(color.substring(1), 16);
-        double t = percent < 0 ? 0 : 255;
-        double p = percent < 0 ? percent * -1 : percent;
-        long R = f >> 16;
-        long G = f >> 8 & 0x00FF;
-        long B = f & 0x0000FF;
-        int red = (int) (Math.round((t - R) * p) + R);
-        int green = (int) (Math.round((t - G) * p) + G);
-        int blue = (int) (Math.round((t - B) * p) + B);
-        return Color.rgb(red, green, blue);
-    }
-
     private final HashMap<String, Integer> palette = new HashMap<>();
 
     /**
-     * @param primary
-     *     the 500 color
+     * @param primary the 500 color
      */
     public MaterialColorPalette(int primary) {
         palette.put("50", shadeColor(primary, 0.9));
@@ -118,6 +76,44 @@ public class MaterialColorPalette {
         palette.put("A200", shadeColor(primary, 0.5));
         palette.put("A400", shadeColor(primary, 0.166));
         palette.put("A700", shadeColor(primary, -0.25));
+    }
+
+    public static int getRandomColor(String key) {
+        return MATERIAL_PALETTES.get(RANDOM.nextInt(MATERIAL_PALETTES.size())).getColor(key);
+    }
+
+    /**
+     * Lighten or darken a color
+     *
+     * @param color   color value
+     * @param percent -1.0 to 1.0
+     * @return new shaded color
+     * @see #shadeColor(String, double)
+     */
+    public static int shadeColor(int color, double percent) {
+        return shadeColor(String.format("#%06X", (0xFFFFFF & color)), percent); // ignores alpha channel
+    }
+
+    /**
+     * Lighten or darken a color
+     *
+     * @param color   7 character string representing the color.
+     * @param percent -1.0 to 1.0
+     * @return new shaded color
+     * @see #shadeColor(int, double)
+     */
+    public static int shadeColor(String color, double percent) {
+        // based off http://stackoverflow.com/a/13542669/1048340
+        long f = Long.parseLong(color.substring(1), 16);
+        double t = percent < 0 ? 0 : 255;
+        double p = percent < 0 ? percent * -1 : percent;
+        long R = f >> 16;
+        long G = f >> 8 & 0x00FF;
+        long B = f & 0x0000FF;
+        int red = (int) (Math.round((t - R) * p) + R);
+        int green = (int) (Math.round((t - G) * p) + G);
+        int blue = (int) (Math.round((t - B) * p) + B);
+        return Color.rgb(red, green, blue);
     }
 
     public int getColor(String key) {

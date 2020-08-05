@@ -25,6 +25,13 @@
       tools:context=".TempGraphsActivity">
 
     <item
+        android:id="@+id/action_set_range"
+        android:icon="@drawable/baseline_date_range_white_24"
+        android:orderInCategory="100"
+        android:title="@string/filter_range"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/action_set_chart_devices"
         android:icon="@drawable/baseline_addchart_white_24"
         android:orderInCategory="100"

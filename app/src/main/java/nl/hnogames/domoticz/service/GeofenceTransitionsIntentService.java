@@ -4,15 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.JobIntentService;
-
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
 import java.util.ArrayList;
 import java.util.Date;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.LocationInfo;
 import nl.hnogames.domoticz.containers.NotificationInfo;

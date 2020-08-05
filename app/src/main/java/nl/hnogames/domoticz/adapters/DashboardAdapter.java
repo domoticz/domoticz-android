@@ -38,14 +38,8 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.slider.LabelFormatter;
@@ -60,6 +54,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
@@ -1255,7 +1253,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 @NonNull
                 @Override
                 public String getFormattedValue(float value) {
-                    return (Math.round(value))+"%";
+                    return (Math.round(value)) + "%";
                 }
             });
             holder.dimmer.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
@@ -1434,7 +1432,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             @NonNull
             @Override
             public String getFormattedValue(float value) {
-                return (Math.round(value))+"%";
+                return (Math.round(value)) + "%";
             }
         });
         holder.dimmer.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
@@ -1572,7 +1570,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             @NonNull
             @Override
             public String getFormattedValue(float value) {
-                return (Math.round(value))+"%";
+                return (Math.round(value)) + "%";
             }
         });
         holder.dimmer.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {

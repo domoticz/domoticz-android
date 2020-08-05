@@ -39,12 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.chip.Chip;
-import com.google.android.material.slider.BasicLabelFormatter;
 import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -59,6 +54,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
@@ -1113,7 +1111,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 @NonNull
                 @Override
                 public String getFormattedValue(float value) {
-                    return (Math.round(value))+"%";
+                    return (Math.round(value)) + "%";
                 }
             });
 
@@ -1294,7 +1292,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             @NonNull
             @Override
             public String getFormattedValue(float value) {
-                return (Math.round(value))+"%";
+                return (Math.round(value)) + "%";
             }
         });
         holder.dimmer.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
@@ -1434,7 +1432,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             @NonNull
             @Override
             public String getFormattedValue(float value) {
-                return (Math.round(value))+"%";
+                return (Math.round(value)) + "%";
             }
         });
         holder.dimmer.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
