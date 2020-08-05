@@ -35,6 +35,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
@@ -47,12 +51,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.BluetoothInfo;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.BluetoothClickListener;
 import nl.hnogames.domoticz.ui.SwitchDialog;
 import nl.hnogames.domoticz.utils.DeviceUtils;
@@ -60,7 +61,6 @@ import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
@@ -68,7 +68,6 @@ import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 public class BluetoothSettingsActivity extends AppCompatPermissionsActivity implements BluetoothClickListener {
     boolean result = false;
     private SharedPrefUtil mSharedPrefs;
-    private Domoticz domoticz;
     private CoordinatorLayout coordinatorLayout;
     private ArrayList<BluetoothInfo> BluetoothList;
     private nl.hnogames.domoticz.adapters.BluetoothAdapter adapter;
@@ -95,7 +94,6 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.category_bluetooth);
 
-        domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         BluetoothList = mSharedPrefs.getBluetoothList();
         adapter = new nl.hnogames.domoticz.adapters.BluetoothAdapter(this, BluetoothList, this);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -175,7 +173,7 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
     }
 
     private void getSwitchesAndShowSwitchesDialog(final BluetoothInfo qrInfo) {
-        domoticz.getDevices(new DevicesReceiver() {
+        StaticHelper.getDomoticz(BluetoothSettingsActivity.this).getDevices(new DevicesReceiver() {
             @Override
 
             public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
@@ -214,7 +212,7 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
         SwitchDialog infoDialog = new SwitchDialog(
                 BluetoothSettingsActivity.this, supportedSwitches,
                 R.layout.dialog_switch_logs,
-                domoticz);
+                StaticHelper.getDomoticz(BluetoothSettingsActivity.this));
 
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override

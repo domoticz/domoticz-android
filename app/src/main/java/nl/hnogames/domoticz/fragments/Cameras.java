@@ -23,25 +23,12 @@ package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.fastaccess.permission.base.PermissionFragmentHelper;
-import com.fastaccess.permission.base.callback.OnPermissionCallback;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -51,18 +38,24 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.fastaccess.permission.base.PermissionFragmentHelper;
+import com.fastaccess.permission.base.callback.OnPermissionCallback;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.CameraActivity;
-import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.CamerasAdapter;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
+import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
@@ -113,17 +106,6 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         new GetCachedDataTask().execute();
     }
 
-    private void processImage(Bitmap savePic, String title) {
-        File dir = mDomoticz.saveSnapShot(savePic, title);
-        if (dir != null) {
-            Intent intent = new Intent(context, CameraActivity.class);
-            //noinspection SpellCheckingInspection
-            intent.putExtra("IMAGETITLE", title);
-            //noinspection SpellCheckingInspection
-            intent.putExtra("IMAGEURL", dir.getPath());
-            startActivity(intent);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -161,7 +143,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         getCameras();
     }
 
-    private void createListView(ArrayList<CameraInfo> Cameras) {
+    private void createListView(final ArrayList<CameraInfo> Cameras) {
         if (getView() == null)
             return;
 
@@ -174,34 +156,12 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         }
 
         if (mAdapter == null) {
-            mAdapter = new CamerasAdapter(Cameras, context, mDomoticz, refreshTimer);
+            mAdapter = new CamerasAdapter(Cameras, context, StaticHelper.getDomoticz(context), refreshTimer);
             mAdapter.setOnItemClickListener(new CamerasAdapter.onClickListener() {
                 @Override
                 public void onItemClick(int position, View v) {
-                    if (mPhoneConnectionUtil.isNetworkAvailable()) {
-                        try {
-                            ImageView cameraImage = v.findViewById(R.id.image);
-                            TextView cameraTitle = v.findViewById(R.id.name);
-                            Bitmap savePic = ((BitmapDrawable) cameraImage.getDrawable()).getBitmap();
-
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                if (!PermissionsUtil.canAccessStorage(context)) {
-                                    permissionFragmentHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
-                                } else
-                                    processImage(savePic, cameraTitle.getText().toString());
-                            } else {
-                                processImage(savePic, cameraTitle.getText().toString());
-                            }
-                        } catch (Exception ex) {
-                            errorHandling(ex, frameLayout);
-                        }
-                    } else {
-                        if (frameLayout != null) {
-                            UsefulBits.showSnackbar(getContext(), frameLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
-                            if (getActivity() instanceof MainActivity)
-                                ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
-                        }
-                    }
+                    CameraInfo camera = Cameras.get(position);
+                    CameraUtil.ProcessImage(context, camera.getIdx(), camera.getName());
                 }
             });
             alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
@@ -305,10 +265,10 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         protected void onPostExecute(Boolean result) {
             if (cacheCameras != null)
                 createListView(cacheCameras);
-            mDomoticz.checkLogin(new LoginReceiver() {
+            StaticHelper.getDomoticz(context).checkLogin(new LoginReceiver() {
                 @Override
                 public void OnReceive(LoginInfo mLoginInfo) {
-                    mDomoticz.getCameras(new CameraReceiver() {
+                    StaticHelper.getDomoticz(context).getCameras(new CameraReceiver() {
                         @Override
                         public void OnReceiveCameras(ArrayList<CameraInfo> Cameras) {
                             successHandling(Cameras.toString(), false);

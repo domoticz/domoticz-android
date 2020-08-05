@@ -23,30 +23,43 @@ package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import androidx.fragment.app.Fragment;
+
 import com.alexvasilkov.gestures.Settings;
 import com.alexvasilkov.gestures.views.GestureImageView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
-import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.helpers.StaticHelper;
+import nl.hnogames.domoticz.utils.CameraUtil;
+import nl.hnogames.domoticz.utils.PicassoUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Domoticz;
 
 public class Camera extends Fragment {
     private GestureImageView root;
-    private String url = "";
     private SharedPrefUtil mSharedPrefs;
+    private Picasso picasso;
+    private Domoticz domoticz;
+    private Context mContext;
+    private int idx;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,8 +74,16 @@ public class Camera extends Fragment {
 
         root = group.findViewById(R.id.image);
         root.getController().getSettings()
+                .setMaxZoom(2f)
+                .setDoubleTapZoom(-1f)
+                .setPanEnabled(true)
+                .setZoomEnabled(true)
+                .setDoubleTapEnabled(true)
+                .setRotationEnabled(false)
+                .setRestrictRotation(false)
+                .setFillViewport(true)
                 .setFitMethod(Settings.Fit.VERTICAL)
-                .setFillViewport(false);
+                .setGravity(Gravity.CENTER);
 
         FloatingActionButton fabButton = group.findViewById(R.id.fab);
         fabButton.setOnClickListener(new View.OnClickListener() {
@@ -71,15 +92,21 @@ public class Camera extends Fragment {
                 processImage();
             }
         });
-        if (this.url.length() > 0)
-            setImage(this.url);
+        if (idx > 0)
+            setImage(idx);
         return group;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.mContext = context;
         mSharedPrefs = new SharedPrefUtil(context);
+        this.domoticz = StaticHelper.getDomoticz(mContext);
+        picasso = new PicassoUtil().getPicasso(mContext,
+                domoticz.getSessionUtil().getSessionCookie(),
+                domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
+                domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD));
     }
 
     @Override
@@ -89,30 +116,58 @@ public class Camera extends Fragment {
     }
 
     private void processImage() {
-        // Get access to the URI for the bitmap
-        File file = new File(url);
-        Uri bmpUri = Uri.fromFile(file);
-        if (bmpUri != null) {
-            // Construct a ShareIntent with link to image
-            Intent shareIntent = new Intent();
-            shareIntent.setAction(Intent.ACTION_SEND);
-            shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
-            shareIntent.setType("image/*");
-            // Launch sharing dialog for image
-            startActivity(Intent.createChooser(shareIntent, "Share Image"));
+        if (root != null) {
+            BitmapDrawable drawable = (BitmapDrawable) root.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+
+            File snapFile = StaticHelper.getDomoticz(mContext).saveSnapShot(bitmap, "share-image");
+            Uri uriBitmap = Uri.fromFile(snapFile);
+            if (uriBitmap != null) {
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, uriBitmap);
+                shareIntent.setType("image/*");
+                startActivity(Intent.createChooser(shareIntent, "Share Image"));
+            }
         }
     }
 
-    public void setImage(String url) {
-        this.url = url;
+    public void setImage(int idx) {
+        this.idx = idx;
         if (root != null) {
-            File file = new File(url);
-            Uri uri = Uri.fromFile(file);
-            Picasso.get()
-                    .load(uri)
-                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .into(root);
+            final String imageUrl = domoticz.getSnapshotUrl(idx);
+            Drawable cache = CameraUtil.getDrawable(imageUrl);
+            if (cache == null) {
+                picasso.load(imageUrl)
+                        .noPlaceholder()
+                        .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                        .into(root, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                CameraUtil.setDrawable(imageUrl, root.getDrawable());
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                            }
+                        });
+            } else {
+                picasso.load(imageUrl)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .noFade()
+                        .placeholder(cache)
+                        .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                        .into(root, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                CameraUtil.setDrawable(imageUrl, root.getDrawable());
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                            }
+                        });
+            }
         }
     }
 }

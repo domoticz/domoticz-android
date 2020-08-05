@@ -73,6 +73,8 @@
     <string name="show_dashboard_list_off">Mostrar tablero en cuadrícula</string>
     <string name="dashboard_clock">Reloj</string>
     <string name="show_dashboard_clock">Mostrar reloj en el panel</string>
+    <string name="dashboard_camera">Camera</string>
+    <string name="show_dashboard_camera">Load the camera for connected switches</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Elementos específicos de Android Wear</string>
     <string name="custom_wear_select">Seleccionar interruptores Android Wear</string>
@@ -170,6 +172,8 @@
     <string name="theme_orange">Naranja</string>
     <string name="theme_pink">Rosa</string>
     <string name="theme_blue">Azul</string>
+    <string name="theme_green">Green</string>
+    <string name="theme_dark_blue">Dark blue</string>
     <!-- Other -->
     <string name="default_values">Valores predeterminados</string>
     <string name="default_values_min_error">El valor Máx debe ser mayor que el valor Mín</string>

@@ -32,24 +32,24 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.ftinc.scoop.Scoop;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SettingsInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SettingsReceiver;
@@ -64,7 +64,6 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
     public CoordinatorLayout coordinatorLayout;
     int mAppWidgetId;
     private SharedPrefUtil mSharedPrefs;
-    private Domoticz domoticz;
     private TextView txtTitle;
     private TextView txtStatus;
     private Button btnConfig;
@@ -82,8 +81,6 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
         setResult(RESULT_CANCELED);
 
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
-        if (domoticz == null)
-            domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         txtStatus = this.findViewById(R.id.status);
         txtTitle = this.findViewById(R.id.title);
         btnConfig = this.findViewById(R.id.checkpin);
@@ -124,7 +121,7 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
                 }
 
                 if (mSettings == null) {
-                    domoticz.getSettings(new SettingsReceiver() {
+                    StaticHelper.getDomoticz(SecurityWidgetConfigurationActivity.this).getSettings(new SettingsReceiver() {
                         @Override
                         public void onReceiveSettings(SettingsInfo settings) {
                             mSettings = settings;
@@ -139,7 +136,7 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(Exception error) {
-                            Log.e(TAG, domoticz.getErrorMessage(error));
+                            Log.e(TAG, StaticHelper.getDomoticz(SecurityWidgetConfigurationActivity.this).getErrorMessage(error));
                         }
                     });
                 } else {
@@ -228,7 +225,7 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
 
     public void initListViews() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
-            domoticz.getDevices(new DevicesReceiver() {
+            StaticHelper.getDomoticz(SecurityWidgetConfigurationActivity.this).getDevices(new DevicesReceiver() {
                 @Override
                 public void onReceiveDevices(final ArrayList<DevicesInfo> mDevicesInfo) {
                     if (mDevicesInfo == null)

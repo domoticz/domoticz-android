@@ -38,6 +38,11 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.fragment.app.Fragment;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
@@ -47,11 +52,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.ui.MultiSelectionSpinner;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -59,7 +61,6 @@ import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.WifiSSIDListener;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
-import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class WelcomePage3 extends Fragment implements OnPermissionCallback {
 
@@ -67,7 +68,6 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     private static final int WELCOME_WIZARD = 1;
     private static final int SETTINGS = 2;
     private SharedPrefUtil mSharedPrefs;
-    private ServerUtil mServerUtil;
 
     private AppCompatEditText server_name_input, remote_server_input, remote_port_input,
             remote_username_input, remote_password_input,
@@ -82,7 +82,6 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     private MultiSelectionSpinner local_wifi_spinner;
     private int callingInstance;
     private PhoneConnectionUtil mPhoneConnectionUtil;
-
     private PermissionFragmentHelper permissionFragmentHelper;
 
     public static WelcomePage3 newInstance(int instance) {
@@ -104,8 +103,6 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
         mSharedPrefs = new SharedPrefUtil(getActivity());
         permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
         v = inflater.inflate(R.layout.fragment_welcome3, container, false);
-
-        mServerUtil = new ServerUtil(getActivity());
 
         getLayoutReferences();
         setPreferenceValues();
@@ -151,7 +148,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
                         .input(null, null, new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
+                                Set<String> ssidFromPrefs = StaticHelper.getServerUtil(getContext()).getActiveServer().getLocalServerSsid();
                                 final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
                                 if (ssidFromPrefs != null) {
                                     if (ssidFromPrefs.size() > 0) {
@@ -161,7 +158,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
                                     }
                                 }
                                 ssidListFromPrefs.add(String.valueOf(input));
-                                mServerUtil.getActiveServer().setLocalServerSsid(ssidListFromPrefs);
+                                StaticHelper.getServerUtil(getContext()).getActiveServer().setLocalServerSsid(ssidListFromPrefs);
 
                                 setSsid_spinner();
                             }
@@ -183,7 +180,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
                 else localServerSettingsLayout.setVisibility(View.GONE);
             }
         });
-        localServerSettingsLayout.setVisibility(mServerUtil.getActiveServer().getIsLocalServerAddressDifferent() ? View.VISIBLE : View.GONE);
+        localServerSettingsLayout.setVisibility(StaticHelper.getServerUtil(getContext()).getActiveServer().getIsLocalServerAddressDifferent() ? View.VISIBLE : View.GONE);
         cbShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -211,18 +208,18 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     }
 
     private void setPreferenceValues() {
-        server_name_input.setText(mServerUtil.getActiveServer().getServerName());
-        remote_username_input.setText(mServerUtil.getActiveServer().getRemoteServerUsername());
-        remote_password_input.setText(mServerUtil.getActiveServer().getRemoteServerPassword());
-        remote_server_input.setText(mServerUtil.getActiveServer().getRemoteServerUrl());
-        remote_port_input.setText(mServerUtil.getActiveServer().getRemoteServerPort());
-        remote_directory_input.setText(mServerUtil.getActiveServer().getRemoteServerDirectory());
-        localServer_switch.setChecked(mServerUtil.getActiveServer().getIsLocalServerAddressDifferent());
-        local_username_input.setText(mServerUtil.getActiveServer().getLocalServerUsername());
-        local_password_input.setText(mServerUtil.getActiveServer().getLocalServerPassword());
-        local_server_input.setText(mServerUtil.getActiveServer().getLocalServerUrl());
-        local_port_input.setText(mServerUtil.getActiveServer().getLocalServerPort());
-        local_directory_input.setText(mServerUtil.getActiveServer().getLocalServerDirectory());
+        server_name_input.setText(StaticHelper.getServerUtil(getContext()).getActiveServer().getServerName());
+        remote_username_input.setText(StaticHelper.getServerUtil(getContext()).getActiveServer().getRemoteServerUsername());
+        remote_password_input.setText(StaticHelper.getServerUtil(getContext()).getActiveServer().getRemoteServerPassword());
+        remote_server_input.setText(StaticHelper.getServerUtil(getContext()).getActiveServer().getRemoteServerUrl());
+        remote_port_input.setText(StaticHelper.getServerUtil(getContext()).getActiveServer().getRemoteServerPort());
+        remote_directory_input.setText(StaticHelper.getServerUtil(getContext()).getActiveServer().getRemoteServerDirectory());
+        localServer_switch.setChecked(StaticHelper.getServerUtil(getContext()).getActiveServer().getIsLocalServerAddressDifferent());
+        local_username_input.setText(StaticHelper.getServerUtil(getContext()).getActiveServer().getLocalServerUsername());
+        local_password_input.setText(StaticHelper.getServerUtil(getContext()).getActiveServer().getLocalServerPassword());
+        local_server_input.setText(StaticHelper.getServerUtil(getContext()).getActiveServer().getLocalServerUrl());
+        local_port_input.setText(StaticHelper.getServerUtil(getContext()).getActiveServer().getLocalServerPort());
+        local_directory_input.setText(StaticHelper.getServerUtil(getContext()).getActiveServer().getLocalServerDirectory());
 
         setProtocol_spinner();
 
@@ -236,7 +233,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     }
 
     private void setSsid_spinner() {
-        Set<String> ssidFromPrefs = mServerUtil.getActiveServer().getLocalServerSsid();
+        Set<String> ssidFromPrefs = StaticHelper.getServerUtil(getContext()).getActiveServer().getLocalServerSsid();
         final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
         //noinspection SpellCheckingInspection
         final ArrayList<String> ssids = new ArrayList<>();
@@ -317,41 +314,41 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     }
 
     private void writePreferenceValues() {
-        mServerUtil.getActiveServer().setRemoteServerUsername(
+        StaticHelper.getServerUtil(getContext()).getActiveServer().setRemoteServerUsername(
                 remote_username_input.getText().toString().trim());
-        mServerUtil.getActiveServer().setRemoteServerPassword(
+        StaticHelper.getServerUtil(getContext()).getActiveServer().setRemoteServerPassword(
                 remote_password_input.getText().toString().trim());
-        mServerUtil.getActiveServer().setRemoteServerUrl(
+        StaticHelper.getServerUtil(getContext()).getActiveServer().setRemoteServerUrl(
                 remote_server_input.getText().toString().trim());
-        mServerUtil.getActiveServer().setRemoteServerPort(
+        StaticHelper.getServerUtil(getContext()).getActiveServer().setRemoteServerPort(
                 remote_port_input.getText().toString().trim());
-        mServerUtil.getActiveServer().setRemoteServerDirectory(
+        StaticHelper.getServerUtil(getContext()).getActiveServer().setRemoteServerDirectory(
                 remote_directory_input.getText().toString().trim());
-        mServerUtil.getActiveServer().setRemoteServerSecure(
+        StaticHelper.getServerUtil(getContext()).getActiveServer().setRemoteServerSecure(
                 getSpinnerDomoticzRemoteSecureBoolean());
         SwitchMaterial useSameAddress = v.findViewById(R.id.localServer_switch);
         if (!useSameAddress.isChecked()) {
-            mServerUtil.getActiveServer().setLocalSameAddressAsRemote();
-            mServerUtil.getActiveServer().setIsLocalServerAddressDifferent(false);
+            StaticHelper.getServerUtil(getContext()).getActiveServer().setLocalSameAddressAsRemote();
+            StaticHelper.getServerUtil(getContext()).getActiveServer().setIsLocalServerAddressDifferent(false);
         } else {
-            mServerUtil.getActiveServer().setLocalServerUsername(
+            StaticHelper.getServerUtil(getContext()).getActiveServer().setLocalServerUsername(
                     local_username_input.getText().toString().trim());
-            mServerUtil.getActiveServer().setLocalServerPassword(
+            StaticHelper.getServerUtil(getContext()).getActiveServer().setLocalServerPassword(
                     local_password_input.getText().toString().trim());
-            mServerUtil.getActiveServer().setLocalServerUrl(
+            StaticHelper.getServerUtil(getContext()).getActiveServer().setLocalServerUrl(
                     local_server_input.getText().toString().trim());
-            mServerUtil.getActiveServer().setLocalServerPort(
+            StaticHelper.getServerUtil(getContext()).getActiveServer().setLocalServerPort(
                     local_port_input.getText().toString().trim());
-            mServerUtil.getActiveServer().setLocalServerDirectory(
+            StaticHelper.getServerUtil(getContext()).getActiveServer().setLocalServerDirectory(
                     local_directory_input.getText().toString().trim());
-            mServerUtil.getActiveServer().setLocalServerSecure(
+            StaticHelper.getServerUtil(getContext()).getActiveServer().setLocalServerSecure(
                     getSpinnerDomoticzLocalSecureBoolean());
-            mServerUtil.getActiveServer().setIsLocalServerAddressDifferent(true);
+            StaticHelper.getServerUtil(getContext()).getActiveServer().setIsLocalServerAddressDifferent(true);
         }
 
-        mServerUtil.getActiveServer().setServerName(server_name_input.getText().toString());
-        mServerUtil.getActiveServer().setLocalServerSsid(local_wifi_spinner.getSelectedStrings());
-        mServerUtil.saveDomoticzServers(true);
+        StaticHelper.getServerUtil(getContext()).getActiveServer().setServerName(server_name_input.getText().toString());
+        StaticHelper.getServerUtil(getContext()).getActiveServer().setLocalServerSsid(local_wifi_spinner.getSelectedStrings());
+        StaticHelper.getServerUtil(getContext()).saveDomoticzServers(true);
     }
 
     private boolean getSpinnerDomoticzRemoteSecureBoolean() {
@@ -365,7 +362,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     }
 
     private int getPrefsDomoticzRemoteSecureIndex() {
-        boolean isSecure = mServerUtil.getActiveServer().getRemoteServerSecure();
+        boolean isSecure = StaticHelper.getServerUtil(getContext()).getActiveServer().getRemoteServerSecure();
         String[] protocols = getResources().getStringArray(R.array.remote_server_protocols);
         int i = 0;
         String protocolString;
@@ -381,7 +378,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     }
 
     private int getPrefsDomoticzLocalSecureIndex() {
-        boolean isSecure = mServerUtil.getActiveServer().getLocalServerSecure();
+        boolean isSecure = StaticHelper.getServerUtil(getContext()).getActiveServer().getLocalServerSecure();
         String[] protocols = getResources().getStringArray(R.array.remote_server_protocols);
         int i = 0;
         String protocolString;

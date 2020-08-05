@@ -26,19 +26,21 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.UserVariablesAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.UserVariablesClickListener;
 import nl.hnogames.domoticz.utils.SerializableManager;
@@ -115,7 +117,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     private void createListView() {
         if (getView() != null) {
             if (adapter == null) {
-                adapter = new UserVariablesAdapter(mContext, mDomoticz, mUserVariableInfos, this);
+                adapter = new UserVariablesAdapter(mContext, StaticHelper.getDomoticz(mContext), mUserVariableInfos, this);
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
             } else {
@@ -156,7 +158,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
 
     @Override
     public void onUserVariableClick(final UserVariableInfo clickedVar) {
-        UserInfo user = getCurrentUser(mContext, mDomoticz);
+        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
         if (user != null && user.getRights() <= 1) {
             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
@@ -203,7 +205,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     }
 
     private boolean updateUserVariable(String input, UserVariableInfo clickedVar) {
-        mDomoticz.setUserVariableValue(input, clickedVar, new setCommandReceiver() {
+        StaticHelper.getDomoticz(mContext).setUserVariableValue(input, clickedVar, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 processUserVariables();
@@ -241,7 +243,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
             if (cacheUserVariables != null)
                 createListView();
 
-            mDomoticz.getUserVariables(new UserVariablesReceiver() {
+            StaticHelper.getDomoticz(mContext).getUserVariables(new UserVariablesReceiver() {
                 @Override
 
                 public void onReceiveUserVariables(ArrayList<UserVariableInfo> mVarInfos) {

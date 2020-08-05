@@ -26,17 +26,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.triggertrap.seekarc.SeekArc;
 
-import androidx.annotation.NonNull;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
-import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
@@ -64,7 +65,7 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
                 .positiveText(android.R.string.ok)
                 .onAny(this);
 
-        ConfigInfo configInfo = new ServerUtil(mContext).getActiveServer().getConfigInfo(mContext);
+        ConfigInfo configInfo = StaticHelper.getServerUtil(mContext).getActiveServer().getConfigInfo(mContext);
         if (configInfo != null) {
             tempSign = UsefulBits.getDegreeSymbol() + configInfo.getTempSign();
             if (!UsefulBits.isEmpty(configInfo.getTempSign()) && !configInfo.getTempSign().equals(DomoticzValues.Temperature.Sign.CELSIUS)) {

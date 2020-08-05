@@ -30,12 +30,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.WidgetUtils;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
@@ -46,7 +46,6 @@ public class SecurityWidgetIntentService extends Service {
     private SharedPrefUtil mSharedPrefs;
     private int idx;
     private Context mContext;
-    private Domoticz domoticz;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -80,9 +79,7 @@ public class SecurityWidgetIntentService extends Service {
 
 
     private void processRequest(final int idx, final int status, final String password) {
-        if (domoticz == null)
-            domoticz = new Domoticz(mContext, AppController.getInstance().getRequestQueue());
-        domoticz.setSecurityPanelAction(status, password, new setCommandReceiver() {
+        StaticHelper.getDomoticz(getApplicationContext()).setSecurityPanelAction(status, password, new setCommandReceiver() {
             @Override
             public void onReceiveResult(String result) {
                 if (action == DomoticzValues.Security.Status.ARMAWAY) {
@@ -105,7 +102,7 @@ public class SecurityWidgetIntentService extends Service {
 
             @Override
             public void onError(Exception error) {
-                Log.e("SECURITYWIDGET", domoticz.getErrorMessage(error));
+                Log.e("SECURITYWIDGET", StaticHelper.getDomoticz(getApplicationContext()).getErrorMessage(error));
                 Toast.makeText(mContext,
                         mContext.getString(R.string.security_generic_error),
                         Toast.LENGTH_SHORT).show();

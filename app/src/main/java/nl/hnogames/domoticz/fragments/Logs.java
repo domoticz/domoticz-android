@@ -28,14 +28,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import java.util.ArrayList;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.LogAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticzapi.Containers.LogInfo;
@@ -56,7 +58,6 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     }
 
     @Override
-
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
@@ -64,7 +65,6 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     }
 
     @Override
-
     public void onAttach(Context context) {
         super.onAttach(context);
         onAttachFragment(this);
@@ -121,7 +121,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     private void createListView(ArrayList<LogInfo> mLogInfos) {
         if (getView() != null) {
             if (adapter == null) {
-                adapter = new LogAdapter(mContext, mDomoticz, mLogInfos);
+                adapter = new LogAdapter(mContext, StaticHelper.getDomoticz(mContext), mLogInfos);
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
             } else {
@@ -129,7 +129,6 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                 adapter.notifyDataSetChanged();
                 alphaSlideIn.notifyDataSetChanged();
             }
-
             if (!isTablet && !itemDecorationAdded) {
                 gridView.addItemDecoration(new MarginItemDecoration(20));
                 itemDecorationAdded = true;
@@ -168,6 +167,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
 
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
         ArrayList<LogInfo> cacheLogs = null;
+        private int LogLevel;
 
         protected Boolean doInBackground(Boolean... geto) {
             if (mPhoneConnectionUtil == null)
@@ -186,7 +186,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                 if (cacheLogs != null)
                     createListView(cacheLogs);
 
-                int LogLevel = DomoticzValues.Log.LOGLEVEL.ALL; //Default
+                LogLevel = DomoticzValues.Log.LOGLEVEL.ALL;
                 if (getSort().equals(getString(R.string.filter_normal)))
                     LogLevel = DomoticzValues.Log.LOGLEVEL.NORMAL;
                 if (getSort().equals(getString(R.string.filter_status)))
@@ -194,9 +194,8 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                 if (getSort().equals(getString(R.string.filter_error)))
                     LogLevel = DomoticzValues.Log.LOGLEVEL.ERROR;
 
-                mDomoticz.getLogs(new LogsReceiver() {
+                StaticHelper.getDomoticz(mContext).getLogs(new LogsReceiver() {
                     @Override
-
                     public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {
                         successHandling(mLogInfos.toString(), false);
                         SerializableManager.saveSerializable(mContext, mLogInfos, "Logs");
@@ -204,9 +203,11 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                     }
 
                     @Override
-
                     public void onError(Exception error) {
-                        errorHandling(error);
+                        if (LogLevel == DomoticzValues.Log.LOGLEVEL.ALL)
+                            errorHandling(error);
+                        else
+                            createListView(new ArrayList<LogInfo>());
                     }
                 }, LogLevel);
             }

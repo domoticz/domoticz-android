@@ -26,25 +26,23 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.Log;
 
+import androidx.preference.MultiSelectListPreference;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import androidx.preference.MultiSelectListPreference;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
 public class WearMultiSelectListPreference extends MultiSelectListPreference {
     private static final String TAG = WearMultiSelectListPreference.class.getName();
-
     private boolean selectAllValuesByDefault;
-
     private CharSequence[] mEntryValues;
-    private Domoticz mDomoticz;
     private int currentSwitch = 1;
 
     public WearMultiSelectListPreference(Context context, AttributeSet attrs) {
@@ -52,13 +50,12 @@ public class WearMultiSelectListPreference extends MultiSelectListPreference {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomListPreference);
         selectAllValuesByDefault = typedArray.getBoolean(R.styleable.CustomListPreference_selectAllValuesByDefault, false);
         typedArray.recycle();
-        mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         initSwitches();
     }
 
     private void initSwitches() {
         currentSwitch = 1;
-        mDomoticz.getDevices(new DevicesReceiver() {
+        StaticHelper.getDomoticz(getContext()).getDevices(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
                 //final List<Integer> appSupportedSwitchesValues = mDomoticz.getWearSupportedSwitchesValues();

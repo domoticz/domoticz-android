@@ -22,15 +22,21 @@
 package nl.hnogames.domoticz.welcome;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+
+import com.codekidlabs.storagechooser.StorageChooser;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.google.android.material.button.MaterialButton;
@@ -38,16 +44,13 @@ import com.google.android.material.button.MaterialButton;
 import java.io.File;
 import java.util.Arrays;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 
 public class WelcomePage2 extends Fragment implements OnPermissionCallback {
-    private File SettingsFile;
     private PermissionFragmentHelper permissionFragmentHelper;
+    private StorageChooser.Theme theme;
 
     public static WelcomePage2 newInstance() {
         return new WelcomePage2();
@@ -57,7 +60,7 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_welcome2, container, false);
-        SettingsFile = new File(Environment.getExternalStorageDirectory(), "/Domoticz/DomoticzSettings.txt");
+        SetStorageTheme();
 
         permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
         MaterialButton importButton = v.findViewById(R.id.import_settings);
@@ -81,20 +84,71 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
                 ((WelcomeViewActivity) getActivity()).setDemoAccount();
             }
         });
-
-        if (!SettingsFile.exists()) {
-            importButton.setVisibility(View.GONE);
-        }
         return v;
     }
 
+    private void SetStorageTheme() {
+        theme = new StorageChooser.Theme(getContext());
+        int[] scheme = new int[16];
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme currentTheme = getContext().getTheme();
+        currentTheme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        scheme[0] = typedValue.data;// header background
+        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
+        scheme[1] = typedValue.data;// header text
+        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
+        scheme[2] = typedValue.data;//list bg
+        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
+        scheme[3] = typedValue.data;//storage list name text
+        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
+        scheme[4] = typedValue.data;//free space text
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[5] = typedValue.data;//memory bar
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[6] = typedValue.data;//folder tint
+        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
+        scheme[7] = typedValue.data;// list bg
+        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
+        scheme[8] = typedValue.data;//list text
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[9] = typedValue.data;//address bar tint
+        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
+        scheme[10] = typedValue.data;//folder hint tint
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[11] = typedValue.data;//elect button color
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[12] = typedValue.data;//select button color
+        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
+        scheme[13] = typedValue.data;//new folder layour bg
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[14] = typedValue.data;//fab multiselect color
+        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
+        scheme[15] = typedValue.data;//address bar bg
+        theme.setScheme(scheme);
+    }
+
     private void importSettings() {
-        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(getActivity());
-        if (mSharedPrefs.loadSharedPreferencesFromFile(SettingsFile)) {
-            Toast.makeText(getActivity(), R.string.settings_imported, Toast.LENGTH_LONG).show();
-            ((WelcomeViewActivity) getActivity()).finishWithResult(true);
-        } else
-            Toast.makeText(getActivity(), R.string.settings_import_failed, Toast.LENGTH_SHORT).show();
+        StorageChooser chooser = new StorageChooser.Builder()
+                .withActivity(getActivity())
+                .withFragmentManager(getActivity().getFragmentManager())
+                .withMemoryBar(false)
+                .allowCustomPath(true)
+                .setType(StorageChooser.FILE_PICKER)
+                .setTheme(theme)
+                .build();
+        chooser.show();
+        chooser.setOnSelectListener(new StorageChooser.OnSelectListener() {
+            @Override
+            public void onSelect(String path) {
+                Log.v("Import", "Importing settings from: " + path);
+                SharedPrefUtil mSharedPrefs = new SharedPrefUtil(getActivity());
+                if (mSharedPrefs.loadSharedPreferencesFromFile(new File(path))) {
+                    Toast.makeText(getActivity(), R.string.settings_imported, Toast.LENGTH_LONG).show();
+                    ((WelcomeViewActivity) getActivity()).finishWithResult(true);
+                } else
+                    Toast.makeText(getActivity(), R.string.settings_import_failed, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

@@ -73,6 +73,8 @@
     <string name="show_dashboard_list_off">Zobrazit řídící panel jako mřížku</string>
     <string name="dashboard_clock">Hodiny</string>
     <string name="show_dashboard_clock">Zobrazit hodiny na panelu</string>
+    <string name="dashboard_camera">Camera</string>
+    <string name="show_dashboard_camera">Load the camera for connected switches</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Vlastní položky Android Wear</string>
     <string name="custom_wear_select">Zvolte Wear přepínače</string>
@@ -170,6 +172,8 @@
     <string name="theme_orange">Orange</string>
     <string name="theme_pink">Pink</string>
     <string name="theme_blue">Blue</string>
+    <string name="theme_green">Green</string>
+    <string name="theme_dark_blue">Dark blue</string>
     <!-- Other -->
     <string name="default_values">Výchozí hodnoty</string>
     <string name="default_values_min_error">Maximální hodnota by měla být vyšší než minimální hodnota</string>

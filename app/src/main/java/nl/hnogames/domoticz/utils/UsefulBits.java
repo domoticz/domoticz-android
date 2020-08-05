@@ -38,6 +38,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.github.javiersantos.piracychecker.PiracyChecker;
 import com.github.javiersantos.piracychecker.PiracyCheckerUtils;
 import com.github.javiersantos.piracychecker.enums.InstallerID;
@@ -60,12 +63,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.service.TaskService;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.LoginInfo;
@@ -301,19 +302,16 @@ public class UsefulBits {
      * @param forceDownload Force downloading the language anyway
      */
 
-    public static void checkDownloadedLanguage(Context context, ServerUtil serverUtil, boolean forceDownload, boolean fromService) {
+    public static void checkDownloadedLanguage(Context context, boolean forceDownload, boolean fromService) {
 
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
         String downloadedLanguage = mSharedPrefs.getDownloadedLanguage();
         String activeLanguage = UsefulBits.getActiveLanguage(context);
 
-        if (serverUtil == null)
-            serverUtil = new ServerUtil(context);
-
         if (mSharedPrefs.getSavedLanguage() == null || forceDownload) {
             // Language files aren't there or should be downloaded anyway, let's download them
             Log.d(TAG, "Downloading language files. Forced: " + forceDownload);
-            mSharedPrefs.getLanguageStringsFromServer(activeLanguage.toLowerCase(), serverUtil);
+            mSharedPrefs.getLanguageStringsFromServer(activeLanguage.toLowerCase(), StaticHelper.getServerUtil(context));
             if (mSharedPrefs.isDebugEnabled()) {
                 if (forceDownload && !fromService) {
                     showSimpleToast(context, "Language files downloaded because it was forced", Toast.LENGTH_SHORT);
@@ -338,7 +336,7 @@ public class UsefulBits {
                         + "Current downloaded language: " + downloadedLanguage + newLine()
                         + "Active language: " + activeLanguage + newLine()
                         + "Downloading the correct language");
-                mSharedPrefs.getLanguageStringsFromServer(activeLanguage.toLowerCase(), serverUtil);
+                mSharedPrefs.getLanguageStringsFromServer(activeLanguage.toLowerCase(), StaticHelper.getServerUtil(context));
             }
         }
     }
@@ -431,18 +429,13 @@ public class UsefulBits {
      * @param context Context
      */
 
-    public static void getServerConfigForActiveServer(final Context context, final LoginInfo loginInfo, final ConfigReceiver receiver, final ConfigInfo currentConfig, final ServerUtil serverUtil) {
-        ServerUtil mServerUtil = serverUtil;
-        if (mServerUtil == null)
-            mServerUtil = new ServerUtil(context);
-        final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
-        final ServerUtil finalMServerUtil = mServerUtil;
-        domoticz.getConfig(new ConfigReceiver() {
+    public static void getServerConfigForActiveServer(final Context context, final LoginInfo loginInfo, final ConfigReceiver receiver, final ConfigInfo currentConfig) {
+        StaticHelper.getDomoticz(context).getConfig(new ConfigReceiver() {
             @Override
 
             public void onReceiveConfig(final ConfigInfo configInfo) {
                 if (configInfo != null)
-                    GetServerUserInfo(domoticz, loginInfo, finalMServerUtil, context, configInfo, currentConfig, receiver);
+                    GetServerUserInfo(StaticHelper.getDomoticz(context), loginInfo, StaticHelper.getServerUtil(context), context, configInfo, currentConfig, receiver);
             }
 
             @Override

@@ -32,28 +32,28 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.MenuItemCompat;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.ftinc.scoop.Scoop;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.MenuItemCompat;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.adapters.TemperatureWidgetAdapter;
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.ui.PasswordDialog;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
 import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.TemperatureReceiver;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
@@ -66,7 +66,6 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
     public CoordinatorLayout coordinatorLayout;
     int mAppWidgetId;
     private SharedPrefUtil mSharedPrefs;
-    private Domoticz domoticz;
     private TemperatureWidgetAdapter adapter;
     private SearchView searchViewAction;
     private Toolbar toolbar;
@@ -81,7 +80,6 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
         setResult(RESULT_CANCELED);
 
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
-        domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -123,7 +121,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
     public void initListViews() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             Log.i(TAG, "Showing switches for widget");
-            domoticz.getTemperatures(new TemperatureReceiver() {
+            StaticHelper.getDomoticz(SmallTempWidgetConfigurationActivity.this).getTemperatures(new TemperatureReceiver() {
                 @Override
                 public void onReceiveTemperatures(ArrayList<TemperatureInfo> mDevicesInfo) {
                     ArrayList<TemperatureInfo> mNewDevicesInfo = new ArrayList<TemperatureInfo>();
@@ -131,7 +129,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
                         mNewDevicesInfo.add(d);
 
                     ListView listView = findViewById(R.id.list);
-                    adapter = new TemperatureWidgetAdapter(SmallTempWidgetConfigurationActivity.this, domoticz, domoticz.getServerUtil(), mNewDevicesInfo);
+                    adapter = new TemperatureWidgetAdapter(SmallTempWidgetConfigurationActivity.this, StaticHelper.getDomoticz(SmallTempWidgetConfigurationActivity.this), StaticHelper.getDomoticz(SmallTempWidgetConfigurationActivity.this).getServerUtil(), mNewDevicesInfo);
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -160,7 +158,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
 
                             if (mDeviceInfo.isProtected()) {
                                 PasswordDialog passwordDialog = new PasswordDialog(
-                                        SmallTempWidgetConfigurationActivity.this, domoticz);
+                                        SmallTempWidgetConfigurationActivity.this, StaticHelper.getDomoticz(SmallTempWidgetConfigurationActivity.this));
                                 passwordDialog.show();
                                 passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                     @Override

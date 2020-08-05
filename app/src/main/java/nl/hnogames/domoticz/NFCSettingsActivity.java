@@ -41,6 +41,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.ftinc.scoop.Scoop;
@@ -49,20 +53,16 @@ import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationA
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import nl.hnogames.domoticz.adapters.NFCAdapter;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.NFCInfo;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.NFCClickListener;
 import nl.hnogames.domoticz.ui.SwitchDialog;
 import nl.hnogames.domoticz.utils.DeviceUtils;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
@@ -83,7 +83,6 @@ public class NFCSettingsActivity extends AppCompatAssistActivity implements NFCC
 
     boolean result = false;
     private SharedPrefUtil mSharedPrefs;
-    private Domoticz domoticz;
     private CoordinatorLayout coordinatorLayout;
     private NfcAdapter mNfcAdapter;
     private ArrayList<NFCInfo> nfcList;
@@ -117,7 +116,6 @@ public class NFCSettingsActivity extends AppCompatAssistActivity implements NFCC
             UsefulBits.showSnackbar(this, coordinatorLayout, R.string.nfc_not_supported, Snackbar.LENGTH_SHORT);
         }
 
-        domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         nfcList = mSharedPrefs.getNFCList();
         adapter = new NFCAdapter(this, nfcList, this);
         createListView();
@@ -251,7 +249,7 @@ public class NFCSettingsActivity extends AppCompatAssistActivity implements NFCC
     }
 
     private void getSwitchesAndShowSwitchesDialog(final NFCInfo nfcInfo) {
-        domoticz.getDevices(new DevicesReceiver() {
+        StaticHelper.getDomoticz(NFCSettingsActivity.this).getDevices(new DevicesReceiver() {
             @Override
 
             public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
@@ -290,7 +288,7 @@ public class NFCSettingsActivity extends AppCompatAssistActivity implements NFCC
         SwitchDialog infoDialog = new SwitchDialog(
                 NFCSettingsActivity.this, supportedSwitches,
                 R.layout.dialog_switch_logs,
-                domoticz);
+                StaticHelper.getDomoticz(NFCSettingsActivity.this));
 
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override

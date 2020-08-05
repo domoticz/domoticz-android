@@ -48,7 +48,7 @@
     <string name="wizard_menuitem_description">Możesz teraz usunąć ten kreator z menu nawigacji!</string>
     <string name="wizard_nfc">NFC</string>
     <string name="wizard_nfc_description">Przerzuć przełączniki za pomocą NFC</string>
-    <string name="wizard_bluetooth_description">You are able to toggle switches via Bluetooth connections!</string>
+    <string name="wizard_bluetooth_description">Możesz przełączać przełączniki poprzez połączenia Bluetooth!</string>
     <string name="wizard_qrcode">Kod QR</string>
     <string name="wizard_qrcode_description">Przerzuć przełączniki, przez zeskanowanie kodu QR (lub kodu kreskowego)!</string>
     <string name="wizard_speech">Polecenia głosowe</string>
@@ -59,5 +59,5 @@
     <string name="wizard_button_wizard">Usuń</string>
     <string name="wizard_button_utilities">Narzędzia</string>
     <string name="wizard_button_done">Gotowe</string>
-    <string name="wizard_beacon_description">Toggle switches by scanning for beacons!</string>
+    <string name="wizard_beacon_description">Przełącz przełączniki skanując w poszukiwaniu nadajników!</string>
 </resources>

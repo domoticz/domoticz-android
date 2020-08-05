@@ -29,14 +29,15 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.widget.LinearLayout;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.MainActivity;
@@ -45,6 +46,7 @@ import nl.hnogames.domoticz.adapters.WeatherAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.ui.WeatherInfoDialog;
@@ -157,7 +159,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
 
     private void createListView(ArrayList<WeatherInfo> mWeatherInfos) {
         if (adapter == null) {
-            adapter = new WeatherAdapter(mContext, mDomoticz, getServerUtil(), mWeatherInfos, this);
+            adapter = new WeatherAdapter(mContext, StaticHelper.getDomoticz(mContext), getServerUtil(), mWeatherInfos, this);
             alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
             gridView.setAdapter(alphaSlideIn);
         } else {
@@ -216,7 +218,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mWeatherInfo.getIdx() + " favorite to " + isFavorite);
 
-        UserInfo user = getCurrentUser(mContext, mDomoticz);
+        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
         if (user != null && user.getRights() <= 1) {
             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
@@ -240,7 +242,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         if (isFavorite) jsonAction = DomoticzValues.Device.Favorite.ON;
         else jsonAction = DomoticzValues.Device.Favorite.OFF;
 
-        mDomoticz.setAction(mWeatherInfo.getIdx(),
+        StaticHelper.getDomoticz(mContext).setAction(mWeatherInfo.getIdx(),
                 jsonUrl,
                 jsonAction,
                 0,
@@ -381,7 +383,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
             if (cacheWeathers != null)
                 createListView(cacheWeathers);
 
-            mDomoticz.getWeathers(new WeatherReceiver() {
+            StaticHelper.getDomoticz(mContext).getWeathers(new WeatherReceiver() {
                 @Override
 
                 public void onReceiveWeather(ArrayList<WeatherInfo> mWeatherInfos) {

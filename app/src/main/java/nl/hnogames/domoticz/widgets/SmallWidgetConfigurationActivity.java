@@ -32,28 +32,28 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.MenuItemCompat;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.ftinc.scoop.Scoop;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.MenuItemCompat;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.adapters.WidgetsAdapter;
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.ui.PasswordDialog;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
@@ -72,7 +72,6 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
     public CoordinatorLayout coordinatorLayout;
     int mAppWidgetId;
     private SharedPrefUtil mSharedPrefs;
-    private Domoticz domoticz;
     private WidgetsAdapter adapter;
     private SearchView searchViewAction;
     private Toolbar toolbar;
@@ -87,7 +86,6 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
         setResult(RESULT_CANCELED);
 
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
-        domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -111,6 +109,7 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
 
     /* Called when the second activity's finished */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (data != null && resultCode == RESULT_OK) {
             switch (requestCode) {
                 case iWelcomeResultCode:
@@ -128,7 +127,7 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
     public void initListViews() {
         if (mSharedPrefs.isWelcomeWizardSuccess()) {
             Log.i(TAG, "Showing switches for widget");
-            domoticz.getDevices(new DevicesReceiver() {
+            StaticHelper.getDomoticz(SmallWidgetConfigurationActivity.this).getDevices(new DevicesReceiver() {
                 @Override
                 public void onReceiveDevices(final ArrayList<DevicesInfo> mDevicesInfo) {
                     ArrayList<DevicesInfo> mNewDevicesInfo = new ArrayList<DevicesInfo>();
@@ -151,7 +150,7 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
                     }
 
                     ListView listView = findViewById(R.id.list);
-                    adapter = new WidgetsAdapter(SmallWidgetConfigurationActivity.this, domoticz, mNewDevicesInfo);
+                    adapter = new WidgetsAdapter(SmallWidgetConfigurationActivity.this, StaticHelper.getDomoticz(SmallWidgetConfigurationActivity.this), mNewDevicesInfo);
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -178,7 +177,7 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
                             final DevicesInfo mDeviceInfo = (DevicesInfo) adapter.getItem(position);
                             if (mDeviceInfo.isProtected()) {
                                 PasswordDialog passwordDialog = new PasswordDialog(
-                                        SmallWidgetConfigurationActivity.this, domoticz);
+                                        SmallWidgetConfigurationActivity.this, StaticHelper.getDomoticz(SmallWidgetConfigurationActivity.this));
                                 passwordDialog.show();
                                 passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                     @Override

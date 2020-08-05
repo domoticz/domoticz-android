@@ -73,6 +73,8 @@
     <string name="show_dashboard_list_off">Vis Instrumentpanel som rutenett</string>
     <string name="dashboard_clock">Clock</string>
     <string name="show_dashboard_clock">Show a clock on the dashboard</string>
+    <string name="dashboard_camera">Camera</string>
+    <string name="show_dashboard_camera">Load the camera for connected switches</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear egendefinerte elementer</string>
     <string name="custom_wear_select">Velg Wear brytere</string>
@@ -170,6 +172,8 @@
     <string name="theme_orange">Orange</string>
     <string name="theme_pink">Pink</string>
     <string name="theme_blue">Blue</string>
+    <string name="theme_green">Green</string>
+    <string name="theme_dark_blue">Dark blue</string>
     <!-- Other -->
     <string name="default_values">Default values</string>
     <string name="default_values_min_error">Max value should be higher than Min value</string>

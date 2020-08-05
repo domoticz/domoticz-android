@@ -30,6 +30,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.widget.SearchView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.stfalcon.chatkit.messages.MessageHolders;
 import com.stfalcon.chatkit.messages.MessagesList;
@@ -39,15 +44,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import androidx.appcompat.widget.SearchView;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.MenuItemCompat;
-import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.helpers.CustomIncomingMessageViewHolder;
 import nl.hnogames.domoticz.helpers.CustomOutcomingMessageViewHolder;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.ui.SendNotificationDialog;
 import nl.hnogames.domoticz.utils.DeviceUtils;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -57,18 +58,15 @@ import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.NotificationTypesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SendNotificationReceiver;
-import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class NotificationHistory extends Fragment {
     private ViewGroup root;
     private SharedPrefUtil mSharedPrefs;
     private Context context;
-    private Domoticz mDomoticz;
     private ArrayList<NotificationTypeInfo> mNotificationTypes;
     private MessagesListAdapter<NotificationInfo> adapter;
     private CoordinatorLayout coordinatorLayout;
     private UserInfo user = null;
-    private ServerUtil mServerUtil = null;
     private ConfigInfo mConfigInfo = null;
     private SearchView searchViewAction;
     private List<NotificationInfo> notifications;
@@ -81,15 +79,13 @@ public class NotificationHistory extends Fragment {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_notification_history, null);
 
         context = getActivity();
-        mServerUtil = new ServerUtil(context);
-        mConfigInfo = mServerUtil.getActiveServer().getConfigInfo(context);
+        mConfigInfo = StaticHelper.getServerUtil(context).getActiveServer().getConfigInfo(context);
 
         mSharedPrefs = new SharedPrefUtil(context);
-        mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
 
         notifications = mSharedPrefs.getLoggedNotifications();
         coordinatorLayout = root.findViewById(R.id.coordinatorLayout);
-        mDomoticz.GetNotificationSystems(new NotificationTypesReceiver() {
+        StaticHelper.getDomoticz(context).GetNotificationSystems(new NotificationTypesReceiver() {
             @Override
             public void onReceive(ArrayList<NotificationTypeInfo> notificationTypes) {
                 mNotificationTypes = notificationTypes;
@@ -144,7 +140,7 @@ public class NotificationHistory extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (mNotificationTypes != null) {
-            UserInfo user = getCurrentUser(mDomoticz);
+            UserInfo user = getCurrentUser(StaticHelper.getDomoticz(context));
             if (user != null && user.getRights() >= 2)
                 inflater.inflate(R.menu.menu_notification, menu);
             else
@@ -189,7 +185,7 @@ public class NotificationHistory extends Fragment {
                 dialog.onDismissListener(new SendNotificationDialog.DismissListener() {
                     @Override
                     public void OnSend(final NotificationInfo message) {
-                        mDomoticz.SendNotification(message.getTitle(), message.getText(), message.getSystems(), new SendNotificationReceiver() {
+                        StaticHelper.getDomoticz(context).SendNotification(message.getTitle(), message.getText(), message.getSystems(), new SendNotificationReceiver() {
                             @Override
                             public void onSuccess() {
                                 adapter.addToStart(message, true);

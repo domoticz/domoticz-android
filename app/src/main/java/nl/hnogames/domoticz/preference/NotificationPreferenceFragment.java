@@ -32,28 +32,27 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 
+import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceGroup;
+
 import com.fastaccess.permission.base.PermissionHelper;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.List;
 
-import androidx.fragment.app.Fragment;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceCategory;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceGroup;
 import nl.hnogames.domoticz.NotificationHistoryActivity;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.DeviceUtils;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.MobileDeviceReceiver;
-import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class NotificationPreferenceFragment extends PreferenceFragmentCompat {
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
@@ -62,9 +61,7 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat {
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private SharedPrefUtil mSharedPrefs;
     private Context mContext;
-    private Domoticz mDomoticz;
     private ConfigInfo mConfigInfo;
-    private ServerUtil mServerUtil;
     private PermissionHelper permissionHelper;
 
     private static void tintIcons(Preference preference, int color) {
@@ -97,10 +94,8 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat {
 
         mContext = getActivity();
         permissionHelper = PermissionHelper.getInstance(getActivity());
-        mServerUtil = new ServerUtil(mContext);
         mSharedPrefs = new SharedPrefUtil(mContext);
-        mDomoticz = new Domoticz(mContext, AppController.getInstance().getRequestQueue());
-        mConfigInfo = mServerUtil.getActiveServer().getConfigInfo(mContext);
+        mConfigInfo = StaticHelper.getServerUtil(getActivity()).getActiveServer().getConfigInfo(mContext);
 
         setIconColor();
         setPreferences();
@@ -214,11 +209,11 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat {
     private void pushGCMRegistrationIds() {
         final String UUID = DeviceUtils.getUniqueID(mContext);
         final String senderId = FirebaseInstanceId.getInstance().getToken();
-        mDomoticz.CleanMobileDevice(UUID, new MobileDeviceReceiver() {
+        StaticHelper.getDomoticz(mContext).CleanMobileDevice(UUID, new MobileDeviceReceiver() {
             @Override
             public void onSuccess() {
                 //previous id cleaned
-                mDomoticz.AddMobileDevice(UUID, senderId, new MobileDeviceReceiver() {
+                StaticHelper.getDomoticz(mContext).AddMobileDevice(UUID, senderId, new MobileDeviceReceiver() {
                     @Override
                     public void onSuccess() {
                         if (isAdded())
@@ -236,7 +231,7 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat {
             @Override
             public void onError(Exception error) {
                 //nothing to clean..
-                mDomoticz.AddMobileDevice(UUID, senderId, new MobileDeviceReceiver() {
+                StaticHelper.getDomoticz(mContext).AddMobileDevice(UUID, senderId, new MobileDeviceReceiver() {
                     @Override
                     public void onSuccess() {
                         if (isAdded())

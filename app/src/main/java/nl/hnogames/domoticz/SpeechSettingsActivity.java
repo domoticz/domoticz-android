@@ -34,6 +34,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
@@ -47,14 +52,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.adapters.SpeechAdapter;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.SpeechInfo;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.SpeechClickListener;
 import nl.hnogames.domoticz.ui.SwitchDialog;
 import nl.hnogames.domoticz.utils.DeviceUtils;
@@ -62,7 +63,6 @@ import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
@@ -71,7 +71,6 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
 
     boolean result = false;
     private SharedPrefUtil mSharedPrefs;
-    private Domoticz domoticz;
     private CoordinatorLayout coordinatorLayout;
     private ArrayList<SpeechInfo> SpeechList;
     private SpeechAdapter adapter;
@@ -103,7 +102,6 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.category_Speech);
 
-        domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         SpeechList = mSharedPrefs.getSpeechList();
         adapter = new SpeechAdapter(this, SpeechList, this);
 
@@ -160,7 +158,7 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
     }
 
     private void getSwitchesAndShowSwitchesDialog(final SpeechInfo qrInfo) {
-        domoticz.getDevices(new DevicesReceiver() {
+        StaticHelper.getDomoticz(SpeechSettingsActivity.this).getDevices(new DevicesReceiver() {
             @Override
 
             public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
@@ -199,7 +197,7 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
         SwitchDialog infoDialog = new SwitchDialog(
                 SpeechSettingsActivity.this, supportedSwitches,
                 R.layout.dialog_switch_logs,
-                domoticz);
+                StaticHelper.getDomoticz(SpeechSettingsActivity.this));
 
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override

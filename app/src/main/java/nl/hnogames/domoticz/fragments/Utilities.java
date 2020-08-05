@@ -31,13 +31,14 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.MainActivity;
@@ -46,6 +47,7 @@ import nl.hnogames.domoticz.adapters.UtilityAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.ui.PasswordDialog;
@@ -159,7 +161,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     private void createListView() {
         if (getView() != null) {
             if (adapter == null) {
-                adapter = new UtilityAdapter(mContext, mDomoticz, mUtilitiesInfos, this);
+                adapter = new UtilityAdapter(mContext, StaticHelper.getDomoticz(mContext), mUtilitiesInfos, this);
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
             } else {
@@ -216,7 +218,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
 
     private void changeFavorite(final UtilitiesInfo mUtilitiesInfo, final boolean isFavorite) {
 
-        UserInfo user = getCurrentUser(mContext, mDomoticz);
+        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
         if (user != null && user.getRights() <= 1) {
             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
@@ -243,7 +245,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         if (isFavorite) jsonAction = DomoticzValues.Device.Favorite.ON;
         else jsonAction = DomoticzValues.Device.Favorite.OFF;
 
-        mDomoticz.setAction(mUtilitiesInfo.getIdx(),
+        StaticHelper.getDomoticz(mContext).setAction(mUtilitiesInfo.getIdx(),
                 jsonUrl,
                 jsonAction,
                 0,
@@ -363,7 +365,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     @Override
 
     public void onThermostatClick(final int idx) {
-        UserInfo user = getCurrentUser(mContext, mDomoticz);
+        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
         if (user != null && user.getRights() <= 0) {
             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
@@ -388,7 +390,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                     if (tempUtil != null) {
                         if (tempUtil.isProtected()) {
                             PasswordDialog passwordDialog = new PasswordDialog(
-                                    mContext, mDomoticz);
+                                    mContext, StaticHelper.getDomoticz(mContext));
                             passwordDialog.show();
                             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                 @Override
@@ -415,7 +417,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     public void setThermostatAction(final UtilitiesInfo tempUtil,
                                     double newSetPoint,
                                     String password) {
-        UserInfo user = getCurrentUser(mContext, mDomoticz);
+        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
         if (user != null && user.getRights() <= 0) {
             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
@@ -431,7 +433,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         if (newSetPoint < tempUtil.getSetPoint())
             action = DomoticzValues.Device.Thermostat.Action.MIN;
 
-        mDomoticz.setAction(tempUtil.getIdx(),
+        StaticHelper.getDomoticz(mContext).setAction(tempUtil.getIdx(),
                 jsonUrl,
                 action,
                 newSetPoint,
@@ -464,7 +466,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     public void onLogButtonClick(int idx) {
 
 
-        mDomoticz.getTextLogs(idx, new SwitchLogReceiver() {
+        StaticHelper.getDomoticz(mContext).getTextLogs(idx, new SwitchLogReceiver() {
             @Override
 
             public void onReceiveSwitches(ArrayList<SwitchLogInfo> switchesLogs) {
@@ -556,7 +558,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             if (cacheUtilities != null)
                 createListView();
 
-            mDomoticz.getUtilities(new UtilitiesReceiver() {
+            StaticHelper.getDomoticz(mContext).getUtilities(new UtilitiesReceiver() {
                 @Override
 
                 public void onReceiveUtilities(ArrayList<UtilitiesInfo> mUtilitiesInfos) {

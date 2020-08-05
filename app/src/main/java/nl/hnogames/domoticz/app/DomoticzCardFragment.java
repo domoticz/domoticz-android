@@ -32,30 +32,28 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.List;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
+
 import nl.hnogames.domoticz.MainActivity;
-import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class DomoticzCardFragment extends Fragment {
-
-    public Domoticz mDomoticz;
     public View frameLayout;
     public PhoneConnectionUtil mPhoneConnectionUtil;
     public SwipeRefreshLayout mSwipeRefreshLayout;
@@ -91,11 +89,7 @@ public class DomoticzCardFragment extends Fragment {
     }
 
     public ServerUtil getServerUtil() {
-        if (getActivity() instanceof MainActivity) {
-            return ((MainActivity) getActivity()).getServerUtil();
-        } else if (getActivity() instanceof PlanActivity) {
-            return ((PlanActivity) getActivity()).getServerUtil();
-        } else return null;
+        return StaticHelper.getServerUtil(getContext());
     }
 
     @Override
@@ -124,8 +118,6 @@ public class DomoticzCardFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        mDomoticz = new Domoticz(getActivity(), AppController.getInstance().getRequestQueue());
         debug = mSharedPrefs.isDebugEnabled();
 
         if (debug) showDebugLayout();
@@ -194,8 +186,7 @@ public class DomoticzCardFragment extends Fragment {
      * @param error Exception
      */
     public void errorHandling(Exception error, View frameLayout) {
-
-        String errorMessage = mDomoticz.getErrorMessage(error);
+        String errorMessage = StaticHelper.getDomoticz(getActivity()).getErrorMessage(error);
         if (mPhoneConnectionUtil == null)
             mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
 

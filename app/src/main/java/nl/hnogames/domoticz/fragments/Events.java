@@ -25,17 +25,19 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.EventsAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.EventsClickListener;
 import nl.hnogames.domoticz.utils.SerializableManager;
@@ -116,11 +118,11 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     private void createListView(ArrayList<EventInfo> mEventInfos) {
         if (getView() != null) {
             if (adapter == null) {
-                adapter = new EventsAdapter(mContext, mDomoticz, mEventInfos, new EventsClickListener() {
+                adapter = new EventsAdapter(mContext, StaticHelper.getDomoticz(mContext), mEventInfos, new EventsClickListener() {
                     @Override
 
                     public void onEventClick(final int idx, boolean action) {
-                        UserInfo user = getCurrentUser(mContext, mDomoticz);
+                        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
                         if (user != null && user.getRights() <= 1) {
                             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
                             if (getActivity() instanceof MainActivity)
@@ -131,7 +133,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
 
                         int jsonAction = action ? DomoticzValues.Event.Action.ON : DomoticzValues.Event.Action.OFF;
                         int jsonUrl = DomoticzValues.Json.Url.Set.EVENTS_UPDATE_STATUS;
-                        mDomoticz.setAction(idx, jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
+                        StaticHelper.getDomoticz(mContext).setAction(idx, jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
                             @Override
                             public void onReceiveResult(String result) {
                                 successHandling(result, false);
@@ -202,7 +204,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
             if (cacheEventInfos != null)
                 createListView(cacheEventInfos);
 
-            mDomoticz.getEvents(new EventReceiver() {
+            StaticHelper.getDomoticz(mContext).getEvents(new EventReceiver() {
                 @Override
 
                 public void onReceiveEvents(final ArrayList<EventInfo> mEventInfos) {

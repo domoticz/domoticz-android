@@ -458,7 +458,11 @@ public class Domoticz {
     }
 
     public String getSnapshotUrl(CameraInfo camera) {
-        return mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CAMERA) + camera.getIdx();
+        return getSnapshotUrl(camera.getIdx());
+    }
+
+    public String getSnapshotUrl(int idx) {
+        return mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CAMERA) + idx;
     }
 
     /**
@@ -523,32 +527,10 @@ public class Domoticz {
             Map<String, String> params = new HashMap<>();
             params.put("username", URLEncoder.encode(username, "UTF-8"));
             params.put("password", URLEncoder.encode(password, "UTF-8"));
-            LoginPostRequest(parser, url, params, true);
+            LoginPostRequest(parser, url, params);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-    }
-
-    public void checkLoginOld(LoginReceiver loginReceiver) {
-        String baseUsername = getUserCredentials(Authentication.USERNAME);
-        String basePassword = getUserCredentials(Authentication.PASSWORD);
-        if(UsefulBits.isEmpty(baseUsername)||UsefulBits.isEmpty(basePassword))
-            loginReceiver.OnReceive(new LoginInfo());
-
-        String username = UsefulBits.encodeBase64(baseUsername);
-        String password = UsefulBits.getMd5String(basePassword);
-        LoginParser parser = new LoginParser(loginReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CHECKLOGIN);
-
-        try {
-            url += "&username=" + URLEncoder.encode(username, "UTF-8");
-            url += "&password=" + URLEncoder.encode(password, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        Log.v(TAG, "Url: " + url);
-        GetRequest(parser, url, false);
     }
 
     public void getSwitches(SwitchesReceiver switchesReceiver) {
@@ -1014,8 +996,7 @@ public class Domoticz {
 
     private void LoginPostRequest(@Nullable final JSONParserInterface parser,
                               final String url,
-                              final Map<String, String> params,
-                              boolean retry) {
+                              final Map<String, String> params) {
         final VolleyErrorListener defaultListener = new VolleyErrorListener() {
             @Override
             public void onDone(JSONObject response) {
@@ -1026,36 +1007,11 @@ public class Domoticz {
             @Override
             public void onError(Exception error) {
                 if (parser != null)
-                    parser.onError(error);
+                    parser.parseResult(null); // Just continue.. we have basic auth failover
             }
         };
 
-        VolleyErrorListener listener = new VolleyErrorListener() {
-            @Override
-            public void onDone(JSONObject response) {
-                if (parser != null)
-                    parser.parseResult(response!= null ? response.toString() : null);
-            }
-
-            @Override
-            public void onError(Exception error) {
-                checkLoginOld(new LoginReceiver() {
-                    @Override
-                    public void OnReceive(LoginInfo mLoginInfo) {
-                        if (parser != null)
-                            parser.parseResult(mLoginInfo != null && mLoginInfo.getJson() != null ? mLoginInfo.getJson().toString() : null);
-                    }
-
-                    @Override
-                    public void onError(Exception error) {
-                        if (parser != null)
-                            parser.onError(error);
-                    }
-                });
-            }
-        };
-
-        RequestUtil.makeJsonPostRequest(retry ? listener : defaultListener,
+        RequestUtil.makeJsonPostRequest(defaultListener,
                 url, params, mSessionUtil,
                 getUserCredentials(Authentication.USERNAME),
                 getUserCredentials(Authentication.PASSWORD),

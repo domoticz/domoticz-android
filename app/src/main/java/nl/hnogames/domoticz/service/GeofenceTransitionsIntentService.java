@@ -4,24 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
+
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.JobIntentService;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.LocationInfo;
 import nl.hnogames.domoticz.containers.NotificationInfo;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.WidgetUtils;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
@@ -31,7 +31,6 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
     private final String TAG = "GEOFENCE";
     private Context context;
     private SharedPrefUtil mSharedPrefs;
-    private Domoticz domoticz;
 
     public static void enqueueWork(Context context, Intent intent) {
         enqueueWork(context, GeofenceTransitionsIntentService.class, JOB_ID, intent);
@@ -102,10 +101,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
     }
 
     private void handleSwitch(final Context context, final int idx, final String password, final boolean checked, final String value, final boolean isSceneOrGroup) {
-        if (domoticz == null)
-            domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
-
-        domoticz.getDevice(new DevicesReceiver() {
+        StaticHelper.getDomoticz(context).getDevice(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
             }
@@ -156,7 +152,7 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
                     if (mDevicesInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
                         jsonAction = DomoticzValues.Scene.Action.ON;
                 }
-                domoticz.setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
+                StaticHelper.getDomoticz(context).setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
                     @Override
                     public void onReceiveResult(String result) {
                         WidgetUtils.RefreshWidgets(context);

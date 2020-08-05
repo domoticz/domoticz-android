@@ -24,6 +24,8 @@ package nl.hnogames.domoticz.adapters;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,25 +36,35 @@ import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.chip.Chip;
+import com.google.android.material.slider.BasicLabelFormatter;
+import com.google.android.material.slider.LabelFormatter;
+import com.google.android.material.slider.Slider;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import androidx.recyclerview.widget.RecyclerView;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.switchesClickListener;
+import nl.hnogames.domoticz.utils.CameraUtil;
+import nl.hnogames.domoticz.utils.PicassoUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
@@ -78,7 +90,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     };
     public ArrayList<DevicesInfo> data = null;
     public ArrayList<DevicesInfo> filteredData = null;
-    private Domoticz domoticz;
     private Context context;
     private switchesClickListener listener;
     private int layoutResourceId;
@@ -86,7 +97,11 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     private SharedPrefUtil mSharedPrefs;
     private ConfigInfo mConfigInfo;
     private int lastPosition = -1;
+    private Picasso picasso;
     private ItemFilter mFilter = new ItemFilter();
+    private Domoticz domoticz;
+    @ColorInt
+    private int listviewRowBackground;
 
 
     public SwitchesAdapter(Context context,
@@ -94,10 +109,21 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                            ArrayList<DevicesInfo> data,
                            switchesClickListener listener) {
         super();
+        this.domoticz = StaticHelper.getDomoticz(context);
+
         mSharedPrefs = new SharedPrefUtil(context);
 
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = context.getTheme();
+        theme.resolveAttribute(R.attr.listviewRowBackground, typedValue, true);
+        listviewRowBackground = typedValue.data;
+
+        picasso = new PicassoUtil().getPicasso(context,
+                domoticz.getSessionUtil().getSessionCookie(),
+                domoticz.getUserCredentials(Domoticz.Authentication.USERNAME),
+                domoticz.getUserCredentials(Domoticz.Authentication.PASSWORD));
+
         this.context = context;
-        domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
         this.listener = listener;
 
@@ -386,6 +412,66 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     throw new NullPointerException(
                             "No supported switch type defined in the adapter (setSwitchRowData)");
             }
+        }
+        SetCameraBackGround(mDeviceInfo, holder);
+    }
+
+    private void SetCameraBackGround(DevicesInfo mDeviceInfo, final SwitchesAdapter.DataObjectHolder holder) {
+        if (mSharedPrefs.addCameraToDashboard() && mDeviceInfo.getUsedByCamera() && mDeviceInfo.getCameraIdx() >= 0) {
+            holder.full_screen_icon.setVisibility(View.VISIBLE);
+            holder.full_screen_icon.setTag(mDeviceInfo.getCameraIdx());
+            holder.full_screen_icon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (v.getTag() != null)
+                        listener.onCameraFullScreenClick((int) v.getTag(), "Snapshot");
+                }
+            });
+
+            final String imageUrl = domoticz.getSnapshotUrl(mDeviceInfo.getCameraIdx());
+            holder.dummyImg.setVisibility(View.VISIBLE);
+            holder.row_wrapper.setBackground(null);
+
+            Drawable cache = CameraUtil.getDrawable(imageUrl);
+            if (cache == null) {
+                picasso.load(imageUrl)
+                        .noPlaceholder()
+                        .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                        .into(holder.dummyImg, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                CameraUtil.setDrawable(imageUrl, holder.dummyImg.getDrawable());
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                holder.dummyImg.setVisibility(View.GONE);
+                                holder.row_wrapper.setBackgroundColor(listviewRowBackground);
+                            }
+                        });
+            } else {
+                picasso.load(imageUrl)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE)
+                        .noFade()
+                        .placeholder(cache)
+                        .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                        .into(holder.dummyImg, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                CameraUtil.setDrawable(imageUrl, holder.dummyImg.getDrawable());
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                holder.dummyImg.setVisibility(View.GONE);
+                                holder.row_wrapper.setBackgroundColor(listviewRowBackground);
+                            }
+                        });
+            }
+        } else {
+            holder.full_screen_icon.setVisibility(View.GONE);
+            holder.dummyImg.setVisibility(View.GONE);
+            holder.row_wrapper.setBackgroundColor(listviewRowBackground);
         }
     }
 
@@ -1022,35 +1108,29 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         });
 
         if (holder.dimmer.getVisibility() == View.VISIBLE) {
-            holder.dimmer.setProgress(mDeviceInfo.getLevel());
-            holder.dimmer.setMax(mDeviceInfo.getMaxDimLevel());
-            holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            holder.dimmer.setValue(mDeviceInfo.getLevel());
+            holder.dimmer.setLabelFormatter(new LabelFormatter() {
+                @NonNull
                 @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    String percentage = calculateDimPercentage(seekBar.getMax(), progress);
-                    TextView switch_dimmer_level = seekBar.getRootView()
-                            .findViewById(mDeviceInfo.getIdx() + ID_TEXTVIEW);
-                    if (switch_dimmer_level != null)
-                        switch_dimmer_level.setText(percentage);
+                public String getFormattedValue(float value) {
+                    return (Math.round(value))+"%";
+                }
+            });
+
+            holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel());
+            holder.dimmer.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+                @Override
+                public void onStartTrackingTouch(@NonNull Slider slider) {
+                    previousDimmerValue = (Math.round(slider.getValue()));
                 }
 
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                    previousDimmerValue = seekBar.getProgress();
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                    int progress = seekBar.getProgress();
+                public void onStopTrackingTouch(@NonNull Slider slider) {
+                    int progress = (Math.round(slider.getValue()));
                     handleDimmerChange(mDeviceInfo.getIdx(), progress + 1, false);
                     mDeviceInfo.setLevel(progress);
                 }
             });
-
-            holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
-            String percentage = calculateDimPercentage(
-                    mDeviceInfo.getMaxDimLevel(), mDeviceInfo.getLevel());
-            holder.switch_dimmer_level.setText(percentage);
         }
 
         Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
@@ -1168,11 +1248,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             holder.switch_battery_level.setText(text);
         }
 
-        holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
-        String percentage = calculateDimPercentage(
-                mDeviceInfo.getMaxDimLevel(), mDeviceInfo.getLevel());
-        holder.switch_dimmer_level.setText(percentage);
-
         Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
                 mDeviceInfo.getSubType(),
@@ -1195,15 +1270,13 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 handleOnOffSwitchClick(compoundButton.getId(), checked);
                 mDeviceInfo.setStatusBoolean(checked);
                 if (checked) {
-                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
                     holder.dimmer.setVisibility(View.VISIBLE);
-                    if (holder.dimmer.getProgress() <= 10) {
-                        holder.dimmer.setProgress(20);//dimmer turned on with default progress value
+                    if (holder.dimmer.getValue() <= 10) {
+                        holder.dimmer.setValue(20);//dimmer turned on with default progress value
                     }
                     if (isRGB)
                         holder.buttonColor.setVisibility(View.VISIBLE);
                 } else {
-                    holder.switch_dimmer_level.setVisibility(View.GONE);
                     holder.dimmer.setVisibility(View.GONE);
                     if (isRGB)
                         holder.buttonColor.setVisibility(View.GONE);
@@ -1215,34 +1288,31 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             }
         });
 
-        holder.dimmer.setProgress(mDeviceInfo.getLevel());
-        holder.dimmer.setMax(mDeviceInfo.getMaxDimLevel());
-        holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        holder.dimmer.setValue(mDeviceInfo.getLevel());
+        holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel());
+        holder.dimmer.setLabelFormatter(new LabelFormatter() {
+            @NonNull
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String percentage = calculateDimPercentage(seekBar.getMax(), progress);
-                TextView switch_dimmer_level = seekBar.getRootView()
-                        .findViewById(mDeviceInfo.getIdx() + ID_TEXTVIEW);
-
-                if (switch_dimmer_level != null)
-                    switch_dimmer_level.setText(percentage);
+            public String getFormattedValue(float value) {
+                return (Math.round(value))+"%";
+            }
+        });
+        holder.dimmer.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+                previousDimmerValue = (Math.round(slider.getValue()));
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                previousDimmerValue = seekBar.getProgress();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = seekBar.getProgress();
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                int progress = (Math.round(slider.getValue()));
                 SwitchMaterial dimmerOnOffSwitch = null;
                 try {
-                    dimmerOnOffSwitch = seekBar.getRootView()
+                    dimmerOnOffSwitch = slider.getRootView()
                             .findViewById(mDeviceInfo.getIdx() + ID_SWITCH);
                     if (progress == 0 && dimmerOnOffSwitch.isChecked()) {
                         dimmerOnOffSwitch.setChecked(false);
-                        seekBar.setProgress(previousDimmerValue);
+                        slider.setValue(previousDimmerValue);
                     } else if (progress > 0 && !dimmerOnOffSwitch.isChecked()) {
                         dimmerOnOffSwitch.setChecked(true);
                     }
@@ -1254,12 +1324,10 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         });
 
         if (!mDeviceInfo.getStatusBoolean()) {
-            holder.switch_dimmer_level.setVisibility(View.GONE);
             holder.dimmer.setVisibility(View.GONE);
             if (isRGB)
                 holder.buttonColor.setVisibility(View.GONE);
         } else {
-            holder.switch_dimmer_level.setVisibility(View.VISIBLE);
             holder.dimmer.setVisibility(View.VISIBLE);
             if (isRGB)
                 holder.buttonColor.setVisibility(View.VISIBLE);
@@ -1315,11 +1383,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             holder.switch_battery_level.setText(text);
         }
 
-        holder.switch_dimmer_level.setId(mDeviceInfo.getIdx() + ID_TEXTVIEW);
         String percentage = calculateDimPercentage(
                 mDeviceInfo.getMaxDimLevel(), mDeviceInfo.getLevel());
-        holder.switch_dimmer_level.setText(percentage);
-
         Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                 mDeviceInfo.getType(),
                 mDeviceInfo.getSubType(),
@@ -1339,10 +1404,9 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 public void onClick(View v) {
                     handleOnOffSwitchClick(v.getId(), true);
                     holder.iconRow.setAlpha(1f);
-                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
                     holder.dimmer.setVisibility(View.VISIBLE);
-                    if (holder.dimmer.getProgress() <= 10) {
-                        holder.dimmer.setProgress(20);//dimmer turned on with default progress value
+                    if (holder.dimmer.getValue() <= 10) {
+                        holder.dimmer.setValue(20);//dimmer turned on with default progress value
                     }
                     if (isRGB)
                         holder.buttonColor.setVisibility(View.VISIBLE);
@@ -1356,9 +1420,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 @Override
                 public void onClick(View v) {
                     handleOnOffSwitchClick(v.getId(), false);
-
                     holder.iconRow.setAlpha(0.5f);
-                    holder.switch_dimmer_level.setVisibility(View.GONE);
                     holder.dimmer.setVisibility(View.GONE);
                     if (isRGB)
                         holder.buttonColor.setVisibility(View.GONE);
@@ -1366,37 +1428,34 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             });
         }
 
-        holder.dimmer.setProgress(mDeviceInfo.getLevel());
-        holder.dimmer.setMax(mDeviceInfo.getMaxDimLevel());
-        holder.dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        holder.dimmer.setValue(mDeviceInfo.getLevel());
+        holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel());
+        holder.dimmer.setLabelFormatter(new LabelFormatter() {
+            @NonNull
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String percentage = calculateDimPercentage(seekBar.getMax(), progress);
-                TextView switch_dimmer_level = seekBar.getRootView().findViewById(mDeviceInfo.getIdx() + ID_TEXTVIEW);
-                if (switch_dimmer_level != null)
-                    switch_dimmer_level.setText(percentage);
+            public String getFormattedValue(float value) {
+                return (Math.round(value))+"%";
+            }
+        });
+        holder.dimmer.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+                previousDimmerValue = (Math.round(slider.getValue()));
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                previousDimmerValue = seekBar.getProgress();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = seekBar.getProgress();
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                int progress = (Math.round(slider.getValue()));
                 handleDimmerChange(mDeviceInfo.getIdx(), progress + 1, false);
                 mDeviceInfo.setLevel(progress);
             }
         });
 
         if (!mDeviceInfo.getStatusBoolean()) {
-            holder.switch_dimmer_level.setVisibility(View.GONE);
             holder.dimmer.setVisibility(View.GONE);
             if (isRGB)
                 holder.buttonColor.setVisibility(View.GONE);
         } else {
-            holder.switch_dimmer_level.setVisibility(View.VISIBLE);
             holder.dimmer.setVisibility(View.VISIBLE);
             if (isRGB)
                 holder.buttonColor.setVisibility(View.VISIBLE);
@@ -1602,8 +1661,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
      * @param level       Current level
      * @return Calculated percentage
      */
-    private String calculateDimPercentage(int maxDimLevel, int level) {
-        float percentage = ((float) level / (float) maxDimLevel) * 100;
+    private String calculateDimPercentage(float maxDimLevel, float level) {
+        float percentage = (level / maxDimLevel) * 100;
         return String.format("%.0f", percentage) + "%";
     }
 
@@ -1633,10 +1692,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
     public void setButtons(DataObjectHolder holder, int button) {
         //defaults
-        if (holder.switch_dimmer_level != null) {
-            holder.switch_dimmer_level.setText("");
-            holder.switch_dimmer_level.setVisibility(View.GONE);
-        }
         if (holder.dimmerOnOffSwitch != null) {
             holder.dimmerOnOffSwitch.setVisibility(View.GONE);
         }
@@ -1720,8 +1775,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     holder.buttonUp.setVisibility(View.VISIBLE);
                 if (holder.buttonStop != null)
                     holder.buttonStop.setVisibility(View.VISIBLE);
-                if (holder.switch_dimmer_level != null)
-                    holder.switch_dimmer_level.setVisibility(View.GONE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.GONE);
                 break;
@@ -1730,8 +1783,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     holder.buttonDown.setVisibility(View.VISIBLE);
                 if (holder.buttonUp != null)
                     holder.buttonUp.setVisibility(View.VISIBLE);
-                if (holder.switch_dimmer_level != null)
-                    holder.switch_dimmer_level.setVisibility(View.GONE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.GONE);
                 break;
@@ -1742,8 +1793,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     holder.buttonUp.setVisibility(View.VISIBLE);
                 if (holder.buttonStop != null)
                     holder.buttonStop.setVisibility(View.VISIBLE);
-                if (holder.switch_dimmer_level != null)
-                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.VISIBLE);
                 break;
@@ -1752,32 +1801,24 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     holder.buttonDown.setVisibility(View.VISIBLE);
                 if (holder.buttonUp != null)
                     holder.buttonUp.setVisibility(View.VISIBLE);
-                if (holder.switch_dimmer_level != null)
-                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.VISIBLE);
                 break;
             case Buttons.DIMMER_RGB:
-                if (holder.buttonDown != null)
-                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
-                if (holder.buttonDown != null)
+                if (holder.dimmerOnOffSwitch != null)
                     holder.dimmerOnOffSwitch.setVisibility(View.VISIBLE);
-                if (holder.buttonDown != null)
+                if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.VISIBLE);
-                if (holder.buttonDown != null)
+                if (holder.buttonColor != null)
                     holder.buttonColor.setVisibility(View.VISIBLE);
                 break;
             case Buttons.DIMMER:
-                if (holder.switch_dimmer_level != null)
-                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
                 if (holder.dimmerOnOffSwitch != null)
                     holder.dimmerOnOffSwitch.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.VISIBLE);
                 break;
             case Buttons.DIMMER_BUTTONS:
-                if (holder.switch_dimmer_level != null)
-                    holder.switch_dimmer_level.setVisibility(View.VISIBLE);
                 if (holder.buttonOn != null)
                     holder.buttonOn.setVisibility(View.VISIBLE);
                 if (holder.buttonOff != null)
@@ -1863,19 +1904,19 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder {
-
-        TextView switch_name, signal_level, switch_status, switch_battery_level, switch_dimmer_level;
+        TextView switch_name, signal_level, switch_status, switch_battery_level;
         SwitchMaterial onOffSwitch, dimmerOnOffSwitch;
         ImageView buttonUp, buttonDown, buttonStop;
         Button buttonOn, buttonColor, buttonSetStatus, buttonSet, buttonOff;
         Chip buttonLog, buttonTimer, buttonNotifications;
         Boolean isProtected;
         LikeButton likeButton;
-        ImageView iconRow, iconMode;
-        SeekBar dimmer;
+        ImageView iconRow, iconMode, full_screen_icon;
+        Slider dimmer;
         Spinner spSelector;
-        LinearLayout extraPanel;
+        LinearLayout extraPanel, row_wrapper;
         ImageView infoIcon;
+        ImageView dummyImg;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -1883,14 +1924,16 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             buttonOn = itemView.findViewById(R.id.on_button);
             buttonOff = itemView.findViewById(R.id.off_button);
             buttonSetStatus = itemView.findViewById(R.id.set_button);
+            dummyImg = itemView.findViewById(R.id.dummyImg);
 
+            row_wrapper = itemView.findViewById(R.id.row_wrapper);
             onOffSwitch = itemView.findViewById(R.id.switch_button);
             signal_level = itemView.findViewById(R.id.switch_signal_level);
             iconRow = itemView.findViewById(R.id.rowIcon);
             switch_name = itemView.findViewById(R.id.switch_name);
             switch_battery_level = itemView.findViewById(R.id.switch_battery_level);
+            full_screen_icon = itemView.findViewById(R.id.full_screen_icon);
 
-            switch_dimmer_level = itemView.findViewById(R.id.switch_dimmer_level);
             dimmerOnOffSwitch = itemView.findViewById(R.id.switch_dimmer_switch);
             dimmer = itemView.findViewById(R.id.switch_dimmer);
             spSelector = itemView.findViewById(R.id.spSelector);

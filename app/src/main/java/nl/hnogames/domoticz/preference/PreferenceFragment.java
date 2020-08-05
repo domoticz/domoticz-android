@@ -29,31 +29,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.hardware.fingerprint.FingerprintManager;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.provider.Settings;
+import android.text.InputType;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.fastaccess.permission.base.PermissionHelper;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.io.File;
-import java.util.HashSet;
-
 import androidx.annotation.NonNull;
+import androidx.biometric.BiometricManager;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.legacy.app.ActivityCompat;
@@ -62,6 +56,16 @@ import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.codekidlabs.storagechooser.StorageChooser;
+import com.fastaccess.permission.base.PermissionHelper;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.io.File;
+import java.util.HashSet;
+
 import nl.hnogames.domoticz.BeaconSettingsActivity;
 import nl.hnogames.domoticz.BluetoothSettingsActivity;
 import nl.hnogames.domoticz.BuildConfig;
@@ -75,16 +79,15 @@ import nl.hnogames.domoticz.ServerSettingsActivity;
 import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.SpeechSettingsActivity;
 import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.ui.SimpleTextDialog;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.LoginInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
-import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 import static android.content.Context.KEYGUARD_SERVICE;
 
@@ -97,12 +100,10 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     @SuppressWarnings("FieldCanBeLocal")
     private final String TAG_EXPORT = "Export Settings";
     private SharedPrefUtil mSharedPrefs;
-    private File SettingsFile;
     private Context mContext;
-    private Domoticz mDomoticz;
     private ConfigInfo mConfigInfo;
-    private ServerUtil mServerUtil;
     private PermissionHelper permissionHelper;
+    private StorageChooser.Theme theme;
 
     private static void tintIcons(Preference preference, int color) {
         if (preference instanceof PreferenceGroup) {
@@ -135,19 +136,58 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         mContext = getActivity();
 
-        mServerUtil = new ServerUtil(mContext);
         mSharedPrefs = new SharedPrefUtil(mContext);
-        mDomoticz = new Domoticz(mContext, AppController.getInstance().getRequestQueue());
-        mConfigInfo = mServerUtil.getActiveServer().getConfigInfo(mContext);
+        mConfigInfo = StaticHelper.getServerUtil(getActivity()).getActiveServer().getConfigInfo(mContext);
 
         UsefulBits.checkAPK(mContext, mSharedPrefs);
 
+        SetStorageTheme();
         setIconColor();
         setPreferences();
         setStartUpScreenDefaultValue();
         handleImportExportButtons();
         handleInfoAndAbout();
         GetVersion();
+    }
+
+    private void SetStorageTheme() {
+        theme = new StorageChooser.Theme(mContext);
+        int[] scheme = new int[16];
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme currentTheme = mContext.getTheme();
+        currentTheme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        scheme[0] = typedValue.data;// header background
+        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
+        scheme[1] = typedValue.data;// header text
+        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
+        scheme[2] = typedValue.data;//list bg
+        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
+        scheme[3] = typedValue.data;//storage list name text
+        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
+        scheme[4] = typedValue.data;//free space text
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[5] = typedValue.data;//memory bar
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[6] = typedValue.data;//folder tint
+        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
+        scheme[7] = typedValue.data;// list bg
+        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
+        scheme[8] = typedValue.data;//list text
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[9] = typedValue.data;//address bar tint
+        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
+        scheme[10] = typedValue.data;//folder hint tint
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[11] = typedValue.data;//elect button color
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[12] = typedValue.data;//select button color
+        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
+        scheme[13] = typedValue.data;//new folder layour bg
+        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+        scheme[14] = typedValue.data;//fab multiselect color
+        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
+        scheme[15] = typedValue.data;//address bar bg
+        theme.setScheme(scheme);
     }
 
     private void setIconColor() {
@@ -222,13 +262,15 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         androidx.preference.Preference premiumPreference = findPreference("premium_settings");
         androidx.preference.Preference ThemePreference = findPreference("darkTheme");
         androidx.preference.SwitchPreference ClockPreference = findPreference("dashboardShowClock");
+        androidx.preference.SwitchPreference CameraPreference = findPreference("dashboardShowCamera");
+
         androidx.preference.Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
         androidx.preference.SwitchPreference FingerPrintPreference = findPreference("enableSecurity");
         androidx.preference.SwitchPreference customSortProperty = findPreference("sortCustom");
         androidx.preference.Preference openNotificationSettings = findPreference("openNotificationSettings");
 
         if (mConfigInfo == null) {
-            mDomoticz.checkLogin(new LoginReceiver() {
+            StaticHelper.getDomoticz(mContext).checkLogin(new LoginReceiver() {
                 @Override
                 public void OnReceive(LoginInfo mLoginInfo) {
                     UsefulBits.getServerConfigForActiveServer(mContext, mLoginInfo, new ConfigReceiver() {
@@ -241,7 +283,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                         @Override
                         public void onError(Exception error) {
                         }
-                    }, mServerUtil.getActiveServer().getConfigInfo(mContext), mServerUtil);
+                    }, StaticHelper.getServerUtil(mContext).getActiveServer().getConfigInfo(mContext));
                 }
 
                 @Override
@@ -330,6 +372,17 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 }
             });
 
+        if (CameraPreference != null)
+            CameraPreference.setOnPreferenceChangeListener(new androidx.preference.Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(androidx.preference.Preference preference, Object newValue) {
+                    if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                        showPremiumSnackbar(getString(R.string.dashboard_camera));
+                        return false;
+                    }
+                    return true;
+                }
+            });
 
         if (MultiServerPreference != null)
             MultiServerPreference.setOnPreferenceChangeListener(new androidx.preference.Preference.OnPreferenceChangeListener() {
@@ -372,7 +425,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             fetchServerConfig.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(androidx.preference.Preference preference) {
-                    mDomoticz.checkLogin(new LoginReceiver() {
+                    StaticHelper.getDomoticz(mContext).checkLogin(new LoginReceiver() {
                         @Override
                         public void OnReceive(LoginInfo mLoginInfo) {
                             UsefulBits.getServerConfigForActiveServer(mContext, mLoginInfo, new ConfigReceiver() {
@@ -385,7 +438,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                                 public void onError(Exception error) {
                                     showSnackbar(mContext.getString(R.string.fetched_server_config_failed));
                                 }
-                            }, null, mServerUtil);
+                            }, null);
                         }
 
                         @Override
@@ -742,16 +795,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                         if (!PermissionsUtil.canAccessFingerprint(mContext)) {
                             permissionHelper.request(PermissionsUtil.INITIAL_FINGERPRINT_PERMS);
                         } else {
-                            FingerprintManager fingerprintManager = (FingerprintManager) mContext.getSystemService(Context.FINGERPRINT_SERVICE);
-                            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
-                                return false;
-                            }
-                            if (fingerprintManager == null || !fingerprintManager.isHardwareDetected()) {
-                                return false;
-                            } else if (!fingerprintManager.hasEnrolledFingerprints()) {
-                                UsefulBits.showSimpleToast(mContext, getString(R.string.fingerprint_not_setup_in_android), Toast.LENGTH_LONG);
-                                return false;
-                            } else {
+                            BiometricManager biometricManager = BiometricManager.from(mContext);
+                            if (biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS) {
                                 new MaterialDialog.Builder(mContext)
                                         .title(R.string.category_startup_security)
                                         .content(R.string.fingerprint_sure)
@@ -766,8 +811,10 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                                             }
                                         })
                                         .show();
-
                                 return false;
+                            } else {
+
+                                UsefulBits.showSimpleToast(mContext, getString(R.string.fingerprint_not_setup_in_android), Toast.LENGTH_LONG);
                             }
                         }
                     }
@@ -861,14 +908,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void handleImportExportButtons() {
-        SettingsFile = new File(Environment.getExternalStorageDirectory(),
-                "/Domoticz/DomoticzSettings.txt");
-
-        final String sPath = SettingsFile.getPath().
-                substring(0, SettingsFile.getPath().lastIndexOf("/"));
-        //noinspection unused
-        boolean mkdirsResultIsOk = new File(sPath + "/").mkdirs();
-
         androidx.preference.Preference exportButton = findPreference("export_settings");
         if (exportButton != null)
             exportButton.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
@@ -904,20 +943,58 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void importSettings() {
-        Log.v(TAG_IMPORT, "Importing settings from: " + SettingsFile.getPath());
-        if (mSharedPrefs.loadSharedPreferencesFromFile(SettingsFile)) {
-            ((SettingsActivity) getActivity()).reloadSettings();
-            showSnackbar(mContext.getString(R.string.settings_imported));
-        } else
-            showSnackbar(mContext.getString(R.string.settings_import_failed));
+        StorageChooser chooser = new StorageChooser.Builder()
+                .withActivity(getActivity())
+                .withFragmentManager(getActivity().getFragmentManager())
+                .withMemoryBar(false)
+                .allowCustomPath(true)
+                .setType(StorageChooser.FILE_PICKER)
+                .setTheme(theme)
+                .build();
+        chooser.show();
+        chooser.setOnSelectListener(new StorageChooser.OnSelectListener() {
+            @Override
+            public void onSelect(String path) {
+                Log.v(TAG_IMPORT, "Importing settings from: " + path);
+                if (mSharedPrefs.loadSharedPreferencesFromFile(new File(path))) {
+                    ((SettingsActivity) getActivity()).reloadSettings();
+                    showSnackbar(mContext.getString(R.string.settings_imported));
+                } else
+                    showSnackbar(mContext.getString(R.string.settings_import_failed));
+            }
+        });
     }
 
     private void exportSettings() {
-        Log.v(TAG_EXPORT, "Exporting settings to: " + SettingsFile.getPath());
-        if (mSharedPrefs.saveSharedPreferencesToFile(SettingsFile))
-            showSnackbar(mContext.getString(R.string.settings_exported));
-        else
-            showSnackbar(mContext.getString(R.string.settings_export_failed));
+        StorageChooser chooser = new StorageChooser.Builder()
+                .withActivity(getActivity())
+                .withFragmentManager(getActivity().getFragmentManager())
+                .allowAddFolder(true)
+                .withMemoryBar(false)
+                .allowCustomPath(true)
+                .setType(StorageChooser.DIRECTORY_CHOOSER)
+                .setTheme(theme)
+                .build();
+        chooser.show();
+        chooser.setOnSelectListener(new StorageChooser.OnSelectListener() {
+            @Override
+            public void onSelect(final String path) {
+                new MaterialDialog.Builder(mContext)
+                        .title(R.string.save_as)
+                        .content(R.string.filename)
+                        .inputType(InputType.TYPE_CLASS_TEXT)
+                        .input("settings.txt", "settings.txt", new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                File newFile = new File(path, "/" + input);
+                                if (mSharedPrefs.saveSharedPreferencesToFile(newFile))
+                                    showSnackbar(mContext.getString(R.string.settings_exported));
+                                else
+                                    showSnackbar(mContext.getString(R.string.settings_export_failed));
+                            }
+                        }).show();
+            }
+        });
     }
 
     private void setStartUpScreenDefaultValue() {

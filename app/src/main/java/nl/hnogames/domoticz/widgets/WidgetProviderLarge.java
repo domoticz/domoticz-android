@@ -34,17 +34,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 
-import androidx.annotation.Nullable;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
@@ -96,7 +96,6 @@ public class WidgetProviderLarge extends AppWidgetProvider {
         private static final int BUTTON_2 = 2;
         private static final int BUTTON_3 = 3;
         private RemoteViews views;
-        private Domoticz domoticz;
         private SharedPrefUtil mSharedPrefs;
 
         @Override
@@ -130,8 +129,6 @@ public class WidgetProviderLarge extends AppWidgetProvider {
             }
             if (mSharedPrefs == null)
                 mSharedPrefs = new SharedPrefUtil(this.getApplicationContext());
-            if (domoticz == null)
-                domoticz = new Domoticz(this.getApplicationContext(), AppController.getInstance().getRequestQueue());
 
             final int idx = mSharedPrefs.getWidgetIDX(appWidgetId);
             views = new RemoteViews(packageName, mSharedPrefs.getWidgetLayout(appWidgetId));
@@ -166,7 +163,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                 appWidgetManager.updateAppWidget(appWidgetId, views);
                 final boolean isScene = mSharedPrefs.getWidgetisScene(appWidgetId);
                 if (!isScene) {
-                    domoticz.getDevice(new DevicesReceiver() {
+                    StaticHelper.getDomoticz(getApplicationContext()).getDevice(new DevicesReceiver() {
                         @Override
                         public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
                         }
@@ -256,7 +253,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         }
                     }, idx, false);
                 } else {
-                    domoticz.getScene(new ScenesReceiver() {
+                    StaticHelper.getDomoticz(getApplicationContext()).getScene(new ScenesReceiver() {
                         @Override
                         public void onReceiveScenes(ArrayList<SceneInfo> scenes) {
                         }

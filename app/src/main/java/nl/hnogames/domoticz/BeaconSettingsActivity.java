@@ -33,6 +33,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
@@ -43,13 +47,11 @@ import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationA
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import nl.hnogames.domoticz.adapters.BeaconAdapter;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.BeaconInfo;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.BeaconClickListener;
 import nl.hnogames.domoticz.ui.AddBeaconDialog;
 import nl.hnogames.domoticz.ui.SwitchDialog;
@@ -58,14 +60,12 @@ import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
 public class BeaconSettingsActivity extends AppCompatPermissionsActivity implements BeaconClickListener {
     boolean result = false;
     private SharedPrefUtil mSharedPrefs;
-    private Domoticz domoticz;
     private CoordinatorLayout coordinatorLayout;
     private ArrayList<BeaconInfo> beaconList;
     private nl.hnogames.domoticz.adapters.BeaconAdapter adapter;
@@ -92,7 +92,6 @@ public class BeaconSettingsActivity extends AppCompatPermissionsActivity impleme
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.beacon);
 
-        domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
         beaconList = mSharedPrefs.getBeaconList();
         adapter = new nl.hnogames.domoticz.adapters.BeaconAdapter(this, beaconList, this);
 
@@ -154,7 +153,7 @@ public class BeaconSettingsActivity extends AppCompatPermissionsActivity impleme
     }
 
     private void getSwitchesAndShowSwitchesDialog(final BeaconInfo qrInfo) {
-        domoticz.getDevices(new DevicesReceiver() {
+        StaticHelper.getDomoticz(BeaconSettingsActivity.this).getDevices(new DevicesReceiver() {
             @Override
 
             public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
@@ -193,7 +192,7 @@ public class BeaconSettingsActivity extends AppCompatPermissionsActivity impleme
         SwitchDialog infoDialog = new SwitchDialog(
                 BeaconSettingsActivity.this, supportedSwitches,
                 R.layout.dialog_switch_logs,
-                domoticz);
+                StaticHelper.getDomoticz(BeaconSettingsActivity.this));
 
         infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
             @Override

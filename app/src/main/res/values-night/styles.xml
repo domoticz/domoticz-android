@@ -64,6 +64,7 @@
         <item name="toolbarBackground">@color/secondary</item>
         <item name="recyclerBackground">@color/secondary_dark</item>
         <item name="listviewRowBackground">@color/secondary</item>
+        <item name="listviewRowTintBackground">@color/secondary60</item>
         <item name="backdropBackground">@color/secondary</item>
         <item name="buttonTextColor">@color/secondary_accent</item>
         <item name="graphTextColor">@color/white</item>

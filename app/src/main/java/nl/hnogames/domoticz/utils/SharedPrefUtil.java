@@ -51,7 +51,6 @@ import java.util.Map;
 import java.util.Set;
 
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.BeaconInfo;
 import nl.hnogames.domoticz.containers.BluetoothInfo;
 import nl.hnogames.domoticz.containers.LocationInfo;
@@ -59,9 +58,9 @@ import nl.hnogames.domoticz.containers.NFCInfo;
 import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.containers.QRCodeInfo;
 import nl.hnogames.domoticz.containers.SpeechInfo;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticzapi.Containers.Language;
 import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.LanguageReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
@@ -120,6 +119,7 @@ public class SharedPrefUtil {
     private static final String PREF_WIDGET_ENABLED = "enableWidgets";
     private static final String PREF_SORT_LIST = "customSortList";
     private static final String PREF_DASHBOARD_CLOCK = "dashboardShowClock";
+    private static final String PREF_DASHBOARD_CAMERA = "dashboardShowCamera";
 
     private static final int DEFAULT_STARTUP_SCREEN = 1;
     private final String TAG = "Shared Pref util";
@@ -150,6 +150,10 @@ public class SharedPrefUtil {
 
     public boolean addClockToDashboard() {
         return prefs.getBoolean(PREF_DASHBOARD_CLOCK, false);
+    }
+
+    public boolean addCameraToDashboard() {
+        return prefs.getBoolean(PREF_DASHBOARD_CAMERA, false);
     }
 
     public boolean showSwitchesAsButtons() {
@@ -1169,7 +1173,7 @@ public class SharedPrefUtil {
     public boolean saveSharedPreferencesToFile(File dst) {
         try {
             boolean isServerUpdateAvailableValue = false;
-            ServerUpdateInfo mServerUpdateInfo = new ServerUtil(mContext).getActiveServer().getServerUpdateInfo(mContext);
+            ServerUpdateInfo mServerUpdateInfo = StaticHelper.getServerUtil(mContext).getActiveServer().getServerUpdateInfo(mContext);
 
             Map<String, ?> oAllPrefs = this.prefs.getAll();
             HashMap<String, Object> oSavePrefs = new HashMap<String, Object>();
@@ -1353,7 +1357,7 @@ public class SharedPrefUtil {
 
         final boolean[] result = new boolean[1];
         if (!UsefulBits.isEmpty(langToDownload)) {
-            new Domoticz(mContext, AppController.getInstance().getRequestQueue()).getLanguageStringsFromServer(langToDownload, new LanguageReceiver() {
+            StaticHelper.getDomoticz(mContext).getLanguageStringsFromServer(langToDownload, new LanguageReceiver() {
                 @Override
                 public void onReceiveLanguage(Language language) {
                     Log.d(TAG, "Language " + langToDownload + " downloaded from server");
