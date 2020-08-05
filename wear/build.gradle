@@ -46,6 +46,15 @@ android {
 
     flavorDimensions "tier"
     productFlavors {
+        dev {
+            applicationId 'nl.hnogames.domoticz.premium'
+            resValue "string", "app_name_domoticz", 'Domoticz'
+            buildConfigField "boolean", "LITE_VERSION", "false"
+            dimension "tier"
+            minSdkVersion 21
+            versionNameSuffix "-dev"
+            resConfigs "en", "xxhdpi"
+        }
         free {
             applicationId 'nl.hnogames.domoticz'
             resValue "string", "app_name_domoticz", 'Domoticz Lite'
