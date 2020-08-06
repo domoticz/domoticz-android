@@ -82,16 +82,14 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
     private LineChart chart;
     private View root;
     private Context mContext;
-    private String range = "minutes";
+    private String range = "day";
     private Integer[] selectedFilters;
-
     private String firstDateStr = "";
     private String endDateStr = "";
     private Pair<Long, Long> selectionDates = null;
 
     @Override
-    public void onConnectionOk() {
-    }
+    public void onConnectionOk() {}
 
     @Override
     public void onConnectionFailed() {
@@ -207,7 +205,66 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
         });
     }
 
+    public void setUpGraphView()
+    {
+        Legend legend = chart.getLegend();
+        legend.setWordWrapEnabled(true);
+        legend.setForm(Legend.LegendForm.CIRCLE);
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = context.getTheme();
+        theme.resolveAttribute(R.attr.graphTextColor, typedValue, true);
+        XAxis xAxis = chart.getXAxis();
+        YAxis yAxis = chart.getAxisLeft();
+        xAxis.setTextColor(typedValue.data);
+        yAxis.setTextColor(typedValue.data);
+        chart.getLegend().setTextColor(typedValue.data);
+        chart.setDrawGridBackground(true);
+        chart.getDescription().setEnabled(false);
+        xAxis.setDrawGridLines(false); // no grid lines
+        chart.getAxisRight().setEnabled(false); // no right axis
+        chart.setDragDecelerationFrictionCoef(0.9f);
+        chart.setDragEnabled(true);
+        chart.setScaleEnabled(true);
+        chart.setDrawGridBackground(false);
+        chart.setHighlightPerDragEnabled(true);
+
+        if (range.equals("minute")) {
+            xAxis.setValueFormatter(new ValueFormatter() {
+                @Override
+                public String getFormattedValue(float value) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis((long) value);
+                    return String.format(Locale.getDefault(), "%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + String.format(Locale.getDefault(), "%02d", calendar.get(Calendar.MINUTE));
+                }
+            });
+        } else {
+            xAxis.setValueFormatter(new ValueFormatter() {
+                @Override
+                public String getFormattedValue(float value) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis((long) value);
+
+                    int mMonth = calendar.get(Calendar.MONTH) + 1;
+                    int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+                    int mHours = calendar.get(Calendar.HOUR_OF_DAY);
+                    int mMinutes = calendar.get(Calendar.MINUTE);
+
+                    String xValue;
+                    if (mHours <= 0 && mMinutes <= 0)
+                        xValue = String.format(Locale.getDefault(), "%02d", mHours) + ":" + String.format(Locale.getDefault(), "%02d", mMinutes);
+                    else
+                        xValue = mDay + "/" + mMonth + " " + String.format(Locale.getDefault(), "%02d", mHours) + ":" + String.format(Locale.getDefault(), "%02d", mMinutes);
+                    return xValue;
+                }
+            });
+        }
+
+        xAxis.setLabelRotationAngle(90);
+        xAxis.setLabelCount(15);
+    }
+
     public void LoadData() {
+        setUpGraphView();
         mGraphList = new HashMap<>();
         if (selectedDevices != null && selectedDevices.length > 0) {
             for (int c : selectedDevices)
@@ -224,65 +281,6 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.dialog_temp_graphs, null);
         chart = root.findViewById(R.id.chart);
-        Legend legend = chart.getLegend();
-        legend.setWordWrapEnabled(true);
-        legend.setForm(Legend.LegendForm.CIRCLE);
-
-        XAxis xAxis = chart.getXAxis();
-        YAxis yAxis = chart.getAxisLeft();
-
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = context.getTheme();
-        theme.resolveAttribute(R.attr.graphTextColor, typedValue, true);
-        xAxis.setTextColor(typedValue.data);
-        yAxis.setTextColor(typedValue.data);
-        chart.getLegend().setTextColor(typedValue.data);
-
-        chart.setDrawGridBackground(true);
-
-        chart.getDescription().setEnabled(false);
-        xAxis.setDrawGridLines(false); // no grid lines
-        chart.getAxisRight().setEnabled(false); // no right axis
-        chart.setDragDecelerationFrictionCoef(0.9f);
-        chart.setDragEnabled(true);
-        chart.setScaleEnabled(true);
-        chart.setDrawGridBackground(false);
-        chart.setHighlightPerDragEnabled(true);
-
-        if (range.equals("day")) {
-            xAxis.setValueFormatter(new ValueFormatter() {
-                @Override
-                public String getFormattedValue(float value) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTimeInMillis((long) value);
-                    return String.format(Locale.getDefault(), "%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + String.format(Locale.getDefault(), "%02d", calendar.get(Calendar.MINUTE));
-                }
-            });
-        } else {
-            xAxis.setValueFormatter(new ValueFormatter() {
-                @Override
-                public String getFormattedValue(float value) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTimeInMillis((long) value);
-
-                    //int mYear = calendar.get(Calendar.YEAR);
-                    int mMonth = calendar.get(Calendar.MONTH) + 1;
-                    int mDay = calendar.get(Calendar.DAY_OF_MONTH) + 1;
-                    int mHours = calendar.get(Calendar.HOUR_OF_DAY);
-                    int mMinutes = calendar.get(Calendar.MINUTE);
-
-                    String xValue;
-                    if (mHours <= 0 && mMinutes <= 0)
-                        xValue = String.format(Locale.getDefault(), "%02d", mHours) + ":" + String.format(Locale.getDefault(), "%02d", mMinutes);
-                    else
-                        xValue = mDay + "/" + mMonth + " " + String.format(Locale.getDefault(), "%02d", mHours) + ":" + String.format(Locale.getDefault(), "%02d", mMinutes);
-                    return xValue;
-                }
-            });
-        }
-
-        xAxis.setLabelRotationAngle(90);
-        xAxis.setLabelCount(15);
         return root;
     }
 
@@ -491,7 +489,7 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                         firstDateStr = sdf2.format(firstDate);
                         endDateStr = sdf2.format(endDate);
                         if (firstDateStr.equals(endDateStr))
-                            range = "minutes";
+                            range = "minute";
                         else
                             range = "day";
 
