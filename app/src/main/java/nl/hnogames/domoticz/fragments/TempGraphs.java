@@ -396,6 +396,7 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                 if (addTemperature) {
                     LineDataSet dataSet = new LineDataSet(valuest, list.getKey() + " " + getString(R.string.temperature)); // add entries to dataset
                     dataSet.setColor(MaterialColorPalette.getRandomColor("600"));
+                    dataSet.setLineWidth(2);
                     dataSet.setDrawCircles(false);
                     dataSet.setMode(LineDataSet.Mode.LINEAR);
                     entries.add(dataSet);
@@ -403,6 +404,7 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                     if (addSetpoint) {
                         dataSet = new LineDataSet(valuesse, list.getKey() + " " + getString(R.string.set_point)); // add entries to dataset
                         dataSet.setColor(MaterialColorPalette.getRandomColor("600"));
+                        dataSet.setLineWidth(2);
                         dataSet.setDrawCircles(false);
                         dataSet.setMode(LineDataSet.Mode.LINEAR);
                         entries.add(dataSet);
@@ -411,6 +413,7 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                     if (addTemperatureRange) {
                         dataSet = new LineDataSet(valuestMax, list.getKey() + " " + "Max"); // add entries to dataset
                         dataSet.setColor(MaterialColorPalette.getRandomColor("600"));
+                        dataSet.setLineWidth(2);
                         dataSet.setDrawCircles(false);
                         dataSet.setMode(LineDataSet.Mode.LINEAR);
                         dataSet.setDrawFilled(true);
@@ -419,6 +422,7 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
 
                         dataSet = new LineDataSet(valuestMin, list.getKey() + " " + "Min"); // add entries to dataset
                         dataSet.setColor(MaterialColorPalette.getRandomColor("600"));
+                        dataSet.setLineWidth(2);
                         dataSet.setDrawCircles(false);
                         dataSet.setMode(LineDataSet.Mode.LINEAR);
                         dataSet.setFillAlpha(255);
@@ -431,6 +435,7 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                 if (addHumidity) {
                     LineDataSet dataSet = new LineDataSet(valueshu, list.getKey() + " " + getString(R.string.humidity)); // add entries to dataset
                     dataSet.setColor(MaterialColorPalette.getRandomColor("600"));
+                    dataSet.setLineWidth(2);
                     dataSet.setDrawCircles(false);
                     dataSet.setMode(LineDataSet.Mode.LINEAR);
                     entries.add(dataSet);
@@ -439,6 +444,7 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                 if (addBarometer) {
                     LineDataSet dataSet = new LineDataSet(valuesba, list.getKey() + " " + getString(R.string.barometer)); // add entries to dataset
                     dataSet.setColor(MaterialColorPalette.getRandomColor("600"));
+                    dataSet.setLineWidth(2);
                     dataSet.setDrawCircles(false);
                     dataSet.setMode(LineDataSet.Mode.LINEAR);
                     entries.add(dataSet);
