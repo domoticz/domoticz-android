@@ -202,7 +202,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         toolbarLayout = findViewById(R.id.collapsingToolbar);
         fabSort = findViewById(R.id.fabSort);
         fabSort.setOnClickListener(new View.OnClickListener() {
