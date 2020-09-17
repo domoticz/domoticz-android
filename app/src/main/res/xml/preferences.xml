@@ -283,19 +283,19 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_advanced" android:icon="@drawable/baseline_settings_white_24">
-        <Preference
-            android:key="export_settings"
-            android:title="@string/export_settings" />
-        <Preference
-            android:key="import_settings"
-            android:title="@string/import_settings" />
-        <Preference
-            android:key="permissionssettings"
-            android:title="@string/permission_config" />
-        <Preference
-            android:key="reset_settings"
-            android:title="@string/reset_settings" />
-    </PreferenceCategory>
+    <Preference
+        android:key="export_settings"
+        android:title="@string/export_settings" />
+    <Preference
+        android:key="import_settings"
+        android:title="@string/import_settings" />
+    <Preference
+        android:key="permissionssettings"
+        android:title="@string/permission_config" />
+    <Preference
+        android:key="reset_settings"
+        android:title="@string/reset_settings" />
+</PreferenceCategory>
 
     <PreferenceCategory
         android:key="@string/category_other" android:icon="@drawable/baseline_whatshot_white_24"
@@ -311,6 +311,10 @@
             android:key="version"
             android:summary="Version 1.0.2"
             android:title="@string/info_version" />
+        <Preference
+            android:key="report"
+            android:summary="@string/report_error"
+            android:title="@string/support" />
         <Preference
             android:key="info_about"
             android:title="@string/info_about" />

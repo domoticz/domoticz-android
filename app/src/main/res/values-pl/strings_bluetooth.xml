@@ -27,7 +27,7 @@
     <string name="bluetooth_name">Nadaj temu urządzeniu bluetooth właściwą nazwę. </string>
     <string name="bluetooth_desc">Sprawdź listę sparowanych urządzeń bluetooth. </string>
     <string name="bluetooth_exists">Bluetooth jest już skonfigurowany w Domoticz. </string>
-    <string name="bluetooth_turned_off">Bluetooth musi być włączony w ustawieniach urządzenia. </string>
+    <string name="bluetooth_turned_off">Należy włączyć Bluetooth w ustawieniach twojego smartfonu.</string>
     <string name="bluetooth_saved">Zapisano nowe połączenie z urządzeniem Bluetooth. </string>
     <string name="bluetooth">Urządzenie Bluetooth</string>
     <string name="bluetooth_disabled">Automatyzacja Bluetooth wyłączona, proszę skonfigurować poprzez ustawienia.</string>

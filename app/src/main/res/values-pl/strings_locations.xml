@@ -21,11 +21,11 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- only temporarily to suppress the missing translations errors for now!! -->
-    <string name="title_add_location">Dodaj lokalizacje</string>
+    <string name="title_add_location">Dodaj lokalizację</string>
     <string name="title_edit_location">Edytuj lokalizację</string>
     <string name="longitude">Długość geograficzna</string>
     <string name="latitude">Szerokość geograficzna</string>
-    <string name="radius">Promień (metery)</string>
+    <string name="radius">Promień (w metrach)</string>
     <string name="connectedSwitch">Powiązany przełącznik</string>
     <string name="unable_to_get_switches">Nie można pobrać wszystkich przełączników, proszę spróbować ponownie</string>
     <string name="delete_short">USUŃ</string>
