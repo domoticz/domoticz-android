@@ -258,8 +258,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         @SuppressWarnings("SpellCheckingInspection") androidx.preference.SwitchPreference RefreshScreenPreference = findPreference("autorefresh");
         @SuppressWarnings("SpellCheckingInspection") androidx.preference.PreferenceScreen preferenceScreen = findPreference("settingsscreen");
         androidx.preference.PreferenceCategory premiumCategory = findPreference("premium_category");
-        androidx.preference.Preference taskerPreference = findPreference("tasker_settings");
         androidx.preference.Preference premiumPreference = findPreference("premium_settings");
+        androidx.preference.Preference taskerPreference = findPreference("tasker_settings");
         androidx.preference.Preference ThemePreference = findPreference("darkTheme");
         androidx.preference.SwitchPreference ClockPreference = findPreference("dashboardShowClock");
         androidx.preference.SwitchPreference CameraPreference = findPreference("dashboardShowCamera");
