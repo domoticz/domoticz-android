@@ -248,8 +248,8 @@ dependencies {
     }
 
     implementation 'com.github.stfalcon:chatkit:0.3.3'
-    implementation 'com.github.matthiasrobbers:shortbread:1.0.2'
-    annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.0.2'
+    implementation 'com.github.matthiasrobbers:shortbread:1.1.0'
+    annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.1.0'
     implementation ('com.schibstedspain.android:leku:6.4.0') {
         exclude group: 'com.google.android.gms'
         exclude group: 'androidx.appcompat'
