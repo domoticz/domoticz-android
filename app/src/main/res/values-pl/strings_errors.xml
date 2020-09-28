@@ -4,7 +4,7 @@
     <string name="error_authentication">Nieprawidłowe poświadczenia</string>
     <string name="error_timeout">Czas minął lub brak połączenia</string>
     <string name="error_server">Błąd serwera</string>
-    <string name="error_network">Błąd sieci, kod %1$d</string>
+    <string name="error_network">Bład sieci, kod statusu %1$d</string>
     <string name="error_parse">Błąd przetwarzania</string>
     <string name="error_notConnected">Błąd: nie podłączony do żadnej sieci</string>
 </resources>

@@ -48,7 +48,7 @@
     <string name="wizard_menuitem_description">Du kan nu ta bort den här guiden från navigeringsmenyn!</string>
     <string name="wizard_nfc">NFC</string>
     <string name="wizard_nfc_description">Du har möjlighet att växla växlar via NFC!</string>
-    <string name="wizard_bluetooth_description">You are able to toggle switches via Bluetooth connections!</string>
+    <string name="wizard_bluetooth_description">Du kan växla strömbrytare via Bluetoothsanslutningar</string>
     <string name="wizard_qrcode">QR-kod</string>
     <string name="wizard_qrcode_description">Växla strömbrytare genom att skanna en QR-kod (eller streckkod)!</string>
     <string name="wizard_speech">Röstkommandon</string>
@@ -59,5 +59,5 @@
     <string name="wizard_button_wizard">Ta bort</string>
     <string name="wizard_button_utilities">Verktyg</string>
     <string name="wizard_button_done">Klar</string>
-    <string name="wizard_beacon_description">Toggle switches by scanning for beacons!</string>
+    <string name="wizard_beacon_description">Växla strömbrytarna via sökning efter beacons!</string>
 </resources>

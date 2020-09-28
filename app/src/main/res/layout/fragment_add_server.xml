@@ -235,17 +235,17 @@
                 android:prompt="@string/welcome_ssid_spinner_prompt" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/set_ssid"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="right"
-                android:layout_marginTop="15dp"
-                android:layout_weight="1"
-                android:text="@string/add"
-                android:textColor="?attr/buttonTextColor" />
+            android:id="@+id/set_ssid"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="right"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:text="@string/add"
+            android:textColor="?attr/buttonTextColor" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"

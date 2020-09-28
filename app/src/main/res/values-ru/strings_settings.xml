@@ -218,4 +218,6 @@
     <string name="restart_required_title">Требуется перезапуск</string>
     <string name="restart_now">Перезапустить?</string>
     <string name="check_settings">Check your settings</string>
+    <string name="report_error">Report an error</string>
+    <string name="support">Support</string>
 </resources>

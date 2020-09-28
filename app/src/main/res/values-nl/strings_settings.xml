@@ -218,4 +218,6 @@
     <string name="restart_required_title">Opnieuw opstarten vereist</string>
     <string name="restart_now">Nu opnieuw opstarten?</string>
     <string name="check_settings">Controleer je instellingen</string>
+    <string name="report_error">Fout rapporteren</string>
+    <string name="support">Ondersteuning</string>
 </resources>

@@ -89,7 +89,8 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
     private Pair<Long, Long> selectionDates = null;
 
     @Override
-    public void onConnectionOk() {}
+    public void onConnectionOk() {
+    }
 
     @Override
     public void onConnectionFailed() {
@@ -205,8 +206,7 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
         });
     }
 
-    public void setUpGraphView()
-    {
+    public void setUpGraphView() {
         Legend legend = chart.getLegend();
         legend.setWordWrapEnabled(true);
         legend.setForm(Legend.LegendForm.CIRCLE);

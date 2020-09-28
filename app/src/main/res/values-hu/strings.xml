@@ -133,10 +133,10 @@
     <string name="filter_error">Hiba</string>
     <string name="use_demo_setup">Demó beállítások</string>
     <string name="auto_refresh_time">Időzítő frissítése</string>
-    <string name="set_auto_refresh_time">Set a specific timer for the auto refresh in seconds.</string>
-    <string name="error_authentication_basicauth">IMPORTANT: Please check if your Domoticz system uses Login Page as the authentication method. Basic Auth is going to be removed from Domoticz from next update!</string>
-    <string name="category_other">Other</string>
-    <string name="tasker_title">Setup automation rules with Tasker for Domoticz</string>
-    <string name="category_tasker">Tasker</string>
-    <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
+    <string name="set_auto_refresh_time">az automatikus frissítés beállítása másodpercben</string>
+    <string name="error_authentication_basicauth">FONTOS:: A Basic Auth bejelentkezés a következő Domoticz frissítéstől kivezetésre került, kérjük váltson Login Page authentication módszerre</string>
+    <string name="category_other">egyéb</string>
+    <string name="tasker_title">automatizmusok beállítása Tasker for Domoticz-al</string>
+    <string name="category_tasker">Tasker - feladat automatizáló</string>
+    <string name="wizard_widgets_tasker">automatizmusok beállítása Tasker for Domoticz-ban</string>
 </resources>

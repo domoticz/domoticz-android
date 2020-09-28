@@ -29,5 +29,5 @@
     <string name="action_qrcode_scan">QR kód beolvasása</string>
     <string name="action_bluetooth_show">Párosított eszközök megtekintése</string>
     <string name="action_speech">Beszédfelismerés</string>
-    <string name="send">Send</string>
+    <string name="send">küldés</string>
 </resources>

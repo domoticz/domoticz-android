@@ -238,6 +238,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         androidx.preference.Preference resetApplication = findPreference("reset_settings");
         androidx.preference.Preference translateApplication = findPreference("translate");
         ListPreference displayLanguage = findPreference("displayLanguage");
+        androidx.preference.Preference ReportErrorSettings = findPreference("report");
         androidx.preference.Preference GeoSettings = findPreference("geo_settings");
         androidx.preference.SwitchPreference WearPreference = findPreference("enableWearItems");
         androidx.preference.SwitchPreference WidgetsEnablePreference = findPreference("enableWidgets");
@@ -257,8 +258,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         @SuppressWarnings("SpellCheckingInspection") androidx.preference.SwitchPreference RefreshScreenPreference = findPreference("autorefresh");
         @SuppressWarnings("SpellCheckingInspection") androidx.preference.PreferenceScreen preferenceScreen = findPreference("settingsscreen");
         androidx.preference.PreferenceCategory premiumCategory = findPreference("premium_category");
-        androidx.preference.Preference taskerPreference = findPreference("tasker_settings");
         androidx.preference.Preference premiumPreference = findPreference("premium_settings");
+        androidx.preference.Preference taskerPreference = findPreference("tasker_settings");
         androidx.preference.Preference ThemePreference = findPreference("darkTheme");
         androidx.preference.SwitchPreference ClockPreference = findPreference("dashboardShowClock");
         androidx.preference.SwitchPreference CameraPreference = findPreference("dashboardShowCamera");
@@ -725,6 +726,18 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                     }
                 });
         }
+
+        if (ReportErrorSettings != null)
+            ReportErrorSettings.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(androidx.preference.Preference preference) {
+                    if (BuildConfig.PAID_OOTT)
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.oott.hu/ereport")));
+                    else
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.domoticz.com/forum/")));
+                    return true;
+                }
+            });
 
         if (taskerPreference != null)
             taskerPreference.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {

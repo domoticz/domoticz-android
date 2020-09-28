@@ -210,7 +210,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                             LineData columnData = generateData(root);
                             if (columnData != null) {
                                 chart.setData(columnData);
-                                chart.invalidate(); // refresh
+                                chart.invalidate(); // refreshs
 
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
