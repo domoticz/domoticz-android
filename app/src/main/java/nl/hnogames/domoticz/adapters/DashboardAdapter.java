@@ -1247,7 +1247,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         });
 
         if (holder.dimmer.getVisibility() == View.VISIBLE) {
-            holder.dimmer.setValue(mDeviceInfo.getLevel());
+            holder.dimmer.setValue(mDeviceInfo.getLevel() > 100 ? 100 : mDeviceInfo.getLevel());
             holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel());
             holder.dimmer.setLabelFormatter(new LabelFormatter() {
                 @NonNull
@@ -1426,7 +1426,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             }
         });
 
-        holder.dimmer.setValue(mDeviceInfo.getLevel());
+        holder.dimmer.setValue(mDeviceInfo.getLevel() > 100 ? 100 : mDeviceInfo.getLevel());
         holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel());
         holder.dimmer.setLabelFormatter(new LabelFormatter() {
             @NonNull
@@ -1564,7 +1564,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             });
         }
 
-        holder.dimmer.setValue(mDeviceInfo.getLevel());
+        holder.dimmer.setValue(mDeviceInfo.getLevel() > 100 ? 100 : mDeviceInfo.getLevel());
         holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel());
         holder.dimmer.setLabelFormatter(new LabelFormatter() {
             @NonNull
