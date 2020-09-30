@@ -1247,6 +1247,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         });
 
         if (holder.dimmer.getVisibility() == View.VISIBLE) {
+            holder.dimmer.setTag(mDeviceInfo.getIdx());
             holder.dimmer.setValue(mDeviceInfo.getLevel() > 100 ? 100 : mDeviceInfo.getLevel());
             holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel());
             holder.dimmer.setLabelFormatter(new LabelFormatter() {
@@ -1265,7 +1266,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 @Override
                 public void onStopTrackingTouch(@NonNull Slider slider) {
                     int progress = (Math.round(slider.getValue()));
-                    handleDimmerChange(mDeviceInfo.getIdx(), progress + 1, false);
+                    handleDimmerChange((int)slider.getTag(), progress + 1, false);
                     mDeviceInfo.setLevel(progress);
                 }
             });
@@ -1399,7 +1400,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.iconRow.setAlpha(1f);
 
         holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
-
         holder.dimmerOnOffSwitch.setOnCheckedChangeListener(null);
         holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
         holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1426,6 +1426,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             }
         });
 
+        holder.dimmer.setTag(mDeviceInfo.getIdx());
         holder.dimmer.setValue(mDeviceInfo.getLevel() > 100 ? 100 : mDeviceInfo.getLevel());
         holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel());
         holder.dimmer.setLabelFormatter(new LabelFormatter() {
@@ -1456,7 +1457,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     }
                 } catch (Exception ex) {/*else we don't use a switch, but buttons */}
 
-                handleDimmerChange(mDeviceInfo.getIdx(), progress + 1, false);
+                handleDimmerChange((int)slider.getTag(), progress + 1, false);
                 mDeviceInfo.setLevel(progress);
             }
         });
@@ -1564,6 +1565,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             });
         }
 
+        holder.dimmer.setTag(mDeviceInfo.getIdx());
         holder.dimmer.setValue(mDeviceInfo.getLevel() > 100 ? 100 : mDeviceInfo.getLevel());
         holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel());
         holder.dimmer.setLabelFormatter(new LabelFormatter() {
@@ -1582,7 +1584,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 int progress = (Math.round(slider.getValue()));
-                handleDimmerChange(mDeviceInfo.getIdx(), progress + 1, false);
+                handleDimmerChange((int)slider.getTag(), progress + 1, false);
                 mDeviceInfo.setLevel(progress);
             }
         });

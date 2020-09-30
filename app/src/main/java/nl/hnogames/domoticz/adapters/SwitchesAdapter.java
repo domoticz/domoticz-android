@@ -1106,6 +1106,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         });
 
         if (holder.dimmer.getVisibility() == View.VISIBLE) {
+            holder.dimmer.setTag(mDeviceInfo.getIdx());
             holder.dimmer.setValue(mDeviceInfo.getLevel() > 100 ? 100 : mDeviceInfo.getLevel());
             holder.dimmer.setLabelFormatter(new LabelFormatter() {
                 @NonNull
@@ -1125,7 +1126,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 @Override
                 public void onStopTrackingTouch(@NonNull Slider slider) {
                     int progress = (Math.round(slider.getValue()));
-                    handleDimmerChange(mDeviceInfo.getIdx(), progress + 1, false);
+                    handleDimmerChange((int)slider.getTag(), progress + 1, false);
                     mDeviceInfo.setLevel(progress);
                 }
             });
@@ -1286,6 +1287,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             }
         });
 
+        holder.dimmer.setTag(mDeviceInfo.getIdx());
         holder.dimmer.setValue(mDeviceInfo.getLevel() > 100 ? 100 : mDeviceInfo.getLevel());
         holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel());
         holder.dimmer.setLabelFormatter(new LabelFormatter() {
@@ -1316,7 +1318,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     }
                 } catch (Exception ex) {/*else we don't use a switch, but buttons */}
 
-                handleDimmerChange(mDeviceInfo.getIdx(), progress + 1, false);
+                handleDimmerChange((int)slider.getTag(), progress + 1, false);
                 mDeviceInfo.setLevel(progress);
             }
         });
@@ -1426,6 +1428,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             });
         }
 
+        holder.dimmer.setTag(mDeviceInfo.getIdx());
         holder.dimmer.setValue(mDeviceInfo.getLevel() > 100 ? 100 : mDeviceInfo.getLevel());
         holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel());
         holder.dimmer.setLabelFormatter(new LabelFormatter() {
@@ -1444,7 +1447,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 int progress = (Math.round(slider.getValue()));
-                handleDimmerChange(mDeviceInfo.getIdx(), progress + 1, false);
+                handleDimmerChange((int)slider.getTag(), progress + 1, false);
                 mDeviceInfo.setLevel(progress);
             }
         });
