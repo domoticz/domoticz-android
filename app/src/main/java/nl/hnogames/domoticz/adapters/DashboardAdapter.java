@@ -1266,7 +1266,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 @Override
                 public void onStopTrackingTouch(@NonNull Slider slider) {
                     int progress = (Math.round(slider.getValue()));
-                    handleDimmerChange((int)slider.getTag(), progress + 1, false);
+                    handleDimmerChange((int) slider.getTag(), progress + 1, false);
                     mDeviceInfo.setLevel(progress);
                 }
             });
@@ -1457,7 +1457,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     }
                 } catch (Exception ex) {/*else we don't use a switch, but buttons */}
 
-                handleDimmerChange((int)slider.getTag(), progress + 1, false);
+                handleDimmerChange((int) slider.getTag(), progress + 1, false);
                 mDeviceInfo.setLevel(progress);
             }
         });
@@ -1584,7 +1584,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 int progress = (Math.round(slider.getValue()));
-                handleDimmerChange((int)slider.getTag(), progress + 1, false);
+                handleDimmerChange((int) slider.getTag(), progress + 1, false);
                 mDeviceInfo.setLevel(progress);
             }
         });
