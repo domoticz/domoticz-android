@@ -36,9 +36,15 @@ import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
@@ -59,6 +65,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.ads.NativeTemplateStyle;
+import nl.hnogames.domoticz.ads.TemplateView;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.switchesClickListener;
 import nl.hnogames.domoticz.utils.CameraUtil;
@@ -180,7 +188,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         View row = null;
         row = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.switch_row_list, parent, false);
-
         return new DataObjectHolder(row);
     }
 
@@ -190,64 +197,41 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             DevicesInfo extendedStatusInfo = filteredData.get(position);
             setSwitchRowData(extendedStatusInfo, holder);
 
-            holder.buttonLog.setId(extendedStatusInfo.getIdx());
-            holder.buttonLog.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleLogButtonClick(v.getId());
-                }
-            });
-            holder.infoIcon.setTag(extendedStatusInfo.getIdx());
-            holder.infoIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemLongClicked((int) v.getTag());
-                }
-            });
-            if (holder.likeButton != null) {
-                holder.likeButton.setId(extendedStatusInfo.getIdx());
-                holder.likeButton.setLiked(extendedStatusInfo.getFavoriteBoolean());
-                holder.likeButton.setOnLikeListener(new OnLikeListener() {
-                    @Override
-                    public void liked(LikeButton likeButton) {
-                        handleLikeButtonClick(likeButton.getId(), true);
-                    }
+            if (extendedStatusInfo.getType() == null || !extendedStatusInfo.getType().equals("advertisement")) {
+                holder.buttonLog.setId(extendedStatusInfo.getIdx());
+                holder.buttonLog.setOnClickListener(v -> handleLogButtonClick(v.getId()));
+                holder.infoIcon.setTag(extendedStatusInfo.getIdx());
+                holder.infoIcon.setOnClickListener(v -> listener.onItemLongClicked((int) v.getTag()));
+                if (holder.likeButton != null) {
+                    holder.likeButton.setId(extendedStatusInfo.getIdx());
+                    holder.likeButton.setLiked(extendedStatusInfo.getFavoriteBoolean());
+                    holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                        @Override
+                        public void liked(LikeButton likeButton) {
+                            handleLikeButtonClick(likeButton.getId(), true);
+                        }
 
-                    @Override
-                    public void unLiked(LikeButton likeButton) {
-                        handleLikeButtonClick(likeButton.getId(), false);
-                    }
-                });
+                        @Override
+                        public void unLiked(LikeButton likeButton) {
+                            handleLikeButtonClick(likeButton.getId(), false);
+                        }
+                    });
+                }
+
+                holder.buttonTimer.setId(extendedStatusInfo.getIdx());
+                holder.buttonTimer.setOnClickListener(v -> handleTimerButtonClick(v.getId()));
+                if (extendedStatusInfo.getTimers().toLowerCase().equals("false"))
+                    holder.buttonTimer.setVisibility(View.GONE);
+
+                holder.buttonNotifications.setId(extendedStatusInfo.getIdx());
+                holder.buttonNotifications.setOnClickListener(v -> handleNotificationButtonClick(v.getId()));
+
+                if (!extendedStatusInfo.hasNotifications())
+                    holder.buttonNotifications.setVisibility(View.GONE);
+
+
+                holder.itemView.setOnClickListener(v -> listener.onItemClicked(v, position));
             }
-
-            holder.buttonTimer.setId(extendedStatusInfo.getIdx());
-            holder.buttonTimer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleTimerButtonClick(v.getId());
-                }
-            });
-            if (extendedStatusInfo.getTimers().toLowerCase().equals("false"))
-                holder.buttonTimer.setVisibility(View.GONE);
-
-            holder.buttonNotifications.setId(extendedStatusInfo.getIdx());
-            holder.buttonNotifications.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleNotificationButtonClick(v.getId());
-                }
-            });
-
-            if (!extendedStatusInfo.hasNotifications())
-                holder.buttonNotifications.setVisibility(View.GONE);
-
-
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClicked(v, position);
-                }
-            });
         }
     }
 
@@ -261,27 +245,33 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                                   DataObjectHolder holder) {
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
                 (mDeviceInfo.getSwitchType() == null)) {
-            switch (mDeviceInfo.getType()) {
-                case DomoticzValues.Scene.Type.GROUP:
-                    setButtons(holder, Buttons.BUTTONS);
-                    setOnOffButtonRowData(mDeviceInfo, holder);
-                    break;
-                case DomoticzValues.Scene.Type.SCENE:
-                    setButtons(holder, Buttons.BUTTON_ON);
-                    setPushOnOffSwitchRowData(mDeviceInfo, holder, true);
-                    break;
-                case DomoticzValues.Device.Utility.Type.THERMOSTAT:
-                    setButtons(holder, Buttons.BUTTON_ON);
-                    setThermostatRowData(mDeviceInfo, holder);
-                    break;
-                case DomoticzValues.Device.Utility.Type.HEATING:
-                    setButtons(holder, Buttons.SET);
-                    setTemperatureRowData(mDeviceInfo, holder);
-                    break;
-                default:
-                    setButtons(holder, Buttons.NOTHING);
-                    setDefaultRowData(mDeviceInfo, holder);
-                    break;
+            if (mDeviceInfo.getType() != null && mDeviceInfo.getType().equals("advertisement")) {
+                setButtons(holder, DashboardAdapter.Buttons.ADS);
+                setAdsLayout(holder);
+            }
+            else {
+                switch (mDeviceInfo.getType()) {
+                    case DomoticzValues.Scene.Type.GROUP:
+                        setButtons(holder, Buttons.BUTTONS);
+                        setOnOffButtonRowData(mDeviceInfo, holder);
+                        break;
+                    case DomoticzValues.Scene.Type.SCENE:
+                        setButtons(holder, Buttons.BUTTON_ON);
+                        setPushOnOffSwitchRowData(mDeviceInfo, holder, true);
+                        break;
+                    case DomoticzValues.Device.Utility.Type.THERMOSTAT:
+                        setButtons(holder, Buttons.BUTTON_ON);
+                        setThermostatRowData(mDeviceInfo, holder);
+                        break;
+                    case DomoticzValues.Device.Utility.Type.HEATING:
+                        setButtons(holder, Buttons.SET);
+                        setTemperatureRowData(mDeviceInfo, holder);
+                        break;
+                    default:
+                        setButtons(holder, Buttons.NOTHING);
+                        setDefaultRowData(mDeviceInfo, holder);
+                        break;
+                }
             }
         } else if ((mDeviceInfo.getSwitchType() == null)) {
             setButtons(holder, Buttons.NOTHING);
@@ -603,7 +593,46 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             holder.iconRow.setAlpha(0.5f);
         else
             holder.iconRow.setAlpha(1f);
+    }
 
+    /**
+     * Set the data for the ads row
+     *
+     * @param holder Holder to use
+     */
+    private void setAdsLayout(DataObjectHolder holder) {
+        try {
+            MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4")
+                    .addTestDevice("1AAE9D81347967A359E372B0445549DE")
+                    .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
+                    .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
+                    .addTestDevice("6C2390A9FF8F555BD01BA560068CD366")
+                    .build();
+
+            AdLoader adLoader = new AdLoader.Builder(context, context.getString(R.string.ad_unit_id))
+                    .forUnifiedNativeAd(unifiedNativeAd -> {
+                        NativeTemplateStyle styles = new NativeTemplateStyle.Builder().build();
+                        if (holder.adview != null) {
+                            holder.adview.setVisibility(View.VISIBLE);
+                            holder.adview.setStyles(styles);
+                            holder.adview.setNativeAd(unifiedNativeAd);
+                        }
+                    })
+                    .withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(int errorCode) {
+                            if (holder.adview != null) {
+                                holder.adview.setVisibility(View.GONE);
+                            }
+                        }
+                    })
+                    .withNativeAdOptions(new NativeAdOptions.Builder().build())
+                    .build();
+            adLoader.loadAd(adRequest);
+        } catch (Exception ignored) {
+        }
     }
 
     /**
@@ -1698,6 +1727,9 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         if (holder.dimmer != null) {
             holder.dimmer.setVisibility(View.GONE);
         }
+        if (holder.adview != null) {
+            holder.adview.setVisibility(View.GONE);
+        }
         if (holder.buttonColor != null) {
             holder.buttonColor.setVisibility(View.GONE);
         }
@@ -1742,33 +1774,73 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         switch (button) {
             case Buttons.SWITCH:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.onOffSwitch != null)
                     holder.onOffSwitch.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
+                break;
+            case Buttons.ADS:
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.VISIBLE);
+                if (holder.switch_name != null)
+                    holder.switch_name.setVisibility(View.GONE);
+                if (holder.signal_level != null)
+                    holder.signal_level.setVisibility(View.GONE);
+                if (holder.switch_battery_level != null)
+                    holder.switch_battery_level.setVisibility(View.GONE);
+                if (holder.iconRow != null)
+                    holder.iconRow.setVisibility(View.GONE);
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.GONE);
                 break;
             case Buttons.BUTTONS:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonOn != null)
                     holder.buttonOn.setVisibility(View.VISIBLE);
 
                 if (holder.buttonOff != null)
                     holder.buttonOff.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.SET:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonSet != null)
                     holder.buttonSet.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.MODAL:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonSetStatus != null)
                     holder.buttonSetStatus.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BUTTON_ON:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonOn != null)
                     holder.buttonOn.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BUTTON_OFF:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonOff != null)
                     holder.buttonOff.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BLINDS:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonDown != null)
                     holder.buttonDown.setVisibility(View.VISIBLE);
                 if (holder.buttonUp != null)
@@ -1777,16 +1849,24 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     holder.buttonStop.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.GONE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BLINDS_NOSTOP:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonDown != null)
                     holder.buttonDown.setVisibility(View.VISIBLE);
                 if (holder.buttonUp != null)
                     holder.buttonUp.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.GONE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BLINDS_DIMMER:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonDown != null)
                     holder.buttonDown.setVisibility(View.VISIBLE);
                 if (holder.buttonUp != null)
@@ -1795,55 +1875,83 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     holder.buttonStop.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BLINDS_DIMMER_NOSTOP:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonDown != null)
                     holder.buttonDown.setVisibility(View.VISIBLE);
                 if (holder.buttonUp != null)
                     holder.buttonUp.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.DIMMER_RGB:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.dimmerOnOffSwitch != null)
                     holder.dimmerOnOffSwitch.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.VISIBLE);
                 if (holder.buttonColor != null)
                     holder.buttonColor.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.DIMMER:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.dimmerOnOffSwitch != null)
                     holder.dimmerOnOffSwitch.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.DIMMER_BUTTONS:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonOn != null)
                     holder.buttonOn.setVisibility(View.VISIBLE);
                 if (holder.buttonOff != null)
                     holder.buttonOff.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.SELECTOR:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.spSelector != null)
                     holder.spSelector.setVisibility(View.VISIBLE);
                 if (holder.dimmerOnOffSwitch != null)
                     holder.dimmerOnOffSwitch.setVisibility(View.GONE);
                 break;
             case Buttons.SELECTOR_BUTTONS:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonOn != null)
                     holder.buttonOn.setVisibility(View.GONE);
                 if (holder.buttonOff != null)
                     holder.buttonOff.setVisibility(View.GONE);
                 if (holder.spSelector != null)
                     holder.spSelector.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             default:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (!mSharedPrefs.showExtraData())
                     holder.signal_level.setVisibility(View.GONE);
                 holder.switch_battery_level.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
         }
     }
@@ -1901,6 +2009,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         int SELECTOR = 12;
         int SELECTOR_BUTTONS = 13;
         int CLOCK = 14;
+        int ADS = 17;
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder {
@@ -1917,10 +2026,14 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         LinearLayout extraPanel, row_wrapper;
         ImageView infoIcon;
         ImageView dummyImg;
+        TemplateView adview;
+        RelativeLayout contentWrapper;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
 
+            contentWrapper = itemView.findViewById(R.id.contentWrapper);
+            adview = itemView.findViewById(R.id.adview);
             buttonOn = itemView.findViewById(R.id.on_button);
             buttonOff = itemView.findViewById(R.id.off_button);
             buttonSetStatus = itemView.findViewById(R.id.set_button);
@@ -1976,7 +2089,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             DevicesInfo filterableObject;
             for (int i = 0; i < count; i++) {
                 filterableObject = list.get(i);
-                if (filterableObject.getName().toLowerCase().contains(filterString)) {
+                if (filterableObject.getName().toLowerCase().contains(filterString) || (filterableObject.getType() != null && filterableObject.getType().equals("advertisement"))) {
                     devicesInfos.add(filterableObject);
                 }
             }

@@ -39,10 +39,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:gnt_template_type="@layout/gnt_small_template_view" />
+        app:gnt_template_type="@layout/gnt_square_template_view" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:id="@+id/contentWrapper"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
         <ImageView
@@ -398,10 +399,7 @@
                                     android:textColor="?attr/buttonTextColor"
                                     android:textSize="10dp" />
                             </LinearLayout>
-
                         </RelativeLayout>
-
-
                     </RelativeLayout>
 
                     <TextView
@@ -409,7 +407,7 @@
                         style="@style/row_dash_body1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end"
+                        android:layout_gravity="start"
                         android:layout_margin="3dp"
                         android:layout_marginTop="5dp"
                         android:gravity="end"
@@ -443,7 +441,5 @@
             android:layout_marginTop="8dp"
             android:src="@drawable/outline_info_black_18"
             android:tint="@color/md_grey_300" />
-
     </RelativeLayout>
-
 </com.google.android.material.card.MaterialCardView>

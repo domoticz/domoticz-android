@@ -223,7 +223,6 @@
                             android:gravity="center_horizontal"
                             android:paddingLeft="0dp" />
                     </LinearLayout>
-
                 </LinearLayout>
 
                 <RelativeLayout

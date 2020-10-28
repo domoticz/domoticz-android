@@ -31,6 +31,8 @@ public class TemplateView extends FrameLayout {
 
     private static final String MEDIUM_TEMPLATE = "medium_template";
     private static final String SMALL_TEMPLATE = "small_template";
+    private static final String SQUARE_TEMPLATE = "square_template";
+
     private int templateType;
     private NativeTemplateStyle styles;
     private UnifiedNativeAd nativeAd;
@@ -74,7 +76,6 @@ public class TemplateView extends FrameLayout {
     }
 
     private void applyStyles() {
-
         Drawable mainBackground = styles.getMainBackgroundColor();
         if (mainBackground != null) {
             background.setBackground(mainBackground);
@@ -221,6 +222,9 @@ public class TemplateView extends FrameLayout {
             ratingBar.setVisibility(GONE);
         }
 
+        if(getTemplateTypeName().equals(SQUARE_TEMPLATE))
+            secondaryView.setVisibility(VISIBLE);
+
         if (icon != null) {
             iconView.setVisibility(VISIBLE);
             iconView.setImageDrawable(icon.getDrawable());
@@ -250,6 +254,8 @@ public class TemplateView extends FrameLayout {
             return MEDIUM_TEMPLATE;
         } else if (templateType == R.layout.gnt_small_template_view) {
             return SMALL_TEMPLATE;
+        } else if (templateType == R.layout.gnt_square_template_view) {
+            return SQUARE_TEMPLATE;
         }
         return "";
     }

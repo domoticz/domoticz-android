@@ -1968,6 +1968,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         switch (button) {
             case Buttons.CLOCK:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.clockLayout != null)
                     holder.clockLayout.setVisibility(View.VISIBLE);
                 if (holder.clockLayoutWrapper != null)
@@ -2006,12 +2008,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.contentWrapper.setVisibility(View.GONE);
                 break;
             case Buttons.SWITCH:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.onOffSwitch != null)
                     holder.onOffSwitch.setVisibility(View.VISIBLE);
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BUTTONS:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonOn != null)
                     holder.buttonOn.setVisibility(View.VISIBLE);
                 if (holder.buttonOff != null)
@@ -2020,30 +2026,40 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.SET:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonSet != null)
                     holder.buttonSet.setVisibility(View.VISIBLE);
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.MODAL:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonSetStatus != null)
                     holder.buttonSetStatus.setVisibility(View.VISIBLE);
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BUTTON_ON:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonOn != null)
                     holder.buttonOn.setVisibility(View.VISIBLE);
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BUTTON_OFF:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonOff != null)
                     holder.buttonOff.setVisibility(View.VISIBLE);
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BLINDS:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonDown != null)
                     holder.buttonDown.setVisibility(View.VISIBLE);
                 if (holder.buttonUp != null)
@@ -2058,6 +2074,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BLINDS_NOSTOP:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonDown != null)
                     holder.buttonDown.setVisibility(View.VISIBLE);
                 if (holder.buttonUp != null)
@@ -2070,6 +2088,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BLINDS_DIMMER:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonDown != null)
                     holder.buttonDown.setVisibility(View.VISIBLE);
                 if (holder.buttonUp != null)
@@ -2084,6 +2104,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BLINDS_DIMMER_NOSTOP:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonDown != null)
                     holder.buttonDown.setVisibility(View.VISIBLE);
                 if (holder.buttonUp != null)
@@ -2096,6 +2118,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.DIMMER_RGB:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.dimmerOnOffSwitch != null)
                     holder.dimmerOnOffSwitch.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
@@ -2108,6 +2132,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.DIMMER:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.dimmerOnOffSwitch != null)
                     holder.dimmerOnOffSwitch.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
@@ -2118,6 +2144,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.DIMMER_BUTTONS:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonOn != null)
                     holder.buttonOn.setVisibility(View.VISIBLE);
                 if (holder.buttonOff != null)
@@ -2130,6 +2158,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.SELECTOR:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.spSelector != null)
                     holder.spSelector.setVisibility(View.VISIBLE);
                 if (holder.dimmerOnOffSwitch != null)
@@ -2140,6 +2170,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.SELECTOR_BUTTONS:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonOn != null)
                     holder.buttonOn.setVisibility(View.GONE);
                 if (holder.buttonOff != null)
@@ -2152,11 +2184,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.adview.setVisibility(View.GONE);
                 break;
             default:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (!mSharedPrefs.showExtraData())
                     holder.signal_level.setVisibility(View.GONE);
                 holder.switch_battery_level.setVisibility(View.VISIBLE);
-                if (holder.contentWrapper != null)
-                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.GONE);
                 break;
@@ -2305,7 +2337,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     private class ItemFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-
             String filterString = constraint.toString().toLowerCase();
             FilterResults results = new FilterResults();
             final ArrayList<DevicesInfo> list = data;
@@ -2315,7 +2346,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             DevicesInfo filterableObject;
             for (int i = 0; i < count; i++) {
                 filterableObject = list.get(i);
-                if (filterableObject.getName().toLowerCase().contains(filterString)) {
+                if (filterableObject.getName().toLowerCase().contains(filterString) ||
+                (filterableObject.getType() != null && filterableObject.getType().equals("advertisement"))) {
                     devicesInfos.add(filterableObject);
                 }
             }

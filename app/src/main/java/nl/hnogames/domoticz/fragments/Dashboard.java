@@ -147,7 +147,6 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     }
 
     @Override
-
     public void Filter(String text) {
         filter = text;
         try {
@@ -262,11 +261,12 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
                     @Override
                     public void onError(Exception error) {
-                        createListView(supportedSwitches, null);
+                        createListView(AddAdsDevice(supportedSwitches), null);
                     }
                 });
-            } else
-                createListView(supportedSwitches, null);
+            } else {
+                createListView(AddAdsDevice(supportedSwitches), null);
+            }
         }
     }
 
@@ -293,39 +293,29 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     }
 
     private ArrayList<DevicesInfo> AddAdsDevice(ArrayList<DevicesInfo> supportedSwitches) {
-        if (supportedSwitches == null || supportedSwitches.size() <= 0)
-            return supportedSwitches;
+        try {
+            if (supportedSwitches == null || supportedSwitches.size() <= 0)
+                return supportedSwitches;
 
-        if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-            boolean alreadySpecified = false;
-            int randomNum = 1;
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                randomNum = ThreadLocalRandom.current().nextInt(1, 5 + 1);
+            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                boolean alreadySpecified = false;
+                for (DevicesInfo d : supportedSwitches) {
+                    if (d.getType().equals("advertisement"))
+                        alreadySpecified = true;
+                }
+                if (!alreadySpecified) {
+                    DevicesInfo adView = new DevicesInfo();
+                    adView.setIdx(-9998);
+                    adView.setName("Ads");
+                    adView.setType("advertisement");
+                    adView.setDescription("Advertisement");
+                    adView.setFavoriteBoolean(true);
+                    adView.setIsProtected(false);
+                    adView.setStatusBoolean(false);
+                    supportedSwitches.add(1, adView);
+                }
             }
-            if (randomNum >= supportedSwitches.size())
-                randomNum = 1;
-            if (randomNum >= supportedSwitches.size())
-                randomNum = supportedSwitches.size() - 1;
-            if (randomNum < 0)
-                randomNum = 0;
-
-            for (DevicesInfo d : supportedSwitches) {
-                if (d.getType().equals("advertisement"))
-                    alreadySpecified = true;
-            }
-            if (!alreadySpecified) {
-                DevicesInfo sunrise = new DevicesInfo();
-                sunrise.setIdx(-9998);
-                sunrise.setName("Ads");
-                sunrise.setType("advertisement");
-                sunrise.setDescription("Advertisement");
-                sunrise.setFavoriteBoolean(true);
-                sunrise.setIsProtected(false);
-                sunrise.setStatusBoolean(false);
-                supportedSwitches.add(randomNum, sunrise);
-            }
-        }
+        }catch (Exception ex){}
         return supportedSwitches;
     }
 
