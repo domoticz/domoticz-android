@@ -41,6 +41,13 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import nl.hnogames.domoticz.ads.NativeTemplateStyle;
+import nl.hnogames.domoticz.ads.TemplateView;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
@@ -113,6 +120,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             boolean showAsList,
                             SunRiseInfo sunriseInfo) {
         super();
+
         this.domoticz = StaticHelper.getDomoticz(context);
         this.showAsList = showAsList;
         this.sunriseInfo = sunriseInfo;
@@ -133,6 +141,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         this.listener = listener;
         if (mCustomSorting == null)
             mCustomSorting = mSharedPrefs.getSortingList("dashboard");
+
         setData(data);
     }
 
@@ -241,7 +250,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if (mDeviceInfo.getType() != null && mDeviceInfo.getType().equals("sunrise")) {
                 setButtons(holder, Buttons.CLOCK);
                 setClockRowData(holder);
-            } else if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
+            }
+            else if (mDeviceInfo.getType() != null && mDeviceInfo.getType().equals("advertisement")) {
+                setButtons(holder, Buttons.ADS);
+                setAdsLayout(holder);
+            }
+            else if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
                 setButtons(holder, Buttons.BUTTON_ON);
                 setThermostatRowData(mDeviceInfo, holder);
             } else {
@@ -910,6 +924,46 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.clockText.setText(current);
                 }
             }
+        } catch (Exception ignored) {
+        }
+    }
+
+    /**
+     * Set the data for the ads row
+     *
+     * @param holder Holder to use
+     */
+    private void setAdsLayout(DataObjectHolder holder) {
+        try {
+                MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
+                AdRequest adRequest = new AdRequest.Builder()
+                        .addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4")
+                        .addTestDevice("1AAE9D81347967A359E372B0445549DE")
+                        .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
+                        .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
+                        .addTestDevice("6C2390A9FF8F555BD01BA560068CD366")
+                        .build();
+
+                AdLoader adLoader = new AdLoader.Builder(context, context.getString(R.string.ad_unit_id))
+                        .forUnifiedNativeAd(unifiedNativeAd -> {
+                            NativeTemplateStyle styles = new NativeTemplateStyle.Builder().build();
+                            if(holder.adview != null) {
+                                holder.adview.setVisibility(View.VISIBLE);
+                                holder.adview.setStyles(styles);
+                                holder.adview.setNativeAd(unifiedNativeAd);
+                            }
+                        })
+                        .withAdListener(new AdListener() {
+                            @Override
+                            public void onAdFailedToLoad(int errorCode) {
+                                if(holder.adview != null) {
+                                    holder.adview.setVisibility(View.GONE);
+                                }
+                            }
+                        })
+                        .withNativeAdOptions(new NativeAdOptions.Builder().build())
+                        .build();
+                adLoader.loadAd(adRequest);
         } catch (Exception ignored) {
         }
     }
@@ -1836,11 +1890,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (holder.dimmer != null) {
             holder.dimmer.setVisibility(View.GONE);
         }
-        if (holder.clockLayout != null) {
-            holder.clockLayout.setVisibility(View.GONE);
+        if (holder.adview != null) {
+            holder.adview.setVisibility(View.GONE);
         }
         if (holder.clockLayoutWrapper != null) {
             holder.clockLayoutWrapper.setVisibility(View.GONE);
+        }
+        if (holder.clockLayout != null) {
+            holder.clockLayout.setVisibility(View.GONE);
         }
         if (holder.sunriseLayout != null) {
             holder.sunriseLayout.setVisibility(View.GONE);
@@ -1933,32 +1990,62 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.details.setVisibility(View.GONE);
                 if (holder.iconRow != null)
                     holder.iconRow.setVisibility(View.GONE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
+                break;
+            case Buttons.ADS:
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.VISIBLE);
+                if (holder.switch_name != null)
+                    holder.switch_name.setVisibility(View.GONE);
+                if (holder.signal_level != null)
+                    holder.signal_level.setVisibility(View.GONE);
+                if (holder.switch_battery_level != null)
+                    holder.switch_battery_level.setVisibility(View.GONE);
+                if (holder.details != null)
+                    holder.details.setVisibility(View.GONE);
+                if (holder.iconRow != null)
+                    holder.iconRow.setVisibility(View.GONE);
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.GONE);
                 break;
             case Buttons.SWITCH:
                 if (holder.onOffSwitch != null)
                     holder.onOffSwitch.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BUTTONS:
                 if (holder.buttonOn != null)
                     holder.buttonOn.setVisibility(View.VISIBLE);
                 if (holder.buttonOff != null)
                     holder.buttonOff.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.SET:
                 if (holder.buttonSet != null)
                     holder.buttonSet.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.MODAL:
                 if (holder.buttonSetStatus != null)
                     holder.buttonSetStatus.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BUTTON_ON:
                 if (holder.buttonOn != null)
                     holder.buttonOn.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BUTTON_OFF:
                 if (holder.buttonOff != null)
                     holder.buttonOff.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BLINDS:
                 if (holder.buttonDown != null)
@@ -1969,6 +2056,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.buttonStop.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.GONE);
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BLINDS_NOSTOP:
                 if (holder.buttonDown != null)
@@ -1977,6 +2068,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.buttonUp.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.GONE);
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BLINDS_DIMMER:
                 if (holder.buttonDown != null)
@@ -1987,6 +2082,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.buttonStop.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.VISIBLE);
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.BLINDS_DIMMER_NOSTOP:
                 if (holder.buttonDown != null)
@@ -1995,6 +2094,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.buttonUp.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.VISIBLE);
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.DIMMER_RGB:
                 if (holder.dimmerOnOffSwitch != null)
@@ -2003,12 +2106,20 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.dimmer.setVisibility(View.VISIBLE);
                 if (holder.buttonColor != null)
                     holder.buttonColor.setVisibility(View.VISIBLE);
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.DIMMER:
                 if (holder.dimmerOnOffSwitch != null)
                     holder.dimmerOnOffSwitch.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.VISIBLE);
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.DIMMER_BUTTONS:
                 if (holder.buttonOn != null)
@@ -2017,12 +2128,20 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.buttonOff.setVisibility(View.VISIBLE);
                 if (holder.dimmer != null)
                     holder.dimmer.setVisibility(View.VISIBLE);
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.SELECTOR:
                 if (holder.spSelector != null)
                     holder.spSelector.setVisibility(View.VISIBLE);
                 if (holder.dimmerOnOffSwitch != null)
                     holder.dimmerOnOffSwitch.setVisibility(View.GONE);
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.SELECTOR_BUTTONS:
                 if (holder.buttonOn != null)
@@ -2031,11 +2150,19 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.buttonOff.setVisibility(View.GONE);
                 if (holder.spSelector != null)
                     holder.spSelector.setVisibility(View.VISIBLE);
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             default:
                 if (!mSharedPrefs.showExtraData())
                     holder.signal_level.setVisibility(View.GONE);
                 holder.switch_battery_level.setVisibility(View.VISIBLE);
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
         }
     }
@@ -2080,6 +2207,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         int SELECTOR = 12;
         int SELECTOR_BUTTONS = 13;
         int CLOCK = 14;
+        int ADS = 17;
     }
 
     public interface OnClickListener {
@@ -2094,7 +2222,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         Boolean isProtected;
         ImageView iconRow, iconMode;
         Slider dimmer;
-
+        RelativeLayout contentWrapper;
         ImageView dummyImg;
         Spinner spSelector;
         LinearLayout extraPanel, clockLayoutWrapper, row_wrapper;
@@ -2104,10 +2232,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         ClockImageView clock, sunrise, sunset;
         LinearLayout clockLayout, sunriseLayout, sunsetLayout;
         TextView clockText, sunriseText, sunsetText;
+        TemplateView adview;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
 
+            contentWrapper = itemView.findViewById(R.id.contentWrapper);
+            adview = itemView.findViewById(R.id.adview);
             extraPanel = itemView.findViewById(R.id.extra_panel);
             details = itemView.findViewById(R.id.details);
             pieView = itemView.findViewById(R.id.pieView);

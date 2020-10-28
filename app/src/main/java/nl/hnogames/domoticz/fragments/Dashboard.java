@@ -26,6 +26,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -45,6 +46,7 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -52,6 +54,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.DashboardAdapter;
@@ -254,7 +257,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 StaticHelper.getDomoticz(mContext).getSunRise(new SunRiseReceiver() {
                     @Override
                     public void onReceive(SunRiseInfo mSunRiseInfo) {
-                        createListView(AddClockDevice(mSunRiseInfo, supportedSwitches), mSunRiseInfo);
+                        createListView(AddAdsDevice(AddClockDevice(mSunRiseInfo, supportedSwitches)), mSunRiseInfo);
                     }
 
                     @Override
@@ -284,6 +287,43 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 sunrise.setIsProtected(false);
                 sunrise.setStatusBoolean(false);
                 supportedSwitches.add(0, sunrise);
+            }
+        }
+        return supportedSwitches;
+    }
+
+    private ArrayList<DevicesInfo> AddAdsDevice(ArrayList<DevicesInfo> supportedSwitches) {
+        if(supportedSwitches == null || supportedSwitches.size() <=0)
+            return supportedSwitches;
+
+        if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+            boolean alreadySpecified = false;
+            int randomNum = 1;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                randomNum = ThreadLocalRandom.current().nextInt(1, 5 + 1);
+            }
+            if(randomNum >= supportedSwitches.size())
+                randomNum = 1;
+            if(randomNum >= supportedSwitches.size())
+                randomNum = supportedSwitches.size()-1;
+            if(randomNum < 0)
+                randomNum = 0;
+
+            for (DevicesInfo d : supportedSwitches) {
+                if (d.getType().equals("advertisement"))
+                    alreadySpecified = true;
+            }
+            if (!alreadySpecified) {
+                DevicesInfo sunrise = new DevicesInfo();
+                sunrise.setIdx(-9998);
+                sunrise.setName("Ads");
+                sunrise.setType("advertisement");
+                sunrise.setDescription("Advertisement");
+                sunrise.setFavoriteBoolean(true);
+                sunrise.setIsProtected(false);
+                sunrise.setStatusBoolean(false);
+                supportedSwitches.add(randomNum, sunrise);
             }
         }
         return supportedSwitches;

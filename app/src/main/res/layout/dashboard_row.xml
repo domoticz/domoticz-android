@@ -34,6 +34,13 @@
     app:cardCornerRadius="5dp"
     app:cardElevation="1dp">
 
+    <nl.hnogames.domoticz.ads.TemplateView
+        android:id="@+id/adview"
+        android:visibility="gone"
+        app:gnt_template_type="@layout/gnt_small_template_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -394,6 +401,8 @@
 
                         </RelativeLayout>
 
+
+
                     </RelativeLayout>
 
                     <TextView
@@ -437,4 +446,5 @@
             android:tint="@color/md_grey_300" />
 
     </RelativeLayout>
+
 </com.google.android.material.card.MaterialCardView>

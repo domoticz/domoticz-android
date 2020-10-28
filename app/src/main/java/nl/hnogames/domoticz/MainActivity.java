@@ -182,15 +182,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         permissionHelper = PermissionHelper.getInstance(this);
 
         UsefulBits.checkAPK(this, mSharedPrefs);
-        if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-            setContentView(R.layout.activity_newmain_free);
-            MobileAds.initialize(this, this.getString(R.string.ADMOB_APP_KEY));
-            AdRequest adRequest = new AdRequest.Builder().addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4").build();
-            ((AdView) findViewById(R.id.adView)).loadAd(adRequest);
-        } else {
-            setContentView(R.layout.activity_newmain_paid);
-            //(findViewById(R.id.adView)).setVisibility(View.GONE);
-        }
+        setContentView(R.layout.activity_newmain_paid);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();

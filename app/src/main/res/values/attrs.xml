@@ -21,6 +21,10 @@
   -->
 
 <resources>
+    <declare-styleable name="TemplateView">
+        <attr name="gnt_template_type" format="reference"/>
+    </declare-styleable>
+
     <attr name="lockedValues" format="reference"/>
     <attr name="lockedValuesDependencyKeys" format="reference"/>
     <attr name="dynamicEntriesProvider" format="string"/>
