@@ -34,11 +34,11 @@
 
     <nl.hnogames.domoticz.ads.TemplateView
         android:id="@+id/adview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="70dp"
-        app:gnt_template_type="@layout/gnt_small_template_view"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        app:gnt_template_type="@layout/gnt_small_template_view" />
 
 </com.google.android.material.card.MaterialCardView>

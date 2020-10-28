@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-  <solid android:color="@color/gnt_colorPrimary2"/>
+    <solid android:color="?attr/md_background_color" />
 
-  <stroke android:width="2dp"
-      android:color="@color/gnt_colorAccent2"/>
+    <stroke
+        android:width="2dp"
+        android:color="?attr/colorAccent" />
 
-  <padding android:left="1dp"
-      android:top="1dp"
-      android:right="1dp"
-      android:bottom="1dp" />
+    <padding
+        android:bottom="1dp"
+        android:left="1dp"
+        android:right="1dp"
+        android:top="1dp" />
 
-  <corners android:bottomRightRadius="5dp"
-      android:bottomLeftRadius="5dp"
-      android:topLeftRadius="5dp"
-      android:topRightRadius="5dp" />
+    <corners
+        android:bottomLeftRadius="5dp"
+        android:bottomRightRadius="5dp"
+        android:topLeftRadius="5dp"
+        android:topRightRadius="5dp" />
 </shape>

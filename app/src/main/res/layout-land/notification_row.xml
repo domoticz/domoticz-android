@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -21,10 +20,10 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/switch_name"
@@ -32,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        tools:text="Switch name"/>
+        tools:text="Switch name" />
 
     <TextView
         android:id="@+id/switch_battery_level"
@@ -41,13 +40,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:text="@string/battery_level"/>
+        android:text="@string/battery_level" />
 
     <TextView
         android:id="@+id/switch_signal_level"
         style="@style/row_body2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/signal_level"/>
+        android:text="@string/signal_level" />
 
 </LinearLayout>

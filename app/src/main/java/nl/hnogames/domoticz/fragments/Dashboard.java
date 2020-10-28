@@ -293,7 +293,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     }
 
     private ArrayList<DevicesInfo> AddAdsDevice(ArrayList<DevicesInfo> supportedSwitches) {
-        if(supportedSwitches == null || supportedSwitches.size() <=0)
+        if (supportedSwitches == null || supportedSwitches.size() <= 0)
             return supportedSwitches;
 
         if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
@@ -303,11 +303,11 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 randomNum = ThreadLocalRandom.current().nextInt(1, 5 + 1);
             }
-            if(randomNum >= supportedSwitches.size())
+            if (randomNum >= supportedSwitches.size())
                 randomNum = 1;
-            if(randomNum >= supportedSwitches.size())
-                randomNum = supportedSwitches.size()-1;
-            if(randomNum < 0)
+            if (randomNum >= supportedSwitches.size())
+                randomNum = supportedSwitches.size() - 1;
+            if (randomNum < 0)
                 randomNum = 0;
 
             for (DevicesInfo d : supportedSwitches) {

@@ -20,22 +20,22 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context=".NotificationHistoryActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".NotificationHistoryActivity">
 
     <item
         android:id="@+id/search"
-        android:title="@string/filter"
         android:icon="@drawable/baseline_search_white_24"
+        android:title="@string/filter"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="always|collapseActionView"/>
+        app:showAsAction="always|collapseActionView" />
 
     <item
         android:id="@+id/action_add"
-        android:orderInCategory="100"
         android:icon="@drawable/baseline_send_white_24"
+        android:orderInCategory="100"
         android:title="@string/add"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 
 </menu>

@@ -41,8 +41,6 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import nl.hnogames.domoticz.ads.NativeTemplateStyle;
-import nl.hnogames.domoticz.ads.TemplateView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
@@ -70,6 +68,8 @@ import az.plainpie.animation.PieAngleAnimation;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.ads.NativeTemplateStyle;
+import nl.hnogames.domoticz.ads.TemplateView;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.switchesClickListener;
 import nl.hnogames.domoticz.utils.CameraUtil;
@@ -204,7 +204,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         else
             row = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.dashboard_row, parent, false);
-
         return new DataObjectHolder(row);
     }
 
@@ -225,7 +224,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.pieView.setTextColor(temperatureValue.data);
 
             setSwitchRowData(extendedStatusInfo, holder);
-
             holder.infoIcon.setTag(extendedStatusInfo.getIdx());
             holder.infoIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -250,12 +248,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if (mDeviceInfo.getType() != null && mDeviceInfo.getType().equals("sunrise")) {
                 setButtons(holder, Buttons.CLOCK);
                 setClockRowData(holder);
-            }
-            else if (mDeviceInfo.getType() != null && mDeviceInfo.getType().equals("advertisement")) {
+            } else if (mDeviceInfo.getType() != null && mDeviceInfo.getType().equals("advertisement")) {
                 setButtons(holder, Buttons.ADS);
                 setAdsLayout(holder);
-            }
-            else if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
+            } else if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
                 setButtons(holder, Buttons.BUTTON_ON);
                 setThermostatRowData(mDeviceInfo, holder);
             } else {
@@ -935,35 +931,35 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
      */
     private void setAdsLayout(DataObjectHolder holder) {
         try {
-                MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4")
-                        .addTestDevice("1AAE9D81347967A359E372B0445549DE")
-                        .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
-                        .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
-                        .addTestDevice("6C2390A9FF8F555BD01BA560068CD366")
-                        .build();
+            MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4")
+                    .addTestDevice("1AAE9D81347967A359E372B0445549DE")
+                    .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
+                    .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
+                    .addTestDevice("6C2390A9FF8F555BD01BA560068CD366")
+                    .build();
 
-                AdLoader adLoader = new AdLoader.Builder(context, context.getString(R.string.ad_unit_id))
-                        .forUnifiedNativeAd(unifiedNativeAd -> {
-                            NativeTemplateStyle styles = new NativeTemplateStyle.Builder().build();
-                            if(holder.adview != null) {
-                                holder.adview.setVisibility(View.VISIBLE);
-                                holder.adview.setStyles(styles);
-                                holder.adview.setNativeAd(unifiedNativeAd);
+            AdLoader adLoader = new AdLoader.Builder(context, context.getString(R.string.ad_unit_id))
+                    .forUnifiedNativeAd(unifiedNativeAd -> {
+                        NativeTemplateStyle styles = new NativeTemplateStyle.Builder().build();
+                        if (holder.adview != null) {
+                            holder.adview.setVisibility(View.VISIBLE);
+                            holder.adview.setStyles(styles);
+                            holder.adview.setNativeAd(unifiedNativeAd);
+                        }
+                    })
+                    .withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(int errorCode) {
+                            if (holder.adview != null) {
+                                holder.adview.setVisibility(View.GONE);
                             }
-                        })
-                        .withAdListener(new AdListener() {
-                            @Override
-                            public void onAdFailedToLoad(int errorCode) {
-                                if(holder.adview != null) {
-                                    holder.adview.setVisibility(View.GONE);
-                                }
-                            }
-                        })
-                        .withNativeAdOptions(new NativeAdOptions.Builder().build())
-                        .build();
-                adLoader.loadAd(adRequest);
+                        }
+                    })
+                    .withNativeAdOptions(new NativeAdOptions.Builder().build())
+                    .build();
+            adLoader.loadAd(adRequest);
         } catch (Exception ignored) {
         }
     }

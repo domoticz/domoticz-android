@@ -34,17 +34,17 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/dummyImg"
             android:layout_width="match_parent"
-            android:tintMode="src_atop"
-            android:tint="?attr/listviewRowTintBackground"
             android:layout_height="fill_parent"
-            android:scaleType="fitCenter"
+            android:layout_alignParentTop="true"
             android:adjustViewBounds="true"
-            android:layout_alignParentTop="true"/>
+            android:scaleType="fitCenter"
+            android:tint="?attr/listviewRowTintBackground"
+            android:tintMode="src_atop" />
 
         <LinearLayout
             android:id="@+id/row_global_wrapper"
@@ -311,9 +311,9 @@
             android:id="@+id/full_screen_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
             android:src="@drawable/baseline_fullscreen_white_24"
             android:tint="@color/md_grey_300" />
 

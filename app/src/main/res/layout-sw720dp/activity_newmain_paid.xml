@@ -40,7 +40,8 @@
             android:id="@+id/tabletLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
             android:layout_width="match_parent"
@@ -74,11 +75,11 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
             android:visibility="gone"
+            app:backgroundTint="?attr/floatingActionBar"
             app:layout_anchor="@id/appBar"
             app:layout_anchorGravity="bottom|end"
-            app:tint="?attr/floatingActionBarText"
-            app:backgroundTint="?attr/floatingActionBar"
-            app:srcCompat="@drawable/baseline_filter_list_white_24"/>
+            app:srcCompat="@drawable/baseline_filter_list_white_24"
+            app:tint="?attr/floatingActionBarText" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

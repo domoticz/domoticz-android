@@ -19,6 +19,7 @@
   ~  under the License.
   -->
 <resources>
+
     <style name="AppThemeIntro" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -54,7 +55,9 @@
         <item name="material_drawer_divider">@color/material_drawer_divider</item>
         <item name="material_drawer_selected">@color/material_drawer_selected</item>
         <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
-        <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
+        <item name="material_drawer_header_selection_text">
+            @color/material_drawer_header_selection_text
+        </item>
 
         <!-- Needed for the theme activity -->
         <item name="colorControlHighlight">@color/primary</item>
@@ -123,7 +126,9 @@
         <item name="material_drawer_divider">@color/material_drawer_divider</item>
         <item name="material_drawer_selected">@color/material_drawer_selected</item>
         <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
-        <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
+        <item name="material_drawer_header_selection_text">
+            @color/material_drawer_header_selection_text
+        </item>
 
         <!-- Needed for the theme activity -->
         <item name="colorControlHighlight">@color/primary</item>
@@ -321,7 +326,9 @@
         <item name="material_drawer_divider">@color/material_drawer_divider</item>
         <item name="material_drawer_selected">@color/material_drawer_selected</item>
         <item name="material_drawer_selected_text">@color/alt3_accent</item>
-        <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
+        <item name="material_drawer_header_selection_text">
+            @color/material_drawer_header_selection_text
+        </item>
 
         <!-- Style to use for Snackbars in this theme. -->
         <item name="snackbarStyle">@style/snackbarStyle</item>
@@ -500,7 +507,7 @@
     </style>
 
     <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-    <item name="android:textColor">@color/primary_accent</item>
+        <item name="android:textColor">@color/primary_accent</item>
         <item name="rippleColor">@color/primary_accent</item>
     </style>
 
@@ -527,7 +534,7 @@
         <item name="rippleColor">@color/secondary_accent</item>
     </style>
 
-    <style name="DialogButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog"/>
+    <style name="DialogButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog" />
 
     <!-- Snackbar styles -->
     <style name="snackbarStyle" parent="@style/Widget.MaterialComponents.Snackbar">
@@ -674,7 +681,7 @@
         <item name="android:scrollbars">vertical</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="Theme.MaterialComponents.Light.Bridge"/>
+    <style name="AppTheme.PopupOverlay" parent="Theme.MaterialComponents.Light.Bridge" />
 </resources>

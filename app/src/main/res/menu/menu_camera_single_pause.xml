@@ -20,13 +20,13 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context=".CameraActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".CameraActivity">
     <item
         android:id="@+id/action_camera_pause"
         android:icon="@drawable/ic_pause"
         android:orderInCategory="100"
         android:title="@string/action_camera_pause"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 </menu>

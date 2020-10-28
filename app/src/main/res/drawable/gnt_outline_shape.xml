@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
-  <solid android:color="@color/gnt_colorPrimary2" />
-  <stroke android:width="2dp" android:color="@color/gnt_colorAccent"/>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="?attr/md_background_color" />
+    <stroke
+        android:width="2dp"
+        android:color="?attr/colorAccent" />
 </shape>
 

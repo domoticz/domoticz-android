@@ -98,10 +98,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/utilities_data"
-                    android:textSize="8sp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
-                    android:text="@string/hardware" />
+                    android:text="@string/hardware"
+                    android:textSize="8sp" />
             </LinearLayout>
 
             <LinearLayout
