@@ -64,6 +64,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
 import nl.hnogames.domoticz.ads.TemplateView;
@@ -146,16 +147,21 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     private ArrayList<DevicesInfo> SortData(ArrayList<DevicesInfo> data) {
         ArrayList<DevicesInfo> customdata = new ArrayList<>();
         if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
+            DevicesInfo adView = null;
             for (String s : mCustomSorting) {
                 for (DevicesInfo d : data) {
-                    if (s.equals(String.valueOf(d.getIdx())))
+                    if (s.equals(String.valueOf(d.getIdx())) && d.getIdx() != MainActivity.ADS_IDX)
                         customdata.add(d);
+                    if(d.getIdx() == MainActivity.ADS_IDX)
+                        adView = d;
                 }
             }
             for (DevicesInfo d : data) {
-                if (!customdata.contains(d))
+                if (!customdata.contains(d) && d.getIdx() != MainActivity.ADS_IDX)
                     customdata.add(d);
             }
+            if(adView != null && customdata != null && customdata.size() > 0)
+                customdata.add(1, adView);
         } else
             customdata = data;
         return customdata;
@@ -164,7 +170,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     private void SaveSorting() {
         List<String> ids = new ArrayList<>();
         for (DevicesInfo d : filteredData) {
-            ids.add(String.valueOf(d.getIdx()));
+            if (d.getType() == null || !d.getType().equals("advertisement"))
+                ids.add(String.valueOf(d.getIdx()));
         }
         mCustomSorting = ids;
         mSharedPrefs.saveSortingList("switches", ids);
@@ -245,7 +252,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                                   DataObjectHolder holder) {
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
                 (mDeviceInfo.getSwitchType() == null)) {
-            if (mDeviceInfo.getType() != null && mDeviceInfo.getType().equals("advertisement")) {
+            if (mDeviceInfo.getIdx() == MainActivity.ADS_IDX) {
                 setButtons(holder, DashboardAdapter.Buttons.ADS);
                 setAdsLayout(holder);
             }

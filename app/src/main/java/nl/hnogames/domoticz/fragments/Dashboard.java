@@ -26,7 +26,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -46,7 +45,6 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -297,25 +295,25 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             if (supportedSwitches == null || supportedSwitches.size() <= 0)
                 return supportedSwitches;
 
+            ArrayList<DevicesInfo> filteredList = new ArrayList<>();
             if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-                boolean alreadySpecified = false;
                 for (DevicesInfo d : supportedSwitches) {
-                    if (d.getType().equals("advertisement"))
-                        alreadySpecified = true;
+                    if (d.getIdx() != MainActivity.ADS_IDX)
+                        filteredList.add(d);
                 }
-                if (!alreadySpecified) {
-                    DevicesInfo adView = new DevicesInfo();
-                    adView.setIdx(-9998);
-                    adView.setName("Ads");
-                    adView.setType("advertisement");
-                    adView.setDescription("Advertisement");
-                    adView.setFavoriteBoolean(true);
-                    adView.setIsProtected(false);
-                    adView.setStatusBoolean(false);
-                    supportedSwitches.add(1, adView);
-                }
+                DevicesInfo adView = new DevicesInfo();
+                adView.setIdx(MainActivity.ADS_IDX);
+                adView.setName("Ads");
+                adView.setType("advertisement");
+                adView.setDescription("Advertisement");
+                adView.setFavoriteBoolean(true);
+                adView.setIsProtected(false);
+                adView.setStatusBoolean(false);
+                filteredList.add(1, adView);
+                return filteredList;
             }
-        }catch (Exception ex){}
+        } catch (Exception ex) {
+        }
         return supportedSwitches;
     }
 

@@ -31,8 +31,7 @@ import java.util.Date;
 import androidx.annotation.NonNull;
 
 public class SceneInfo implements Comparable, Serializable {
-
-    private final boolean isProtected;
+    private boolean isProtected = false;
     private String jsonObject;
 
     private int favorite;
@@ -46,6 +45,9 @@ public class SceneInfo implements Comparable, Serializable {
     private Boolean timers;
     private String type;
     private int idx;
+
+    public SceneInfo() {
+    }
 
     public SceneInfo(JSONObject row) throws JSONException {
         this.jsonObject = row.toString();
@@ -141,6 +143,9 @@ public class SceneInfo implements Comparable, Serializable {
     public String getName() {
         return name;
     }
+    public void setName(String n) {
+        name = n;
+    }
 
     public String getOffAction() {
         return offAction;
@@ -166,8 +171,16 @@ public class SceneInfo implements Comparable, Serializable {
         return type;
     }
 
+    public void setType(String n) {
+        type = n;
+    }
+
     public int getIdx() {
         return idx;
+    }
+
+    public void setIdx(int n) {
+        idx = n;
     }
 
     public String getJsonObject() {

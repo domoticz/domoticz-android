@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.SceneAdapter;
@@ -55,6 +56,7 @@ import nl.hnogames.domoticz.ui.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.WidgetUtils;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Containers.SwitchLogInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -85,7 +87,6 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     @Override
-
     public void onAttach(Context context) {
         super.onAttach(context);
         onAttachFragment(this);
@@ -108,8 +109,6 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         onAttachFragment(this);
         super.onActivityCreated(savedInstanceState);
-        //if (getActionBar() != null)
-        //    getActionBar().setTitle(R.string.title_scenes);
     }
 
     @Override
@@ -137,6 +136,31 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    private ArrayList<SceneInfo> AddAdsDevice(ArrayList<SceneInfo> supportedSwitches) {
+        try {
+            if (supportedSwitches == null || supportedSwitches.size() <= 0)
+                return supportedSwitches;
+
+            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                ArrayList<SceneInfo> filteredList = new ArrayList<>();
+                for (SceneInfo d : supportedSwitches) {
+                    if (d.getIdx() != MainActivity.ADS_IDX)
+                        filteredList.add(d);
+                }
+                SceneInfo adView = new SceneInfo();
+                adView.setIdx(MainActivity.ADS_IDX);
+                adView.setName("Ads");
+                adView.setType("advertisement");
+                adView.setDescription("Advertisement");
+                adView.setFavoriteBoolean(true);
+                filteredList.add(1, adView);
+                return filteredList;
+            }
+        } catch (Exception ex) {
+        }
+        return supportedSwitches;
     }
 
     private void initAnimation() {
@@ -198,11 +222,11 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             }
 
             if (adapter == null) {
-                adapter = new SceneAdapter(mContext, StaticHelper.getDomoticz(mContext), supportedScenes, listener);
+                adapter = new SceneAdapter(mContext, StaticHelper.getDomoticz(mContext), AddAdsDevice(supportedScenes), listener);
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
             } else {
-                adapter.setData(supportedScenes);
+                adapter.setData(AddAdsDevice(supportedScenes));
                 adapter.notifyDataSetChanged();
                 alphaSlideIn.notifyDataSetChanged();
             }

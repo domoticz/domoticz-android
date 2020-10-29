@@ -29,8 +29,14 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.material.chip.Chip;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
@@ -43,10 +49,14 @@ import java.util.List;
 import androidx.recyclerview.widget.RecyclerView;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.ads.NativeTemplateStyle;
+import nl.hnogames.domoticz.ads.TemplateView;
 import nl.hnogames.domoticz.interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
@@ -96,23 +106,27 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.scene_row_default, parent, false);
-
         return new DataObjectHolder(view);
     }
 
     private ArrayList<SceneInfo> SortData(ArrayList<SceneInfo> data) {
         ArrayList<SceneInfo> customdata = new ArrayList<>();
         if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
+            SceneInfo adView = null;
             for (String s : mCustomSorting) {
                 for (SceneInfo d : data) {
-                    if (s.equals(String.valueOf(d.getIdx())))
+                    if (s.equals(String.valueOf(d.getIdx())) && d.getIdx() != MainActivity.ADS_IDX)
                         customdata.add(d);
+                    if(d.getIdx() == MainActivity.ADS_IDX)
+                        adView = d;
                 }
             }
             for (SceneInfo d : data) {
-                if (!customdata.contains(d))
+                if (!customdata.contains(d) && d.getIdx() != MainActivity.ADS_IDX)
                     customdata.add(d);
             }
+            if(adView != null && customdata != null && customdata.size() > 0)
+                customdata.add(1, adView);
         } else
             customdata = data;
         return customdata;
@@ -121,10 +135,11 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
     private void SaveSorting() {
         List<String> ids = new ArrayList<>();
         for (SceneInfo d : filteredData) {
-            ids.add(String.valueOf(d.getIdx()));
+            if (d.getIdx() != -9998)
+                ids.add(String.valueOf(d.getIdx()));
         }
         mCustomSorting = ids;
-        mSharedPrefs.saveSortingList("plans", ids);
+        mSharedPrefs.saveSortingList("scenes", ids);
     }
 
     @Override
@@ -133,14 +148,13 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
             final SceneInfo mSceneInfo = filteredData.get(position);
 
             holder.infoIcon.setTag(mSceneInfo.getIdx());
-            holder.infoIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemLongClicked((int) v.getTag());
-                }
-            });
+            holder.infoIcon.setOnClickListener(v -> listener.onItemLongClicked((int) v.getTag()));
 
-            if (DomoticzValues.Scene.Type.SCENE.equalsIgnoreCase(mSceneInfo.getType())) {
+            if (mSceneInfo.getIdx() == MainActivity.ADS_IDX) {
+                setButtons(holder, DashboardAdapter.Buttons.ADS);
+                setAdsLayout(holder);
+            }
+            else if (DomoticzValues.Scene.Type.SCENE.equalsIgnoreCase(mSceneInfo.getType())) {
                 holder.isProtected = mSceneInfo.isProtected();
 
                 setButtons(holder, Buttons.SCENE);
@@ -291,6 +305,46 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         }
     }
 
+    /**
+     * Set the data for the ads row
+     *
+     * @param holder Holder to use
+     */
+    private void setAdsLayout(DataObjectHolder holder) {
+        try {
+            MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4")
+                    .addTestDevice("1AAE9D81347967A359E372B0445549DE")
+                    .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
+                    .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
+                    .addTestDevice("6C2390A9FF8F555BD01BA560068CD366")
+                    .build();
+
+            AdLoader adLoader = new AdLoader.Builder(context, context.getString(R.string.ad_unit_id))
+                    .forUnifiedNativeAd(unifiedNativeAd -> {
+                        NativeTemplateStyle styles = new NativeTemplateStyle.Builder().build();
+                        if (holder.adview != null) {
+                            holder.adview.setVisibility(View.VISIBLE);
+                            holder.adview.setStyles(styles);
+                            holder.adview.setNativeAd(unifiedNativeAd);
+                        }
+                    })
+                    .withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(int errorCode) {
+                            if (holder.adview != null) {
+                                holder.adview.setVisibility(View.GONE);
+                            }
+                        }
+                    })
+                    .withNativeAdOptions(new NativeAdOptions.Builder().build())
+                    .build();
+            adLoader.loadAd(adRequest);
+        } catch (Exception ignored) {
+        }
+    }
+
     @Override
     public int getItemCount() {
         return filteredData.size();
@@ -309,16 +363,46 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         if (holder.buttonOn != null) {
             holder.buttonOn.setVisibility(View.GONE);
         }
+        if (holder.switch_name != null)
+            holder.switch_name.setVisibility(View.VISIBLE);
+        if (holder.signal_level != null)
+            holder.signal_level.setVisibility(View.VISIBLE);
+        if (holder.switch_battery_level != null)
+            holder.switch_battery_level.setVisibility(View.VISIBLE);
+        if (holder.iconRow != null)
+            holder.iconRow.setVisibility(View.VISIBLE);
 
         switch (button) {
+            case SwitchesAdapter.Buttons.ADS:
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.VISIBLE);
+                if (holder.switch_name != null)
+                    holder.switch_name.setVisibility(View.GONE);
+                if (holder.signal_level != null)
+                    holder.signal_level.setVisibility(View.GONE);
+                if (holder.switch_battery_level != null)
+                    holder.switch_battery_level.setVisibility(View.GONE);
+                if (holder.iconRow != null)
+                    holder.iconRow.setVisibility(View.GONE);
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.GONE);
+                break;
             case Buttons.SCENE:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 holder.buttonOn.setVisibility(View.VISIBLE);
                 holder.buttonLog.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.GROUP:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 holder.buttonOn.setVisibility(View.VISIBLE);
                 holder.buttonOff.setVisibility(View.VISIBLE);
                 holder.buttonLog.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
         }
     }
@@ -371,10 +455,14 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         Button buttonOn, buttonOff;
         Chip buttonLog, buttonTimer, buttonNotifications;
         ImageView infoIcon;
+        TemplateView adview;
+        RelativeLayout contentWrapper;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
 
+            contentWrapper = itemView.findViewById(R.id.contentWrapper);
+            adview = itemView.findViewById(R.id.adview);
             buttonOn = itemView.findViewById(R.id.on_button);
             signal_level = itemView.findViewById(R.id.switch_signal_level);
             iconRow = itemView.findViewById(R.id.rowIcon);
@@ -412,6 +500,9 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         }
     }
 
+    /**
+     * Item filter
+     */
     private class ItemFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -423,18 +514,17 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
             final ArrayList<SceneInfo> list = data;
 
             int count = list.size();
-            final ArrayList<SceneInfo> sceneInfos = new ArrayList<>(count);
+            final ArrayList<SceneInfo> devicesInfos = new ArrayList<>(count);
 
             SceneInfo filterableObject;
-
             for (int i = 0; i < count; i++) {
                 filterableObject = list.get(i);
-                if (filterableObject.getName().toLowerCase().contains(filterString)) {
-                    sceneInfos.add(filterableObject);
+                if (filterableObject.getName().toLowerCase().contains(filterString) || (filterableObject.getType() != null && filterableObject.getType().equals("advertisement"))) {
+                    devicesInfos.add(filterableObject);
                 }
             }
-            results.values = sceneInfos;
-            results.count = sceneInfos.size();
+            results.values = devicesInfos;
+            results.count = devicesInfos.size();
             return results;
         }
 

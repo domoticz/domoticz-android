@@ -144,8 +144,6 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     public void onActivityCreated(Bundle savedInstanceState) {
         onAttachFragment(this);
         super.onActivityCreated(savedInstanceState);
-        //if (getActionBar() != null)
-        //    getActionBar().setTitle(R.string.title_switches);
     }
 
     @Override
@@ -295,24 +293,24 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 return supportedSwitches;
 
             if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-                boolean alreadySpecified = false;
+                ArrayList<DevicesInfo> filteredList = new ArrayList<>();
                 for (DevicesInfo d : supportedSwitches) {
-                    if (d.getType().equals("advertisement"))
-                        alreadySpecified = true;
+                    if (d.getIdx() != MainActivity.ADS_IDX)
+                        filteredList.add(d);
                 }
-                if (!alreadySpecified) {
-                    DevicesInfo adView = new DevicesInfo();
-                    adView.setIdx(-9998);
-                    adView.setName("Ads");
-                    adView.setType("advertisement");
-                    adView.setDescription("Advertisement");
-                    adView.setFavoriteBoolean(true);
-                    adView.setIsProtected(false);
-                    adView.setStatusBoolean(false);
-                    supportedSwitches.add(1, adView);
-                }
+                DevicesInfo adView = new DevicesInfo();
+                adView.setIdx(MainActivity.ADS_IDX);
+                adView.setName("Ads");
+                adView.setType("advertisement");
+                adView.setDescription("Advertisement");
+                adView.setFavoriteBoolean(true);
+                adView.setIsProtected(false);
+                adView.setStatusBoolean(false);
+                filteredList.add(1, adView);
+                return filteredList;
             }
-        }catch (Exception ex){}
+        } catch (Exception ex) {
+        }
         return supportedSwitches;
     }
 

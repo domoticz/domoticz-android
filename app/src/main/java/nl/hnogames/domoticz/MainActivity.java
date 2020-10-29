@@ -127,6 +127,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private final int iQRResultCode = 775;
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
+    public static final int ADS_IDX = -9998;
+
     public boolean onPhone;
     public Exception configException;
     public FrameLayout frameLayout;
