@@ -1732,7 +1732,11 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     }
 
     public void setButtons(DataObjectHolder holder, int button) {
-        //defaults
+        holder.itemView.setVisibility(View.VISIBLE);
+        if (holder.contentWrapper != null)
+            holder.contentWrapper.setVisibility(View.VISIBLE);
+        if (holder.adview != null)
+            holder.adview.setVisibility(View.GONE);
         if (holder.dimmerOnOffSwitch != null) {
             holder.dimmerOnOffSwitch.setVisibility(View.GONE);
         }
@@ -1796,14 +1800,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             case Buttons.ADS:
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.VISIBLE);
-                if (holder.switch_name != null)
-                    holder.switch_name.setVisibility(View.GONE);
-                if (holder.signal_level != null)
-                    holder.signal_level.setVisibility(View.GONE);
-                if (holder.switch_battery_level != null)
-                    holder.switch_battery_level.setVisibility(View.GONE);
-                if (holder.iconRow != null)
-                    holder.iconRow.setVisibility(View.GONE);
                 if (holder.contentWrapper != null)
                     holder.contentWrapper.setVisibility(View.GONE);
                 break;
@@ -1812,7 +1808,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.buttonOn != null)
                     holder.buttonOn.setVisibility(View.VISIBLE);
-
                 if (holder.buttonOff != null)
                     holder.buttonOff.setVisibility(View.VISIBLE);
                 if (holder.adview != null)

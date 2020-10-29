@@ -356,6 +356,11 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
     }
 
     public void setButtons(DataObjectHolder holder, int button) {
+        holder.itemView.setVisibility(View.VISIBLE);
+        if (holder.contentWrapper != null)
+            holder.contentWrapper.setVisibility(View.VISIBLE);
+        if (holder.adview != null)
+            holder.adview.setVisibility(View.GONE);
         if (holder.buttonLog != null) {
             holder.buttonLog.setVisibility(View.GONE);
         }
@@ -384,14 +389,6 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
             case Buttons.ADS:
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.VISIBLE);
-                if (holder.switch_name != null)
-                    holder.switch_name.setVisibility(View.GONE);
-                if (holder.signal_level != null)
-                    holder.signal_level.setVisibility(View.GONE);
-                if (holder.switch_battery_level != null)
-                    holder.switch_battery_level.setVisibility(View.GONE);
-                if (holder.iconRow != null)
-                    holder.iconRow.setVisibility(View.GONE);
                 if (holder.contentWrapper != null)
                     holder.contentWrapper.setVisibility(View.GONE);
                 break;

@@ -183,7 +183,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         try {
             holder.itemView.setVisibility(View.GONE);
             holder.itemView.getLayoutParams().height = 0;
-            holder.itemView.getLayoutParams().width = 0;
 
             MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder()
@@ -203,7 +202,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                             holder.adview.setNativeAd(unifiedNativeAd);
                             holder.itemView.setVisibility(View.VISIBLE);
                             holder.itemView.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-                            holder.itemView.getLayoutParams().width = RelativeLayout.LayoutParams.WRAP_CONTENT;
                         }
                     })
                     .withAdListener(new AdListener() {
@@ -443,8 +441,10 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         if (holder.adview != null) {
             holder.adview.setVisibility(View.GONE);
         }
+
         if (holder.contentWrapper != null)
             holder.contentWrapper.setVisibility(View.VISIBLE);
+
         if (holder.buttonLog != null) {
             holder.buttonLog.setVisibility(View.GONE);
         }

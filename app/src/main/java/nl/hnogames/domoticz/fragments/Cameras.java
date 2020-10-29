@@ -180,7 +180,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         }
 
         if (mAdapter == null) {
-            mAdapter = new CamerasAdapter(AddAdsDevice(Cameras), context, StaticHelper.getDomoticz(context), refreshTimer);
+            mAdapter = new CamerasAdapter(Cameras, context, StaticHelper.getDomoticz(context), refreshTimer);
             mAdapter.setOnItemClickListener((position, v) -> {
                 CameraInfo camera = Cameras.get(position);
                 CameraUtil.ProcessImage(context, camera.getIdx(), camera.getName());
@@ -189,7 +189,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             mRecyclerView.setAdapter(alphaSlideIn);
         } else {
             mAdapter.setRefreshTimer(refreshTimer);
-            mAdapter.setData(AddAdsDevice(Cameras));
+            mAdapter.setData(Cameras);
             mAdapter.notifyDataSetChanged();
             alphaSlideIn.notifyDataSetChanged();
         }

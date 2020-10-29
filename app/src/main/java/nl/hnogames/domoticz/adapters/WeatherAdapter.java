@@ -218,6 +218,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 holder.contentWrapper.setVisibility(View.VISIBLE);
             if (holder.adview != null)
                 holder.adview.setVisibility(View.GONE);
+            holder.itemView.setVisibility(View.VISIBLE);
 
             if (mWeatherInfo.getIdx() == MainActivity.ADS_IDX) {
                 if (holder.contentWrapper != null)

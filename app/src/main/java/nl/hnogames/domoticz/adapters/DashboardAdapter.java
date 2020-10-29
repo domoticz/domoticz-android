@@ -1772,7 +1772,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     }
 
     public void setButtons(DataObjectHolder holder, int button) {
-        //defaults
+        holder.itemView.setVisibility(View.VISIBLE);
+        if (holder.contentWrapper != null)
+            holder.contentWrapper.setVisibility(View.VISIBLE);
+        if (holder.adview != null)
+            holder.adview.setVisibility(View.GONE);
         if (holder.dimmerOnOffSwitch != null) {
             holder.dimmerOnOffSwitch.setVisibility(View.GONE);
         }
@@ -1884,19 +1888,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.GONE);
                 break;
-            case Buttons.ADS:
+            case SwitchesAdapter.Buttons.ADS:
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.VISIBLE);
-                if (holder.switch_name != null)
-                    holder.switch_name.setVisibility(View.GONE);
-                if (holder.signal_level != null)
-                    holder.signal_level.setVisibility(View.GONE);
-                if (holder.switch_battery_level != null)
-                    holder.switch_battery_level.setVisibility(View.GONE);
-                if (holder.details != null)
-                    holder.details.setVisibility(View.GONE);
-                if (holder.iconRow != null)
-                    holder.iconRow.setVisibility(View.GONE);
                 if (holder.contentWrapper != null)
                     holder.contentWrapper.setVisibility(View.GONE);
                 break;
