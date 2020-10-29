@@ -330,13 +330,13 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (ThemePreference != null)
             ThemePreference.setOnPreferenceClickListener(preference -> {
-                //if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-                //    showPremiumSnackbar(getString(R.string.category_theme));
-                //    return false;
-                //} else {
-                ((SettingsActivity) getActivity()).openThemePicker();
-                return true;
-                //}
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_theme));
+                    return false;
+                } else {
+                    ((SettingsActivity) getActivity()).openThemePicker();
+                    return true;
+                }
             });
 
         if (ClockPreference != null)
