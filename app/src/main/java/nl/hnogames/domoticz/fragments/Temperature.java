@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
@@ -53,6 +54,7 @@ import nl.hnogames.domoticz.ui.TemperatureDialog;
 import nl.hnogames.domoticz.ui.TemperatureInfoDialog;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.TemperatureReceiver;
@@ -83,7 +85,6 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     }
 
     @Override
-
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
@@ -91,7 +92,6 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     }
 
     @Override
-
     public void onAttach(Context context) {
         super.onAttach(context);
         onAttachFragment(this);
@@ -99,6 +99,30 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         initAnimation();
         setActionbar(getString(R.string.title_temperature));
         setSortFab(false);
+    }
+
+    private ArrayList<TemperatureInfo> AddAdsDevice(ArrayList<TemperatureInfo> supportedSwitches) {
+        try {
+            if (supportedSwitches == null || supportedSwitches.size() <= 0)
+                return supportedSwitches;
+
+            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                ArrayList<TemperatureInfo> filteredList = new ArrayList<>();
+                for (TemperatureInfo d : supportedSwitches) {
+                    if (d.getIdx() != MainActivity.ADS_IDX)
+                        filteredList.add(d);
+                }
+                TemperatureInfo adView = new TemperatureInfo();
+                adView.setIdx(MainActivity.ADS_IDX);
+                adView.setName("Ads");
+                adView.setType("advertisement");
+                adView.setFavoriteBoolean(true);
+                filteredList.add(1, adView);
+                return filteredList;
+            }
+        } catch (Exception ex) {
+        }
+        return supportedSwitches;
     }
 
     @Override
@@ -159,11 +183,11 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     private void createListView(ArrayList<TemperatureInfo> mTemperatureInfos) {
         if (getView() != null) {
             if (adapter == null) {
-                adapter = new TemperatureAdapter(mContext, StaticHelper.getDomoticz(mContext), getServerUtil(), mTemperatureInfos, this);
+                adapter = new TemperatureAdapter(mContext, StaticHelper.getDomoticz(mContext), getServerUtil(), AddAdsDevice(mTemperatureInfos), this);
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
             } else {
-                adapter.setData(mTemperatureInfos);
+                adapter.setData(AddAdsDevice(mTemperatureInfos));
                 adapter.notifyDataSetChanged();
                 alphaSlideIn.notifyDataSetChanged();
             }

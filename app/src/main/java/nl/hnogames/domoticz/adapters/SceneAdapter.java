@@ -151,7 +151,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
             holder.infoIcon.setOnClickListener(v -> listener.onItemLongClicked((int) v.getTag()));
 
             if (mSceneInfo.getIdx() == MainActivity.ADS_IDX) {
-                setButtons(holder, DashboardAdapter.Buttons.ADS);
+                setButtons(holder, Buttons.ADS);
                 setAdsLayout(holder);
             }
             else if (DomoticzValues.Scene.Type.SCENE.equalsIgnoreCase(mSceneInfo.getType())) {
