@@ -34,6 +34,8 @@ public class PlanInfo implements Serializable {
     private int order;
     private int idx;
 
+    public PlanInfo(){}
+
     public PlanInfo(JSONObject row) throws JSONException {
         this.jsonObject = row.toString();
 
@@ -69,5 +71,10 @@ public class PlanInfo implements Serializable {
     public int getOrder() {
         return order;
     }
-
+    public void setIdx(int n) {
+        idx = n;
+    }
+    public void setName(String n) {
+        name = n;
+    }
 }

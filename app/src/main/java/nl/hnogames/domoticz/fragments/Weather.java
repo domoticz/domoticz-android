@@ -36,7 +36,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.GraphActivity;
@@ -55,7 +54,6 @@ import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.Language;
-import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Containers.WeatherInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;

@@ -56,7 +56,6 @@ import nl.hnogames.domoticz.ads.TemplateView;
 import nl.hnogames.domoticz.interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
@@ -117,7 +116,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 for (SceneInfo d : data) {
                     if (s.equals(String.valueOf(d.getIdx())) && d.getIdx() != MainActivity.ADS_IDX)
                         customdata.add(d);
-                    if(d.getIdx() == MainActivity.ADS_IDX)
+                    if (d.getIdx() == MainActivity.ADS_IDX)
                         adView = d;
                 }
             }
@@ -125,7 +124,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 if (!customdata.contains(d) && d.getIdx() != MainActivity.ADS_IDX)
                     customdata.add(d);
             }
-            if(adView != null && customdata != null && customdata.size() > 0)
+            if (adView != null && customdata != null && customdata.size() > 0)
                 customdata.add(1, adView);
         } else
             customdata = data;
@@ -153,8 +152,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
             if (mSceneInfo.getIdx() == MainActivity.ADS_IDX) {
                 setButtons(holder, Buttons.ADS);
                 setAdsLayout(holder);
-            }
-            else if (DomoticzValues.Scene.Type.SCENE.equalsIgnoreCase(mSceneInfo.getType())) {
+            } else if (DomoticzValues.Scene.Type.SCENE.equalsIgnoreCase(mSceneInfo.getType())) {
                 holder.isProtected = mSceneInfo.isProtected();
 
                 setButtons(holder, Buttons.SCENE);

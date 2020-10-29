@@ -222,7 +222,7 @@ public class TemplateView extends FrameLayout {
             ratingBar.setVisibility(GONE);
         }
 
-        if(getTemplateTypeName().equals(SQUARE_TEMPLATE))
+        if (getTemplateTypeName().equals(SQUARE_TEMPLATE))
             secondaryView.setVisibility(VISIBLE);
 
         if (icon != null) {

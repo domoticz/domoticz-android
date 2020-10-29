@@ -64,7 +64,6 @@ import nl.hnogames.domoticz.interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
-import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.Language;
 import nl.hnogames.domoticzapi.Containers.WeatherInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -117,7 +116,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 for (WeatherInfo d : data) {
                     if (s.equals(String.valueOf(d.getIdx())) && d.getIdx() != MainActivity.ADS_IDX)
                         customdata.add(d);
-                    if(d.getIdx() == MainActivity.ADS_IDX)
+                    if (d.getIdx() == MainActivity.ADS_IDX)
                         adView = d;
                 }
             }
@@ -125,7 +124,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 if (!customdata.contains(d) && d.getIdx() != MainActivity.ADS_IDX)
                     customdata.add(d);
             }
-            if(adView != null && customdata != null && customdata.size() > 0)
+            if (adView != null && customdata != null && customdata.size() > 0)
                 customdata.add(1, adView);
         } else
             customdata = data;
@@ -226,138 +225,137 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.VISIBLE);
                 setAdsLayout(holder);
-            }
-            else{
-            JSONObject language = null;
-            Language languageObj = new SharedPrefUtil(context).getSavedLanguage();
-            if (languageObj != null) language = languageObj.getJsonObject();
-
-            String tempSign = "";
-            String windSign = "";
-            if (mConfigInfo != null) {
-                tempSign = mConfigInfo.getTempSign();
-                windSign = mConfigInfo.getWindSign();
-            }
-
-            holder.infoIcon.setTag(mWeatherInfo.getIdx());
-            holder.infoIcon.setOnClickListener(v -> listener.onItemLongClicked((int) v.getTag()));
-
-            TypedValue pieBackgroundValue = new TypedValue();
-            TypedValue temperatureValue = new TypedValue();
-            Resources.Theme theme = context.getTheme();
-            theme.resolveAttribute(R.attr.listviewRowBackground, pieBackgroundValue, true);
-            theme.resolveAttribute(R.attr.temperatureTextColor, temperatureValue, true);
-            holder.pieView.setInnerBackgroundColor(pieBackgroundValue.data);
-            holder.pieView.setTextColor(temperatureValue.data);
-
-            holder.isProtected = mWeatherInfo.isProtected();
-            holder.name.setText(mWeatherInfo.getName());
-            holder.data.setText("");
-            holder.hardware.setText("");
-            if (language != null) {
-                String hardware = language.optString(mWeatherInfo.getHardwareName(), mWeatherInfo.getHardwareName());
-                holder.hardware.setText(hardware);
-            } else holder.hardware.setText(mWeatherInfo.getHardwareName());
-
-            holder.data.setEllipsize(TextUtils.TruncateAt.END);
-            holder.data.setMaxLines(3);
-            if (mWeatherInfo.getType().equals("Wind")) {
-                holder.data.append(context.getString(R.string.direction) + " " + mWeatherInfo.getDirection() + " " + mWeatherInfo.getDirectionStr());
             } else {
-                holder.data.append(mWeatherInfo.getData());
-            }
-            String text;
+                JSONObject language = null;
+                Language languageObj = new SharedPrefUtil(context).getSavedLanguage();
+                if (languageObj != null) language = languageObj.getJsonObject();
 
-            if (!UsefulBits.isEmpty(mWeatherInfo.getRain())) {
-                text = context.getString(R.string.rain) + ": " + mWeatherInfo.getRain();
-                holder.data.setText(text);
-            }
-            if (!UsefulBits.isEmpty(mWeatherInfo.getRainRate()))
-                holder.data.append(", " + context.getString(R.string.rainrate) + ": " + mWeatherInfo.getRainRate());
-            if (!UsefulBits.isEmpty(mWeatherInfo.getForecastStr()))
-                holder.data.append(", " + mWeatherInfo.getForecastStr());
-            if (!UsefulBits.isEmpty(mWeatherInfo.getSpeed()))
-                holder.data.append(", " + context.getString(R.string.speed) + ": " + mWeatherInfo.getSpeed() + " " + windSign);
-            if (mWeatherInfo.getDewPoint() > 0)
-                holder.data.append(", " + context.getString(R.string.dewPoint) + ": " + mWeatherInfo.getDewPoint() + " " + tempSign);
-            if (mWeatherInfo.getTemp() > 0) {
-                holder.data.append(", " + context.getString(R.string.temp) + ": " + mWeatherInfo.getTemp() + " " + tempSign);
-
-                holder.pieView.setVisibility(View.VISIBLE);
-                holder.pieView.setPercentageTextSize(16);
-                holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
-
-                double temp = mWeatherInfo.getTemp();
-                if (!tempSign.equals("C"))
-                    temp = temp / 2;
-                holder.pieView.setPercentage(Float.valueOf(temp + ""));
-                holder.pieView.setInnerText(mWeatherInfo.getTemp() + " " + tempSign);
-
-                PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
-                animation.setDuration(2000);
-                holder.pieView.startAnimation(animation);
-            } else {
-                holder.pieView.setVisibility(View.GONE);
-            }
-            if (mWeatherInfo.getBarometer() > 0)
-                holder.data.append(", " + context.getString(R.string.pressure) + ": " + mWeatherInfo.getBarometer());
-            if (!UsefulBits.isEmpty(mWeatherInfo.getChill()))
-                holder.data.append(", " + context.getString(R.string.chill) + ": " + mWeatherInfo.getChill() + " " + tempSign);
-            if (!UsefulBits.isEmpty(mWeatherInfo.getHumidityStatus()))
-                holder.data.append(", " + context.getString(R.string.humidity) + ": " + mWeatherInfo.getHumidityStatus());
-
-            holder.dayButton.setId(mWeatherInfo.getIdx());
-            holder.dayButton.setOnClickListener(v -> {
-                for (WeatherInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, DomoticzValues.Graph.Range.DAY);
+                String tempSign = "";
+                String windSign = "";
+                if (mConfigInfo != null) {
+                    tempSign = mConfigInfo.getTempSign();
+                    windSign = mConfigInfo.getWindSign();
                 }
-            });
 
-            holder.monthButton.setId(mWeatherInfo.getIdx());
-            holder.monthButton.setOnClickListener(v -> {
-                for (WeatherInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, DomoticzValues.Graph.Range.MONTH);
+                holder.infoIcon.setTag(mWeatherInfo.getIdx());
+                holder.infoIcon.setOnClickListener(v -> listener.onItemLongClicked((int) v.getTag()));
+
+                TypedValue pieBackgroundValue = new TypedValue();
+                TypedValue temperatureValue = new TypedValue();
+                Resources.Theme theme = context.getTheme();
+                theme.resolveAttribute(R.attr.listviewRowBackground, pieBackgroundValue, true);
+                theme.resolveAttribute(R.attr.temperatureTextColor, temperatureValue, true);
+                holder.pieView.setInnerBackgroundColor(pieBackgroundValue.data);
+                holder.pieView.setTextColor(temperatureValue.data);
+
+                holder.isProtected = mWeatherInfo.isProtected();
+                holder.name.setText(mWeatherInfo.getName());
+                holder.data.setText("");
+                holder.hardware.setText("");
+                if (language != null) {
+                    String hardware = language.optString(mWeatherInfo.getHardwareName(), mWeatherInfo.getHardwareName());
+                    holder.hardware.setText(hardware);
+                } else holder.hardware.setText(mWeatherInfo.getHardwareName());
+
+                holder.data.setEllipsize(TextUtils.TruncateAt.END);
+                holder.data.setMaxLines(3);
+                if (mWeatherInfo.getType().equals("Wind")) {
+                    holder.data.append(context.getString(R.string.direction) + " " + mWeatherInfo.getDirection() + " " + mWeatherInfo.getDirectionStr());
+                } else {
+                    holder.data.append(mWeatherInfo.getData());
                 }
-            });
+                String text;
 
-            holder.yearButton.setId(mWeatherInfo.getIdx());
-            holder.yearButton.setOnClickListener(v -> {
-                for (WeatherInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, DomoticzValues.Graph.Range.YEAR);
+                if (!UsefulBits.isEmpty(mWeatherInfo.getRain())) {
+                    text = context.getString(R.string.rain) + ": " + mWeatherInfo.getRain();
+                    holder.data.setText(text);
                 }
-            });
+                if (!UsefulBits.isEmpty(mWeatherInfo.getRainRate()))
+                    holder.data.append(", " + context.getString(R.string.rainrate) + ": " + mWeatherInfo.getRainRate());
+                if (!UsefulBits.isEmpty(mWeatherInfo.getForecastStr()))
+                    holder.data.append(", " + mWeatherInfo.getForecastStr());
+                if (!UsefulBits.isEmpty(mWeatherInfo.getSpeed()))
+                    holder.data.append(", " + context.getString(R.string.speed) + ": " + mWeatherInfo.getSpeed() + " " + windSign);
+                if (mWeatherInfo.getDewPoint() > 0)
+                    holder.data.append(", " + context.getString(R.string.dewPoint) + ": " + mWeatherInfo.getDewPoint() + " " + tempSign);
+                if (mWeatherInfo.getTemp() > 0) {
+                    holder.data.append(", " + context.getString(R.string.temp) + ": " + mWeatherInfo.getTemp() + " " + tempSign);
 
-            holder.weekButton.setVisibility(View.GONE);
-            holder.weekButton.setId(mWeatherInfo.getIdx());
-            holder.weekButton.setOnClickListener(v -> {
-                for (WeatherInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, DomoticzValues.Graph.Range.WEEK);
+                    holder.pieView.setVisibility(View.VISIBLE);
+                    holder.pieView.setPercentageTextSize(16);
+                    holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
+
+                    double temp = mWeatherInfo.getTemp();
+                    if (!tempSign.equals("C"))
+                        temp = temp / 2;
+                    holder.pieView.setPercentage(Float.valueOf(temp + ""));
+                    holder.pieView.setInnerText(mWeatherInfo.getTemp() + " " + tempSign);
+
+                    PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
+                    animation.setDuration(2000);
+                    holder.pieView.startAnimation(animation);
+                } else {
+                    holder.pieView.setVisibility(View.GONE);
                 }
-            });
+                if (mWeatherInfo.getBarometer() > 0)
+                    holder.data.append(", " + context.getString(R.string.pressure) + ": " + mWeatherInfo.getBarometer());
+                if (!UsefulBits.isEmpty(mWeatherInfo.getChill()))
+                    holder.data.append(", " + context.getString(R.string.chill) + ": " + mWeatherInfo.getChill() + " " + tempSign);
+                if (!UsefulBits.isEmpty(mWeatherInfo.getHumidityStatus()))
+                    holder.data.append(", " + context.getString(R.string.humidity) + ": " + mWeatherInfo.getHumidityStatus());
 
-            if (holder.likeButton != null) {
-                holder.likeButton.setId(mWeatherInfo.getIdx());
-                holder.likeButton.setLiked(mWeatherInfo.getFavoriteBoolean());
-                holder.likeButton.setOnLikeListener(new OnLikeListener() {
-                    @Override
-                    public void liked(LikeButton likeButton) {
-                        handleLikeButtonClick(likeButton.getId(), true);
-                    }
-
-                    @Override
-                    public void unLiked(LikeButton likeButton) {
-                        handleLikeButtonClick(likeButton.getId(), false);
+                holder.dayButton.setId(mWeatherInfo.getIdx());
+                holder.dayButton.setOnClickListener(v -> {
+                    for (WeatherInfo t : filteredData) {
+                        if (t.getIdx() == v.getId())
+                            listener.onLogClick(t, DomoticzValues.Graph.Range.DAY);
                     }
                 });
-            }
 
-            holder.itemView.setOnClickListener(v -> listener.onItemClicked(v, position));
+                holder.monthButton.setId(mWeatherInfo.getIdx());
+                holder.monthButton.setOnClickListener(v -> {
+                    for (WeatherInfo t : filteredData) {
+                        if (t.getIdx() == v.getId())
+                            listener.onLogClick(t, DomoticzValues.Graph.Range.MONTH);
+                    }
+                });
 
-            Picasso.get().load(DomoticzIcons.getDrawableIcon(mWeatherInfo.getTypeImg(), mWeatherInfo.getType(), null, false, false, null)).into(holder.iconRow);
+                holder.yearButton.setId(mWeatherInfo.getIdx());
+                holder.yearButton.setOnClickListener(v -> {
+                    for (WeatherInfo t : filteredData) {
+                        if (t.getIdx() == v.getId())
+                            listener.onLogClick(t, DomoticzValues.Graph.Range.YEAR);
+                    }
+                });
+
+                holder.weekButton.setVisibility(View.GONE);
+                holder.weekButton.setId(mWeatherInfo.getIdx());
+                holder.weekButton.setOnClickListener(v -> {
+                    for (WeatherInfo t : filteredData) {
+                        if (t.getIdx() == v.getId())
+                            listener.onLogClick(t, DomoticzValues.Graph.Range.WEEK);
+                    }
+                });
+
+                if (holder.likeButton != null) {
+                    holder.likeButton.setId(mWeatherInfo.getIdx());
+                    holder.likeButton.setLiked(mWeatherInfo.getFavoriteBoolean());
+                    holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                        @Override
+                        public void liked(LikeButton likeButton) {
+                            handleLikeButtonClick(likeButton.getId(), true);
+                        }
+
+                        @Override
+                        public void unLiked(LikeButton likeButton) {
+                            handleLikeButtonClick(likeButton.getId(), false);
+                        }
+                    });
+                }
+
+                holder.itemView.setOnClickListener(v -> listener.onItemClicked(v, position));
+
+                Picasso.get().load(DomoticzIcons.getDrawableIcon(mWeatherInfo.getTypeImg(), mWeatherInfo.getType(), null, false, false, null)).into(holder.iconRow);
             }
         }
     }

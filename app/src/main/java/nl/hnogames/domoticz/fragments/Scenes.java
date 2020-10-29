@@ -56,7 +56,6 @@ import nl.hnogames.domoticz.ui.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.WidgetUtils;
-import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Containers.SwitchLogInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;

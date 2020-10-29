@@ -57,7 +57,6 @@ import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PicassoUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
-import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 
 @SuppressWarnings("unused")
@@ -101,7 +100,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
                 for (CameraInfo d : data) {
                     if (s.equals(String.valueOf(d.getIdx())) && d.getIdx() != MainActivity.ADS_IDX)
                         customdata.add(d);
-                    if(d.getIdx() == MainActivity.ADS_IDX)
+                    if (d.getIdx() == MainActivity.ADS_IDX)
                         adView = d;
                 }
             }
@@ -109,7 +108,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
                 if (!customdata.contains(d) && d.getIdx() != MainActivity.ADS_IDX)
                     customdata.add(d);
             }
-            if(adView != null && customdata != null && customdata.size() > 0)
+            if (adView != null && customdata != null && customdata.size() > 0)
                 customdata.add(1, adView);
         } else
             customdata = data;
@@ -139,62 +138,59 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
         if (mDataset != null && mDataset.size() > 0) {
             CameraInfo cameraInfo = mDataset.get(position);
 
+            holder.itemView.setVisibility(View.VISIBLE);
             if (holder.contentWrapper != null)
                 holder.contentWrapper.setVisibility(View.VISIBLE);
             if (holder.adview != null)
                 holder.adview.setVisibility(View.GONE);
 
             if (cameraInfo.getIdx() == MainActivity.ADS_IDX) {
-                if (holder.contentWrapper != null)
-                    holder.contentWrapper.setVisibility(View.GONE);
-                if (holder.adview != null)
-                    holder.adview.setVisibility(View.VISIBLE);
                 setAdsLayout(holder);
+            } else {
+                String name = cameraInfo.getName();
+                String address = cameraInfo.getAddress();
+                final String imageUrl = cameraInfo.getSnapShotURL();
+
+                int numberOfDevices = cameraInfo.getDevices();
+                try {
+                    String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
+                    holder.name.setText(name);
+
+                    Drawable cache = CameraUtil.getDrawable(imageUrl);
+                    if (cache == null) {
+                        picasso.load(imageUrl)
+                                .placeholder(R.drawable.placeholder)
+                                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                                .into(holder.camera, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        CameraUtil.setDrawable(imageUrl, holder.camera.getDrawable());
+                                    }
+
+                                    @Override
+                                    public void onError(Exception e) {
+                                    }
+                                });
+                    } else
+                        picasso.load(imageUrl)
+                                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                                .noFade()
+                                .placeholder(cache)
+                                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                                .into(holder.camera, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        CameraUtil.setDrawable(imageUrl, holder.camera.getDrawable());
+                                    }
+
+                                    @Override
+                                    public void onError(Exception e) {
+                                    }
+                                });
+                } catch (Exception ex) {
+                    Log.i("CameraAdapter", ex.getMessage());
+                }
             }
-            else{
-            String name = cameraInfo.getName();
-            String address = cameraInfo.getAddress();
-            final String imageUrl = cameraInfo.getSnapShotURL();
-
-            int numberOfDevices = cameraInfo.getDevices();
-            try {
-                String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
-                holder.name.setText(name);
-
-                Drawable cache = CameraUtil.getDrawable(imageUrl);
-                if (cache == null) {
-                    picasso.load(imageUrl)
-                            .placeholder(R.drawable.placeholder)
-                            .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
-                            .into(holder.camera, new Callback() {
-                                @Override
-                                public void onSuccess() {
-                                    CameraUtil.setDrawable(imageUrl, holder.camera.getDrawable());
-                                }
-
-                                @Override
-                                public void onError(Exception e) {
-                                }
-                            });
-                } else
-                    picasso.load(imageUrl)
-                            .memoryPolicy(MemoryPolicy.NO_CACHE)
-                            .noFade()
-                            .placeholder(cache)
-                            .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
-                            .into(holder.camera, new Callback() {
-                                @Override
-                                public void onSuccess() {
-                                    CameraUtil.setDrawable(imageUrl, holder.camera.getDrawable());
-                                }
-
-                                @Override
-                                public void onError(Exception e) {
-                                }
-                            });
-            } catch (Exception ex) {
-                Log.i("CameraAdapter", ex.getMessage());
-            }}
         }
     }
 
@@ -207,7 +203,6 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
         try {
             holder.itemView.setVisibility(View.GONE);
             holder.itemView.getLayoutParams().height = 0;
-            holder.itemView.getLayoutParams().width = 0;
 
             MobileAds.initialize(mContext, mContext.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder()
@@ -227,7 +222,6 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
                             holder.adview.setNativeAd(unifiedNativeAd);
                             holder.itemView.setVisibility(View.VISIBLE);
                             holder.itemView.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-                            holder.itemView.getLayoutParams().width = RelativeLayout.LayoutParams.WRAP_CONTENT;
                         }
                     })
                     .withAdListener(new AdListener() {

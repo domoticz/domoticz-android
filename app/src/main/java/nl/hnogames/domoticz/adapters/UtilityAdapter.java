@@ -55,7 +55,6 @@ import nl.hnogames.domoticz.ads.NativeTemplateStyle;
 import nl.hnogames.domoticz.ads.TemplateView;
 import nl.hnogames.domoticz.interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
@@ -104,7 +103,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                 for (UtilitiesInfo d : data) {
                     if (s.equals(String.valueOf(d.getIdx())) && d.getIdx() != MainActivity.ADS_IDX)
                         customdata.add(d);
-                    if(d.getIdx() == MainActivity.ADS_IDX)
+                    if (d.getIdx() == MainActivity.ADS_IDX)
                         adView = d;
                 }
             }
@@ -112,7 +111,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                 if (!customdata.contains(d) && d.getIdx() != MainActivity.ADS_IDX)
                     customdata.add(d);
             }
-            if(adView != null && customdata != null && customdata.size() > 0)
+            if (adView != null && customdata != null && customdata.size() > 0)
                 customdata.add(1, adView);
         } else
             customdata = data;
@@ -150,8 +149,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             if (mUtilitiesInfo.getIdx() == MainActivity.ADS_IDX) {
                 setButtons(holder, Buttons.ADS);
                 setAdsLayout(holder);
-            }
-            else {
+            } else {
                 if ((mUtilitiesInfo.getType() != null && DomoticzValues.Device.Utility.Type.THERMOSTAT.equalsIgnoreCase(mUtilitiesInfo.getType())) ||
                         (mUtilitiesInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mUtilitiesInfo.getSubType()))) {
                     setButtons(holder, Buttons.THERMOSTAT);

@@ -46,7 +46,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.squareup.picasso.Callback;
@@ -66,7 +65,6 @@ import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
@@ -160,7 +158,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 for (DevicesInfo d : data) {
                     if (s.equals(String.valueOf(d.getIdx())) && d.getIdx() != MainActivity.ADS_IDX)
                         customdata.add(d);
-                    if(d.getIdx() == MainActivity.ADS_IDX)
+                    if (d.getIdx() == MainActivity.ADS_IDX)
                         adView = d;
                 }
             }
@@ -168,7 +166,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 if (!customdata.contains(d) && d.getIdx() != MainActivity.ADS_IDX)
                     customdata.add(d);
             }
-            if(adView != null && customdata != null && customdata.size() > 0)
+            if (adView != null && customdata != null && customdata.size() > 0)
                 customdata.add(1, adView);
         } else
             customdata = data;
@@ -2234,7 +2232,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             for (int i = 0; i < count; i++) {
                 filterableObject = list.get(i);
                 if (filterableObject.getName().toLowerCase().contains(filterString) ||
-                (filterableObject.getType() != null && filterableObject.getType().equals("advertisement"))) {
+                        (filterableObject.getType() != null && filterableObject.getType().equals("advertisement"))) {
                     devicesInfos.add(filterableObject);
                 }
             }

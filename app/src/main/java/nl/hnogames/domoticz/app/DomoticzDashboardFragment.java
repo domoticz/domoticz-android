@@ -224,7 +224,7 @@ public class DomoticzDashboardFragment extends Fragment {
                         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
                         gridView.setLayoutManager(mLayoutManager);
                     } else {
-                        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
+                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
                         gridView.setLayoutManager(mLayoutManager);
                     }
                 } else {

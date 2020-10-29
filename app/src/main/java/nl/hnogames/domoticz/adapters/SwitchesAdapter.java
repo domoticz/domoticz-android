@@ -152,7 +152,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 for (DevicesInfo d : data) {
                     if (s.equals(String.valueOf(d.getIdx())) && d.getIdx() != MainActivity.ADS_IDX)
                         customdata.add(d);
-                    if(d.getIdx() == MainActivity.ADS_IDX)
+                    if (d.getIdx() == MainActivity.ADS_IDX)
                         adView = d;
                 }
             }
@@ -160,7 +160,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 if (!customdata.contains(d) && d.getIdx() != MainActivity.ADS_IDX)
                     customdata.add(d);
             }
-            if(adView != null && customdata != null && customdata.size() > 0)
+            if (adView != null && customdata != null && customdata.size() > 0)
                 customdata.add(1, adView);
         } else
             customdata = data;
@@ -255,8 +255,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             if (mDeviceInfo.getIdx() == MainActivity.ADS_IDX) {
                 setButtons(holder, Buttons.ADS);
                 setAdsLayout(holder);
-            }
-            else {
+            } else {
                 switch (mDeviceInfo.getType()) {
                     case DomoticzValues.Scene.Type.GROUP:
                         setButtons(holder, Buttons.BUTTONS);

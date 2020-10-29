@@ -40,9 +40,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.BuildConfig;
@@ -59,7 +59,6 @@ import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Containers.LoginInfo;
-import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
 import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
@@ -174,13 +173,12 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         if (mRecyclerView == null) {
             mRecyclerView = getView().findViewById(R.id.my_recycler_view);
             mSwipeRefreshLayout = getView().findViewById(R.id.swipe_refresh_layout);
-            mRecyclerView.setHasFixedSize(true);
-            GridLayoutManager mLayoutManager = new GridLayoutManager(context, 2);
+            StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             mRecyclerView.setLayoutManager(mLayoutManager);
         }
 
         if (mAdapter == null) {
-            mAdapter = new CamerasAdapter(Cameras, context, StaticHelper.getDomoticz(context), refreshTimer);
+            mAdapter = new CamerasAdapter(AddAdsDevice(Cameras), context, StaticHelper.getDomoticz(context), refreshTimer);
             mAdapter.setOnItemClickListener((position, v) -> {
                 CameraInfo camera = Cameras.get(position);
                 CameraUtil.ProcessImage(context, camera.getIdx(), camera.getName());
@@ -189,7 +187,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             mRecyclerView.setAdapter(alphaSlideIn);
         } else {
             mAdapter.setRefreshTimer(refreshTimer);
-            mAdapter.setData(Cameras);
+            mAdapter.setData(AddAdsDevice(Cameras));
             mAdapter.notifyDataSetChanged();
             alphaSlideIn.notifyDataSetChanged();
         }
