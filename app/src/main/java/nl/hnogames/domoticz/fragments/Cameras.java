@@ -45,6 +45,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import nl.hnogames.domoticz.BuildConfig;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.CamerasAdapter;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
@@ -57,6 +59,7 @@ import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Containers.LoginInfo;
+import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
 import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
@@ -90,6 +93,28 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             mSwipeRefreshLayout.setRefreshing(true);
 
         getCameras();
+    }
+
+    private ArrayList<CameraInfo> AddAdsDevice(ArrayList<CameraInfo> supportedSwitches) {
+        try {
+            if (supportedSwitches == null || supportedSwitches.size() <= 0)
+                return supportedSwitches;
+
+            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                ArrayList<CameraInfo> filteredList = new ArrayList<>();
+                for (CameraInfo d : supportedSwitches) {
+                    if (d.getIdx() != MainActivity.ADS_IDX)
+                        filteredList.add(d);
+                }
+                CameraInfo adView = new CameraInfo();
+                adView.setIdx(MainActivity.ADS_IDX);
+                adView.setName("Ads");
+                filteredList.add(1, adView);
+                return filteredList;
+            }
+        } catch (Exception ex) {
+        }
+        return supportedSwitches;
     }
 
     @Override
@@ -155,19 +180,16 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         }
 
         if (mAdapter == null) {
-            mAdapter = new CamerasAdapter(Cameras, context, StaticHelper.getDomoticz(context), refreshTimer);
-            mAdapter.setOnItemClickListener(new CamerasAdapter.onClickListener() {
-                @Override
-                public void onItemClick(int position, View v) {
-                    CameraInfo camera = Cameras.get(position);
-                    CameraUtil.ProcessImage(context, camera.getIdx(), camera.getName());
-                }
+            mAdapter = new CamerasAdapter(AddAdsDevice(Cameras), context, StaticHelper.getDomoticz(context), refreshTimer);
+            mAdapter.setOnItemClickListener((position, v) -> {
+                CameraInfo camera = Cameras.get(position);
+                CameraUtil.ProcessImage(context, camera.getIdx(), camera.getName());
             });
             alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
             mRecyclerView.setAdapter(alphaSlideIn);
         } else {
             mAdapter.setRefreshTimer(refreshTimer);
-            mAdapter.setData(Cameras);
+            mAdapter.setData(AddAdsDevice(Cameras));
             mAdapter.notifyDataSetChanged();
             alphaSlideIn.notifyDataSetChanged();
         }
@@ -184,13 +206,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         }
 
         mSwipeRefreshLayout.setRefreshing(false);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-
-            public void onRefresh() {
-                getCameras();
-            }
-        });
+        mSwipeRefreshLayout.setOnRefreshListener(() -> getCameras());
     }
 
     @Override

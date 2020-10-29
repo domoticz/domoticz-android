@@ -33,7 +33,17 @@
     android:padding="8dp"
     app:cardCornerRadius="5dp"
     app:cardElevation="1dp">
+    <nl.hnogames.domoticz.ads.TemplateView
+        android:id="@+id/adview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:gnt_template_type="@layout/gnt_square_template_view" />
 
+    <RelativeLayout
+        android:id="@+id/contentWrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,5 +67,6 @@
             android:paddingBottom="8dp"
             tools:text="12 devices" />
     </LinearLayout>
+    </RelativeLayout>
 
 </com.google.android.material.card.MaterialCardView>

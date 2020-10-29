@@ -312,6 +312,9 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
      */
     private void setAdsLayout(DataObjectHolder holder) {
         try {
+            holder.itemView.setVisibility(View.GONE);
+            holder.itemView.getLayoutParams().height = 0;
+
             MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder()
                     .addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4")
@@ -328,6 +331,8 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                             holder.adview.setVisibility(View.VISIBLE);
                             holder.adview.setStyles(styles);
                             holder.adview.setNativeAd(unifiedNativeAd);
+                            holder.itemView.setVisibility(View.VISIBLE);
+                            holder.itemView.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
                         }
                     })
                     .withAdListener(new AdListener() {

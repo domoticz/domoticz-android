@@ -33,6 +33,7 @@
     android:padding="8dp"
     app:cardCornerRadius="5dp"
     app:cardElevation="1dp">
+
     <nl.hnogames.domoticz.ads.TemplateView
         android:id="@+id/adview"
         android:layout_width="fill_parent"

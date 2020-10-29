@@ -143,9 +143,6 @@ public class SceneInfo implements Comparable, Serializable {
     public String getName() {
         return name;
     }
-    public void setName(String n) {
-        name = n;
-    }
 
     public String getOffAction() {
         return offAction;
@@ -171,16 +168,18 @@ public class SceneInfo implements Comparable, Serializable {
         return type;
     }
 
-    public void setType(String n) {
-        type = n;
-    }
-
     public int getIdx() {
         return idx;
     }
 
     public void setIdx(int n) {
         idx = n;
+    }
+    public void setName(String n) {
+        name = n;
+    }
+    public void setType(String n) {
+        type = n;
     }
 
     public String getJsonObject() {
