@@ -170,7 +170,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     private void SaveSorting() {
         List<String> ids = new ArrayList<>();
         for (DevicesInfo d : filteredData) {
-            if (d.getType() == null || !d.getType().equals("advertisement"))
+            if (d.getIdx() != MainActivity.ADS_IDX)
                 ids.add(String.valueOf(d.getIdx()));
         }
         mCustomSorting = ids;
@@ -253,7 +253,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
                 (mDeviceInfo.getSwitchType() == null)) {
             if (mDeviceInfo.getIdx() == MainActivity.ADS_IDX) {
-                setButtons(holder, DashboardAdapter.Buttons.ADS);
+                setButtons(holder, Buttons.ADS);
                 setAdsLayout(holder);
             }
             else {

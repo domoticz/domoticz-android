@@ -363,6 +363,9 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         if (holder.buttonOn != null) {
             holder.buttonOn.setVisibility(View.GONE);
         }
+        if (holder.adview != null) {
+            holder.adview.setVisibility(View.GONE);
+        }
         if (holder.switch_name != null)
             holder.switch_name.setVisibility(View.VISIBLE);
         if (holder.signal_level != null)
@@ -373,7 +376,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
             holder.iconRow.setVisibility(View.VISIBLE);
 
         switch (button) {
-            case SwitchesAdapter.Buttons.ADS:
+            case Buttons.ADS:
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.VISIBLE);
                 if (holder.switch_name != null)
@@ -444,6 +447,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
     interface Buttons {
         int SCENE = 0;
         int GROUP = 1;
+        int ADS = 2;
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder implements RVHViewHolder {
