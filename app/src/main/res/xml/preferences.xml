@@ -358,7 +358,10 @@
             android:key="info_about"
             android:title="@string/info_about" />
         <Preference
-            android:key="info_credits"
-            android:title="@string/info_credits" />
+            android:key="info_privacy"
+            android:title="Privacy Policy" />
+        <Preference
+            android:key="info_terms"
+            android:title="Terms &amp; Conditions" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -257,7 +257,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         Preference ThemePreference = findPreference("darkTheme");
         SwitchPreference ClockPreference = findPreference("dashboardShowClock");
         SwitchPreference CameraPreference = findPreference("dashboardShowCamera");
-
+        Preference TermsPreferences = findPreference("info_terms");
+        Preference PrivacyPreferences = findPreference("info_privacy");
         Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
         SwitchPreference FingerPrintPreference = findPreference("enableSecurity");
         SwitchPreference customSortProperty = findPreference("sortCustom");
@@ -626,6 +627,18 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 });
         }
 
+        if (TermsPreferences != null)
+            TermsPreferences.setOnPreferenceClickListener(preference -> {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://hnogames.nl/domoticz_terms.html")));
+                return true;
+            });
+
+        if (PrivacyPreferences != null)
+            PrivacyPreferences.setOnPreferenceClickListener(preference -> {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://hnogames.nl/domoticz_policy.html")));
+                return true;
+            });
+
         if (ReportErrorSettings != null)
             ReportErrorSettings.setOnPreferenceClickListener(preference -> {
                 if (BuildConfig.PAID_OOTT)
@@ -760,7 +773,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
     private void handleInfoAndAbout() {
         androidx.preference.Preference about = findPreference("info_about");
-
         if (about != null)
             about.setOnPreferenceClickListener(preference -> {
                 SimpleTextDialog td = new SimpleTextDialog(mContext);
@@ -768,19 +780,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 td.setText(R.string.welcome_info_domoticz);
                 td.show();
                 return true;
-            });
-        androidx.preference.Preference credits = findPreference("info_credits");
-
-        if (credits != null)
-            credits.setOnPreferenceClickListener(preference -> {
-                String text = getString(R.string.info_credits_text);
-                text = text + ":\n\n" + getString(R.string.info_credits_text_urls);
-
-                SimpleTextDialog td = new SimpleTextDialog(mContext);
-                td.setTitle(R.string.info_credits);
-                td.setText(text);
-                td.show();
-                return false;
             });
     }
 

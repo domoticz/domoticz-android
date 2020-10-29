@@ -161,5 +161,6 @@
     <string name="tasker_title">Setup automation rules with Tasker for Domoticz</string>
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
+    <string name="background_location_warning">This app collects location data to enable for geofencing services within this app, even when the app is closed or not in use.</string>
 
 </resources>
