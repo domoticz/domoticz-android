@@ -47,6 +47,7 @@ import java.util.List;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import nl.hnogames.domoticz.MainActivity;
@@ -226,7 +227,7 @@ public class DomoticzRecyclerFragment extends Fragment {
                     GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
                     gridView.setLayoutManager(mLayoutManager);
                 } else {
-                    GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
+                    StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
                     gridView.setLayoutManager(mLayoutManager);
                 }
             } else {

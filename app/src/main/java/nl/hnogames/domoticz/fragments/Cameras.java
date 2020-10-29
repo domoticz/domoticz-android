@@ -175,6 +175,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             mSwipeRefreshLayout = getView().findViewById(R.id.swipe_refresh_layout);
             StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             mRecyclerView.setLayoutManager(mLayoutManager);
+            mRecyclerView.setHasFixedSize(false);
         }
 
         if (mAdapter == null) {

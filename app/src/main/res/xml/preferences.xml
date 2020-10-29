@@ -119,7 +119,7 @@
             android:summaryOn="@string/show_extra_data_on"
             android:title="@string/extra_data_title" />
         <SwitchPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="dashboardAsList"
             android:summaryOff="@string/show_dashboard_list_on"
             android:summaryOn="@string/show_dashboard_list_off"
