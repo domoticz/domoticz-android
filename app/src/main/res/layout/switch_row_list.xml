@@ -37,7 +37,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:gnt_template_type="@layout/gnt_square_template_view" />
+        app:gnt_template_type="@layout/gnt_small_template_view" />
 
     <RelativeLayout
         android:id="@+id/contentWrapper"

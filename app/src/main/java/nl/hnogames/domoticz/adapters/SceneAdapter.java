@@ -198,12 +198,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 if (holder.buttonOn != null) {
                     holder.buttonOn.setId(mSceneInfo.getIdx());
                     //  holder.buttonOn.setText(context.getString(R.string.button_state_on));
-                    holder.buttonOn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            handleClick(view.getId(), true);
-                        }
-                    });
+                    holder.buttonOn.setOnClickListener(view -> handleClick(view.getId(), true));
                     if (holder.isProtected) {
                         holder.buttonOn.setEnabled(false);
                     }
@@ -226,12 +221,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 }
                 if (holder.buttonLog != null) {
                     holder.buttonLog.setId(mSceneInfo.getIdx());
-                    holder.buttonLog.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            handleLogButtonClick(v.getId());
-                        }
-                    });
+                    holder.buttonLog.setOnClickListener(v -> handleLogButtonClick(v.getId()));
                 }
             } else if (mSceneInfo.getType().equalsIgnoreCase(DomoticzValues.Scene.Type.GROUP)) {
                 holder.isProtected = mSceneInfo.isProtected();
@@ -254,22 +244,12 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 holder.switch_battery_level.setText(DomoticzValues.Scene.Type.GROUP);
                 if (holder.buttonOn != null) {
                     holder.buttonOn.setId(mSceneInfo.getIdx());
-                    holder.buttonOn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            handleClick(v.getId(), true);
-                        }
-                    });
+                    holder.buttonOn.setOnClickListener(v -> handleClick(v.getId(), true));
                 }
 
                 if (holder.buttonOff != null) {
                     holder.buttonOff.setId(mSceneInfo.getIdx());
-                    holder.buttonOff.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            handleClick(v.getId(), false);
-                        }
-                    });
+                    holder.buttonOff.setOnClickListener(v -> handleClick(v.getId(), false));
                 }
 
                 Picasso.get().load(DomoticzIcons.getDrawableIcon(
@@ -302,22 +282,11 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 }
                 if (holder.buttonLog != null) {
                     holder.buttonLog.setId(mSceneInfo.getIdx());
-                    holder.buttonLog.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            handleLogButtonClick(v.getId());
-                        }
-                    });
+                    holder.buttonLog.setOnClickListener(v -> handleLogButtonClick(v.getId()));
                 }
             } else throw new NullPointerException("Scene type not supported in the adapter for:\n"
                     + mSceneInfo.toString());
-
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClicked(v, position);
-                }
-            });
+            holder.itemView.setOnClickListener(v -> listener.onItemClicked(v, position));
         }
     }
 

@@ -197,6 +197,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
                 adView.setIdx(MainActivity.ADS_IDX);
                 adView.setName("Ads");
                 filteredList.add(1, adView);
+                this.mPlans = filteredList;
                 return filteredList;
             }
         } catch (Exception ex) {

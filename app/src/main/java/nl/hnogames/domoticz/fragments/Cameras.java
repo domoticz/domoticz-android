@@ -109,6 +109,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                 adView.setIdx(MainActivity.ADS_IDX);
                 adView.setName("Ads");
                 filteredList.add(1, adView);
+                Cameras = filteredList;
                 return filteredList;
             }
         } catch (Exception ex) {
@@ -161,12 +162,14 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         }
     }
 
+    private ArrayList<CameraInfo> Cameras;
+
     @Override
     public void onConnectionFailed() {
         getCameras();
     }
 
-    private void createListView(final ArrayList<CameraInfo> Cameras) {
+    private void createListView() {
         if (getView() == null)
             return;
 
@@ -277,17 +280,20 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         }
 
         protected void onPostExecute(Boolean result) {
-            if (cacheCameras != null)
-                createListView(cacheCameras);
+            if (cacheCameras != null) {
+                Cameras = cacheCameras;
+                createListView();
+            }
             StaticHelper.getDomoticz(context).checkLogin(new LoginReceiver() {
                 @Override
                 public void OnReceive(LoginInfo mLoginInfo) {
                     StaticHelper.getDomoticz(context).getCameras(new CameraReceiver() {
                         @Override
-                        public void OnReceiveCameras(ArrayList<CameraInfo> Cameras) {
-                            successHandling(Cameras.toString(), false);
-                            SerializableManager.saveSerializable(context, Cameras, "Cameras");
-                            createListView(Cameras);
+                        public void OnReceiveCameras(ArrayList<CameraInfo> c) {
+                            successHandling(c.toString(), false);
+                            SerializableManager.saveSerializable(context, c, "Cameras");
+                            Cameras = c;
+                            createListView();
                         }
 
                         @Override
