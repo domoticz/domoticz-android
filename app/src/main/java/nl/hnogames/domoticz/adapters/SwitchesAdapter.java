@@ -227,16 +227,16 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
                 holder.buttonTimer.setId(extendedStatusInfo.getIdx());
                 holder.buttonTimer.setOnClickListener(v -> handleTimerButtonClick(v.getId()));
-                if (extendedStatusInfo.getTimers().toLowerCase().equals("false"))
-                    holder.buttonTimer.setVisibility(View.GONE);
+                if(!UsefulBits.isEmpty(extendedStatusInfo.getTimers())) {
+                    if (extendedStatusInfo.getTimers().toLowerCase().equals("false"))
+                        holder.buttonTimer.setVisibility(View.GONE);
+                }
 
                 holder.buttonNotifications.setId(extendedStatusInfo.getIdx());
                 holder.buttonNotifications.setOnClickListener(v -> handleNotificationButtonClick(v.getId()));
 
                 if (!extendedStatusInfo.hasNotifications())
                     holder.buttonNotifications.setVisibility(View.GONE);
-
-
                 holder.itemView.setOnClickListener(v -> listener.onItemClicked(v, position));
             }
         }
@@ -413,12 +413,9 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         if (mSharedPrefs.addCameraToDashboard() && mDeviceInfo.getUsedByCamera() && mDeviceInfo.getCameraIdx() >= 0) {
             holder.full_screen_icon.setVisibility(View.VISIBLE);
             holder.full_screen_icon.setTag(mDeviceInfo.getCameraIdx());
-            holder.full_screen_icon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (v.getTag() != null)
-                        listener.onCameraFullScreenClick((int) v.getTag(), "Snapshot");
-                }
+            holder.full_screen_icon.setOnClickListener(v -> {
+                if (v.getTag() != null)
+                    listener.onCameraFullScreenClick((int) v.getTag(), "Snapshot");
             });
 
             final String imageUrl = domoticz.getSnapshotUrl(mDeviceInfo.getCameraIdx());
@@ -579,12 +576,9 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             else
                 holder.buttonOn.setText(context.getString(R.string.button_arm));
 
-            holder.buttonOn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //open security panel
-                    handleSecurityPanel(v.getId());
-                }
+            holder.buttonOn.setOnClickListener(v -> {
+                //open security panel
+                handleSecurityPanel(v.getId());
             });
         }
 
@@ -686,24 +680,14 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             else
                 holder.buttonOn.setId(mDeviceInfo.getIdx());
 
-            holder.buttonOn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleOnOffSwitchClick(v.getId(), true);
-                }
-            });
+            holder.buttonOn.setOnClickListener(v -> handleOnOffSwitchClick(v.getId(), true));
         }
         if (holder.buttonOff != null) {
             if (mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.GROUP) || mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
                 holder.buttonOff.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
             else
                 holder.buttonOff.setId(mDeviceInfo.getIdx());
-            holder.buttonOff.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleOnOffSwitchClick(v.getId(), false);
-                }
-            });
+            holder.buttonOff.setOnClickListener(v -> handleOnOffSwitchClick(v.getId(), false));
         }
 
         if (!mDeviceInfo.getStatusBoolean())
@@ -717,12 +701,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             else
                 holder.buttonLog.setId(mDeviceInfo.getIdx());
 
-            holder.buttonLog.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleLogButtonClick(v.getId());
-                }
-            });
+            holder.buttonLog.setOnClickListener(v -> handleLogButtonClick(v.getId()));
         }
     }
 
@@ -772,16 +751,13 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
             holder.onOffSwitch.setOnCheckedChangeListener(null);
             holder.onOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
-            holder.onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                    handleOnOffSwitchClick(compoundButton.getId(), checked);
-                    mDeviceInfo.setStatusBoolean(checked);
-                    if (!checked)
-                        holder.iconRow.setAlpha(0.5f);
-                    else
-                        holder.iconRow.setAlpha(1f);
-                }
+            holder.onOffSwitch.setOnCheckedChangeListener((compoundButton, checked) -> {
+                handleOnOffSwitchClick(compoundButton.getId(), checked);
+                mDeviceInfo.setStatusBoolean(checked);
+                if (!checked)
+                    holder.iconRow.setAlpha(0.5f);
+                else
+                    holder.iconRow.setAlpha(1f);
             });
         }
 
@@ -791,12 +767,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             else
                 holder.buttonLog.setId(mDeviceInfo.getIdx());
 
-            holder.buttonLog.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleLogButtonClick(v.getId());
-                }
-            });
+            holder.buttonLog.setOnClickListener(v -> handleLogButtonClick(v.getId()));
         }
     }
 
@@ -815,12 +786,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         if (holder.isProtected)
             holder.buttonOn.setEnabled(false);
         holder.buttonOn.setText(context.getString(R.string.set_temperature));
-        holder.buttonOn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleThermostatClick(v.getId());
-            }
-        });
+        holder.buttonOn.setOnClickListener(v -> handleThermostatClick(v.getId()));
         holder.buttonOn.setId(mDeviceInfo.getIdx());
 
         holder.switch_name.setText(mDeviceInfo.getName());
@@ -896,12 +862,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         if ("evohome".equals(mDeviceInfo.getHardwareName())) {
             holder.buttonSet.setText(context.getString(R.string.set_temperature));
-            holder.buttonSet.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleSetTemperatureClick(v.getId());
-                }
-            });
+            holder.buttonSet.setOnClickListener(v -> handleSetTemperatureClick(v.getId()));
             holder.buttonSet.setId(mDeviceInfo.getIdx());
             holder.buttonSet.setVisibility(View.VISIBLE);
 
@@ -962,24 +923,23 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 holder.buttonOn.setVisibility(View.GONE);
             } else {
                 holder.buttonOn.setId(mDevicesInfo.getIdx());
-                String status = mDevicesInfo.getData().toLowerCase();
-                if (statusOpen.contains(status)) {
-                    holder.buttonOn.setText(context.getString(R.string.button_state_open));
-                } else if (statusClosed.contains(status)) {
-                    holder.buttonOn.setText(context.getString(R.string.button_state_closed));
-                } else {
-                    if (status.startsWith("off")) status = "off";
-                    holder.buttonOn.setText(status.toUpperCase());
-                }
-                holder.buttonOn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String text = (String) ((Button) v).getText();
-                        if (text.equals(context.getString(R.string.button_state_on)))
-                            handleOnButtonClick(v.getId(), true);
-                        else
-                            handleOnButtonClick(v.getId(), false);
+                if(!UsefulBits.isEmpty(mDevicesInfo.getData())) {
+                    String status = mDevicesInfo.getData().toLowerCase();
+                    if (statusOpen.contains(status)) {
+                        holder.buttonOn.setText(context.getString(R.string.button_state_open));
+                    } else if (statusClosed.contains(status)) {
+                        holder.buttonOn.setText(context.getString(R.string.button_state_closed));
+                    } else {
+                        if (status.startsWith("off")) status = "off";
+                        holder.buttonOn.setText(status.toUpperCase());
                     }
+                }
+                holder.buttonOn.setOnClickListener(v -> {
+                    String text1 = (String) ((Button) v).getText();
+                    if (text1.equals(context.getString(R.string.button_state_on)))
+                        handleOnButtonClick(v.getId(), true);
+                    else
+                        handleOnButtonClick(v.getId(), false);
                 });
             }
         }
@@ -1045,17 +1005,14 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             //holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_off));
         }
 
-        holder.buttonOn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    String text = (String) ((Button) v).getText();
-                    if (text.equals(context.getString(R.string.button_state_on)))
-                        handleOnButtonClick(v.getId(), true);
-                    else
-                        handleOnButtonClick(v.getId(), false);
-                } catch (Exception ignore) {
-                }
+        holder.buttonOn.setOnClickListener(v -> {
+            try {
+                String text1 = (String) ((Button) v).getText();
+                if (text1.equals(context.getString(R.string.button_state_on)))
+                    handleOnButtonClick(v.getId(), true);
+                else
+                    handleOnButtonClick(v.getId(), false);
+            } catch (Exception ignore) {
             }
         });
 
@@ -1065,12 +1022,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             else
                 holder.buttonLog.setId(mDeviceInfo.getIdx());
 
-            holder.buttonLog.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleLogButtonClick(v.getId());
-                }
-            });
+            holder.buttonLog.setOnClickListener(v -> handleLogButtonClick(v.getId()));
         }
     }
 
@@ -1103,59 +1055,43 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         }
 
         holder.buttonUp.setId(mDeviceInfo.getIdx());
-        holder.buttonUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for (DevicesInfo e : data) {
-                    if (e.getIdx() == view.getId()) {
-                        if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED)
-                            handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
-                        else
-                            handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
-                    }
+        holder.buttonUp.setOnClickListener(view -> {
+            for (DevicesInfo e : data) {
+                if (e.getIdx() == view.getId()) {
+                    if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED)
+                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
+                    else
+                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
                 }
             }
         });
 
         holder.buttonStop.setId(mDeviceInfo.getIdx());
-        holder.buttonStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for (DevicesInfo e : data) {
-                    if (e.getIdx() == view.getId()) {
-                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.STOP);
-                    }
+        holder.buttonStop.setOnClickListener(view -> {
+            for (DevicesInfo e : data) {
+                if (e.getIdx() == view.getId()) {
+                    handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.STOP);
                 }
             }
         });
 
         holder.buttonDown.setId(mDeviceInfo.getIdx());
-        holder.buttonDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for (DevicesInfo e : data) {
-                    if (e.getIdx() == view.getId()) {
-                        if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED)
-                            handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
-                        else
-                            handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
-                    }
+        holder.buttonDown.setOnClickListener(view -> {
+            for (DevicesInfo e : data) {
+                if (e.getIdx() == view.getId()) {
+                    if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED)
+                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
+                    else
+                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
                 }
             }
         });
 
         if (holder.dimmer.getVisibility() == View.VISIBLE) {
             holder.dimmer.setTag(mDeviceInfo.getIdx());
-            holder.dimmer.setValue(mDeviceInfo.getLevel() > 100 ? 100 : mDeviceInfo.getLevel());
-            holder.dimmer.setLabelFormatter(new LabelFormatter() {
-                @NonNull
-                @Override
-                public String getFormattedValue(float value) {
-                    return (Math.round(value)) + "%";
-                }
-            });
-
-            holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel());
+            holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel() <= 0 ? 100 : mDeviceInfo.getMaxDimLevel());
+            holder.dimmer.setValue(mDeviceInfo.getLevel() > holder.dimmer.getValueTo() ? holder.dimmer.getValueTo() : mDeviceInfo.getLevel());
+            holder.dimmer.setLabelFormatter(value -> (Math.round(value)) + "%");
             holder.dimmer.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
                 @Override
                 public void onStartTrackingTouch(@NonNull Slider slider) {
@@ -1302,40 +1238,31 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         holder.dimmerOnOffSwitch.setOnCheckedChangeListener(null);
         holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
-        holder.dimmerOnOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                handleOnOffSwitchClick(compoundButton.getId(), checked);
-                mDeviceInfo.setStatusBoolean(checked);
-                if (checked) {
-                    holder.dimmer.setVisibility(View.VISIBLE);
-                    if (holder.dimmer.getValue() <= 10) {
-                        holder.dimmer.setValue(20);//dimmer turned on with default progress value
-                    }
-                    if (isRGB)
-                        holder.buttonColor.setVisibility(View.VISIBLE);
-                } else {
-                    holder.dimmer.setVisibility(View.GONE);
-                    if (isRGB)
-                        holder.buttonColor.setVisibility(View.GONE);
+        holder.dimmerOnOffSwitch.setOnCheckedChangeListener((compoundButton, checked) -> {
+            handleOnOffSwitchClick(compoundButton.getId(), checked);
+            mDeviceInfo.setStatusBoolean(checked);
+            if (checked) {
+                holder.dimmer.setVisibility(View.VISIBLE);
+                if (holder.dimmer.getValue() <= 10) {
+                    holder.dimmer.setValue(20);//dimmer turned on with default progress value
                 }
-                if (!checked)
-                    holder.iconRow.setAlpha(0.5f);
-                else
-                    holder.iconRow.setAlpha(1f);
+                if (isRGB)
+                    holder.buttonColor.setVisibility(View.VISIBLE);
+            } else {
+                holder.dimmer.setVisibility(View.GONE);
+                if (isRGB)
+                    holder.buttonColor.setVisibility(View.GONE);
             }
+            if (!checked)
+                holder.iconRow.setAlpha(0.5f);
+            else
+                holder.iconRow.setAlpha(1f);
         });
 
         holder.dimmer.setTag(mDeviceInfo.getIdx());
-        holder.dimmer.setValue(mDeviceInfo.getLevel() > 100 ? 100 : mDeviceInfo.getLevel());
-        holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel());
-        holder.dimmer.setLabelFormatter(new LabelFormatter() {
-            @NonNull
-            @Override
-            public String getFormattedValue(float value) {
-                return (Math.round(value)) + "%";
-            }
-        });
+        holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel() <= 0 ? 100 : mDeviceInfo.getMaxDimLevel());
+        holder.dimmer.setValue(mDeviceInfo.getLevel() > holder.dimmer.getValueTo() ? holder.dimmer.getValueTo() : mDeviceInfo.getLevel());
+        holder.dimmer.setLabelFormatter(value -> (Math.round(value)) + "%");
         holder.dimmer.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
@@ -1374,22 +1301,12 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         if (holder.buttonLog != null) {
             holder.buttonLog.setId(mDeviceInfo.getIdx());
-            holder.buttonLog.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleLogButtonClick(v.getId());
-                }
-            });
+            holder.buttonLog.setOnClickListener(v -> handleLogButtonClick(v.getId()));
         }
 
         if (isRGB && holder.buttonColor != null) {
             holder.buttonColor.setId(mDeviceInfo.getIdx());
-            holder.buttonColor.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleColorButtonClick(v.getId());
-                }
-            });
+            holder.buttonColor.setOnClickListener(v -> handleColorButtonClick(v.getId()));
         }
     }
 
@@ -1438,45 +1355,33 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         if (holder.buttonOn != null) {
             holder.buttonOn.setId(mDeviceInfo.getIdx());
-            holder.buttonOn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleOnOffSwitchClick(v.getId(), true);
-                    holder.iconRow.setAlpha(1f);
-                    holder.dimmer.setVisibility(View.VISIBLE);
-                    if (holder.dimmer.getValue() <= 10) {
-                        holder.dimmer.setValue(20);//dimmer turned on with default progress value
-                    }
-                    if (isRGB)
-                        holder.buttonColor.setVisibility(View.VISIBLE);
-
+            holder.buttonOn.setOnClickListener(v -> {
+                handleOnOffSwitchClick(v.getId(), true);
+                holder.iconRow.setAlpha(1f);
+                holder.dimmer.setVisibility(View.VISIBLE);
+                if (holder.dimmer.getValue() <= 10) {
+                    holder.dimmer.setValue(20);//dimmer turned on with default progress value
                 }
+                if (isRGB)
+                    holder.buttonColor.setVisibility(View.VISIBLE);
+
             });
         }
         if (holder.buttonOff != null) {
             holder.buttonOff.setId(mDeviceInfo.getIdx());
-            holder.buttonOff.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleOnOffSwitchClick(v.getId(), false);
-                    holder.iconRow.setAlpha(0.5f);
-                    holder.dimmer.setVisibility(View.GONE);
-                    if (isRGB)
-                        holder.buttonColor.setVisibility(View.GONE);
-                }
+            holder.buttonOff.setOnClickListener(v -> {
+                handleOnOffSwitchClick(v.getId(), false);
+                holder.iconRow.setAlpha(0.5f);
+                holder.dimmer.setVisibility(View.GONE);
+                if (isRGB)
+                    holder.buttonColor.setVisibility(View.GONE);
             });
         }
 
         holder.dimmer.setTag(mDeviceInfo.getIdx());
-        holder.dimmer.setValue(mDeviceInfo.getLevel() > 100 ? 100 : mDeviceInfo.getLevel());
-        holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel());
-        holder.dimmer.setLabelFormatter(new LabelFormatter() {
-            @NonNull
-            @Override
-            public String getFormattedValue(float value) {
-                return (Math.round(value)) + "%";
-            }
-        });
+        holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel() <= 0 ? 100 : mDeviceInfo.getMaxDimLevel());
+        holder.dimmer.setValue(mDeviceInfo.getLevel() > holder.dimmer.getValueTo() ? holder.dimmer.getValueTo() : mDeviceInfo.getLevel());
+        holder.dimmer.setLabelFormatter(value -> (Math.round(value)) + "%");
         holder.dimmer.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
@@ -1503,22 +1408,12 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         if (holder.buttonLog != null) {
             holder.buttonLog.setId(mDeviceInfo.getIdx());
-            holder.buttonLog.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleLogButtonClick(v.getId());
-                }
-            });
+            holder.buttonLog.setOnClickListener(v -> handleLogButtonClick(v.getId()));
         }
 
         if (isRGB && holder.buttonColor != null) {
             holder.buttonColor.setId(mDeviceInfo.getIdx());
-            holder.buttonColor.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleColorButtonClick(v.getId());
-                }
-            });
+            holder.buttonColor.setOnClickListener(v -> handleColorButtonClick(v.getId()));
         }
     }
 
@@ -1547,12 +1442,9 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         if (holder.buttonSetStatus != null) {
             holder.buttonSetStatus.setId(mDeviceInfo.getIdx());
-            holder.buttonSetStatus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //open state dialog
-                    handleStateButtonClick(v.getId(), stateNamesArrayRes, stateIds);
-                }
+            holder.buttonSetStatus.setOnClickListener(v -> {
+                //open state dialog
+                handleStateButtonClick(v.getId(), stateNamesArrayRes, stateIds);
             });
         }
 
