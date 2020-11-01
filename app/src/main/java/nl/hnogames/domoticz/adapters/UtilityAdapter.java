@@ -22,6 +22,7 @@
 package nl.hnogames.domoticz.adapters;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ import nl.hnogames.domoticz.ads.TemplateView;
 import nl.hnogames.domoticz.interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
+import nl.hnogames.domoticzapi.Containers.WeatherInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -95,7 +97,16 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         this.filteredData = sortedData;
     }
 
-    private ArrayList<UtilitiesInfo> SortData(ArrayList<UtilitiesInfo> data) {
+    private ArrayList<UtilitiesInfo> SortData(ArrayList<UtilitiesInfo> dat) {
+        ArrayList<UtilitiesInfo> data = new ArrayList<>();
+        if (Build.VERSION.SDK_INT >= 21) {
+            data = dat;
+        } else {
+            for (UtilitiesInfo d : dat) {
+                if (d.getIdx() != MainActivity.ADS_IDX)
+                    data.add(d);
+            }
+        }
         ArrayList<UtilitiesInfo> customdata = new ArrayList<>();
         if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
             UtilitiesInfo adView = null;
@@ -134,9 +145,14 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
 
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.utilities_row_default, parent, false);
-
+        View view;
+        if (Build.VERSION.SDK_INT >= 21) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.utilities_row_default, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.utilities_row_default_noads, parent, false);
+        }
         return new DataObjectHolder(view);
     }
 

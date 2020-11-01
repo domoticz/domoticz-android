@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.adapters;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +65,7 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
+import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -107,7 +109,16 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
         this.filteredData = sortedData;
     }
 
-    private ArrayList<TemperatureInfo> SortData(ArrayList<TemperatureInfo> data) {
+    private ArrayList<TemperatureInfo> SortData(ArrayList<TemperatureInfo> dat) {
+        ArrayList<TemperatureInfo> data = new ArrayList<>();
+        if (Build.VERSION.SDK_INT >= 21) {
+            data = dat;
+        } else {
+            for (TemperatureInfo d : dat) {
+                if (d.getIdx() != MainActivity.ADS_IDX)
+                    data.add(d);
+            }
+        }
         ArrayList<TemperatureInfo> customdata = new ArrayList<>();
         if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
             TemperatureInfo adView = null;
@@ -146,8 +157,14 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
 
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.temperature_row_default, parent, false);
+        View view;
+        if (Build.VERSION.SDK_INT >= 21) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.temperature_row_default, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.temperature_row_default_noads, parent, false);
+        }
         return new DataObjectHolder(view);
     }
 

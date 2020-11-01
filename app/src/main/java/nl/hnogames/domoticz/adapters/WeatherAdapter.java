@@ -23,6 +23,7 @@ package nl.hnogames.domoticz.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -65,6 +66,7 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.Language;
+import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Containers.WeatherInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
@@ -108,7 +110,16 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
         this.filteredData = sortedData;
     }
 
-    private ArrayList<WeatherInfo> SortData(ArrayList<WeatherInfo> data) {
+    private ArrayList<WeatherInfo> SortData(ArrayList<WeatherInfo> dat) {
+        ArrayList<WeatherInfo> data = new ArrayList<>();
+        if (Build.VERSION.SDK_INT >= 21) {
+            data = dat;
+        } else {
+            for (WeatherInfo d : dat) {
+                if (d.getIdx() != MainActivity.ADS_IDX)
+                    data.add(d);
+            }
+        }
         ArrayList<WeatherInfo> customdata = new ArrayList<>();
         if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
             WeatherInfo adView = null;
@@ -147,8 +158,14 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
 
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.weather_row_default, parent, false);
+        View view;
+        if (Build.VERSION.SDK_INT >= 21) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.weather_row_default, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.weather_row_default_noads, parent, false);
+        }
         return new DataObjectHolder(view);
     }
 

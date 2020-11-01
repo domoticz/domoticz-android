@@ -31,6 +31,7 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +45,9 @@ import com.fastaccess.permission.base.PermissionHelper;
 import com.ftinc.scoop.Scoop;
 import com.github.zagum.speechrecognitionview.RecognitionProgressView;
 import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -180,7 +184,20 @@ public class MainActivity extends AppCompatPermissionsActivity {
         permissionHelper = PermissionHelper.getInstance(this);
 
         UsefulBits.checkAPK(this, mSharedPrefs);
-        setContentView(R.layout.activity_newmain_paid);
+
+        if (Build.VERSION.SDK_INT < 21 && (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated())) {
+            setContentView(R.layout.activity_newmain_free);
+            MobileAds.initialize(this, this.getString(R.string.ADMOB_APP_KEY));
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4")
+                    .addTestDevice("1AAE9D81347967A359E372B0445549DE")
+                    .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
+                    .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
+                    .addTestDevice("6C2390A9FF8F555BD01BA560068CD366")
+                    .build();
+            ((AdView) findViewById(R.id.adView)).loadAd(adRequest);
+        } else
+            setContentView(R.layout.activity_newmain_paid);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();

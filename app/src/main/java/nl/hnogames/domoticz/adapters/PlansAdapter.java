@@ -22,6 +22,7 @@
 package nl.hnogames.domoticz.adapters;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
 import nl.hnogames.domoticz.ads.TemplateView;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Containers.PlanInfo;
 
 @SuppressWarnings("unused")
@@ -75,7 +77,16 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
         this.mDataset = sortedData;
     }
 
-    private ArrayList<PlanInfo> SortData(ArrayList<PlanInfo> data) {
+    private ArrayList<PlanInfo> SortData(ArrayList<PlanInfo> dat) {
+        ArrayList<PlanInfo> data = new ArrayList<>();
+        if (Build.VERSION.SDK_INT >= 21) {
+            data = dat;
+        } else {
+            for (PlanInfo d : dat) {
+                if (d.getIdx() != MainActivity.ADS_IDX)
+                    data.add(d);
+            }
+        }
         ArrayList<PlanInfo> customdata = new ArrayList<>();
         if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
             PlanInfo adView = null;
@@ -110,8 +121,14 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
 
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.plan_row, parent, false);
+        View view;
+        if (Build.VERSION.SDK_INT >= 21) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.plan_row, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.plan_row_noads, parent, false);
+        }
         return new DataObjectHolder(view);
     }
 

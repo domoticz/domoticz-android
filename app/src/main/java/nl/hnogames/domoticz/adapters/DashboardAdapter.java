@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -150,7 +151,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         this.filteredData = sortedData;
     }
 
-    private ArrayList<DevicesInfo> SortData(ArrayList<DevicesInfo> data) {
+    private ArrayList<DevicesInfo> SortData(ArrayList<DevicesInfo> dat) {
+        ArrayList<DevicesInfo> data = new ArrayList<>();
+        if (Build.VERSION.SDK_INT >= 21) {
+            data = dat;
+        } else {
+            for (DevicesInfo d : dat) {
+                if (d.getIdx() != MainActivity.ADS_IDX)
+                    data.add(d);
+            }
+        }
         ArrayList<DevicesInfo> customdata = new ArrayList<>();
         if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
             DevicesInfo adView = null;
@@ -203,12 +213,23 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View row;
-        if (showAsList)
-            row = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.dashboard_row_list, parent, false);
-        else
-            row = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.dashboard_row, parent, false);
+
+        // Check if we're running on Android 5.0 or higher
+        if (Build.VERSION.SDK_INT >= 21) {
+            if (showAsList)
+                row = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.dashboard_row_list, parent, false);
+            else
+                row = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.dashboard_row, parent, false);
+        } else {
+            if (showAsList)
+                row = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.dashboard_row_list_noads, parent, false);
+            else
+                row = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.dashboard_row_noads, parent, false);
+        }
         return new DataObjectHolder(row);
     }
 

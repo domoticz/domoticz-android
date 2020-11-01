@@ -23,6 +23,7 @@ package nl.hnogames.domoticz.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +58,7 @@ import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PicassoUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
+import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 
 @SuppressWarnings("unused")
@@ -92,7 +94,16 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
         CamerasAdapter.onClickListener = onClickListener;
     }
 
-    private ArrayList<CameraInfo> SortData(ArrayList<CameraInfo> data) {
+    private ArrayList<CameraInfo> SortData(ArrayList<CameraInfo> dat) {
+        ArrayList<CameraInfo> data = new ArrayList<>();
+        if (Build.VERSION.SDK_INT >= 21) {
+            data = dat;
+        } else {
+            for (CameraInfo d : dat) {
+                if (d.getIdx() != MainActivity.ADS_IDX)
+                    data.add(d);
+            }
+        }
         ArrayList<CameraInfo> customdata = new ArrayList<>();
         if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
             CameraInfo adView = null;
@@ -128,8 +139,14 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     @NonNull
     @Override
     public DataObjectHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.camera_row, parent, false);
+        View view;
+        if (Build.VERSION.SDK_INT >= 21) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.camera_row, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.camera_row_noads, parent, false);
+        }
         return new DataObjectHolder(view);
     }
 
