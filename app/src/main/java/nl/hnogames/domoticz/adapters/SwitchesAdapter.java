@@ -1261,7 +1261,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             if (checked) {
                 holder.dimmer.setVisibility(View.VISIBLE);
                 if (holder.dimmer.getValue() <= 10) {
-                    holder.dimmer.setValue(20);//dimmer turned on with default progress value
+                    //dimmer turned on with default progress value
+                    holder.dimmer.setValue(20 > holder.dimmer.getValueTo() ? holder.dimmer.getValueTo() : 20);
                 }
                 if (isRGB)
                     holder.buttonColor.setVisibility(View.VISIBLE);
@@ -1377,7 +1378,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 holder.iconRow.setAlpha(1f);
                 holder.dimmer.setVisibility(View.VISIBLE);
                 if (holder.dimmer.getValue() <= 10) {
-                    holder.dimmer.setValue(20);//dimmer turned on with default progress value
+                    //dimmer turned on with default progress value
+                    holder.dimmer.setValue(20 > holder.dimmer.getValueTo() ? holder.dimmer.getValueTo() : 20);
                 }
                 if (isRGB)
                     holder.buttonColor.setVisibility(View.VISIBLE);
