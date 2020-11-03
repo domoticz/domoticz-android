@@ -48,7 +48,6 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
 import nl.hnogames.domoticz.ads.TemplateView;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Containers.PlanInfo;
 
 @SuppressWarnings("unused")
@@ -58,6 +57,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
     private final Context mContext;
     private SharedPrefUtil mSharedPrefs;
     private ArrayList<PlanInfo> mDataset;
+    private boolean adLoaded = false;
 
     public PlansAdapter(ArrayList<PlanInfo> data, Context mContext) {
         this.mContext = mContext;
@@ -169,8 +169,12 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
      */
     private void setAdsLayout(DataObjectHolder holder) {
         try {
-            holder.itemView.setVisibility(View.GONE);
-            holder.itemView.getLayoutParams().height = 0;
+            if (holder.adview == null)
+                return;
+            if (!adLoaded) {
+                holder.itemView.setVisibility(View.GONE);
+                holder.itemView.getLayoutParams().height = 0;
+            }
 
             MobileAds.initialize(mContext, mContext.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder()
@@ -190,6 +194,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
                             holder.adview.setNativeAd(unifiedNativeAd);
                             holder.itemView.setVisibility(View.VISIBLE);
                             holder.itemView.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                            adLoaded = true;
                         }
                     })
                     .withAdListener(new AdListener() {
@@ -197,6 +202,8 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
                         public void onAdFailedToLoad(int errorCode) {
                             if (holder.adview != null) {
                                 holder.adview.setVisibility(View.GONE);
+                                holder.itemView.setVisibility(View.GONE);
+                                holder.itemView.getLayoutParams().height = 0;
                             }
                         }
                     })

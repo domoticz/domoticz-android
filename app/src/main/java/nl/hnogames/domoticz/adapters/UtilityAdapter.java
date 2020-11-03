@@ -57,7 +57,6 @@ import nl.hnogames.domoticz.ads.TemplateView;
 import nl.hnogames.domoticz.interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
-import nl.hnogames.domoticzapi.Containers.WeatherInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -74,6 +73,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     private Domoticz domoticz;
     private ItemFilter mFilter = new ItemFilter();
     private SharedPrefUtil mSharedPrefs;
+    private boolean adLoaded = false;
 
     public UtilityAdapter(Context context,
                           Domoticz mDomoticz,
@@ -195,8 +195,12 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
      */
     private void setAdsLayout(DataObjectHolder holder) {
         try {
-            holder.itemView.setVisibility(View.GONE);
-            holder.itemView.getLayoutParams().height = 0;
+            if (holder.adview == null)
+                return;
+            if (!adLoaded) {
+                holder.itemView.setVisibility(View.GONE);
+                holder.itemView.getLayoutParams().height = 0;
+            }
 
             MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder()
@@ -216,6 +220,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                             holder.adview.setNativeAd(unifiedNativeAd);
                             holder.itemView.setVisibility(View.VISIBLE);
                             holder.itemView.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                            adLoaded = true;
                         }
                     })
                     .withAdListener(new AdListener() {
@@ -223,6 +228,8 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                         public void onAdFailedToLoad(int errorCode) {
                             if (holder.adview != null) {
                                 holder.adview.setVisibility(View.GONE);
+                                holder.itemView.setVisibility(View.GONE);
+                                holder.itemView.getLayoutParams().height = 0;
                             }
                         }
                     })

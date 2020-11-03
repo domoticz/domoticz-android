@@ -112,6 +112,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     @ColorInt
     private int listviewRowBackground;
     private Picasso picasso;
+    private boolean adLoaded = false;
 
     public DashboardAdapter(Context context,
                             ServerUtil serverUtil,
@@ -918,9 +919,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
      */
     private void setAdsLayout(DataObjectHolder holder) {
         try {
-            holder.itemView.setVisibility(View.GONE);
-            holder.itemView.getLayoutParams().height = 0;
-
+            if (holder.adview == null)
+                return;
+            if (!adLoaded) {
+                holder.itemView.setVisibility(View.GONE);
+                holder.itemView.getLayoutParams().height = 0;
+            }
             MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder()
                     .addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4")
@@ -939,6 +943,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             holder.adview.setNativeAd(unifiedNativeAd);
                             holder.itemView.setVisibility(View.VISIBLE);
                             holder.itemView.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                            adLoaded = true;
                         }
                     })
                     .withAdListener(new AdListener() {
@@ -946,6 +951,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                         public void onAdFailedToLoad(int errorCode) {
                             if (holder.adview != null) {
                                 holder.adview.setVisibility(View.GONE);
+                                holder.itemView.setVisibility(View.GONE);
+                                holder.itemView.getLayoutParams().height = 0;
                             }
                         }
                     })

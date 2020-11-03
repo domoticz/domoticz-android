@@ -58,6 +58,7 @@ import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
 import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
@@ -98,6 +99,20 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         try {
             if (supportedSwitches == null || supportedSwitches.size() <= 0)
                 return supportedSwitches;
+
+            int counter = mSharedPrefs.getAdsCounter();
+            if (counter < 1) {
+                ArrayList<CameraInfo> filteredList = new ArrayList<>();
+                for (CameraInfo d : supportedSwitches) {
+                    if (d.getIdx() != MainActivity.ADS_IDX)
+                        filteredList.add(d);
+                }
+                counter++;
+                mSharedPrefs.setAdsCounter(counter);
+                return filteredList;
+            } else {
+                mSharedPrefs.setAdsCounter(0);
+            }
 
             if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                 ArrayList<CameraInfo> filteredList = new ArrayList<>();

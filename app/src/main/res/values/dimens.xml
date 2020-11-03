@@ -43,7 +43,6 @@
     <dimen name="sneek_height">0dp</dimen>
     <dimen name="default_padding">20dp</dimen>
 
-
     <item name="gnt_medium_template_bottom_weight" format="float" type="dimen">0.4</item>
     <item name="gnt_text_row_weight" format="float" type="dimen">0.25</item>
     <item name="gnt_media_view_weight" format="float" type="dimen">1.0</item>

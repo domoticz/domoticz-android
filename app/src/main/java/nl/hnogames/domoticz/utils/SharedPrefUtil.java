@@ -66,6 +66,7 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class SharedPrefUtil {
+    private static final String PREF_ADS_COUNTER = "adsCounter";
 
     private static final int NR_OF_HISTORY = 100;
     private static final String PREF_MULTI_SERVER = "enableMultiServers";
@@ -160,9 +161,14 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_SWITCH_BUTTONS, false);
     }
 
-    // public boolean checkForUpdatesEnabled() {
-    //     return prefs.getBoolean(PREF_CHECK_UPDATES, false);
-    // }
+    public int getAdsCounter() {
+        return prefs.getInt(PREF_ADS_COUNTER, 0);
+    }
+
+    public void setAdsCounter(int id) {
+        editor.putInt(PREF_ADS_COUNTER, id).apply();
+        editor.commit();
+    }
 
     public boolean IsWidgetsEnabled() {
         return prefs.getBoolean(PREF_WIDGET_ENABLED, false);

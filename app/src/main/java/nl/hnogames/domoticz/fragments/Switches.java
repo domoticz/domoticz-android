@@ -81,6 +81,7 @@ import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.NotificationInfo;
 import nl.hnogames.domoticzapi.Containers.SwitchLogInfo;
 import nl.hnogames.domoticzapi.Containers.SwitchTimerInfo;
+import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
@@ -291,6 +292,20 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         try {
             if (supportedSwitches == null || supportedSwitches.size() <= 0)
                 return supportedSwitches;
+
+            int counter = mSharedPrefs.getAdsCounter();
+            if (counter < 1) {
+                ArrayList<DevicesInfo> filteredList = new ArrayList<>();
+                for (DevicesInfo d : supportedSwitches) {
+                    if (d.getIdx() != MainActivity.ADS_IDX)
+                        filteredList.add(d);
+                }
+                counter++;
+                mSharedPrefs.setAdsCounter(counter);
+                return filteredList;
+            } else {
+                mSharedPrefs.setAdsCounter(0);
+            }
 
             if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                 ArrayList<DevicesInfo> filteredList = new ArrayList<>();

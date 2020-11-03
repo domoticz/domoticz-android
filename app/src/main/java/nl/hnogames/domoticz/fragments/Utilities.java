@@ -112,6 +112,20 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             if (supportedSwitches == null || supportedSwitches.size() <= 0)
                 return supportedSwitches;
 
+            int counter = mSharedPrefs.getAdsCounter();
+            if (counter < 1) {
+                ArrayList<UtilitiesInfo> filteredList = new ArrayList<>();
+                for (UtilitiesInfo d : supportedSwitches) {
+                    if (d.getIdx() != MainActivity.ADS_IDX)
+                        filteredList.add(d);
+                }
+                counter++;
+                mSharedPrefs.setAdsCounter(counter);
+                return filteredList;
+            } else {
+                mSharedPrefs.setAdsCounter(0);
+            }
+
             if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                 ArrayList<UtilitiesInfo> filteredList = new ArrayList<>();
                 for (UtilitiesInfo d : supportedSwitches) {

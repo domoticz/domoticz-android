@@ -65,7 +65,6 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
-import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -85,6 +84,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
     private Context context;
     private ArrayList<TemperatureInfo> data = null;
     private ItemFilter mFilter = new ItemFilter();
+    private boolean adLoaded = false;
 
     public TemperatureAdapter(Context context,
                               Domoticz mDomoticz,
@@ -175,8 +175,12 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
      */
     private void setAdsLayout(DataObjectHolder holder) {
         try {
-            holder.itemView.setVisibility(View.GONE);
-            holder.itemView.getLayoutParams().height = 0;
+            if (holder.adview == null)
+                return;
+            if (!adLoaded) {
+                holder.itemView.setVisibility(View.GONE);
+                holder.itemView.getLayoutParams().height = 0;
+            }
 
             MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder()
@@ -196,6 +200,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                             holder.adview.setNativeAd(unifiedNativeAd);
                             holder.itemView.setVisibility(View.VISIBLE);
                             holder.itemView.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                            adLoaded = true;
                         }
                     })
                     .withAdListener(new AdListener() {
@@ -203,6 +208,8 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                         public void onAdFailedToLoad(int errorCode) {
                             if (holder.adview != null) {
                                 holder.adview.setVisibility(View.GONE);
+                                holder.itemView.setVisibility(View.GONE);
+                                holder.itemView.getLayoutParams().height = 0;
                             }
                         }
                     })

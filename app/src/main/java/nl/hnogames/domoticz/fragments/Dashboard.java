@@ -75,6 +75,7 @@ import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Containers.PlanInfo;
 import nl.hnogames.domoticzapi.Containers.SunRiseInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -293,6 +294,20 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         try {
             if (supportedSwitches == null || supportedSwitches.size() <= 0)
                 return supportedSwitches;
+
+            int counter = mSharedPrefs.getAdsCounter();
+            if (counter < 1) {
+                ArrayList<DevicesInfo> filteredList = new ArrayList<>();
+                for (DevicesInfo d : supportedSwitches) {
+                    if (d.getIdx() != MainActivity.ADS_IDX)
+                        filteredList.add(d);
+                }
+                counter++;
+                mSharedPrefs.setAdsCounter(counter);
+                return filteredList;
+            } else {
+                mSharedPrefs.setAdsCounter(0);
+            }
 
             ArrayList<DevicesInfo> filteredList = new ArrayList<>();
             if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {

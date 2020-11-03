@@ -55,6 +55,7 @@ import nl.hnogames.domoticz.ui.TemperatureInfoDialog;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
+import nl.hnogames.domoticzapi.Containers.WeatherInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.TemperatureReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
@@ -104,6 +105,20 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         try {
             if (supportedSwitches == null || supportedSwitches.size() <= 0)
                 return supportedSwitches;
+
+            int counter = mSharedPrefs.getAdsCounter();
+            if (counter < 1) {
+                ArrayList<TemperatureInfo> filteredList = new ArrayList<>();
+                for (TemperatureInfo d : supportedSwitches) {
+                    if (d.getIdx() != MainActivity.ADS_IDX)
+                        filteredList.add(d);
+                }
+                counter++;
+                mSharedPrefs.setAdsCounter(counter);
+                return filteredList;
+            } else {
+                mSharedPrefs.setAdsCounter(0);
+            }
 
             if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                 ArrayList<TemperatureInfo> filteredList = new ArrayList<>();

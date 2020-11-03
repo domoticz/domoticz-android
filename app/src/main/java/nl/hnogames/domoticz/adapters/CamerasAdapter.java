@@ -58,7 +58,6 @@ import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PicassoUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
-import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 
 @SuppressWarnings("unused")
@@ -71,6 +70,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     private Domoticz domoticz;
     private boolean refreshTimer;
     private Picasso picasso;
+    private boolean adLoaded = false;
 
     public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext, final Domoticz domoticz, boolean refreshTimer) {
         this.mContext = mContext;
@@ -218,8 +218,12 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
      */
     private void setAdsLayout(DataObjectHolder holder) {
         try {
-            holder.itemView.setVisibility(View.GONE);
-            holder.itemView.getLayoutParams().height = 0;
+            if (holder.adview == null)
+                return;
+            if (!adLoaded) {
+                holder.itemView.setVisibility(View.GONE);
+                holder.itemView.getLayoutParams().height = 0;
+            }
 
             MobileAds.initialize(mContext, mContext.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder()
@@ -239,6 +243,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
                             holder.adview.setNativeAd(unifiedNativeAd);
                             holder.itemView.setVisibility(View.VISIBLE);
                             holder.itemView.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                            adLoaded = true;
                         }
                     })
                     .withAdListener(new AdListener() {
@@ -247,6 +252,8 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
                             if (holder.adview != null) {
                                 holder.adview.setVisibility(View.GONE);
                             }
+                            holder.itemView.setVisibility(View.GONE);
+                            holder.itemView.getLayoutParams().height = 0;
                         }
                     })
                     .withNativeAdOptions(new NativeAdOptions.Builder().build())

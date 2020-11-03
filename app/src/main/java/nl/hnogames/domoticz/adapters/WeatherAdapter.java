@@ -66,7 +66,6 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.Language;
-import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Containers.WeatherInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
@@ -87,6 +86,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
     private ItemFilter mFilter = new ItemFilter();
     private ConfigInfo mConfigInfo;
     private SharedPrefUtil mSharedPrefs;
+    private boolean adLoaded = false;
 
     public WeatherAdapter(Context context,
                           Domoticz mDomoticz,
@@ -187,8 +187,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
      */
     private void setAdsLayout(DataObjectHolder holder) {
         try {
-            holder.itemView.setVisibility(View.GONE);
-            holder.itemView.getLayoutParams().height = 0;
+            if (holder.adview == null)
+                return;
+            if (!adLoaded) {
+                holder.itemView.setVisibility(View.GONE);
+                holder.itemView.getLayoutParams().height = 0;
+            }
 
             MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder()
@@ -208,6 +212,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                             holder.adview.setNativeAd(unifiedNativeAd);
                             holder.itemView.setVisibility(View.VISIBLE);
                             holder.itemView.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                            adLoaded = true;
                         }
                     })
                     .withAdListener(new AdListener() {
@@ -215,6 +220,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                         public void onAdFailedToLoad(int errorCode) {
                             if (holder.adview != null) {
                                 holder.adview.setVisibility(View.GONE);
+                                holder.itemView.setVisibility(View.GONE);
+                                holder.itemView.getLayoutParams().height = 0;
                             }
                         }
                     })

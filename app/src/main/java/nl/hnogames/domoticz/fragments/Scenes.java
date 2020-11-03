@@ -56,6 +56,7 @@ import nl.hnogames.domoticz.ui.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.WidgetUtils;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Containers.SwitchLogInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -141,6 +142,20 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         try {
             if (supportedSwitches == null || supportedSwitches.size() <= 0)
                 return supportedSwitches;
+
+            int counter = mSharedPrefs.getAdsCounter();
+            if (counter < 1) {
+                ArrayList<SceneInfo> filteredList = new ArrayList<>();
+                for (SceneInfo d : supportedSwitches) {
+                    if (d.getIdx() != MainActivity.ADS_IDX)
+                        filteredList.add(d);
+                }
+                counter++;
+                mSharedPrefs.setAdsCounter(counter);
+                return filteredList;
+            } else {
+                mSharedPrefs.setAdsCounter(0);
+            }
 
             if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                 ArrayList<SceneInfo> filteredList = new ArrayList<>();

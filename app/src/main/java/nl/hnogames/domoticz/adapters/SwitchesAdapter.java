@@ -33,7 +33,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,7 +46,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.like.LikeButton;
@@ -110,6 +108,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     private Domoticz domoticz;
     @ColorInt
     private int listviewRowBackground;
+    private boolean adLoaded = false;
 
     public SwitchesAdapter(Context context,
                            ServerUtil serverUtil,
@@ -244,7 +243,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
                 holder.buttonTimer.setId(extendedStatusInfo.getIdx());
                 holder.buttonTimer.setOnClickListener(v -> handleTimerButtonClick(v.getId()));
-                if(!UsefulBits.isEmpty(extendedStatusInfo.getTimers())) {
+                if (!UsefulBits.isEmpty(extendedStatusInfo.getTimers())) {
                     if (extendedStatusInfo.getTimers().toLowerCase().equals("false"))
                         holder.buttonTimer.setVisibility(View.GONE);
                 }
@@ -267,6 +266,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
      */
     private void setSwitchRowData(DevicesInfo mDeviceInfo,
                                   DataObjectHolder holder) {
+        holder.itemView.setVisibility(View.VISIBLE);
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
                 (mDeviceInfo.getSwitchType() == null)) {
             if (mDeviceInfo.getIdx() == MainActivity.ADS_IDX) {
@@ -619,8 +619,12 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
      */
     private void setAdsLayout(DataObjectHolder holder) {
         try {
-            holder.itemView.setVisibility(View.GONE);
-            holder.itemView.getLayoutParams().height = 0;
+            if (holder.adview == null)
+                return;
+            if (!adLoaded) {
+                holder.itemView.setVisibility(View.GONE);
+                holder.itemView.getLayoutParams().height = 0;
+            }
 
             MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder()
@@ -640,6 +644,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                             holder.adview.setNativeAd(unifiedNativeAd);
                             holder.itemView.setVisibility(View.VISIBLE);
                             holder.itemView.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                            adLoaded = true;
                         }
                     })
                     .withAdListener(new AdListener() {
@@ -647,6 +652,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                         public void onAdFailedToLoad(int errorCode) {
                             if (holder.adview != null) {
                                 holder.adview.setVisibility(View.GONE);
+                                holder.itemView.setVisibility(View.GONE);
+                                holder.itemView.getLayoutParams().height = 0;
                             }
                         }
                     })
@@ -940,7 +947,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 holder.buttonOn.setVisibility(View.GONE);
             } else {
                 holder.buttonOn.setId(mDevicesInfo.getIdx());
-                if(!UsefulBits.isEmpty(mDevicesInfo.getData())) {
+                if (!UsefulBits.isEmpty(mDevicesInfo.getData())) {
                     String status = mDevicesInfo.getData().toLowerCase();
                     if (statusOpen.contains(status)) {
                         holder.buttonOn.setText(context.getString(R.string.button_state_open));
