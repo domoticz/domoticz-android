@@ -333,15 +333,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
             if (usingTabletLayout == null)
                 onPhone = true;
 
-            if (StaticHelper.getServerUtil(this, true).getActiveServer() != null && UsefulBits.isEmpty(StaticHelper.getServerUtil(this).getActiveServer().getRemoteServerUrl())) {
-                Toast.makeText(this, "Incorrect settings detected, please reconfigure this app.", Toast.LENGTH_LONG).show();
-
-                //incorrect settings detected
-                mSharedPrefs.setNavigationDefaults();
-                Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
-                startActivityForResult(welcomeWizard, iWelcomeResultCode);
-                mSharedPrefs.setFirstStart(false);
-            } else {
                 if (!fromVoiceWidget && !fromQRCodeWidget) {
                     GetDomoticzAuthAndConfig();
                     if (mSharedPrefs.isStartupSecurityEnabled()) {
@@ -349,7 +340,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     }
                     drawNavigationMenu(null);
                 }
-            }
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
