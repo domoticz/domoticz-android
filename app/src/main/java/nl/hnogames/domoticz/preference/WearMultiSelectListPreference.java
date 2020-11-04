@@ -40,7 +40,7 @@ import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
 public class WearMultiSelectListPreference extends MultiSelectListPreference {
     private static final String TAG = WearMultiSelectListPreference.class.getName();
-    private boolean selectAllValuesByDefault;
+    private final boolean selectAllValuesByDefault;
     private CharSequence[] mEntryValues;
     private int currentSwitch = 1;
 

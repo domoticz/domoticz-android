@@ -45,11 +45,10 @@ public class NFCAdapter extends BaseAdapter {
 
     @SuppressWarnings("unused")
     private static final String TAG = NFCAdapter.class.getSimpleName();
+    private final Context context;
+    private final NFCClickListener listener;
+    private final SharedPrefUtil mSharedPrefs;
     public ArrayList<NFCInfo> data = null;
-    private Context context;
-    private NFCClickListener listener;
-
-    private SharedPrefUtil mSharedPrefs;
 
     public NFCAdapter(Context context,
                       ArrayList<NFCInfo> data,

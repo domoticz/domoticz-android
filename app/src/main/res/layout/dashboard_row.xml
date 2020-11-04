@@ -25,7 +25,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical"
     android:paddingStart="8dp"
     android:paddingTop="4dp"
@@ -36,6 +35,7 @@
 
     <nl.hnogames.domoticz.ads.TemplateView
         android:id="@+id/adview"
+        android:background="@color/red_600"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -442,4 +442,5 @@
             android:src="@drawable/outline_info_black_18"
             android:tint="@color/md_grey_300" />
     </RelativeLayout>
+
 </com.google.android.material.card.MaterialCardView>

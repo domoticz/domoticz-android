@@ -98,20 +98,20 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             DomoticzValues.Device.ModalSwitch.Action.CUSTOM,
             DomoticzValues.Device.ModalSwitch.Action.HEATING_OFF
     };
+    private final boolean showAsList;
+    private final Context context;
+    private final switchesClickListener listener;
+    private final SharedPrefUtil mSharedPrefs;
+    private final ConfigInfo mConfigInfo;
+    private final ItemFilter mFilter = new ItemFilter();
+    private final SunRiseInfo sunriseInfo;
+    private final Domoticz domoticz;
+    @ColorInt
+    private final int listviewRowBackground;
+    private final Picasso picasso;
     public ArrayList<DevicesInfo> data = null;
     public ArrayList<DevicesInfo> filteredData = null;
-    private boolean showAsList;
-    private Context context;
-    private switchesClickListener listener;
     private int previousDimmerValue;
-    private SharedPrefUtil mSharedPrefs;
-    private ConfigInfo mConfigInfo;
-    private ItemFilter mFilter = new ItemFilter();
-    private SunRiseInfo sunriseInfo;
-    private Domoticz domoticz;
-    @ColorInt
-    private int listviewRowBackground;
-    private Picasso picasso;
     private boolean adLoaded = false;
 
     public DashboardAdapter(Context context,
@@ -1119,10 +1119,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 }
                 holder.buttonOn.setOnClickListener(v -> {
                     String text1 = (String) ((Button) v).getText();
-                    if (text1.equals(context.getString(R.string.button_state_on)))
-                        handleOnButtonClick(v.getId(), true);
-                    else
-                        handleOnButtonClick(v.getId(), false);
+                    handleOnButtonClick(v.getId(), text1.equals(context.getString(R.string.button_state_on)));
                 });
             }
         }
@@ -1188,10 +1185,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         holder.buttonOn.setOnClickListener(v -> {
             try {
                 String text1 = (String) ((Button) v).getText();
-                if (text1.equals(context.getString(R.string.button_state_on)))
-                    handleOnButtonClick(v.getId(), true);
-                else
-                    handleOnButtonClick(v.getId(), false);
+                handleOnButtonClick(v.getId(), text1.equals(context.getString(R.string.button_state_on)));
             } catch (Exception ignore) {
             }
         });

@@ -12,9 +12,10 @@ import android.view.View;
  */
 
 public class MjpegViewThread extends Thread {
+    private final SurfaceHolder mSurfaceHolder;
+    private final Paint bgColor;
     public MjpegCallback mCallback;
     public int displayMode;
-    private SurfaceHolder mSurfaceHolder;
     private MjpegInputStream mInputStream;
     private Bitmap imgBack;
     private boolean mRun;
@@ -29,9 +30,7 @@ public class MjpegViewThread extends Thread {
     private int imgBackHeight = 0;
     private int previmgBackWidth = 0;
     private int previmgBackHeight = 0;
-
     private Canvas c = null;
-    private Paint bgColor;
 
     public MjpegViewThread(SurfaceHolder surfaceHolder, View view) {
         mSurfaceHolder = surfaceHolder;

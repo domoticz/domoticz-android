@@ -42,7 +42,7 @@ import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 
 public class NFCServiceActivity extends AppCompatActivity {
-    private String TAG = NFCSettingsActivity.class.getSimpleName();
+    private final String TAG = NFCSettingsActivity.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

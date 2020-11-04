@@ -74,9 +74,14 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = TempGraphs.class.getSimpleName();
+    private final boolean graphChill = false;
+    private final boolean graphDew = false;
     private Context context;
     private ArrayList<TemperatureInfo> mTempInfos;
-    private boolean graphTemp = true, graphChill = false, graphHum = false, graphBaro = false, graphDew = false, graphSet = false;
+    private boolean graphTemp = true;
+    private boolean graphHum = false;
+    private boolean graphBaro = false;
+    private boolean graphSet = false;
     private Integer[] selectedDevices;
     private HashMap<String, ArrayList<GraphPointInfo>> mGraphList;
     private LineChart chart;

@@ -54,7 +54,7 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
     private final int REQUEST_EDIT_SERVER = 55;
 
     @SuppressWarnings("unused")
-    private String TAG = ServerListSettingsActivity.class.getSimpleName();
+    private final String TAG = ServerListSettingsActivity.class.getSimpleName();
     private CoordinatorLayout coordinatorLayout;
     private ServerAdapter adapter;
     private ArrayList<ServerInfo> mServerList;

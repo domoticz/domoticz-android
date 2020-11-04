@@ -132,10 +132,10 @@ public class SharedPrefUtil {
     private final String PREF_SWITCH_BUTTONS = "switchButtons";
     @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_DASHBOARD_LIST = "dashboardAsList";
-    private Context mContext;
-    private SharedPreferences prefs;
-    private SharedPreferences.Editor editor;
-    private Gson gson;
+    private final Context mContext;
+    private final SharedPreferences prefs;
+    private final SharedPreferences.Editor editor;
+    private final Gson gson;
 
     @SuppressLint("CommitPrefEdits")
     public SharedPrefUtil(Context mContext) {
@@ -1248,20 +1248,22 @@ public class SharedPrefUtil {
                     else if (entry.getKey().equals("receivedNotifications") || entry.getKey().equals("receivedNotificationsLog"))
                         Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
                     else {
-                        if (v instanceof Boolean)
-                            editor.putBoolean(key, ((Boolean) v).booleanValue());
-                        else if (v instanceof Float)
-                            editor.putFloat(key, ((Float) v).floatValue());
-                        else if (v instanceof Integer)
-                            editor.putInt(key, ((Integer) v).intValue());
-                        else if (v instanceof Long)
-                            editor.putLong(key, ((Long) v).longValue());
-                        else if (v instanceof String)
-                            editor.putString(key, ((String) v));
-                        else if (v instanceof Set)
-                            editor.putStringSet(key, ((Set<String>) v));
-                        else
-                            Log.v(TAG, "Could not load pref: " + key + " | " + v.getClass());
+                        try {
+                            if (v instanceof Boolean)
+                                editor.putBoolean(key, ((Boolean) v).booleanValue());
+                            else if (v instanceof Float)
+                                editor.putFloat(key, ((Float) v).floatValue());
+                            else if (v instanceof Integer)
+                                editor.putInt(key, ((Integer) v).intValue());
+                            else if (v instanceof Long)
+                                editor.putLong(key, ((Long) v).longValue());
+                            else if (v instanceof String)
+                                editor.putString(key, ((String) v));
+                            else if (v instanceof Set)
+                                editor.putStringSet(key, ((Set<String>) v));
+                            else
+                                Log.v(TAG, "Could not load pref: " + key + " | " + v.getClass());
+                        } catch (Exception ex) {}
                     }
                 }
             }

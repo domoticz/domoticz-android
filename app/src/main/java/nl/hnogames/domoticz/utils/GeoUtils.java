@@ -41,11 +41,11 @@ import nl.hnogames.domoticz.service.GeofenceBroadcastReceiver;
 
 public class GeoUtils {
     public static boolean geofencesAlreadyRegistered = false;
-    private Context mContext;
-    private Activity mActivity;
+    private final Context mContext;
+    private final Activity mActivity;
 
-    private SharedPrefUtil mSharedPrefs;
-    private GeofencingClient mGeofencingClient;
+    private final SharedPrefUtil mSharedPrefs;
+    private final GeofencingClient mGeofencingClient;
     private PendingIntent mGeofencePendingIntent;
 
     public GeoUtils(Context mContext, Activity activity) {

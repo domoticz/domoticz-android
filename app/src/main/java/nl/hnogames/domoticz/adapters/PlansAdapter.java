@@ -55,7 +55,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
     public static List<String> mCustomSorting;
     private static onClickListener onClickListener;
     private final Context mContext;
-    private SharedPrefUtil mSharedPrefs;
+    private final SharedPrefUtil mSharedPrefs;
     private ArrayList<PlanInfo> mDataset;
     private boolean adLoaded = false;
 

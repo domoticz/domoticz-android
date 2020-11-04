@@ -625,10 +625,7 @@ public class UsefulBits {
 
         if (BuildConfig.DEBUG) {
             //check with debug key
-            if (PiracyCheckerUtils.getAPKSignature(context).equals(context.getString(R.string.APK_VALIDATE_DEBUG)))
-                mSharedPrefs.setAPKValidated(true);
-            else
-                mSharedPrefs.setAPKValidated(false);
+            mSharedPrefs.setAPKValidated(PiracyCheckerUtils.getAPKSignature(context).equals(context.getString(R.string.APK_VALIDATE_DEBUG)));
         }
 
         if (BuildConfig.PAID_OOTT) {

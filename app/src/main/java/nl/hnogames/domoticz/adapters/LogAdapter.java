@@ -44,12 +44,12 @@ import nl.hnogames.domoticzapi.Domoticz;
 public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder> {
     private static final String TAG = LogAdapter.class.getSimpleName();
 
-    private Context context;
+    private final Context context;
+    private final Domoticz domoticz;
+    private final SharedPrefUtil mSharedPrefs;
+    private final ItemFilter mFilter = new ItemFilter();
     private ArrayList<LogInfo> filteredData = null;
     private ArrayList<LogInfo> data = null;
-    private Domoticz domoticz;
-    private SharedPrefUtil mSharedPrefs;
-    private ItemFilter mFilter = new ItemFilter();
 
     public LogAdapter(Context context,
                       Domoticz mDomoticz,

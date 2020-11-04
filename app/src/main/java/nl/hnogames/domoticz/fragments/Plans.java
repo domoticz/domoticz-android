@@ -52,7 +52,6 @@ import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.PlanInfo;
-import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Interfaces.PlansReceiver;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
@@ -187,20 +186,6 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         try {
             if (supportedSwitches == null || supportedSwitches.size() <= 0)
                 return supportedSwitches;
-
-            int counter = mSharedPrefs.getAdsCounter();
-            if (counter < 1) {
-                ArrayList<PlanInfo> filteredList = new ArrayList<>();
-                for (PlanInfo d : supportedSwitches) {
-                    if (d.getIdx() != MainActivity.ADS_IDX)
-                        filteredList.add(d);
-                }
-                counter++;
-                mSharedPrefs.setAdsCounter(counter);
-                return filteredList;
-            } else {
-                mSharedPrefs.setAdsCounter(0);
-            }
 
             if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                 ArrayList<PlanInfo> filteredList = new ArrayList<>();

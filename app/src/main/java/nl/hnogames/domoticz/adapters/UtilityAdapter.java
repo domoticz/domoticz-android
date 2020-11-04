@@ -67,12 +67,12 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     private static final String TAG = UtilityAdapter.class.getSimpleName();
     public static List<String> mCustomSorting;
     private final UtilityClickListener listener;
+    private final Context context;
+    private final Domoticz domoticz;
+    private final ItemFilter mFilter = new ItemFilter();
+    private final SharedPrefUtil mSharedPrefs;
     public ArrayList<UtilitiesInfo> filteredData = null;
-    private Context context;
     private ArrayList<UtilitiesInfo> data = null;
-    private Domoticz domoticz;
-    private ItemFilter mFilter = new ItemFilter();
-    private SharedPrefUtil mSharedPrefs;
     private boolean adLoaded = false;
 
     public UtilityAdapter(Context context,

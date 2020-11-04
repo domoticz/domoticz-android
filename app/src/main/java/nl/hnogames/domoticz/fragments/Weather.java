@@ -55,7 +55,6 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.Language;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
-import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
 import nl.hnogames.domoticzapi.Containers.WeatherInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.WeatherReceiver;
@@ -104,20 +103,6 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         try {
             if (supportedSwitches == null || supportedSwitches.size() <= 0)
                 return supportedSwitches;
-
-            int counter = mSharedPrefs.getAdsCounter();
-            if (counter < 1) {
-                ArrayList<WeatherInfo> filteredList = new ArrayList<>();
-                for (WeatherInfo d : supportedSwitches) {
-                    if (d.getIdx() != MainActivity.ADS_IDX)
-                        filteredList.add(d);
-                }
-                counter++;
-                mSharedPrefs.setAdsCounter(counter);
-                return filteredList;
-            } else {
-                mSharedPrefs.setAdsCounter(0);
-            }
 
             if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                 ArrayList<WeatherInfo> filteredList = new ArrayList<>();

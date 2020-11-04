@@ -36,8 +36,8 @@ import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 public class TemperatureInfoDialog implements DialogInterface.OnDismissListener {
 
     private final MaterialDialog.Builder mdb;
+    private final TemperatureInfo info;
     private DismissListener dismissListener;
-    private TemperatureInfo info;
     private String idx;
     private String lastUpdate;
     private boolean isFavorite;

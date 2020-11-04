@@ -31,7 +31,6 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,14 +49,10 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -68,7 +63,6 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -125,19 +119,18 @@ import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import shortbread.Shortcut;
 
-
 public class MainActivity extends AppCompatPermissionsActivity {
     public static final int ADS_IDX = -9998;
     private static TalkBackUtil oTalkBackUtil;
     private final int iQRResultCode = 775;
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
+    private final String TAG = MainActivity.class.getSimpleName();
     public boolean onPhone;
     public Exception configException;
     public FrameLayout frameLayout;
     public FloatingActionButton fabSort;
     private SharedPrefUtil mSharedPrefs;
-    private String TAG = MainActivity.class.getSimpleName();
     private SearchView searchViewAction;
     private CollapsingToolbarLayout toolbarLayout;
     private Toolbar toolbar;
@@ -211,15 +204,12 @@ public class MainActivity extends AppCompatPermissionsActivity {
         setSupportActionBar(toolbar);
         toolbarLayout = findViewById(R.id.collapsingToolbar);
         fabSort = findViewById(R.id.fabSort);
-        fabSort.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment f = latestFragment;
-                if (f instanceof DomoticzRecyclerFragment) {
-                    ((DomoticzRecyclerFragment) f).toggleBackDrop();
-                } else if (f instanceof DomoticzDashboardFragment) {
-                    ((DomoticzDashboardFragment) f).toggleBackDrop();
-                }
+        fabSort.setOnClickListener(v -> {
+            Fragment f = latestFragment;
+            if (f instanceof DomoticzRecyclerFragment) {
+                ((DomoticzRecyclerFragment) f).toggleBackDrop();
+            } else if (f instanceof DomoticzDashboardFragment) {
+                ((DomoticzDashboardFragment) f).toggleBackDrop();
             }
         });
 
@@ -257,12 +247,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
                 if (errorCode == 13) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            FallbackSecurity();
-                        }
-                    });
+                    runOnUiThread(() -> FallbackSecurity());
                 } else MainActivity.this.finish();
             }
 
@@ -318,16 +303,10 @@ public class MainActivity extends AppCompatPermissionsActivity {
         if (mSharedPrefs.isTalkBackEnabled()) {
             oTalkBackUtil = new TalkBackUtil();
             if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage())) {
-                oTalkBackUtil.Init(this, new Locale(mSharedPrefs.getDisplayLanguage()), new TalkBackUtil.InitListener() {
-                    @Override
-                    public void onInit(int status) {
-                    }
+                oTalkBackUtil.Init(this, new Locale(mSharedPrefs.getDisplayLanguage()), status -> {
                 });
             } else {
-                oTalkBackUtil.Init(this, new TalkBackUtil.InitListener() {
-                    @Override
-                    public void onInit(int status) {
-                    }
+                oTalkBackUtil.Init(this, status -> {
                 });
             }
         }
@@ -354,8 +333,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
             if (usingTabletLayout == null)
                 onPhone = true;
 
-            if (StaticHelper.getServerUtil(this, true).getActiveServer() != null &&
-                    UsefulBits.isEmpty(StaticHelper.getServerUtil(this).getActiveServer().getRemoteServerUrl())) {
+            if (StaticHelper.getServerUtil(this, true).getActiveServer() != null && UsefulBits.isEmpty(StaticHelper.getServerUtil(this).getActiveServer().getRemoteServerUrl())) {
                 Toast.makeText(this, "Incorrect settings detected, please reconfigure this app.", Toast.LENGTH_LONG).show();
 
                 //incorrect settings detected
@@ -770,12 +748,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 @Override
 
                 public void run() {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            refreshFragment();
-                        }
-                    });
+                    runOnUiThread(() -> refreshFragment());
                 }
             }, 0, (mSharedPrefs.getAutoRefreshTimer() * 1000));
         }
@@ -802,27 +775,19 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private void GetFirebaseToken() {
         try {
             FirebaseInstanceId.getInstance().getInstanceId()
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "getInstanceId failed", e);
-                        }
-                    })
-                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                            try {
-                                if (!task.isSuccessful() && task.getResult() == null) {
-                                    Log.w(TAG, "getInstanceId failed", task.getException());
-                                    return;
-                                }
-
-                                String refreshedToken = task.getResult().getToken();
-                                Log.d("Firebase id login", "Refreshed token: " + refreshedToken);
-                                GCMUtils.sendRegistrationIdToBackend(MainActivity.this, refreshedToken);
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                    .addOnFailureListener(e -> Log.w(TAG, "getInstanceId failed", e))
+                    .addOnCompleteListener(task -> {
+                        try {
+                            if (!task.isSuccessful() && task.getResult() == null) {
+                                Log.w(TAG, "getInstanceId failed", task.getException());
+                                return;
                             }
+
+                            String refreshedToken = task.getResult().getToken();
+                            Log.d("Firebase id login", "Refreshed token: " + refreshedToken);
+                            GCMUtils.sendRegistrationIdToBackend(MainActivity.this, refreshedToken);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     });
         } catch (Exception e) {
@@ -868,61 +833,52 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 .addProfiles(loggedinAccount)
                 .withTextColor(typedValue.data)
                 .withOnlyMainProfileImageVisible(true)
-                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-                    @Override
-
-                    public boolean onProfileChanged(View view, final IProfile profile, boolean current) {
-                        if (!current) {
-                            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-                                if (frameLayout != null) {
-                                    Snackbar.make(frameLayout, getString(R.string.category_account) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
-                                            .setAction(R.string.upgrade, new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View view) {
-                                                    UsefulBits.openPremiumAppStore(MainActivity.this);
-                                                }
-                                            })
-                                            .setActionTextColor(ContextCompat.getColor(MainActivity.this, R.color.primary))
-                                            .show();
-                                }
-                                return false;
-                            } else {
-                                PasswordDialog passwordDialog = new PasswordDialog(MainActivity.this, null);
-                                passwordDialog.show();
-                                passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
-                                    @Override
-                                    public void onDismiss(String password) {
-                                        if (UsefulBits.isEmpty(password)) {
-                                            UsefulBits.showSnackbar(MainActivity.this, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
-                                            Talk(R.string.security_wrong_code);
-                                            drawNavigationMenu(finalConfig);
-                                        } else {
-                                            for (UserInfo user : finalConfig.getUsers()) {
-                                                if (user.getUsername().equals(profile.getEmail().getText())) {
-                                                    String md5Pass = UsefulBits.getMd5String(password);
-                                                    if (md5Pass.equals(user.getPassword())) {
-                                                        StaticHelper.getDomoticz(MainActivity.this).LogOff();
-                                                        StaticHelper.getDomoticz(MainActivity.this).setUserCredentials(user.getUsername(), password);
-                                                        initScreen();
-                                                    } else {
-                                                        UsefulBits.showSnackbar(MainActivity.this, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
-                                                        drawNavigationMenu(finalConfig);
-                                                    }
+                .withOnAccountHeaderListener((view, profile, current) -> {
+                    if (!current) {
+                        if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                            if (frameLayout != null) {
+                                Snackbar.make(frameLayout, getString(R.string.category_account) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
+                                        .setAction(R.string.upgrade, view1 -> UsefulBits.openPremiumAppStore(MainActivity.this))
+                                        .setActionTextColor(ContextCompat.getColor(MainActivity.this, R.color.primary))
+                                        .show();
+                            }
+                            return false;
+                        } else {
+                            PasswordDialog passwordDialog = new PasswordDialog(MainActivity.this, null);
+                            passwordDialog.show();
+                            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                                @Override
+                                public void onDismiss(String password) {
+                                    if (UsefulBits.isEmpty(password)) {
+                                        UsefulBits.showSnackbar(MainActivity.this, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                        Talk(R.string.security_wrong_code);
+                                        drawNavigationMenu(finalConfig);
+                                    } else {
+                                        for (UserInfo user : finalConfig.getUsers()) {
+                                            if (user.getUsername().equals(profile.getEmail().getText())) {
+                                                String md5Pass = UsefulBits.getMd5String(password);
+                                                if (md5Pass.equals(user.getPassword())) {
+                                                    StaticHelper.getDomoticz(MainActivity.this).LogOff();
+                                                    StaticHelper.getDomoticz(MainActivity.this).setUserCredentials(user.getUsername(), password);
+                                                    initScreen();
+                                                } else {
+                                                    UsefulBits.showSnackbar(MainActivity.this, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                                                    drawNavigationMenu(finalConfig);
                                                 }
                                             }
                                         }
                                     }
+                                }
 
-                                    @Override
-                                    public void onCancel() {
-                                    }
-                                });
-                            }
-
-                            drawNavigationMenu(finalConfig);
+                                @Override
+                                public void onCancel() {
+                                }
+                            });
                         }
-                        return false;
+
+                        drawNavigationMenu(finalConfig);
                     }
+                    return false;
                 })
                 .build();
 
@@ -945,27 +901,23 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 .withToolbar(toolbar)
                 .withSelectedItem(-1)
                 .withDrawerItems(getDrawerItems())
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if (drawerItem != null) {
-                            if (searchViewAction != null) {
-                                searchViewAction.setQuery("", false);
-                                searchViewAction.clearFocus();
-                            }
-                            if (drawerItem.getTag() != null && String.valueOf(drawerItem.getTag()).equals("Settings")) {
-                                OpenSettings();
-                            } else if (drawerItem.getTag() != null) {
-                                changeFragment(String.valueOf(drawerItem.getTag()), true);
-                                stopCameraTimer();
-                                invalidateOptionsMenu();
-                                if (onPhone)
-                                    drawer.closeDrawer();
-                            }
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    if (drawerItem != null) {
+                        if (searchViewAction != null) {
+                            searchViewAction.setQuery("", false);
+                            searchViewAction.clearFocus();
                         }
-                        return false;
+                        if (drawerItem.getTag() != null && String.valueOf(drawerItem.getTag()).equals("Settings")) {
+                            OpenSettings();
+                        } else if (drawerItem.getTag() != null) {
+                            changeFragment(String.valueOf(drawerItem.getTag()), true);
+                            stopCameraTimer();
+                            invalidateOptionsMenu();
+                            if (onPhone)
+                                drawer.closeDrawer();
+                        }
                     }
+                    return false;
                 })
                 .build();
         drawer.addStickyFooterItem(createSecondaryDrawerItem(this.getString(R.string.action_settings), "gmd_settings", "Settings"));
@@ -1181,12 +1133,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     recognitionProgressView.setColors(colors);
                     recognitionProgressView.setSpeechRecognizer(speechRecognizer);
                     recognitionProgressView.setRecognitionListener(recognitionListener);
-                    recognitionProgressView.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            startRecognition();
-                        }
-                    }, 50);
+                    recognitionProgressView.postDelayed(() -> startRecognition(), 50);
 
                     return true;
                 case R.id.action_camera_play:
@@ -1195,18 +1142,15 @@ public class MainActivity extends AppCompatPermissionsActivity {
                         cameraRefreshTimer.scheduleAtFixedRate(new TimerTask() {
                             @Override
                             public void run() {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        //call refresh fragment
-                                        Fragment f = latestFragment;
-                                        if (f instanceof Cameras) {
-                                            ((Cameras) f).refreshFragment();
-                                        } else {
-                                            //we're not at the camera fragment? stop timer!
-                                            stopCameraTimer();
-                                            invalidateOptionsMenu();
-                                        }
+                                runOnUiThread(() -> {
+                                    //call refresh fragment
+                                    Fragment f = latestFragment;
+                                    if (f instanceof Cameras) {
+                                        ((Cameras) f).refreshFragment();
+                                    } else {
+                                        //we're not at the camera fragment? stop timer!
+                                        stopCameraTimer();
+                                        invalidateOptionsMenu();
                                     }
                                 });
                             }
@@ -1240,18 +1184,15 @@ public class MainActivity extends AppCompatPermissionsActivity {
                             new SortDialog(
                                     this,
                                     R.layout.dialog_switch_logs, null);
-                    infoDialog.onDismissListener(new SortDialog.DismissListener() {
-                        @Override
-                        public void onDismiss(String selectedSort) {
-                            Log.i(TAG, "Sorting: " + selectedSort);
-                            Fragment f = latestFragment;
-                            if (f instanceof DomoticzRecyclerFragment) {
-                                ((DomoticzRecyclerFragment) f).sortFragment(selectedSort);
-                            } else if (f instanceof DomoticzDashboardFragment) {
-                                ((DomoticzDashboardFragment) f).sortFragment(selectedSort);
-                            } else if (f instanceof RefreshFragment) {
-                                ((RefreshFragment) f).sortFragment(selectedSort);
-                            }
+                    infoDialog.onDismissListener(selectedSort -> {
+                        Log.i(TAG, "Sorting: " + selectedSort);
+                        Fragment f = latestFragment;
+                        if (f instanceof DomoticzRecyclerFragment) {
+                            ((DomoticzRecyclerFragment) f).sortFragment(selectedSort);
+                        } else if (f instanceof DomoticzDashboardFragment) {
+                            ((DomoticzDashboardFragment) f).sortFragment(selectedSort);
+                        } else if (f instanceof RefreshFragment) {
+                            ((RefreshFragment) f).sortFragment(selectedSort);
                         }
                     });
                     infoDialog.show();
@@ -1389,24 +1330,20 @@ public class MainActivity extends AppCompatPermissionsActivity {
         new MaterialDialog.Builder(this)
                 .title(R.string.choose_server)
                 .items(serverNames)
-                .itemsCallbackSingleChoice(selectionId, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-
-                    public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                        try {
-                            for (ServerInfo s : StaticHelper.getServerUtil(MainActivity.this).getEnabledServerList()) {
-                                if (s.getServerName() != null && s.getServerName().contentEquals(text)) {
-                                    String message = String.format(getString(R.string.switch_to_server), s.getServerName());
-                                    showSnackbar(message);
-                                    StaticHelper.getServerUtil(MainActivity.this).setActiveServer(s);
-                                    StaticHelper.getDomoticz(MainActivity.this).getSessionUtil().clearSessionCookie();
-                                    MainActivity.this.recreate();
-                                }
+                .itemsCallbackSingleChoice(selectionId, (dialog, itemView, which, text) -> {
+                    try {
+                        for (ServerInfo s : StaticHelper.getServerUtil(MainActivity.this).getEnabledServerList()) {
+                            if (s.getServerName() != null && s.getServerName().contentEquals(text)) {
+                                String message = String.format(getString(R.string.switch_to_server), s.getServerName());
+                                showSnackbar(message);
+                                StaticHelper.getServerUtil(MainActivity.this).setActiveServer(s);
+                                StaticHelper.getDomoticz(MainActivity.this).getSessionUtil().clearSessionCookie();
+                                MainActivity.this.recreate();
                             }
-                            return false;
-                        } catch (Exception ex) {
-                            return false;
                         }
+                        return false;
+                    } catch (Exception ex) {
+                        return false;
                     }
                 })
                 .show();

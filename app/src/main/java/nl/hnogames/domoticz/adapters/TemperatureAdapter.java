@@ -77,13 +77,13 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
     private static final String TAG = TemperatureAdapter.class.getSimpleName();
     public static List<String> mCustomSorting;
     private final TemperatureClickListener listener;
+    private final SharedPrefUtil mSharedPrefs;
+    private final Domoticz domoticz;
+    private final ConfigInfo mConfigInfo;
+    private final Context context;
+    private final ItemFilter mFilter = new ItemFilter();
     public ArrayList<TemperatureInfo> filteredData = null;
-    private SharedPrefUtil mSharedPrefs;
-    private Domoticz domoticz;
-    private ConfigInfo mConfigInfo;
-    private Context context;
     private ArrayList<TemperatureInfo> data = null;
-    private ItemFilter mFilter = new ItemFilter();
     private boolean adLoaded = false;
 
     public TemperatureAdapter(Context context,

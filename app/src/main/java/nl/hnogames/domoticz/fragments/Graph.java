@@ -72,13 +72,11 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = Graph.class.getSimpleName();
-
+    private final int steps = 1;
     private Context context;
-
     private int idx = 0;
     private String range = "day";
     private String type = "temp";
-    private int steps = 1;
     private String axisYLabel = "Temp";
 
     private boolean enableFilters = false;

@@ -36,8 +36,8 @@ import nl.hnogames.domoticzapi.Containers.SceneInfo;
 public class SceneInfoDialog implements DialogInterface.OnDismissListener {
 
     private final MaterialDialog.Builder mdb;
+    private final SceneInfo info;
     private DismissListener dismissListener;
-    private SceneInfo info;
     private String idx;
     private String lastUpdate;
     private boolean isFavorite;

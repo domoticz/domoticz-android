@@ -79,13 +79,13 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
     private static final String TAG = WeatherAdapter.class.getSimpleName();
     public static List<String> mCustomSorting;
     private final WeatherClickListener listener;
+    private final Context context;
+    private final Domoticz domoticz;
+    private final ItemFilter mFilter = new ItemFilter();
+    private final ConfigInfo mConfigInfo;
+    private final SharedPrefUtil mSharedPrefs;
     public ArrayList<WeatherInfo> filteredData = null;
-    private Context context;
     private ArrayList<WeatherInfo> data = null;
-    private Domoticz domoticz;
-    private ItemFilter mFilter = new ItemFilter();
-    private ConfigInfo mConfigInfo;
-    private SharedPrefUtil mSharedPrefs;
     private boolean adLoaded = false;
 
     public WeatherAdapter(Context context,

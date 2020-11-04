@@ -36,11 +36,11 @@ import nl.hnogames.domoticz.utils.UsefulBits;
 
 public class AddBeaconDialog {
     private final MaterialDialog.Builder mdb;
-    private Context mContext;
+    private final Context mContext;
+    private final OnDoneListener listener;
     private AppCompatEditText uuid;
     private AppCompatEditText major;
     private AppCompatEditText minor;
-    private OnDoneListener listener;
 
     public AddBeaconDialog(final Context mContext, OnDoneListener l) {
         this.mContext = mContext;

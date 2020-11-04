@@ -69,12 +69,12 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
     private static final String TAG = SceneAdapter.class.getSimpleName();
     public static List<String> mCustomSorting;
     private final ScenesClickListener listener;
+    private final Context context;
+    private final Domoticz domoticz;
+    private final SharedPrefUtil mSharedPrefs;
+    private final ItemFilter mFilter = new ItemFilter();
     public ArrayList<SceneInfo> filteredData = null;
-    private Context context;
     private ArrayList<SceneInfo> data = null;
-    private Domoticz domoticz;
-    private SharedPrefUtil mSharedPrefs;
-    private ItemFilter mFilter = new ItemFilter();
     private boolean adLoaded = false;
 
     public SceneAdapter(Context context,

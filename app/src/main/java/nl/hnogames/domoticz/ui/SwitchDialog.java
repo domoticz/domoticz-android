@@ -39,10 +39,10 @@ import nl.hnogames.domoticzapi.Domoticz;
 public class SwitchDialog implements DialogInterface.OnDismissListener {
 
     private final MaterialDialog.Builder mdb;
-    private ArrayList<DevicesInfo> info;
+    private final ArrayList<DevicesInfo> info;
+    private final Context mContext;
+    private final Domoticz mDomoticz;
     private DismissListener dismissListener;
-    private Context mContext;
-    private Domoticz mDomoticz;
 
     public SwitchDialog(Context c,
                         ArrayList<DevicesInfo> _info,

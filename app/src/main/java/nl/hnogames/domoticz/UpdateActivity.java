@@ -53,7 +53,7 @@ public class UpdateActivity extends AppCompatAssistActivity {
     @SuppressWarnings("FieldCanBeLocal")
     private final int SERVER_UPDATE_TIME = 3; // Time in minutes
     @SuppressWarnings("unused")
-    private String TAG = UpdateActivity.class.getSimpleName();
+    private final String TAG = UpdateActivity.class.getSimpleName();
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private MaterialDialog progressDialog;
     private Button buttonUpdateServer;

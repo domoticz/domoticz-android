@@ -65,11 +65,11 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     public static List<String> mCustomSorting;
     private static onClickListener onClickListener;
     private final Context mContext;
-    private SharedPrefUtil mSharedPrefs;
+    private final SharedPrefUtil mSharedPrefs;
+    private final Domoticz domoticz;
+    private final Picasso picasso;
     private ArrayList<CameraInfo> mDataset;
-    private Domoticz domoticz;
     private boolean refreshTimer;
-    private Picasso picasso;
     private boolean adLoaded = false;
 
     public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext, final Domoticz domoticz, boolean refreshTimer) {

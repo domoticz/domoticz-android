@@ -44,11 +44,10 @@ public class LocationAdapter extends BaseAdapter {
 
     @SuppressWarnings("unused")
     private static final String TAG = LocationAdapter.class.getSimpleName();
+    private final Context context;
+    private final SharedPrefUtil mSharedPrefs;
+    private final LocationClickListener listener;
     public ArrayList<LocationInfo> data = null;
-    private Context context;
-
-    private SharedPrefUtil mSharedPrefs;
-    private LocationClickListener listener;
 
     public LocationAdapter(Context context,
                            ArrayList<LocationInfo> data,
@@ -131,11 +130,7 @@ public class LocationAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 for (LocationInfo locationInfo : data) {
                     if (locationInfo.getID() == buttonView.getId()) {
-                        if (!handleEnableChanged(locationInfo, holder.enable.isChecked())) {
-                            buttonView.setChecked(false);
-                        } else {
-                            buttonView.setChecked(true);
-                        }
+                        buttonView.setChecked(handleEnableChanged(locationInfo, holder.enable.isChecked()));
                         break;
                     }
                 }

@@ -33,10 +33,10 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 
 public class WWColorPickerDialog implements DialogInterface.OnDismissListener {
     private final MaterialDialog.Builder mdb;
+    private final Context mContext;
+    private final SharedPrefUtil mSharedPrefs;
+    private final int idx;
     private DismissListener dismissListener;
-    private Context mContext;
-    private SharedPrefUtil mSharedPrefs;
-    private int idx;
     private SeekBar kelvinBar;
 
     public WWColorPickerDialog(Context mContext, int idx) {

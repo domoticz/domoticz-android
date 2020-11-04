@@ -46,12 +46,12 @@ import nl.hnogames.domoticzapi.Domoticz;
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObjectHolder> {
     private static final String TAG = EventsAdapter.class.getSimpleName();
     private final EventsClickListener listener;
+    private final Domoticz domoticz;
+    private final SharedPrefUtil mSharedPrefs;
+    private final ItemFilter mFilter = new ItemFilter();
     public Context context;
     private ArrayList<EventInfo> filteredData = null;
     private ArrayList<EventInfo> data = null;
-    private Domoticz domoticz;
-    private SharedPrefUtil mSharedPrefs;
-    private ItemFilter mFilter = new ItemFilter();
 
     public EventsAdapter(Context context,
                          Domoticz mDomoticz,
@@ -105,11 +105,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
                     }
                 });
 
-                if (mEventInfo.getStatusBoolean()) {
-                    holder.buttonON.setChecked(true);
-                } else {
-                    holder.buttonON.setChecked(false);
-                }
+                holder.buttonON.setChecked(mEventInfo.getStatusBoolean());
             }
 
             if (holder.name != null)

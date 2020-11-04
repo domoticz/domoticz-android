@@ -36,8 +36,8 @@ import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
 public class UtilitiesInfoDialog implements DialogInterface.OnDismissListener {
 
     private final MaterialDialog.Builder mdb;
+    private final UtilitiesInfo info;
     private DismissListener dismissListener;
-    private UtilitiesInfo info;
     private String idx;
     private String lastUpdate;
     private boolean isFavorite;

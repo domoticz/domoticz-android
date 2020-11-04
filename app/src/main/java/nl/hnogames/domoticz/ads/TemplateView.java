@@ -280,17 +280,17 @@ public class TemplateView extends FrameLayout {
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
-        nativeAdView = (UnifiedNativeAdView) findViewById(R.id.native_ad_view);
-        primaryView = (TextView) findViewById(R.id.primary);
-        secondaryView = (TextView) findViewById(R.id.secondary);
-        tertiaryView = (TextView) findViewById(R.id.body);
+        nativeAdView = findViewById(R.id.native_ad_view);
+        primaryView = findViewById(R.id.primary);
+        secondaryView = findViewById(R.id.secondary);
+        tertiaryView = findViewById(R.id.body);
 
-        ratingBar = (RatingBar) findViewById(R.id.rating_bar);
+        ratingBar = findViewById(R.id.rating_bar);
         ratingBar.setEnabled(false);
 
-        callToActionView = (Button) findViewById(R.id.cta);
-        iconView = (ImageView) findViewById(R.id.icon);
-        mediaView = (MediaView) findViewById(R.id.media_view);
-        background = (ConstraintLayout) findViewById(R.id.background);
+        callToActionView = findViewById(R.id.cta);
+        iconView = findViewById(R.id.icon);
+        mediaView = findViewById(R.id.media_view);
+        background = findViewById(R.id.background);
     }
 }

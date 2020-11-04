@@ -37,8 +37,8 @@ import nl.hnogames.domoticzapi.Containers.SwitchLogInfo;
 public class SwitchLogInfoDialog implements DialogInterface.OnDismissListener {
 
     private final MaterialDialog.Builder mdb;
-    private ArrayList<SwitchLogInfo> info;
-    private Context mContext;
+    private final ArrayList<SwitchLogInfo> info;
+    private final Context mContext;
 
     public SwitchLogInfoDialog(Context c,
                                ArrayList<SwitchLogInfo> _info,

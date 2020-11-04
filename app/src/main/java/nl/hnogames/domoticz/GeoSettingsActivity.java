@@ -29,12 +29,8 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.CompoundButton;
 import android.widget.ListView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
@@ -123,7 +119,7 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
         geoSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
-                    switch (which){
+                    switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 if (!PermissionsUtil.canAccessLocation(GeoSettingsActivity.this)) {
