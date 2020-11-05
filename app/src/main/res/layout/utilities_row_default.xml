@@ -27,7 +27,6 @@
     android:layout_marginStart="8dp"
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="8dp"
-    android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical"
     android:padding="8dp"
     app:cardCornerRadius="5dp"
@@ -58,7 +57,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/listviewRowBackground"
-            android:minHeight="50dp"
             android:orientation="horizontal"
             android:padding="10dp">
 

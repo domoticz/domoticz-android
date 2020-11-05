@@ -154,7 +154,8 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
                 views = new RemoteViews(packageName, mSharedPrefs.getSecurityWidgetLayout(appWidgetId));
                 StaticHelper.getDomoticz(getApplicationContext()).getDevice(new DevicesReceiver() {
                     @Override
-                    public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {}
+                    public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+                    }
 
                     @Override
                     public void onReceiveDevice(DevicesInfo s) {

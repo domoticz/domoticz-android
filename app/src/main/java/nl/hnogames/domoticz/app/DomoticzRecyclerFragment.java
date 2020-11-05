@@ -45,7 +45,6 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -220,21 +219,18 @@ public class DomoticzRecyclerFragment extends Fragment {
                 isTablet = !
                         ((MainActivity) getActivity()).onPhone;
             }
-            gridView.setHasFixedSize(true);
-
             if (isTablet) {
                 if (isPortrait) {
-                    GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+                    StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                     gridView.setLayoutManager(mLayoutManager);
                 } else {
                     StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
                     gridView.setLayoutManager(mLayoutManager);
                 }
             } else {
-                GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+                StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                 gridView.setLayoutManager(mLayoutManager);
             }
-
             gridView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
         } catch (Exception ex) {
         }

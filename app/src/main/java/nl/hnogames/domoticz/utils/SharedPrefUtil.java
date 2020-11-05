@@ -1263,7 +1263,8 @@ public class SharedPrefUtil {
                                 editor.putStringSet(key, ((Set<String>) v));
                             else
                                 Log.v(TAG, "Could not load pref: " + key + " | " + v.getClass());
-                        } catch (Exception ex) {}
+                        } catch (Exception ex) {
+                        }
                     }
                 }
             }
@@ -1275,6 +1276,7 @@ public class SharedPrefUtil {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (Exception ex) {
         } finally {
             try {
                 if (input != null) {

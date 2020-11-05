@@ -172,7 +172,6 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 setAdsLayout(holder);
             } else if (DomoticzValues.Scene.Type.SCENE.equalsIgnoreCase(mSceneInfo.getType())) {
                 holder.isProtected = mSceneInfo.isProtected();
-
                 setButtons(holder, Buttons.SCENE);
                 if (holder.buttonTimer != null)
                     holder.buttonTimer.setVisibility(View.GONE);
@@ -299,10 +298,8 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         try {
             if (holder.adview == null)
                 return;
-            if (!adLoaded) {
-                holder.itemView.setVisibility(View.GONE);
-                holder.itemView.getLayoutParams().height = 0;
-            }
+            if (!adLoaded)
+                holder.adview.setVisibility(View.GONE);
 
             MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder()
@@ -317,22 +314,17 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                     .forUnifiedNativeAd(unifiedNativeAd -> {
                         NativeTemplateStyle styles = new NativeTemplateStyle.Builder().build();
                         if (holder.adview != null) {
-                            holder.adview.setVisibility(View.VISIBLE);
                             holder.adview.setStyles(styles);
                             holder.adview.setNativeAd(unifiedNativeAd);
-                            holder.itemView.setVisibility(View.VISIBLE);
-                            holder.itemView.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                            holder.adview.setVisibility(View.VISIBLE);
                             adLoaded = true;
                         }
                     })
                     .withAdListener(new AdListener() {
                         @Override
                         public void onAdFailedToLoad(int errorCode) {
-                            if (holder.adview != null) {
+                            if (holder.adview != null)
                                 holder.adview.setVisibility(View.GONE);
-                                holder.itemView.setVisibility(View.GONE);
-                                holder.itemView.getLayoutParams().height = 0;
-                            }
                         }
                     })
                     .withNativeAdOptions(new NativeAdOptions.Builder().build())
@@ -348,11 +340,10 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
     }
 
     public void setButtons(DataObjectHolder holder, int button) {
-        holder.itemView.setVisibility(View.VISIBLE);
-        if (holder.contentWrapper != null)
-            holder.contentWrapper.setVisibility(View.VISIBLE);
         if (holder.adview != null)
             holder.adview.setVisibility(View.GONE);
+        if (holder.contentWrapper != null)
+            holder.contentWrapper.setVisibility(View.VISIBLE);
         if (holder.buttonLog != null) {
             holder.buttonLog.setVisibility(View.GONE);
         }
@@ -364,9 +355,6 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         }
         if (holder.buttonOn != null) {
             holder.buttonOn.setVisibility(View.GONE);
-        }
-        if (holder.adview != null) {
-            holder.adview.setVisibility(View.GONE);
         }
         if (holder.switch_name != null)
             holder.switch_name.setVisibility(View.VISIBLE);

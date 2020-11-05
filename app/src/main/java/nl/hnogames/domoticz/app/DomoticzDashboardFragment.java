@@ -45,7 +45,6 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -221,14 +220,14 @@ public class DomoticzDashboardFragment extends Fragment {
             if (!mSharedPrefs.showDashboardAsList()) {
                 if (isTablet) {
                     if (isPortrait) {
-                        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                         gridView.setLayoutManager(mLayoutManager);
                     } else {
                         StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
                         gridView.setLayoutManager(mLayoutManager);
                     }
                 } else {
-                    GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+                    StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                     gridView.setLayoutManager(mLayoutManager);
                 }
             } else {
@@ -260,7 +259,6 @@ public class DomoticzDashboardFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_cameras, null);
-
         initViews(root);
         setTheme();
         return root;

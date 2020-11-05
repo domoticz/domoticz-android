@@ -333,13 +333,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
             if (usingTabletLayout == null)
                 onPhone = true;
 
-                if (!fromVoiceWidget && !fromQRCodeWidget) {
-                    GetDomoticzAuthAndConfig();
-                    if (mSharedPrefs.isStartupSecurityEnabled()) {
-                        biometricPrompt.authenticate(promptInfo);
-                    }
-                    drawNavigationMenu(null);
+            if (!fromVoiceWidget && !fromQRCodeWidget) {
+                GetDomoticzAuthAndConfig();
+                if (mSharedPrefs.isStartupSecurityEnabled()) {
+                    biometricPrompt.authenticate(promptInfo);
                 }
+                drawNavigationMenu(null);
+            }
         } else {
             Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);

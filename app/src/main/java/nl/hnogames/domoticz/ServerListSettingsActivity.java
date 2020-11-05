@@ -25,8 +25,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -102,22 +100,19 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
         listView.setAdapter(animationAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int item, long id) {
-                String servername = String.valueOf(((TextView) view.findViewById(R.id.server_name)).getText());
-                boolean active = false;
-                for (ServerInfo s : mServerList) {
-                    if (s.getServerName().equals(servername)) {
-                        if (StaticHelper.getServerUtil(getApplicationContext()).getActiveServer().getServerName().equals(servername)) {
-                            active = true;
-                            break;
-                        }
+        listView.setOnItemClickListener((adapterView, view, item, id) -> {
+            String servername = String.valueOf(((TextView) view.findViewById(R.id.server_name)).getText());
+            boolean active = false;
+            for (ServerInfo s : mServerList) {
+                if (s.getServerName().equals(servername)) {
+                    if (StaticHelper.getServerUtil(getApplicationContext()).getActiveServer().getServerName().equals(servername)) {
+                        active = true;
+                        break;
                     }
                 }
-
-                showEditServerActivity(servername, active);
             }
+
+            showEditServerActivity(servername, active);
         });
     }
 

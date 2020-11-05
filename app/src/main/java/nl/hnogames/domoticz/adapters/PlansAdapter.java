@@ -171,10 +171,8 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
         try {
             if (holder.adview == null)
                 return;
-            if (!adLoaded) {
-                holder.itemView.setVisibility(View.GONE);
-                holder.itemView.getLayoutParams().height = 0;
-            }
+            if (!adLoaded)
+                holder.adview.setVisibility(View.GONE);
 
             MobileAds.initialize(mContext, mContext.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder()
@@ -189,22 +187,17 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
                     .forUnifiedNativeAd(unifiedNativeAd -> {
                         NativeTemplateStyle styles = new NativeTemplateStyle.Builder().build();
                         if (holder.adview != null) {
-                            holder.adview.setVisibility(View.VISIBLE);
                             holder.adview.setStyles(styles);
                             holder.adview.setNativeAd(unifiedNativeAd);
-                            holder.itemView.setVisibility(View.VISIBLE);
-                            holder.itemView.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                            holder.adview.setVisibility(View.VISIBLE);
                             adLoaded = true;
                         }
                     })
                     .withAdListener(new AdListener() {
                         @Override
                         public void onAdFailedToLoad(int errorCode) {
-                            if (holder.adview != null) {
+                            if (holder.adview != null)
                                 holder.adview.setVisibility(View.GONE);
-                                holder.itemView.setVisibility(View.GONE);
-                                holder.itemView.getLayoutParams().height = 0;
-                            }
                         }
                     })
                     .withNativeAdOptions(new NativeAdOptions.Builder().build())
