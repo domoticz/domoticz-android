@@ -92,7 +92,7 @@
         android:theme="@style/AppThemeDefault"
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
-        tools:replace="android:icon, android:label, android:theme, android:name">
+        tools:replace="android:icon, android:label, android:theme, android:name, android:allowBackup">
 
         <activity android:name="nl.hnogames.domoticz.service.NFCServiceActivity">
             <intent-filter>
