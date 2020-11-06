@@ -20,9 +20,9 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context=".MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
 
     <item
         android:id="@+id/action_speech"
@@ -30,20 +30,20 @@
         android:orderInCategory="99"
         android:title="@string/action_speech"
         android:visible="false"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_switch_server"
         android:orderInCategory="400"
         android:title="@string/action_switch_server"
         android:visible="false"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_scan_qrcode"
         android:orderInCategory="500"
         android:title="@string/action_qrcode_scan"
         android:visible="false"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 
 </menu>

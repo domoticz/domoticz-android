@@ -45,11 +45,10 @@ public class BluetoothAdapter extends BaseAdapter {
 
     @SuppressWarnings("unused")
     private static final String TAG = BluetoothAdapter.class.getSimpleName();
+    private final Context context;
+    private final BluetoothClickListener listener;
+    private final SharedPrefUtil mSharedPrefs;
     public ArrayList<BluetoothInfo> data = null;
-    private Context context;
-    private BluetoothClickListener listener;
-
-    private SharedPrefUtil mSharedPrefs;
 
     public BluetoothAdapter(Context context,
                             ArrayList<BluetoothInfo> data,

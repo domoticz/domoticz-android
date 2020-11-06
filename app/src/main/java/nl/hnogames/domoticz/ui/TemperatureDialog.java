@@ -26,12 +26,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.triggertrap.seekarc.SeekArc;
 
+import androidx.annotation.NonNull;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -43,10 +42,9 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
     private final MaterialDialog.Builder mdb;
     private final int maxTemp;
-    private int minTemp;
-
+    private final int minTemp;
+    private final Context mContext;
     private DialogActionListener dialogActionListener;
-    private Context mContext;
     private double currentTemperature = 20;
     private SeekArc temperatureControl;
     private TextView temperatureText;

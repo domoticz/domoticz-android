@@ -45,11 +45,10 @@ public class BeaconAdapter extends BaseAdapter {
 
     @SuppressWarnings("unused")
     private static final String TAG = BeaconAdapter.class.getSimpleName();
+    private final Context context;
+    private final BeaconClickListener listener;
+    private final SharedPrefUtil mSharedPrefs;
     public ArrayList<BeaconInfo> data = null;
-    private Context context;
-    private BeaconClickListener listener;
-
-    private SharedPrefUtil mSharedPrefs;
 
     public BeaconAdapter(Context context,
                          ArrayList<BeaconInfo> data,

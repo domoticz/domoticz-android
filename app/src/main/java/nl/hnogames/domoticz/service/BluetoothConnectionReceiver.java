@@ -41,7 +41,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
         BluetoothDevice bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
         BluetoothInfo connectedDevice = null;
         for (BluetoothInfo b : connectedDevices) {
-            if (b.getName().equals(bluetoothDevice.getName()))
+            if (b.getName() != null && b.getName().equals(bluetoothDevice.getName()))
                 connectedDevice = b;
         }
 

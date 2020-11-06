@@ -31,10 +31,6 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import androidx.core.app.NotificationCompat;
-import androidx.multidex.MultiDex;
-import androidx.multidex.MultiDexApplication;
-
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -66,6 +62,9 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
+import androidx.core.app.NotificationCompat;
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 import de.duenndns.ssl.MemorizingTrustManager;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;

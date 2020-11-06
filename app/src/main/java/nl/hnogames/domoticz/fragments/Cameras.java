@@ -30,22 +30,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import nl.hnogames.domoticz.BuildConfig;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.CamerasAdapter;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
@@ -76,6 +77,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     private SlideInBottomAnimationAdapter alphaSlideIn;
     private PermissionFragmentHelper permissionFragmentHelper;
     private ItemTouchHelper mItemTouchHelper;
+    private ArrayList<CameraInfo> Cameras;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -93,6 +95,29 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         getCameras();
     }
 
+    private ArrayList<CameraInfo> AddAdsDevice(ArrayList<CameraInfo> supportedSwitches) {
+        try {
+            if (supportedSwitches == null || supportedSwitches.size() <= 0)
+                return supportedSwitches;
+
+            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                ArrayList<CameraInfo> filteredList = new ArrayList<>();
+                for (CameraInfo d : supportedSwitches) {
+                    if (d.getIdx() != MainActivity.ADS_IDX)
+                        filteredList.add(d);
+                }
+                CameraInfo adView = new CameraInfo();
+                adView.setIdx(MainActivity.ADS_IDX);
+                adView.setName("Ads");
+                filteredList.add(1, adView);
+                Cameras = filteredList;
+                return filteredList;
+            }
+        } catch (Exception ex) {
+        }
+        return supportedSwitches;
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         onAttachFragment(this);
@@ -105,7 +130,6 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
         new GetCachedDataTask().execute();
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -143,32 +167,29 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         getCameras();
     }
 
-    private void createListView(final ArrayList<CameraInfo> Cameras) {
+    private void createListView() {
         if (getView() == null)
             return;
 
         if (mRecyclerView == null) {
             mRecyclerView = getView().findViewById(R.id.my_recycler_view);
             mSwipeRefreshLayout = getView().findViewById(R.id.swipe_refresh_layout);
-            mRecyclerView.setHasFixedSize(true);
-            GridLayoutManager mLayoutManager = new GridLayoutManager(context, 2);
+            StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             mRecyclerView.setLayoutManager(mLayoutManager);
+            mRecyclerView.setHasFixedSize(false);
         }
 
         if (mAdapter == null) {
-            mAdapter = new CamerasAdapter(Cameras, context, StaticHelper.getDomoticz(context), refreshTimer);
-            mAdapter.setOnItemClickListener(new CamerasAdapter.onClickListener() {
-                @Override
-                public void onItemClick(int position, View v) {
-                    CameraInfo camera = Cameras.get(position);
-                    CameraUtil.ProcessImage(context, camera.getIdx(), camera.getName());
-                }
+            mAdapter = new CamerasAdapter(AddAdsDevice(Cameras), context, StaticHelper.getDomoticz(context), refreshTimer);
+            mAdapter.setOnItemClickListener((position, v) -> {
+                CameraInfo camera = Cameras.get(position);
+                CameraUtil.ProcessImage(context, camera.getIdx(), camera.getName());
             });
             alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
             mRecyclerView.setAdapter(alphaSlideIn);
         } else {
             mAdapter.setRefreshTimer(refreshTimer);
-            mAdapter.setData(Cameras);
+            mAdapter.setData(AddAdsDevice(Cameras));
             mAdapter.notifyDataSetChanged();
             alphaSlideIn.notifyDataSetChanged();
         }
@@ -185,13 +206,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         }
 
         mSwipeRefreshLayout.setRefreshing(false);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-
-            public void onRefresh() {
-                getCameras();
-            }
-        });
+        mSwipeRefreshLayout.setOnRefreshListener(() -> getCameras());
     }
 
     @Override
@@ -263,17 +278,20 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         }
 
         protected void onPostExecute(Boolean result) {
-            if (cacheCameras != null)
-                createListView(cacheCameras);
+            if (cacheCameras != null) {
+                Cameras = cacheCameras;
+                createListView();
+            }
             StaticHelper.getDomoticz(context).checkLogin(new LoginReceiver() {
                 @Override
                 public void OnReceive(LoginInfo mLoginInfo) {
                     StaticHelper.getDomoticz(context).getCameras(new CameraReceiver() {
                         @Override
-                        public void OnReceiveCameras(ArrayList<CameraInfo> Cameras) {
-                            successHandling(Cameras.toString(), false);
-                            SerializableManager.saveSerializable(context, Cameras, "Cameras");
-                            createListView(Cameras);
+                        public void OnReceiveCameras(ArrayList<CameraInfo> c) {
+                            successHandling(c.toString(), false);
+                            SerializableManager.saveSerializable(context, c, "Cameras");
+                            Cameras = c;
+                            createListView();
                         }
 
                         @Override

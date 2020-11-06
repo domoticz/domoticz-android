@@ -40,7 +40,8 @@
             android:id="@+id/tabletLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
             android:layout_width="match_parent"
@@ -67,19 +68,6 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabSort"
-            style="@style/Widget.MaterialComponents.FloatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:visibility="gone"
-            app:layout_anchor="@id/appBar"
-            app:layout_anchorGravity="bottom|end"
-            app:tint="?attr/floatingActionBarText"
-            app:backgroundTint="?attr/floatingActionBar"
-            app:srcCompat="@drawable/baseline_filter_list_white_24"/>
-
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -87,16 +75,23 @@
             android:scrollbars="none"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
                 <FrameLayout
                     android:id="@+id/main"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-            </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabSort"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:visibility="gone"
+            app:backgroundTint="?attr/floatingActionBar"
+            app:layout_anchor="@id/appBar"
+            app:layout_anchorGravity="bottom|end"
+            app:srcCompat="@drawable/baseline_filter_list_white_24"
+            app:tint="?attr/floatingActionBarText" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </RelativeLayout>

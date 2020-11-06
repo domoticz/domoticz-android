@@ -48,11 +48,11 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
     private static final String TAG = SecurityPanelDialog.class.getSimpleName();
 
     private final MaterialDialog.Builder mdb;
+    private final Context mContext;
+    private final SharedPrefUtil mSharedPrefs;
+    private final DevicesInfo panelInfo;
+    private final Domoticz domoticz;
     private DismissListener dismissListener;
-    private Context mContext;
-    private SharedPrefUtil mSharedPrefs;
-    private DevicesInfo panelInfo;
-    private Domoticz domoticz;
     private SettingsInfo mSettings;
     private MaterialDialog md;
     private androidx.appcompat.widget.AppCompatEditText editPinCode;

@@ -29,17 +29,17 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.android.vending.CHECK_LICENSE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -93,13 +93,14 @@
         android:protectionLevel="signature" />
 
     <application
+        android:allowBackup="false"
         android:name="nl.hnogames.domoticz.app.AppController"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name_domoticz"
         android:theme="@style/AppThemeDefault"
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
-        tools:replace="android:icon, android:label, android:theme, android:name">
+        tools:replace="android:icon, android:label, android:theme, android:name, android:allowBackup">
 
         <activity android:name="nl.hnogames.domoticz.service.NFCServiceActivity">
             <intent-filter>
@@ -119,8 +120,6 @@
                 android:resource="@xml/nfc_tech_list" />
         </activity>
 
-        <service android:name="nl.hnogames.domoticz.service.RingtonePlayingService" />
-
         <receiver
             android:name="nl.hnogames.domoticz.service.BluetoothConnectionReceiver"
             android:enabled="true"
@@ -130,6 +129,8 @@
                 <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
             </intent-filter>
         </receiver>
+
+        <service android:name="nl.hnogames.domoticz.service.RingtonePlayingService" />
 
         <receiver
             android:name="nl.hnogames.domoticz.service.LocationProviderChangedReceiver"
@@ -173,6 +174,15 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <receiver android:name="nl.hnogames.domoticz.service.BootUpReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </receiver>
 
         <receiver
             android:name="nl.hnogames.domoticz.service.GeofenceBroadcastReceiver"
@@ -230,11 +240,6 @@
             android:label="@string/settingsActivity_name"
             android:parentActivityName="nl.hnogames.domoticz.MainActivity"
             android:resizeableActivity="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.NOTIFICATION_PREFERENCES" />
-            </intent-filter>
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.hnogames.domoticz.MainActivity" />
@@ -268,6 +273,17 @@
 
         <activity
             android:name="nl.hnogames.domoticz.GraphActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/wizard_graph"
+            android:parentActivityName="nl.hnogames.domoticz.MainActivity"
+            android:resizeableActivity="true">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nl.hnogames.domoticz.MainActivity" />
+        </activity>
+
+        <activity
+            android:name="nl.hnogames.domoticz.TempGraphsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/wizard_graph"
             android:parentActivityName="nl.hnogames.domoticz.MainActivity"
@@ -379,9 +395,6 @@
             android:resizeableActivity="true" />
 
         <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/ADMOB_APP_KEY" />
-        <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
         <meta-data
@@ -390,6 +403,10 @@
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/ADMOB_APP_KEY" />
 
         <activity
             android:name="nl.hnogames.domoticz.UpdateActivity"
@@ -542,7 +559,5 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-
     </application>
-
 </manifest>

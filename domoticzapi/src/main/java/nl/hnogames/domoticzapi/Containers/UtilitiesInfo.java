@@ -32,7 +32,7 @@ import androidx.annotation.NonNull;
 
 public class UtilitiesInfo implements Comparable, Serializable {
 
-    private final boolean isProtected;
+    private boolean isProtected = false;
     private String jsonObject;
 
     private int idx;
@@ -54,6 +54,8 @@ public class UtilitiesInfo implements Comparable, Serializable {
     private String Usage;
     private String UsageDeliv;
     private int signalLevel;
+
+    public UtilitiesInfo(){}
 
     public UtilitiesInfo(JSONObject row) throws JSONException {
         this.jsonObject = row.toString();

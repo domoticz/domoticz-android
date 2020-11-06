@@ -37,11 +37,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
@@ -54,7 +49,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.SwitchesAdapter;
@@ -114,7 +114,6 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     }
 
     @Override
-
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
@@ -122,7 +121,6 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     }
 
     @Override
-
     public void onAttach(Context context) {
         super.onAttach(context);
         onAttachFragment(this);
@@ -146,12 +144,9 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     public void onActivityCreated(Bundle savedInstanceState) {
         onAttachFragment(this);
         super.onActivityCreated(savedInstanceState);
-        //if (getActionBar() != null)
-        //    getActionBar().setTitle(R.string.title_switches);
     }
 
     @Override
-
     public void Filter(String text) {
         filter = text;
         try {
@@ -178,7 +173,6 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     }
 
     @Override
-
     public void onConnectionOk() {
         super.showSpinner(true);
         getSwitchesData();
@@ -246,11 +240,11 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
 
                 if (adapter == null) {
                     final switchesClickListener listener = this;
-                    adapter = new SwitchesAdapter(mContext, getServerUtil(), supportedSwitches, listener);
+                    adapter = new SwitchesAdapter(mContext, getServerUtil(), AddAdsDevice(supportedSwitches), listener);
                     alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                     gridView.setAdapter(alphaSlideIn);
                 } else {
-                    adapter.setData(supportedSwitches);
+                    adapter.setData(AddAdsDevice(supportedSwitches));
                     adapter.notifyDataSetChanged();
                     alphaSlideIn.notifyDataSetChanged();
                 }
@@ -290,8 +284,34 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 errorHandling(ex);
             }
         }
-
         super.showSpinner(false);
+    }
+
+    private ArrayList<DevicesInfo> AddAdsDevice(ArrayList<DevicesInfo> supportedSwitches) {
+        try {
+            if (supportedSwitches == null || supportedSwitches.size() <= 0)
+                return supportedSwitches;
+
+            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                ArrayList<DevicesInfo> filteredList = new ArrayList<>();
+                for (DevicesInfo d : supportedSwitches) {
+                    if (d.getIdx() != MainActivity.ADS_IDX)
+                        filteredList.add(d);
+                }
+                DevicesInfo adView = new DevicesInfo();
+                adView.setIdx(MainActivity.ADS_IDX);
+                adView.setName("Ads");
+                adView.setType("advertisement");
+                adView.setDescription("Advertisement");
+                adView.setFavoriteBoolean(true);
+                adView.setIsProtected(false);
+                adView.setStatusBoolean(false);
+                filteredList.add(1, adView);
+                return filteredList;
+            }
+        } catch (Exception ex) {
+        }
+        return supportedSwitches;
     }
 
     private void showInfoDialog(final DevicesInfo mSwitch) {

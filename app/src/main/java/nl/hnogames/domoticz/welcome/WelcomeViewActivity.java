@@ -25,13 +25,12 @@ package nl.hnogames.domoticz.welcome;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.github.paolorotolo.appintro.AppIntro2;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import com.github.paolorotolo.appintro.model.SliderPage;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -39,7 +38,7 @@ import nl.hnogames.domoticz.utils.UsefulBits;
 
 public class WelcomeViewActivity extends AppIntro2 {
     private static final int WELCOME_WIZARD = 1;
-    private int p = 0;
+    private final int p = 0;
     private SharedPrefUtil mSharedPrefs;
 
     @Override
@@ -97,11 +96,7 @@ public class WelcomeViewActivity extends AppIntro2 {
     @Override
     public void onSlideChanged(@Nullable Fragment oldFragment, @Nullable Fragment newFragment) {
         super.onSlideChanged(oldFragment, newFragment);
-        if (newFragment instanceof WelcomePage4) {
-            setProgressButtonEnabled(false);
-        } else {
-            setProgressButtonEnabled(true);
-        }
+        setProgressButtonEnabled(!(newFragment instanceof WelcomePage4));
     }
 
     public void finishWithResult(boolean success) {

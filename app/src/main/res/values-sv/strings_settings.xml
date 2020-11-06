@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -63,8 +62,8 @@
     <string name="always_on_on">Lås skärmen till alltid på</string>
     <string name="always_on_off">Lås inte skärmen till alltid på</string>
     <string name="always_auto_refresh">Uppdatera automatiskt</string>
-    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
-    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_on">Uppdatera enhetsstatus varannan sekund</string>
+    <string name="always_auto_refresh_off">Uppdatera inte enhetsstatus varannan sekund</string>
     <string name="switch_buttons_title">Brytare</string>
     <string name="switch_buttons_on">Visa brytare med strömbrytare</string>
     <string name="switch_buttons_off">Visa brytare med knappbrytare</string>
@@ -73,7 +72,7 @@
     <string name="show_dashboard_list_off">Visa skrivbordet som rutnät</string>
     <string name="dashboard_clock">Klocka</string>
     <string name="show_dashboard_clock">Visa klocka på instrumentpanelen</string>
-    <string name="dashboard_camera">Camera</string>
+    <string name="dashboard_camera">Kamera</string>
     <string name="show_dashboard_camera">Load the camera for connected switches</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear-anpassade objekt</string>
@@ -119,8 +118,8 @@
     <string name="qrcode_enable_settings">Aktivera QR-kodsfunktionen</string>
     <string name="bluetooth_settings">Konfigurera Bluetooth-enheter</string>
     <string name="enable_bluetooth">Aktivera Bluetooth-funktion</string>
-    <string name="beacon_settings">Setup Beacons</string>
-    <string name="enable_beacon">Enable Beacon functionality</string>
+    <string name="beacon_settings">Ställ in Beacons</string>
+    <string name="enable_beacon">Aktivera Beacon funktionalitet</string>
     <string name="translate_description">Du kan hjälpa till och göra våra översättningar bättre och även lägga till nya språk till denna app via vårt Crowdin projekt</string>
     <string name="translate_title">Översättningar</string>
     <string name="security_settings">Konfigurera säkerhet</string>
@@ -149,8 +148,8 @@
     <string name="enable_notifications_title">Aktivera notifieringar</string>
     <string name="enable_notifications">Aktivera notifieringar på den här enheten</string>
     <string name="notification_screen_title">Notifieringsinställningar</string>
-    <string name="notification_history">Notification history</string>
-    <string name="notification_inbox">Inbox</string>
+    <string name="notification_history">Notifikationshistorik</string>
+    <string name="notification_inbox">Inkommande</string>
     <string name="notification_vibrate_title">Vibrera</string>
     <string name="notification_vibrate_on">Vibrera när en notifiering tas emot</string>
     <string name="notification_vibrate_off">Vibrera inte</string>
@@ -167,13 +166,13 @@
     <string name="alarmtimer_title">Alarmtimer</string>
     <string name="alarmtimer">Antal sekunder att larma</string>
     <!-- Theme properties -->
-    <string name="theme_default">Default</string>
-    <string name="theme_daynight">Day/Night</string>
+    <string name="theme_default">Grundinställning</string>
+    <string name="theme_daynight">Dag/Natt</string>
     <string name="theme_orange">Orange</string>
-    <string name="theme_pink">Pink</string>
-    <string name="theme_blue">Blue</string>
-    <string name="theme_green">Green</string>
-    <string name="theme_dark_blue">Dark blue</string>
+    <string name="theme_pink">rosa</string>
+    <string name="theme_blue">Blå</string>
+    <string name="theme_green">Grön</string>
+    <string name="theme_dark_blue">Mörkblå</string>
     <!-- Other -->
     <string name="default_values">Standardvärden</string>
     <string name="default_values_min_error">Maxvärde bör vara högre än Min värde</string>
@@ -217,5 +216,7 @@
     <string name="debug_test_text">Testfelsökning</string>
     <string name="restart_required_title">Omstart krävs</string>
     <string name="restart_now">Starta om nu?</string>
-    <string name="check_settings">Check your settings</string>
+    <string name="check_settings">Kontrollera dina inställningar</string>
+    <string name="report_error">Report an error</string>
+    <string name="support">Support</string>
 </resources>

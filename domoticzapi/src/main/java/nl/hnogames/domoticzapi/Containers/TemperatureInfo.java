@@ -32,7 +32,7 @@ import androidx.annotation.NonNull;
 
 public class TemperatureInfo implements Comparable, Serializable {
 
-    private final boolean isProtected;
+    private boolean isProtected = false;
     private String jsonObject;
 
     private int idx;
@@ -50,6 +50,8 @@ public class TemperatureInfo implements Comparable, Serializable {
     private String Description;
     private double Temp;
     private int signalLevel;
+
+    public TemperatureInfo(){}
 
     public TemperatureInfo(JSONObject row) throws JSONException {
         this.jsonObject = row.toString();

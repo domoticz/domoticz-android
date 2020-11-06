@@ -33,7 +33,7 @@ public class SimpleTextDialog {
 
     private final MaterialDialog.Builder mdb;
 
-    private Context mContext;
+    private final Context mContext;
     private String title;
     private String text;
 

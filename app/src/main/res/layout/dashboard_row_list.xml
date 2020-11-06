@@ -27,25 +27,32 @@
     android:layout_marginStart="8dp"
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="8dp"
-    android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical"
     android:padding="8dp"
     app:cardCornerRadius="5dp"
     app:cardElevation="1dp">
 
+    <nl.hnogames.domoticz.ads.TemplateView
+        android:id="@+id/adview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:gnt_template_type="@layout/gnt_small_template_view" />
+
     <RelativeLayout
+        android:id="@+id/contentWrapper"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/dummyImg"
             android:layout_width="match_parent"
-            android:tintMode="src_atop"
-            android:tint="?attr/listviewRowTintBackground"
             android:layout_height="fill_parent"
-            android:scaleType="fitCenter"
+            android:layout_alignParentTop="true"
             android:adjustViewBounds="true"
-            android:layout_alignParentTop="true"/>
+            android:scaleType="fitCenter"
+            android:tint="?attr/listviewRowTintBackground"
+            android:tintMode="src_atop" />
 
         <LinearLayout
             android:id="@+id/row_global_wrapper"
@@ -215,7 +222,6 @@
                             android:gravity="center_horizontal"
                             android:paddingLeft="0dp" />
                     </LinearLayout>
-
                 </LinearLayout>
 
                 <RelativeLayout
@@ -442,14 +448,14 @@
         </LinearLayout>
 
         <ImageView
-        android:id="@+id/full_screen_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/baseline_fullscreen_white_24"
-        android:tint="@color/md_grey_300" />
+            android:id="@+id/full_screen_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
+            android:src="@drawable/baseline_fullscreen_white_24"
+            android:tint="@color/md_grey_300" />
 
     </RelativeLayout>
 

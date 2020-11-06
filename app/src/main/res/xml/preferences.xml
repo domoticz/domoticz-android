@@ -24,14 +24,17 @@
     android:key="settingsscreen">
 
     <PreferenceCategory
-        android:key="premium_category" android:icon="@drawable/baseline_store_white_24"
+        android:icon="@drawable/baseline_store_white_24"
+        android:key="premium_category"
         android:title="@string/premium_category">
         <Preference
             android:key="premium_settings"
             android:title="@string/premium_title" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_generic" android:icon="@drawable/baseline_view_carousel_black_24">
+    <PreferenceCategory
+        android:icon="@drawable/baseline_view_carousel_black_24"
+        android:title="@string/category_generic">
         <ListPreference
             android:entries="@array/startup_actions"
             android:entryValues="@array/startup_actions"
@@ -75,8 +78,9 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:icon="@drawable/baseline_keyboard_arrow_down_black_24"
         android:key="defaultValues"
-        android:title="@string/default_values" android:icon="@drawable/baseline_keyboard_arrow_down_black_24">
+        android:title="@string/default_values">
         <nl.hnogames.domoticz.preference.EditTextIntegerPreference
             android:key="tempMinValue"
             android:summary="@string/set_point_min_description"
@@ -87,7 +91,9 @@
             android:title="@string/set_point_max" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/sort_server_title" android:icon="@drawable/baseline_filter_list_white_24">
+    <PreferenceCategory
+        android:icon="@drawable/baseline_filter_list_white_24"
+        android:title="@string/sort_server_title">
         <SwitchPreference
             android:defaultValue="false"
             android:key="sortCustom"
@@ -103,7 +109,9 @@
             android:title="@string/sort_lock_server_title" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/title_dashboard" android:icon="@drawable/baseline_view_carousel_black_24">
+    <PreferenceCategory
+        android:icon="@drawable/baseline_view_carousel_black_24"
+        android:title="@string/title_dashboard">
         <SwitchPreference
             android:defaultValue="true"
             android:key="extradata"
@@ -111,7 +119,7 @@
             android:summaryOn="@string/show_extra_data_on"
             android:title="@string/extra_data_title" />
         <SwitchPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="dashboardAsList"
             android:summaryOff="@string/show_dashboard_list_on"
             android:summaryOn="@string/show_dashboard_list_off"
@@ -124,13 +132,17 @@
             android:title="@string/dashboard_clock" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_notification" android:icon="@drawable/baseline_notification_important_white_24">
+    <PreferenceCategory
+        android:icon="@drawable/baseline_notification_important_white_24"
+        android:title="@string/category_notification">
         <Preference
             android:key="openNotificationSettings"
             android:title="@string/category_notification" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_server" android:icon="@drawable/baseline_settings_input_component_white_24">
+    <PreferenceCategory
+        android:icon="@drawable/baseline_settings_input_component_white_24"
+        android:title="@string/category_server">
         <SwitchPreference
             android:defaultValue="false"
             android:key="enableMultiServers"
@@ -145,13 +157,17 @@
             android:title="@string/server_force_fetch_config" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_geofencing" android:icon="@drawable/baseline_my_location_white_24">
+    <PreferenceCategory
+        android:icon="@drawable/baseline_my_location_white_24"
+        android:title="@string/category_geofencing">
         <Preference
             android:key="geo_settings"
             android:title="@string/geofencing_configure" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_nfc" android:icon="@drawable/baseline_nfc_white_24">
+    <PreferenceCategory
+        android:icon="@drawable/baseline_nfc_white_24"
+        android:title="@string/category_nfc">
         <SwitchPreference
             android:defaultValue="false"
             android:key="enableNFC"
@@ -164,7 +180,9 @@
             android:title="@string/nfc_settings" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_Speech" android:icon="@drawable/baseline_mic_none_white_24" >
+    <PreferenceCategory
+        android:icon="@drawable/baseline_mic_none_white_24"
+        android:title="@string/category_Speech">
         <SwitchPreference
             android:defaultValue="false"
             android:key="enableSpeech"
@@ -177,7 +195,9 @@
             android:title="@string/speech_settings" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_QRCode" android:icon="@drawable/baseline_camera_black_24">
+    <PreferenceCategory
+        android:icon="@drawable/baseline_camera_black_24"
+        android:title="@string/category_QRCode">
         <SwitchPreference
             android:defaultValue="false"
             android:key="enableQRCode"
@@ -190,7 +210,9 @@
             android:title="@string/qrcode_settings" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_bluetooth" android:icon="@drawable/baseline_bluetooth_black_24">
+    <PreferenceCategory
+        android:icon="@drawable/baseline_bluetooth_black_24"
+        android:title="@string/category_bluetooth">
         <SwitchPreference
             android:defaultValue="false"
             android:key="enableBluetooth"
@@ -201,14 +223,16 @@
             android:title="@string/bluetooth_settings" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/beacon" android:icon="@drawable/baseline_wifi_tethering_black_24">
+    <PreferenceCategory
+        android:icon="@drawable/baseline_wifi_tethering_black_24"
+        android:title="@string/beacon">
         <SwitchPreference
             android:defaultValue="false"
             android:key="enableBeacon"
             android:title="@string/enable_beacon" />
         <SwitchPreference
-            android:dependency="enableBeacon"
             android:defaultValue="false"
+            android:dependency="enableBeacon"
             android:key="beacon_notifications_enabled"
             android:title="@string/beacon_notifications" />
         <Preference
@@ -217,7 +241,9 @@
             android:title="@string/beacon_settings" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_startup_security" android:icon="@drawable/baseline_fingerprint_white_24">
+    <PreferenceCategory
+        android:icon="@drawable/baseline_fingerprint_white_24"
+        android:title="@string/category_startup_security">
         <SwitchPreference
             android:defaultValue="false"
             android:key="enableSecurity"
@@ -230,16 +256,20 @@
             android:title="@string/setup_fingerprints" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/wizard_widgets" android:icon="@drawable/outline_widgets_white_24">
+    <PreferenceCategory
+        android:icon="@drawable/outline_widgets_white_24"
+        android:title="@string/wizard_widgets">
         <SwitchPreference
             android:defaultValue="false"
             android:key="enableWidgets"
             android:summaryOff="@string/widget_description"
             android:summaryOn="@string/widget_description"
-            android:title="@string/category_widgets"/>
+            android:title="@string/category_widgets" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_language" android:icon="@drawable/baseline_language_white_24">
+    <PreferenceCategory
+        android:icon="@drawable/baseline_language_white_24"
+        android:title="@string/category_language">
         <ListPreference
             android:entries="@array/domoticz_language_entries"
             android:entryValues="@array/domoticz_language_entryValues"
@@ -257,13 +287,17 @@
             android:title="@string/translate_title" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_theme" android:icon="@drawable/baseline_invert_colors_white_24">
+    <PreferenceCategory
+        android:icon="@drawable/baseline_invert_colors_white_24"
+        android:title="@string/category_theme">
         <Preference
             android:key="darkTheme"
             android:title="@string/config_theme" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_wear" android:icon="@drawable/baseline_watch_white_24">
+    <PreferenceCategory
+        android:icon="@drawable/baseline_watch_white_24"
+        android:title="@string/category_wear">
         <SwitchPreference
             android:defaultValue="false"
             android:key="enableWearItems"
@@ -282,7 +316,9 @@
             customPreference:selectAllValuesByDefault="true" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_advanced" android:icon="@drawable/baseline_settings_white_24">
+    <PreferenceCategory
+        android:icon="@drawable/baseline_settings_white_24"
+        android:title="@string/category_advanced">
         <Preference
             android:key="export_settings"
             android:title="@string/export_settings" />
@@ -298,24 +334,34 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="@string/category_other" android:icon="@drawable/baseline_whatshot_white_24"
+        android:icon="@drawable/baseline_whatshot_white_24"
+        android:key="@string/category_other"
         android:title="@string/category_other">
         <Preference
             android:key="tasker_settings"
-            android:title="@string/category_tasker"
-            android:summary="@string/tasker_title" />
+            android:summary="@string/tasker_title"
+            android:title="@string/category_tasker" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_info" android:icon="@drawable/baseline_info_white_24">
+    <PreferenceCategory
+        android:icon="@drawable/baseline_info_white_24"
+        android:title="@string/category_info">
         <Preference
             android:key="version"
             android:summary="Version 1.0.2"
             android:title="@string/info_version" />
         <Preference
+            android:key="report"
+            android:summary="@string/report_error"
+            android:title="@string/support" />
+        <Preference
             android:key="info_about"
             android:title="@string/info_about" />
         <Preference
-            android:key="info_credits"
-            android:title="@string/info_credits" />
+            android:key="info_privacy"
+            android:title="Privacy Policy" />
+        <Preference
+            android:key="info_terms"
+            android:title="Terms &amp; Conditions" />
     </PreferenceCategory>
 </PreferenceScreen>

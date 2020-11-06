@@ -21,6 +21,7 @@
 
 package nl.hnogames.domoticz;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,17 +29,8 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.CompoundButton;
 import android.widget.ListView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
@@ -53,6 +45,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import nl.hnogames.domoticz.adapters.LocationAdapter;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.containers.LocationInfo;
@@ -120,52 +116,62 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
         geoNotificationSwitch = findViewById(R.id.switch_notifications_button);
         geoNotificationSwitch.setChecked(mSharedPrefs.isGeofenceNotificationsEnabled());
 
-        geoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (!PermissionsUtil.canAccessLocation(GeoSettingsActivity.this)) {
-                            geoSwitch.setChecked(false);
-                            geoNotificationSwitch.setEnabled(false);
-                            permissionHelper.request(PermissionsUtil.INITIAL_LOCATION_PERMS);
-                        } else {
-                            if (!PermissionsUtil.canAccessStorage(GeoSettingsActivity.this)) {
-                                geoSwitch.setChecked(false);
-                                geoNotificationSwitch.setEnabled(false);
-                                permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
-                            } else {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !PermissionsUtil.canAccessBackgroundLocation(GeoSettingsActivity.this))
-                                    permissionHelper.request(PermissionsUtil.BACKGROUND_LOCATION_PERMS);
-                                else {
-//all settings are correct
-                                    mSharedPrefs.setGeofenceEnabled(true);
-                                    geoNotificationSwitch.setEnabled(true);
-                                    oGeoUtils.AddGeofences();
-                                    invalidateOptionsMenu();
+        geoSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                if (!PermissionsUtil.canAccessLocation(GeoSettingsActivity.this)) {
+                                    geoSwitch.setChecked(false);
+                                    geoNotificationSwitch.setEnabled(false);
+                                    permissionHelper.request(PermissionsUtil.INITIAL_LOCATION_PERMS);
+                                } else {
+                                    if (!PermissionsUtil.canAccessStorage(GeoSettingsActivity.this)) {
+                                        geoSwitch.setChecked(false);
+                                        geoNotificationSwitch.setEnabled(false);
+                                        permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                                    } else {
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !PermissionsUtil.canAccessBackgroundLocation(GeoSettingsActivity.this))
+                                            permissionHelper.request(PermissionsUtil.BACKGROUND_LOCATION_PERMS);
+                                        else {
+                                            mSharedPrefs.setGeofenceEnabled(true);
+                                            geoNotificationSwitch.setEnabled(true);
+                                            oGeoUtils.AddGeofences();
+                                            invalidateOptionsMenu();
+                                        }
+                                    }
                                 }
+                            } else {
+                                mSharedPrefs.setGeofenceEnabled(true);
+                                oGeoUtils.AddGeofences();
+                                invalidateOptionsMenu();
                             }
-                        }
-                    } else {
-                        mSharedPrefs.setGeofenceEnabled(true);
-                        oGeoUtils.AddGeofences();
-                        invalidateOptionsMenu();
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            mSharedPrefs.setGeofenceEnabled(false);
+                            geoNotificationSwitch.setEnabled(false);
+                            oGeoUtils.RemoveGeofences();
+                            invalidateOptionsMenu();
+                            geoSwitch.setChecked(false);
+                            break;
                     }
-                } else {
-                    mSharedPrefs.setGeofenceEnabled(false);
-                    geoNotificationSwitch.setEnabled(false);
-                    oGeoUtils.RemoveGeofences();
-                    invalidateOptionsMenu();
-                }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(getString(R.string.background_location_warning)).setPositiveButton(getString(R.string.yes), dialogClickListener)
+                        .setNegativeButton(getString(R.string.no), dialogClickListener).show();
+
+            } else {
+                mSharedPrefs.setGeofenceEnabled(false);
+                geoNotificationSwitch.setEnabled(false);
+                oGeoUtils.RemoveGeofences();
+                invalidateOptionsMenu();
             }
         });
 
-        geoNotificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mSharedPrefs.setGeofenceNotificationsEnabled(isChecked);
-            }
-        });
+        geoNotificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> mSharedPrefs.setGeofenceNotificationsEnabled(isChecked));
     }
 
     @Override
@@ -193,29 +199,26 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                 R.layout.dialog_switch_logs,
                 StaticHelper.getDomoticz(GeoSettingsActivity.this));
 
-        infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
-            @Override
-            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName, boolean isSceneOrGroup) {
-                selectedLocation.setSwitchIdx(selectedSwitchIDX);
-                selectedLocation.setSwitchPassword(selectedSwitchPassword);
-                selectedLocation.setSwitchName(selectedSwitchName);
-                selectedLocation.setSceneOrGroup(isSceneOrGroup);
+        infoDialog.onDismissListener((selectedSwitchIDX, selectedSwitchPassword, selectedSwitchName, isSceneOrGroup) -> {
+            selectedLocation.setSwitchIdx(selectedSwitchIDX);
+            selectedLocation.setSwitchPassword(selectedSwitchPassword);
+            selectedLocation.setSwitchName(selectedSwitchName);
+            selectedLocation.setSceneOrGroup(isSceneOrGroup);
 
-                if (!isSceneOrGroup) {
-                    for (DevicesInfo s : supportedSwitches) {
-                        if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
-                            showSelectorDialog(selectedLocation, s);
-                        else {
-                            mSharedPrefs.updateLocation(selectedLocation);
-                            adapter.data = mSharedPrefs.getLocations();
-                            adapter.notifyDataSetChanged();
-                        }
+            if (!isSceneOrGroup) {
+                for (DevicesInfo s : supportedSwitches) {
+                    if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
+                        showSelectorDialog(selectedLocation, s);
+                    else {
+                        mSharedPrefs.updateLocation(selectedLocation);
+                        adapter.data = mSharedPrefs.getLocations();
+                        adapter.notifyDataSetChanged();
                     }
-                } else {
-                    mSharedPrefs.updateLocation(selectedLocation);
-                    adapter.data = mSharedPrefs.getLocations();
-                    adapter.notifyDataSetChanged();
                 }
+            } else {
+                mSharedPrefs.updateLocation(selectedLocation);
+                adapter.data = mSharedPrefs.getLocations();
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -227,14 +230,11 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
         new MaterialDialog.Builder(this)
                 .title(R.string.selector_value)
                 .items(levelNames)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        selectedLocation.setValue(String.valueOf(text));
-                        mSharedPrefs.updateLocation(selectedLocation);
-                        adapter.data = mSharedPrefs.getLocations();
-                        adapter.notifyDataSetChanged();
-                    }
+                .itemsCallback((dialog, view, which, text) -> {
+                    selectedLocation.setValue(String.valueOf(text));
+                    mSharedPrefs.updateLocation(selectedLocation);
+                    adapter.data = mSharedPrefs.getLocations();
+                    adapter.notifyDataSetChanged();
                 })
                 .show();
     }
@@ -266,29 +266,21 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
         listView.setAdapter(animationAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int item, long id) {
-                showEditLocationDialog(locations.get(item));
-            }
-        });
+        listView.setOnItemClickListener((adapterView, view, item, id) -> showEditLocationDialog(locations.get(item)));
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                LocationInfo location = locations.get(position);
-                if (location.getSwitchIdx() > 0) {
-                    location.setSwitchIdx(0);
-                    location.setSwitchName(null);
-                    location.setValue(null);
-                    location.setSwitchPassword(null);
-                    mSharedPrefs.updateLocation(location);
-                    UsefulBits.showSnackbar(GeoSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
-                    adapter.notifyDataSetChanged();
-                } else
-                    getSwitchesAndShowSwitchesDialog(locations.get(position));
-                return true;
-            }
+        listView.setOnItemLongClickListener((parent, view, position, id) -> {
+            LocationInfo location = locations.get(position);
+            if (location.getSwitchIdx() > 0) {
+                location.setSwitchIdx(0);
+                location.setSwitchName(null);
+                location.setValue(null);
+                location.setSwitchPassword(null);
+                mSharedPrefs.updateLocation(location);
+                UsefulBits.showSnackbar(GeoSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
+                adapter.notifyDataSetChanged();
+            } else
+                getSwitchesAndShowSwitchesDialog(locations.get(position));
+            return true;
         });
     }
 
@@ -314,12 +306,7 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                         break;
                 }
             }
-        }, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addLocationToListView(locationInfo);
-            }
-        }, this.getString(R.string.undo));
+        }, v -> addLocationToListView(locationInfo), this.getString(R.string.undo));
     }
 
     private void removeLocationFromListView(LocationInfo locationInfo) {
@@ -355,12 +342,7 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
 
             public void onError(Exception error) {
                 UsefulBits.showSnackbarWithAction(GeoSettingsActivity.this, coordinatorLayout, GeoSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
-                        null, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                getSwitchesAndShowSwitchesDialog(locationInfo);
-                            }
-                        }, GeoSettingsActivity.this.getString(R.string.retry));
+                        null, v -> getSwitchesAndShowSwitchesDialog(locationInfo), GeoSettingsActivity.this.getString(R.string.retry));
             }
         }, 0, "all");
     }
@@ -374,12 +356,9 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                         + getString(R.string.noSwitchSelected_connectOneNow))
                 .positiveText(R.string.yes)
                 .negativeText(R.string.no)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        getSwitchesAndShowSwitchesDialog(locationInfo);
-                        result = true;
-                    }
+                .onPositive((dialog, which) -> {
+                    getSwitchesAndShowSwitchesDialog(locationInfo);
+                    result = true;
                 })
                 .show();
         return result;
@@ -415,13 +394,10 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                         .title(R.string.title_edit_location)
                         .content(R.string.Location_name)
                         .inputType(InputType.TYPE_CLASS_TEXT)
-                        .input(null, prefillEditedName, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                String name = String.valueOf(input);
-                                if (!nl.hnogames.domoticzapi.Utils.UsefulBits.isEmpty(name))
-                                    showRadiusEditor(editedID, name, latLng);
-                            }
+                        .input(null, prefillEditedName, (dialog, input) -> {
+                            String name1 = String.valueOf(input);
+                            if (!nl.hnogames.domoticzapi.Utils.UsefulBits.isEmpty(name1))
+                                showRadiusEditor(editedID, name1, latLng);
                         }).show();
             } else
                 showRadiusEditor(editedID, name, latLng);
@@ -451,32 +427,29 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                 .title(R.string.radius)
                 .content(R.string.radius)
                 .inputType(InputType.TYPE_CLASS_NUMBER)
-                .input("500", String.valueOf(location.getRadius()), new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        try {
-                            finalLocation.setRadius(Integer.parseInt(String.valueOf(input)));
-                        } catch (Exception ex) {
-                        }
-
-                        if (editedLocationID != -1 && locations != null) {
-                            mSharedPrefs.updateLocation(finalLocation);
-                            for (int i = locations.size() - 1; i >= 0; i--)
-                                if (locations.get(i).getID() == editedLocationID) {
-                                    locations.set(i, finalLocation);
-                                    GeoUtils.geofencesAlreadyRegistered = false;
-                                    oGeoUtils.AddGeofences();
-                                    break;
-                                }
-                        } else {
-                            mSharedPrefs.addLocation(finalLocation);
-                            locations = mSharedPrefs.getLocations();
-                            adapter.data = locations;
-                            GeoUtils.geofencesAlreadyRegistered = false;
-                            oGeoUtils.AddGeofences();
-                        }
-                        adapter.notifyDataSetChanged();
+                .input("500", String.valueOf(location.getRadius()), (dialog, input) -> {
+                    try {
+                        finalLocation.setRadius(Integer.parseInt(String.valueOf(input)));
+                    } catch (Exception ex) {
                     }
+
+                    if (editedLocationID != -1 && locations != null) {
+                        mSharedPrefs.updateLocation(finalLocation);
+                        for (int i = locations.size() - 1; i >= 0; i--)
+                            if (locations.get(i).getID() == editedLocationID) {
+                                locations.set(i, finalLocation);
+                                GeoUtils.geofencesAlreadyRegistered = false;
+                                oGeoUtils.AddGeofences();
+                                break;
+                            }
+                    } else {
+                        mSharedPrefs.addLocation(finalLocation);
+                        locations = mSharedPrefs.getLocations();
+                        adapter.data = locations;
+                        GeoUtils.geofencesAlreadyRegistered = false;
+                        oGeoUtils.AddGeofences();
+                    }
+                    adapter.notifyDataSetChanged();
                 }).show();
     }
 

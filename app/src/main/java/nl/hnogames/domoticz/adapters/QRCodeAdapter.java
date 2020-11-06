@@ -45,11 +45,10 @@ public class QRCodeAdapter extends BaseAdapter {
 
     @SuppressWarnings("unused")
     private static final String TAG = QRCodeAdapter.class.getSimpleName();
+    private final Context context;
+    private final QRCodeClickListener listener;
+    private final SharedPrefUtil mSharedPrefs;
     public ArrayList<QRCodeInfo> data = null;
-    private Context context;
-    private QRCodeClickListener listener;
-
-    private SharedPrefUtil mSharedPrefs;
 
     public QRCodeAdapter(Context context,
                          ArrayList<QRCodeInfo> data,

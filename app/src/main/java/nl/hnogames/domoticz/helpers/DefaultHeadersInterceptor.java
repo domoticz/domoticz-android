@@ -12,11 +12,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class DefaultHeadersInterceptor implements Interceptor {
-    private Context mContext;
+    private final Context mContext;
+    private final String sCookie;
+    private final String sUsername;
+    private final String sPassword;
     private boolean useBasicAuth = false;
-    private String sCookie;
-    private String sUsername;
-    private String sPassword;
     private boolean useCookie = false;
 
     public DefaultHeadersInterceptor(Context context, String cookie, String username, String password, boolean addBasicAuth) {

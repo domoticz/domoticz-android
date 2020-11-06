@@ -33,12 +33,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
@@ -52,7 +46,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.DashboardAdapter;
@@ -76,7 +76,6 @@ import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SunRiseInfo;
-import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
@@ -145,7 +144,6 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     }
 
     @Override
-
     public void Filter(String text) {
         filter = text;
         try {
@@ -255,16 +253,17 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 StaticHelper.getDomoticz(mContext).getSunRise(new SunRiseReceiver() {
                     @Override
                     public void onReceive(SunRiseInfo mSunRiseInfo) {
-                        createListView(AddClockDevice(mSunRiseInfo, supportedSwitches), mSunRiseInfo);
+                        createListView(AddAdsDevice(AddClockDevice(mSunRiseInfo, supportedSwitches)), mSunRiseInfo);
                     }
 
                     @Override
                     public void onError(Exception error) {
-                        createListView(supportedSwitches, null);
+                        createListView(AddAdsDevice(supportedSwitches), null);
                     }
                 });
-            } else
-                createListView(supportedSwitches, null);
+            } else {
+                createListView(AddAdsDevice(supportedSwitches), null);
+            }
         }
     }
 
@@ -286,6 +285,33 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 sunrise.setStatusBoolean(false);
                 supportedSwitches.add(0, sunrise);
             }
+        }
+        return supportedSwitches;
+    }
+
+    private ArrayList<DevicesInfo> AddAdsDevice(ArrayList<DevicesInfo> supportedSwitches) {
+        try {
+            if (supportedSwitches == null || supportedSwitches.size() <= 0)
+                return supportedSwitches;
+
+            ArrayList<DevicesInfo> filteredList = new ArrayList<>();
+            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                for (DevicesInfo d : supportedSwitches) {
+                    if (d.getIdx() != MainActivity.ADS_IDX)
+                        filteredList.add(d);
+                }
+                DevicesInfo adView = new DevicesInfo();
+                adView.setIdx(MainActivity.ADS_IDX);
+                adView.setName("Ads");
+                adView.setType("advertisement");
+                adView.setDescription("Advertisement");
+                adView.setFavoriteBoolean(true);
+                adView.setIsProtected(false);
+                adView.setStatusBoolean(false);
+                filteredList.add(1, adView);
+                return filteredList;
+            }
+        } catch (Exception ex) {
         }
         return supportedSwitches;
     }
@@ -397,15 +423,6 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     }
 
     private void changeFavorite(final DevicesInfo mSwitch, final boolean isFavorite) {
-        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
-        if (user != null && user.getRights() <= 1) {
-            UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
-            if (getActivity() instanceof MainActivity)
-                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
-            refreshFragment();
-            return;
-        }
-
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mSwitch.getIdx() + " favorite to " + isFavorite);
 
@@ -484,15 +501,6 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.switch_off) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(mContext.getString(R.string.switch_off));
-        }
-
-        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
-        if (user != null && user.getRights() <= 0) {
-            UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
-            if (getActivity() instanceof MainActivity)
-                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
-            refreshFragment();
-            return;
         }
 
         int idx = clickedSwitch.getIdx();

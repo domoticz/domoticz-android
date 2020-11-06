@@ -20,13 +20,13 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context=".BeaconSettingsActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".BeaconSettingsActivity">
     <item
         android:id="@+id/action_beacon_show"
-        android:orderInCategory="100"
         android:icon="@drawable/baseline_add_white_24"
+        android:orderInCategory="100"
         android:title="@string/action_beacon_show"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 </menu>

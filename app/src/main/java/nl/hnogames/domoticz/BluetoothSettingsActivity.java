@@ -24,22 +24,14 @@ package nl.hnogames.domoticz;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.ftinc.scoop.Scoop;
@@ -51,6 +43,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.containers.BluetoothInfo;
 import nl.hnogames.domoticz.helpers.StaticHelper;
@@ -111,32 +106,29 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
             UsefulBits.showSnackbar(BluetoothSettingsActivity.this, coordinatorLayout, R.string.bluetooth_turned_off, Snackbar.LENGTH_SHORT);
             return;
         }
-
         new AlertDialog.Builder(this)
                 .setSingleChoiceItems(items, 0, null)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.dismiss();
-                        int position = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                        final String Bluetooth_ID = bluetoothDevices.get(position);
+                .setPositiveButton(R.string.ok, (dialog, whichButton) -> {
+                    dialog.dismiss();
+                    int position = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                    final String Bluetooth_ID = bluetoothDevices.get(position);
 
-                        boolean newTagFound = true;
-                        if (BluetoothList != null && BluetoothList.size() > 0) {
-                            for (BluetoothInfo n : BluetoothList) {
-                                if (n.getId().equals(Bluetooth_ID))
-                                    newTagFound = false;
-                            }
+                    boolean newTagFound = true;
+                    if (BluetoothList != null && BluetoothList.size() > 0) {
+                        for (BluetoothInfo n : BluetoothList) {
+                            if (n.getId().equals(Bluetooth_ID))
+                                newTagFound = false;
                         }
+                    }
 
-                        if (newTagFound) {
-                            UsefulBits.showSnackbar(BluetoothSettingsActivity.this, coordinatorLayout, getString(R.string.bluetooth_saved) + ": " + Bluetooth_ID, Snackbar.LENGTH_SHORT);
-                            BluetoothInfo BluetoothInfo = new BluetoothInfo();
-                            BluetoothInfo.setId(Bluetooth_ID);
-                            BluetoothInfo.setName(String.valueOf(Bluetooth_ID));
-                            updateBluetooth(BluetoothInfo);
-                        } else {
-                            UsefulBits.showSnackbar(BluetoothSettingsActivity.this, coordinatorLayout, R.string.bluetooth_exists, Snackbar.LENGTH_SHORT);
-                        }
+                    if (newTagFound) {
+                        UsefulBits.showSnackbar(BluetoothSettingsActivity.this, coordinatorLayout, getString(R.string.bluetooth_saved) + ": " + Bluetooth_ID, Snackbar.LENGTH_SHORT);
+                        BluetoothInfo BluetoothInfo = new BluetoothInfo();
+                        BluetoothInfo.setId(Bluetooth_ID);
+                        BluetoothInfo.setName(String.valueOf(Bluetooth_ID));
+                        updateBluetooth(BluetoothInfo);
+                    } else {
+                        UsefulBits.showSnackbar(BluetoothSettingsActivity.this, coordinatorLayout, R.string.bluetooth_exists, Snackbar.LENGTH_SHORT);
                     }
                 })
                 .show();
@@ -147,28 +139,20 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
         listView.setAdapter(animationAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int item, long id) {
-                getSwitchesAndShowSwitchesDialog(BluetoothList.get(item));
-            }
-        });
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                BluetoothInfo bluetooth = BluetoothList.get(position);
-                if (bluetooth.getSwitchIdx() > 0) {
-                    bluetooth.setSwitchIdx(0);
-                    bluetooth.setSwitchName(null);
-                    bluetooth.setValue(null);
-                    bluetooth.setSwitchPassword(null);
-                    updateBluetooth(bluetooth);
-                    UsefulBits.showSnackbar(BluetoothSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
-                    adapter.notifyDataSetChanged();
-                } else
-                    getSwitchesAndShowSwitchesDialog(bluetooth);
-                return true;
-            }
+        listView.setOnItemClickListener((adapterView, view, item, id) -> getSwitchesAndShowSwitchesDialog(BluetoothList.get(item)));
+        listView.setOnItemLongClickListener((parent, view, position, id) -> {
+            BluetoothInfo bluetooth = BluetoothList.get(position);
+            if (bluetooth.getSwitchIdx() > 0) {
+                bluetooth.setSwitchIdx(0);
+                bluetooth.setSwitchName(null);
+                bluetooth.setValue(null);
+                bluetooth.setSwitchPassword(null);
+                updateBluetooth(bluetooth);
+                UsefulBits.showSnackbar(BluetoothSettingsActivity.this, coordinatorLayout, R.string.switch_connection_removed, Snackbar.LENGTH_LONG);
+                adapter.notifyDataSetChanged();
+            } else
+                getSwitchesAndShowSwitchesDialog(bluetooth);
+            return true;
         });
     }
 
@@ -189,12 +173,7 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
 
             public void onError(Exception error) {
                 UsefulBits.showSnackbarWithAction(BluetoothSettingsActivity.this, coordinatorLayout, BluetoothSettingsActivity.this.getString(R.string.unable_to_get_switches), Snackbar.LENGTH_SHORT,
-                        null, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                getSwitchesAndShowSwitchesDialog(qrInfo);
-                            }
-                        }, BluetoothSettingsActivity.this.getString(R.string.retry));
+                        null, v -> getSwitchesAndShowSwitchesDialog(qrInfo), BluetoothSettingsActivity.this.getString(R.string.retry));
             }
         }, 0, "all");
     }
@@ -214,25 +193,22 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
                 R.layout.dialog_switch_logs,
                 StaticHelper.getDomoticz(BluetoothSettingsActivity.this));
 
-        infoDialog.onDismissListener(new SwitchDialog.DismissListener() {
-            @Override
-            public void onDismiss(int selectedSwitchIDX, String selectedSwitchPassword, String selectedSwitchName, boolean isSceneOrGroup) {
-                BluetoothInfo.setSwitchIdx(selectedSwitchIDX);
-                BluetoothInfo.setSwitchPassword(selectedSwitchPassword);
-                BluetoothInfo.setSwitchName(selectedSwitchName);
-                BluetoothInfo.setSceneOrGroup(isSceneOrGroup);
+        infoDialog.onDismissListener((selectedSwitchIDX, selectedSwitchPassword, selectedSwitchName, isSceneOrGroup) -> {
+            BluetoothInfo.setSwitchIdx(selectedSwitchIDX);
+            BluetoothInfo.setSwitchPassword(selectedSwitchPassword);
+            BluetoothInfo.setSwitchName(selectedSwitchName);
+            BluetoothInfo.setSceneOrGroup(isSceneOrGroup);
 
-                if (!isSceneOrGroup) {
-                    for (DevicesInfo s : supportedSwitches) {
-                        if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
-                            showSelectorDialog(BluetoothInfo, s);
-                        else
-                            updateBluetooth(BluetoothInfo);
+            if (!isSceneOrGroup) {
+                for (DevicesInfo s : supportedSwitches) {
+                    if (s.getIdx() == selectedSwitchIDX && s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
+                        showSelectorDialog(BluetoothInfo, s);
+                    else
+                        updateBluetooth(BluetoothInfo);
 
-                    }
-                } else {
-                    updateBluetooth(BluetoothInfo);
                 }
+            } else {
+                updateBluetooth(BluetoothInfo);
             }
         });
 
@@ -244,12 +220,9 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
         new MaterialDialog.Builder(this)
                 .title(R.string.selector_value)
                 .items(levelNames)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        BluetoothInfo.setValue(String.valueOf(text));
-                        updateBluetooth(BluetoothInfo);
-                    }
+                .itemsCallback((dialog, view, which, text) -> {
+                    BluetoothInfo.setValue(String.valueOf(text));
+                    updateBluetooth(BluetoothInfo);
                 })
                 .show();
     }
@@ -284,12 +257,9 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
                         + getString(R.string.noSwitchSelected_connectOneNow))
                 .positiveText(R.string.yes)
                 .negativeText(R.string.no)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        getSwitchesAndShowSwitchesDialog(BluetoothInfo);
-                        result = true;
-                    }
+                .onPositive((dialog, which) -> {
+                    getSwitchesAndShowSwitchesDialog(BluetoothInfo);
+                    result = true;
                 })
                 .show();
         return result;
@@ -334,11 +304,8 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
                         break;
                 }
             }
-        }, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateBluetooth(BluetoothInfo);//undo
-            }
+        }, v -> {
+            updateBluetooth(BluetoothInfo);//undo
         }, this.getString(R.string.undo));
     }
 

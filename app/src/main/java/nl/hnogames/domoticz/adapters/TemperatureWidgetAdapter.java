@@ -44,14 +44,14 @@ import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class TemperatureWidgetAdapter extends BaseAdapter implements Filterable {
+    private final Domoticz domoticz;
+    private final Context context;
+    private final ItemFilter mFilter = new ItemFilter();
+    private final ConfigInfo mConfigInfo;
+    private final SharedPrefUtil mSharedPrefs;
     public ArrayList<TemperatureInfo> filteredData = null;
-    private Domoticz domoticz;
-    private Context context;
     private ArrayList<TemperatureInfo> data = null;
     private int layoutResourceId;
-    private ItemFilter mFilter = new ItemFilter();
-    private ConfigInfo mConfigInfo;
-    private SharedPrefUtil mSharedPrefs;
 
     public TemperatureWidgetAdapter(Context context,
                                     Domoticz mDomoticz,

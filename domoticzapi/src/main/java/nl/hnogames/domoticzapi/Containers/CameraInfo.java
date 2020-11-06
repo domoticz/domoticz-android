@@ -41,6 +41,8 @@ public class CameraInfo implements Comparable, Serializable {
     private String SnapShotURL;
     private int idx;
 
+    public CameraInfo(){}
+
     public CameraInfo(JSONObject row) throws JSONException {
         this.jsonObject = row.toString();
         if (row.has("Name"))
@@ -119,6 +121,13 @@ public class CameraInfo implements Comparable, Serializable {
 
     public int getIdx() {
         return idx;
+    }
+
+    public void setIdx(int n) {
+        idx = n;
+    }
+    public void setName(String n) {
+        Name = n;
     }
 
     public int getDevices() {

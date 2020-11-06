@@ -44,18 +44,18 @@ import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 public class SwitchInfoDialog implements DialogInterface.OnDismissListener {
 
     private final MaterialDialog.Builder mdb;
+    private final DevicesInfo mSwitch;
+    private final Context mContext;
+    private final Domoticz mDomoticz;
     private DismissListener dismissListener;
-    private DevicesInfo mSwitch;
     private String idx;
     private String lastUpdate;
     private String signalLevel;
     private String batteryLevel;
     private boolean isFavorite;
-    private Context mContext;
     private SwitchMaterial favorite_switch;
     private boolean isColorLight;
     private LinearLayout colorOptions;
-    private Domoticz mDomoticz;
     private MaterialButton buttonNight, buttonFull;
     private boolean isChanged = false;
 

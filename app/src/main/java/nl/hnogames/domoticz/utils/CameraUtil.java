@@ -9,7 +9,7 @@ import java.util.HashMap;
 import nl.hnogames.domoticz.CameraActivity;
 
 public class CameraUtil {
-    private static HashMap<String, Drawable> cameraCache = new HashMap<>();
+    private static final HashMap<String, Drawable> cameraCache = new HashMap<>();
 
     public static Drawable getDrawable(String url) {
         if (cameraCache.containsKey(url))

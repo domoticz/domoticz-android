@@ -30,11 +30,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.appcompat.widget.SearchView;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.MenuItemCompat;
-import androidx.fragment.app.Fragment;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.stfalcon.chatkit.messages.MessageHolders;
 import com.stfalcon.chatkit.messages.MessagesList;
@@ -44,6 +39,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.appcompat.widget.SearchView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.helpers.CustomIncomingMessageViewHolder;
@@ -60,13 +59,13 @@ import nl.hnogames.domoticzapi.Interfaces.NotificationTypesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SendNotificationReceiver;
 
 public class NotificationHistory extends Fragment {
+    private final UserInfo user = null;
     private ViewGroup root;
     private SharedPrefUtil mSharedPrefs;
     private Context context;
     private ArrayList<NotificationTypeInfo> mNotificationTypes;
     private MessagesListAdapter<NotificationInfo> adapter;
     private CoordinatorLayout coordinatorLayout;
-    private UserInfo user = null;
     private ConfigInfo mConfigInfo = null;
     private SearchView searchViewAction;
     private List<NotificationInfo> notifications;

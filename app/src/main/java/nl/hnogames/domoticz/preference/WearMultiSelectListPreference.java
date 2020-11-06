@@ -26,13 +26,12 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.Log;
 
-import androidx.preference.MultiSelectListPreference;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import androidx.preference.MultiSelectListPreference;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
@@ -41,7 +40,7 @@ import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
 public class WearMultiSelectListPreference extends MultiSelectListPreference {
     private static final String TAG = WearMultiSelectListPreference.class.getName();
-    private boolean selectAllValuesByDefault;
+    private final boolean selectAllValuesByDefault;
     private CharSequence[] mEntryValues;
     private int currentSwitch = 1;
 

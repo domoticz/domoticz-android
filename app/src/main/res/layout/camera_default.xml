@@ -37,13 +37,13 @@
         style="@style/Widget.MaterialComponents.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
         android:layout_gravity="end|bottom"
-        app:tint="?attr/floatingActionBarText"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/baseline_share_white_24"
         app:backgroundTint="?attr/floatingActionBar"
-        android:src="@drawable/baseline_share_white_24" />
+        app:tint="?attr/floatingActionBarText" />
 
 </RelativeLayout>

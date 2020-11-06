@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.adapters;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +33,14 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.material.chip.Chip;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
@@ -46,11 +50,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.ads.NativeTemplateStyle;
+import nl.hnogames.domoticz.ads.TemplateView;
 import nl.hnogames.domoticz.interfaces.TemperatureClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -68,13 +77,14 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
     private static final String TAG = TemperatureAdapter.class.getSimpleName();
     public static List<String> mCustomSorting;
     private final TemperatureClickListener listener;
+    private final SharedPrefUtil mSharedPrefs;
+    private final Domoticz domoticz;
+    private final ConfigInfo mConfigInfo;
+    private final Context context;
+    private final ItemFilter mFilter = new ItemFilter();
     public ArrayList<TemperatureInfo> filteredData = null;
-    private SharedPrefUtil mSharedPrefs;
-    private Domoticz domoticz;
-    private ConfigInfo mConfigInfo;
-    private Context context;
     private ArrayList<TemperatureInfo> data = null;
-    private ItemFilter mFilter = new ItemFilter();
+    private boolean adLoaded = false;
 
     public TemperatureAdapter(Context context,
                               Domoticz mDomoticz,
@@ -99,19 +109,33 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
         this.filteredData = sortedData;
     }
 
-    private ArrayList<TemperatureInfo> SortData(ArrayList<TemperatureInfo> data) {
+    private ArrayList<TemperatureInfo> SortData(ArrayList<TemperatureInfo> dat) {
+        ArrayList<TemperatureInfo> data = new ArrayList<>();
+        if (Build.VERSION.SDK_INT >= 21) {
+            data = dat;
+        } else {
+            for (TemperatureInfo d : dat) {
+                if (d.getIdx() != MainActivity.ADS_IDX)
+                    data.add(d);
+            }
+        }
         ArrayList<TemperatureInfo> customdata = new ArrayList<>();
         if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
+            TemperatureInfo adView = null;
             for (String s : mCustomSorting) {
                 for (TemperatureInfo d : data) {
-                    if (s.equals(String.valueOf(d.getIdx())))
+                    if (s.equals(String.valueOf(d.getIdx())) && d.getIdx() != MainActivity.ADS_IDX)
                         customdata.add(d);
+                    if (d.getIdx() == MainActivity.ADS_IDX)
+                        adView = d;
                 }
             }
             for (TemperatureInfo d : data) {
-                if (!customdata.contains(d))
+                if (!customdata.contains(d) && d.getIdx() != MainActivity.ADS_IDX)
                     customdata.add(d);
             }
+            if (adView != null && customdata != null && customdata.size() > 0)
+                customdata.add(1, adView);
         } else
             customdata = data;
         return customdata;
@@ -120,10 +144,11 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
     private void SaveSorting() {
         List<String> ids = new ArrayList<>();
         for (TemperatureInfo d : filteredData) {
-            ids.add(String.valueOf(d.getIdx()));
+            if (d.getIdx() != MainActivity.ADS_IDX)
+                ids.add(String.valueOf(d.getIdx()));
         }
         mCustomSorting = ids;
-        mSharedPrefs.saveSortingList("plans", ids);
+        mSharedPrefs.saveSortingList("temperature", ids);
     }
 
     public Filter getFilter() {
@@ -132,195 +157,232 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
 
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.temperature_row_default, parent, false);
-
+        View view;
+        if (Build.VERSION.SDK_INT >= 21) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.temperature_row_default, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.temperature_row_default_noads, parent, false);
+        }
         return new DataObjectHolder(view);
+    }
+
+    /**
+     * Set the data for the ads row
+     *
+     * @param holder Holder to use
+     */
+    private void setAdsLayout(DataObjectHolder holder) {
+        try {
+            if (holder.adview == null)
+                return;
+            if (!adLoaded)
+                holder.adview.setVisibility(View.GONE);
+
+            MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4")
+                    .addTestDevice("1AAE9D81347967A359E372B0445549DE")
+                    .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
+                    .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
+                    .addTestDevice("6C2390A9FF8F555BD01BA560068CD366")
+                    .build();
+
+            AdLoader adLoader = new AdLoader.Builder(context, context.getString(R.string.ad_unit_id))
+                    .forUnifiedNativeAd(unifiedNativeAd -> {
+                        NativeTemplateStyle styles = new NativeTemplateStyle.Builder().build();
+                        if (holder.adview != null) {
+                            holder.adview.setStyles(styles);
+                            holder.adview.setNativeAd(unifiedNativeAd);
+                            holder.adview.setVisibility(View.VISIBLE);
+                            adLoaded = true;
+                        }
+                    })
+                    .withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(int errorCode) {
+                            if (holder.adview != null)
+                                holder.adview.setVisibility(View.GONE);
+                        }
+                    })
+                    .withNativeAdOptions(new NativeAdOptions.Builder().build())
+                    .build();
+            adLoader.loadAd(adRequest);
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
     public void onBindViewHolder(final DataObjectHolder holder, final int position) {
-
         if (filteredData != null && filteredData.size() > 0) {
             final TemperatureInfo mTemperatureInfo = filteredData.get(position);
 
-            holder.infoIcon.setTag(mTemperatureInfo.getIdx());
-            holder.infoIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemLongClicked((int) v.getTag());
-                }
-            });
-            holder.isProtected = mTemperatureInfo.isProtected();
-            String sign = mConfigInfo != null ? mConfigInfo.getTempSign() : "C";
+            if (holder.contentWrapper != null)
+                holder.contentWrapper.setVisibility(View.VISIBLE);
+            if (holder.adview != null)
+                holder.adview.setVisibility(View.GONE);
 
-            int modeIconRes = 0;
-            if ((!UsefulBits.isEmpty(sign) && sign.equals("C") && mTemperatureInfo.getTemperature() < 0) ||
-                    (!UsefulBits.isEmpty(sign) && sign.equals("F") && mTemperatureInfo.getTemperature() < 30)) {
-                Picasso.get().load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
-                        mTemperatureInfo.getType(),
-                        null,
-                        mConfigInfo != null && mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature(),
-                        true,
-                        "Freezing")).into(holder.iconRow);
+            if (mTemperatureInfo.getIdx() == MainActivity.ADS_IDX) {
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.GONE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.VISIBLE);
+                setAdsLayout(holder);
             } else {
-                Picasso.get().load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
-                        mTemperatureInfo.getType(),
-                        null,
-                        mConfigInfo != null && mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature(),
-                        false,
-                        null)).into(holder.iconRow);
-            }
+                holder.infoIcon.setTag(mTemperatureInfo.getIdx());
+                holder.infoIcon.setOnClickListener(v -> listener.onItemLongClicked((int) v.getTag()));
+                holder.isProtected = mTemperatureInfo.isProtected();
+                String sign = mConfigInfo != null ? mConfigInfo.getTempSign() : "C";
 
-            TypedValue pieBackgroundValue = new TypedValue();
-            TypedValue temperatureValue = new TypedValue();
-            Resources.Theme theme = context.getTheme();
-            theme.resolveAttribute(R.attr.listviewRowBackground, pieBackgroundValue, true);
-            theme.resolveAttribute(R.attr.temperatureTextColor, temperatureValue, true);
-            holder.pieView.setInnerBackgroundColor(pieBackgroundValue.data);
-            holder.pieView.setTextColor(temperatureValue.data);
-
-            if (!UsefulBits.isEmpty(mTemperatureInfo.getHardwareName()) && mTemperatureInfo.getHardwareName().equalsIgnoreCase(DomoticzValues.Device.Hardware.EVOHOME)) {
-                holder.setButton.setVisibility(View.VISIBLE);
-                holder.pieView.setVisibility(View.GONE);
-                modeIconRes = getEvohomeStateIcon(mTemperatureInfo.getStatus());
-            } else {
-                holder.setButton.setVisibility(View.GONE);
-                if (!UsefulBits.isEmpty(mTemperatureInfo.getType()) && mTemperatureInfo.getType().equalsIgnoreCase(DomoticzValues.Device.Type.Name.WIND)) {
-                    holder.pieView.setVisibility(View.GONE);
+                int modeIconRes = 0;
+                if ((!UsefulBits.isEmpty(sign) && sign.equals("C") && mTemperatureInfo.getTemperature() < 0) ||
+                        (!UsefulBits.isEmpty(sign) && sign.equals("F") && mTemperatureInfo.getTemperature() < 30)) {
+                    Picasso.get().load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
+                            mTemperatureInfo.getType(),
+                            null,
+                            mConfigInfo != null && mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature(),
+                            true,
+                            "Freezing")).into(holder.iconRow);
                 } else {
-                    holder.pieView.setVisibility(View.VISIBLE);
-                    holder.pieView.setPercentageTextSize(16);
+                    Picasso.get().load(DomoticzIcons.getDrawableIcon(mTemperatureInfo.getTypeImg(),
+                            mTemperatureInfo.getType(),
+                            null,
+                            mConfigInfo != null && mTemperatureInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature(),
+                            false,
+                            null)).into(holder.iconRow);
+                }
 
-                    if ((!UsefulBits.isEmpty(sign) && sign.equals("C") && mTemperatureInfo.getTemperature() < 0) ||
-                            (!UsefulBits.isEmpty(sign) && sign.equals("F") && mTemperatureInfo.getTemperature() < 30))
-                        holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_blue_600));
-                    else
-                        holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
+                TypedValue pieBackgroundValue = new TypedValue();
+                TypedValue temperatureValue = new TypedValue();
+                Resources.Theme theme = context.getTheme();
+                theme.resolveAttribute(R.attr.listviewRowBackground, pieBackgroundValue, true);
+                theme.resolveAttribute(R.attr.temperatureTextColor, temperatureValue, true);
+                holder.pieView.setInnerBackgroundColor(pieBackgroundValue.data);
+                holder.pieView.setTextColor(temperatureValue.data);
 
-                    double temp = mTemperatureInfo.getTemperature();
-                    if (!UsefulBits.isEmpty(sign) && !sign.equals("C"))
-                        temp = temp / 2;
-                    holder.pieView.setPercentage(Float.valueOf(temp + ""));
-                    holder.pieView.setInnerText(mTemperatureInfo.getTemperature() + " " + sign);
+                if (!UsefulBits.isEmpty(mTemperatureInfo.getHardwareName()) && mTemperatureInfo.getHardwareName().equalsIgnoreCase(DomoticzValues.Device.Hardware.EVOHOME)) {
+                    holder.setButton.setVisibility(View.VISIBLE);
+                    holder.pieView.setVisibility(View.GONE);
+                    modeIconRes = getEvohomeStateIcon(mTemperatureInfo.getStatus());
+                } else {
+                    holder.setButton.setVisibility(View.GONE);
+                    if (!UsefulBits.isEmpty(mTemperatureInfo.getType()) && mTemperatureInfo.getType().equalsIgnoreCase(DomoticzValues.Device.Type.Name.WIND)) {
+                        holder.pieView.setVisibility(View.GONE);
+                    } else {
+                        holder.pieView.setVisibility(View.VISIBLE);
+                        holder.pieView.setPercentageTextSize(16);
 
-                    if (!mSharedPrefs.getAutoRefresh()) {
-                        PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
-                        animation.setDuration(2000);
-                        holder.pieView.startAnimation(animation);
+                        if ((!UsefulBits.isEmpty(sign) && sign.equals("C") && mTemperatureInfo.getTemperature() < 0) ||
+                                (!UsefulBits.isEmpty(sign) && sign.equals("F") && mTemperatureInfo.getTemperature() < 30))
+                            holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_blue_600));
+                        else
+                            holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
+
+                        double temp = mTemperatureInfo.getTemperature();
+                        if (!UsefulBits.isEmpty(sign) && !sign.equals("C"))
+                            temp = temp / 2;
+                        holder.pieView.setPercentage(Float.valueOf(temp + ""));
+                        holder.pieView.setInnerText(mTemperatureInfo.getTemperature() + " " + sign);
+
+                        if (!mSharedPrefs.getAutoRefresh()) {
+                            PieAngleAnimation animation = new PieAngleAnimation(holder.pieView);
+                            animation.setDuration(2000);
+                            holder.pieView.startAnimation(animation);
+                        }
                     }
                 }
-            }
 
-            holder.setButton.setText(context.getString(R.string.set_temperature));
-            holder.setButton.setId(mTemperatureInfo.getIdx());
-            holder.setButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                holder.setButton.setText(context.getString(R.string.set_temperature));
+                holder.setButton.setId(mTemperatureInfo.getIdx());
+                holder.setButton.setOnClickListener(v -> {
                     for (TemperatureInfo t : filteredData) {
                         if (t.getIdx() == v.getId())
                             listener.onSetClick(t);
                     }
-                }
-            });
+                });
 
-            holder.dayButton.setId(mTemperatureInfo.getIdx());
-            holder.dayButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                holder.dayButton.setId(mTemperatureInfo.getIdx());
+                holder.dayButton.setOnClickListener(v -> {
                     for (TemperatureInfo t : filteredData) {
                         if (t.getIdx() == v.getId())
                             listener.onLogClick(t, DomoticzValues.Graph.Range.DAY);
                     }
-                }
-            });
-            holder.monthButton.setId(mTemperatureInfo.getIdx());
-            holder.monthButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                });
+                holder.monthButton.setId(mTemperatureInfo.getIdx());
+                holder.monthButton.setOnClickListener(v -> {
                     for (TemperatureInfo t : filteredData) {
                         if (t.getIdx() == v.getId())
                             listener.onLogClick(t, DomoticzValues.Graph.Range.MONTH);
                     }
-                }
-            });
+                });
 
-            holder.weekButton.setVisibility(View.GONE);
-            holder.weekButton.setId(mTemperatureInfo.getIdx());
-            holder.weekButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                holder.weekButton.setVisibility(View.GONE);
+                holder.weekButton.setId(mTemperatureInfo.getIdx());
+                holder.weekButton.setOnClickListener(v -> {
                     for (TemperatureInfo t : filteredData) {
                         if (t.getIdx() == v.getId())
                             listener.onLogClick(t, DomoticzValues.Graph.Range.WEEK);
                     }
-                }
-            });
-            holder.yearButton.setId(mTemperatureInfo.getIdx());
-            holder.yearButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                });
+                holder.yearButton.setId(mTemperatureInfo.getIdx());
+                holder.yearButton.setOnClickListener(v -> {
                     for (TemperatureInfo t : filteredData) {
                         if (t.getIdx() == v.getId())
                             listener.onLogClick(t, DomoticzValues.Graph.Range.YEAR);
                     }
-                }
-            });
-
-            if (holder.likeButton != null) {
-                holder.likeButton.setId(mTemperatureInfo.getIdx());
-                holder.likeButton.setLiked(mTemperatureInfo.getFavoriteBoolean());
-                holder.likeButton.setOnLikeListener(new OnLikeListener() {
-                    @Override
-                    public void liked(LikeButton likeButton) {
-                        handleLikeButtonClick(likeButton.getId(), true);
-                    }
-
-                    @Override
-                    public void unLiked(LikeButton likeButton) {
-                        handleLikeButtonClick(likeButton.getId(), false);
-                    }
                 });
-            }
 
-            if (!UsefulBits.isEmpty(mTemperatureInfo.getName()))
-                holder.name.setText(mTemperatureInfo.getName());
-            if (!UsefulBits.isEmpty(mTemperatureInfo.getType()) && mTemperatureInfo.getType().equalsIgnoreCase(DomoticzValues.Device.Type.Name.WIND)) {
-                holder.data.setText(R.string.wind);
-                holder.data.append(": " + mTemperatureInfo.getData() + " " + mTemperatureInfo.getDirection());
-                holder.data2.setText(String.format("%s: %s", context.getString(R.string.last_update), UsefulBits.getFormattedDate(context,
-                        mTemperatureInfo.getLastUpdateDateTime().getTime())));
-                holder.data2.setVisibility(View.VISIBLE);
-            } else {
-                double temperature = mTemperatureInfo.getTemperature();
-                double setPoint = mTemperatureInfo.getSetPoint();
-                if (temperature <= 0 || setPoint <= 0) {
-                    holder.data.setText(String.format("%s: %s", context.getString(R.string.temperature), mTemperatureInfo.getData()));
+                if (holder.likeButton != null) {
+                    holder.likeButton.setId(mTemperatureInfo.getIdx());
+                    holder.likeButton.setLiked(mTemperatureInfo.getFavoriteBoolean());
+                    holder.likeButton.setOnLikeListener(new OnLikeListener() {
+                        @Override
+                        public void liked(LikeButton likeButton) {
+                            handleLikeButtonClick(likeButton.getId(), true);
+                        }
+
+                        @Override
+                        public void unLiked(LikeButton likeButton) {
+                            handleLikeButtonClick(likeButton.getId(), false);
+                        }
+                    });
+                }
+
+                if (!UsefulBits.isEmpty(mTemperatureInfo.getName()))
+                    holder.name.setText(mTemperatureInfo.getName());
+                if (!UsefulBits.isEmpty(mTemperatureInfo.getType()) && mTemperatureInfo.getType().equalsIgnoreCase(DomoticzValues.Device.Type.Name.WIND)) {
+                    holder.data.setText(R.string.wind);
+                    holder.data.append(": " + mTemperatureInfo.getData() + " " + mTemperatureInfo.getDirection());
                     holder.data2.setText(String.format("%s: %s", context.getString(R.string.last_update), UsefulBits.getFormattedDate(context,
                             mTemperatureInfo.getLastUpdateDateTime().getTime())));
                     holder.data2.setVisibility(View.VISIBLE);
                 } else {
-                    holder.data.setText(String.format("%s: %s %s", context.getString(R.string.temperature), mTemperatureInfo.getTemperature(), sign));
-                    holder.data2.setText(String.format("%s: %s %s", context.getString(R.string.set_point), mTemperatureInfo.getSetPoint(), sign));
-                    holder.data2.setVisibility(View.VISIBLE);
+                    double temperature = mTemperatureInfo.getTemperature();
+                    double setPoint = mTemperatureInfo.getSetPoint();
+                    if (temperature <= 0 || setPoint <= 0) {
+                        holder.data.setText(String.format("%s: %s", context.getString(R.string.temperature), mTemperatureInfo.getData()));
+                        holder.data2.setText(String.format("%s: %s", context.getString(R.string.last_update), UsefulBits.getFormattedDate(context,
+                                mTemperatureInfo.getLastUpdateDateTime().getTime())));
+                        holder.data2.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.data.setText(String.format("%s: %s %s", context.getString(R.string.temperature), mTemperatureInfo.getTemperature(), sign));
+                        holder.data2.setText(String.format("%s: %s %s", context.getString(R.string.set_point), mTemperatureInfo.getSetPoint(), sign));
+                        holder.data2.setVisibility(View.VISIBLE);
+                    }
                 }
-            }
 
-            if (holder.iconMode != null) {
-                if (modeIconRes == 0) {
-                    holder.iconMode.setVisibility(View.GONE);
-                } else {
-                    holder.iconMode.setImageResource(modeIconRes);
-                    holder.iconMode.setVisibility(View.VISIBLE);
+                if (holder.iconMode != null) {
+                    if (modeIconRes == 0) {
+                        holder.iconMode.setVisibility(View.GONE);
+                    } else {
+                        holder.iconMode.setImageResource(modeIconRes);
+                        holder.iconMode.setVisibility(View.VISIBLE);
+                    }
                 }
-            }
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClicked(v, position);
-                }
-            });
+                holder.itemView.setOnClickListener(v -> listener.onItemClicked(v, position));
+            }
         }
     }
 
@@ -390,9 +452,13 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
         LinearLayout extraPanel;
         PieView pieView;
         ImageView infoIcon;
+        TemplateView adview;
+        RelativeLayout contentWrapper;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
+            contentWrapper = itemView.findViewById(R.id.contentWrapper);
+            adview = itemView.findViewById(R.id.adview);
             infoIcon = itemView.findViewById(R.id.widget_info_icon);
             name = itemView.findViewById(R.id.temperature_name);
             data = itemView.findViewById(R.id.temperature_data);
@@ -435,20 +501,17 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
             final ArrayList<TemperatureInfo> list = data;
 
             int count = list.size();
-            final ArrayList<TemperatureInfo> temperatureInfos = new ArrayList<>(count);
+            final ArrayList<TemperatureInfo> devicesInfos = new ArrayList<>(count);
 
             TemperatureInfo filterableObject;
-
             for (int i = 0; i < count; i++) {
                 filterableObject = list.get(i);
-                if (filterableObject.getName().toLowerCase().contains(filterString)) {
-                    temperatureInfos.add(filterableObject);
+                if (filterableObject.getName().toLowerCase().contains(filterString) || (filterableObject.getType() != null && filterableObject.getType().equals("advertisement"))) {
+                    devicesInfos.add(filterableObject);
                 }
             }
-
-            results.values = temperatureInfos;
-            results.count = temperatureInfos.size();
-
+            results.values = devicesInfos;
+            results.count = devicesInfos.size();
             return results;
         }
 

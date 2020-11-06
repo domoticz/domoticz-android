@@ -34,10 +34,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
 
+import androidx.annotation.Nullable;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.NotificationUtil;
@@ -160,32 +159,35 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
 
                     @Override
                     public void onReceiveDevice(DevicesInfo s) {
-                        if (s != null) {
-                            views = new RemoteViews(packageName, mSharedPrefs.getSecurityWidgetLayout(appWidgetId));
-                            views.setTextViewText(R.id.title, s.getName());
-                            views.setTextViewText(R.id.status, getApplicationContext().getString(R.string.status) + ": " +
-                                    s.getData());
+                        try {
+                            if (s != null) {
+                                views = new RemoteViews(packageName, mSharedPrefs.getSecurityWidgetLayout(appWidgetId));
+                                views.setTextViewText(R.id.title, s.getName());
+                                views.setTextViewText(R.id.status, getApplicationContext().getString(R.string.status) + ": " +
+                                        s.getData());
 
-                            views.setOnClickPendingIntent(R.id.armhome, buildButtonPendingIntent(
-                                    UpdateSecurityWidgetService.this,
-                                    appWidgetId,
-                                    s.getIdx(), ACTION_WIDGET_ARMHOME, password));
-                            views.setViewVisibility(R.id.armhome, View.VISIBLE);
+                                views.setOnClickPendingIntent(R.id.armhome, buildButtonPendingIntent(
+                                        UpdateSecurityWidgetService.this,
+                                        appWidgetId,
+                                        s.getIdx(), ACTION_WIDGET_ARMHOME, password));
+                                views.setViewVisibility(R.id.armhome, View.VISIBLE);
 
-                            views.setOnClickPendingIntent(R.id.armaway, buildButtonPendingIntent(
-                                    UpdateSecurityWidgetService.this,
-                                    appWidgetId,
-                                    s.getIdx(), ACTION_WIDGET_ARMAWAY, password));
-                            views.setViewVisibility(R.id.armaway, View.VISIBLE);
+                                views.setOnClickPendingIntent(R.id.armaway, buildButtonPendingIntent(
+                                        UpdateSecurityWidgetService.this,
+                                        appWidgetId,
+                                        s.getIdx(), ACTION_WIDGET_ARMAWAY, password));
+                                views.setViewVisibility(R.id.armaway, View.VISIBLE);
 
-                            views.setOnClickPendingIntent(R.id.disarm, buildButtonPendingIntent(
-                                    UpdateSecurityWidgetService.this,
-                                    appWidgetId,
-                                    s.getIdx(), ACTION_WIDGET_DISARM, password));
-                            views.setViewVisibility(R.id.disarm, View.VISIBLE);
+                                views.setOnClickPendingIntent(R.id.disarm, buildButtonPendingIntent(
+                                        UpdateSecurityWidgetService.this,
+                                        appWidgetId,
+                                        s.getIdx(), ACTION_WIDGET_DISARM, password));
+                                views.setViewVisibility(R.id.disarm, View.VISIBLE);
 
-                            views.setImageViewResource(R.id.rowIcon, DomoticzIcons.getDrawableIcon(s.getTypeImg(), s.getType(), s.getSwitchType(), true, s.getUseCustomImage(), s.getImage()));
-                            appWidgetManager.updateAppWidget(appWidgetId, views);
+                                views.setImageViewResource(R.id.rowIcon, DomoticzIcons.getDrawableIcon(s.getTypeImg(), s.getType(), s.getSwitchType(), true, s.getUseCustomImage(), s.getImage()));
+                                appWidgetManager.updateAppWidget(appWidgetId, views);
+                            }
+                        } catch (Exception ignored) {
                         }
                     }
 

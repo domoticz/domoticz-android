@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -23,6 +22,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
 
     <string name="domoticz_url" translatable="false">http://www.domoticz.com/</string>
+    <string name="ad_unit_id" translatable="false">ca-app-pub-2210179934394995/9519963928</string>
 
     <string name="premium_category">Buy premium!</string>
     <string name="premium_title">Get the premium version!</string>
@@ -130,6 +130,7 @@
     <string name="filterOn_all">All devices</string>
     <string name="filter">Filter</string>
     <string name="filter_devices">Filter devices</string>
+    <string name="filter_range">Set range</string>
     <string name="filter_graph_empty">Please specify a filter</string>
 
     <string name="choose_color">Choose color</string>
@@ -156,9 +157,10 @@
     <string name="set_auto_refresh_time">Set a specific timer for the auto refresh in seconds.</string>
 
     <string name="error_authentication_basicauth">IMPORTANT: Please check if your Domoticz system uses Login Page as the authentication method. Basic Auth is going to be removed from Domoticz from next update!</string>
-    <string name="category_other" >Other</string>
-    <string name="tasker_title" >Setup automation rules with Tasker for Domoticz</string>
-    <string name="category_tasker" >Tasker</string>
+    <string name="category_other">Other</string>
+    <string name="tasker_title">Setup automation rules with Tasker for Domoticz</string>
+    <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
+    <string name="background_location_warning">This app collects location data to enable for geofencing services within this app, even when the app is closed or not in use.</string>
 
 </resources>

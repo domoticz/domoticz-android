@@ -23,16 +23,20 @@ package nl.hnogames.domoticz.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -42,9 +46,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.ads.NativeTemplateStyle;
+import nl.hnogames.domoticz.ads.TemplateView;
 import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PicassoUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -56,11 +65,12 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     public static List<String> mCustomSorting;
     private static onClickListener onClickListener;
     private final Context mContext;
-    private SharedPrefUtil mSharedPrefs;
+    private final SharedPrefUtil mSharedPrefs;
+    private final Domoticz domoticz;
+    private final Picasso picasso;
     private ArrayList<CameraInfo> mDataset;
-    private Domoticz domoticz;
     private boolean refreshTimer;
-    private Picasso picasso;
+    private boolean adLoaded = false;
 
     public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext, final Domoticz domoticz, boolean refreshTimer) {
         this.mContext = mContext;
@@ -84,19 +94,33 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
         CamerasAdapter.onClickListener = onClickListener;
     }
 
-    private ArrayList<CameraInfo> SortData(ArrayList<CameraInfo> data) {
+    private ArrayList<CameraInfo> SortData(ArrayList<CameraInfo> dat) {
+        ArrayList<CameraInfo> data = new ArrayList<>();
+        if (Build.VERSION.SDK_INT >= 21) {
+            data = dat;
+        } else {
+            for (CameraInfo d : dat) {
+                if (d.getIdx() != MainActivity.ADS_IDX)
+                    data.add(d);
+            }
+        }
         ArrayList<CameraInfo> customdata = new ArrayList<>();
         if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
+            CameraInfo adView = null;
             for (String s : mCustomSorting) {
                 for (CameraInfo d : data) {
-                    if (s.equals(String.valueOf(d.getIdx())))
+                    if (s.equals(String.valueOf(d.getIdx())) && d.getIdx() != MainActivity.ADS_IDX)
                         customdata.add(d);
+                    if (d.getIdx() == MainActivity.ADS_IDX)
+                        adView = d;
                 }
             }
             for (CameraInfo d : data) {
-                if (!customdata.contains(d))
+                if (!customdata.contains(d) && d.getIdx() != MainActivity.ADS_IDX)
                     customdata.add(d);
             }
+            if (adView != null && customdata != null && customdata.size() > 0)
+                customdata.add(1, adView);
         } else
             customdata = data;
         return customdata;
@@ -105,7 +129,8 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     private void SaveSorting() {
         List<String> ids = new ArrayList<>();
         for (CameraInfo d : mDataset) {
-            ids.add(String.valueOf(d.getIdx()));
+            if (d.getIdx() != MainActivity.ADS_IDX)
+                ids.add(String.valueOf(d.getIdx()));
         }
         mCustomSorting = ids;
         mSharedPrefs.saveSortingList("cameras", ids);
@@ -114,8 +139,14 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     @NonNull
     @Override
     public DataObjectHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.camera_row, parent, false);
+        View view;
+        if (Build.VERSION.SDK_INT >= 21) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.camera_row, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.camera_row_noads, parent, false);
+        }
         return new DataObjectHolder(view);
     }
 
@@ -123,49 +154,105 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     public void onBindViewHolder(@NonNull final DataObjectHolder holder, int position) {
         if (mDataset != null && mDataset.size() > 0) {
             CameraInfo cameraInfo = mDataset.get(position);
-            String name = cameraInfo.getName();
-            String address = cameraInfo.getAddress();
-            final String imageUrl = cameraInfo.getSnapShotURL();
 
-            int numberOfDevices = cameraInfo.getDevices();
-            try {
-                String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
-                holder.name.setText(name);
+            holder.itemView.setVisibility(View.VISIBLE);
+            if (holder.contentWrapper != null)
+                holder.contentWrapper.setVisibility(View.VISIBLE);
+            if (holder.adview != null)
+                holder.adview.setVisibility(View.GONE);
 
-                Drawable cache = CameraUtil.getDrawable(imageUrl);
-                if (cache == null) {
-                    picasso.load(imageUrl)
-                            .placeholder(R.drawable.placeholder)
-                            .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
-                            .into(holder.camera, new Callback() {
-                                @Override
-                                public void onSuccess() {
-                                    CameraUtil.setDrawable(imageUrl, holder.camera.getDrawable());
-                                }
+            if (cameraInfo.getIdx() == MainActivity.ADS_IDX) {
+                setAdsLayout(holder);
+            } else {
+                String name = cameraInfo.getName();
+                String address = cameraInfo.getAddress();
+                final String imageUrl = cameraInfo.getSnapShotURL();
 
-                                @Override
-                                public void onError(Exception e) {
-                                }
-                            });
-                } else
-                    picasso.load(imageUrl)
-                            .memoryPolicy(MemoryPolicy.NO_CACHE)
-                            .noFade()
-                            .placeholder(cache)
-                            .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
-                            .into(holder.camera, new Callback() {
-                                @Override
-                                public void onSuccess() {
-                                    CameraUtil.setDrawable(imageUrl, holder.camera.getDrawable());
-                                }
+                int numberOfDevices = cameraInfo.getDevices();
+                try {
+                    String text = mContext.getResources().getQuantityString(R.plurals.devices, numberOfDevices, numberOfDevices);
+                    holder.name.setText(name);
 
-                                @Override
-                                public void onError(Exception e) {
-                                }
-                            });
-            } catch (Exception ex) {
-                Log.i("CameraAdapter", ex.getMessage());
+                    Drawable cache = CameraUtil.getDrawable(imageUrl);
+                    if (cache == null) {
+                        picasso.load(imageUrl)
+                                .placeholder(R.drawable.placeholder)
+                                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                                .into(holder.camera, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        CameraUtil.setDrawable(imageUrl, holder.camera.getDrawable());
+                                    }
+
+                                    @Override
+                                    public void onError(Exception e) {
+                                    }
+                                });
+                    } else
+                        picasso.load(imageUrl)
+                                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                                .noFade()
+                                .placeholder(cache)
+                                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                                .into(holder.camera, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        CameraUtil.setDrawable(imageUrl, holder.camera.getDrawable());
+                                    }
+
+                                    @Override
+                                    public void onError(Exception e) {
+                                    }
+                                });
+                } catch (Exception ex) {
+                    Log.i("CameraAdapter", ex.getMessage());
+                }
             }
+        }
+    }
+
+    /**
+     * Set the data for the ads row
+     *
+     * @param holder Holder to use
+     */
+    private void setAdsLayout(DataObjectHolder holder) {
+        try {
+            if (holder.adview == null)
+                return;
+            if (!adLoaded)
+                holder.adview.setVisibility(View.GONE);
+
+            MobileAds.initialize(mContext, mContext.getString(R.string.ADMOB_APP_KEY));
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4")
+                    .addTestDevice("1AAE9D81347967A359E372B0445549DE")
+                    .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
+                    .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
+                    .addTestDevice("6C2390A9FF8F555BD01BA560068CD366")
+                    .build();
+
+            AdLoader adLoader = new AdLoader.Builder(mContext, mContext.getString(R.string.ad_unit_id))
+                    .forUnifiedNativeAd(unifiedNativeAd -> {
+                        NativeTemplateStyle styles = new NativeTemplateStyle.Builder().build();
+                        if (holder.adview != null) {
+                            holder.adview.setStyles(styles);
+                            holder.adview.setNativeAd(unifiedNativeAd);
+                            holder.adview.setVisibility(View.VISIBLE);
+                            adLoaded = true;
+                        }
+                    })
+                    .withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(int errorCode) {
+                            if (holder.adview != null)
+                                holder.adview.setVisibility(View.GONE);
+                        }
+                    })
+                    .withNativeAdOptions(new NativeAdOptions.Builder().build())
+                    .build();
+            adLoader.loadAd(adRequest);
+        } catch (Exception ignored) {
         }
     }
 
@@ -208,9 +295,13 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
             implements View.OnClickListener, RVHViewHolder {
         TextView name;
         ImageView camera;
+        TemplateView adview;
+        RelativeLayout contentWrapper;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
+            contentWrapper = itemView.findViewById(R.id.contentWrapper);
+            adview = itemView.findViewById(R.id.adview);
             name = itemView.findViewById(R.id.name);
             camera = itemView.findViewById(R.id.image);
             itemView.setOnClickListener(this);

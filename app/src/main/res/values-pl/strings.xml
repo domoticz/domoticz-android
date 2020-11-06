@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -32,7 +31,7 @@
     <string name="button_state_off">Wył.</string>
     <string name="button_state_closed">Zamknięte</string>
     <string name="button_state_open">Otwarte</string>
-    <string name="button_state_lock">Blokada</string>
+    <string name="button_state_lock">Zablokuj</string>
     <string name="button_state_unlock">Odblokuj</string>
     <string name="button_status_log">Log</string>
     <string name="button_status_day">Dzień</string>
@@ -45,7 +44,7 @@
     <string name="button_arm">Uzbrój</string>
     <string name="button_disarm">Rozbrój</string>
     <string name="button_state_full_light">Pełne oświetlenie</string>
-    <string name="button_state_night">Lampka nocna</string>
+    <string name="button_state_night">Podświetlenie nocne</string>
     <string name="sunrise">Wschód słońca</string>
     <string name="sunset">Zachód słońca</string>
     <string name="now">Teraz</string>
@@ -98,12 +97,12 @@
     <string name="retry">Ponów</string>
     <string name="undo">Cofnij</string>
     <string name="something_deleted">%1$s usuniętych</string>
-    <string name="remove_last_server">I </string>
+    <string name="remove_last_server">Nie można usunąć ostatniego serwera z listy.</string>
     <string name="switch_on">Przełącznik przełączony na wł.</string>
     <string name="switch_off">Przełącznik przełączony na wył.</string>
-    <string name="switch_night">Obróć przełącznik na nocne światło</string>
-    <string name="switch_full">Obróć przełącznik na pełne światło</string>
-    <string name="switch_connection_removed">Połączenie zostało usunięte.</string>
+    <string name="switch_night">Przełącz na światło nocne</string>
+    <string name="switch_full">Przełącz na światło pełne</string>
+    <string name="switch_connection_removed">Połączenie z przełącznikiem zostało usunięte.</string>
     <string name="blind_up">Przełaczenie na odsłanianie rolety</string>
     <string name="blind_down">Przełaczenie na zasłanianie rolety</string>
     <string name="blind_stop">Zatrzymaj roletę</string>
@@ -133,7 +132,7 @@
     <string name="filter_error">Błąd</string>
     <string name="use_demo_setup">Użyj ustawień demo</string>
     <string name="auto_refresh_time">Interwał auto odświeżania</string>
-    <string name="set_auto_refresh_time">Set a specific timer for the auto refresh in seconds.</string>
+    <string name="set_auto_refresh_time">Ustaw własny timer dla auto-odświeżania w sekundach.</string>
     <string name="error_authentication_basicauth">WAŻNE: Sprawdź, czy twój system Domoticz używa strony logowania jako metody uwierzytelniania. Podstawowe uwierzytelnianie zostanie usunięte z Domoticza w następnej aktualizacji!</string>
     <string name="category_other">Inne</string>
     <string name="tasker_title">Ustaw reguły automatyzacji z Tasker dla Domoticz</string>

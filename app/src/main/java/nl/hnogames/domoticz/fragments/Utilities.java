@@ -31,15 +31,14 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
@@ -93,7 +92,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
-
     public void onAttach(Context context) {
         super.onAttach(context);
         onAttachFragment(this);
@@ -109,8 +107,31 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         super.onActivityCreated(savedInstanceState);
     }
 
-    @Override
+    private ArrayList<UtilitiesInfo> AddAdsDevice(ArrayList<UtilitiesInfo> supportedSwitches) {
+        try {
+            if (supportedSwitches == null || supportedSwitches.size() <= 0)
+                return supportedSwitches;
 
+            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                ArrayList<UtilitiesInfo> filteredList = new ArrayList<>();
+                for (UtilitiesInfo d : supportedSwitches) {
+                    if (d.getIdx() != MainActivity.ADS_IDX)
+                        filteredList.add(d);
+                }
+                UtilitiesInfo adView = new UtilitiesInfo();
+                adView.setIdx(MainActivity.ADS_IDX);
+                adView.setName("Ads");
+                adView.setType("advertisement");
+                adView.setFavoriteBoolean(true);
+                filteredList.add(1, adView);
+                return filteredList;
+            }
+        } catch (Exception ex) {
+        }
+        return supportedSwitches;
+    }
+
+    @Override
     public void Filter(String text) {
         filter = text;
         try {
@@ -137,7 +158,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
-
     public void onConnectionOk() {
         super.showSpinner(true);
         processUtilities();
@@ -161,11 +181,11 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     private void createListView() {
         if (getView() != null) {
             if (adapter == null) {
-                adapter = new UtilityAdapter(mContext, StaticHelper.getDomoticz(mContext), mUtilitiesInfos, this);
+                adapter = new UtilityAdapter(mContext, StaticHelper.getDomoticz(mContext), AddAdsDevice(mUtilitiesInfos), this);
                 alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                 gridView.setAdapter(alphaSlideIn);
             } else {
-                adapter.setData(mUtilitiesInfos);
+                adapter.setData(AddAdsDevice(mUtilitiesInfos));
                 adapter.notifyDataSetChanged();
                 alphaSlideIn.notifyDataSetChanged();
             }
@@ -185,13 +205,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 itemDecorationAdded = true;
             }
             mSwipeRefreshLayout.setRefreshing(false);
-            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-
-                public void onRefresh() {
-                    processUtilities();
-                }
-            });
+            mSwipeRefreshLayout.setOnRefreshListener(() -> processUtilities());
 
             super.showSpinner(false);
             this.Filter(filter);
@@ -207,17 +221,12 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         infoDialog.setLastUpdate(mUtilitiesInfo.getLastUpdate());
         infoDialog.setIsFavorite(mUtilitiesInfo.getFavoriteBoolean());
         infoDialog.show();
-        infoDialog.onDismissListener(new UtilitiesInfoDialog.DismissListener() {
-            @Override
-
-            public void onDismiss(boolean isChanged, boolean isFavorite) {
-                if (isChanged) changeFavorite(mUtilitiesInfo, isFavorite);
-            }
+        infoDialog.onDismissListener((isChanged, isFavorite) -> {
+            if (isChanged) changeFavorite(mUtilitiesInfo, isFavorite);
         });
     }
 
     private void changeFavorite(final UtilitiesInfo mUtilitiesInfo, final boolean isFavorite) {
-
         UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
         if (user != null && user.getRights() <= 1) {
             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
@@ -381,34 +390,30 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 mContext,
                 tempUtil.getSetPoint());
 
-        tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
-            @Override
+        tempDialog.onDismissListener((newSetPoint, dialogAction) -> {
+            if (dialogAction == DialogAction.POSITIVE) {
+                addDebugText("Set idx " + idx + " to " + newSetPoint);
+                if (tempUtil != null) {
+                    if (tempUtil.isProtected()) {
+                        PasswordDialog passwordDialog = new PasswordDialog(
+                                mContext, StaticHelper.getDomoticz(mContext));
+                        passwordDialog.show();
+                        passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                            @Override
+                            public void onDismiss(String password) {
+                                setThermostatAction(tempUtil, newSetPoint, password);
+                            }
 
-            public void onDialogAction(final double newSetPoint, DialogAction dialogAction) {
-                if (dialogAction == DialogAction.POSITIVE) {
-                    addDebugText("Set idx " + idx + " to " + newSetPoint);
-                    if (tempUtil != null) {
-                        if (tempUtil.isProtected()) {
-                            PasswordDialog passwordDialog = new PasswordDialog(
-                                    mContext, StaticHelper.getDomoticz(mContext));
-                            passwordDialog.show();
-                            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
-                                @Override
-                                public void onDismiss(String password) {
-                                    setThermostatAction(tempUtil, newSetPoint, password);
-                                }
-
-                                @Override
-                                public void onCancel() {
-                                }
-                            });
-                        } else {
-                            setThermostatAction(tempUtil, newSetPoint, null);
-                        }
+                            @Override
+                            public void onCancel() {
+                            }
+                        });
+                    } else {
+                        setThermostatAction(tempUtil, newSetPoint, null);
                     }
-                } else {
-                    addDebugText("Not updating idx " + idx);
                 }
+            } else {
+                addDebugText("Not updating idx " + idx);
             }
         });
         tempDialog.show();

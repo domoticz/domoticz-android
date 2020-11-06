@@ -29,7 +29,7 @@ import java.io.Serializable;
 import androidx.annotation.NonNull;
 
 public class WeatherInfo implements Comparable, Serializable {
-    private final boolean isProtected;
+    private boolean isProtected = false;
     private String jsonObject;
     private int idx;
 
@@ -53,6 +53,8 @@ public class WeatherInfo implements Comparable, Serializable {
     private String HardwareName;
     private String TypeImg;
     private int signalLevel;
+
+    public WeatherInfo(){}
 
     public WeatherInfo(JSONObject row) throws JSONException {
         this.jsonObject = row.toString();

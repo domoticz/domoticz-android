@@ -35,8 +35,8 @@ import rm.com.clocks.ClockImageView;
 public class SunriseInfoDialog {
 
     private final MaterialDialog.Builder mdb;
-    private SunRiseInfo info;
-    private Context context;
+    private final SunRiseInfo info;
+    private final Context context;
     private ClockImageView clock, sunrise, sunset;
     private TextView clockText, sunriseText, sunsetText;
     private ClockImageView astrTwilightStart, astrTwilightEnd;

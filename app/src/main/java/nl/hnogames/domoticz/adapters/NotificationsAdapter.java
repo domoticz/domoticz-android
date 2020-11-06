@@ -38,10 +38,9 @@ import nl.hnogames.domoticzapi.Containers.NotificationInfo;
 
 public class NotificationsAdapter extends BaseAdapter {
 
-    private Context context;
+    private final Context context;
+    private final SharedPrefUtil mSharedPrefs;
     private ArrayList<NotificationInfo> data = null;
-
-    private SharedPrefUtil mSharedPrefs;
 
     public NotificationsAdapter(Context context,
                                 ArrayList<NotificationInfo> data) {

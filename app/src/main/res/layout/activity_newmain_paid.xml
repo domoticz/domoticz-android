@@ -62,6 +62,18 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                <FrameLayout
+                    android:id="@+id/main"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+        </androidx.core.widget.NestedScrollView>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabSort"
             style="@style/Widget.MaterialComponents.FloatingActionButton"
@@ -69,29 +81,10 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
             android:visibility="gone"
+            app:backgroundTint="?attr/floatingActionBar"
             app:layout_anchor="@id/appBar"
             app:layout_anchorGravity="bottom|end"
-            app:tint="?attr/floatingActionBarText"
-            app:backgroundTint="?attr/floatingActionBar"
-            app:srcCompat="@drawable/baseline_filter_list_white_24"/>
-
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            android:scrollbars="none"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <FrameLayout
-                    android:id="@+id/main"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+            app:srcCompat="@drawable/baseline_filter_list_white_24"
+            app:tint="?attr/floatingActionBarText" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </RelativeLayout>

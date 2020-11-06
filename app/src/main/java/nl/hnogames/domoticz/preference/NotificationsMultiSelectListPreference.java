@@ -25,20 +25,19 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
-import androidx.preference.MultiSelectListPreference;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import androidx.preference.MultiSelectListPreference;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 
 public class NotificationsMultiSelectListPreference extends MultiSelectListPreference {
     private static final String TAG = NotificationsMultiSelectListPreference.class.getName();
-    private boolean selectAllValuesByDefault;
+    private final boolean selectAllValuesByDefault;
+    private final SharedPrefUtil mSharedPrefUtil;
     private CharSequence[] mEntryValues;
-    private SharedPrefUtil mSharedPrefUtil;
 
     public NotificationsMultiSelectListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
