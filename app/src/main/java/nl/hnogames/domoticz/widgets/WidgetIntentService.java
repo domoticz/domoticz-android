@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import androidx.annotation.Nullable;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -184,14 +184,13 @@ public class WidgetIntentService extends Service {
     }
 
     private void processSwitch(final Context context, int idx) {
-        final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         boolean isScene = mSharedPrefs.getWidgetisScene(widgetID);
         if (smallWidget)
             isScene = mSharedPrefs.getSmallWidgetisScene(widgetID);
         Log.i("PROCESS SWITCH", "Device: " + idx + " " + isScene);
 
         if (!isScene) {
-            domoticz.getDevice(new DevicesReceiver() {
+            StaticHelper.getDomoticz(context).getDevice(new DevicesReceiver() {
                 @Override
                 public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
                 }
@@ -203,15 +202,15 @@ public class WidgetIntentService extends Service {
 
                         if (isOnOffSwitch(s)) {
                             if (toggle)
-                                onSwitchClick(s, !s.getStatusBoolean(), domoticz, context, value);
+                                onSwitchClick(s, !s.getStatusBoolean(), StaticHelper.getDomoticz(context), context, value);
                             else
-                                onSwitchClick(s, action, domoticz, context, value);
+                                onSwitchClick(s, action, StaticHelper.getDomoticz(context), context, value);
                         }
 
                         if (isPushOffSwitch(s))
-                            onButtonClick(s, false, domoticz, context);
+                            onButtonClick(s, false, StaticHelper.getDomoticz(context), context);
                         if (isPushOnSwitch(s))
-                            onButtonClick(s, true, domoticz, context);
+                            onButtonClick(s, true, StaticHelper.getDomoticz(context), context);
                     }
                 }
 
@@ -221,7 +220,7 @@ public class WidgetIntentService extends Service {
                 }
             }, idx, false);
         } else {
-            domoticz.getScene(new ScenesReceiver() {
+            StaticHelper.getDomoticz(context).getScene(new ScenesReceiver() {
                 @Override
                 public void onReceiveScenes(ArrayList<SceneInfo> scenes) {
                 }
@@ -235,12 +234,12 @@ public class WidgetIntentService extends Service {
                     if (scene != null) {
                         Log.i("SCENE TOGGLE", "Device: " + scene.getName());
                         if (DomoticzValues.Scene.Type.SCENE.equalsIgnoreCase(scene.getType())) {
-                            onButtonClick(scene, true, domoticz, context);//push on scene
+                            onButtonClick(scene, true, StaticHelper.getDomoticz(context), context);//push on scene
                         } else {//switch
                             if (toggle)
-                                onSwitchClick(scene, !scene.getStatusInBoolean(), domoticz, context);
+                                onSwitchClick(scene, !scene.getStatusInBoolean(), StaticHelper.getDomoticz(context), context);
                             else
-                                onSwitchClick(scene, action, domoticz, context);
+                                onSwitchClick(scene, action, StaticHelper.getDomoticz(context), context);
                         }
                     }
                 }
@@ -249,9 +248,7 @@ public class WidgetIntentService extends Service {
     }
 
     private void processBlind(final Context context, int idx, final int action) {
-        final Domoticz domoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
-
-        domoticz.getDevice(new DevicesReceiver() {
+        StaticHelper.getDomoticz(context).getDevice(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
             }
@@ -259,7 +256,7 @@ public class WidgetIntentService extends Service {
             @Override
             public void onReceiveDevice(final DevicesInfo s) {
                 if (s != null) {
-                    onBlindsToggle(s, action, domoticz, context);
+                    onBlindsToggle(s, action, StaticHelper.getDomoticz(context), context);
                 }
             }
 

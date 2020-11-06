@@ -45,13 +45,14 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.ui.Backdrop.BackdropContainer;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -67,7 +68,6 @@ public class DomoticzRecyclerFragment extends Fragment {
 
     public RecyclerView gridView;
     public SwipeRefreshLayout mSwipeRefreshLayout;
-    public Domoticz mDomoticz;
     public SharedPrefUtil mSharedPrefs;
     public PhoneConnectionUtil mPhoneConnectionUtil;
     public View frameLayout;
@@ -126,12 +126,7 @@ public class DomoticzRecyclerFragment extends Fragment {
     }
 
     public ServerUtil getServerUtil() {
-        Activity activity = getActivity();
-        if (activity instanceof MainActivity) {
-            return ((MainActivity) getActivity()).getServerUtil();
-        } else if (activity instanceof PlanActivity) {
-            return ((PlanActivity) getActivity()).getServerUtil();
-        } else return null;
+        return StaticHelper.getServerUtil(getContext());
     }
 
     public void sortFragment(String sort) {
@@ -224,21 +219,18 @@ public class DomoticzRecyclerFragment extends Fragment {
                 isTablet = !
                         ((MainActivity) getActivity()).onPhone;
             }
-            gridView.setHasFixedSize(true);
-
             if (isTablet) {
                 if (isPortrait) {
-                    GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+                    StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                     gridView.setLayoutManager(mLayoutManager);
                 } else {
-                    GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
+                    StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
                     gridView.setLayoutManager(mLayoutManager);
                 }
             } else {
-                GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+                StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                 gridView.setLayoutManager(mLayoutManager);
             }
-
             gridView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
         } catch (Exception ex) {
         }
@@ -260,7 +252,6 @@ public class DomoticzRecyclerFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         mSharedPrefs = new SharedPrefUtil(getActivity());
-        mDomoticz = new Domoticz(getActivity(), AppController.getInstance().getRequestQueue());
         debug = mSharedPrefs.isDebugEnabled();
 
         if (debug)
@@ -355,7 +346,7 @@ public class DomoticzRecyclerFragment extends Fragment {
     public void errorHandling(Exception error) {
         showSpinner(false);
         error.printStackTrace();
-        String errorMessage = mDomoticz.getErrorMessage(error);
+        String errorMessage = StaticHelper.getDomoticz(getActivity()).getErrorMessage(error);
         if (mPhoneConnectionUtil == null)
             mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
         if (mPhoneConnectionUtil.isNetworkAvailable()) {

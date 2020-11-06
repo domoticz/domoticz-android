@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -29,5 +28,5 @@
     <string name="action_qrcode_scan">QR kód beolvasása</string>
     <string name="action_bluetooth_show">Párosított eszközök megtekintése</string>
     <string name="action_speech">Beszédfelismerés</string>
-    <string name="send">Send</string>
+    <string name="send">küldés</string>
 </resources>

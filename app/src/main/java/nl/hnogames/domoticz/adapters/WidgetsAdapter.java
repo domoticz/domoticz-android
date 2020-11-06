@@ -47,13 +47,13 @@ import nl.hnogames.domoticzapi.DomoticzIcons;
 public class WidgetsAdapter extends BaseAdapter implements Filterable {
     private final int iVoiceAction = -55;
     private final int iQRCodeAction = -66;
+    private final Domoticz domoticz;
+    private final Context context;
+    private final ItemFilter mFilter = new ItemFilter();
+    private final SharedPrefUtil mSharedPrefs;
     public ArrayList<DevicesInfo> filteredData = null;
-    private Domoticz domoticz;
-    private Context context;
     private ArrayList<DevicesInfo> data = null;
     private int layoutResourceId;
-    private ItemFilter mFilter = new ItemFilter();
-    private SharedPrefUtil mSharedPrefs;
 
     public WidgetsAdapter(Context context,
                           Domoticz mDomoticz,

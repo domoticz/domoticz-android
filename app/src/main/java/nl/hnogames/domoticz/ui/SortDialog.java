@@ -35,9 +35,9 @@ import nl.hnogames.domoticz.R;
 public class SortDialog implements DialogInterface.OnDismissListener {
 
     private final MaterialDialog.Builder mdb;
+    private final Context mContext;
+    private final String[] names;
     private DismissListener dismissListener;
-    private Context mContext;
-    private String[] names;
 
     public SortDialog(Context c,
                       int layout,

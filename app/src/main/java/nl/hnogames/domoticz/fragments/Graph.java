@@ -38,6 +38,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -59,12 +60,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.GraphPointInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.GraphDataReceiver;
 
 
@@ -72,14 +72,11 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
     @SuppressWarnings("unused")
     private static final String TAG = Graph.class.getSimpleName();
-
+    private final int steps = 1;
     private Context context;
-    private Domoticz mDomoticz;
-
     private int idx = 0;
     private String range = "day";
     private String type = "temp";
-    private int steps = 1;
     private String axisYLabel = "Temp";
 
     private boolean enableFilters = false;
@@ -102,7 +99,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         super.onAttach(context);
         onAttachFragment(this);
         this.context = context;
-        mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
         mSharedPrefs = new SharedPrefUtil(context);
     }
 
@@ -137,6 +133,10 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         root = inflater.inflate(R.layout.dialog_graph, null);
 
         chart = root.findViewById(R.id.chart);
+        Legend legend = chart.getLegend();
+        legend.setWordWrapEnabled(true);
+        legend.setForm(Legend.LegendForm.CIRCLE);
+
         XAxis xAxis = chart.getXAxis();
         YAxis yAxis = chart.getAxisLeft();
 
@@ -146,9 +146,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         xAxis.setTextColor(typedValue.data);
         yAxis.setTextColor(typedValue.data);
         chart.getLegend().setTextColor(typedValue.data);
-
         chart.setDrawGridBackground(true);
-
         chart.getDescription().setEnabled(false);
         xAxis.setDrawGridLines(false); // no grid lines
         chart.getAxisRight().setEnabled(false); // no right axis
@@ -176,7 +174,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
                     //int mYear = calendar.get(Calendar.YEAR);
                     int mMonth = calendar.get(Calendar.MONTH) + 1;
-                    int mDay = calendar.get(Calendar.DAY_OF_MONTH) + 1;
+                    int mDay = calendar.get(Calendar.DAY_OF_MONTH);
                     int mHours = calendar.get(Calendar.HOUR_OF_DAY);
                     int mMinutes = calendar.get(Calendar.MINUTE);
 
@@ -201,10 +199,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
         new Thread() {
             @Override
             public void run() {
-                if (mDomoticz == null)
-                    mDomoticz = new Domoticz(context, AppController.getInstance().getRequestQueue());
-
-                mDomoticz.getGraphData(idx, range, type, new GraphDataReceiver() {
+                StaticHelper.getDomoticz(context).getGraphData(idx, range, type, new GraphDataReceiver() {
                     @Override
 
                     public void onReceive(ArrayList<GraphPointInfo> grphPoints) {
@@ -213,7 +208,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                             LineData columnData = generateData(root);
                             if (columnData != null) {
                                 chart.setData(columnData);
-                                chart.invalidate(); // refresh
+                                chart.invalidate(); // refreshs
 
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
@@ -473,6 +468,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 LineDataSet dataSet = new LineDataSet(valuest, ((TextView) view.findViewById(R.id.legend_temperature)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_blue_600));
                 dataSet.setDrawCircles(false);
+                dataSet.setLineWidth(2);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
 
@@ -487,6 +483,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
                 if (addTemperatureRange) {
                     dataSet = new LineDataSet(valuestMax, "Max"); // add entries to dataset
+                    dataSet.setLineWidth(2);
                     dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
                     dataSet.setDrawCircles(false);
                     dataSet.setMode(LineDataSet.Mode.LINEAR);
@@ -495,6 +492,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     entries.add(dataSet);
 
                     dataSet = new LineDataSet(valuestMin, "Min"); // add entries to dataset
+                    dataSet.setLineWidth(2);
                     dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
                     dataSet.setDrawCircles(false);
                     dataSet.setMode(LineDataSet.Mode.LINEAR);
@@ -509,6 +507,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_humidity)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valueshu, ((TextView) view.findViewById(R.id.legend_humidity)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_orange_600));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -518,6 +517,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_barometer)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesba, ((TextView) view.findViewById(R.id.legend_barometer)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_green_600));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -527,6 +527,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_counter)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesc, ((TextView) view.findViewById(R.id.legend_counter)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_indigo_600));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -536,6 +537,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_powerusage)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valueeu, ((TextView) view.findViewById(R.id.legend_powerusage)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_yellow_600));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -544,6 +546,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_powerdeliv)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valueeg, ((TextView) view.findViewById(R.id.legend_powerdeliv)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_deep_purple_600));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -553,12 +556,14 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_percentage)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesv, ((TextView) view.findViewById(R.id.legend_percentage)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_yellow_600));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
 
                 if (addPercentageRange) {
                     dataSet = new LineDataSet(valuesvMax, "Max"); // add entries to dataset
+                    dataSet.setLineWidth(2);
                     dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
                     dataSet.setDrawCircles(false);
                     dataSet.setMode(LineDataSet.Mode.LINEAR);
@@ -567,6 +572,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     entries.add(dataSet);
 
                     dataSet = new LineDataSet(valuesvMin, "Min"); // add entries to dataset
+                    dataSet.setLineWidth(2);
                     dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
                     dataSet.setDrawCircles(false);
                     dataSet.setMode(LineDataSet.Mode.LINEAR);
@@ -581,6 +587,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_percentage2)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesv2, ((TextView) view.findViewById(R.id.legend_percentage2)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_orange_600));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -590,6 +597,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_direction)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesdi, ((TextView) view.findViewById(R.id.legend_direction)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_green_600));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -599,6 +607,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_sunpower)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesuv, ((TextView) view.findViewById(R.id.legend_sunpower)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_deep_purple_600));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -608,6 +617,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_speed)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuessp, ((TextView) view.findViewById(R.id.legend_speed)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_amber_600));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -617,6 +627,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_usage)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesu, ((TextView) view.findViewById(R.id.legend_usage)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_orange_600));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -626,6 +637,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_rain)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesmm, ((TextView) view.findViewById(R.id.legend_rain)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_light_green_600));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -635,6 +647,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_co2)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesco2, ((TextView) view.findViewById(R.id.legend_co2)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_blue_600));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -644,6 +657,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_co2min)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesco2min, ((TextView) view.findViewById(R.id.legend_co2min)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_light_green_600));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -653,6 +667,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_co2max)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesco2max, ((TextView) view.findViewById(R.id.legend_co2max)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.md_red_400));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -662,6 +677,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_Lux)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesLux, ((TextView) view.findViewById(R.id.legend_Lux)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_blue_600));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -671,6 +687,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_Luxmin)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesLuxmin, ((TextView) view.findViewById(R.id.legend_Luxmin)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.material_light_green_600));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -680,6 +697,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_Luxmax)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesLuxmax, ((TextView) view.findViewById(R.id.legend_Luxmax)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.md_red_400));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -689,6 +707,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_LuxAvg)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesLuxAvg, ((TextView) view.findViewById(R.id.legend_LuxAvg)).getText().toString()); // add entries to dataset
                 dataSet.setColor(ContextCompat.getColor(context, R.color.md_yellow_400));
+                dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
                 entries.add(dataSet);
@@ -848,16 +867,13 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
-
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (lineLabels != null && lineLabels.size() > 1) {
+        if (lineLabels != null && lineLabels.size() > 1)
             inflater.inflate(R.menu.menu_graph_sort, menu);
-        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
-
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_sort:

@@ -40,11 +40,11 @@ public class PasswordDialog implements DialogInterface.OnDismissListener {
     private static final String TAG = PasswordDialog.class.getSimpleName();
 
     private final MaterialDialog.Builder mdb;
+    private final Context mContext;
+    private final Domoticz domoticz;
+    private final SharedPrefUtil mSharedPrefs;
     private DismissListener dismissListener;
-    private Context mContext;
-    private Domoticz domoticz;
     private MaterialDialog md;
-    private SharedPrefUtil mSharedPrefs;
     private androidx.appcompat.widget.AppCompatEditText editPassword;
     private CheckBox showPassword;
 

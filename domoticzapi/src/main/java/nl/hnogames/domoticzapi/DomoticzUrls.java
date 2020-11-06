@@ -433,6 +433,10 @@ public class DomoticzUrls {
                 url = DomoticzValues.Url.Log.GRAPH;
                 break;
 
+            case DomoticzValues.Json.Url.Request.TEMPGRAPHS:
+                url = DomoticzValues.Url.Temp.GRAPH;
+                break;
+
             case DomoticzValues.Json.Url.Request.ADD_MOBILE_DEVICE:
                 url = DomoticzValues.Url.System.ADD_MOBILE_DEVICE;
                 break;

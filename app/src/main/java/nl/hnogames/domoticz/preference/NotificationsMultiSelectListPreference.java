@@ -35,9 +35,9 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 
 public class NotificationsMultiSelectListPreference extends MultiSelectListPreference {
     private static final String TAG = NotificationsMultiSelectListPreference.class.getName();
-    private boolean selectAllValuesByDefault;
+    private final boolean selectAllValuesByDefault;
+    private final SharedPrefUtil mSharedPrefUtil;
     private CharSequence[] mEntryValues;
-    private SharedPrefUtil mSharedPrefUtil;
 
     public NotificationsMultiSelectListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);

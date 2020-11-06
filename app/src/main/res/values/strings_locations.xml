@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -27,6 +26,9 @@
     <string name="longitude">Longitude</string>
     <string name="latitude">Latitude</string>
     <string name="radius">Radius (meter)</string>
+    <string name="save_as">Save as</string>
+    <string name="filename">Filename</string>
+
     <string name="connectedSwitch">Connected switch</string>
     <string name="unable_to_get_switches">Unable to get all switches, please try again</string>
     <string name="delete_short">DEL</string>

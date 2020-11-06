@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -21,15 +20,20 @@
   -->
 
 <resources>
-    <attr name="lockedValues" format="reference"/>
-    <attr name="lockedValuesDependencyKeys" format="reference"/>
-    <attr name="dynamicEntriesProvider" format="string"/>
-    <attr name="dynamicEntryValuesProvider" format="string"/>
-    <attr name="selectAllValuesByDefault" format="boolean"/>
+    <declare-styleable name="TemplateView">
+        <attr name="gnt_template_type" format="reference" />
+    </declare-styleable>
+
+    <attr name="lockedValues" format="reference" />
+    <attr name="lockedValuesDependencyKeys" format="reference" />
+    <attr name="dynamicEntriesProvider" format="string" />
+    <attr name="dynamicEntryValuesProvider" format="string" />
+    <attr name="selectAllValuesByDefault" format="boolean" />
 
     <attr name="recyclerBackground" format="color" />
     <attr name="listviewBackground" format="color" />
     <attr name="listviewRowBackground" format="color" />
+    <attr name="listviewRowTintBackground" format="color" />
     <attr name="backdropBackground" format="color" />
     <attr name="buttonTextColor" format="color" />
     <attr name="toolbarBackground" format="color" />
@@ -50,16 +54,16 @@
     <attr name="highlightColor" format="color" />
 
     <declare-styleable name="CustomListPreference">
-        <attr name="lockedValues"/>
-        <attr name="lockedValuesDependencyKeys"/>
-        <attr name="selectAllValuesByDefault"/>
-        <attr name="dynamicEntriesProvider"/>
-        <attr name="dynamicEntryValuesProvider"/>
+        <attr name="lockedValues" />
+        <attr name="lockedValuesDependencyKeys" />
+        <attr name="selectAllValuesByDefault" />
+        <attr name="dynamicEntriesProvider" />
+        <attr name="dynamicEntryValuesProvider" />
     </declare-styleable>
 
     <declare-styleable name="BackdropContainer">
-        <attr name="menuIcon" format="reference"/>
-        <attr name="closeIcon" format="reference"/>
-        <attr name="duration" format="integer"/>
+        <attr name="menuIcon" format="reference" />
+        <attr name="closeIcon" format="reference" />
+        <attr name="duration" format="integer" />
     </declare-styleable>
 </resources>

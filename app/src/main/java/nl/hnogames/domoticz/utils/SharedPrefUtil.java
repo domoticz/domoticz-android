@@ -51,7 +51,6 @@ import java.util.Map;
 import java.util.Set;
 
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.BeaconInfo;
 import nl.hnogames.domoticz.containers.BluetoothInfo;
 import nl.hnogames.domoticz.containers.LocationInfo;
@@ -59,14 +58,15 @@ import nl.hnogames.domoticz.containers.NFCInfo;
 import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.containers.QRCodeInfo;
 import nl.hnogames.domoticz.containers.SpeechInfo;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticzapi.Containers.Language;
 import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.Interfaces.LanguageReceiver;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class SharedPrefUtil {
+    private static final String PREF_ADS_COUNTER = "adsCounter";
 
     private static final int NR_OF_HISTORY = 100;
     private static final String PREF_MULTI_SERVER = "enableMultiServers";
@@ -120,6 +120,7 @@ public class SharedPrefUtil {
     private static final String PREF_WIDGET_ENABLED = "enableWidgets";
     private static final String PREF_SORT_LIST = "customSortList";
     private static final String PREF_DASHBOARD_CLOCK = "dashboardShowClock";
+    private static final String PREF_DASHBOARD_CAMERA = "dashboardShowCamera";
 
     private static final int DEFAULT_STARTUP_SCREEN = 1;
     private final String TAG = "Shared Pref util";
@@ -131,10 +132,10 @@ public class SharedPrefUtil {
     private final String PREF_SWITCH_BUTTONS = "switchButtons";
     @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_DASHBOARD_LIST = "dashboardAsList";
-    private Context mContext;
-    private SharedPreferences prefs;
-    private SharedPreferences.Editor editor;
-    private Gson gson;
+    private final Context mContext;
+    private final SharedPreferences prefs;
+    private final SharedPreferences.Editor editor;
+    private final Gson gson;
 
     @SuppressLint("CommitPrefEdits")
     public SharedPrefUtil(Context mContext) {
@@ -152,13 +153,22 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_DASHBOARD_CLOCK, false);
     }
 
+    public boolean addCameraToDashboard() {
+        return prefs.getBoolean(PREF_DASHBOARD_CAMERA, false);
+    }
+
     public boolean showSwitchesAsButtons() {
         return prefs.getBoolean(PREF_SWITCH_BUTTONS, false);
     }
 
-    // public boolean checkForUpdatesEnabled() {
-    //     return prefs.getBoolean(PREF_CHECK_UPDATES, false);
-    // }
+    public int getAdsCounter() {
+        return prefs.getInt(PREF_ADS_COUNTER, 0);
+    }
+
+    public void setAdsCounter(int id) {
+        editor.putInt(PREF_ADS_COUNTER, id).apply();
+        editor.commit();
+    }
 
     public boolean IsWidgetsEnabled() {
         return prefs.getBoolean(PREF_WIDGET_ENABLED, false);
@@ -1169,7 +1179,7 @@ public class SharedPrefUtil {
     public boolean saveSharedPreferencesToFile(File dst) {
         try {
             boolean isServerUpdateAvailableValue = false;
-            ServerUpdateInfo mServerUpdateInfo = new ServerUtil(mContext).getActiveServer().getServerUpdateInfo(mContext);
+            ServerUpdateInfo mServerUpdateInfo = StaticHelper.getServerUtil(mContext).getActiveServer().getServerUpdateInfo(mContext);
 
             Map<String, ?> oAllPrefs = this.prefs.getAll();
             HashMap<String, Object> oSavePrefs = new HashMap<String, Object>();
@@ -1238,20 +1248,23 @@ public class SharedPrefUtil {
                     else if (entry.getKey().equals("receivedNotifications") || entry.getKey().equals("receivedNotificationsLog"))
                         Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
                     else {
-                        if (v instanceof Boolean)
-                            editor.putBoolean(key, ((Boolean) v).booleanValue());
-                        else if (v instanceof Float)
-                            editor.putFloat(key, ((Float) v).floatValue());
-                        else if (v instanceof Integer)
-                            editor.putInt(key, ((Integer) v).intValue());
-                        else if (v instanceof Long)
-                            editor.putLong(key, ((Long) v).longValue());
-                        else if (v instanceof String)
-                            editor.putString(key, ((String) v));
-                        else if (v instanceof Set)
-                            editor.putStringSet(key, ((Set<String>) v));
-                        else
-                            Log.v(TAG, "Could not load pref: " + key + " | " + v.getClass());
+                        try {
+                            if (v instanceof Boolean)
+                                editor.putBoolean(key, ((Boolean) v).booleanValue());
+                            else if (v instanceof Float)
+                                editor.putFloat(key, ((Float) v).floatValue());
+                            else if (v instanceof Integer)
+                                editor.putInt(key, ((Integer) v).intValue());
+                            else if (v instanceof Long)
+                                editor.putLong(key, ((Long) v).longValue());
+                            else if (v instanceof String)
+                                editor.putString(key, ((String) v));
+                            else if (v instanceof Set)
+                                editor.putStringSet(key, ((Set<String>) v));
+                            else
+                                Log.v(TAG, "Could not load pref: " + key + " | " + v.getClass());
+                        } catch (Exception ex) {
+                        }
                     }
                 }
             }
@@ -1263,6 +1276,7 @@ public class SharedPrefUtil {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (Exception ex) {
         } finally {
             try {
                 if (input != null) {
@@ -1353,7 +1367,7 @@ public class SharedPrefUtil {
 
         final boolean[] result = new boolean[1];
         if (!UsefulBits.isEmpty(langToDownload)) {
-            new Domoticz(mContext, AppController.getInstance().getRequestQueue()).getLanguageStringsFromServer(langToDownload, new LanguageReceiver() {
+            StaticHelper.getDomoticz(mContext).getLanguageStringsFromServer(langToDownload, new LanguageReceiver() {
                 @Override
                 public void onReceiveLanguage(Language language) {
                     Log.d(TAG, "Language " + langToDownload + " downloaded from server");

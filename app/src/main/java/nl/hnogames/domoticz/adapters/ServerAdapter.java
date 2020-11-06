@@ -43,11 +43,10 @@ public class ServerAdapter extends BaseAdapter {
 
     @SuppressWarnings("unused")
     private static final String TAG = ServerAdapter.class.getSimpleName();
+    private final Context context;
+    private final ServerClickListener listener;
+    private final SharedPrefUtil mSharedPrefs;
     public ArrayList<ServerInfo> data = null;
-    private Context context;
-    private ServerClickListener listener;
-
-    private SharedPrefUtil mSharedPrefs;
 
     public ServerAdapter(Context context,
                          ArrayList<ServerInfo> data,

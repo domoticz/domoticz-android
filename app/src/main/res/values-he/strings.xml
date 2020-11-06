@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -32,8 +31,8 @@
     <string name="button_state_off">כבוי</string>
     <string name="button_state_closed">סגור</string>
     <string name="button_state_open">פתוח</string>
-    <string name="button_state_lock">Lock</string>
-    <string name="button_state_unlock">Unlock</string>
+    <string name="button_state_lock">תנעל</string>
+    <string name="button_state_unlock">תפתח</string>
     <string name="button_status_log">יומן</string>
     <string name="button_status_day">יום</string>
     <string name="button_status_week">שבוע</string>
@@ -44,11 +43,11 @@
     <string name="button_color">צבע</string>
     <string name="button_arm">דריכה</string>
     <string name="button_disarm">ניטרול</string>
-    <string name="button_state_full_light">Full light</string>
-    <string name="button_state_night">Night light</string>
-    <string name="sunrise">Sunrise</string>
-    <string name="sunset">Sunset</string>
-    <string name="now">Now</string>
+    <string name="button_state_full_light">אור בעוצמה מלאה</string>
+    <string name="button_state_night">תאורת לילה</string>
+    <string name="sunrise">זריחה</string>
+    <string name="sunset">שקיעה</string>
+    <string name="now">עכשיו</string>
     <string name="astrTwilightStart">Astronomical twilight start</string>
     <string name="astrTwilightEnd">Astronomical twilight end</string>
     <string name="civTwilightStart">Civil twilight start</string>

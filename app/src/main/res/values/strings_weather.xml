@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -28,6 +27,7 @@
     <string name="chill">Chill</string>
     <string name="direction">Direction</string>
     <string name="humidity">Hum</string>
+    <string name="barometer">Baro</string>
     <string name="speed">Speed</string>
     <string name="forecast">Forecast</string>
     <string name="rain">Rain</string>

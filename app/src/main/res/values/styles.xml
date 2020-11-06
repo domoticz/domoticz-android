@@ -19,6 +19,7 @@
   ~  under the License.
   -->
 <resources>
+
     <style name="AppThemeIntro" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -54,7 +55,9 @@
         <item name="material_drawer_divider">@color/material_drawer_divider</item>
         <item name="material_drawer_selected">@color/material_drawer_selected</item>
         <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
-        <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
+        <item name="material_drawer_header_selection_text">
+            @color/material_drawer_header_selection_text
+        </item>
 
         <!-- Needed for the theme activity -->
         <item name="colorControlHighlight">@color/primary</item>
@@ -72,6 +75,8 @@
         <item name="toolbarTextColor">@color/white</item>
         <item name="recyclerBackground">@color/background_grey</item>
         <item name="listviewRowBackground">@color/white</item>
+        <item name="listviewRowTintBackground">@color/white60</item>
+
         <item name="backdropBackground">@color/primary</item>
         <item name="buttonTextColor">@color/primary_accent</item>
         <item name="graphTextColor">@color/grey_900</item>
@@ -121,7 +126,9 @@
         <item name="material_drawer_divider">@color/material_drawer_divider</item>
         <item name="material_drawer_selected">@color/material_drawer_selected</item>
         <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
-        <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
+        <item name="material_drawer_header_selection_text">
+            @color/material_drawer_header_selection_text
+        </item>
 
         <!-- Needed for the theme activity -->
         <item name="colorControlHighlight">@color/primary</item>
@@ -139,6 +146,7 @@
         <item name="toolbarTextColor">@color/white</item>
         <item name="recyclerBackground">@color/background_grey</item>
         <item name="listviewRowBackground">@color/white</item>
+        <item name="listviewRowTintBackground">@color/white60</item>
         <item name="backdropBackground">@color/primary</item>
         <item name="buttonTextColor">@color/primary_accent</item>
         <item name="graphTextColor">@color/grey_900</item>
@@ -203,6 +211,7 @@
         <item name="toolbarBackground">@color/secondary</item>
         <item name="recyclerBackground">@color/secondary_dark</item>
         <item name="listviewRowBackground">@color/secondary</item>
+        <item name="listviewRowTintBackground">@color/secondary60</item>
         <item name="backdropBackground">@color/secondary</item>
         <item name="buttonTextColor">@color/alt1_accent</item>
         <item name="graphTextColor">@color/white</item>
@@ -269,6 +278,7 @@
         <item name="toolbarBackground">@color/alt2</item>
         <item name="recyclerBackground">@color/alt2_dark</item>
         <item name="listviewRowBackground">@color/alt2</item>
+        <item name="listviewRowTintBackground">@color/alt260</item>
         <item name="backdropBackground">@color/alt2</item>
         <item name="buttonTextColor">@color/alt2_accent</item>
         <item name="graphTextColor">@color/white</item>
@@ -316,7 +326,9 @@
         <item name="material_drawer_divider">@color/material_drawer_divider</item>
         <item name="material_drawer_selected">@color/material_drawer_selected</item>
         <item name="material_drawer_selected_text">@color/alt3_accent</item>
-        <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
+        <item name="material_drawer_header_selection_text">
+            @color/material_drawer_header_selection_text
+        </item>
 
         <!-- Style to use for Snackbars in this theme. -->
         <item name="snackbarStyle">@style/snackbarStyle</item>
@@ -334,6 +346,7 @@
         <item name="toolbarTextColor">@color/white</item>
         <item name="recyclerBackground">@color/alt3_background</item>
         <item name="listviewRowBackground">@color/white</item>
+        <item name="listviewRowTintBackground">@color/white60</item>
         <item name="backdropBackground">@color/alt3</item>
         <item name="buttonTextColor">@color/alt3</item>
         <item name="graphTextColor">@color/black</item>
@@ -398,6 +411,7 @@
         <item name="toolbarBackground">@color/alt4</item>
         <item name="recyclerBackground">@color/alt4_dark</item>
         <item name="listviewRowBackground">@color/alt4</item>
+        <item name="listviewRowTintBackground">@color/alt460</item>
         <item name="backdropBackground">@color/alt4</item>
         <item name="buttonTextColor">@color/alt4_accent</item>
         <item name="graphTextColor">@color/white</item>
@@ -418,6 +432,71 @@
         <item name="outcomingTextColor">@color/white</item>
     </style>
 
+    <style name="AppThemeAlt5Main" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/alt5</item>
+        <item name="colorPrimaryDark">@color/alt5_dark</item>
+        <item name="colorAccent">@color/alt5_accent</item>
+
+        <item name="md_background_color">@color/alt5_dark</item>
+        <item name="android:windowBackground">@color/alt5_dark</item>
+        <item name="android:buttonBarButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButton</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButton</item>
+        <item name="materialAlertDialogTheme">@style/AlertDialogDarkTheme</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogDarkTheme</item>
+        <item name="alertDialogTheme">@style/AlertDialogDarkTheme</item>
+        <item name="android:actionBarStyle">@style/AppThemeDarkActionBar</item>
+        <item name="actionBarStyle">@style/AppThemeDarkActionBar</item>
+
+        <!-- MaterialDrawer specific values -->
+        <item name="material_drawer_background">@color/alt5_dark</item>
+        <item name="material_drawer_primary_text">@color/white</item>
+        <item name="material_drawer_primary_icon">@color/white</item>
+        <item name="material_drawer_secondary_text">@color/white</item>
+        <item name="material_drawer_hint_text">@color/white</item>
+        <item name="material_drawer_divider">@color/alt5_dark</item>
+        <item name="material_drawer_selected">@color/alt5</item>
+        <item name="material_drawer_selected_text">@color/white</item>
+        <item name="material_drawer_header_selection_text">@color/white</item>
+
+        <!-- Style to use for Snackbars in this theme. -->
+        <item name="snackbarStyle">@style/snackbarDarkStyle</item>
+        <item name="snackbarButtonStyle">@style/snackbarDarkButton</item>
+        <item name="snackbarTextViewStyle">@style/snackbarDarkText</item>
+
+        <!-- Needed for the theme activity -->
+        <item name="colorControlHighlight">@color/alt5_accent</item>
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="toolbarItemTint">@color/white</item>
+
+        <!-- Custom values -->
+        <item name="toolbarTextColor">@color/white</item>
+        <item name="toolbarBackground">@color/alt5_dark</item>
+        <item name="recyclerBackground">@color/alt5_dark2</item>
+        <item name="listviewRowBackground">@color/alt5_dark</item>
+        <item name="listviewRowTintBackground">@color/alt560</item>
+        <item name="backdropBackground">@color/alt5_dark2</item>
+        <item name="buttonTextColor">@color/alt5_accent</item>
+        <item name="graphTextColor">@color/white</item>
+        <item name="wizardCardColor">@color/alt5_dark</item>
+        <item name="wizardTitleColor">@color/white</item>
+        <item name="temperatureTextColor">@color/white</item>
+        <item name="preferenceIconColor">@color/alt5</item>
+        <item name="editTextBackgroundColor">@color/alt5</item>
+        <item name="editTextTextColor">@color/white</item>
+        <item name="floatingActionBar">@color/alt5_accent</item>
+        <item name="floatingActionBarText">@color/white</item>
+        <item name="highlightColor">@color/alt5_accent</item>
+
+        <!-- notification history -->
+        <item name="incomingDefaultBubbleColor">@color/grey_900</item>
+        <item name="incomingTextColor">@color/white</item>
+        <item name="outcomingDefaultBubbleColor">@color/alt5_accent</item>
+        <item name="outcomingTextColor">@color/white</item>
+    </style>
+
     <!-- Dialog themes -->
     <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="colorSurface">@color/white</item>
@@ -428,7 +507,7 @@
     </style>
 
     <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-    <item name="android:textColor">@color/primary_accent</item>
+        <item name="android:textColor">@color/primary_accent</item>
         <item name="rippleColor">@color/primary_accent</item>
     </style>
 
@@ -455,7 +534,7 @@
         <item name="rippleColor">@color/secondary_accent</item>
     </style>
 
-    <style name="DialogButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog"/>
+    <style name="DialogButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog" />
 
     <!-- Snackbar styles -->
     <style name="snackbarStyle" parent="@style/Widget.MaterialComponents.Snackbar">
@@ -602,7 +681,7 @@
         <item name="android:scrollbars">vertical</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="Theme.MaterialComponents.Light.Bridge"/>
+    <style name="AppTheme.PopupOverlay" parent="Theme.MaterialComponents.Light.Bridge" />
 </resources>

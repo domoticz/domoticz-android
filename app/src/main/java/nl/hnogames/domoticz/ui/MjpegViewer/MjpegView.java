@@ -21,7 +21,7 @@ public class MjpegView extends SurfaceView implements SurfaceHolder.Callback {
     public final static int SIZE_FIT = 1;
 
     public final static int SIZE_FULL = 2;
-    private SurfaceHolder mHolder;
+    private final SurfaceHolder mHolder;
     private MjpegViewThread thread = null;
     private State state;
     private Handler handler = null;

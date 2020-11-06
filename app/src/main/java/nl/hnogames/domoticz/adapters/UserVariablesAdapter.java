@@ -45,14 +45,13 @@ import nl.hnogames.domoticzapi.Domoticz;
 @SuppressWarnings("unused")
 public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdapter.DataObjectHolder> {
     private static final String TAG = UserVariablesAdapter.class.getSimpleName();
+    private final Context context;
+    private final Domoticz domoticz;
+    private final ItemFilter mFilter = new ItemFilter();
+    private final UserVariablesClickListener listener;
+    private final SharedPrefUtil mSharedPrefs;
     public ArrayList<UserVariableInfo> filteredData = null;
-    private Context context;
     private ArrayList<UserVariableInfo> data = null;
-    private Domoticz domoticz;
-    private ItemFilter mFilter = new ItemFilter();
-    private UserVariablesClickListener listener;
-
-    private SharedPrefUtil mSharedPrefs;
 
     public UserVariablesAdapter(Context context,
                                 Domoticz mDomoticz,

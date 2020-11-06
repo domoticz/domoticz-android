@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      android:background="@android:color/white">
+    android:background="@android:color/white">
 
     <item
         android:id="@+id/bbn_dashboard"
         android:icon="@drawable/baseline_dashboard_black_24"
-        android:title="@string/title_dashboard"/>
+        android:title="@string/title_dashboard" />
 
     <item
         android:id="@+id/bbn_switches"
         android:icon="@drawable/baseline_highlight_black_24"
-        android:title="@string/title_switches"/>
+        android:title="@string/title_switches" />
 
     <item
         android:id="@+id/bbn_scenes"
         android:icon="@drawable/baseline_view_carousel_black_24"
-        android:title="@string/title_scenes"/>
+        android:title="@string/title_scenes" />
 
 </menu>

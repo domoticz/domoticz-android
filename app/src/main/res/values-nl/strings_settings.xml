@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -73,6 +72,8 @@
     <string name="show_dashboard_list_off">Dashboard weergeven als raster</string>
     <string name="dashboard_clock">Klok</string>
     <string name="show_dashboard_clock">Een klok weergeven op het dashboard</string>
+    <string name="dashboard_camera">Camera</string>
+    <string name="show_dashboard_camera">Laad de camera achter verbonden schakelaars</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Aangepaste lijst</string>
     <string name="custom_wear_select">Selecteer schakelaars</string>
@@ -170,6 +171,8 @@
     <string name="theme_orange">Oranje</string>
     <string name="theme_pink">Roze</string>
     <string name="theme_blue">Blauw</string>
+    <string name="theme_green">Groen</string>
+    <string name="theme_dark_blue">Donkerblauw</string>
     <!-- Other -->
     <string name="default_values">Standaardwaarden</string>
     <string name="default_values_min_error">Maximale waarde moet hoger zijn dan minimale waarde</string>
@@ -214,4 +217,6 @@
     <string name="restart_required_title">Opnieuw opstarten vereist</string>
     <string name="restart_now">Nu opnieuw opstarten?</string>
     <string name="check_settings">Controleer je instellingen</string>
+    <string name="report_error">Fout rapporteren</string>
+    <string name="support">Ondersteuning</string>
 </resources>

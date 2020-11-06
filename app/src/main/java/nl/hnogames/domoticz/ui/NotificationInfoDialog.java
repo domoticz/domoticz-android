@@ -36,8 +36,8 @@ import nl.hnogames.domoticzapi.Containers.NotificationInfo;
 public class NotificationInfoDialog {
 
     private final MaterialDialog.Builder mdb;
-    private ArrayList<NotificationInfo> info;
-    private Context mContext;
+    private final ArrayList<NotificationInfo> info;
+    private final Context mContext;
 
     public NotificationInfoDialog(Context c,
                                   ArrayList<NotificationInfo> _info) {

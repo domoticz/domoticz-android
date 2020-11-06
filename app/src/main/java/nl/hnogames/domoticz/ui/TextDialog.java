@@ -37,7 +37,7 @@ public class TextDialog implements
         MaterialDialog.SingleButtonCallback {
 
     private final MaterialDialog.Builder mdb;
-    private Context context;
+    private final Context context;
     private DismissListener dismissListener;
     private NegativeListener negativeListener;
     private PositiveListener positiveListener;

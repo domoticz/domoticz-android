@@ -38,10 +38,10 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 
 public class RGBWWColorPickerDialog implements DialogInterface.OnDismissListener {
     private final MaterialDialog.Builder mdb;
+    private final Context mContext;
+    private final SharedPrefUtil mSharedPrefs;
+    private final int idx;
     private DismissListener dismissListener;
-    private Context mContext;
-    private SharedPrefUtil mSharedPrefs;
-    private int idx;
     private SeekBar kelvinBar;
     private ColorPickerView colorPickerView;
     private SwitchMaterial rgbSwitch;

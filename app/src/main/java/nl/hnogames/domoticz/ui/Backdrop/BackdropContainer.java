@@ -18,13 +18,13 @@ import nl.hnogames.domoticz.R;
 
 public class BackdropContainer extends FrameLayout implements BackdropActions {
 
+    private final Context context;
+    private final Drawable mMenuicon;
+    private final Drawable mCloseicon;
     Interpolator interpolator;
     int duration;
-    private Context context;
     private Toolbar toolbar;
     private ToolbarIconClick toolbarIconClick;
-    private Drawable mMenuicon;
-    private Drawable mCloseicon;
     private int height;
 
     public BackdropContainer(@NonNull Context context, @Nullable AttributeSet attrs) {

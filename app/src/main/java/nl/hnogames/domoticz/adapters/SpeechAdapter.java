@@ -45,11 +45,10 @@ public class SpeechAdapter extends BaseAdapter {
 
     @SuppressWarnings("unused")
     private static final String TAG = SpeechAdapter.class.getSimpleName();
+    private final Context context;
+    private final SpeechClickListener listener;
+    private final SharedPrefUtil mSharedPrefs;
     public ArrayList<SpeechInfo> data = null;
-    private Context context;
-    private SpeechClickListener listener;
-
-    private SharedPrefUtil mSharedPrefs;
 
     public SpeechAdapter(Context context,
                          ArrayList<SpeechInfo> data,

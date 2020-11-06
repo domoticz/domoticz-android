@@ -33,19 +33,20 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.PlansAdapter;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -129,47 +130,39 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         if (getView() == null)
             return;
 
-        Collections.sort(this.mPlans, new Comparator<PlanInfo>() {
-            @Override
-            public int compare(PlanInfo left, PlanInfo right) {
-                return left.getOrder() - right.getOrder();
-            }
-        });
+        Collections.sort(this.mPlans, (left, right) -> left.getOrder() - right.getOrder());
 
         if (mRecyclerView == null) {
             mRecyclerView = getView().findViewById(R.id.my_recycler_view);
             mSwipeRefreshLayout = getView().findViewById(R.id.swipe_refresh_layout);
             mRecyclerView.setHasFixedSize(true);
-            GridLayoutManager mLayoutManager = new GridLayoutManager(mContext, 2);
+            StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             mRecyclerView.setLayoutManager(mLayoutManager);
         }
 
         if (mAdapter == null) {
-            mAdapter = new PlansAdapter(this.mPlans, mContext);
-            mAdapter.setOnItemClickListener(new PlansAdapter.onClickListener() {
-                @Override
-                public void onItemClick(int position, View v) {
-                    try {
-                        if (mPhoneConnectionUtil != null && mPhoneConnectionUtil.isNetworkAvailable()) {
-                            Intent intent = new Intent(mContext, PlanActivity.class);
-                            intent.putExtra("PLANNAME", mPlans.get(position).getName());
-                            intent.putExtra("PLANID", mPlans.get(position).getIdx());
-                            startActivity(intent);
-                        } else {
-                            if (frameLayout != null) {
-                                UsefulBits.showSnackbar(getContext(), frameLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
-                                if (getActivity() instanceof MainActivity)
-                                    ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
-                            }
+            mAdapter = new PlansAdapter(AddAdsDevice(this.mPlans), mContext);
+            mAdapter.setOnItemClickListener((position, v) -> {
+                try {
+                    if (mPhoneConnectionUtil != null && mPhoneConnectionUtil.isNetworkAvailable()) {
+                        Intent intent = new Intent(mContext, PlanActivity.class);
+                        intent.putExtra("PLANNAME", mPlans.get(position).getName());
+                        intent.putExtra("PLANID", mPlans.get(position).getIdx());
+                        startActivity(intent);
+                    } else {
+                        if (frameLayout != null) {
+                            UsefulBits.showSnackbar(getContext(), frameLayout, R.string.error_notConnected, Snackbar.LENGTH_SHORT);
+                            if (getActivity() instanceof MainActivity)
+                                ((MainActivity) getActivity()).Talk(R.string.error_notConnected);
                         }
-                    } catch (Exception ignored) {
                     }
+                } catch (Exception ignored) {
                 }
             });
             alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
             mRecyclerView.setAdapter(alphaSlideIn);
         } else {
-            mAdapter.setData(this.mPlans);
+            mAdapter.setData(AddAdsDevice(this.mPlans));
             mAdapter.notifyDataSetChanged();
             alphaSlideIn.notifyDataSetChanged();
         }
@@ -186,13 +179,30 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         }
 
         mSwipeRefreshLayout.setRefreshing(false);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
+        mSwipeRefreshLayout.setOnRefreshListener(() -> processPlans());
+    }
 
-            public void onRefresh() {
-                processPlans();
+    private ArrayList<PlanInfo> AddAdsDevice(ArrayList<PlanInfo> supportedSwitches) {
+        try {
+            if (supportedSwitches == null || supportedSwitches.size() <= 0)
+                return supportedSwitches;
+
+            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                ArrayList<PlanInfo> filteredList = new ArrayList<>();
+                for (PlanInfo d : supportedSwitches) {
+                    if (d.getIdx() != MainActivity.ADS_IDX)
+                        filteredList.add(d);
+                }
+                PlanInfo adView = new PlanInfo();
+                adView.setIdx(MainActivity.ADS_IDX);
+                adView.setName("Ads");
+                filteredList.add(1, adView);
+                this.mPlans = filteredList;
+                return filteredList;
             }
-        });
+        } catch (Exception ex) {
+        }
+        return supportedSwitches;
     }
 
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
@@ -216,7 +226,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
             if (cachePlans != null)
                 createListView();
 
-            mDomoticz.getPlans(new PlansReceiver() {
+            StaticHelper.getDomoticz(mContext).getPlans(new PlansReceiver() {
                 @Override
                 public void OnReceivePlans(ArrayList<PlanInfo> plans) {
                     successHandling(plans.toString(), false);

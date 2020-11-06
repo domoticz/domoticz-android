@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -32,8 +31,8 @@
     <string name="button_state_off">关</string>
     <string name="button_state_closed">已关闭</string>
     <string name="button_state_open">已开启</string>
-    <string name="button_state_lock">Lock</string>
-    <string name="button_state_unlock">Unlock</string>
+    <string name="button_state_lock">锁</string>
+    <string name="button_state_unlock">解锁</string>
     <string name="button_status_log">日志</string>
     <string name="button_status_day">日</string>
     <string name="button_status_week">周</string>
@@ -44,9 +43,9 @@
     <string name="button_color">颜色</string>
     <string name="button_arm">激活</string>
     <string name="button_disarm">解除</string>
-    <string name="button_state_full_light">Full light</string>
-    <string name="button_state_night">Night light</string>
-    <string name="sunrise">Sunrise</string>
+    <string name="button_state_full_light">全光灯</string>
+    <string name="button_state_night">夜灯</string>
+    <string name="sunrise">日出</string>
     <string name="sunset">Sunset</string>
     <string name="now">Now</string>
     <string name="astrTwilightStart">Astronomical twilight start</string>

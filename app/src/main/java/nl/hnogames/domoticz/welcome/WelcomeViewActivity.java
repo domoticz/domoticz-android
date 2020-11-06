@@ -31,15 +31,14 @@ import com.github.paolorotolo.appintro.model.SliderPage;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class WelcomeViewActivity extends AppIntro2 {
     private static final int WELCOME_WIZARD = 1;
-    private int p = 0;
+    private final int p = 0;
     private SharedPrefUtil mSharedPrefs;
 
     @Override
@@ -65,17 +64,16 @@ public class WelcomeViewActivity extends AppIntro2 {
     }
 
     public void setDemoAccount() {
-        ServerUtil mServerUtil = new ServerUtil(this);
-        mServerUtil.getActiveServer().setServerName("Demo");
-        mServerUtil.getActiveServer().setRemoteServerUsername("admin");
-        mServerUtil.getActiveServer().setRemoteServerPassword("D@m@t1czCl0ud");
-        mServerUtil.getActiveServer().setRemoteServerUrl("gandalf.domoticz.com");
-        mServerUtil.getActiveServer().setRemoteServerPort("1883");
-        mServerUtil.getActiveServer().setRemoteServerDirectory("");
-        mServerUtil.getActiveServer().setRemoteServerSecure(true);
-        mServerUtil.getActiveServer().setLocalSameAddressAsRemote();
-        mServerUtil.getActiveServer().setIsLocalServerAddressDifferent(false);
-        mServerUtil.saveDomoticzServers(true);
+        StaticHelper.getServerUtil(this).getActiveServer().setServerName("Demo");
+        StaticHelper.getServerUtil(this).getActiveServer().setRemoteServerUsername("admin");
+        StaticHelper.getServerUtil(this).getActiveServer().setRemoteServerPassword("D@m@t1czCl0ud");
+        StaticHelper.getServerUtil(this).getActiveServer().setRemoteServerUrl("gandalf.domoticz.com");
+        StaticHelper.getServerUtil(this).getActiveServer().setRemoteServerPort("1883");
+        StaticHelper.getServerUtil(this).getActiveServer().setRemoteServerDirectory("");
+        StaticHelper.getServerUtil(this).getActiveServer().setRemoteServerSecure(true);
+        StaticHelper.getServerUtil(this).getActiveServer().setLocalSameAddressAsRemote();
+        StaticHelper.getServerUtil(this).getActiveServer().setIsLocalServerAddressDifferent(false);
+        StaticHelper.getServerUtil(this).saveDomoticzServers(true);
         mSharedPrefs.setWelcomeWizardSuccess(true);
         endWelcomeWizard();
     }
@@ -98,11 +96,7 @@ public class WelcomeViewActivity extends AppIntro2 {
     @Override
     public void onSlideChanged(@Nullable Fragment oldFragment, @Nullable Fragment newFragment) {
         super.onSlideChanged(oldFragment, newFragment);
-        if (newFragment instanceof WelcomePage4) {
-            setProgressButtonEnabled(false);
-        } else {
-            setProgressButtonEnabled(true);
-        }
+        setProgressButtonEnabled(!(newFragment instanceof WelcomePage4));
     }
 
     public void finishWithResult(boolean success) {

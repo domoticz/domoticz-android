@@ -90,6 +90,9 @@ public class DevicesInfo implements Comparable, Serializable {
     private long Temp;
     private int Barometer;
 
+    private int CameraIdx;
+    private boolean UsedByCamera;
+
     private boolean Notifications;
     private boolean statusBoolean;
     private boolean isProtected;
@@ -283,6 +286,18 @@ public class DevicesInfo implements Comparable, Serializable {
         }
 
         try {
+            if (row.has("CameraIdx"))
+                CameraIdx = row.getInt("CameraIdx");
+        } catch (Exception e) {
+            CameraIdx = -1;
+        }
+        try {
+            UsedByCamera = row.getBoolean("UsedByCamera");
+        } catch (Exception e) {
+            UsedByCamera = false;
+        }
+
+        try {
             if (row.has("SetPoint")) {
                 setPoint = row.getDouble("SetPoint");
             } else {
@@ -402,6 +417,14 @@ public class DevicesInfo implements Comparable, Serializable {
                         .create()
                         .toJson(this) +
                 '}';
+    }
+
+    public int getCameraIdx() {
+        return CameraIdx;
+    }
+
+    public boolean getUsedByCamera() {
+        return UsedByCamera;
     }
 
     public int getIdx() {

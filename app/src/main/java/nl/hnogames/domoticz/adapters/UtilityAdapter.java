@@ -22,6 +22,7 @@
 package nl.hnogames.domoticz.adapters;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +30,14 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.material.chip.Chip;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
@@ -43,7 +50,10 @@ import java.util.List;
 import androidx.recyclerview.widget.RecyclerView;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.ads.NativeTemplateStyle;
+import nl.hnogames.domoticz.ads.TemplateView;
 import nl.hnogames.domoticz.interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
@@ -57,12 +67,13 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     private static final String TAG = UtilityAdapter.class.getSimpleName();
     public static List<String> mCustomSorting;
     private final UtilityClickListener listener;
+    private final Context context;
+    private final Domoticz domoticz;
+    private final ItemFilter mFilter = new ItemFilter();
+    private final SharedPrefUtil mSharedPrefs;
     public ArrayList<UtilitiesInfo> filteredData = null;
-    private Context context;
     private ArrayList<UtilitiesInfo> data = null;
-    private Domoticz domoticz;
-    private ItemFilter mFilter = new ItemFilter();
-    private SharedPrefUtil mSharedPrefs;
+    private boolean adLoaded = false;
 
     public UtilityAdapter(Context context,
                           Domoticz mDomoticz,
@@ -86,19 +97,33 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         this.filteredData = sortedData;
     }
 
-    private ArrayList<UtilitiesInfo> SortData(ArrayList<UtilitiesInfo> data) {
+    private ArrayList<UtilitiesInfo> SortData(ArrayList<UtilitiesInfo> dat) {
+        ArrayList<UtilitiesInfo> data = new ArrayList<>();
+        if (Build.VERSION.SDK_INT >= 21) {
+            data = dat;
+        } else {
+            for (UtilitiesInfo d : dat) {
+                if (d.getIdx() != MainActivity.ADS_IDX)
+                    data.add(d);
+            }
+        }
         ArrayList<UtilitiesInfo> customdata = new ArrayList<>();
         if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
+            UtilitiesInfo adView = null;
             for (String s : mCustomSorting) {
                 for (UtilitiesInfo d : data) {
-                    if (s.equals(String.valueOf(d.getIdx())))
+                    if (s.equals(String.valueOf(d.getIdx())) && d.getIdx() != MainActivity.ADS_IDX)
                         customdata.add(d);
+                    if (d.getIdx() == MainActivity.ADS_IDX)
+                        adView = d;
                 }
             }
             for (UtilitiesInfo d : data) {
-                if (!customdata.contains(d))
+                if (!customdata.contains(d) && d.getIdx() != MainActivity.ADS_IDX)
                     customdata.add(d);
             }
+            if (adView != null && customdata != null && customdata.size() > 0)
+                customdata.add(1, adView);
         } else
             customdata = data;
         return customdata;
@@ -107,7 +132,8 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     private void SaveSorting() {
         List<String> ids = new ArrayList<>();
         for (UtilitiesInfo d : filteredData) {
-            ids.add(String.valueOf(d.getIdx()));
+            if (d.getIdx() != MainActivity.ADS_IDX)
+                ids.add(String.valueOf(d.getIdx()));
         }
         mCustomSorting = ids;
         mSharedPrefs.saveSortingList("utilities", ids);
@@ -119,9 +145,14 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
 
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.utilities_row_default, parent, false);
-
+        View view;
+        if (Build.VERSION.SDK_INT >= 21) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.utilities_row_default, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.utilities_row_default_noads, parent, false);
+        }
         return new DataObjectHolder(view);
     }
 
@@ -131,34 +162,74 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             final UtilitiesInfo mUtilitiesInfo = filteredData.get(position);
             final double setPoint = mUtilitiesInfo.getSetPoint();
 
-            if ((mUtilitiesInfo.getType() != null && DomoticzValues.Device.Utility.Type.THERMOSTAT.equalsIgnoreCase(mUtilitiesInfo.getType())) ||
-                    (mUtilitiesInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mUtilitiesInfo.getSubType()))) {
-                setButtons(holder, Buttons.THERMOSTAT);
-                CreateThermostatRow(holder, mUtilitiesInfo, setPoint);
+            if (mUtilitiesInfo.getIdx() == MainActivity.ADS_IDX) {
+                setButtons(holder, Buttons.ADS);
+                setAdsLayout(holder);
             } else {
-                if (DomoticzValues.Device.Utility.SubType.TEXT.equalsIgnoreCase(mUtilitiesInfo.getSubType()) || DomoticzValues.Device.Utility.SubType.ALERT.equalsIgnoreCase(mUtilitiesInfo.getSubType())) {
-                    CreateTextRow(holder, mUtilitiesInfo);
-                    setButtons(holder, Buttons.TEXT);
+                if ((mUtilitiesInfo.getType() != null && DomoticzValues.Device.Utility.Type.THERMOSTAT.equalsIgnoreCase(mUtilitiesInfo.getType())) ||
+                        (mUtilitiesInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mUtilitiesInfo.getSubType()))) {
+                    setButtons(holder, Buttons.THERMOSTAT);
+                    CreateThermostatRow(holder, mUtilitiesInfo, setPoint);
                 } else {
-                    CreateDefaultRow(holder, mUtilitiesInfo);
-                    setButtons(holder, Buttons.DEFAULT);
+                    if (DomoticzValues.Device.Utility.SubType.TEXT.equalsIgnoreCase(mUtilitiesInfo.getSubType()) || DomoticzValues.Device.Utility.SubType.ALERT.equalsIgnoreCase(mUtilitiesInfo.getSubType())) {
+                        CreateTextRow(holder, mUtilitiesInfo);
+                        setButtons(holder, Buttons.TEXT);
+                    } else {
+                        CreateDefaultRow(holder, mUtilitiesInfo);
+                        setButtons(holder, Buttons.DEFAULT);
+                    }
                 }
             }
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClicked(v, position);
-                }
-            });
+            holder.itemView.setOnClickListener(v -> listener.onItemClicked(v, position));
 
             holder.infoIcon.setTag(mUtilitiesInfo.getIdx());
-            holder.infoIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemLongClicked((int) v.getTag());
-                }
-            });
+            holder.infoIcon.setOnClickListener(v -> listener.onItemLongClicked((int) v.getTag()));
+        }
+    }
+
+    /**
+     * Set the data for the ads row
+     *
+     * @param holder Holder to use
+     */
+    private void setAdsLayout(DataObjectHolder holder) {
+        try {
+            if (holder.adview == null)
+                return;
+            if (!adLoaded)
+                holder.adview.setVisibility(View.GONE);
+
+            MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4")
+                    .addTestDevice("1AAE9D81347967A359E372B0445549DE")
+                    .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
+                    .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
+                    .addTestDevice("6C2390A9FF8F555BD01BA560068CD366")
+                    .build();
+
+            AdLoader adLoader = new AdLoader.Builder(context, context.getString(R.string.ad_unit_id))
+                    .forUnifiedNativeAd(unifiedNativeAd -> {
+                        NativeTemplateStyle styles = new NativeTemplateStyle.Builder().build();
+                        if (holder.adview != null) {
+                            holder.adview.setStyles(styles);
+                            holder.adview.setNativeAd(unifiedNativeAd);
+                            holder.adview.setVisibility(View.VISIBLE);
+                            adLoaded = true;
+                        }
+                    })
+                    .withAdListener(new AdListener() {
+                        @Override
+                        public void onAdFailedToLoad(int errorCode) {
+                            if (holder.adview != null)
+                                holder.adview.setVisibility(View.GONE);
+                        }
+                    })
+                    .withNativeAdOptions(new NativeAdOptions.Builder().build())
+                    .build();
+            adLoader.loadAd(adRequest);
+        } catch (Exception ignored) {
         }
     }
 
@@ -217,12 +288,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         }
 
         holder.buttonLog.setId(mUtilitiesInfo.getIdx());
-        holder.buttonLog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleLogButtonClick(v.getId());
-            }
-        });
+        holder.buttonLog.setOnClickListener(v -> handleLogButtonClick(v.getId()));
 
         Picasso.get().load(DomoticzIcons.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
     }
@@ -269,46 +335,34 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         }
 
         holder.dayButton.setId(mUtilitiesInfo.getIdx());
-        holder.dayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (UtilitiesInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, DomoticzValues.Graph.Range.DAY);
-                }
+        holder.dayButton.setOnClickListener(v -> {
+            for (UtilitiesInfo t : filteredData) {
+                if (t.getIdx() == v.getId())
+                    listener.onLogClick(t, DomoticzValues.Graph.Range.DAY);
             }
         });
         holder.monthButton.setId(mUtilitiesInfo.getIdx());
-        holder.monthButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (UtilitiesInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, DomoticzValues.Graph.Range.MONTH);
-                }
+        holder.monthButton.setOnClickListener(v -> {
+            for (UtilitiesInfo t : filteredData) {
+                if (t.getIdx() == v.getId())
+                    listener.onLogClick(t, DomoticzValues.Graph.Range.MONTH);
             }
         });
 
         holder.weekButton.setVisibility(View.GONE);
         holder.weekButton.setId(mUtilitiesInfo.getIdx());
-        holder.weekButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (UtilitiesInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, DomoticzValues.Graph.Range.WEEK);
-                }
+        holder.weekButton.setOnClickListener(v -> {
+            for (UtilitiesInfo t : filteredData) {
+                if (t.getIdx() == v.getId())
+                    listener.onLogClick(t, DomoticzValues.Graph.Range.WEEK);
             }
         });
 
         holder.yearButton.setId(mUtilitiesInfo.getIdx());
-        holder.yearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (UtilitiesInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, DomoticzValues.Graph.Range.YEAR);
-                }
+        holder.yearButton.setOnClickListener(v -> {
+            for (UtilitiesInfo t : filteredData) {
+                if (t.getIdx() == v.getId())
+                    listener.onLogClick(t, DomoticzValues.Graph.Range.YEAR);
             }
         });
 
@@ -339,43 +393,29 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
 
         holder.on_button.setText(context.getString(R.string.set_temperature));
         holder.on_button.setId(mUtilitiesInfo.getIdx());
-        holder.on_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleThermostatClick(v.getId());
-            }
-        });
+        holder.on_button.setOnClickListener(v -> handleThermostatClick(v.getId()));
 
         holder.dayButton.setId(mUtilitiesInfo.getIdx());
-        holder.dayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (UtilitiesInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, DomoticzValues.Graph.Range.DAY);
-                }
+        holder.dayButton.setOnClickListener(v -> {
+            for (UtilitiesInfo t : filteredData) {
+                if (t.getIdx() == v.getId())
+                    listener.onLogClick(t, DomoticzValues.Graph.Range.DAY);
             }
         });
         holder.monthButton.setId(mUtilitiesInfo.getIdx());
-        holder.monthButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (UtilitiesInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, DomoticzValues.Graph.Range.MONTH);
-                }
+        holder.monthButton.setOnClickListener(v -> {
+            for (UtilitiesInfo t : filteredData) {
+                if (t.getIdx() == v.getId())
+                    listener.onLogClick(t, DomoticzValues.Graph.Range.MONTH);
             }
         });
 
         holder.weekButton.setVisibility(View.GONE);
         holder.weekButton.setId(mUtilitiesInfo.getIdx());
-        holder.weekButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (UtilitiesInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, DomoticzValues.Graph.Range.WEEK);
-                }
+        holder.weekButton.setOnClickListener(v -> {
+            for (UtilitiesInfo t : filteredData) {
+                if (t.getIdx() == v.getId())
+                    listener.onLogClick(t, DomoticzValues.Graph.Range.WEEK);
             }
         });
 
@@ -390,13 +430,10 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             holder.weekButton.setVisibility(View.VISIBLE);
 
         holder.yearButton.setId(mUtilitiesInfo.getIdx());
-        holder.yearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (UtilitiesInfo t : filteredData) {
-                    if (t.getIdx() == v.getId())
-                        listener.onLogClick(t, DomoticzValues.Graph.Range.YEAR);
-                }
+        holder.yearButton.setOnClickListener(v -> {
+            for (UtilitiesInfo t : filteredData) {
+                if (t.getIdx() == v.getId())
+                    listener.onLogClick(t, DomoticzValues.Graph.Range.YEAR);
             }
         });
         holder.name.setText(mUtilitiesInfo.getName());
@@ -415,6 +452,10 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     }
 
     public void setButtons(DataObjectHolder holder, int button) {
+        if (holder.adview != null)
+            holder.adview.setVisibility(View.GONE);
+        if (holder.contentWrapper != null)
+            holder.contentWrapper.setVisibility(View.VISIBLE);
 
         if (holder.buttonLog != null) {
             holder.buttonLog.setVisibility(View.GONE);
@@ -436,21 +477,39 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         }
 
         switch (button) {
+            case Buttons.ADS:
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.VISIBLE);
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.GONE);
+                break;
             case Buttons.DEFAULT:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 holder.dayButton.setVisibility(View.VISIBLE);
                 holder.monthButton.setVisibility(View.VISIBLE);
                 holder.weekButton.setVisibility(View.VISIBLE);
                 holder.yearButton.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.TEXT:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 holder.buttonLog.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
             case Buttons.THERMOSTAT:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
                 holder.on_button.setVisibility(View.VISIBLE);
                 holder.dayButton.setVisibility(View.VISIBLE);
                 holder.monthButton.setVisibility(View.VISIBLE);
                 holder.weekButton.setVisibility(View.VISIBLE);
                 holder.yearButton.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
                 break;
         }
     }
@@ -485,6 +544,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         int DEFAULT = 0;
         int TEXT = 1;
         int THERMOSTAT = 2;
+        int ADS = 3;
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder implements RVHViewHolder {
@@ -503,10 +563,14 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         ImageView infoIcon;
         LikeButton likeButton;
         LinearLayout extraPanel;
+        TemplateView adview;
+        RelativeLayout contentWrapper;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
 
+            contentWrapper = itemView.findViewById(R.id.contentWrapper);
+            adview = itemView.findViewById(R.id.adview);
             dayButton = itemView.findViewById(R.id.day_button);
             monthButton = itemView.findViewById(R.id.month_button);
             yearButton = itemView.findViewById(R.id.year_button);
@@ -548,22 +612,20 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             final ArrayList<UtilitiesInfo> list = data;
 
             int count = list.size();
-            final ArrayList<UtilitiesInfo> nlist = new ArrayList<UtilitiesInfo>(count);
+            final ArrayList<UtilitiesInfo> devicesInfos = new ArrayList<>(count);
 
             UtilitiesInfo filterableObject;
-
             for (int i = 0; i < count; i++) {
                 filterableObject = list.get(i);
-                if (filterableObject.getName().toLowerCase().contains(filterString)) {
-                    nlist.add(filterableObject);
+                if (filterableObject.getName().toLowerCase().contains(filterString) || (filterableObject.getType() != null && filterableObject.getType().equals("advertisement"))) {
+                    devicesInfos.add(filterableObject);
                 }
             }
-
-            results.values = nlist;
-            results.count = nlist.size();
-
+            results.values = devicesInfos;
+            results.count = devicesInfos.size();
             return results;
         }
+
 
         @SuppressWarnings("unchecked")
         @Override

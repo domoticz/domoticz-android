@@ -58,4 +58,6 @@ public interface switchesClickListener {
     void onItemClicked(View v, int position);
 
     boolean onItemLongClicked(int idx);
+
+    void onCameraFullScreenClick(int idx, String name);
 }

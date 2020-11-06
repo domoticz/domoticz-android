@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -73,6 +72,8 @@
     <string name="show_dashboard_list_off">Pokaži nadzorno ploščo kot mrežo</string>
     <string name="dashboard_clock">Clock</string>
     <string name="show_dashboard_clock">Show a clock on the dashboard</string>
+    <string name="dashboard_camera">Camera</string>
+    <string name="show_dashboard_camera">Load the camera for connected switches</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear pripomočki po meri</string>
     <string name="custom_wear_select">Izberi Android Wear stikala</string>
@@ -170,6 +171,8 @@
     <string name="theme_orange">Orange</string>
     <string name="theme_pink">Pink</string>
     <string name="theme_blue">Blue</string>
+    <string name="theme_green">Green</string>
+    <string name="theme_dark_blue">Dark blue</string>
     <!-- Other -->
     <string name="default_values">Privzete vrednosti</string>
     <string name="default_values_min_error">Maksimalna vrednost naj bo višja kot minimalna vrednost</string>
@@ -214,4 +217,6 @@
     <string name="restart_required_title">Potreben je vnovičen zagon</string>
     <string name="restart_now">Ponovni zagon zdaj?</string>
     <string name="check_settings">Check your settings</string>
+    <string name="report_error">Report an error</string>
+    <string name="support">Support</string>
 </resources>

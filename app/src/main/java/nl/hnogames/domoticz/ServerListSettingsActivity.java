@@ -25,8 +25,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,11 +38,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import nl.hnogames.domoticz.adapters.ServerAdapter;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.ServerClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
-import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 
 public class ServerListSettingsActivity extends AppCompatAssistActivity {
@@ -54,8 +52,7 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
     private final int REQUEST_EDIT_SERVER = 55;
 
     @SuppressWarnings("unused")
-    private String TAG = ServerListSettingsActivity.class.getSimpleName();
-    private ServerUtil mServerUtil;
+    private final String TAG = ServerListSettingsActivity.class.getSimpleName();
     private CoordinatorLayout coordinatorLayout;
     private ServerAdapter adapter;
     private ArrayList<ServerInfo> mServerList;
@@ -84,13 +81,12 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
     }
 
     private void createListView() {
-        mServerUtil = new ServerUtil(this);
-        mServerList = mServerUtil.getServerList();
+        mServerList = StaticHelper.getServerUtil(getApplicationContext()).getServerList();
         adapter = new ServerAdapter(this, mServerList, new ServerClickListener() {
             @Override
             public boolean onEnableClick(ServerInfo server, boolean checked) {
                 server.setEnabled(checked);
-                mServerUtil.updateServerInfo(server);
+                StaticHelper.getServerUtil(getApplicationContext()).updateServerInfo(server);
                 return false;
             }
 
@@ -104,22 +100,19 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
         SwingBottomInAnimationAdapter animationAdapter = new SwingBottomInAnimationAdapter(adapter);
         animationAdapter.setAbsListView(listView);
         listView.setAdapter(animationAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int item, long id) {
-                String servername = String.valueOf(((TextView) view.findViewById(R.id.server_name)).getText());
-                boolean active = false;
-                for (ServerInfo s : mServerList) {
-                    if (s.getServerName().equals(servername)) {
-                        if (mServerUtil.getActiveServer().getServerName().equals(servername)) {
-                            active = true;
-                            break;
-                        }
+        listView.setOnItemClickListener((adapterView, view, item, id) -> {
+            String servername = String.valueOf(((TextView) view.findViewById(R.id.server_name)).getText());
+            boolean active = false;
+            for (ServerInfo s : mServerList) {
+                if (s.getServerName().equals(servername)) {
+                    if (StaticHelper.getServerUtil(getApplicationContext()).getActiveServer().getServerName().equals(servername)) {
+                        active = true;
+                        break;
                     }
                 }
-
-                showEditServerActivity(servername, active);
             }
+
+            showEditServerActivity(servername, active);
         });
     }
 
@@ -146,7 +139,7 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
     }
 
     private void removeServerFromSettings(ServerInfo serverInfo) {
-        mServerUtil.removeServer(serverInfo);
+        StaticHelper.getServerUtil(getApplicationContext()).removeServer(serverInfo);
     }
 
     private void addServerToListView(ServerInfo serverInfo) {

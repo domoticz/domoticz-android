@@ -11,16 +11,16 @@ import androidx.appcompat.widget.AppCompatImageButton;
 
 public class ToolbarIconClick implements View.OnClickListener {
 
-    private Context context;
-    private View backlayer;
-    private View frontlayer;
-    private Drawable hambergerIcon;
-    private Drawable closeIcon;
-    private int translate;
-    private Interpolator interpolator;
-    private int anim_duration;
+    private final Context context;
+    private final View backlayer;
+    private final View frontlayer;
+    private final Drawable hambergerIcon;
+    private final Drawable closeIcon;
+    private final int translate;
+    private final Interpolator interpolator;
+    private final int anim_duration;
+    private final AnimatorSet animatorSet = new AnimatorSet();
     private boolean dropped = false;
-    private AnimatorSet animatorSet = new AnimatorSet();
     private AppCompatImageButton toolbaricon;
 
     public ToolbarIconClick(Context context, View frontview, View backview, Drawable mMenuicon,

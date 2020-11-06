@@ -42,9 +42,9 @@ import nl.hnogames.domoticzapi.Containers.NotificationTypeInfo;
 
 public class SendNotificationDialog {
     private final MaterialDialog.Builder mdb;
+    private final List<NotificationTypeInfo> info;
+    private final Context context;
     private DismissListener dismissListener;
-    private List<NotificationTypeInfo> info;
-    private Context context;
     private AppCompatEditText subject, message;
     private MultiSelectionSpinner systems;
 

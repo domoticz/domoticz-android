@@ -36,8 +36,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
@@ -45,6 +45,7 @@ import nl.hnogames.domoticz.adapters.WeatherAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.WeatherClickListener;
 import nl.hnogames.domoticz.ui.WeatherInfoDialog;
@@ -96,6 +97,30 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         initAnimation();
         setActionbar(getString(R.string.title_weather));
         setSortFab(false);
+    }
+
+    private ArrayList<WeatherInfo> AddAdsDevice(ArrayList<WeatherInfo> supportedSwitches) {
+        try {
+            if (supportedSwitches == null || supportedSwitches.size() <= 0)
+                return supportedSwitches;
+
+            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                ArrayList<WeatherInfo> filteredList = new ArrayList<>();
+                for (WeatherInfo d : supportedSwitches) {
+                    if (d.getIdx() != MainActivity.ADS_IDX)
+                        filteredList.add(d);
+                }
+                WeatherInfo adView = new WeatherInfo();
+                adView.setIdx(MainActivity.ADS_IDX);
+                adView.setName("Ads");
+                adView.setType("advertisement");
+                adView.setFavoriteBoolean(true);
+                filteredList.add(1, adView);
+                return filteredList;
+            }
+        } catch (Exception ex) {
+        }
+        return supportedSwitches;
     }
 
     @Override
@@ -157,11 +182,11 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
 
     private void createListView(ArrayList<WeatherInfo> mWeatherInfos) {
         if (adapter == null) {
-            adapter = new WeatherAdapter(mContext, mDomoticz, getServerUtil(), mWeatherInfos, this);
+            adapter = new WeatherAdapter(mContext, StaticHelper.getDomoticz(mContext), getServerUtil(), AddAdsDevice(mWeatherInfos), this);
             alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
             gridView.setAdapter(alphaSlideIn);
         } else {
-            adapter.setData(mWeatherInfos);
+            adapter.setData(AddAdsDevice(mWeatherInfos));
             adapter.notifyDataSetChanged();
             alphaSlideIn.notifyDataSetChanged();
         }
@@ -182,15 +207,8 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
                 mItemTouchHelper.attachToRecyclerView(null);
         }
 
-
         mSwipeRefreshLayout.setRefreshing(false);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-
-            public void onRefresh() {
-                processWeather();
-            }
-        });
+        mSwipeRefreshLayout.setOnRefreshListener(() -> processWeather());
         super.showSpinner(false);
         this.Filter(filter);
     }
@@ -202,13 +220,9 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
                 R.layout.dialog_weather);
         infoDialog.setWeatherInfo(mWeatherInfo);
         infoDialog.show();
-        infoDialog.onDismissListener(new WeatherInfoDialog.DismissListener() {
-            @Override
-
-            public void onDismiss(boolean isChanged, boolean isFavorite) {
-                if (isChanged)
-                    changeFavorite(mWeatherInfo, isFavorite);
-            }
+        infoDialog.onDismissListener((isChanged, isFavorite) -> {
+            if (isChanged)
+                changeFavorite(mWeatherInfo, isFavorite);
         });
     }
 
@@ -216,7 +230,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         addDebugText("changeFavorite");
         addDebugText("Set idx " + mWeatherInfo.getIdx() + " favorite to " + isFavorite);
 
-        UserInfo user = getCurrentUser(mContext, mDomoticz);
+        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
         if (user != null && user.getRights() <= 1) {
             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
@@ -240,7 +254,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         if (isFavorite) jsonAction = DomoticzValues.Device.Favorite.ON;
         else jsonAction = DomoticzValues.Device.Favorite.OFF;
 
-        mDomoticz.setAction(mWeatherInfo.getIdx(),
+        StaticHelper.getDomoticz(mContext).setAction(mWeatherInfo.getIdx(),
                 jsonUrl,
                 jsonAction,
                 0,
@@ -381,7 +395,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
             if (cacheWeathers != null)
                 createListView(cacheWeathers);
 
-            mDomoticz.getWeathers(new WeatherReceiver() {
+            StaticHelper.getDomoticz(mContext).getWeathers(new WeatherReceiver() {
                 @Override
 
                 public void onReceiveWeather(ArrayList<WeatherInfo> mWeatherInfos) {

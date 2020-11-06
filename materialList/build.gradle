@@ -21,13 +21,13 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha03'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha05'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
-    implementation 'com.google.firebase:firebase-core:17.4.2'
+    implementation 'com.google.firebase:firebase-core:17.5.0'
     implementation 'com.google.firebase:firebase-crash:16.2.1'
 
     implementation 'com.nineoldandroids:library:2.4.0'

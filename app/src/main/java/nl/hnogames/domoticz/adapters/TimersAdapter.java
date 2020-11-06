@@ -38,9 +38,9 @@ import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.SwitchTimerInfo;
 
 public class TimersAdapter extends BaseAdapter {
-    private SharedPrefUtil mSharedPrefs;
-    private Context context;
-    private ArrayList<SwitchTimerInfo> data;
+    private final SharedPrefUtil mSharedPrefs;
+    private final Context context;
+    private final ArrayList<SwitchTimerInfo> data;
 
     public TimersAdapter(Context context,
                          ArrayList<SwitchTimerInfo> data) {

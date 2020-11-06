@@ -36,8 +36,8 @@ import nl.hnogames.domoticzapi.Containers.SwitchTimerInfo;
 public class SwitchTimerInfoDialog {
 
     private final MaterialDialog.Builder mdb;
-    private ArrayList<SwitchTimerInfo> info;
-    private Context mContext;
+    private final ArrayList<SwitchTimerInfo> info;
+    private final Context mContext;
 
     public SwitchTimerInfoDialog(Context c,
                                  ArrayList<SwitchTimerInfo> _info,

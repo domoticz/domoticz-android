@@ -31,21 +31,18 @@ import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import nl.hnogames.domoticz.NFCSettingsActivity;
-import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.containers.NFCInfo;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 
 public class NFCServiceActivity extends AppCompatActivity {
-
-    private Domoticz domoticz;
-    private String TAG = NFCSettingsActivity.class.getSimpleName();
+    private final String TAG = NFCSettingsActivity.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,10 +75,7 @@ public class NFCServiceActivity extends AppCompatActivity {
     }
 
     private void handleSwitch(final int idx, final String password, final String value, final boolean isSceneOrGroup) {
-        if (domoticz == null)
-            domoticz = new Domoticz(this, AppController.getInstance().getRequestQueue());
-
-        domoticz.getDevice(new DevicesReceiver() {
+        StaticHelper.getDomoticz(this).getDevice(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
             }
@@ -146,7 +140,7 @@ public class NFCServiceActivity extends AppCompatActivity {
                         jsonAction = DomoticzValues.Scene.Action.ON;
                 }
 
-                domoticz.setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
+                StaticHelper.getDomoticz(getApplicationContext()).setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
                     @Override
 
                     public void onReceiveResult(String result) {

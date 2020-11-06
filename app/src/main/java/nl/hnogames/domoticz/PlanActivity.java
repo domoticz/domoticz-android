@@ -33,22 +33,20 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.fragments.Dashboard;
+import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
-import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 public class PlanActivity extends AppCompatAssistActivity {
-    private ServerUtil mServerUtil;
     private Timer autoRefreshTimer = null;
     private Dashboard dash;
     private SharedPrefUtil mSharedPrefs;
     private Toolbar toolbar;
 
-
     public ConfigInfo getConfig() {
-        return mServerUtil != null && mServerUtil.getActiveServer() != null ?
-                mServerUtil.getActiveServer().getConfigInfo(this) :
+        return StaticHelper.getServerUtil(this) != null && StaticHelper.getServerUtil(this).getActiveServer() != null ?
+                StaticHelper.getServerUtil(this).getActiveServer().getConfigInfo(this) :
                 null;
     }
 
@@ -111,12 +109,6 @@ public class PlanActivity extends AppCompatAssistActivity {
             autoRefreshTimer.purge();
             autoRefreshTimer = null;
         }
-    }
-
-    public ServerUtil getServerUtil() {
-        if (mServerUtil == null)
-            mServerUtil = new ServerUtil(this);
-        return mServerUtil;
     }
 
     @Override

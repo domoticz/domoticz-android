@@ -34,9 +34,9 @@ import android.widget.SeekBar;
 public class LevelIndicator extends SeekBar {
 
     @SuppressWarnings("FieldCanBeLocal")
-    private int duration = 1000;
+    private final int min = 5;
     @SuppressWarnings("FieldCanBeLocal")
-    private int min = 5;
+    private int duration = 1000;
 
     public LevelIndicator(Context context) {
         super(context);
