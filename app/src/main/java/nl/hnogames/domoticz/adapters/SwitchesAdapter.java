@@ -452,7 +452,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
                             @Override
                             public void onError(Exception e) {
-                                holder.dummyImg.setVisibility(View.GONE);
+                                if(holder.dummyImg.getDrawable() == null)
+                                    holder.dummyImg.setVisibility(View.GONE);
                                 holder.row_wrapper.setBackgroundColor(listviewRowBackground);
                             }
                         });
@@ -470,7 +471,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
                             @Override
                             public void onError(Exception e) {
-                                holder.dummyImg.setVisibility(View.GONE);
+                                if(holder.dummyImg.getDrawable() == null)
+                                    holder.dummyImg.setVisibility(View.GONE);
                                 holder.row_wrapper.setBackgroundColor(listviewRowBackground);
                             }
                         });

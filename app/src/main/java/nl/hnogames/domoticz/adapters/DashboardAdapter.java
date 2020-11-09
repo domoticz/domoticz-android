@@ -741,7 +741,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
                             @Override
                             public void onError(Exception e) {
-                                holder.dummyImg.setVisibility(View.GONE);
+                                if(holder.dummyImg.getDrawable() == null)
+                                    holder.dummyImg.setVisibility(View.GONE);
                                 holder.row_wrapper.setBackgroundColor(listviewRowBackground);
                             }
                         });
@@ -759,7 +760,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
                             @Override
                             public void onError(Exception e) {
-                                holder.dummyImg.setVisibility(View.GONE);
+                                if(holder.dummyImg.getDrawable() == null)
+                                    holder.dummyImg.setVisibility(View.GONE);
                                 holder.row_wrapper.setBackgroundColor(listviewRowBackground);
                             }
                         });

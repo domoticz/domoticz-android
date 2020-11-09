@@ -55,22 +55,14 @@ public class SerializableManager {
      * @param fileName     The name of the file.
      */
     public static void saveSerializable(Context context, Object objectToSave, String fileName) {
-        File SettingsFile = new File(Environment.getExternalStorageDirectory(),
-                "/Domoticz/DomoticzSettings.txt");
-
-        final String sPath = SettingsFile.getPath().
-                substring(0, SettingsFile.getPath().lastIndexOf("/"));
-
-        //noinspection unused
-        boolean mkdirsResultIsOk = new File(sPath + "/").mkdirs();
-        String combinedFilename = sPath + "/" + fileName;
-
         try {
-            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(combinedFilename));
+            ObjectOutputStream output = new ObjectOutputStream(context.openFileOutput( fileName+".txt", Context.MODE_PRIVATE));
             output.writeObject(objectToSave);
             output.close();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -84,27 +76,16 @@ public class SerializableManager {
     public static Object readSerializedObject(Context context, String fileName) {
         Object objectToReturn = null;
 
-        File SettingsFile = new File(Environment.getExternalStorageDirectory(),
-                "/Domoticz/DomoticzSettings.txt");
-
-        final String sPath = SettingsFile.getPath().
-                substring(0, SettingsFile.getPath().lastIndexOf("/"));
-
-        //noinspection unused
-        boolean mkdirsResultIsOk = new File(sPath + "/").mkdirs();
-        String combinedFilename = sPath + "/" + fileName;
-
-        if (!new File(combinedFilename).exists())
-            return null;
-
+        FileInputStream fis = null;
         try {
-            ObjectInputStream input = new ObjectInputStream(new FileInputStream(combinedFilename));
-            objectToReturn = input.readObject();
-            input.close();
+            fis = context.openFileInput(fileName+".txt");
+                ObjectInputStream input = new ObjectInputStream(fis);
+                objectToReturn = input.readObject();
+                input.close();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return objectToReturn;
+            return objectToReturn;
     }
 
     /**
