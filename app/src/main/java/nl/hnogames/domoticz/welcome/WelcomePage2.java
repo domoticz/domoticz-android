@@ -21,6 +21,7 @@
 
 package nl.hnogames.domoticz.welcome;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
@@ -50,6 +51,7 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 public class WelcomePage2 extends Fragment implements OnPermissionCallback {
     private PermissionFragmentHelper permissionFragmentHelper;
     private StorageChooser.Theme theme;
+    private int IMPORT_SETTINGS = 555;
 
     public static WelcomePage2 newInstance() {
         return new WelcomePage2();
@@ -64,25 +66,17 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
         permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
         MaterialButton importButton = v.findViewById(R.id.import_settings);
         MaterialButton demoSetup = v.findViewById(R.id.demo_settings);
-        importButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!PermissionsUtil.canAccessStorage(getActivity()))
-                        permissionFragmentHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
-                    else
-                        importSettings();
-                } else
+        importButton.setOnClickListener(v12 -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (!PermissionsUtil.canAccessStorage(getActivity()))
+                    permissionFragmentHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                else
                     importSettings();
-            }
+            } else
+                importSettings();
         });
 
-        demoSetup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((WelcomeViewActivity) getActivity()).setDemoAccount();
-            }
-        });
+        demoSetup.setOnClickListener(v1 -> ((WelcomeViewActivity) getActivity()).setDemoAccount());
         return v;
     }
 
@@ -127,27 +121,11 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
     }
 
     private void importSettings() {
-        StorageChooser chooser = new StorageChooser.Builder()
-                .withActivity(getActivity())
-                .withFragmentManager(getActivity().getFragmentManager())
-                .withMemoryBar(false)
-                .allowCustomPath(true)
-                .setType(StorageChooser.FILE_PICKER)
-                .setTheme(theme)
-                .build();
-        chooser.show();
-        chooser.setOnSelectListener(new StorageChooser.OnSelectListener() {
-            @Override
-            public void onSelect(String path) {
-                Log.v("Import", "Importing settings from: " + path);
-                SharedPrefUtil mSharedPrefs = new SharedPrefUtil(getActivity());
-                if (mSharedPrefs.loadSharedPreferencesFromFile(new File(path))) {
-                    Toast.makeText(getActivity(), R.string.settings_imported, Toast.LENGTH_LONG).show();
-                    ((WelcomeViewActivity) getActivity()).finishWithResult(true);
-                } else
-                    Toast.makeText(getActivity(), R.string.settings_import_failed, Toast.LENGTH_SHORT).show();
-            }
-        });
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_TITLE, "settings.txt");
+        startActivityForResult(intent, IMPORT_SETTINGS);
     }
 
     @Override
@@ -184,6 +162,22 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         permissionFragmentHelper.onActivityForResult(requestCode);
+        if( requestCode == IMPORT_SETTINGS ) {
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                    if (data != null && data.getData() != null) {
+                        if ((new SharedPrefUtil(getContext())).loadSharedPreferencesFromFile(data.getData())) {
+                            Toast.makeText(getActivity(), R.string.settings_imported, Toast.LENGTH_LONG).show();
+                            ((WelcomeViewActivity) getActivity()).finishWithResult(true);
+                        }
+                        else
+                            Toast.makeText(getActivity(), R.string.settings_import_failed, Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case Activity.RESULT_CANCELED:
+                    break;
+            }
+        }
     }
 
     @Override

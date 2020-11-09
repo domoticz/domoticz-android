@@ -25,6 +25,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -38,8 +40,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -1176,7 +1180,7 @@ public class SharedPrefUtil {
         }
     }
 
-    public boolean saveSharedPreferencesToFile(File dst) {
+    public boolean saveSharedPreferencesToFile(Uri file) {
         try {
             boolean isServerUpdateAvailableValue = false;
             ServerUpdateInfo mServerUpdateInfo = StaticHelper.getServerUtil(mContext).getActiveServer().getServerUpdateInfo(mContext);
@@ -1195,49 +1199,37 @@ public class SharedPrefUtil {
                 }
             }
 
-            boolean result = true;
-            if (dst.exists())
-                result = dst.delete();
-
-            if (result) {
-                ObjectOutputStream output = null;
-
-                //noinspection TryWithIdenticalCatches
-                try {
-                    output = new ObjectOutputStream(new FileOutputStream(dst));
-                    output.writeObject(oSavePrefs);
-                    result = true;
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        if (output != null) {
-                            output.flush();
-                            output.close();
-                        }
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }
+            OutputStream outputStream;
+            ObjectOutputStream output = null;
+            try {
+                outputStream = mContext.getContentResolver().openOutputStream(file);
+                output = new ObjectOutputStream(outputStream);
+                output.writeObject(oSavePrefs);
+                output.flush();
+                output.close();
+                outputStream.flush();
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
             // Write original settings to preferences
-            if (isServerUpdateAvailableValue) mServerUpdateInfo.setUpdateAvailable(true);
-            return result;
+            if (isServerUpdateAvailableValue)
+                mServerUpdateInfo.setUpdateAvailable(true);
+            return true;
         } catch (Exception ex) {
             return false;
         }
     }
 
     @SuppressWarnings({"UnnecessaryUnboxing", "unchecked"})
-    public boolean loadSharedPreferencesFromFile(File src) {
+    public boolean loadSharedPreferencesFromFile(Uri src) {
         boolean res = false;
         ObjectInputStream input = null;
         //noinspection TryWithIdenticalCatches
         try {
-            input = new ObjectInputStream(new FileInputStream(src));
-            //editor.clear();
+            InputStream iputStream = mContext.getContentResolver().openInputStream(src);
+            input = new ObjectInputStream(iputStream);
             Map<String, ?> entries = (Map<String, ?>) input.readObject();
             for (Map.Entry<String, ?> entry : entries.entrySet()) {
                 Object v = entry.getValue();

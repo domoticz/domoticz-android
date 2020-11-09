@@ -22,6 +22,7 @@
 package nl.hnogames.domoticz.preference;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.KeyguardManager;
 import android.content.ActivityNotFoundException;
@@ -31,7 +32,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
@@ -51,6 +54,8 @@ import com.fastaccess.permission.base.PermissionHelper;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashSet;
 
 import androidx.biometric.BiometricManager;
@@ -791,10 +796,9 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                     if (!PermissionsUtil.canAccessStorage(mContext)) {
                         permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                     } else
-                        exportSettings();
+                        ((SettingsActivity) getActivity()).exportSettings();
                 } else
-                    exportSettings();
-
+                    ((SettingsActivity) getActivity()).exportSettings();
                 return false;
             });
         androidx.preference.Preference importButton = findPreference("import_settings");
@@ -804,56 +808,11 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                     if (!PermissionsUtil.canAccessStorage(mContext)) {
                         permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                     } else
-                        importSettings();
+                        ((SettingsActivity) getActivity()).importSettings();
                 } else
-                    importSettings();
-
+                    ((SettingsActivity) getActivity()).importSettings();
                 return false;
             });
-    }
-
-    private void importSettings() {
-        StorageChooser chooser = new StorageChooser.Builder()
-                .withActivity(getActivity())
-                .withFragmentManager(getActivity().getFragmentManager())
-                .withMemoryBar(false)
-                .allowCustomPath(true)
-                .setType(StorageChooser.FILE_PICKER)
-                .setTheme(theme)
-                .build();
-        chooser.show();
-        chooser.setOnSelectListener(path -> {
-            Log.v(TAG_IMPORT, "Importing settings from: " + path);
-            if (mSharedPrefs.loadSharedPreferencesFromFile(new File(path))) {
-                ((SettingsActivity) getActivity()).reloadSettings();
-                showSnackbar(mContext.getString(R.string.settings_imported));
-            } else
-                showSnackbar(mContext.getString(R.string.settings_import_failed));
-        });
-    }
-
-    private void exportSettings() {
-        StorageChooser chooser = new StorageChooser.Builder()
-                .withActivity(getActivity())
-                .withFragmentManager(getActivity().getFragmentManager())
-                .allowAddFolder(true)
-                .withMemoryBar(false)
-                .allowCustomPath(true)
-                .setType(StorageChooser.DIRECTORY_CHOOSER)
-                .setTheme(theme)
-                .build();
-        chooser.show();
-        chooser.setOnSelectListener(path -> new MaterialDialog.Builder(mContext)
-                .title(R.string.save_as)
-                .content(R.string.filename)
-                .inputType(InputType.TYPE_CLASS_TEXT)
-                .input("settings.txt", "settings.txt", (dialog, input) -> {
-                    File newFile = new File(path, "/" + input);
-                    if (mSharedPrefs.saveSharedPreferencesToFile(newFile))
-                        showSnackbar(mContext.getString(R.string.settings_exported));
-                    else
-                        showSnackbar(mContext.getString(R.string.settings_export_failed));
-                }).show());
     }
 
     private void setStartUpScreenDefaultValue() {
@@ -877,7 +836,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         }
     }
 
-    private void showSnackbar(final String text) {
+    public void showSnackbar(final String text) {
         try {
             new Handler().postDelayed(() -> {
                 if (getView() != null) {
