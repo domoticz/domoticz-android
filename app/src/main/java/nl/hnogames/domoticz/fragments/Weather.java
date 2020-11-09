@@ -81,7 +81,6 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     }
 
     @Override
-
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
@@ -89,7 +88,13 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     }
 
     @Override
+    public void onDestroyView() {
+        if (adapter != null)
+            adapter.onDestroy();
+        super.onDestroyView();
+    }
 
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         onAttachFragment(this);

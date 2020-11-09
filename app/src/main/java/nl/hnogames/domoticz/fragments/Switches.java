@@ -121,6 +121,13 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     }
 
     @Override
+    public void onDestroyView() {
+        if (adapter != null)
+            adapter.onDestroy();
+        super.onDestroyView();
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         onAttachFragment(this);

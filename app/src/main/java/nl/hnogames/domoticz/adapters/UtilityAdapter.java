@@ -91,7 +91,13 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         this.listener = listener;
     }
 
+    public void onDestroy() {
+        SaveSorting();
+    }
+
     public void setData(ArrayList<UtilitiesInfo> data) {
+        if (this.filteredData != null)
+            SaveSorting();
         ArrayList<UtilitiesInfo> sortedData = SortData(data);
         this.data = sortedData;
         this.filteredData = sortedData;
@@ -130,13 +136,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     }
 
     private void SaveSorting() {
-        List<String> ids = new ArrayList<>();
-        for (UtilitiesInfo d : filteredData) {
-            if (d.getIdx() != MainActivity.ADS_IDX)
-                ids.add(String.valueOf(d.getIdx()));
-        }
-        mCustomSorting = ids;
-        mSharedPrefs.saveSortingList("utilities", ids);
+        mSharedPrefs.saveSortingList("utilities", mCustomSorting);
     }
 
     public Filter getFilter() {
@@ -537,7 +537,12 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     private void swap(int firstPosition, int secondPosition) {
         Collections.swap(filteredData, firstPosition, secondPosition);
         notifyItemMoved(firstPosition, secondPosition);
-        SaveSorting();
+        List<String> ids = new ArrayList<>();
+        for (UtilitiesInfo d : filteredData) {
+            if (d.getIdx() != -9998)
+                ids.add(String.valueOf(d.getIdx()));
+        }
+        mCustomSorting = ids;
     }
 
     interface Buttons {
