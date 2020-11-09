@@ -22,11 +22,8 @@
 package nl.hnogames.domoticz.utils;
 
 import android.content.Context;
-import android.os.Environment;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -56,7 +53,7 @@ public class SerializableManager {
      */
     public static void saveSerializable(Context context, Object objectToSave, String fileName) {
         try {
-            ObjectOutputStream output = new ObjectOutputStream(context.openFileOutput( fileName+".txt", Context.MODE_PRIVATE));
+            ObjectOutputStream output = new ObjectOutputStream(context.openFileOutput(fileName + ".txt", Context.MODE_PRIVATE));
             output.writeObject(objectToSave);
             output.close();
         } catch (IOException e) {
@@ -78,14 +75,14 @@ public class SerializableManager {
 
         FileInputStream fis = null;
         try {
-            fis = context.openFileInput(fileName+".txt");
-                ObjectInputStream input = new ObjectInputStream(fis);
-                objectToReturn = input.readObject();
-                input.close();
+            fis = context.openFileInput(fileName + ".txt");
+            ObjectInputStream input = new ObjectInputStream(fis);
+            objectToReturn = input.readObject();
+            input.close();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-            return objectToReturn;
+        return objectToReturn;
     }
 
     /**

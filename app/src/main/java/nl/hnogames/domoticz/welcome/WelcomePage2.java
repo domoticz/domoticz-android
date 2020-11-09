@@ -33,12 +33,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.codekidlabs.storagechooser.StorageChooser;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.google.android.material.button.MaterialButton;
 
-import java.io.File;
 import java.util.Arrays;
 
 import androidx.annotation.NonNull;
@@ -50,7 +48,6 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 
 public class WelcomePage2 extends Fragment implements OnPermissionCallback {
     private PermissionFragmentHelper permissionFragmentHelper;
-    private StorageChooser.Theme theme;
     private int IMPORT_SETTINGS = 555;
 
     public static WelcomePage2 newInstance() {
@@ -61,8 +58,6 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_welcome2, container, false);
-        SetStorageTheme();
-
         permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
         MaterialButton importButton = v.findViewById(R.id.import_settings);
         MaterialButton demoSetup = v.findViewById(R.id.demo_settings);
@@ -78,46 +73,6 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
 
         demoSetup.setOnClickListener(v1 -> ((WelcomeViewActivity) getActivity()).setDemoAccount());
         return v;
-    }
-
-    private void SetStorageTheme() {
-        theme = new StorageChooser.Theme(getContext());
-        int[] scheme = new int[16];
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme currentTheme = getContext().getTheme();
-        currentTheme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
-        scheme[0] = typedValue.data;// header background
-        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
-        scheme[1] = typedValue.data;// header text
-        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
-        scheme[2] = typedValue.data;//list bg
-        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
-        scheme[3] = typedValue.data;//storage list name text
-        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
-        scheme[4] = typedValue.data;//free space text
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[5] = typedValue.data;//memory bar
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[6] = typedValue.data;//folder tint
-        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
-        scheme[7] = typedValue.data;// list bg
-        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
-        scheme[8] = typedValue.data;//list text
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[9] = typedValue.data;//address bar tint
-        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
-        scheme[10] = typedValue.data;//folder hint tint
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[11] = typedValue.data;//elect button color
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[12] = typedValue.data;//select button color
-        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
-        scheme[13] = typedValue.data;//new folder layour bg
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[14] = typedValue.data;//fab multiselect color
-        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
-        scheme[15] = typedValue.data;//address bar bg
-        theme.setScheme(scheme);
     }
 
     private void importSettings() {
@@ -162,15 +117,14 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         permissionFragmentHelper.onActivityForResult(requestCode);
-        if( requestCode == IMPORT_SETTINGS ) {
+        if (requestCode == IMPORT_SETTINGS) {
             switch (resultCode) {
                 case Activity.RESULT_OK:
                     if (data != null && data.getData() != null) {
                         if ((new SharedPrefUtil(getContext())).loadSharedPreferencesFromFile(data.getData())) {
                             Toast.makeText(getActivity(), R.string.settings_imported, Toast.LENGTH_LONG).show();
                             ((WelcomeViewActivity) getActivity()).finishWithResult(true);
-                        }
-                        else
+                        } else
                             Toast.makeText(getActivity(), R.string.settings_import_failed, Toast.LENGTH_SHORT).show();
                     }
                     break;

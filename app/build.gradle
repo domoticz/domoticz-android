@@ -240,7 +240,6 @@ dependencies {
     implementation 'com.github.javiersantos:PiracyChecker:1.1'
     implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
     implementation 'com.alexvasilkov:gesture-views:2.6.0'
-    implementation 'com.github.codekidX:storage-chooser:2.0.4.4'
 
     implementation("com.mikepenz:materialdrawer:6.1.2@aar") {
         transitive = true

@@ -27,7 +27,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -43,12 +42,8 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 
 import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
@@ -59,6 +54,7 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Domoticz;
 
 public class Camera extends Fragment {
+    private static final int CREATE_SNAPSHOT_IMAGE = 111;
     private GestureImageView root;
     private SharedPrefUtil mSharedPrefs;
     private Picasso picasso;
@@ -115,45 +111,44 @@ public class Camera extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    private static final int CREATE_SNAPSHOT_IMAGE = 111;
     private void processImage() {
         if (root != null) {
-                Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("image/jpg");
-                intent.putExtra(Intent.EXTRA_TITLE, "snapshot_share-image.jpg");
-                startActivityForResult(intent, CREATE_SNAPSHOT_IMAGE);
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/jpg");
+            intent.putExtra(Intent.EXTRA_TITLE, "snapshot_share-image.jpg");
+            startActivityForResult(intent, CREATE_SNAPSHOT_IMAGE);
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if( requestCode == CREATE_SNAPSHOT_IMAGE ) {
-                switch (resultCode) {
-                    case Activity.RESULT_OK:
-                        if (data != null && data.getData() != null) {
-                            OutputStream outputStream;
-                            try {
-                                BitmapDrawable drawable = (BitmapDrawable) root.getDrawable();
-                                Bitmap bitmap = drawable.getBitmap();
-                                outputStream = mContext.getContentResolver().openOutputStream(data.getData());
-                                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
-                                outputStream.flush();
-                                outputStream.close();
+        if (requestCode == CREATE_SNAPSHOT_IMAGE) {
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                    if (data != null && data.getData() != null) {
+                        OutputStream outputStream;
+                        try {
+                            BitmapDrawable drawable = (BitmapDrawable) root.getDrawable();
+                            Bitmap bitmap = drawable.getBitmap();
+                            outputStream = mContext.getContentResolver().openOutputStream(data.getData());
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
+                            outputStream.flush();
+                            outputStream.close();
 
-                                Intent shareIntent = new Intent();
-                                shareIntent.setAction(Intent.ACTION_SEND);
-                                shareIntent.putExtra(Intent.EXTRA_STREAM, data.getData());
-                                shareIntent.setType("image/*");
-                                startActivity(Intent.createChooser(shareIntent, "Share Image"));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                            Intent shareIntent = new Intent();
+                            shareIntent.setAction(Intent.ACTION_SEND);
+                            shareIntent.putExtra(Intent.EXTRA_STREAM, data.getData());
+                            shareIntent.setType("image/*");
+                            startActivity(Intent.createChooser(shareIntent, "Share Image"));
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        break;
-                }
+                    }
+                    break;
+                case Activity.RESULT_CANCELED:
+                    break;
+            }
         }
     }
 

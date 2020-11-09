@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.preference;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.KeyguardManager;
 import android.content.ActivityNotFoundException;
@@ -32,9 +31,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
@@ -43,19 +40,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.provider.Settings;
-import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.codekidlabs.storagechooser.StorageChooser;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.HashSet;
 
 import androidx.biometric.BiometricManager;
@@ -107,7 +99,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     private Context mContext;
     private ConfigInfo mConfigInfo;
     private PermissionHelper permissionHelper;
-    private StorageChooser.Theme theme;
 
     private static void tintIcons(Preference preference, int color) {
         if (preference instanceof PreferenceGroup) {
@@ -145,53 +136,12 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         UsefulBits.checkAPK(mContext, mSharedPrefs);
 
-        SetStorageTheme();
         setIconColor();
         setPreferences();
         setStartUpScreenDefaultValue();
         handleImportExportButtons();
         handleInfoAndAbout();
         GetVersion();
-    }
-
-    private void SetStorageTheme() {
-        theme = new StorageChooser.Theme(mContext);
-        int[] scheme = new int[16];
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme currentTheme = mContext.getTheme();
-        currentTheme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
-        scheme[0] = typedValue.data;// header background
-        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
-        scheme[1] = typedValue.data;// header text
-        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
-        scheme[2] = typedValue.data;//list bg
-        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
-        scheme[3] = typedValue.data;//storage list name text
-        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
-        scheme[4] = typedValue.data;//free space text
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[5] = typedValue.data;//memory bar
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[6] = typedValue.data;//folder tint
-        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
-        scheme[7] = typedValue.data;// list bg
-        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
-        scheme[8] = typedValue.data;//list text
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[9] = typedValue.data;//address bar tint
-        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
-        scheme[10] = typedValue.data;//folder hint tint
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[11] = typedValue.data;//elect button color
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[12] = typedValue.data;//select button color
-        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
-        scheme[13] = typedValue.data;//new folder layour bg
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[14] = typedValue.data;//fab multiselect color
-        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
-        scheme[15] = typedValue.data;//address bar bg
-        theme.setScheme(scheme);
     }
 
     private void setIconColor() {

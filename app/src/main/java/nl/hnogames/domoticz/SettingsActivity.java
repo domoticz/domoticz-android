@@ -111,7 +111,7 @@ public class SettingsActivity extends AppCompatPermissionsActivity {
         if (resultCode == RESULT_OK && requestCode == THEME_CHANGED) {
             recreate();
         }
-        if( requestCode == EXPORT_SETTINGS ) {
+        if (requestCode == EXPORT_SETTINGS) {
             switch (resultCode) {
                 case Activity.RESULT_OK:
                     if (data != null && data.getData() != null) {
@@ -125,7 +125,7 @@ public class SettingsActivity extends AppCompatPermissionsActivity {
                     break;
             }
         }
-        if( requestCode == IMPORT_SETTINGS ) {
+        if (requestCode == IMPORT_SETTINGS) {
             switch (resultCode) {
                 case Activity.RESULT_OK:
                     if (data != null && data.getData() != null) {
