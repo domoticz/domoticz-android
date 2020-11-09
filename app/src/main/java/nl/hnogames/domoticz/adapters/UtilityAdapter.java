@@ -535,8 +535,28 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     }
 
     private void swap(int firstPosition, int secondPosition) {
-        Collections.swap(filteredData, firstPosition, secondPosition);
-        notifyItemMoved(firstPosition, secondPosition);
+        if(firstPosition == (secondPosition+1) || firstPosition == (secondPosition-1)) {
+            Collections.swap(filteredData, firstPosition, secondPosition);
+            notifyItemMoved(firstPosition, secondPosition);
+        }
+        else{
+            if(firstPosition < secondPosition)
+            {
+                for(int i = firstPosition; i < secondPosition; i++)
+                {
+                    Collections.swap(filteredData, i, i+1);
+                    notifyItemMoved(i, i+1);
+                }
+            }
+            else{
+                for(int i = firstPosition; i > secondPosition; i--)
+                {
+                    Collections.swap(filteredData, i, i-1);
+                    notifyItemMoved(i, i-1);
+                }
+            }
+        }
+
         List<String> ids = new ArrayList<>();
         for (UtilitiesInfo d : filteredData) {
             if (d.getIdx() != -9998)

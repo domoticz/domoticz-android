@@ -273,8 +273,28 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     }
 
     private void swap(int firstPosition, int secondPosition) {
-        Collections.swap(mDataset, firstPosition, secondPosition);
-        notifyItemMoved(firstPosition, secondPosition);
+        if(firstPosition == (secondPosition+1) || firstPosition == (secondPosition-1)) {
+            Collections.swap(mDataset, firstPosition, secondPosition);
+            notifyItemMoved(firstPosition, secondPosition);
+        }
+        else{
+            if(firstPosition < secondPosition)
+            {
+                for(int i = firstPosition; i < secondPosition; i++)
+                {
+                    Collections.swap(mDataset, i, i+1);
+                    notifyItemMoved(i, i+1);
+                }
+            }
+            else{
+                for(int i = firstPosition; i > secondPosition; i--)
+                {
+                    Collections.swap(mDataset, i, i-1);
+                    notifyItemMoved(i, i-1);
+                }
+            }
+        }
+
         List<String> ids = new ArrayList<>();
         for (CameraInfo d : mDataset) {
             if (d.getIdx() != -9998)
