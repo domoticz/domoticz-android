@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -510,7 +511,7 @@ public class SharedPrefUtil {
 
     public void saveSortingList(String listName, List<String> ids) {
         if (ids != null)
-            editor.putString(listName + PREF_SORT_LIST, UsefulBits.Join(ids)).apply();
+            editor.putString(listName + PREF_SORT_LIST, TextUtils.join(",", ids)).apply();
         else
             editor.putString(listName + PREF_SORT_LIST, null).apply();
         editor.commit();

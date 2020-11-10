@@ -407,7 +407,8 @@ public class DomoticzDashboardFragment extends Fragment {
             if (debug) {
                 if (debugText != null) {
                     String temp = debugText.getText().toString();
-                    if (temp.isEmpty() || temp.equals("")) debugText.setText(text);
+                    if (temp.isEmpty())
+                        debugText.setText(text);
                     else {
                         temp = temp + "\n";
                         temp = temp + text;
