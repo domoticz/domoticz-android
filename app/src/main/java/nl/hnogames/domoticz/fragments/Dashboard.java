@@ -110,7 +110,6 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     }
 
     @Override
-
     public void onAttach(Context context) {
         super.onAttach(context);
         onAttachFragment(this);
@@ -130,13 +129,18 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     }
 
     @Override
-
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
         processDashboard();
     }
 
+    @Override
+    public void onDestroyView() {
+        if (adapter != null)
+            adapter.onDestroy();
+        super.onDestroyView();
+    }
 
     public void selectedPlan(int plan, String name) {
         planID = plan;
@@ -1447,19 +1451,16 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
             StaticHelper.getDomoticz(mContext).getFavorites(new DevicesReceiver() {
                 @Override
-
                 public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
                     SerializableManager.saveSerializable(mContext, switches, "Dashboard");
                     processDevices(switches);
                 }
 
                 @Override
-
                 public void onReceiveDevice(DevicesInfo mDevicesInfo) {
                 }
 
                 @Override
-
                 public void onError(Exception error) {
                     errorHandling(error);
                 }

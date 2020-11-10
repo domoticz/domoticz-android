@@ -83,6 +83,13 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     }
 
     @Override
+    public void onDestroyView() {
+        if (mAdapter != null)
+            mAdapter.onDestroy();
+        super.onDestroyView();
+    }
+
+    @Override
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);

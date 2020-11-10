@@ -89,11 +89,12 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
         if (mCustomSorting == null)
             mCustomSorting = mSharedPrefs.getSortingList("scenes");
         setData(data);
-
         this.listener = listener;
     }
 
     public void setData(ArrayList<SceneInfo> data) {
+        if (this.filteredData != null)
+            SaveSorting();
         ArrayList<SceneInfo> sortedData = SortData(data);
         this.data = sortedData;
         this.filteredData = sortedData;
@@ -150,13 +151,11 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
     }
 
     private void SaveSorting() {
-        List<String> ids = new ArrayList<>();
-        for (SceneInfo d : filteredData) {
-            if (d.getIdx() != -9998)
-                ids.add(String.valueOf(d.getIdx()));
-        }
-        mCustomSorting = ids;
-        mSharedPrefs.saveSortingList("scenes", ids);
+        mSharedPrefs.saveSortingList("scenes", mCustomSorting);
+    }
+
+    public void onDestroy() {
+        SaveSorting();
     }
 
     @Override
@@ -421,9 +420,29 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
     }
 
     private void swap(int firstPosition, int secondPosition) {
-        Collections.swap(filteredData, firstPosition, secondPosition);
-        notifyItemMoved(firstPosition, secondPosition);
-        SaveSorting();
+        if (firstPosition == (secondPosition + 1) || firstPosition == (secondPosition - 1)) {
+            Collections.swap(filteredData, firstPosition, secondPosition);
+            notifyItemMoved(firstPosition, secondPosition);
+        } else {
+            if (firstPosition < secondPosition) {
+                for (int i = firstPosition; i < secondPosition; i++) {
+                    Collections.swap(filteredData, i, i + 1);
+                    notifyItemMoved(i, i + 1);
+                }
+            } else {
+                for (int i = firstPosition; i > secondPosition; i--) {
+                    Collections.swap(filteredData, i, i - 1);
+                    notifyItemMoved(i, i - 1);
+                }
+            }
+        }
+
+        List<String> ids = new ArrayList<>();
+        for (SceneInfo d : filteredData) {
+            if (d.getIdx() != -9998)
+                ids.add(String.valueOf(d.getIdx()));
+        }
+        mCustomSorting = ids;
     }
 
     interface Buttons {

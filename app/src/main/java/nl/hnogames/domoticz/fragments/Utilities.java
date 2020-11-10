@@ -84,11 +84,17 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
-
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
         processUtilities();
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (adapter != null)
+            adapter.onDestroy();
+        super.onDestroyView();
     }
 
     @Override

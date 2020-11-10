@@ -96,6 +96,13 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     @Override
+    public void onDestroyView() {
+        if (adapter != null)
+            adapter.onDestroy();
+        super.onDestroyView();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {

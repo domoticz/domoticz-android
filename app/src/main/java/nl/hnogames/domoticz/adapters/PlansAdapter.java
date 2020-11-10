@@ -73,6 +73,8 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
     }
 
     public void setData(ArrayList<PlanInfo> data) {
+        if (this.mDataset != null)
+            SaveSorting();
         ArrayList<PlanInfo> sortedData = SortData(data);
         this.mDataset = sortedData;
     }
@@ -110,13 +112,11 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
     }
 
     private void SaveSorting() {
-        List<String> ids = new ArrayList<>();
-        for (PlanInfo d : mDataset) {
-            if (d.getIdx() != MainActivity.ADS_IDX)
-                ids.add(String.valueOf(d.getIdx()));
-        }
-        mCustomSorting = ids;
-        mSharedPrefs.saveSortingList("plans", ids);
+        mSharedPrefs.saveSortingList("plans", mCustomSorting);
+    }
+
+    public void onDestroy() {
+        SaveSorting();
     }
 
     @Override
@@ -224,9 +224,29 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
     }
 
     private void swap(int firstPosition, int secondPosition) {
-        Collections.swap(mDataset, firstPosition, secondPosition);
-        notifyItemMoved(firstPosition, secondPosition);
-        SaveSorting();
+        if (firstPosition == (secondPosition + 1) || firstPosition == (secondPosition - 1)) {
+            Collections.swap(mDataset, firstPosition, secondPosition);
+            notifyItemMoved(firstPosition, secondPosition);
+        } else {
+            if (firstPosition < secondPosition) {
+                for (int i = firstPosition; i < secondPosition; i++) {
+                    Collections.swap(mDataset, i, i + 1);
+                    notifyItemMoved(i, i + 1);
+                }
+            } else {
+                for (int i = firstPosition; i > secondPosition; i--) {
+                    Collections.swap(mDataset, i, i - 1);
+                    notifyItemMoved(i, i - 1);
+                }
+            }
+        }
+
+        List<String> ids = new ArrayList<>();
+        for (PlanInfo d : mDataset) {
+            if (d.getIdx() != -9998)
+                ids.add(String.valueOf(d.getIdx()));
+        }
+        mCustomSorting = ids;
     }
 
     @Override

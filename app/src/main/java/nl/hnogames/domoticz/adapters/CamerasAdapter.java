@@ -86,8 +86,14 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     }
 
     public void setData(ArrayList<CameraInfo> data) {
+        if (this.mDataset != null)
+            SaveSorting();
         ArrayList<CameraInfo> sortedData = SortData(data);
         this.mDataset = sortedData;
+    }
+
+    public void onDestroy() {
+        SaveSorting();
     }
 
     public void setOnItemClickListener(onClickListener onClickListener) {
@@ -127,13 +133,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     }
 
     private void SaveSorting() {
-        List<String> ids = new ArrayList<>();
-        for (CameraInfo d : mDataset) {
-            if (d.getIdx() != MainActivity.ADS_IDX)
-                ids.add(String.valueOf(d.getIdx()));
-        }
-        mCustomSorting = ids;
-        mSharedPrefs.saveSortingList("cameras", ids);
+        mSharedPrefs.saveSortingList("cameras", mCustomSorting);
     }
 
     @NonNull
@@ -273,9 +273,29 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     }
 
     private void swap(int firstPosition, int secondPosition) {
-        Collections.swap(mDataset, firstPosition, secondPosition);
-        notifyItemMoved(firstPosition, secondPosition);
-        SaveSorting();
+        if (firstPosition == (secondPosition + 1) || firstPosition == (secondPosition - 1)) {
+            Collections.swap(mDataset, firstPosition, secondPosition);
+            notifyItemMoved(firstPosition, secondPosition);
+        } else {
+            if (firstPosition < secondPosition) {
+                for (int i = firstPosition; i < secondPosition; i++) {
+                    Collections.swap(mDataset, i, i + 1);
+                    notifyItemMoved(i, i + 1);
+                }
+            } else {
+                for (int i = firstPosition; i > secondPosition; i--) {
+                    Collections.swap(mDataset, i, i - 1);
+                    notifyItemMoved(i, i - 1);
+                }
+            }
+        }
+
+        List<String> ids = new ArrayList<>();
+        for (CameraInfo d : mDataset) {
+            if (d.getIdx() != -9998)
+                ids.add(String.valueOf(d.getIdx()));
+        }
+        mCustomSorting = ids;
     }
 
     @Override
