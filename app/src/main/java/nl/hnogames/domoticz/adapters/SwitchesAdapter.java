@@ -452,7 +452,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
                             @Override
                             public void onError(Exception e) {
-                                holder.dummyImg.setVisibility(View.GONE);
+                                if (holder.dummyImg.getDrawable() == null)
+                                    holder.dummyImg.setVisibility(View.GONE);
                                 holder.row_wrapper.setBackgroundColor(listviewRowBackground);
                             }
                         });
@@ -470,7 +471,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
                             @Override
                             public void onError(Exception e) {
-                                holder.dummyImg.setVisibility(View.GONE);
+                                if (holder.dummyImg.getDrawable() == null)
+                                    holder.dummyImg.setVisibility(View.GONE);
                                 holder.row_wrapper.setBackgroundColor(listviewRowBackground);
                             }
                         });
@@ -1892,24 +1894,19 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     }
 
     private void swap(int firstPosition, int secondPosition) {
-        if(firstPosition == (secondPosition+1) || firstPosition == (secondPosition-1)) {
+        if (firstPosition == (secondPosition + 1) || firstPosition == (secondPosition - 1)) {
             Collections.swap(filteredData, firstPosition, secondPosition);
             notifyItemMoved(firstPosition, secondPosition);
-        }
-        else{
-            if(firstPosition < secondPosition)
-            {
-                for(int i = firstPosition; i < secondPosition; i++)
-                {
-                    Collections.swap(filteredData, i, i+1);
-                    notifyItemMoved(i, i+1);
+        } else {
+            if (firstPosition < secondPosition) {
+                for (int i = firstPosition; i < secondPosition; i++) {
+                    Collections.swap(filteredData, i, i + 1);
+                    notifyItemMoved(i, i + 1);
                 }
-            }
-            else{
-                for(int i = firstPosition; i > secondPosition; i--)
-                {
-                    Collections.swap(filteredData, i, i-1);
-                    notifyItemMoved(i, i-1);
+            } else {
+                for (int i = firstPosition; i > secondPosition; i--) {
+                    Collections.swap(filteredData, i, i - 1);
+                    notifyItemMoved(i, i - 1);
                 }
             }
         }

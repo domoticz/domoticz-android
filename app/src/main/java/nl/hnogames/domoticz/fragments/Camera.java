@@ -21,12 +21,12 @@
 
 package nl.hnogames.domoticz.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -42,7 +42,8 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
@@ -53,6 +54,7 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Domoticz;
 
 public class Camera extends Fragment {
+    private static final int CREATE_SNAPSHOT_IMAGE = 111;
     private GestureImageView root;
     private SharedPrefUtil mSharedPrefs;
     private Picasso picasso;
@@ -85,12 +87,7 @@ public class Camera extends Fragment {
                 .setGravity(Gravity.CENTER);
 
         FloatingActionButton fabButton = group.findViewById(R.id.fab);
-        fabButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                processImage();
-            }
-        });
+        fabButton.setOnClickListener(v -> processImage());
         if (idx > 0)
             setImage(idx);
         return group;
@@ -116,17 +113,41 @@ public class Camera extends Fragment {
 
     private void processImage() {
         if (root != null) {
-            BitmapDrawable drawable = (BitmapDrawable) root.getDrawable();
-            Bitmap bitmap = drawable.getBitmap();
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/jpg");
+            intent.putExtra(Intent.EXTRA_TITLE, "snapshot_share-image.jpg");
+            startActivityForResult(intent, CREATE_SNAPSHOT_IMAGE);
+        }
+    }
 
-            File snapFile = StaticHelper.getDomoticz(mContext).saveSnapShot(bitmap, "share-image");
-            Uri uriBitmap = Uri.fromFile(snapFile);
-            if (uriBitmap != null) {
-                Intent shareIntent = new Intent();
-                shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_STREAM, uriBitmap);
-                shareIntent.setType("image/*");
-                startActivity(Intent.createChooser(shareIntent, "Share Image"));
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CREATE_SNAPSHOT_IMAGE) {
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                    if (data != null && data.getData() != null) {
+                        OutputStream outputStream;
+                        try {
+                            BitmapDrawable drawable = (BitmapDrawable) root.getDrawable();
+                            Bitmap bitmap = drawable.getBitmap();
+                            outputStream = mContext.getContentResolver().openOutputStream(data.getData());
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
+                            outputStream.flush();
+                            outputStream.close();
+
+                            Intent shareIntent = new Intent();
+                            shareIntent.setAction(Intent.ACTION_SEND);
+                            shareIntent.putExtra(Intent.EXTRA_STREAM, data.getData());
+                            shareIntent.setType("image/*");
+                            startActivity(Intent.createChooser(shareIntent, "Share Image"));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                case Activity.RESULT_CANCELED:
+                    break;
             }
         }
     }

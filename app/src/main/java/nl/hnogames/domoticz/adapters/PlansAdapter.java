@@ -48,7 +48,6 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
 import nl.hnogames.domoticz.ads.TemplateView;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.PlanInfo;
 
 @SuppressWarnings("unused")
@@ -225,24 +224,19 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
     }
 
     private void swap(int firstPosition, int secondPosition) {
-        if(firstPosition == (secondPosition+1) || firstPosition == (secondPosition-1)) {
+        if (firstPosition == (secondPosition + 1) || firstPosition == (secondPosition - 1)) {
             Collections.swap(mDataset, firstPosition, secondPosition);
             notifyItemMoved(firstPosition, secondPosition);
-        }
-        else{
-            if(firstPosition < secondPosition)
-            {
-                for(int i = firstPosition; i < secondPosition; i++)
-                {
-                    Collections.swap(mDataset, i, i+1);
-                    notifyItemMoved(i, i+1);
+        } else {
+            if (firstPosition < secondPosition) {
+                for (int i = firstPosition; i < secondPosition; i++) {
+                    Collections.swap(mDataset, i, i + 1);
+                    notifyItemMoved(i, i + 1);
                 }
-            }
-            else{
-                for(int i = firstPosition; i > secondPosition; i--)
-                {
-                    Collections.swap(mDataset, i, i-1);
-                    notifyItemMoved(i, i-1);
+            } else {
+                for (int i = firstPosition; i > secondPosition; i--) {
+                    Collections.swap(mDataset, i, i - 1);
+                    notifyItemMoved(i, i - 1);
                 }
             }
         }

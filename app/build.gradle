@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.1"
 
     def versionPropsFile = file('version.properties')
     if (versionPropsFile.canRead()) {
@@ -36,7 +36,7 @@ android {
             versionCode version_Code
             versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
             minSdkVersion 19
-            targetSdkVersion 29
+            targetSdkVersion 30
             multiDexEnabled true
             wearAppUnbundled true
         }
@@ -240,7 +240,6 @@ dependencies {
     implementation 'com.github.javiersantos:PiracyChecker:1.1'
     implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
     implementation 'com.alexvasilkov:gesture-views:2.6.0'
-    implementation 'com.github.codekidX:storage-chooser:2.0.4.4'
 
     implementation("com.mikepenz:materialdrawer:6.1.2@aar") {
         transitive = true

@@ -25,6 +25,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,13 +35,12 @@ import com.google.android.gms.location.Geofence;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -1177,7 +1177,7 @@ public class SharedPrefUtil {
         }
     }
 
-    public boolean saveSharedPreferencesToFile(File dst) {
+    public boolean saveSharedPreferencesToFile(Uri file) {
         try {
             boolean isServerUpdateAvailableValue = false;
             ServerUpdateInfo mServerUpdateInfo = StaticHelper.getServerUtil(mContext).getActiveServer().getServerUpdateInfo(mContext);
@@ -1185,60 +1185,50 @@ public class SharedPrefUtil {
             Map<String, ?> oAllPrefs = this.prefs.getAll();
             HashMap<String, Object> oSavePrefs = new HashMap<String, Object>();
             for (Map.Entry<String, ?> entry : oAllPrefs.entrySet()) {
-                //Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
-                if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET") || entry.getKey().startsWith("SMALLTEMPWIDGET") || entry.getKey().startsWith("WIDGETSECURITY"))
-                    Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
-                else if (entry.getKey().equals("receivedNotifications") || entry.getKey().equals("receivedNotificationsLog"))
-                    Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
-                else {
-                    Log.i("PREFS", "Exported: " + entry.getKey() + ": " + entry.getValue().toString());
-                    oSavePrefs.put(entry.getKey(), entry.getValue());
-                }
-            }
-
-            boolean result = true;
-            if (dst.exists())
-                result = dst.delete();
-
-            if (result) {
-                ObjectOutputStream output = null;
-
-                //noinspection TryWithIdenticalCatches
-                try {
-                    output = new ObjectOutputStream(new FileOutputStream(dst));
-                    output.writeObject(oSavePrefs);
-                    result = true;
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        if (output != null) {
-                            output.flush();
-                            output.close();
-                        }
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
+                if(entry.getValue() != null) {
+                    //Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
+                    if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET") || entry.getKey().startsWith("SMALLTEMPWIDGET") || entry.getKey().startsWith("WIDGETSECURITY"))
+                        Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
+                    else if (entry.getKey().equals("receivedNotifications") || entry.getKey().equals("receivedNotificationsLog"))
+                        Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
+                    else {
+                        Log.i("PREFS", "Exported: " + entry.getKey() + ": " + entry.getValue().toString());
+                        oSavePrefs.put(entry.getKey(), entry.getValue());
                     }
                 }
             }
+
+            OutputStream outputStream;
+            ObjectOutputStream output = null;
+            try {
+                outputStream = mContext.getContentResolver().openOutputStream(file);
+                output = new ObjectOutputStream(outputStream);
+                output.writeObject(oSavePrefs);
+                output.flush();
+                output.close();
+                outputStream.flush();
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             // Write original settings to preferences
-            if (isServerUpdateAvailableValue) mServerUpdateInfo.setUpdateAvailable(true);
-            return result;
+            if (isServerUpdateAvailableValue)
+                mServerUpdateInfo.setUpdateAvailable(true);
+            return true;
         } catch (Exception ex) {
             return false;
         }
     }
 
     @SuppressWarnings({"UnnecessaryUnboxing", "unchecked"})
-    public boolean loadSharedPreferencesFromFile(File src) {
+    public boolean loadSharedPreferencesFromFile(Uri src) {
         boolean res = false;
         ObjectInputStream input = null;
         //noinspection TryWithIdenticalCatches
         try {
-            input = new ObjectInputStream(new FileInputStream(src));
-            //editor.clear();
+            InputStream iputStream = mContext.getContentResolver().openInputStream(src);
+            input = new ObjectInputStream(iputStream);
             Map<String, ?> entries = (Map<String, ?>) input.readObject();
             for (Map.Entry<String, ?> entry : entries.entrySet()) {
                 Object v = entry.getValue();
