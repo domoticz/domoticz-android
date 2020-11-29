@@ -46,9 +46,9 @@ class AutoScreen extends Screen implements DefaultLifecycleObserver {
     @NonNull
     @Override
     public Template getTemplate() {
-        templateBuilder.setTitle("Domoticz");
+        templateBuilder.setTitle(getCarContext().getResources().getString(R.string.app_name));
         templateBuilder.setHeaderAction(Action.APP_ICON);
-        if( isFinishedLoading){
+        if(isFinishedLoading){
             return templateBuilder.build();
         }
         else
