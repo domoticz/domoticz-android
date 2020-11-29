@@ -35,7 +35,7 @@ android {
         defaultConfig {
             versionCode version_Code
             versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
-            minSdkVersion 19
+            minSdkVersion 23
             targetSdkVersion 30
             multiDexEnabled true
             wearAppUnbundled true
@@ -93,7 +93,7 @@ android {
             buildConfigField "boolean", "PAID_OOTT", "false"
             dimension "tier"
 
-            minSdkVersion 21
+            minSdkVersion 23
             versionNameSuffix "-dev"
             resConfigs "en", "xxhdpi"
         }
@@ -262,6 +262,7 @@ dependencies {
     implementation project(path: ':SeekArc_library')
     implementation project(path: ':domoticzapi')
     implementation project(path: ':materialList')
+    implementation 'com.google.android.libraries.car:car-app:1.0.0-beta.1'
 }
 
 buildscript {
