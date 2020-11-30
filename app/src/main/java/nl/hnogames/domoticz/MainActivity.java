@@ -377,7 +377,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private void GetServerConfig(LoginInfo mLoginInfo) {
         UsefulBits.getServerConfigForActiveServer(MainActivity.this, mLoginInfo, new ConfigReceiver() {
             @Override
-
             public void onReceiveConfig(ConfigInfo settings) {
                 if (MainActivity.this.mConfigInfo == null || settings == null || !MainActivity.this.mConfigInfo.toString().equals(settings.toString())) {
                     MainActivity.this.mConfigInfo = settings;
@@ -394,7 +393,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
             }
 
             @Override
-
             public void onError(Exception error) {
                 configException = error;
                 if (!fromShortcut)

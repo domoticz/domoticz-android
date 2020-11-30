@@ -36,9 +36,9 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 
 public class SettingsActivity extends AppCompatPermissionsActivity {
-    private final int THEME_CHANGED = 55;
-    private final int EXPORT_SETTINGS = 66;
-    private final int IMPORT_SETTINGS = 66;
+    private final int THEME_CHANGED = 555;
+    private final int EXPORT_SETTINGS = 666;
+    private final int IMPORT_SETTINGS = 777;
     private Toolbar toolbar;
     private PreferenceFragment fragment;
 
