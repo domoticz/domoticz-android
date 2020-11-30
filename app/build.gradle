@@ -222,6 +222,9 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
 
+    implementation 'org.reactivestreams:reactive-streams:1.0.3'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+
     implementation 'com.github.alxrm:animated-clock-icon:1.0.2'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.google.code.gson:gson:2.8.6'
