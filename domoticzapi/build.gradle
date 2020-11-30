@@ -23,7 +23,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.1"
+    buildToolsVersion "30.0.2"
 
     def versionPropsFile = file('version.properties')
 
@@ -54,7 +54,7 @@ android {
         defaultConfig {
             versionCode version_Code
             versionName "${versionMajor}.${versionMinor}.${versionPatch}"
-            minSdkVersion 19
+            minSdkVersion 23
             targetSdkVersion 30
         }
     }
