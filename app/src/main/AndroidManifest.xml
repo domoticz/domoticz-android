@@ -79,12 +79,6 @@
         android:requestLegacyExternalStorage="true"
         tools:replace="android:icon, android:label, android:theme, android:name, android:allowBackup">
 
-        <service android:name="nl.hnogames.domoticz.service.CustomControlService" android:permission="android.permission.BIND_CONTROLS" android:exported="true">
-            <intent-filter>
-                <action android:name="android.service.controls.ControlsProviderService"/>
-            </intent-filter>
-        </service>
-
         <activity android:name="nl.hnogames.domoticz.service.NFCServiceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
