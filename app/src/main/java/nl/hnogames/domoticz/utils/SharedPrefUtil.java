@@ -771,9 +771,7 @@ public class SharedPrefUtil {
 
     public String[] getWearSwitches() {
         if (!prefs.contains(PREF_CUSTOM_WEAR_ITEMS)) return null;
-
         Set<String> selections = prefs.getStringSet(PREF_CUSTOM_WEAR_ITEMS, null);
-
         if (selections != null) {
             String[] selectionValues = new String[selections.size()];
 
