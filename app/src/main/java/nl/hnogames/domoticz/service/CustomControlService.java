@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Flow;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -43,7 +44,7 @@ public class CustomControlService extends ControlsProviderService {
     private ArrayList<DevicesInfo> extendedStatusSwitches;
     private ReplayProcessor publisherForAll;
     private ReplayProcessor updatePublisher;
-    private List activeControlIds = null;
+    private List<String> activeControlIds = null;
     private PendingIntent pi;
 
     @Override
@@ -90,14 +91,13 @@ public class CustomControlService extends ControlsProviderService {
             Control control = DeviceToControl(device, true);
             publisherForAll.onNext(control);
         }
-
         if (updatePublisher != null && activeControlIds != null) {
-            Control control = DeviceToControl(device, false);
             Integer controlId = device.getType().equals(DomoticzValues.Scene.Type.GROUP) || device.getType().equals(DomoticzValues.Scene.Type.SCENE) ?
                     device.getIdx() + DashboardAdapter.ID_SCENE_SWITCH :
                     device.getIdx() + ID_SWITCH;
             if (activeControlIds.contains(String.valueOf(controlId))) {
                 Log.d(TAG, "Adding stateful for device: " + device.getName() + " | with control id " + controlId);
+                Control control = DeviceToControl(device, false);
                 updatePublisher.onNext(control);
             }
         }
@@ -198,7 +198,7 @@ public class CustomControlService extends ControlsProviderService {
     @NonNull
     @Override
     public Flow.Publisher<Control> createPublisherFor(@NonNull List<String> controlIds) {
-        Log.d(TAG, "Creating publishers for " + controlIds.size());
+        Log.d(TAG, "Creating publishers for " + controlIds.size() + " devices");
         updatePublisher = ReplayProcessor.create();
         activeControlIds = controlIds;
         processAll();
@@ -225,6 +225,7 @@ public class CustomControlService extends ControlsProviderService {
                         @Override
                         public void onReceiveResult(String result) {
                             consumer.accept(ControlAction.RESPONSE_OK);
+                            processAll();
                         }
 
                         @Override
@@ -260,7 +261,7 @@ public class CustomControlService extends ControlsProviderService {
                 if (!UsefulBits.isEmpty(value)) {
                     jsonAction = DomoticzValues.Device.Dimmer.Action.DIM_LEVEL;
                     jsonValue = 0;
-                    if (mDevicesInfo.getStatus() != value)//before turning stuff off check if the value is still the same as the on value (else something else took over)
+                    if (mDevicesInfo.getStatus() != value)
                         return;
                 }
             }
