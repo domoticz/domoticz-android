@@ -197,7 +197,6 @@ public class DomoticzIcons {
     @SuppressWarnings("SpellCheckingInspection")
     public static int getDrawableIconForGoogle(String imgType, String Type, String switchType, boolean State, boolean useCustomImage, String CustomImage) {
         int standardImage = getDrawableIconForGoogle(imgType, Type, switchType, State);
-
         if (useCustomImage && CustomImage != null && CustomImage.length() > 0) {
             switch (CustomImage) {
                 case "Alarm":
@@ -271,7 +270,7 @@ public class DomoticzIcons {
             case "pushoff":
                 return DeviceTypes.TYPE_GENERIC_ON_OFF;
             case "siren":
-                return R.drawable.siren;
+                return DeviceTypes.TYPE_GENERIC_ON_OFF;
             case "smoke":
             return DeviceTypes.TYPE_UNKNOWN;
             case "uv":
@@ -287,7 +286,7 @@ public class DomoticzIcons {
             case "dimmer":
                 return DeviceTypes.TYPE_LIGHT;
             case "motion":
-                return R.drawable.motion;
+                return DeviceTypes.TYPE_UNKNOWN;
             case "security":
                 return DeviceTypes.TYPE_SECURITY_SYSTEM;
             case "temperature":
