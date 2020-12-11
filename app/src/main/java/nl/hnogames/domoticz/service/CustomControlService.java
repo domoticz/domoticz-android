@@ -6,13 +6,11 @@ import android.content.Intent;
 import android.os.Build;
 import android.service.controls.Control;
 import android.service.controls.ControlsProviderService;
-import android.service.controls.DeviceTypes;
 import android.service.controls.actions.BooleanAction;
 import android.service.controls.actions.ControlAction;
 import android.service.controls.templates.ControlButton;
 import android.service.controls.templates.ControlTemplate;
 import android.service.controls.templates.RangeTemplate;
-import android.service.controls.templates.StatelessTemplate;
 import android.service.controls.templates.ToggleRangeTemplate;
 import android.service.controls.templates.ToggleTemplate;
 import android.util.Log;
@@ -20,69 +18,57 @@ import android.util.Log;
 import org.reactivestreams.FlowAdapters;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Flow;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import io.reactivex.Flowable;
 import io.reactivex.processors.ReplayProcessor;
+import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.DeviceUtils;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.WidgetUtils;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
+import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class CustomControlService extends ControlsProviderService {
-    private ReplayProcessor updatePublisher;
-    private List<Control> stateControls = new ArrayList<>();
     private ArrayList<DevicesInfo> extendedStatusSwitches;
-    private PendingIntent activityIntent;
-
-    @Override
-    public void onCreate() {
-        activityIntent = PendingIntent.getActivity(getBaseContext(), 1, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
-        getSwitches(GetDefaultHandler());
-        super.onCreate();
-    }
-
-    public DevicesReceiver GetDefaultHandler() {
-        return new DevicesReceiver() {
-            @Override
-            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
-                extendedStatusSwitches = mDevicesInfo;
-                processAllSwitches(extendedStatusSwitches);
-            }
-
-            @Override
-            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
-            }
-
-            @Override
-            public void onError(Exception error) {
-            }
-        };
-    }
+    private ReplayProcessor publisherForAll;
+    private ReplayProcessor updatePublisher;
+    private List activeControlIds;
 
     @Override
     public Flow.Publisher createPublisherForAllAvailable() {
-        Log.i(TAG, "cpa");
-        return FlowAdapters.toFlowPublisher(Flowable.fromIterable(stateControls));
+        Log.d(TAG, "Creating publishers for all");
+        publisherForAll = ReplayProcessor.create();
+        processAll();
+        return FlowAdapters.toFlowPublisher(publisherForAll);
     }
 
-    private void getSwitches(DevicesReceiver listener) {
-        extendedStatusSwitches = new ArrayList<>();
+    private void processAll() {
         StaticHelper.getDomoticz(getApplicationContext()).getDevices(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
-                listener.onReceiveDevices(mDevicesInfo);
+                extendedStatusSwitches = mDevicesInfo;
+                for (DevicesInfo device : extendedStatusSwitches) {
+                    String name = device.getName();
+                    if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) && DeviceUtils.isSupportedForExternalControl(device)) {
+                        process(device);
+                    }
+                }
+                if (publisherForAll != null) {
+                    Log.d(TAG, "Completing all publisher");
+                    publisherForAll.onComplete();
+                }
+                Log.d(TAG, "Done processing");
             }
 
             @Override
@@ -97,58 +83,72 @@ public class CustomControlService extends ControlsProviderService {
         }, 0, "all");
     }
 
-    private void processAllSwitches(ArrayList<DevicesInfo> extendedStatusSwitches) {
-        ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
-        for (DevicesInfo mDevicesInfo : extendedStatusSwitches) {
-            String name = mDevicesInfo.getName();
-            if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) && DeviceUtils.isSupportedForExternalControl(mDevicesInfo)) {
-                supportedSwitches.add(mDevicesInfo);
-            }
+    private void process(DevicesInfo device) {
+        if (publisherForAll != null) {
+            Control control = DeviceToControl(device, true);
+            publisherForAll.onNext(control);
         }
-        for (DevicesInfo d : supportedSwitches) {
-            String description = d.getDescription();
-            if(description.contains("|"))
-                description = description.substring(description.lastIndexOf("|")+1);
-            Control control = (new Control.StatefulBuilder(d.getIdx() + "", activityIntent)
-                    .setTitle(d.getName())
-                    .setSubtitle(description)
-                    .setStructure(d.getPlanID())
-                    .setControlTemplate(getControlTemplate(d))
-                    .setDeviceType(getDeviceType(d))
-                    .setStatus(Control.STATUS_OK)
-                    .setStatusText(d.getStatus() != null ? d.getStatus() : "")
-                    .build());
-            updateControl(control);
+
+        if (updatePublisher != null) {
+            Control control = DeviceToControl(device, false);
+            if (activeControlIds.contains(device.getIdx() + "")) {
+                Log.d(TAG, "Adding stateful");
+                updatePublisher.onNext(control);
+            }
         }
     }
 
-    private void processSwitch(DevicesInfo extendedStatusSwitches) {
-        ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
-        supportedSwitches.add(extendedStatusSwitches);
-        for (DevicesInfo d : supportedSwitches) {
-            Control control = (new Control.StatefulBuilder(d.getIdx() + "", activityIntent)
-                    .setTitle(d.getName())
-                    .setSubtitle(d.getDescription())
-                    .setStructure(d.getPlanID())
-                    .setControlTemplate(getControlTemplate(d))
-                    .setDeviceType(getDeviceType(d))
-                    .setStatus(Control.STATUS_OK)
-                    .setStatusText(d.getStatus() != null ? d.getStatus() : "")
-                    .build());
-            updateControl(control);
+    private PendingIntent pi;
+    public Control DeviceToControl(DevicesInfo d, boolean stateless) {
+        if(pi == null) {
+            Context context = getBaseContext();
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            pi = PendingIntent.getActivity(context, 101, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Log.d(TAG, "Created pendingintent for " + d.getName() + " with intent id " + 101 + " for device id " + d.getIdx());
         }
+
+        String description = d.getDescription();
+        if (description.contains("|"))
+            description = description.substring(description.lastIndexOf("|") + 1).replace("controlicz:", "").replace("Controlicz:", "").trim();
+        if(UsefulBits.isEmpty(description))
+            description = d.getType();
+
+        String status = d.getStatus() != null ? d.getStatus() : "";
+        if (status.contains("|"))
+            status = status.substring(status.lastIndexOf("|") + 1);
+
+        if(!stateless) {
+            Control.StatefulBuilder builder = new Control.StatefulBuilder(d.getIdx() + "", pi)
+                    .setTitle(d.getName())
+                    .setStructure(d.getPlanID());
+            builder.setStatus(Control.STATUS_OK);
+            builder.setStatusText(status);
+            if(!UsefulBits.isEmpty(description))
+                builder.setSubtitle(description);
+            ControlTemplate template = getControlTemplate(d);
+            if (template != null)
+                builder.setControlTemplate(template);
+            builder.setDeviceType(getDeviceType(d));
+            return builder.build();
+        }
+        else return new Control.StatelessBuilder(d.getIdx() + "", pi)
+                    .setTitle(d.getName())
+                    .setSubtitle(description)
+                    .setStructure(d.getPlanID())
+                    .setDeviceType(getDeviceType(d)).build();
     }
 
     public ControlTemplate getControlTemplate(DevicesInfo mDeviceInfo) {
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
                 (mDeviceInfo.getSwitchType() == null)) {
-                switch (mDeviceInfo.getType()) {
-                    case DomoticzValues.Scene.Type.GROUP:
-                        return new ToggleTemplate(mDeviceInfo.getIdx() + "_toggle", new ControlButton(mDeviceInfo.getStatusBoolean(), "toggle"));
-                    case DomoticzValues.Scene.Type.SCENE:
-                        return new StatelessTemplate(mDeviceInfo.getIdx() + "_stateless");
-                    case DomoticzValues.Device.Utility.Type.THERMOSTAT:
-                }
+            switch (mDeviceInfo.getType()) {
+                case DomoticzValues.Scene.Type.GROUP:
+                    return new ToggleTemplate(mDeviceInfo.getIdx() + "_toggle", new ControlButton(mDeviceInfo.getStatusBoolean(), "toggle"));
+                case DomoticzValues.Scene.Type.SCENE:
+                    return null;
+                case DomoticzValues.Device.Utility.Type.THERMOSTAT:
+            }
         } else {
             switch (mDeviceInfo.getSwitchTypeVal()) {
                 case DomoticzValues.Device.Type.Value.ON_OFF:
@@ -164,7 +164,7 @@ public class CustomControlService extends ControlsProviderService {
                 case DomoticzValues.Device.Type.Value.DOORBELL:
                 case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
                 case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
-                    return new StatelessTemplate(mDeviceInfo.getIdx() + "_stateless");
+                    return null;
 
                 case DomoticzValues.Device.Type.Value.DIMMER:
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
@@ -174,7 +174,7 @@ public class CustomControlService extends ControlsProviderService {
                 case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
                 case DomoticzValues.Device.Type.Value.BLINDVENETIANUS:
                     int maxValue = mDeviceInfo.getMaxDimLevel() <= 0 ? 100 : mDeviceInfo.getMaxDimLevel();
-                    return new ToggleRangeTemplate(mDeviceInfo.getIdx() + "_toggle", new ControlButton(mDeviceInfo.getStatusBoolean(), "toggle"),  new RangeTemplate(mDeviceInfo.getIdx() + "_range", 0.0f,
+                    return new ToggleRangeTemplate(mDeviceInfo.getIdx() + "_toggle", new ControlButton(mDeviceInfo.getStatusBoolean(), "toggle"), new RangeTemplate(mDeviceInfo.getIdx() + "_range", 0.0f,
                             maxValue,
                             mDeviceInfo.getLevel() > maxValue ? maxValue : mDeviceInfo.getLevel(),
                             1, "%d"));
@@ -186,110 +186,43 @@ public class CustomControlService extends ControlsProviderService {
     }
 
     public int getDeviceType(DevicesInfo mDeviceInfo) {
-        if (mDeviceInfo.getSwitchTypeVal() == 0 &&
-                (mDeviceInfo.getSwitchType() == null)) {
-                switch (mDeviceInfo.getType()) {
-                    case DomoticzValues.Scene.Type.GROUP:
-                        return DeviceTypes.TYPE_LIGHT;
-                    case DomoticzValues.Scene.Type.SCENE:
-                        return DeviceTypes.TYPE_GENERIC_ON_OFF;
-                }
-        } else {
-            switch (mDeviceInfo.getSwitchTypeVal()) {
-                case DomoticzValues.Device.Type.Value.ON_OFF:
-                case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
-                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
-                case DomoticzValues.Device.Type.Value.CONTACT:
-                case DomoticzValues.Device.Type.Value.DOORLOCK:
-                case DomoticzValues.Device.Type.Value.DOORCONTACT:
-                    return DeviceTypes.TYPE_DOOR;
-                case DomoticzValues.Device.Type.Value.X10SIREN:
-                case DomoticzValues.Device.Type.Value.MOTION:
-                case DomoticzValues.Device.Type.Value.DUSKSENSOR:
-                case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
-                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
-                case DomoticzValues.Device.Type.Value.DOORBELL:
-                    return DeviceTypes.TYPE_DOORBELL;
-                case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
-                case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
-                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
-                case DomoticzValues.Device.Type.Value.DIMMER:
-                    return DeviceTypes.TYPE_LIGHT;
-                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
-                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
-                case DomoticzValues.Device.Type.Value.BLINDS:
-                case DomoticzValues.Device.Type.Value.BLINDINVERTED:
-                case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
-                case DomoticzValues.Device.Type.Value.BLINDVENETIANUS:
-                    return DeviceTypes.TYPE_BLINDS;
-                default:
-                    return -1;
-            }
-        }
-        return DeviceTypes.TYPE_GENERIC_ON_OFF;
-    }
-
-    private void updateControl(Control control) {
-        stateControls = stateControls.stream().filter(c -> !c.getControlId().equals(control.getControlId())).collect(Collectors.toList());
-        stateControls.add(control);
-        if (updatePublisher != null)
-            updatePublisher.onNext(control);
+        return DomoticzIcons.getDrawableIconForGoogle(mDeviceInfo.getTypeImg(),
+                mDeviceInfo.getType(),
+                mDeviceInfo.getSubType(),
+                mDeviceInfo.getStatusBoolean(),
+                mDeviceInfo.getUseCustomImage(),
+                mDeviceInfo.getImage());
     }
 
     @NonNull
     @Override
     public Flow.Publisher<Control> createPublisherFor(@NonNull List<String> controlIds) {
+        Log.d(TAG, "Creating publishers for " + Integer.toString(controlIds.size()));
         updatePublisher = ReplayProcessor.create();
-        getSwitches(GetDefaultHandler());
-        for (String id : controlIds) {
-            Log.i(TAG, "cpf " + id);
-            for (DevicesInfo d : extendedStatusSwitches) {
-                if ((d.getIdx() + "").equals(id))
-                    processSwitch(d);
-            }
-        }
+        activeControlIds = controlIds;
+        processAll();
         return FlowAdapters.toFlowPublisher(updatePublisher);
     }
 
     @Override
     public void performControlAction(String controlId, ControlAction action,
                                      Consumer consumer) {
-        /* First, locate the control identified by the controlId. Once it is located, you can
-         * interpret the action appropriately for that specific device. For instance, the following
-         * assumes that the controlId is associated with a light, and the light can be turned on
-         * or off.
-         */
         try {
             Log.i(TAG, "pca " + controlId + " act " + action);
-            getSwitches(new DevicesReceiver() {
-                @Override
-                public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
-                    DevicesInfo device = null;
-                    for (DevicesInfo d : mDevicesInfo) {
-                        if ((d.getIdx() + "").equals(controlId))
-                            device = d;
-                    }
-                    if (device == null)
-                        return;
 
-                    if (action instanceof BooleanAction) {
-                        boolean newState = ((BooleanAction) action).getNewState();
-                        handleSwitch(getApplicationContext(), device, null, !newState, null);
-                        getSwitches(GetDefaultHandler());
-                    }
+            DevicesInfo device = null;
+            for (DevicesInfo d : extendedStatusSwitches) {
+                if ((d.getIdx() + "").equals(controlId))
+                    device = d;
+            }
+            if (device != null) {
+                if (action instanceof BooleanAction) {
+                    boolean newState = ((BooleanAction) action).getNewState();
+                    handleSwitch(getApplicationContext(), device, null, !newState, null);
                 }
-
-                @Override
-                public void onReceiveDevice(DevicesInfo mDevicesInfo) {}
-
-                @Override
-                public void onError(Exception error) {}
-            });
-
-          /*  if (action instanceof FloatAction) {
-            }*/
-
-            consumer.accept(ControlAction.RESPONSE_OK);
+                consumer.accept(ControlAction.RESPONSE_OK);
+            } else
+                consumer.accept(ControlAction.RESPONSE_FAIL);
         } catch (Exception ex) {
             Log.e("pca", ex.getMessage());
         }
