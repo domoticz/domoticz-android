@@ -29,7 +29,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -41,7 +40,6 @@ import android.os.Handler;
 import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.Log;
-import android.util.TypedValue;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
