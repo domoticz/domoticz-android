@@ -86,7 +86,7 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 import rm.com.clocks.ClockImageView;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DataObjectHolder> implements RVHAdapter {
-    public static final int ID_SCENE_SWITCH = 2000;
+    public static final int ID_SCENE_SWITCH = 3000;
     public static List<String> mCustomSorting;
     private final int ID_TEXTVIEW = 1000;
     private final int ID_SWITCH = 0;

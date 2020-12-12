@@ -771,9 +771,7 @@ public class SharedPrefUtil {
 
     public String[] getWearSwitches() {
         if (!prefs.contains(PREF_CUSTOM_WEAR_ITEMS)) return null;
-
         Set<String> selections = prefs.getStringSet(PREF_CUSTOM_WEAR_ITEMS, null);
-
         if (selections != null) {
             String[] selectionValues = new String[selections.size()];
 
@@ -1185,7 +1183,7 @@ public class SharedPrefUtil {
             Map<String, ?> oAllPrefs = this.prefs.getAll();
             HashMap<String, Object> oSavePrefs = new HashMap<String, Object>();
             for (Map.Entry<String, ?> entry : oAllPrefs.entrySet()) {
-                if(entry.getValue() != null) {
+                if (entry.getValue() != null) {
                     //Log.d("map values", entry.getKey() + ": " + entry.getValue().toString());
                     if (entry.getKey().startsWith("WIDGET") || entry.getKey().startsWith("SMALLWIDGET") || entry.getKey().startsWith("SMALLTEMPWIDGET") || entry.getKey().startsWith("WIDGETSECURITY"))
                         Log.i("PREFS", "Skipped: " + entry.getKey() + ": " + entry.getValue().toString());
