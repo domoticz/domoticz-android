@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Flow;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -41,6 +40,7 @@ import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class CustomControlService extends ControlsProviderService {
     public static final int ID_SWITCH = 1000;
+    private static final String prefix = "domoticz://";
     private ArrayList<DevicesInfo> extendedStatusSwitches;
     private ReplayProcessor publisherForAll;
     private ReplayProcessor updatePublisher;
@@ -50,13 +50,12 @@ public class CustomControlService extends ControlsProviderService {
     @Override
     public Flow.Publisher createPublisherForAllAvailable() {
         Log.d(TAG, "Creating publishers for all");
-        activeControlIds = null;
         publisherForAll = ReplayProcessor.create();
-        processAll();
+        processControls(false);
         return FlowAdapters.toFlowPublisher(publisherForAll);
     }
 
-    private void processAll() {
+    private void processControls(boolean onlyActive) {
         StaticHelper.getDomoticz(getApplicationContext()).getDevices(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
@@ -64,10 +63,10 @@ public class CustomControlService extends ControlsProviderService {
                 for (DevicesInfo device : extendedStatusSwitches) {
                     String name = device.getName();
                     if (!name.startsWith(Domoticz.HIDDEN_CHARACTER) && DeviceUtils.isSupportedForExternalControl(device)) {
-                        process(device);
+                        process(device, onlyActive);
                     }
                 }
-                if (publisherForAll != null && activeControlIds == null) {
+                if (publisherForAll != null) {
                     Log.d(TAG, "Completing all publisher");
                     publisherForAll.onComplete();
                 }
@@ -86,16 +85,16 @@ public class CustomControlService extends ControlsProviderService {
         }, 0, "all");
     }
 
-    private void process(DevicesInfo device) {
-        if (publisherForAll != null && activeControlIds == null) {
+    private void process(DevicesInfo device, boolean onlyActive) {
+        if (publisherForAll != null && !onlyActive) {
             Control control = DeviceToControl(device, true);
             publisherForAll.onNext(control);
         }
-        if (updatePublisher != null && activeControlIds != null) {
-            Integer controlId = device.getType().equals(DomoticzValues.Scene.Type.GROUP) || device.getType().equals(DomoticzValues.Scene.Type.SCENE) ?
+        if (updatePublisher != null && onlyActive) {
+            int controlId = device.getType().equals(DomoticzValues.Scene.Type.GROUP) || device.getType().equals(DomoticzValues.Scene.Type.SCENE) ?
                     device.getIdx() + DashboardAdapter.ID_SCENE_SWITCH :
                     device.getIdx() + ID_SWITCH;
-            if (activeControlIds.contains(String.valueOf(controlId))) {
+            if (activeControlIds.contains(prefix + controlId)) {
                 Log.d(TAG, "Adding stateful for device: " + device.getName() + " | with control id " + controlId);
                 Control control = DeviceToControl(device, false);
                 updatePublisher.onNext(control);
@@ -111,16 +110,18 @@ public class CustomControlService extends ControlsProviderService {
             pi = PendingIntent.getActivity(context, 101, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
-        Integer controlId = d.getType().equals(DomoticzValues.Scene.Type.GROUP) || d.getType().equals(DomoticzValues.Scene.Type.SCENE) ? d.getIdx() + DashboardAdapter.ID_SCENE_SWITCH : d.getIdx() + ID_SWITCH;
+        int controlId = d.getType().equals(DomoticzValues.Scene.Type.GROUP) || d.getType().equals(DomoticzValues.Scene.Type.SCENE) ? d.getIdx() + DashboardAdapter.ID_SCENE_SWITCH : d.getIdx() + ID_SWITCH;
         String description = d.getType();
+        if (description == null)
+            description = "";
         String status = d.getStatus() != null ? d.getStatus() : "";
         if (status.contains("|"))
             status = status.substring(status.lastIndexOf("|") + 1);
 
         if (!stateless) {
-            Control.StatefulBuilder builder = new Control.StatefulBuilder(String.valueOf(controlId), pi)
+            Control.StatefulBuilder builder = new Control.StatefulBuilder(prefix + controlId, pi)
                     .setTitle(d.getName())
-                    .setStructure(d.getPlanID());
+                    .setStructure("Domoticz");
             builder.setStatus(Control.STATUS_OK);
             builder.setStatusText(status);
             if (!UsefulBits.isEmpty(description))
@@ -130,33 +131,32 @@ public class CustomControlService extends ControlsProviderService {
                 builder.setControlTemplate(template);
             builder.setDeviceType(getDeviceType(d));
             return builder.build();
-        } else return new Control.StatelessBuilder(String.valueOf(controlId), pi)
-                .setTitle(d.getName())
-                .setSubtitle(description)
-                .setStructure(d.getPlanID())
-                .setDeviceType(getDeviceType(d)).build();
+        } else
+            return new Control.StatelessBuilder(prefix + controlId, pi)
+                    .setTitle(d.getName())
+                    .setSubtitle(description)
+                    .setStructure("Domoticz")
+                    .setDeviceType(getDeviceType(d))
+                    .build();
     }
 
     public ControlTemplate getControlTemplate(DevicesInfo mDeviceInfo) {
         Integer controlId = mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.GROUP) || mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.SCENE) ?
                 mDeviceInfo.getIdx() + DashboardAdapter.ID_SCENE_SWITCH :
                 mDeviceInfo.getIdx() + ID_SWITCH;
-        if (mDeviceInfo.getSwitchTypeVal() == 0 &&
-                (mDeviceInfo.getSwitchType() == null)) {
+        if (mDeviceInfo.getSwitchTypeVal() == 0 && mDeviceInfo.getSwitchType() == null) {
             switch (mDeviceInfo.getType()) {
                 case DomoticzValues.Scene.Type.GROUP:
-                    return new ToggleTemplate(controlId + "_toggle", new ControlButton(mDeviceInfo.getStatusBoolean(), "toggle"));
                 case DomoticzValues.Scene.Type.SCENE:
-                    return null;
+                    return new ToggleTemplate(prefix + controlId + "_toggle", new ControlButton(mDeviceInfo.getStatusBoolean(), "toggle"));
                 case DomoticzValues.Device.Utility.Type.THERMOSTAT:
+                    return null;
             }
         } else {
             switch (mDeviceInfo.getSwitchTypeVal()) {
                 case DomoticzValues.Device.Type.Value.ON_OFF:
                 case DomoticzValues.Device.Type.Value.DOORLOCK:
                 case DomoticzValues.Device.Type.Value.DOORCONTACT:
-                    return new ToggleTemplate(controlId + "_toggle", new ControlButton(mDeviceInfo.getStatusBoolean(), "toggle"));
-
                 case DomoticzValues.Device.Type.Value.X10SIREN:
                 case DomoticzValues.Device.Type.Value.MOTION:
                 case DomoticzValues.Device.Type.Value.CONTACT:
@@ -165,7 +165,7 @@ public class CustomControlService extends ControlsProviderService {
                 case DomoticzValues.Device.Type.Value.DOORBELL:
                 case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
                 case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
-                    return null;
+                    return new ToggleTemplate(prefix + controlId + "_toggle", new ControlButton(mDeviceInfo.getStatusBoolean(), "toggle"));
 
                 case DomoticzValues.Device.Type.Value.DIMMER:
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
@@ -175,15 +175,15 @@ public class CustomControlService extends ControlsProviderService {
                 case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
                 case DomoticzValues.Device.Type.Value.BLINDVENETIANUS:
                     int maxValue = mDeviceInfo.getMaxDimLevel() <= 0 ? 100 : mDeviceInfo.getMaxDimLevel();
-                    return new ToggleRangeTemplate(controlId + "_toggle", new ControlButton(mDeviceInfo.getStatusBoolean(), "toggle"), new RangeTemplate(controlId + "_range", 0.0f,
+                    return new ToggleRangeTemplate(prefix + controlId + "_toggle", new ControlButton(mDeviceInfo.getStatusBoolean(), "toggle"), new RangeTemplate(controlId + "_range", 0.0f,
                             maxValue,
                             mDeviceInfo.getLevel() > maxValue ? maxValue : mDeviceInfo.getLevel(),
                             1, "%d"));
                 default:
-                    return new ToggleTemplate(controlId + "_toggle", new ControlButton(mDeviceInfo.getStatusBoolean(), "toggle"));
+                    return new ToggleTemplate(prefix + controlId + "_toggle", new ControlButton(mDeviceInfo.getStatusBoolean(), "toggle"));
             }
         }
-        return new ToggleTemplate(controlId + "_toggle", new ControlButton(mDeviceInfo.getStatusBoolean(), "toggle"));
+        return new ToggleTemplate(prefix + controlId + "_toggle", new ControlButton(mDeviceInfo.getStatusBoolean(), "toggle"));
     }
 
     public int getDeviceType(DevicesInfo mDeviceInfo) {
@@ -201,7 +201,7 @@ public class CustomControlService extends ControlsProviderService {
         Log.d(TAG, "Creating publishers for " + controlIds.size() + " devices");
         updatePublisher = ReplayProcessor.create();
         activeControlIds = controlIds;
-        processAll();
+        processControls(true);
         return FlowAdapters.toFlowPublisher(updatePublisher);
     }
 
@@ -215,7 +215,7 @@ public class CustomControlService extends ControlsProviderService {
                 Integer deviceId = d.getType().equals(DomoticzValues.Scene.Type.GROUP) || d.getType().equals(DomoticzValues.Scene.Type.SCENE) ?
                         d.getIdx() + DashboardAdapter.ID_SCENE_SWITCH :
                         d.getIdx() + ID_SWITCH;
-                if (String.valueOf(deviceId).equals(controlId))
+                if (String.valueOf(deviceId).equals(controlId.replace(prefix, "")))
                     device = d;
             }
             if (device != null) {
@@ -225,7 +225,7 @@ public class CustomControlService extends ControlsProviderService {
                         @Override
                         public void onReceiveResult(String result) {
                             consumer.accept(ControlAction.RESPONSE_OK);
-                            processAll();
+                            processControls(true);
                         }
 
                         @Override
