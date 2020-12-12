@@ -21,6 +21,11 @@
 
 package nl.hnogames.domoticzapi;
 
+import android.os.Build;
+import android.service.controls.DeviceTypes;
+
+import androidx.annotation.RequiresApi;
+
 /**
  * Created by m.heinis on 8/5/2016.
  */
@@ -184,6 +189,150 @@ public class DomoticzIcons {
                 return R.drawable.heating;
             case "thermostat":
                 return R.drawable.flame;
+        }
+        return test;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    @SuppressWarnings("SpellCheckingInspection")
+    public static int getDrawableIconForGoogle(String imgType, String Type, String switchType, boolean State, boolean useCustomImage, String CustomImage) {
+        int standardImage = getDrawableIconForGoogle(imgType, Type, switchType, State);
+        if (useCustomImage && CustomImage != null && CustomImage.length() > 0) {
+            switch (CustomImage) {
+                case "Alarm":
+                    return DeviceTypes.TYPE_GENERIC_ARM_DISARM;
+                case "Freezing":
+                    return DeviceTypes.TYPE_GENERIC_TEMP_SETTING;
+                case "Amplifier":
+                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
+                case "Computer":
+                case "ComputerPC":
+                    return DeviceTypes.TYPE_DISPLAY;
+                case "Cooling":
+                    return DeviceTypes.TYPE_GENERIC_TEMP_SETTING;
+                case "ChristmasTree":
+                    return DeviceTypes.TYPE_LIGHT;
+                case "Door":
+                    return DeviceTypes.TYPE_DOOR;
+                case "Fan":
+                    return DeviceTypes.TYPE_FAN;
+                case "Fireplace":
+                    return DeviceTypes.TYPE_HEATER;
+                case "Generic":
+                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
+                case "Harddisk":
+                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
+                case "Heating":
+                    return DeviceTypes.TYPE_HEATER;
+                case "Light":
+                    return DeviceTypes.TYPE_LIGHT;
+                case "Media":
+                    return DeviceTypes.TYPE_TV;
+                case "Phone":
+                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
+                case "Speaker":
+                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
+                case "Printer":
+                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
+                case "TV":
+                    return DeviceTypes.TYPE_TV;
+                case "WallSocket":
+                    return DeviceTypes.TYPE_OUTLET;
+                case "Water":
+                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
+                case "GoogleDevsHomeMini":
+                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
+            }
+        }
+
+        return standardImage;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    @SuppressWarnings("SpellCheckingInspection")
+    public static int getDrawableIconForGoogle(String imgType, String Type, String switchType, boolean State) {
+        int test = R.drawable.defaultimage;
+        switch (imgType.toLowerCase()) {
+            case "scene":
+                return DeviceTypes.TYPE_LIGHT;
+            case "group":
+                return DeviceTypes.TYPE_LIGHT;
+            case "wind":
+                return DeviceTypes.TYPE_GENERIC_TEMP_SETTING;
+            case "doorbell":
+                return DeviceTypes.TYPE_DOORBELL;
+            case "door":
+                return DeviceTypes.TYPE_DOOR;
+            case "lightbulb":
+                return DeviceTypes.TYPE_LIGHT;
+            case "push":
+                return DeviceTypes.TYPE_GENERIC_ON_OFF;
+            case "pushoff":
+                return DeviceTypes.TYPE_GENERIC_ON_OFF;
+            case "siren":
+                return DeviceTypes.TYPE_GENERIC_ON_OFF;
+            case "smoke":
+            return DeviceTypes.TYPE_UNKNOWN;
+            case "uv":
+                return DeviceTypes.TYPE_UNKNOWN;
+            case "contact":
+                return DeviceTypes.TYPE_GENERIC_ON_OFF;
+            case "logitechMediaServer":
+                return DeviceTypes.TYPE_TV;
+            case "media":
+                return DeviceTypes.TYPE_TV;
+            case "blinds":
+                return DeviceTypes.TYPE_BLINDS;
+            case "dimmer":
+                return DeviceTypes.TYPE_LIGHT;
+            case "motion":
+                return DeviceTypes.TYPE_UNKNOWN;
+            case "security":
+                return DeviceTypes.TYPE_SECURITY_SYSTEM;
+            case "temperature":
+            case "override_mini":
+                return DeviceTypes.TYPE_HEATER;
+            case "counter":
+                return DeviceTypes.TYPE_UNKNOWN;
+            case "visibility":
+                return DeviceTypes.TYPE_UNKNOWN;
+            case "radiation":
+                return DeviceTypes.TYPE_UNKNOWN;
+            case "moisture":
+            case "rain":
+                return DeviceTypes.TYPE_UNKNOWN;
+            case "leaf":
+                return DeviceTypes.TYPE_UNKNOWN;
+            case "hardware":
+                return DeviceTypes.TYPE_DISPLAY;
+            case "fan":
+                return DeviceTypes.TYPE_FAN;
+            case "speaker":
+                return DeviceTypes.TYPE_GENERIC_ON_OFF;
+            case "current":
+                return DeviceTypes.TYPE_OUTLET;
+            case "text":
+                return DeviceTypes.TYPE_UNKNOWN;
+            case "alert":
+                return DeviceTypes.TYPE_GENERIC_ON_OFF;
+            case "gauge":
+                return DeviceTypes.TYPE_GENERIC_ON_OFF;
+            case "clock":
+                return DeviceTypes.TYPE_GENERIC_ON_OFF;
+            case "mode":
+                return DeviceTypes.TYPE_GENERIC_ON_OFF;
+            case "utility":
+                return DeviceTypes.TYPE_GENERIC_ON_OFF;
+            case "scale":
+                return DeviceTypes.TYPE_GENERIC_ON_OFF;
+            case "lux":
+                return DeviceTypes.TYPE_GENERIC_ON_OFF;
+        }
+        switch (Type.toLowerCase()) {
+            case "heating":
+                return DeviceTypes.TYPE_HEATER;
+            case "thermostat":
+                return DeviceTypes.TYPE_THERMOSTAT;
         }
         return test;
     }
