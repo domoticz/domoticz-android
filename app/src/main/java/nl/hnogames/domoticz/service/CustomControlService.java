@@ -8,6 +8,7 @@ import android.service.controls.Control;
 import android.service.controls.ControlsProviderService;
 import android.service.controls.actions.BooleanAction;
 import android.service.controls.actions.ControlAction;
+import android.service.controls.actions.FloatAction;
 import android.service.controls.templates.ControlButton;
 import android.service.controls.templates.ControlTemplate;
 import android.service.controls.templates.RangeTemplate;
@@ -233,6 +234,20 @@ public class CustomControlService extends ControlsProviderService {
                             consumer.accept(ControlAction.RESPONSE_FAIL);
                         }
                     });
+                } else if (action instanceof FloatAction) {
+                    float newState = ((FloatAction) action).getNewValue();
+                    handleSwitch(getApplicationContext(), device, null, false, String.valueOf((int)newState), new setCommandReceiver() {
+                        @Override
+                        public void onReceiveResult(String result) {
+                            consumer.accept(ControlAction.RESPONSE_OK);
+                            processControls(true);
+                        }
+
+                        @Override
+                        public void onError(Exception error) {
+                            consumer.accept(ControlAction.RESPONSE_FAIL);
+                        }
+                    });
                 }
             } else
                 consumer.accept(ControlAction.RESPONSE_FAIL);
@@ -303,8 +318,12 @@ public class CustomControlService extends ControlsProviderService {
     }
 
     private int getSelectorValue(DevicesInfo mDevicesInfo, String value) {
-        if (mDevicesInfo == null || mDevicesInfo.getLevelNames() == null)
-            return 0;
+        if (mDevicesInfo == null || mDevicesInfo.getLevelNames() == null) {
+            if(UsefulBits.isEmpty(value))
+                return 0;
+            else
+                return Integer.valueOf(value);
+        }
         int jsonValue = 0;
         if (!UsefulBits.isEmpty(value)) {
             ArrayList<String> levelNames = mDevicesInfo.getLevelNames();
