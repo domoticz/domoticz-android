@@ -390,8 +390,6 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/ADMOB_APP_KEY" />
-        <meta-data android:name="com.google.android.gms.car.application"
-                   android:resource="@xml/automotive_app_desc"/>
 
         <activity
             android:name="nl.hnogames.domoticz.UpdateActivity"
