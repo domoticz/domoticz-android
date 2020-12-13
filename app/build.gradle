@@ -265,7 +265,6 @@ dependencies {
     implementation project(path: ':SeekArc_library')
     implementation project(path: ':domoticzapi')
     implementation project(path: ':materialList')
-    implementation 'com.google.android.libraries.car:car-app:1.0.0-beta.1'
 }
 
 buildscript {
