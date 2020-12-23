@@ -1449,7 +1449,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             if (cacheSwitches != null)
                 processDevices(cacheSwitches);
 
-            StaticHelper.getDomoticz(mContext).getFavorites(new DevicesReceiver() {
+            StaticHelper.getDomoticz(mContext).getDevices(new DevicesReceiver() {
                 @Override
                 public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
                     SerializableManager.saveSerializable(mContext, switches, "Dashboard");
