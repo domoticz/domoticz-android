@@ -6,7 +6,7 @@ buildscript {
     }
 	//noinspection GroovyAssignabilityCheck
 	dependencies {
-		classpath 'com.android.tools.build:gradle:4.1.0'
+		classpath 'com.android.tools.build:gradle:4.1.2'
 	}
 }
 
@@ -18,12 +18,12 @@ dependencies {
 }
 
 android {
-	compileSdkVersion 29
-	buildToolsVersion "29.0.2"
+	compileSdkVersion 30
+	buildToolsVersion "30.0.2"
 	//noinspection GroovyAssignabilityCheck
 	defaultConfig {
-        minSdkVersion 19
-		targetSdkVersion 29
+        minSdkVersion 23
+		targetSdkVersion 30
 	}
 
 	//noinspection GroovyAssignabilityCheck

@@ -58,7 +58,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -134,12 +133,6 @@ public class UsefulBits {
         return A;
     }
 
-    public static String Join(List<String> msgs) {
-        return msgs == null || msgs.size() == 0 ?
-                "" : msgs.size() == 1 ? msgs.get(0) :
-                msgs.subList(0, msgs.size() - 1).toString().replaceAll("^.|.$", "") + " and " + msgs.get(msgs.size() - 1);
-    }
-
     public static String newLine() {
         return System.getProperty("line.separator");
     }
@@ -147,12 +140,6 @@ public class UsefulBits {
     public static char getDegreeSymbol() {
         return '\u00B0';
     }
-
-
-    public static String createUniqueId() {
-        return UUID.randomUUID().toString();
-    }
-
 
     public static double[] rgb2hsv(int red, int green, int blue) {
         double computedH, computedS, computedV;

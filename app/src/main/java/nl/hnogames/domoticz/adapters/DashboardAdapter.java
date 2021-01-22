@@ -86,7 +86,7 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 import rm.com.clocks.ClockImageView;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DataObjectHolder> implements RVHAdapter {
-    public static final int ID_SCENE_SWITCH = 2000;
+    public static final int ID_SCENE_SWITCH = 3000;
     public static List<String> mCustomSorting;
     private final int ID_TEXTVIEW = 1000;
     private final int ID_SWITCH = 0;
@@ -140,16 +140,24 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         this.context = context;
         mConfigInfo = serverUtil.getActiveServer().getConfigInfo(context);
         this.listener = listener;
+
         if (mCustomSorting == null)
             mCustomSorting = mSharedPrefs.getSortingList("dashboard");
-
         setData(data);
     }
 
     public void setData(ArrayList<DevicesInfo> data) {
-        ArrayList<DevicesInfo> sortedData = SortData(data);
-        this.data = sortedData;
-        this.filteredData = sortedData;
+        if (this.filteredData != null)
+            SaveSorting();
+        if (data != null) {
+            ArrayList<DevicesInfo> sortedData = SortData(data);
+            this.data = sortedData;
+            this.filteredData = sortedData;
+        }
+    }
+
+    public void onDestroy() {
+        SaveSorting();
     }
 
     private ArrayList<DevicesInfo> SortData(ArrayList<DevicesInfo> dat) {
@@ -185,13 +193,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     }
 
     private void SaveSorting() {
-        List<String> ids = new ArrayList<>();
-        for (DevicesInfo d : filteredData) {
-            if (d.getIdx() != -9998)
-                ids.add(String.valueOf(d.getIdx()));
-        }
-        mCustomSorting = ids;
-        mSharedPrefs.saveSortingList("dashboard", ids);
+        mSharedPrefs.saveSortingList("dashboard", mCustomSorting);
     }
 
     /**
@@ -207,7 +209,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public int getItemCount() {
         if (filteredData == null)
             return 0;
-
         return filteredData.size();
     }
 
@@ -740,7 +741,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
                             @Override
                             public void onError(Exception e) {
-                                holder.dummyImg.setVisibility(View.GONE);
+                                if (holder.dummyImg.getDrawable() == null)
+                                    holder.dummyImg.setVisibility(View.GONE);
                                 holder.row_wrapper.setBackgroundColor(listviewRowBackground);
                             }
                         });
@@ -758,7 +760,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
                             @Override
                             public void onError(Exception e) {
-                                holder.dummyImg.setVisibility(View.GONE);
+                                if (holder.dummyImg.getDrawable() == null)
+                                    holder.dummyImg.setVisibility(View.GONE);
                                 holder.row_wrapper.setBackgroundColor(listviewRowBackground);
                             }
                         });
@@ -2115,9 +2118,29 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     }
 
     private void swap(int firstPosition, int secondPosition) {
-        Collections.swap(filteredData, firstPosition, secondPosition);
-        notifyItemMoved(firstPosition, secondPosition);
-        SaveSorting();
+        if (firstPosition == (secondPosition + 1) || firstPosition == (secondPosition - 1)) {
+            Collections.swap(filteredData, firstPosition, secondPosition);
+            notifyItemMoved(firstPosition, secondPosition);
+        } else {
+            if (firstPosition < secondPosition) {
+                for (int i = firstPosition; i < secondPosition; i++) {
+                    Collections.swap(filteredData, i, i + 1);
+                    notifyItemMoved(i, i + 1);
+                }
+            } else {
+                for (int i = firstPosition; i > secondPosition; i--) {
+                    Collections.swap(filteredData, i, i - 1);
+                    notifyItemMoved(i, i - 1);
+                }
+            }
+        }
+
+        List<String> ids = new ArrayList<>();
+        for (DevicesInfo d : filteredData) {
+            if (d.getIdx() != -9998)
+                ids.add(String.valueOf(d.getIdx()));
+        }
+        mCustomSorting = ids;
     }
 
     interface Buttons {

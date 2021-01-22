@@ -105,6 +105,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
     }
 
     public void setData(ArrayList<WeatherInfo> data) {
+        if (this.filteredData != null)
+            SaveSorting();
         ArrayList<WeatherInfo> sortedData = SortData(data);
         this.data = sortedData;
         this.filteredData = sortedData;
@@ -143,13 +145,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
     }
 
     private void SaveSorting() {
-        List<String> ids = new ArrayList<>();
-        for (WeatherInfo d : filteredData) {
-            if (d.getIdx() != MainActivity.ADS_IDX)
-                ids.add(String.valueOf(d.getIdx()));
-        }
-        mCustomSorting = ids;
-        mSharedPrefs.saveSortingList("weather", ids);
+        mSharedPrefs.saveSortingList("weather", mCustomSorting);
+    }
+
+    public void onDestroy() {
+        SaveSorting();
     }
 
     public Filter getFilter() {
@@ -392,9 +392,29 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
     }
 
     private void swap(int firstPosition, int secondPosition) {
-        Collections.swap(filteredData, firstPosition, secondPosition);
-        notifyItemMoved(firstPosition, secondPosition);
-        SaveSorting();
+        if (firstPosition == (secondPosition + 1) || firstPosition == (secondPosition - 1)) {
+            Collections.swap(filteredData, firstPosition, secondPosition);
+            notifyItemMoved(firstPosition, secondPosition);
+        } else {
+            if (firstPosition < secondPosition) {
+                for (int i = firstPosition; i < secondPosition; i++) {
+                    Collections.swap(filteredData, i, i + 1);
+                    notifyItemMoved(i, i + 1);
+                }
+            } else {
+                for (int i = firstPosition; i > secondPosition; i--) {
+                    Collections.swap(filteredData, i, i - 1);
+                    notifyItemMoved(i, i - 1);
+                }
+            }
+        }
+
+        List<String> ids = new ArrayList<>();
+        for (WeatherInfo d : filteredData) {
+            if (d.getIdx() != -9998)
+                ids.add(String.valueOf(d.getIdx()));
+        }
+        mCustomSorting = ids;
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder implements RVHViewHolder {

@@ -104,6 +104,8 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
     }
 
     public void setData(ArrayList<TemperatureInfo> data) {
+        if (this.filteredData != null)
+            SaveSorting();
         ArrayList<TemperatureInfo> sortedData = SortData(data);
         this.data = sortedData;
         this.filteredData = sortedData;
@@ -142,13 +144,11 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
     }
 
     private void SaveSorting() {
-        List<String> ids = new ArrayList<>();
-        for (TemperatureInfo d : filteredData) {
-            if (d.getIdx() != MainActivity.ADS_IDX)
-                ids.add(String.valueOf(d.getIdx()));
-        }
-        mCustomSorting = ids;
-        mSharedPrefs.saveSortingList("temperature", ids);
+        mSharedPrefs.saveSortingList("temperature", mCustomSorting);
+    }
+
+    public void onDestroy() {
+        SaveSorting();
     }
 
     public Filter getFilter() {
@@ -422,9 +422,29 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
     }
 
     private void swap(int firstPosition, int secondPosition) {
-        Collections.swap(filteredData, firstPosition, secondPosition);
-        notifyItemMoved(firstPosition, secondPosition);
-        SaveSorting();
+        if (firstPosition == (secondPosition + 1) || firstPosition == (secondPosition - 1)) {
+            Collections.swap(filteredData, firstPosition, secondPosition);
+            notifyItemMoved(firstPosition, secondPosition);
+        } else {
+            if (firstPosition < secondPosition) {
+                for (int i = firstPosition; i < secondPosition; i++) {
+                    Collections.swap(filteredData, i, i + 1);
+                    notifyItemMoved(i, i + 1);
+                }
+            } else {
+                for (int i = firstPosition; i > secondPosition; i--) {
+                    Collections.swap(filteredData, i, i - 1);
+                    notifyItemMoved(i, i - 1);
+                }
+            }
+        }
+
+        List<String> ids = new ArrayList<>();
+        for (TemperatureInfo d : filteredData) {
+            if (d.getIdx() != -9998)
+                ids.add(String.valueOf(d.getIdx()));
+        }
+        mCustomSorting = ids;
     }
 
     @Override

@@ -87,6 +87,13 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     }
 
     @Override
+    public void onDestroyView() {
+        if (mAdapter != null)
+            mAdapter.onDestroy();
+        super.onDestroyView();
+    }
+
+    @Override
     public void refreshFragment() {
         refreshTimer = true;
         if (mSwipeRefreshLayout != null)

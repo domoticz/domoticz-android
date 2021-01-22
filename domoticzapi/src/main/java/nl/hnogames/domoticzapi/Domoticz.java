@@ -21,10 +21,13 @@
 
 package nl.hnogames.domoticzapi;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.util.Log;
 
 import com.android.volley.RequestQueue;
@@ -1091,28 +1094,6 @@ public class Domoticz {
                 getUserCredentials(Authentication.PASSWORD),
                 BasicAuthDetected,
                 queue);
-    }
-
-    public File saveSnapShot(Bitmap bitmap, String name) {
-        String snapshot_file_path = "/Domoticz/SnapShot";
-        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                snapshot_file_path;
-        File dir = new File(file_path);
-        if (!dir.exists())
-            dir.mkdirs();
-
-        File file = new File(dir, "snapshot" + name + ".jpg");
-        FileOutputStream fOut;
-        try {
-            fOut = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-            fOut.flush();
-            fOut.close();
-            return file;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public interface Authentication {

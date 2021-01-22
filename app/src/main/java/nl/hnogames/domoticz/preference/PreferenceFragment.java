@@ -29,7 +29,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -40,17 +39,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.provider.Settings;
-import android.text.InputType;
 import android.util.Log;
-import android.util.TypedValue;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.codekidlabs.storagechooser.StorageChooser;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.io.File;
 import java.util.HashSet;
 
 import androidx.biometric.BiometricManager;
@@ -102,7 +97,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     private Context mContext;
     private ConfigInfo mConfigInfo;
     private PermissionHelper permissionHelper;
-    private StorageChooser.Theme theme;
 
     private static void tintIcons(Preference preference, int color) {
         if (preference instanceof PreferenceGroup) {
@@ -140,53 +134,12 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         UsefulBits.checkAPK(mContext, mSharedPrefs);
 
-        SetStorageTheme();
         setIconColor();
         setPreferences();
         setStartUpScreenDefaultValue();
         handleImportExportButtons();
         handleInfoAndAbout();
         GetVersion();
-    }
-
-    private void SetStorageTheme() {
-        theme = new StorageChooser.Theme(mContext);
-        int[] scheme = new int[16];
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme currentTheme = mContext.getTheme();
-        currentTheme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
-        scheme[0] = typedValue.data;// header background
-        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
-        scheme[1] = typedValue.data;// header text
-        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
-        scheme[2] = typedValue.data;//list bg
-        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
-        scheme[3] = typedValue.data;//storage list name text
-        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
-        scheme[4] = typedValue.data;//free space text
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[5] = typedValue.data;//memory bar
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[6] = typedValue.data;//folder tint
-        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
-        scheme[7] = typedValue.data;// list bg
-        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
-        scheme[8] = typedValue.data;//list text
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[9] = typedValue.data;//address bar tint
-        currentTheme.resolveAttribute(R.attr.temperatureTextColor, typedValue, true);
-        scheme[10] = typedValue.data;//folder hint tint
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[11] = typedValue.data;//elect button color
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[12] = typedValue.data;//select button color
-        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
-        scheme[13] = typedValue.data;//new folder layour bg
-        currentTheme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-        scheme[14] = typedValue.data;//fab multiselect color
-        currentTheme.resolveAttribute(R.attr.md_background_color, typedValue, true);
-        scheme[15] = typedValue.data;//address bar bg
-        theme.setScheme(scheme);
     }
 
     private void setIconColor() {
@@ -791,10 +744,9 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                     if (!PermissionsUtil.canAccessStorage(mContext)) {
                         permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                     } else
-                        exportSettings();
+                        ((SettingsActivity) getActivity()).exportSettings();
                 } else
-                    exportSettings();
-
+                    ((SettingsActivity) getActivity()).exportSettings();
                 return false;
             });
         androidx.preference.Preference importButton = findPreference("import_settings");
@@ -804,56 +756,11 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                     if (!PermissionsUtil.canAccessStorage(mContext)) {
                         permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                     } else
-                        importSettings();
+                        ((SettingsActivity) getActivity()).importSettings();
                 } else
-                    importSettings();
-
+                    ((SettingsActivity) getActivity()).importSettings();
                 return false;
             });
-    }
-
-    private void importSettings() {
-        StorageChooser chooser = new StorageChooser.Builder()
-                .withActivity(getActivity())
-                .withFragmentManager(getActivity().getFragmentManager())
-                .withMemoryBar(false)
-                .allowCustomPath(true)
-                .setType(StorageChooser.FILE_PICKER)
-                .setTheme(theme)
-                .build();
-        chooser.show();
-        chooser.setOnSelectListener(path -> {
-            Log.v(TAG_IMPORT, "Importing settings from: " + path);
-            if (mSharedPrefs.loadSharedPreferencesFromFile(new File(path))) {
-                ((SettingsActivity) getActivity()).reloadSettings();
-                showSnackbar(mContext.getString(R.string.settings_imported));
-            } else
-                showSnackbar(mContext.getString(R.string.settings_import_failed));
-        });
-    }
-
-    private void exportSettings() {
-        StorageChooser chooser = new StorageChooser.Builder()
-                .withActivity(getActivity())
-                .withFragmentManager(getActivity().getFragmentManager())
-                .allowAddFolder(true)
-                .withMemoryBar(false)
-                .allowCustomPath(true)
-                .setType(StorageChooser.DIRECTORY_CHOOSER)
-                .setTheme(theme)
-                .build();
-        chooser.show();
-        chooser.setOnSelectListener(path -> new MaterialDialog.Builder(mContext)
-                .title(R.string.save_as)
-                .content(R.string.filename)
-                .inputType(InputType.TYPE_CLASS_TEXT)
-                .input("settings.txt", "settings.txt", (dialog, input) -> {
-                    File newFile = new File(path, "/" + input);
-                    if (mSharedPrefs.saveSharedPreferencesToFile(newFile))
-                        showSnackbar(mContext.getString(R.string.settings_exported));
-                    else
-                        showSnackbar(mContext.getString(R.string.settings_export_failed));
-                }).show());
     }
 
     private void setStartUpScreenDefaultValue() {
@@ -877,7 +784,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         }
     }
 
-    private void showSnackbar(final String text) {
+    public void showSnackbar(final String text) {
         try {
             new Handler().postDelayed(() -> {
                 if (getView() != null) {
