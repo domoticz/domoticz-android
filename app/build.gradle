@@ -201,11 +201,11 @@ dependencies {
     implementation 'org.reactivestreams:reactive-streams:1.0.3'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
 
-    implementation 'com.google.firebase:firebase-core:18.0.0'
-    implementation 'com.google.firebase:firebase-analytics:18.0.0'
+    implementation 'com.google.firebase:firebase-core:18.0.1'
+    implementation 'com.google.firebase:firebase-analytics:18.0.1'
     implementation 'com.google.firebase:firebase-crashlytics:17.3.0'
-    implementation "com.google.firebase:firebase-messaging:21.0.0"
-    implementation "com.google.firebase:firebase-ads:19.6.0"
+    implementation "com.google.firebase:firebase-messaging:21.0.1"
+    implementation "com.google.firebase:firebase-ads:19.7.0"
 
     implementation "com.google.android.gms:play-services-analytics:17.0.0"
     implementation "com.google.android.gms:play-services-wearable:17.0.0"
@@ -213,7 +213,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-gcm:17.0.0"
     implementation "com.google.android.gms:play-services-location:17.1.0"
     implementation "com.google.android.gms:play-services-places:17.0.0"
-    implementation "com.google.android.gms:play-services-ads:19.6.0"
+    implementation "com.google.android.gms:play-services-ads:19.7.0"
     implementation 'com.google.android.ads.consent:consent-library:1.0.8'
     implementation "com.github.nisrulz:recyclerviewhelper:27.1.1"
     implementation "org.altbeacon:android-beacon-library:2.17"
@@ -265,7 +265,6 @@ dependencies {
     implementation project(path: ':SeekArc_library')
     implementation project(path: ':domoticzapi')
     implementation project(path: ':materialList')
-    implementation 'com.google.android.libraries.car:car-app:1.0.0-beta.1'
 }
 
 buildscript {
