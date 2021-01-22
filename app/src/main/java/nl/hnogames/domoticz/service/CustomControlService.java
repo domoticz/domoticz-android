@@ -18,9 +18,6 @@ import android.service.controls.templates.RangeTemplate;
 import android.service.controls.templates.ToggleRangeTemplate;
 import android.service.controls.templates.ToggleTemplate;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import org.reactivestreams.FlowAdapters;
 
@@ -31,11 +28,9 @@ import java.util.function.Consumer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 import io.reactivex.processors.ReplayProcessor;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
-import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.DashboardAdapter;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.DeviceUtils;
@@ -101,15 +96,13 @@ public class CustomControlService extends ControlsProviderService {
                     Log.e(TAG, errorMessage);
                 }
             }, 0, "all");
-        }
-        else{
+        } else {
             // Add dummy control (to show premium feature)
             addDummyControl(onlyActive);
         }
     }
 
-    public void addDummyControl(boolean onlyActive)
-    {
+    public void addDummyControl(boolean onlyActive) {
         if (publisherForAll != null && !onlyActive) {
             Control control = new Control.StatelessBuilder(prefix + "premium", pi)
                     .setTitle("Premium")
@@ -120,7 +113,7 @@ public class CustomControlService extends ControlsProviderService {
             publisherForAll.onNext(control);
         }
         if (updatePublisher != null && onlyActive) {
-                Control control = new Control.StatefulBuilder(prefix + "premium", pi)
+            Control control = new Control.StatefulBuilder(prefix + "premium", pi)
                     .setTitle("Premium")
                     .setStatus(Control.STATUS_OK)
                     .setStatusText("Buy")
@@ -129,7 +122,7 @@ public class CustomControlService extends ControlsProviderService {
                     .setControlTemplate(new ToggleTemplate(prefix + "dummy" + "_toggle", new ControlButton(true, "toggle")))
                     .setDeviceType(DeviceTypes.TYPE_LIGHT)
                     .build();
-                updatePublisher.onNext(control);
+            updatePublisher.onNext(control);
         }
         if (publisherForAll != null) {
             Log.d(TAG, "Completing all publisher");
@@ -155,7 +148,7 @@ public class CustomControlService extends ControlsProviderService {
     }
 
     public Control DeviceToControl(DevicesInfo d, boolean stateless) {
-              int controlId = d.getType().equals(DomoticzValues.Scene.Type.GROUP) || d.getType().equals(DomoticzValues.Scene.Type.SCENE) ? d.getIdx() + DashboardAdapter.ID_SCENE_SWITCH : d.getIdx() + ID_SWITCH;
+        int controlId = d.getType().equals(DomoticzValues.Scene.Type.GROUP) || d.getType().equals(DomoticzValues.Scene.Type.SCENE) ? d.getIdx() + DashboardAdapter.ID_SCENE_SWITCH : d.getIdx() + ID_SWITCH;
         String description = d.getType();
         if (description == null)
             description = "";
@@ -255,8 +248,7 @@ public class CustomControlService extends ControlsProviderService {
                                      Consumer consumer) {
         try {
             Log.i(TAG, controlId + " act " + action);
-            if(controlId.equals(prefix+"premium"))
-            {
+            if (controlId.equals(prefix + "premium")) {
                 String packageID = getApplicationContext().getPackageName() + ".premium";
                 try {
                     Intent openStore = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageID));
@@ -268,8 +260,7 @@ public class CustomControlService extends ControlsProviderService {
                     startActivity(openStore);
                 }
                 consumer.accept(ControlAction.RESPONSE_OK);
-            }
-            else {
+            } else {
                 DevicesInfo device = null;
                 for (DevicesInfo d : extendedStatusSwitches) {
                     Integer deviceId = d.getType().equals(DomoticzValues.Scene.Type.GROUP) || d.getType().equals(DomoticzValues.Scene.Type.SCENE) ?
@@ -379,7 +370,7 @@ public class CustomControlService extends ControlsProviderService {
 
     private int getSelectorValue(DevicesInfo mDevicesInfo, String value) {
         if (mDevicesInfo == null || mDevicesInfo.getLevelNames() == null) {
-            if(UsefulBits.isEmpty(value))
+            if (UsefulBits.isEmpty(value))
                 return 0;
             else
                 return Integer.valueOf(value);
