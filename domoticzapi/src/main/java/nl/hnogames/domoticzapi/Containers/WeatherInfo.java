@@ -37,6 +37,7 @@ public class WeatherInfo implements Comparable, Serializable {
     private String Data;
     private String LastUpdate;
     private String Type;
+    private String SubType;
     private String ForecastStr;
     private String HumidityStatus;
     private String DirectionStr;
@@ -65,8 +66,9 @@ public class WeatherInfo implements Comparable, Serializable {
         if (row.has("Favorite")) Favorite = row.getInt("Favorite");
         if (row.has("Barometer")) Barometer = row.getInt("Barometer");
         if (row.has("HardwareID")) HardwareID = row.getInt("HardwareID");
-        if (row.has("Type")) HardwareName = row.getString("Type");
+        if (row.has("HardwareName")) HardwareName = row.getString("HardwareName");
         if (row.has("Type")) Type = row.getString("Type");
+        if (row.has("SubType")) SubType = row.getString("SubType");
         if (row.has("TypeImg")) TypeImg = row.getString("TypeImg");
         if (row.has("LastUpdate")) LastUpdate = row.getString("LastUpdate");
         if (row.has("Name")) Name = row.getString("Name");
@@ -246,6 +248,14 @@ public class WeatherInfo implements Comparable, Serializable {
 
     public void setType(String type) {
         Type = type;
+    }
+
+    public String getSubType() {
+        return SubType;
+    }
+
+    public void setSubType(String type) {
+        SubType = type;
     }
 
     public String getLastUpdate() {

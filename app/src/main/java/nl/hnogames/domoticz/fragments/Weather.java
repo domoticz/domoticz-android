@@ -80,6 +80,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         new GetCachedDataTask().execute();
     }
 
+
     @Override
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
@@ -303,10 +304,12 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     @Override
 
     public void onLogClick(final WeatherInfo weather, final String range) {
-        final String graphType = weather.getTypeImg()
+        String graphType = weather.getTypeImg()
                 .toLowerCase()
                 .replace("temperature", "temp")
                 .replace("visibility", "counter");
+        if(weather.getSubType().equals("Barometer"))
+            graphType = "temp";
 
         JSONObject language = null;
         Language languageObj = new SharedPrefUtil(mContext).getSavedLanguage();
