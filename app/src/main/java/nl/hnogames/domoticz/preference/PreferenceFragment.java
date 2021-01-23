@@ -582,13 +582,19 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (TermsPreferences != null)
             TermsPreferences.setOnPreferenceClickListener(preference -> {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://hnogames.nl/domoticz_terms.html")));
+                if (BuildConfig.PAID_OOTT)
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://hnogames.nl/oott_terms.html")));
+                else
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://hnogames.nl/domoticz_terms.html")));
                 return true;
             });
 
         if (PrivacyPreferences != null)
             PrivacyPreferences.setOnPreferenceClickListener(preference -> {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://hnogames.nl/domoticz_policy.html")));
+                if (BuildConfig.PAID_OOTT)
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://hnogames.nl/oott_policy.html")));
+                else
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://hnogames.nl/domoticz_policy.html")));
                 return true;
             });
 
