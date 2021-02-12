@@ -184,7 +184,6 @@ public class WearMessageListenerService extends WearableListenerService implemen
                 for (DevicesInfo mDevicesInfo : extendedStatusSwitches) {
                     String name = mDevicesInfo.getName();
                     String idx = mDevicesInfo.getIdx() + "";
-
                     if (!name.startsWith(Domoticz.HIDDEN_CHARACTER)) //&&
                     {
                         for (String f : filterSwitches) {

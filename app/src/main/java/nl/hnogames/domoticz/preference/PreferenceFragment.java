@@ -188,6 +188,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         Preference ReportErrorSettings = findPreference("report");
         Preference GeoSettings = findPreference("geo_settings");
         SwitchPreference WearPreference = findPreference("enableWearItems");
+        SwitchPreference AutoPreference = findPreference("enableAutoItems");
         SwitchPreference WidgetsEnablePreference = findPreference("enableWidgets");
         Preference NFCPreference = findPreference("nfc_settings");
         Preference QRCodePreference = findPreference("qrcode_settings");
@@ -541,6 +542,15 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             WearPreference.setOnPreferenceChangeListener((preference, newValue) -> {
                 if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_wear));
+                    return false;
+                }
+                return true;
+            });
+
+        if (AutoPreference != null)
+            AutoPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_auto));
                     return false;
                 }
                 return true;

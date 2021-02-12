@@ -73,11 +73,13 @@ public class SharedPrefUtil {
     private static final String PREF_MULTI_SERVER = "enableMultiServers";
     private static final String PREF_STARTUP_PROTECTION_ENABLED = "enableSecurity";
     private static final String PREF_CUSTOM_WEAR = "enableWearItems";
+    private static final String PREF_CUSTOM_AUTOLIST = "enableAutoItems";
     private static final String PREF_CUSTOM_AUTO = "enableAutoNotifications";
     private static final String PREF_ENABLE_NFC = "enableNFC";
     private static final String PREF_ENABLE_Bluetooth = "enableBluetooth";
     private static final String PREF_ENABLE_BEACON = "enableBeacon";
     private static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
+    private static final String PREF_CUSTOM_AUTO_ITEMS = "autolistItems";
     private static final String PREF_ALWAYS_ON = "alwayson";
     private static final String PREF_AUTO_REFRESH = "autorefresh";
     private static final String PREF_AUTO_REFRESH_TIMER = "autorefreshTimer";
@@ -769,6 +771,21 @@ public class SharedPrefUtil {
         return prefs.getString(PREF_STARTUP_SCREEN, null);
     }
 
+    public String[] getAutoSwitches() {
+        if (!prefs.contains(PREF_CUSTOM_AUTO_ITEMS)) return null;
+        Set<String> selections = prefs.getStringSet(PREF_CUSTOM_AUTO_ITEMS, null);
+        if (selections != null) {
+            String[] selectionValues = new String[selections.size()];
+
+            int i = 0;
+            for (String s : selections) {
+                selectionValues[i] = s;
+                i++;
+            }
+            return selectionValues;
+        } else return null;
+    }
+
     public String[] getWearSwitches() {
         if (!prefs.contains(PREF_CUSTOM_WEAR_ITEMS)) return null;
         Set<String> selections = prefs.getStringSet(PREF_CUSTOM_WEAR_ITEMS, null);
@@ -901,6 +918,10 @@ public class SharedPrefUtil {
 
     public boolean showCustomWear() {
         return prefs.getBoolean(PREF_CUSTOM_WEAR, false);
+    }
+
+    public boolean showCustomAndroidAuto() {
+        return prefs.getBoolean(PREF_CUSTOM_AUTOLIST, false);
     }
 
     public boolean showAutoNotifications() {
