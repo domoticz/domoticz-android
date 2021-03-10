@@ -21,8 +21,11 @@
 
 package nl.hnogames.domoticz.welcome;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.wifi.ScanResult;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
@@ -42,14 +45,17 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.isupatches.wisefy.WiseFy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
@@ -80,7 +86,6 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     private boolean hasBeenVisibleToUser = false;
     private MultiSelectionSpinner local_wifi_spinner;
     private int callingInstance;
-    private PhoneConnectionUtil mPhoneConnectionUtil;
     private PermissionFragmentHelper permissionFragmentHelper;
 
     public static WelcomePage3 newInstance(int instance) {
@@ -105,7 +110,6 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
 
         getLayoutReferences();
         setPreferenceValues();
-
         return v;
     }
 
@@ -137,33 +141,25 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
         CheckBox cbShowPasswordLocal = v.findViewById(R.id.showpasswordlocal);
         Button btnManualSSID = v.findViewById(R.id.set_ssid);
 
-        btnManualSSID.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new MaterialDialog.Builder(getContext())
-                        .title(R.string.welcome_ssid_button_prompt)
-                        .content(R.string.welcome_msg_no_ssid_found)
-                        .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
-                        .input(null, null, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                Set<String> ssidFromPrefs = StaticHelper.getServerUtil(getContext()).getActiveServer().getLocalServerSsid();
-                                final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
-                                if (ssidFromPrefs != null) {
-                                    if (ssidFromPrefs.size() > 0) {
-                                        for (String wifi : ssidFromPrefs) {
-                                            ssidListFromPrefs.add(wifi);
-                                        }
-                                    }
-                                }
-                                ssidListFromPrefs.add(String.valueOf(input));
-                                StaticHelper.getServerUtil(getContext()).getActiveServer().setLocalServerSsid(ssidListFromPrefs);
-
-                                setSsid_spinner();
+        btnManualSSID.setOnClickListener(v -> new MaterialDialog.Builder(getContext())
+                .title(R.string.welcome_ssid_button_prompt)
+                .content(R.string.welcome_msg_no_ssid_found)
+                .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                .input(null, null, (dialog, input) -> {
+                    Set<String> ssidFromPrefs = StaticHelper.getServerUtil(getContext()).getActiveServer().getLocalServerSsid();
+                    final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
+                    if (ssidFromPrefs != null) {
+                        if (ssidFromPrefs.size() > 0) {
+                            for (String wifi : ssidFromPrefs) {
+                                ssidListFromPrefs.add(wifi);
                             }
-                        }).show();
-            }
-        });
+                        }
+                    }
+                    ssidListFromPrefs.add(String.valueOf(input));
+                    StaticHelper.getServerUtil(getContext()).getActiveServer().setLocalServerSsid(ssidListFromPrefs);
+
+                    setSsid_spinner();
+                }).show());
 
         if (callingInstance == SETTINGS) {
             v.findViewById(R.id.server_settings_title).setVisibility(View.GONE);
@@ -172,36 +168,27 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
         final LinearLayout localServerSettingsLayout = v.findViewById(R.id.local_server_settings);
         localServer_switch = v.findViewById(R.id.localServer_switch);
         localServer_switch.setChecked(mSharedPrefs.isAdvancedSettingsEnabled());
-        localServer_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if (checked) localServerSettingsLayout.setVisibility(View.VISIBLE);
-                else localServerSettingsLayout.setVisibility(View.GONE);
-            }
+        localServer_switch.setOnCheckedChangeListener((compoundButton, checked) -> {
+            if (checked) localServerSettingsLayout.setVisibility(View.VISIBLE);
+            else localServerSettingsLayout.setVisibility(View.GONE);
         });
         localServerSettingsLayout.setVisibility(StaticHelper.getServerUtil(getContext()).getActiveServer().getIsLocalServerAddressDifferent() ? View.VISIBLE : View.GONE);
-        cbShowPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked) {
-                    remote_password_input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    remote_password_input.setSelection(remote_password_input.getText().length());
-                } else {
-                    remote_password_input.setInputType(InputType.TYPE_CLASS_TEXT);
-                    remote_password_input.setSelection(remote_password_input.getText().length());
-                }
+        cbShowPassword.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!isChecked) {
+                remote_password_input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                remote_password_input.setSelection(remote_password_input.getText().length());
+            } else {
+                remote_password_input.setInputType(InputType.TYPE_CLASS_TEXT);
+                remote_password_input.setSelection(remote_password_input.getText().length());
             }
         });
-        cbShowPasswordLocal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked) {
-                    local_password_input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    local_password_input.setSelection(local_password_input.getText().length());
-                } else {
-                    local_password_input.setInputType(InputType.TYPE_CLASS_TEXT);
-                    local_password_input.setSelection(local_password_input.getText().length());
-                }
+        cbShowPasswordLocal.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!isChecked) {
+                local_password_input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                local_password_input.setSelection(local_password_input.getText().length());
+            } else {
+                local_password_input.setInputType(InputType.TYPE_CLASS_TEXT);
+                local_password_input.setSelection(local_password_input.getText().length());
             }
         });
     }
@@ -250,33 +237,30 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
             }
         }
 
-        mPhoneConnectionUtil = new PhoneConnectionUtil(getActivity(), new WifiSSIDListener() {
-            @Override
-            public void ReceiveSSIDs(CharSequence[] ssidFound) {
-                if (ssidFound == null || ssidFound.length < 1) {
-                    if (ssidListFromPrefs.size() <= 0) {
-                        // No wifi ssid nearby found!
-                        local_wifi_spinner.setEnabled(false);                       // Disable spinner
-                        ssids.add(getString(R.string.welcome_msg_no_ssid_found));
-                        // Set selection to the 'no ssids found' message to inform user
-                        local_wifi_spinner.setItems(ssids);
-                        local_wifi_spinner.setSelection(0);
-                    }
-                } else {
-                    for (CharSequence ssid : ssidFound) {
-                        //noinspection SuspiciousMethodCalls
-                        if (!UsefulBits.isEmpty(ssid) && !ssids.contains(ssid))
-                            ssids.add(ssid.toString());  // Prevent double SSID's
-                    }
-                    local_wifi_spinner.setTitle(R.string.welcome_ssid_spinner_prompt);
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            permissionFragmentHelper.request(PermissionsUtil.INITIAL_LOCATION_PERMS);
+        else {
+            WiseFy wisefy = new WiseFy.Brains(getActivity()).getSmarts();
+            List<ScanResult> nearbyAccessPoints = wisefy.getNearbyAccessPoints(true);
+            if (nearbyAccessPoints == null || nearbyAccessPoints.size() < 1) {
+                if (nearbyAccessPoints.size() <= 0) {
+                    // No wifi ssid nearby found!
+                    local_wifi_spinner.setEnabled(false);                       // Disable spinner
+                    ssids.add(getString(R.string.welcome_msg_no_ssid_found));
+                    // Set selection to the 'no ssids found' message to inform user
                     local_wifi_spinner.setItems(ssids);
-
-                    local_wifi_spinner.setSelection(ssidListFromPrefs);
+                    local_wifi_spinner.setSelection(0);
                 }
-                mPhoneConnectionUtil.stopReceiver();
+            } else {
+                for (ScanResult ssid : nearbyAccessPoints) {
+                    if (!UsefulBits.isEmpty(ssid.SSID) && !ssids.contains(ssid.SSID))
+                        ssids.add(ssid.SSID);
+                }
+                local_wifi_spinner.setTitle(R.string.welcome_ssid_spinner_prompt);
+                local_wifi_spinner.setItems(ssids);
+                local_wifi_spinner.setSelection(ssidListFromPrefs);
             }
-        });
-        mPhoneConnectionUtil.startSsidScan();
+        }
     }
 
     private void setProtocol_spinner() {
@@ -393,14 +377,6 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
     }
 
     @Override
-    public void onStop() {
-        if (mPhoneConnectionUtil != null)
-            mPhoneConnectionUtil.stopReceiver();
-
-        super.onStop();
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         if (callingInstance == SETTINGS) {
@@ -413,12 +389,7 @@ public class WelcomePage3 extends Fragment implements OnPermissionCallback {
         Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
         String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_LOCATION_PERMS);
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
-                getActivity().getString(R.string.permission_desc_location), neededPermission, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (mPhoneConnectionUtil != null)
-                            mPhoneConnectionUtil.stopReceiver();
-                    }
+                getActivity().getString(R.string.permission_desc_location), neededPermission, (dialog, which) -> {
                 });
         if (!alert.isShowing()) {
             alert.show();
