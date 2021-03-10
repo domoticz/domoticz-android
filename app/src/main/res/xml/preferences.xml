@@ -211,7 +211,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:icon="@drawable/baseline_wifi_tethering_black_24"
+        android:icon="@drawable/baseline_network_wifi_black_24"
         android:title="@string/category_wifi">
         <SwitchPreference
             android:defaultValue="false"
