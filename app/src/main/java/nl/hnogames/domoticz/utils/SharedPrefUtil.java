@@ -59,6 +59,7 @@ import nl.hnogames.domoticz.containers.NFCInfo;
 import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.containers.QRCodeInfo;
 import nl.hnogames.domoticz.containers.SpeechInfo;
+import nl.hnogames.domoticz.containers.WifiInfo;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticzapi.Containers.Language;
 import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
@@ -76,6 +77,7 @@ public class SharedPrefUtil {
     private static final String PREF_CUSTOM_AUTO = "enableAutoNotifications";
     private static final String PREF_ENABLE_NFC = "enableNFC";
     private static final String PREF_ENABLE_Bluetooth = "enableBluetooth";
+    private static final String PREF_ENABLE_WIFI = "enableWifi";
     private static final String PREF_ENABLE_BEACON = "enableBeacon";
     private static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
     private static final String PREF_ALWAYS_ON = "alwayson";
@@ -92,6 +94,7 @@ public class SharedPrefUtil {
     private static final String PREF_NAVIGATION_ITEMS = "show_nav_items";
     private static final String PREF_NFC_TAGS = "nfc_tags";
     private static final String PREF_BLUETOOTH = "bluetooth";
+    private static final String PREF_WIFI = "wifi";
     private static final String PREF_BEACON = "beacon";
     private static final String PREF_QR_CODES = "qr_codes";
     private static final String PREF_SPEECH_COMMANDS = "speech_commands";
@@ -915,6 +918,10 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_ENABLE_Bluetooth, false);
     }
 
+    public boolean isWifiEnabled() {
+        return prefs.getBoolean(PREF_ENABLE_WIFI, false);
+    }
+
     public boolean isBeaconEnabled() {
         return prefs.getBoolean(PREF_ENABLE_BEACON, false);
     }
@@ -1002,6 +1009,25 @@ public class SharedPrefUtil {
         } else
             return null;
 
+        return oReturnValue;
+    }
+
+    public void saveWifiList(List<WifiInfo> list) {
+        editor.putString(PREF_WIFI, gson.toJson(list));
+        editor.commit();
+    }
+
+    public ArrayList<WifiInfo> getWifiList() {
+        ArrayList<WifiInfo> oReturnValue;
+        List<WifiInfo> Wifis;
+        if (prefs.contains(PREF_WIFI)) {
+            String jsonWifis = prefs.getString(PREF_WIFI, null);
+            WifiInfo[] item = gson.fromJson(jsonWifis,
+                    WifiInfo[].class);
+            Wifis = Arrays.asList(item);
+            oReturnValue = new ArrayList<>(Wifis);
+        } else
+            return null;
         return oReturnValue;
     }
 

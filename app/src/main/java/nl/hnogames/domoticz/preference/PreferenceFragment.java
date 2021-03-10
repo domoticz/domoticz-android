@@ -72,6 +72,7 @@ import nl.hnogames.domoticz.ServerListSettingsActivity;
 import nl.hnogames.domoticz.ServerSettingsActivity;
 import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.SpeechSettingsActivity;
+import nl.hnogames.domoticz.WifiSettingsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.ui.SimpleTextDialog;
@@ -192,11 +193,13 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         Preference NFCPreference = findPreference("nfc_settings");
         Preference QRCodePreference = findPreference("qrcode_settings");
         Preference BluetoothPreference = findPreference("bluetooth_settings");
+        Preference WifiPreference = findPreference("wifi_settings");
         Preference BeaconPreference = findPreference("beacon_settings");
         Preference SpeechPreference = findPreference("speech_settings");
         SwitchPreference EnableNFCPreference = findPreference("enableNFC");
         SwitchPreference EnableQRCodePreference = findPreference("enableQRCode");
         SwitchPreference EnableBluetoothPreference = findPreference("enableBluetooth");
+        SwitchPreference EnableWifiPreference = findPreference("enableWifi");
         SwitchPreference EnableBeaconPreference = findPreference("enableBeacon");
         SwitchPreference EnableSpeechPreference = findPreference("enableSpeech");
         SwitchPreference EnableTalkBackPreference = findPreference("talkBack");
@@ -405,6 +408,15 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 return true;
             });
 
+        if (EnableWifiPreference != null)
+            EnableWifiPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_wifi));
+                    return false;
+                }
+                return true;
+            });
+
         if (EnableBeaconPreference != null)
             EnableBeaconPreference.setOnPreferenceChangeListener((preference, newValue) -> {
                 if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
@@ -471,6 +483,18 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                     return false;
                 } else {
                     Intent intent = new Intent(mContext, QRCodeSettingsActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+            });
+
+        if (WifiPreference != null)
+            WifiPreference.setOnPreferenceClickListener(preference -> {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_wifi));
+                    return false;
+                } else {
+                    Intent intent = new Intent(mContext, WifiSettingsActivity.class);
                     startActivity(intent);
                     return true;
                 }

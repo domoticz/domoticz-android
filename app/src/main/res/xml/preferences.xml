@@ -211,6 +211,19 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:icon="@drawable/baseline_wifi_tethering_black_24"
+        android:title="@string/category_wifi">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enableWifi"
+            android:title="@string/enable_wifi" />
+        <Preference
+            android:dependency="enableWifi"
+            android:key="wifi_settings"
+            android:title="@string/wifi_settings" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:icon="@drawable/baseline_bluetooth_black_24"
         android:title="@string/category_bluetooth">
         <SwitchPreference
