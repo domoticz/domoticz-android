@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.welcome;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.net.wifi.ScanResult;
 import android.os.Build;
@@ -37,7 +36,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
@@ -66,8 +64,6 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
-import nl.hnogames.domoticzapi.Interfaces.WifiSSIDListener;
-import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class SetupServerSettings extends Fragment implements OnPermissionCallback {
 

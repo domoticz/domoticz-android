@@ -95,6 +95,7 @@ public class SharedPrefUtil {
     private static final String PREF_NFC_TAGS = "nfc_tags";
     private static final String PREF_BLUETOOTH = "bluetooth";
     private static final String PREF_WIFI = "wifi";
+    private static final String PREF_LAST_WIFI = "lastWifiConnection";
     private static final String PREF_BEACON = "beacon";
     private static final String PREF_QR_CODES = "qr_codes";
     private static final String PREF_SPEECH_COMMANDS = "speech_commands";
@@ -1015,6 +1016,20 @@ public class SharedPrefUtil {
     public void saveWifiList(List<WifiInfo> list) {
         editor.putString(PREF_WIFI, gson.toJson(list));
         editor.commit();
+    }
+
+    public void saveLastWifi(WifiInfo wifi) {
+        editor.putString(PREF_LAST_WIFI, gson.toJson(wifi));
+        editor.commit();
+    }
+
+    public WifiInfo getLastWifi() {
+        List<WifiInfo> Wifis;
+        if (prefs.contains(PREF_LAST_WIFI)) {
+            String jsonWifi = prefs.getString(PREF_LAST_WIFI, null);
+            return gson.fromJson(jsonWifi, WifiInfo.class);
+        } else
+            return null;
     }
 
     public ArrayList<WifiInfo> getWifiList() {

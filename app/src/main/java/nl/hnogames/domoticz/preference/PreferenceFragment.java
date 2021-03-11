@@ -60,6 +60,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 import nl.hnogames.domoticz.BeaconSettingsActivity;
 import nl.hnogames.domoticz.BluetoothSettingsActivity;
 import nl.hnogames.domoticz.BuildConfig;
@@ -75,6 +77,8 @@ import nl.hnogames.domoticz.SpeechSettingsActivity;
 import nl.hnogames.domoticz.WifiSettingsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.helpers.StaticHelper;
+import nl.hnogames.domoticz.service.WifiReceiver;
+import nl.hnogames.domoticz.service.WifiReceiverManager;
 import nl.hnogames.domoticz.ui.SimpleTextDialog;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -413,6 +417,16 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_wifi));
                     return false;
+                }
+
+                WorkManager.getInstance(mContext).cancelAllWorkByTag(WifiReceiver.workTag);
+                WorkManager.getInstance(mContext).cancelAllWorkByTag(WifiReceiverManager.workTag);
+
+                if (((boolean) newValue)) {
+                    WorkManager.getInstance(mContext).enqueue(new OneTimeWorkRequest
+                            .Builder(WifiReceiverManager.class)
+                            .addTag(WifiReceiverManager.workTag)
+                            .build());
                 }
                 return true;
             });

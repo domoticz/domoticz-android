@@ -25,5 +25,6 @@ import nl.hnogames.domoticz.containers.WifiInfo;
 
 public interface WifiClickListener {
     boolean onEnableClick(WifiInfo device, boolean checked);
+
     void onRemoveClick(WifiInfo device);
 }

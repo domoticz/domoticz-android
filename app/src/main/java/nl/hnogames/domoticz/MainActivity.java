@@ -82,6 +82,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 import hotchemi.android.rate.AppRate;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.app.AppController;
@@ -95,6 +97,8 @@ import nl.hnogames.domoticz.fragments.Cameras;
 import nl.hnogames.domoticz.fragments.Logs;
 import nl.hnogames.domoticz.fragments.Temperature;
 import nl.hnogames.domoticz.helpers.StaticHelper;
+import nl.hnogames.domoticz.service.WifiReceiver;
+import nl.hnogames.domoticz.service.WifiReceiverManager;
 import nl.hnogames.domoticz.ui.PasswordDialog;
 import nl.hnogames.domoticz.ui.SortDialog;
 import nl.hnogames.domoticz.utils.GCMUtils;
@@ -230,7 +234,20 @@ public class MainActivity extends AppCompatPermissionsActivity {
             mSharedPrefs.setFirstStart(false);
         } else {
             new GeoUtils(this, this).AddGeofences();
+            resetWorkerThreads();
             initScreen();
+        }
+    }
+
+    public void resetWorkerThreads() {
+        if (mSharedPrefs.isWifiEnabled()) {
+            WorkManager.getInstance(getApplicationContext()).cancelAllWorkByTag(WifiReceiver.workTag);
+            WorkManager.getInstance(getApplicationContext()).cancelAllWorkByTag(WifiReceiverManager.workTag);
+            OneTimeWorkRequest workRequest = new OneTimeWorkRequest
+                    .Builder(WifiReceiverManager.class)
+                    .addTag(WifiReceiverManager.workTag)
+                    .build();
+            WorkManager.getInstance(this).enqueue(workRequest);
         }
     }
 
