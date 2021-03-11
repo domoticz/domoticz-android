@@ -69,6 +69,7 @@
         android:name="nl.hnogames.domoticz.premium.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <application
         android:allowBackup="false"
         android:name="nl.hnogames.domoticz.app.AppController"

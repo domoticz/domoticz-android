@@ -42,7 +42,7 @@ public class WifiReceiverManager extends Worker {
         }
 
         try {
-            Thread.sleep(10000);
+            Thread.sleep(30000);
             OneTimeWorkRequest workRequest = new OneTimeWorkRequest
                     .Builder(WifiReceiverManager.class)
                     .addTag(WifiReceiverManager.workTag)

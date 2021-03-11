@@ -57,6 +57,12 @@ public class WifiReceiver extends Worker {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return Result.success();
         }
+        android.net.wifi.WifiInfo info = wisefy.getCurrentNetwork();
+        if(wisefy.isDeviceConnectedToWifiNetwork() && info.getSSID().contains("unknown")) {
+            Log.i("WiseFyReceiver", "Current SSID is unknown");
+            wisefy.dump();
+            return Result.success();
+        }
 
         boolean turnOn = true;
         WifiInfo connectedDevice = null;
