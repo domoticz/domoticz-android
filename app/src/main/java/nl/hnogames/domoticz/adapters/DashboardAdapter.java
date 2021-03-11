@@ -1720,7 +1720,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
      * @param selector True if it's a selector device
      */
     private void handleDimmerChange(final int idx, final int value, boolean selector) {
-        listener.onDimmerChange(idx, value, selector);
+        listener.onDimmerChange(idx, value > 100 ? 100 : value, selector);
     }
 
     /**
