@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -31,8 +32,8 @@
     <string name="button_state_off">Вимк.</string>
     <string name="button_state_closed">Закрито</string>
     <string name="button_state_open">Відчинити</string>
-    <string name="button_state_lock">Lock</string>
-    <string name="button_state_unlock">Unlock</string>
+    <string name="button_state_lock">Заблокувати</string>
+    <string name="button_state_unlock">Розблокувати</string>
     <string name="button_status_log">Журнал</string>
     <string name="button_status_day">День</string>
     <string name="button_status_week">Тиждень</string>
@@ -43,25 +44,25 @@
     <string name="button_color">Колір</string>
     <string name="button_arm">Постановка на охорону</string>
     <string name="button_disarm">Зняття з охорони</string>
-    <string name="button_state_full_light">Full light</string>
-    <string name="button_state_night">Night light</string>
-    <string name="sunrise">Sunrise</string>
-    <string name="sunset">Sunset</string>
-    <string name="now">Now</string>
-    <string name="astrTwilightStart">Astronomical twilight start</string>
-    <string name="astrTwilightEnd">Astronomical twilight end</string>
-    <string name="civTwilightStart">Civil twilight start</string>
-    <string name="civTwilightEnd">Civil twilight end</string>
-    <string name="nautTwilightStart">Nautical twilight start</string>
-    <string name="nautTwilightEnd">Nautical twilight end</string>
-    <string name="last_update">Останнє відвідування</string>
+    <string name="button_state_full_light">Повне освітлення</string>
+    <string name="button_state_night">Нічне освітлення</string>
+    <string name="sunrise">Схід сонця</string>
+    <string name="sunset">Захід сонця</string>
+    <string name="now">Зараз</string>
+    <string name="astrTwilightStart">Астрономічні сутінки починаються</string>
+    <string name="astrTwilightEnd">Астрономічні сутінки закінчуються</string>
+    <string name="civTwilightStart">Початок цивільних сутінків</string>
+    <string name="civTwilightEnd">Закінчення цивільних сутінків</string>
+    <string name="nautTwilightStart">Початок навігаційних сутінків</string>
+    <string name="nautTwilightEnd">Закінчення навігаційних сутінків</string>
+    <string name="last_update">Остання активність</string>
     <string name="signal_level">Рівень сигналу</string>
     <string name="battery_level">Рівень заряду акумулятора</string>
     <string name="data">Дані</string>
     <string name="hardware">Устаткування</string>
     <string name="temperature">Температура</string>
     <string name="status">Статус</string>
-    <string name="switch_rgb_wwcolor">RGB color or warm white</string>
+    <string name="switch_rgb_wwcolor">Колір RGB або теплий білий</string>
     <string name="set_point">Термостат</string>
     <string name="set_point_min">Мінімальне значення термостату</string>
     <string name="set_point_min_description">Мінімальна температура, яку можна встановити на термостаті</string>
@@ -97,12 +98,12 @@
     <string name="retry">Повторити спробу</string>
     <string name="undo">Скасувати</string>
     <string name="something_deleted">%1$s видалено</string>
-    <string name="remove_last_server">You can\'t remove the last server in the list.</string>
+    <string name="remove_last_server">Ви не можете видалити останній сервер зі списку.</string>
     <string name="switch_on">Перемикач ввімкнено</string>
     <string name="switch_off">Перемикач вимкнено</string>
-    <string name="switch_night">Turning switch to night light</string>
-    <string name="switch_full">Turning switch to full light</string>
-    <string name="switch_connection_removed">Switch connection removed.</string>
+    <string name="switch_night">Переведення вимикача у нічне освітлення</string>
+    <string name="switch_full">Переведення вимикача у повне освітлення</string>
+    <string name="switch_connection_removed">Підключення до вимикача видалено.</string>
     <string name="blind_up">Жалюзі вгору</string>
     <string name="blind_down">Жалюзі вниз</string>
     <string name="blind_stop">Жалюзі вгору</string>
@@ -113,6 +114,7 @@
     <string name="filterOn_all">Всі пристрої</string>
     <string name="filter">Фільтр</string>
     <string name="filter_devices">Фільтр пристроїв</string>
+    <string name="filter_range">Встановити діапазон</string>
     <string name="filter_graph_empty">Будь ласка, вкажіть фільтр</string>
     <string name="choose_color">Вибрати колір</string>
     <string name="no_data_on_domoticz">Немає даних на сервері Domoticz</string>
@@ -126,16 +128,17 @@
     <string name="continue_question">Продовжити?</string>
     <string name="cant_remove_default_server">Не можна видалити сервера за замовчуванням</string>
     <string name="restart_required_msg">Перезавантажте додаток, щоб налаштування мови вступили в дію</string>
-    <string name="filter_all">All</string>
-    <string name="filter_normal">Normal</string>
-    <string name="filter_status">Status</string>
-    <string name="filter_error">Error</string>
-    <string name="use_demo_setup">Use demo setup</string>
-    <string name="auto_refresh_time">Refresh timer</string>
-    <string name="set_auto_refresh_time">Set a specific timer for the auto refresh in seconds.</string>
-    <string name="error_authentication_basicauth">IMPORTANT: Please check if your Domoticz system uses Login Page as the authentication method. Basic Auth is going to be removed from Domoticz from next update!</string>
-    <string name="category_other">Other</string>
-    <string name="tasker_title">Setup automation rules with Tasker for Domoticz</string>
+    <string name="filter_all">Всі</string>
+    <string name="filter_normal">Звичайний</string>
+    <string name="filter_status">Статус</string>
+    <string name="filter_error">Помилка</string>
+    <string name="use_demo_setup">Використовувати демонстраційні налаштування</string>
+    <string name="auto_refresh_time">Оновити таймер</string>
+    <string name="set_auto_refresh_time">Встановити окремий таймер для автоматичного оновлення в секундах</string>
+    <string name="error_authentication_basicauth">ВАЖЛИВО: Перевірте, будь ласка, що ваша система Domoticz використовує \"Login Page\" як метод авторизації. \"Basic Auth\" буде видалений з Domoticz із наступним оновленням!</string>
+    <string name="category_other">Інше</string>
+    <string name="tasker_title">Налаштувати правила автоматизації використовуючи Tasker для Domoticz</string>
     <string name="category_tasker">Tasker</string>
-    <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
+    <string name="wizard_widgets_tasker">Налаштування правил автоматизації із використанням Tasker для Domoticz!</string>
+    <string name="background_location_warning">Цей додаток збирає дані про місцезнаходження, щоб ввімкнути функцію геозон у цьому додатку, навіть якщо додаток закритий чи не використовується.</string>
 </resources>

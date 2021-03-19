@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -21,7 +22,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="title_dashboard">Panel</string>
-    <string name="delivery">Delivery</string>
+    <string name="delivery">Doručeno</string>
     <string name="usage">Využití</string>
     <string name="today">Dnes</string>
     <string name="total">Celkem</string>

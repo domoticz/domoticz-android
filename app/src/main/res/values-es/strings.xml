@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -97,12 +98,12 @@
     <string name="retry">Reintentar</string>
     <string name="undo">Deshacer</string>
     <string name="something_deleted">%1$s ha sido eliminado</string>
-    <string name="remove_last_server">You can\'t remove the last server in the list.</string>
+    <string name="remove_last_server">No se puede eliminar el último servidor de la lista.</string>
     <string name="switch_on">Encender el interruptor</string>
     <string name="switch_off">Apagar el interruptor</string>
     <string name="switch_night">Interruptor para luz de noche</string>
     <string name="switch_full">Interruptor para luz a plena potencia</string>
-    <string name="switch_connection_removed">Switch connection removed.</string>
+    <string name="switch_connection_removed">Conexión de interruptor eliminada.</string>
     <string name="blind_up">Subir persianas</string>
     <string name="blind_down">Bajar persianas</string>
     <string name="blind_stop">Parar persianas</string>
@@ -113,6 +114,7 @@
     <string name="filterOn_all">Todos los dispositivos</string>
     <string name="filter">Filtro</string>
     <string name="filter_devices">Filtrar dispositivos</string>
+    <string name="filter_range">Ajustar alcance</string>
     <string name="filter_graph_empty">Por favor, especifica un filtro</string>
     <string name="choose_color">Selecciona el color</string>
     <string name="no_data_on_domoticz">No hay datos en el servidor de Domoticz</string>
@@ -138,4 +140,5 @@
     <string name="tasker_title">Setup automation rules with Tasker for Domoticz</string>
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
+    <string name="background_location_warning">This app collects location data to enable for geofencing services within this app, even when the app is closed or not in use.</string>
 </resources>

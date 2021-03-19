@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -113,6 +114,7 @@
     <string name="filterOn_all">Alle apparaten</string>
     <string name="filter">Filter</string>
     <string name="filter_devices">Filter apparaten</string>
+    <string name="filter_range">Bereik instellen</string>
     <string name="filter_graph_empty">Kies een filter</string>
     <string name="choose_color">Kleur kiezen</string>
     <string name="no_data_on_domoticz">Geen gegevens beschikbaar op de Domoticz server</string>
@@ -138,4 +140,5 @@
     <string name="tasker_title">Automatiseringsregels instellen met Tasker voor Domoticz</string>
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Automatiseringsregels instellen binnen Tasker voor Domoticz!</string>
+    <string name="background_location_warning">Deze app verzamelt locatiegegevens zodat u geofencing kunt gebruiken om apparaten aan/uit te zetten, zelfs wanneer de app is gesloten of niet in gebruik is.</string>
 </resources>

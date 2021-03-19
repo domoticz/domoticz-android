@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -26,12 +27,12 @@
     <string name="verylow">Molto Basso</string>
     <string name="allsystems">Tutti i sistemi</string>
     <string name="systems">Sistemi</string>
-    <string name="send_notification">Send notification</string>
-    <string name="notification_subject">Subject</string>
-    <string name="notification_message">Message</string>
-    <string name="notification_error_system">Please choose a system to send the notification to</string>
-    <string name="notification_error_message">Please fill in a message</string>
-    <string name="notification_error_subject">Please fill in a subject</string>
-    <string name="notification_error_send">Could not send the notification to Domoticz</string>
-    <string name="notification_send">Notification send to Domoticz</string>
+    <string name="send_notification">Invia notifica</string>
+    <string name="notification_subject">Oggetto</string>
+    <string name="notification_message">Messaggio</string>
+    <string name="notification_error_system">Scegli un sistema per inviare la notifica a</string>
+    <string name="notification_error_message">Compila un messaggio</string>
+    <string name="notification_error_subject">Si prega di compilare un oggetto</string>
+    <string name="notification_error_send">Impossibile inviare la notifica a Domoticz</string>
+    <string name="notification_send">Notifica inviata a Domoticz</string>
 </resources>

@@ -8,14 +8,18 @@ import android.util.Log;
 import com.isupatches.wisefy.WiseFy;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.containers.WifiInfo;
 import nl.hnogames.domoticz.helpers.StaticHelper;
+import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.WidgetUtils;
@@ -54,48 +58,60 @@ public class WifiReceiver extends Worker {
             return Result.success();
         }
 
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return Result.success();
-        }
-        android.net.wifi.WifiInfo info = wisefy.getCurrentNetwork();
-        if(wisefy.isDeviceConnectedToWifiNetwork() && info.getSSID().contains("unknown")) {
-            Log.i("WiseFyReceiver", "Current SSID is unknown");
-            wisefy.dump();
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return Result.success();
         }
 
-        boolean turnOn = true;
-        WifiInfo connectedDevice = null;
-        for (WifiInfo b : connectedDevices) {
-            if (b.getSSID() != null && wisefy.isDeviceConnectedToSSID(b.getSSID()))
-                connectedDevice = b;
-        }
-
-        WifiInfo lastDevice = mSharedPrefs.getLastWifi();
-        if (connectedDevice != null && lastDevice != null) { // Already processed
-            if (lastDevice.getSSID().equals(connectedDevice.getSSID())) {
-                Log.i("WiseFyReceiver", "Device already processed");
+        try {
+            android.net.wifi.WifiInfo info = wisefy.getCurrentNetwork();
+            if (wisefy.isDeviceConnectedToWifiNetwork() && info.getSSID().contains("unknown")) {
+                Log.i("WiseFyReceiver", "Current SSID is unknown");
+                wisefy.dump();
                 return Result.success();
             }
-            // Did we turned of the switch of the previously connected access point?
-            if (!connectedDevice.getSSID().equals(lastDevice.getSSID())) {
-                Log.i("WiseFyReceiver", "Other device needs to be turned off");
-                handleSwitch(context, lastDevice.getSwitchIdx(), lastDevice.getSwitchPassword(), false, lastDevice.getValue(), lastDevice.isSceneOrGroup());
+
+            String connectedSSID = info.getSSID().replace("\"", "");
+            boolean turnOn = true;
+            WifiInfo connectedDevice = null;
+            for (WifiInfo b : connectedDevices) {
+                String ssid = b.getSSID() != null ? b.getSSID() : null;
+                if (ssid.equals(connectedSSID))
+                    connectedDevice = b;
             }
-        }
-        if (connectedDevice == null) {
-            Log.i("WiseFyReceiver", "Connected device is registered as null");
-            connectedDevice = mSharedPrefs.getLastWifi();
-            turnOn = false;
-        }
 
-        // Toggle new device
-        if (connectedDevice != null && connectedDevice.isEnabled()) {
-            mSharedPrefs.saveLastWifi(turnOn ? connectedDevice : null);
-            handleSwitch(context, connectedDevice.getSwitchIdx(), connectedDevice.getSwitchPassword(), turnOn,
-                    connectedDevice.getValue(), connectedDevice.isSceneOrGroup());
-        }
+            WifiInfo lastDevice = mSharedPrefs.getLastWifi();
+            if (connectedDevice != null && lastDevice != null) { // Already processed
+                if (lastDevice.getSSID().equals(connectedDevice.getSSID())) {
+                    Log.i("WiseFyReceiver", "Device already processed");
+                    return Result.success();
+                }
+                // Did we turned of the switch of the previously connected access point?
+                if (!connectedDevice.getSSID().equals(lastDevice.getSSID())) {
+                    Log.i("WiseFyReceiver", "Other device needs to be turned off");
+                    handleSwitch(context, lastDevice.getSwitchIdx(), lastDevice.getSwitchPassword(), false, lastDevice.getValue(), lastDevice.isSceneOrGroup());
+                }
+            }
+            if (connectedDevice == null) {
+                Log.i("WiseFyReceiver", "Connected device is registered as null");
+                connectedDevice = mSharedPrefs.getLastWifi();
+                turnOn = false;
+            }
 
+            // Toggle new device
+            if (connectedDevice != null && connectedDevice.isEnabled()) {
+                if (mSharedPrefs.isWifiNotificationsEnabled()) {
+                    NotificationUtil.sendSimpleNotification(new NotificationInfo(connectedDevice.getSwitchIdx(),
+                            String.format(context.getString(turnOn ? R.string.wifi_connected_to : R.string.wifi_disconnected_to),
+                                    connectedDevice.getName()),
+                            context.getString(turnOn ? R.string.wifi_connected_to_text : R.string.wifi_disconnected_to_text),
+                            0, new Date()), context);
+                }
+                mSharedPrefs.saveLastWifi(turnOn ? connectedDevice : null);
+                handleSwitch(context, connectedDevice.getSwitchIdx(), connectedDevice.getSwitchPassword(), turnOn,
+                        connectedDevice.getValue(), connectedDevice.isSceneOrGroup());
+            }
+        } catch (Exception ignored) {
+        }
         return Result.success();
     }
 

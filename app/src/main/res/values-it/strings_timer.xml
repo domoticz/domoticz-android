@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -37,28 +38,28 @@
     <string name="monthly_weekday">Mensile (nei giorni feriali)</string>
     <string name="yearly">Annuale</string>
     <string name="yearly_weekday">Annuale (nei giorni feriali)</string>
-    <string name="before_sun_at_south">Before Sun at South</string>
-    <string name="after_sun_at_south">After Sun at South</string>
-    <string name="before_civil_twilight_start">Before Civil Twilight Start</string>
-    <string name="after_civil_twilight_start">After Civil Twilight Start</string>
-    <string name="before_civil_twilight_end">Before Civil Twilight End</string>
-    <string name="after_civil_twilight_end">After Civil Twilight End</string>
-    <string name="before_nautical_twilight_start">Before Nautical Twilight Start</string>
-    <string name="after_nautical_twilight_start">After Nautical Twilight Start</string>
-    <string name="before_nautical_twilight_end">Before Nautical Twilight End</string>
-    <string name="after_nautical_twilight_end">After Nautical Twilight End</string>
-    <string name="before_austronomical_twilight_start">Before Austronomical Twilight Start</string>
-    <string name="after_austronomical_twilight_start">After Austronomical Twilight Start</string>
-    <string name="before_austronomical_twilight_end">Before Austronomical Twilight End</string>
-    <string name="after_austronomical_twilight_end">After Austronomical Twilight End</string>
+    <string name="before_sun_at_south">Prima del Sole a Sud</string>
+    <string name="after_sun_at_south">Dopo il Sole a Sud</string>
+    <string name="before_civil_twilight_start">Prima Di Avvio Del Crepuscolo Civile</string>
+    <string name="after_civil_twilight_start">Dopo L\'Inizio Del Crepuscolo Civile</string>
+    <string name="before_civil_twilight_end">Prima Della Fine Del Crepuscolo Civile</string>
+    <string name="after_civil_twilight_end">Dopo La Fine Del Crepuscolo Civile</string>
+    <string name="before_nautical_twilight_start">Prima Dell\'Inizio Del Crepuscolo Nautico</string>
+    <string name="after_nautical_twilight_start">Dopo Avvio Nautico Del Crepuscolo</string>
+    <string name="before_nautical_twilight_end">Prima Della Fine Nautica Del Crepuscolo</string>
+    <string name="after_nautical_twilight_end">Dopo Fine Crepuscolo Nautico</string>
+    <string name="before_austronomical_twilight_start">Prima Dell\'Inizio Del Crepuscolo Austronomico</string>
+    <string name="after_austronomical_twilight_start">Dopo L\'Inizio Del Crepuscolo Austronomico</string>
+    <string name="before_austronomical_twilight_end">Prima Della Fine Del Crepuscolo Austronomico</string>
+    <string name="after_austronomical_twilight_end">Dopo La Fine Del Crepuscolo Austronomico</string>
     <string name="timer_every_days">Tutti i giorni</string>
     <string name="timer_working_days">Giorni lavorativi</string>
     <string name="timer_weekend">Fine settimana</string>
     <string name="timer_other">Altri</string>
     <string name="timers">Tempi</string>
-    <string name="first">First</string>
-    <string name="second">Second</string>
-    <string name="third">Third</string>
-    <string name="fourth">Fourth</string>
-    <string name="last">Last</string>
+    <string name="first">Primo</string>
+    <string name="second">Secondo</string>
+    <string name="third">Terzo</string>
+    <string name="fourth">Quarto</string>
+    <string name="last">Ultimo</string>
 </resources>

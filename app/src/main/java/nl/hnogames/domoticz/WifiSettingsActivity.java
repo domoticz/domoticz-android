@@ -37,6 +37,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.ftinc.scoop.Scoop;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.isupatches.wisefy.WiseFy;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
@@ -72,6 +73,8 @@ public class WifiSettingsActivity extends AppCompatPermissionsActivity implement
     private PermissionHelper permissionHelper;
     private WifiAdapter adapter;
     private Toolbar toolbar;
+    private SwitchMaterial notificationSwitch;
+    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,50 +99,62 @@ public class WifiSettingsActivity extends AppCompatPermissionsActivity implement
         adapter = new WifiAdapter(this, WifiList, this);
         wisefy = new WiseFy.Brains(this).getSmarts();
 
+        notificationSwitch = findViewById(R.id.switch_notifications_button);
+        notificationSwitch.setChecked(mSharedPrefs.isWifiNotificationsEnabled());
+        notificationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> mSharedPrefs.setWifiNotificationsEnabled(isChecked));
+
         createListView();
 
-        if (!wisefy.isDeviceConnectedToMobileNetwork()) {
-            UsefulBits.showSnackbar(WifiSettingsActivity.this, coordinatorLayout, R.string.wifi_turned_off, Snackbar.LENGTH_SHORT);
-            return;
+        try {
+            if (!wisefy.isWifiEnabled()) {
+                UsefulBits.showSnackbar(WifiSettingsActivity.this, coordinatorLayout, R.string.wifi_turned_off, Snackbar.LENGTH_SHORT);
+                return;
+            }
+        } catch (Exception ignored) {
         }
     }
 
     private void showWifiList() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             permissionHelper.request(PermissionsUtil.INITIAL_LOCATION_PERMS);
         else {
-            List<ScanResult> nearbyAccessPoints = wisefy.getNearbyAccessPoints(true);
-            final List<String> wifiDevices = new ArrayList<>();
-            for (ScanResult result : nearbyAccessPoints)
-                wifiDevices.add(result.SSID);
+            try {
+                List<ScanResult> nearbyAccessPoints = wisefy.getNearbyAccessPoints(true);
+                if (nearbyAccessPoints == null)
+                    return;
 
-            CharSequence[] items = wifiDevices.toArray(new CharSequence[wifiDevices.size()]);
-            new AlertDialog.Builder(this)
-                    .setSingleChoiceItems(items, 0, null)
-                    .setPositiveButton(R.string.ok, (dialog, whichButton) -> {
-                        dialog.dismiss();
-                        int position = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-                        final String SSID = wifiDevices.get(position);
+                final List<String> wifiDevices = new ArrayList<>();
+                for (ScanResult result : nearbyAccessPoints)
+                    wifiDevices.add(result.SSID);
 
-                        boolean newTagFound = true;
-                        if (WifiList != null && WifiList.size() > 0) {
-                            for (WifiInfo n : WifiList) {
-                                if (n.getSSID().equals(SSID))
-                                    newTagFound = false;
+                CharSequence[] items = wifiDevices.toArray(new CharSequence[wifiDevices.size()]);
+                new AlertDialog.Builder(this)
+                        .setSingleChoiceItems(items, 0, null)
+                        .setPositiveButton(R.string.ok, (dialog, whichButton) -> {
+                            dialog.dismiss();
+                            int position = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                            final String SSID = wifiDevices.get(position);
+                            boolean newTagFound = true;
+                            if (WifiList != null && WifiList.size() > 0) {
+                                for (WifiInfo n : WifiList) {
+                                    if (n.getSSID().equals(SSID))
+                                        newTagFound = false;
+                                }
                             }
-                        }
 
-                        if (newTagFound) {
-                            UsefulBits.showSnackbar(WifiSettingsActivity.this, coordinatorLayout, getString(R.string.wifi_saved) + ": " + SSID, Snackbar.LENGTH_SHORT);
-                            WifiInfo WifiInfo = new WifiInfo();
-                            WifiInfo.setSSID(SSID);
-                            WifiInfo.setName(String.valueOf(SSID));
-                            updateWifi(WifiInfo);
-                        } else {
-                            UsefulBits.showSnackbar(WifiSettingsActivity.this, coordinatorLayout, R.string.wifi_exists, Snackbar.LENGTH_SHORT);
-                        }
-                    })
-                    .show();
+                            if (newTagFound) {
+                                UsefulBits.showSnackbar(WifiSettingsActivity.this, coordinatorLayout, getString(R.string.wifi_saved) + ": " + SSID, Snackbar.LENGTH_SHORT);
+                                WifiInfo WifiInfo = new WifiInfo();
+                                WifiInfo.setSSID(SSID);
+                                WifiInfo.setName(String.valueOf(SSID));
+                                updateWifi(WifiInfo);
+                            } else {
+                                UsefulBits.showSnackbar(WifiSettingsActivity.this, coordinatorLayout, R.string.wifi_exists, Snackbar.LENGTH_SHORT);
+                            }
+                        })
+                        .show();
+            } catch (Exception ignored) {
+            }
         }
     }
 
