@@ -204,9 +204,9 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-core:18.0.2'
     implementation 'com.google.firebase:firebase-analytics:18.0.2'
-    implementation 'com.google.firebase:firebase-crashlytics:17.3.1'
+    implementation 'com.google.firebase:firebase-crashlytics:17.4.0'
     implementation "com.google.firebase:firebase-messaging:21.0.1"
-    implementation "com.google.firebase:firebase-ads:19.7.0"
+    implementation "com.google.firebase:firebase-ads:19.8.0"
 
     implementation "com.google.android.gms:play-services-analytics:17.0.0"
     implementation "com.google.android.gms:play-services-wearable:17.0.0"
@@ -214,7 +214,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-gcm:17.0.0"
     implementation "com.google.android.gms:play-services-location:18.0.0"
     implementation "com.google.android.gms:play-services-places:17.0.0"
-    implementation "com.google.android.gms:play-services-ads:19.7.0"
+    implementation "com.google.android.gms:play-services-ads:19.8.0"
     implementation 'com.google.android.ads.consent:consent-library:1.0.8'
     implementation "com.github.nisrulz:recyclerviewhelper:27.1.1"
     implementation "org.altbeacon:android-beacon-library:2.17"
