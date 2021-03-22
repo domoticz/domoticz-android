@@ -675,7 +675,6 @@ public class SharedPrefUtil {
         editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS, null).apply();
     }
 
-
     public void removeWizard() {
         // 1 if start up screen is 0 (wizard) change to dashboard
         if (getStartupScreenIndex() == 0) setStartupScreenIndex(DEFAULT_STARTUP_SCREEN);

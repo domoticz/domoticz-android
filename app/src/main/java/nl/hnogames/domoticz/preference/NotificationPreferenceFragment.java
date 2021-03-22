@@ -109,7 +109,6 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void setPreferences() {
-        androidx.preference.Preference ClearNotifications = findPreference("clear_notifications");
         androidx.preference.Preference NotificationLogged = findPreference("notification_show_logs");
         NotificationsMultiSelectListPreference notificationsMultiSelectListPreference = findPreference("suppressNotifications");
         NotificationsMultiSelectListPreference alarmMultiSelectListPreference = findPreference("alarmNotifications");
@@ -127,18 +126,15 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat {
         }
 
         if (noticiationSettings != null)
-            noticiationSettings.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(androidx.preference.Preference preference) {
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                        Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
-                        intent.putExtra(Settings.EXTRA_CHANNEL_ID, NotificationUtil.CHANNEL_ID);
-                        intent.putExtra(Settings.EXTRA_APP_PACKAGE, mContext.getPackageName());
-                        startActivity(intent);
-                        return true;
-                    }
-                    return false;
+            noticiationSettings.setOnPreferenceClickListener(preference -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+                    intent.putExtra(Settings.EXTRA_CHANNEL_ID, NotificationUtil.CHANNEL_ID);
+                    intent.putExtra(Settings.EXTRA_APP_PACKAGE, mContext.getPackageName());
+                    startActivity(intent);
+                    return true;
                 }
+                return false;
             });
 
         List<String> notifications = mSharedPrefs.getReceivedNotifications();
@@ -154,50 +150,32 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat {
                 alarmMultiSelectListPreference.setEnabled(true);
         }
 
-        if (ClearNotifications != null)
-            ClearNotifications.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(androidx.preference.Preference preference) {
-                    mSharedPrefs.clearPreviousNotification();
-                    return true;
-                }
-            });
-
         if (registrationId != null)
-            registrationId.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(androidx.preference.Preference preference) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (!PermissionsUtil.canAccessDeviceState(mContext)) {
-                            permissionHelper.request(PermissionsUtil.INITIAL_DEVICE_PERMS);
-                        } else {
-                            pushGCMRegistrationIds();
-                        }
+            registrationId.setOnPreferenceClickListener(preference -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (!PermissionsUtil.canAccessDeviceState(mContext)) {
+                        permissionHelper.request(PermissionsUtil.INITIAL_DEVICE_PERMS);
                     } else {
                         pushGCMRegistrationIds();
                     }
-                    return true;
+                } else {
+                    pushGCMRegistrationIds();
                 }
+                return true;
             });
 
         if (NotificationLogged != null)
-            NotificationLogged.setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(androidx.preference.Preference preference) {
-                    startActivity(new Intent(mContext, NotificationHistoryActivity.class));
-                    return true;
-                }
+            NotificationLogged.setOnPreferenceClickListener(preference -> {
+                startActivity(new Intent(mContext, NotificationHistoryActivity.class));
+                return true;
             });
     }
 
     private void showSnack(final String text) {
         try {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (getView() != null) {
-                        Snackbar.make(getView(), text, Snackbar.LENGTH_LONG).show();
-                    }
+            new Handler().postDelayed(() -> {
+                if (getView() != null) {
+                    Snackbar.make(getView(), text, Snackbar.LENGTH_LONG).show();
                 }
             }, (300));
         } catch (Exception ex) {

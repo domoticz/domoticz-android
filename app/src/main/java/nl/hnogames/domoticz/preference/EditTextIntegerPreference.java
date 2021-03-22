@@ -35,32 +35,17 @@ public class EditTextIntegerPreference extends EditTextPreference {
 
     public EditTextIntegerPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        this.setOnBindEditTextListener(new OnBindEditTextListener() {
-            @Override
-            public void onBindEditText(@NonNull EditText editText) {
-                editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
-            }
-        });
+        this.setOnBindEditTextListener(editText -> editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED));
     }
 
     public EditTextIntegerPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.setOnBindEditTextListener(new OnBindEditTextListener() {
-            @Override
-            public void onBindEditText(@NonNull EditText editText) {
-                editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
-            }
-        });
+        this.setOnBindEditTextListener(editText -> editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED));
     }
 
     public EditTextIntegerPreference(Context context) {
         super(context);
-        this.setOnBindEditTextListener(new OnBindEditTextListener() {
-            @Override
-            public void onBindEditText(@NonNull EditText editText) {
-                editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
-            }
-        });
+        this.setOnBindEditTextListener(editText -> editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED));
     }
 
     private static Integer parseInteger(String text) {
