@@ -24,9 +24,7 @@ package nl.hnogames.domoticz.preference;
 import android.content.Context;
 import android.text.InputType;
 import android.util.AttributeSet;
-import android.widget.EditText;
 
-import androidx.annotation.NonNull;
 import androidx.preference.EditTextPreference;
 
 public class EditTextIntegerPreference extends EditTextPreference {

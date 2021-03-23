@@ -40,6 +40,9 @@ import android.os.Handler;
 import android.os.RemoteException;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -48,8 +51,10 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.HashSet;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.biometric.BiometricManager;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.legacy.app.ActivityCompat;
 import androidx.preference.ListPreference;
@@ -102,6 +107,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     private Context mContext;
     private ConfigInfo mConfigInfo;
     private PermissionHelper permissionHelper;
+    private String filter;
+    private SearchView searchViewAction;
 
     private static void tintIcons(Preference preference, int color) {
         if (preference instanceof PreferenceGroup) {
@@ -129,11 +136,11 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         // Load the preferences from an XML resource
+        setHasOptionsMenu(true);
         addPreferencesFromResource(R.xml.preferences);
         permissionHelper = PermissionHelper.getInstance(getActivity());
 
         mContext = getActivity();
-
         mSharedPrefs = new SharedPrefUtil(mContext);
         mConfigInfo = StaticHelper.getServerUtil(getActivity()).getActiveServer().getConfigInfo(mContext);
 
@@ -183,46 +190,249 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void setPreferences() {
+        // Screen
+        PreferenceScreen preferenceScreen = findPreference("settingsscreen");
+
+        // Categories
+        PreferenceCategory premiumCategory = findPreference("premium_category");
+        PreferenceCategory dashboard_category = findPreference("dashboard_category");
+        PreferenceCategory generic_category = findPreference("generic_category");
+        PreferenceCategory defaultValues = findPreference("defaultValues");
+        PreferenceCategory sorting_category = findPreference("sorting_category");
+        PreferenceCategory notifications_category = findPreference("notifications_category");
+        PreferenceCategory server_category = findPreference("server_category");
+        PreferenceCategory geofencing_category = findPreference("geofencing_category");
+        PreferenceCategory nfc_category = findPreference("nfc_category");
+        PreferenceCategory qrcode_category = findPreference("qrcode_category");
+        PreferenceCategory wifi_category = findPreference("wifi_category");
+        PreferenceCategory bluetooth_category = findPreference("bluetooth_category");
+        PreferenceCategory beacon_category = findPreference("beacon_category");
+        PreferenceCategory security_category = findPreference("security_category");
+        PreferenceCategory widgets_category = findPreference("widgets_category");
+        PreferenceCategory language_category = findPreference("language_category");
+        PreferenceCategory theme_category = findPreference("theme_category");
+        PreferenceCategory wear_category = findPreference("wear_category");
+        PreferenceCategory advanced_category = findPreference("advanced_category");
+        PreferenceCategory other_category = findPreference("other_category");
+        PreferenceCategory about_category = findPreference("about_category");
+        PreferenceCategory speech_category = findPreference("speech_category");
+
+        // Generic settings
+        ListPreference startup_screen = findPreference("startup_nav");
+        MultiSelectListPreference drawerItems = findPreference("show_nav_items");
+        SwitchPreference switchButtonsPreference = findPreference("switchButtons");
+        SwitchPreference CameraPreference = findPreference("dashboardShowCamera");
+        SwitchPreference AlwaysOnPreference = findPreference("alwayson");
+        SwitchPreference RefreshScreenPreference = findPreference("autorefresh");
+        EditTextIntegerPreference RefreshScreenTimerPreference = findPreference("autorefreshTimer");
+
+        // Default values settings
+        EditTextIntegerPreference oTemperatureMin = findPreference("tempMinValue");
+        EditTextIntegerPreference oTemperatureMax = findPreference("tempMaxValue");
+
+        // Sorting settings
+        SwitchPreference customSortProperty = findPreference("sortCustom");
+        SwitchPreference customSortLockProperty = findPreference("lockSortCustom");
+
+        // Dashboard settings
+        SwitchPreference extradataProperty = findPreference("extradata");
+        SwitchPreference dashboardAsListProperty = findPreference("dashboardAsList");
+        SwitchPreference ClockPreference = findPreference("dashboardShowClock");
+
+        // Notification settings
+        Preference openNotificationSettings = findPreference("openNotificationSettings");
+
+        // Server settings
         final SwitchPreference MultiServerPreference = findPreference("enableMultiServers");
         Preference ServerSettings = findPreference("server_settings");
-        Preference PermissionsSettings = findPreference("permissionssettings");
         Preference fetchServerConfig = findPreference("server_force_fetch_config");
-        Preference resetApplication = findPreference("reset_settings");
-        Preference translateApplication = findPreference("translate");
-        ListPreference displayLanguage = findPreference("displayLanguage");
-        Preference ReportErrorSettings = findPreference("report");
+
+        // Geofence settings
         Preference GeoSettings = findPreference("geo_settings");
-        SwitchPreference WearPreference = findPreference("enableWearItems");
-        SwitchPreference WidgetsEnablePreference = findPreference("enableWidgets");
-        Preference NFCPreference = findPreference("nfc_settings");
-        Preference QRCodePreference = findPreference("qrcode_settings");
-        Preference BluetoothPreference = findPreference("bluetooth_settings");
-        Preference WifiPreference = findPreference("wifi_settings");
-        Preference BeaconPreference = findPreference("beacon_settings");
-        Preference SpeechPreference = findPreference("speech_settings");
+
+        // NFC settings
         SwitchPreference EnableNFCPreference = findPreference("enableNFC");
-        SwitchPreference EnableQRCodePreference = findPreference("enableQRCode");
-        SwitchPreference EnableBluetoothPreference = findPreference("enableBluetooth");
-        SwitchPreference EnableWifiPreference = findPreference("enableWifi");
-        SwitchPreference EnableBeaconPreference = findPreference("enableBeacon");
+        Preference NFCPreference = findPreference("nfc_settings");
+
+        // Speech settings
         SwitchPreference EnableSpeechPreference = findPreference("enableSpeech");
-        SwitchPreference EnableTalkBackPreference = findPreference("talkBack");
-        MultiSelectListPreference drawerItems = findPreference("show_nav_items");
-        @SuppressWarnings("SpellCheckingInspection") SwitchPreference AlwaysOnPreference = findPreference("alwayson");
-        @SuppressWarnings("SpellCheckingInspection") SwitchPreference RefreshScreenPreference = findPreference("autorefresh");
-        @SuppressWarnings("SpellCheckingInspection") PreferenceScreen preferenceScreen = findPreference("settingsscreen");
-        PreferenceCategory premiumCategory = findPreference("premium_category");
-        Preference premiumPreference = findPreference("premium_settings");
-        Preference taskerPreference = findPreference("tasker_settings");
-        Preference ThemePreference = findPreference("darkTheme");
-        SwitchPreference ClockPreference = findPreference("dashboardShowClock");
-        SwitchPreference CameraPreference = findPreference("dashboardShowCamera");
-        Preference TermsPreferences = findPreference("info_terms");
-        Preference PrivacyPreferences = findPreference("info_privacy");
+        Preference SpeechPreference = findPreference("speech_settings");
+
+        // QR Code settings
+        SwitchPreference EnableQRCodePreference = findPreference("enableQRCode");
+        Preference QRCodePreference = findPreference("qrcode_settings");
+
+        // Wifi settings
+        SwitchPreference EnableWifiPreference = findPreference("enableWifi");
+        Preference WifiPreference = findPreference("wifi_settings");
+
+        // Bluetooth settings
+        Preference BluetoothPreference = findPreference("bluetooth_settings");
+        SwitchPreference EnableBluetoothPreference = findPreference("enableBluetooth");
+
+        // Beacon settings
+        SwitchPreference EnableBeaconPreference = findPreference("enableBeacon");
+        SwitchPreference EnableBeaconNotificationsPreference = findPreference("beacon_notifications_enabled");
+        Preference BeaconPreference = findPreference("beacon_settings");
+
+        // Security settings
         Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
         SwitchPreference FingerPrintPreference = findPreference("enableSecurity");
-        SwitchPreference customSortProperty = findPreference("sortCustom");
-        Preference openNotificationSettings = findPreference("openNotificationSettings");
+
+        // Widgets settings
+        SwitchPreference WidgetsEnablePreference = findPreference("enableWidgets");
+
+        // Language settings
+        ListPreference displayLanguage = findPreference("displayLanguage");
+        SwitchPreference EnableTalkBackPreference = findPreference("talkBack");
+        Preference translateApplication = findPreference("translate");
+
+        // Theme settings
+        Preference ThemePreference = findPreference("darkTheme");
+
+        // Android Wear settings
+        SwitchPreference WearPreference = findPreference("enableWearItems");
+        WearMultiSelectListPreference WearItems = findPreference("wearItems");
+
+        // Advanced settings
+        androidx.preference.Preference exportButton = findPreference("export_settings");
+        androidx.preference.Preference importButton = findPreference("import_settings");
+        Preference PermissionsSettings = findPreference("permissionssettings");
+        Preference resetApplication = findPreference("reset_settings");
+
+        // Other settings
+        Preference taskerPreference = findPreference("tasker_settings");
+
+        // Premium settings
+        Preference premiumPreference = findPreference("premium_settings");
+
+        // About settings
+        Preference ReportErrorSettings = findPreference("report");
+        Preference TermsPreferences = findPreference("info_terms");
+        Preference PrivacyPreferences = findPreference("info_privacy");
+        Preference versionPreferences = findPreference("version");
+        Preference about = findPreference("info_about");
+
+        if (premiumPreference != null) {
+            premiumCategory.setVisible(UsefulBits.isEmpty(filter));
+            premiumPreference.setVisible(UsefulBits.isEmpty(filter));
+        }
+
+        startup_screen.setVisible(UsefulBits.isEmpty(filter) || startup_screen.getTitle().toString().toLowerCase().contains(filter) || (CameraPreference.getSummary() != null && startup_screen.getSummary().toString().toLowerCase().contains(filter)));
+        drawerItems.setVisible(UsefulBits.isEmpty(filter) || drawerItems.getTitle().toString().toLowerCase().contains(filter) || (drawerItems.getSummary() != null && drawerItems.getSummary().toString().toLowerCase().contains(filter)));
+        switchButtonsPreference.setVisible(UsefulBits.isEmpty(filter) || switchButtonsPreference.getTitle().toString().toLowerCase().contains(filter) || (switchButtonsPreference.getSummary() != null && switchButtonsPreference.getSummary().toString().toLowerCase().contains(filter)));
+        CameraPreference.setVisible(UsefulBits.isEmpty(filter) || CameraPreference.getTitle().toString().toLowerCase().contains(filter) || (CameraPreference.getSummary() != null && CameraPreference.getSummary().toString().toLowerCase().contains(filter)));
+        AlwaysOnPreference.setVisible(UsefulBits.isEmpty(filter) || AlwaysOnPreference.getTitle().toString().toLowerCase().contains(filter) || (AlwaysOnPreference.getSummary() != null && AlwaysOnPreference.getSummary().toString().toLowerCase().contains(filter)));
+        RefreshScreenPreference.setVisible(UsefulBits.isEmpty(filter) || RefreshScreenPreference.getTitle().toString().toLowerCase().contains(filter) || (RefreshScreenPreference.getSummary() != null && RefreshScreenPreference.getSummary().toString().toLowerCase().contains(filter)));
+        RefreshScreenTimerPreference.setVisible(UsefulBits.isEmpty(filter) || RefreshScreenTimerPreference.getTitle().toString().toLowerCase().contains(filter) || (RefreshScreenTimerPreference.getSummary() != null && RefreshScreenTimerPreference.getSummary().toString().toLowerCase().contains(filter)));
+        generic_category.setVisible(startup_screen.isVisible() || drawerItems.isVisible() || switchButtonsPreference.isVisible() || CameraPreference.isVisible() || AlwaysOnPreference.isVisible() || RefreshScreenPreference.isVisible() || RefreshScreenTimerPreference.isVisible());
+
+        // Default values settings
+        oTemperatureMin.setVisible(UsefulBits.isEmpty(filter) || oTemperatureMin.getTitle().toString().toLowerCase().contains(filter) || (oTemperatureMin.getSummary() != null && oTemperatureMin.getSummary().toString().toLowerCase().contains(filter)));
+        oTemperatureMax.setVisible(UsefulBits.isEmpty(filter) || oTemperatureMax.getTitle().toString().toLowerCase().contains(filter) || (oTemperatureMax.getSummary() != null && oTemperatureMax.getSummary().toString().toLowerCase().contains(filter)));
+        defaultValues.setVisible(oTemperatureMax.isVisible() || oTemperatureMin.isVisible());
+
+        // Sorting settings
+        customSortProperty.setVisible(UsefulBits.isEmpty(filter) || customSortProperty.getTitle().toString().toLowerCase().contains(filter) || (customSortProperty.getSummary() != null && customSortProperty.getSummary().toString().toLowerCase().contains(filter)));
+        customSortLockProperty.setVisible(UsefulBits.isEmpty(filter) || customSortLockProperty.getTitle().toString().toLowerCase().contains(filter) || (customSortLockProperty.getSummary() != null && customSortLockProperty.getSummary().toString().toLowerCase().contains(filter)));
+        sorting_category.setVisible(customSortProperty.isVisible() || customSortLockProperty.isVisible());
+
+        // Dashboard settings
+        extradataProperty.setVisible(UsefulBits.isEmpty(filter) || extradataProperty.getTitle().toString().toLowerCase().contains(filter) || (extradataProperty.getSummary() != null && extradataProperty.getSummary().toString().toLowerCase().contains(filter)));
+        dashboardAsListProperty.setVisible(UsefulBits.isEmpty(filter) || dashboardAsListProperty.getTitle().toString().toLowerCase().contains(filter) || (dashboardAsListProperty.getSummary() != null && dashboardAsListProperty.getSummary().toString().toLowerCase().contains(filter)));
+        ClockPreference.setVisible(UsefulBits.isEmpty(filter) || ClockPreference.getTitle().toString().toLowerCase().contains(filter) || (ClockPreference.getSummary() != null && ClockPreference.getSummary().toString().toLowerCase().contains(filter)));
+        dashboard_category.setVisible(extradataProperty.isVisible() || dashboardAsListProperty.isVisible() || ClockPreference.isVisible());
+
+        // Notification settings
+        openNotificationSettings.setVisible(UsefulBits.isEmpty(filter) || openNotificationSettings.getTitle().toString().toLowerCase().contains(filter) || (openNotificationSettings.getSummary() != null && openNotificationSettings.getSummary().toString().toLowerCase().contains(filter)));
+        notifications_category.setVisible(openNotificationSettings.isVisible());
+
+        // Server settings
+        MultiServerPreference.setVisible(UsefulBits.isEmpty(filter) || MultiServerPreference.getTitle().toString().toLowerCase().contains(filter) || (MultiServerPreference.getSummary() != null && MultiServerPreference.getSummary().toString().toLowerCase().contains(filter)));
+        ServerSettings.setVisible(UsefulBits.isEmpty(filter) || ServerSettings.getTitle().toString().toLowerCase().contains(filter) || (ServerSettings.getSummary() != null && ServerSettings.getSummary().toString().toLowerCase().contains(filter)));
+        fetchServerConfig.setVisible(UsefulBits.isEmpty(filter) || fetchServerConfig.getTitle().toString().toLowerCase().contains(filter) || (fetchServerConfig.getSummary() != null && fetchServerConfig.getSummary().toString().toLowerCase().contains(filter)));
+        server_category.setVisible(MultiServerPreference.isVisible() || ServerSettings.isVisible() || fetchServerConfig.isVisible());
+
+        // Geofence settings
+        GeoSettings.setVisible(UsefulBits.isEmpty(filter) || GeoSettings.getTitle().toString().toLowerCase().contains(filter) || (GeoSettings.getSummary() != null && GeoSettings.getSummary().toString().toLowerCase().contains(filter)));
+        geofencing_category.setVisible(GeoSettings.isVisible());
+
+        // NFC settings
+        EnableNFCPreference.setVisible(UsefulBits.isEmpty(filter) || EnableNFCPreference.getTitle().toString().toLowerCase().contains(filter) || (EnableNFCPreference.getSummary() != null && EnableNFCPreference.getSummary().toString().toLowerCase().contains(filter)));
+        NFCPreference.setVisible(UsefulBits.isEmpty(filter) || NFCPreference.getTitle().toString().toLowerCase().contains(filter) || (NFCPreference.getSummary() != null && NFCPreference.getSummary().toString().toLowerCase().contains(filter)));
+        nfc_category.setVisible(EnableNFCPreference.isVisible() || NFCPreference.isVisible());
+
+        // Speech settings
+        EnableSpeechPreference.setVisible(UsefulBits.isEmpty(filter) || EnableSpeechPreference.getTitle().toString().toLowerCase().contains(filter) || (EnableSpeechPreference.getSummary() != null && EnableSpeechPreference.getSummary().toString().toLowerCase().contains(filter)));
+        SpeechPreference.setVisible(UsefulBits.isEmpty(filter) || SpeechPreference.getTitle().toString().toLowerCase().contains(filter) || (SpeechPreference.getSummary() != null && SpeechPreference.getSummary().toString().toLowerCase().contains(filter)));
+        speech_category.setVisible(EnableSpeechPreference.isVisible() || SpeechPreference.isVisible());
+
+        // QR Code settings
+        EnableQRCodePreference.setVisible(UsefulBits.isEmpty(filter) || EnableQRCodePreference.getTitle().toString().toLowerCase().contains(filter) || (EnableQRCodePreference.getSummary() != null && EnableQRCodePreference.getSummary().toString().toLowerCase().contains(filter)));
+        QRCodePreference.setVisible(UsefulBits.isEmpty(filter) || QRCodePreference.getTitle().toString().toLowerCase().contains(filter) || (QRCodePreference.getSummary() != null && QRCodePreference.getSummary().toString().toLowerCase().contains(filter)));
+        qrcode_category.setVisible(EnableQRCodePreference.isVisible() || QRCodePreference.isVisible());
+
+        // Wifi settings
+        EnableWifiPreference.setVisible(UsefulBits.isEmpty(filter) || EnableWifiPreference.getTitle().toString().toLowerCase().contains(filter) || (EnableWifiPreference.getSummary() != null && EnableWifiPreference.getSummary().toString().toLowerCase().contains(filter)));
+        WifiPreference.setVisible(UsefulBits.isEmpty(filter) || WifiPreference.getTitle().toString().toLowerCase().contains(filter) || (WifiPreference.getSummary() != null && WifiPreference.getSummary().toString().toLowerCase().contains(filter)));
+        wifi_category.setVisible(EnableWifiPreference.isVisible() || WifiPreference.isVisible());
+
+        // Bluetooth settings
+        BluetoothPreference.setVisible(UsefulBits.isEmpty(filter) || BluetoothPreference.getTitle().toString().toLowerCase().contains(filter) || (BluetoothPreference.getSummary() != null && BluetoothPreference.getSummary().toString().toLowerCase().contains(filter)));
+        EnableBluetoothPreference.setVisible(UsefulBits.isEmpty(filter) || EnableBluetoothPreference.getTitle().toString().toLowerCase().contains(filter) || (EnableBluetoothPreference.getSummary() != null && EnableBluetoothPreference.getSummary().toString().toLowerCase().contains(filter)));
+        bluetooth_category.setVisible(BluetoothPreference.isVisible() || EnableBluetoothPreference.isVisible());
+
+        // Beacon settings
+        EnableBeaconPreference.setVisible(UsefulBits.isEmpty(filter) || EnableBeaconPreference.getTitle().toString().toLowerCase().contains(filter) || (EnableBeaconPreference.getSummary() != null && EnableBeaconPreference.getSummary().toString().toLowerCase().contains(filter)));
+        EnableBeaconNotificationsPreference.setVisible(UsefulBits.isEmpty(filter) || EnableBeaconNotificationsPreference.getTitle().toString().toLowerCase().contains(filter) || (EnableBeaconNotificationsPreference.getSummary() != null && EnableBeaconNotificationsPreference.getSummary().toString().toLowerCase().contains(filter)));
+        BeaconPreference.setVisible(UsefulBits.isEmpty(filter) || BeaconPreference.getTitle().toString().toLowerCase().contains(filter) || (BeaconPreference.getSummary() != null && BeaconPreference.getSummary().toString().toLowerCase().contains(filter)));
+        beacon_category.setVisible(EnableBeaconPreference.isVisible() || EnableBeaconNotificationsPreference.isVisible() || BeaconPreference.isVisible());
+
+        // Security settings
+        FingerPrintSettingsPreference.setVisible(UsefulBits.isEmpty(filter) || FingerPrintSettingsPreference.getTitle().toString().toLowerCase().contains(filter) || (FingerPrintSettingsPreference.getSummary() != null && FingerPrintSettingsPreference.getSummary().toString().toLowerCase().contains(filter)));
+        FingerPrintPreference.setVisible(UsefulBits.isEmpty(filter) || FingerPrintPreference.getTitle().toString().toLowerCase().contains(filter) || (FingerPrintPreference.getSummary() != null && FingerPrintPreference.getSummary().toString().toLowerCase().contains(filter)));
+        security_category.setVisible(FingerPrintSettingsPreference.isVisible() || FingerPrintPreference.isVisible());
+
+        // Widgets settings
+        WidgetsEnablePreference.setVisible(UsefulBits.isEmpty(filter) || WidgetsEnablePreference.getTitle().toString().toLowerCase().contains(filter) || (WidgetsEnablePreference.getSummary() != null && WidgetsEnablePreference.getSummary().toString().toLowerCase().contains(filter)));
+        widgets_category.setVisible(WidgetsEnablePreference.isVisible());
+
+        // Language settings
+        displayLanguage.setVisible(UsefulBits.isEmpty(filter) || displayLanguage.getTitle().toString().toLowerCase().contains(filter) || (displayLanguage.getSummary() != null && displayLanguage.getSummary().toString().toLowerCase().contains(filter)));
+        EnableTalkBackPreference.setVisible(UsefulBits.isEmpty(filter) || EnableTalkBackPreference.getTitle().toString().toLowerCase().contains(filter) || (EnableTalkBackPreference.getSummary() != null && EnableTalkBackPreference.getSummary().toString().toLowerCase().contains(filter)));
+        translateApplication.setVisible(UsefulBits.isEmpty(filter) || translateApplication.getTitle().toString().toLowerCase().contains(filter) || (translateApplication.getSummary() != null && translateApplication.getSummary().toString().toLowerCase().contains(filter)));
+        language_category.setVisible(displayLanguage.isVisible() || EnableTalkBackPreference.isVisible() || translateApplication.isVisible());
+
+        // Theme settings
+        ThemePreference.setVisible(UsefulBits.isEmpty(filter) || ThemePreference.getTitle().toString().toLowerCase().contains(filter) || (ThemePreference.getSummary() != null && ThemePreference.getSummary().toString().toLowerCase().contains(filter)));
+        theme_category.setVisible(ThemePreference.isVisible());
+
+        // Android Wear settings
+        WearPreference.setVisible(UsefulBits.isEmpty(filter) || WearPreference.getTitle().toString().toLowerCase().contains(filter) || (WearPreference.getSummary() != null && WearPreference.getSummary().toString().toLowerCase().contains(filter)));
+        WearItems.setVisible(UsefulBits.isEmpty(filter) || WearItems.getTitle().toString().toLowerCase().contains(filter) || (WearItems.getSummary() != null && WearItems.getSummary().toString().toLowerCase().contains(filter)));
+        wear_category.setVisible(WearPreference.isVisible() || WearItems.isVisible());
+
+        // Advanced settings
+        exportButton.setVisible(UsefulBits.isEmpty(filter) || exportButton.getTitle().toString().toLowerCase().contains(filter) || (exportButton.getSummary() != null && exportButton.getSummary().toString().toLowerCase().contains(filter)));
+        importButton.setVisible(UsefulBits.isEmpty(filter) || importButton.getTitle().toString().toLowerCase().contains(filter) || (importButton.getSummary() != null && importButton.getSummary().toString().toLowerCase().contains(filter)));
+        PermissionsSettings.setVisible(UsefulBits.isEmpty(filter) || PermissionsSettings.getTitle().toString().toLowerCase().contains(filter) || (PermissionsSettings.getSummary() != null && PermissionsSettings.getSummary().toString().toLowerCase().contains(filter)));
+        resetApplication.setVisible(UsefulBits.isEmpty(filter) || resetApplication.getTitle().toString().toLowerCase().contains(filter) || (resetApplication.getSummary() != null && resetApplication.getSummary().toString().toLowerCase().contains(filter)));
+        advanced_category.setVisible(exportButton.isVisible() || importButton.isVisible() || PermissionsSettings.isVisible() || resetApplication.isVisible());
+
+        // Other settings
+        taskerPreference.setVisible(UsefulBits.isEmpty(filter) || taskerPreference.getTitle().toString().toLowerCase().contains(filter) || (taskerPreference.getSummary() != null && taskerPreference.getSummary().toString().toLowerCase().contains(filter)));
+        other_category.setVisible(taskerPreference.isVisible());
+
+        // About settings
+        ReportErrorSettings.setVisible(UsefulBits.isEmpty(filter) || ReportErrorSettings.getTitle().toString().toLowerCase().contains(filter) || (ReportErrorSettings.getSummary() != null && ReportErrorSettings.getSummary().toString().toLowerCase().contains(filter)));
+        TermsPreferences.setVisible(UsefulBits.isEmpty(filter) || TermsPreferences.getTitle().toString().toLowerCase().contains(filter) || (TermsPreferences.getSummary() != null && TermsPreferences.getSummary().toString().toLowerCase().contains(filter)));
+        PrivacyPreferences.setVisible(UsefulBits.isEmpty(filter) || PrivacyPreferences.getTitle().toString().toLowerCase().contains(filter) || (PrivacyPreferences.getSummary() != null && PrivacyPreferences.getSummary().toString().toLowerCase().contains(filter)));
+        versionPreferences.setVisible(UsefulBits.isEmpty(filter) || versionPreferences.getTitle().toString().toLowerCase().contains(filter) || (versionPreferences.getSummary() != null && versionPreferences.getSummary().toString().toLowerCase().contains(filter)));
+        about.setVisible(UsefulBits.isEmpty(filter) || about.getTitle().toString().toLowerCase().contains(filter) || (about.getSummary() != null && about.getSummary().toString().toLowerCase().contains(filter)));
+        about_category.setVisible(ReportErrorSettings.isVisible() || TermsPreferences.isVisible() || PrivacyPreferences.isVisible() || versionPreferences.isVisible() || about.isVisible());
+
+        int defaultValue = mSharedPrefs.getActualStartupScreenIndex();
+        startup_screen.setValueIndex(defaultValue);
 
         if (mConfigInfo == null) {
             StaticHelper.getDomoticz(mContext).checkLogin(new LoginReceiver() {
@@ -782,6 +992,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
     private void handleImportExportButtons() {
         androidx.preference.Preference exportButton = findPreference("export_settings");
+        androidx.preference.Preference importButton = findPreference("import_settings");
         if (exportButton != null)
             exportButton.setOnPreferenceClickListener(preference -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -793,7 +1004,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                     ((SettingsActivity) getActivity()).exportSettings();
                 return false;
             });
-        androidx.preference.Preference importButton = findPreference("import_settings");
         if (importButton != null)
             importButton.setOnPreferenceClickListener(preference -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -808,9 +1018,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void setStartUpScreenDefaultValue() {
-        int defaultValue = mSharedPrefs.getActualStartupScreenIndex();
-        ListPreference startup_screen = findPreference("startup_nav");
-        startup_screen.setValueIndex(defaultValue);
     }
 
     private void showPremiumSnackbar(final String category) {
@@ -838,5 +1045,29 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         } catch (Exception ex) {
             Log.e(TAG, "No Snackbar shown: " + ex.getMessage());
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_preferences, menu);
+        MenuItem searchMenuItem = menu.findItem(R.id.search);
+        searchViewAction = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+        searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Filter on preferences
+                filter = newText;
+                if (!UsefulBits.isEmpty(filter))
+                    filter = filter.toLowerCase();
+                setPreferences();
+                return false;
+            }
+        });
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }
