@@ -264,49 +264,52 @@ public class SetupServerSettings extends Fragment implements OnPermissionCallbac
     }
 
     private void setSsid_spinner() {
-        final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
-        final ArrayList<String> ssids = new ArrayList<>();
-        if (newServer != null) {
-            Set<String> ssidFromPrefs = newServer.getLocalServerSsid();
-            //noinspection SpellCheckingInspection
-            if (ssidFromPrefs != null) {
-                if (ssidFromPrefs.size() > 0) {
-                    for (String wifi : ssidFromPrefs) {
-                        ssids.add(wifi);
-                        ssidListFromPrefs.add(wifi);
-                    }
+        try {
+            final ArrayList<String> ssidListFromPrefs = new ArrayList<>();
+            final ArrayList<String> ssids = new ArrayList<>();
+            if (newServer != null) {
+                Set<String> ssidFromPrefs = newServer.getLocalServerSsid();
+                //noinspection SpellCheckingInspection
+                if (ssidFromPrefs != null) {
+                    if (ssidFromPrefs.size() > 0) {
+                        for (String wifi : ssidFromPrefs) {
+                            ssids.add(wifi);
+                            ssidListFromPrefs.add(wifi);
+                        }
 
-                    //quickly set the values
+                        //quickly set the values
+                        local_wifi_spinner.setTitle(R.string.welcome_ssid_spinner_prompt);
+                        local_wifi_spinner.setItems(ssids);
+                        local_wifi_spinner.setSelection(ssidListFromPrefs);
+                    }
+                }
+            }
+
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                permissionFragmentHelper.request(PermissionsUtil.INITIAL_LOCATION_PERMS);
+            else {
+                WiseFy wisefy = new WiseFy.Brains(getActivity()).getSmarts();
+                List<ScanResult> nearbyAccessPoints = wisefy.getNearbyAccessPoints(true);
+                if (nearbyAccessPoints == null || nearbyAccessPoints.size() < 1) {
+                    if (nearbyAccessPoints.size() <= 0) {
+                        // No wifi ssid nearby found!
+                        local_wifi_spinner.setEnabled(false);                       // Disable spinner
+                        ssids.add(getString(R.string.welcome_msg_no_ssid_found));
+                        // Set selection to the 'no ssids found' message to inform user
+                        local_wifi_spinner.setItems(ssids);
+                        local_wifi_spinner.setSelection(0);
+                    }
+                } else {
+                    for (ScanResult ssid : nearbyAccessPoints) {
+                        if (!UsefulBits.isEmpty(ssid.SSID) && !ssids.contains(ssid.SSID))
+                            ssids.add(ssid.SSID);
+                    }
                     local_wifi_spinner.setTitle(R.string.welcome_ssid_spinner_prompt);
                     local_wifi_spinner.setItems(ssids);
                     local_wifi_spinner.setSelection(ssidListFromPrefs);
                 }
             }
-        }
-
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            permissionFragmentHelper.request(PermissionsUtil.INITIAL_LOCATION_PERMS);
-        else {
-            WiseFy wisefy = new WiseFy.Brains(getActivity()).getSmarts();
-            List<ScanResult> nearbyAccessPoints = wisefy.getNearbyAccessPoints(true);
-            if (nearbyAccessPoints == null || nearbyAccessPoints.size() < 1) {
-                if (nearbyAccessPoints.size() <= 0) {
-                    // No wifi ssid nearby found!
-                    local_wifi_spinner.setEnabled(false);                       // Disable spinner
-                    ssids.add(getString(R.string.welcome_msg_no_ssid_found));
-                    // Set selection to the 'no ssids found' message to inform user
-                    local_wifi_spinner.setItems(ssids);
-                    local_wifi_spinner.setSelection(0);
-                }
-            } else {
-                for (ScanResult ssid : nearbyAccessPoints) {
-                    if (!UsefulBits.isEmpty(ssid.SSID) && !ssids.contains(ssid.SSID))
-                        ssids.add(ssid.SSID);
-                }
-                local_wifi_spinner.setTitle(R.string.welcome_ssid_spinner_prompt);
-                local_wifi_spinner.setItems(ssids);
-                local_wifi_spinner.setSelection(ssidListFromPrefs);
-            }
+        } catch (Exception ex) {
         }
     }
 
