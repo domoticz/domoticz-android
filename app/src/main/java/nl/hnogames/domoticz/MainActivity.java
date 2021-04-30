@@ -241,13 +241,17 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
     public void resetWorkerThreads() {
         if (mSharedPrefs.isWifiEnabled()) {
-            WorkManager.getInstance(getApplicationContext()).cancelAllWorkByTag(WifiReceiver.workTag);
-            WorkManager.getInstance(getApplicationContext()).cancelAllWorkByTag(WifiReceiverManager.workTag);
-            OneTimeWorkRequest workRequest = new OneTimeWorkRequest
-                    .Builder(WifiReceiverManager.class)
-                    .addTag(WifiReceiverManager.workTag)
-                    .build();
-            WorkManager.getInstance(this).enqueue(workRequest);
+            try {
+                WorkManager.getInstance(getApplicationContext()).cancelAllWorkByTag(WifiReceiver.workTag);
+                WorkManager.getInstance(getApplicationContext()).cancelAllWorkByTag(WifiReceiverManager.workTag);
+                OneTimeWorkRequest workRequest = new OneTimeWorkRequest
+                        .Builder(WifiReceiverManager.class)
+                        .addTag(WifiReceiverManager.workTag)
+                        .build();
+                WorkManager.getInstance(this).enqueue(workRequest);
+            } catch (Exception ex) {
+                Log.e(TAG, ex.getMessage());
+            }
         }
     }
 

@@ -49,7 +49,7 @@ public class WifiReceiverManager extends Worker {
                     .build();
             WorkManager.getInstance(context).enqueue(workRequest);
             return Result.success();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return Result.success();
