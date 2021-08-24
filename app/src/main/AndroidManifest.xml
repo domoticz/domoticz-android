@@ -69,6 +69,7 @@
         android:name="nl.hnogames.domoticz.premium.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <application
         android:allowBackup="false"
         android:name="nl.hnogames.domoticz.app.AppController"
@@ -323,6 +324,16 @@
 
         <activity
             android:name="nl.hnogames.domoticz.BluetoothSettingsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/category_bluetooth"
+            android:parentActivityName="nl.hnogames.domoticz.SettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nl.hnogames.domoticz.SettingsActivity" />
+        </activity>
+
+        <activity
+            android:name="nl.hnogames.domoticz.WifiSettingsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/category_bluetooth"
             android:parentActivityName="nl.hnogames.domoticz.SettingsActivity">

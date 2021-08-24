@@ -34,6 +34,7 @@
 
     <PreferenceCategory
         android:icon="@drawable/baseline_view_carousel_black_24"
+        android:key="generic_category"
         android:title="@string/category_generic">
         <ListPreference
             android:entries="@array/startup_actions"
@@ -93,6 +94,7 @@
 
     <PreferenceCategory
         android:icon="@drawable/baseline_filter_list_white_24"
+        android:key="sorting_category"
         android:title="@string/sort_server_title">
         <SwitchPreference
             android:defaultValue="false"
@@ -111,6 +113,7 @@
 
     <PreferenceCategory
         android:icon="@drawable/baseline_view_carousel_black_24"
+        android:key="dashboard_category"
         android:title="@string/title_dashboard">
         <SwitchPreference
             android:defaultValue="true"
@@ -134,6 +137,7 @@
 
     <PreferenceCategory
         android:icon="@drawable/baseline_notification_important_white_24"
+        android:key="notifications_category"
         android:title="@string/category_notification">
         <Preference
             android:key="openNotificationSettings"
@@ -142,6 +146,7 @@
 
     <PreferenceCategory
         android:icon="@drawable/baseline_settings_input_component_white_24"
+        android:key="server_category"
         android:title="@string/category_server">
         <SwitchPreference
             android:defaultValue="false"
@@ -159,6 +164,7 @@
 
     <PreferenceCategory
         android:icon="@drawable/baseline_my_location_white_24"
+        android:key="geofencing_category"
         android:title="@string/category_geofencing">
         <Preference
             android:key="geo_settings"
@@ -167,6 +173,7 @@
 
     <PreferenceCategory
         android:icon="@drawable/baseline_nfc_white_24"
+        android:key="nfc_category"
         android:title="@string/category_nfc">
         <SwitchPreference
             android:defaultValue="false"
@@ -182,6 +189,7 @@
 
     <PreferenceCategory
         android:icon="@drawable/baseline_mic_none_white_24"
+        android:key="speech_category"
         android:title="@string/category_Speech">
         <SwitchPreference
             android:defaultValue="false"
@@ -197,6 +205,7 @@
 
     <PreferenceCategory
         android:icon="@drawable/baseline_camera_black_24"
+        android:key="qrcode_category"
         android:title="@string/category_QRCode">
         <SwitchPreference
             android:defaultValue="false"
@@ -211,7 +220,22 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:icon="@drawable/baseline_network_wifi_black_24"
+        android:key="wifi_category"
+        android:title="@string/category_wifi">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enableWifi"
+            android:title="@string/enable_wifi" />
+        <Preference
+            android:dependency="enableWifi"
+            android:key="wifi_settings"
+            android:title="@string/wifi_settings" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:icon="@drawable/baseline_bluetooth_black_24"
+        android:key="bluetooth_category"
         android:title="@string/category_bluetooth">
         <SwitchPreference
             android:defaultValue="false"
@@ -225,6 +249,7 @@
 
     <PreferenceCategory
         android:icon="@drawable/baseline_wifi_tethering_black_24"
+        android:key="beacon_category"
         android:title="@string/beacon">
         <SwitchPreference
             android:defaultValue="false"
@@ -243,6 +268,7 @@
 
     <PreferenceCategory
         android:icon="@drawable/baseline_fingerprint_white_24"
+        android:key="security_category"
         android:title="@string/category_startup_security">
         <SwitchPreference
             android:defaultValue="false"
@@ -258,6 +284,7 @@
 
     <PreferenceCategory
         android:icon="@drawable/outline_widgets_white_24"
+        android:key="widgets_category"
         android:title="@string/wizard_widgets">
         <SwitchPreference
             android:defaultValue="false"
@@ -269,6 +296,7 @@
 
     <PreferenceCategory
         android:icon="@drawable/baseline_language_white_24"
+        android:key="language_category"
         android:title="@string/category_language">
         <ListPreference
             android:entries="@array/domoticz_language_entries"
@@ -289,6 +317,7 @@
 
     <PreferenceCategory
         android:icon="@drawable/baseline_invert_colors_white_24"
+        android:key="theme_category"
         android:title="@string/category_theme">
         <Preference
             android:key="darkTheme"
@@ -296,6 +325,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="wear_category"
         android:icon="@drawable/baseline_watch_white_24"
         android:title="@string/category_wear">
         <SwitchPreference
@@ -317,6 +347,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="advanced_category"
         android:icon="@drawable/baseline_settings_white_24"
         android:title="@string/category_advanced">
         <Preference
@@ -335,7 +366,7 @@
 
     <PreferenceCategory
         android:icon="@drawable/baseline_whatshot_white_24"
-        android:key="@string/category_other"
+        android:key="other_category"
         android:title="@string/category_other">
         <Preference
             android:key="tasker_settings"
@@ -345,6 +376,7 @@
 
     <PreferenceCategory
         android:icon="@drawable/baseline_info_white_24"
+        android:key="about_category"
         android:title="@string/category_info">
         <Preference
             android:key="version"

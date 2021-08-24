@@ -1270,7 +1270,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 @Override
                 public void onStopTrackingTouch(@NonNull Slider slider) {
                     int progress = (Math.round(slider.getValue()));
-                    handleDimmerChange((int) slider.getTag(), progress + 1, false);
+                    handleDimmerChange((int) slider.getTag(), progress, false);
                     mDeviceInfo.setLevel(progress);
                 }
             });
@@ -1453,7 +1453,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     }
                 } catch (Exception ex) {/*else we don't use a switch, but buttons */}
 
-                handleDimmerChange((int) slider.getTag(), progress + 1, false);
+                handleDimmerChange((int) slider.getTag(), progress, false);
                 mDeviceInfo.setLevel(progress);
             }
         });
@@ -1559,7 +1559,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 int progress = (Math.round(slider.getValue()));
-                handleDimmerChange((int) slider.getTag(), progress + 1, false);
+                handleDimmerChange((int) slider.getTag(), progress, false);
                 mDeviceInfo.setLevel(progress);
             }
         });
@@ -1720,7 +1720,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
      * @param selector True if it's a selector device
      */
     private void handleDimmerChange(final int idx, final int value, boolean selector) {
-        listener.onDimmerChange(idx, value, selector);
+        listener.onDimmerChange(idx, value > 100 ? 100 : value, selector);
     }
 
     /**

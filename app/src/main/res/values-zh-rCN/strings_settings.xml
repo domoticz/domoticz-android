@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -42,6 +43,7 @@
     <string name="category_account">账户</string>
     <string name="category_QRCode">二维码</string>
     <string name="category_bluetooth">Bluetooth</string>
+    <string name="category_wifi">Wifi</string>
     <string name="category_Speech">语音</string>
     <string name="category_Reset">重置</string>
     <string name="category_help">Contribute</string>

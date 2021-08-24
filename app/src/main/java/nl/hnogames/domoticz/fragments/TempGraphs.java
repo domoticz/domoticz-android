@@ -47,7 +47,6 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -138,21 +137,20 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
     }
 
     public void GetTypes() {
-        if (selectedFilters == null) {
-            selectedFilters = new Integer[1];
-            selectedFilters[0] = 0;
-        }
-        String[] items = new String[4];
-        items[0] = getString(R.string.temperature);
-        items[1] = getString(R.string.set_point);
-        items[2] = getString(R.string.humidity);
-        items[3] = getString(R.string.barometer);
-        new MaterialDialog.Builder(context)
-                .title(context.getString(R.string.filter))
-                .items(items)
-                .itemsCallbackMultiChoice(selectedFilters, new MaterialDialog.ListCallbackMultiChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+        try {
+            if (selectedFilters == null) {
+                selectedFilters = new Integer[1];
+                selectedFilters[0] = 0;
+            }
+            String[] items = new String[4];
+            items[0] = getString(R.string.temperature);
+            items[1] = getString(R.string.set_point);
+            items[2] = getString(R.string.humidity);
+            items[3] = getString(R.string.barometer);
+            new MaterialDialog.Builder(context)
+                    .title(context.getString(R.string.filter))
+                    .items(items)
+                    .itemsCallbackMultiChoice(selectedFilters, (dialog, which, text) -> {
                         selectedFilters = which;
                         if (text != null && text.length > 0) {
                             graphTemp = false;
@@ -171,11 +169,12 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                         } else
                             Toast.makeText(context, context.getString(R.string.filter_graph_empty), Toast.LENGTH_SHORT).show();
                         return true;
-                    }
-                })
-                .positiveText(R.string.ok)
-                .negativeText(R.string.cancel)
-                .show();
+                    })
+                    .positiveText(R.string.ok)
+                    .negativeText(R.string.cancel)
+                    .show();
+        } catch (Exception ex) {
+        }
     }
 
     public void GetTempDevices() {
@@ -190,15 +189,12 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                 new MaterialDialog.Builder(context)
                         .title(context.getString(R.string.filter_devices))
                         .items(items)
-                        .itemsCallbackMultiChoice(selectedDevices, new MaterialDialog.ListCallbackMultiChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-                                selectedDevices = which;
-                                LoadData();
-                                if (selectedFilters == null)
-                                    GetTypes();
-                                return true;
-                            }
+                        .itemsCallbackMultiChoice(selectedDevices, (dialog, which, text) -> {
+                            selectedDevices = which;
+                            LoadData();
+                            if (selectedFilters == null)
+                                GetTypes();
+                            return true;
                         })
                         .positiveText(R.string.ok)
                         .negativeText(R.string.cancel)
@@ -303,14 +299,11 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                                     if (columnData != null) {
                                         chart.setData(columnData);
                                         chart.invalidate(); // refresh
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                chart.setVisibility(View.VISIBLE);
-                                                chart.animateX(1000);
-                                                if (getActivity() != null)
-                                                    getActivity().invalidateOptionsMenu();
-                                            }
+                                        getActivity().runOnUiThread(() -> {
+                                            chart.setVisibility(View.VISIBLE);
+                                            chart.animateX(1000);
+                                            if (getActivity() != null)
+                                                getActivity().invalidateOptionsMenu();
                                         });
                                     }
                                 } catch (Exception ex) {
@@ -489,25 +482,22 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
                 if (selectionDates != null)
                     builder.setSelection(selectionDates);
                 final MaterialDatePicker<Pair<Long, Long>> picker = builder.build();
-                picker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Pair<Long, Long>>() {
-                    @Override
-                    public void onPositiveButtonClick(Pair<Long, Long> selection) {
-                        long firstDateLong = selection.first;
-                        Date firstDate = new Date(firstDateLong);
-                        long endDateLong = selection.second;
-                        Date endDate = new Date(endDateLong);
-                        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                        firstDateStr = sdf2.format(firstDate);
-                        endDateStr = sdf2.format(endDate);
-                        if (firstDateStr.equals(endDateStr))
-                            range = "minute";
-                        else
-                            range = "day";
+                picker.addOnPositiveButtonClickListener(selection -> {
+                    long firstDateLong = selection.first;
+                    Date firstDate = new Date(firstDateLong);
+                    long endDateLong = selection.second;
+                    Date endDate = new Date(endDateLong);
+                    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    firstDateStr = sdf2.format(firstDate);
+                    endDateStr = sdf2.format(endDate);
+                    if (firstDateStr.equals(endDateStr))
+                        range = "minute";
+                    else
+                        range = "day";
 
-                        selectionDates = selection;
-                        picker.dismiss();
-                        LoadData();
-                    }
+                    selectionDates = selection;
+                    picker.dismiss();
+                    LoadData();
                 });
                 picker.show(getActivity().getSupportFragmentManager(), picker.toString());
                 return true;

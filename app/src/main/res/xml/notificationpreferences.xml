@@ -103,10 +103,6 @@
                 android:key="notification_registration_id"
                 android:summary="@string/notification_settings_push"
                 android:title="@string/notification_settings_id" />
-            <androidx.preference.Preference
-                android:dependency="enableNotifications"
-                android:key="clear_notifications"
-                android:title="@string/clear_notifications" />
         </androidx.preference.PreferenceCategory>
     </androidx.preference.PreferenceCategory>
 

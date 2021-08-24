@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wifi_not_supported">Wifi is not supported on this device</string>
+    <string name="wifi_register">Connect a wifi ssid</string>
+    <string name="wifi_found">New wifi access point found</string>
+    <string name="wifi_edit">Edit wifi access point</string>
+    <string name="wifi_name">Give this access point a proper name. </string>
+    <string name="wifi_desc">Check the list of paired access point. </string>
+    <string name="wifi_exists">This access point already configured on Domoticz. </string>
+    <string name="wifi_turned_off">Wifi needs to be turned on in your device settings. </string>
+    <string name="wifi_saved">Saved a new access point connection. </string>
+    <string name="wifi_settings">Setup access points</string>
+    <string name="enable_wifi">Enable Wifi functionality</string>
+    <string name="wifi_disabled">Wifi automation disabled, please setup via settings.</string>
+    <string name="noSwitchSelected_explanation_wifi">For an access point to automate something in Domoticz, a switch should be linked to an access point.</string>
+    <string name="title_notification_wifi">Enable Notifications</string>
+    <string name="description_notification_wifi">Show notifications when you connect or disconnect a wifi access point.</string>
+    <string name="wifi_connected_to">"Connected to %1$s"</string>
+    <string name="wifi_disconnected_to">Disconnected to  %1$s</string>
+    <string name="wifi_connected_to_text">Connected to one of the registed access points.</string>
+    <string name="wifi_disconnected_to_text">Disconnected to one of the registed access points.</string>
+</resources>

@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -36,24 +37,25 @@
     <string name="category_debug">Debugging</string>
     <string name="category_export">Importa/Esporta impostazioni</string>
     <string name="category_theme">Tema</string>
-    <string name="category_clock">Clock</string>
+    <string name="category_clock">Orologio</string>
     <string name="category_nfc">Connessioni NFC</string>
     <string name="category_startup_security">Sicurezza</string>
     <string name="category_account">Accounts</string>
     <string name="category_QRCode">QR Code</string>
     <string name="category_bluetooth">Bluetooth</string>
+    <string name="category_wifi">Wifi</string>
     <string name="category_Speech">Comando vocale</string>
     <string name="category_Reset">Reset</string>
-    <string name="category_help">Contribute</string>
+    <string name="category_help">Contribuisci</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Schermata iniziale</string>
     <string name="enable_items">Abilita/Disabilita i componenti</string>
     <!--        Generic sorting settings       -->
-    <string name="sort_server_title">Sorting</string>
-    <string name="sort_server_on">Sort devices like sorted on the server</string>
-    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
-    <string name="sort_lock_server_title">Lock</string>
-    <string name="sort_lock_custom_on">Lock the current custom sorting (disable drag/drop)</string>
+    <string name="sort_server_title">Ordinamento</string>
+    <string name="sort_server_on">Ordina dispositivi come ordinati sul server</string>
+    <string name="sort_custom_on">Ordinamento personalizzato, trascina e rilascia per personalizzare l\'ordinamento</string>
+    <string name="sort_lock_server_title">Blocca</string>
+    <string name="sort_lock_custom_on">Blocca l\'ordinamento personalizzato corrente (disattiva trascinamento/rilascio)</string>
     <string name="sort_dashboardLikeServer_off">Ordinamento alfabetico pagina principale</string>
     <string name="extra_data_title">Dati addizionali nel pannello principale</string>
     <string name="show_extra_data_on">Visualizza dati extra nel pannello principale</string>
@@ -61,19 +63,19 @@
     <string name="always_on_title">Wake Lock</string>
     <string name="always_on_on">Blocca lo schemo sempre attivo</string>
     <string name="always_on_off">Non bloccare lo schemo sempre attivo</string>
-    <string name="always_auto_refresh">Auto Refresh</string>
-    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
-    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh">Auto Aggiorna</string>
+    <string name="always_auto_refresh_on">Aggiorna lo stato del dispositivo ogni due secondi</string>
+    <string name="always_auto_refresh_off">Non aggiornare lo stato del dispositivo ogni due secondi</string>
     <string name="switch_buttons_title">Interruttori</string>
     <string name="switch_buttons_on">Visualizza interruttori on/off</string>
     <string name="switch_buttons_off">Visualizza pulsanti on/off</string>
     <string name="dashboard_list_title">Griglia pagina principale</string>
     <string name="show_dashboard_list_on">Visualizza la pagina principale cole lista</string>
     <string name="show_dashboard_list_off">Visualizza la pagina principale come griglia</string>
-    <string name="dashboard_clock">Clock</string>
-    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
+    <string name="dashboard_clock">Orologio</string>
+    <string name="show_dashboard_clock">Mostra un orologio sulla dashboard</string>
     <string name="dashboard_camera">Camera</string>
-    <string name="show_dashboard_camera">Load the camera for connected switches</string>
+    <string name="show_dashboard_camera">Carica la fotocamera per gli interruttori collegati</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Dispositivi personalizzati Android Wear</string>
     <string name="custom_wear_select">Seleziona gli interruttori Wear</string>
@@ -116,12 +118,12 @@
     <string name="qrcode_settings">Impostazioni QR Code</string>
     <string name="enable_qrcode">Abilita QR Code</string>
     <string name="qrcode_enable_settings">Abilita le funzionalità QR Code</string>
-    <string name="bluetooth_settings">Setup Bluetooth devices</string>
-    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
-    <string name="beacon_settings">Setup Beacons</string>
-    <string name="enable_beacon">Enable Beacon functionality</string>
-    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
-    <string name="translate_title">Translations</string>
+    <string name="bluetooth_settings">Imposta dispositivi Bluetooth</string>
+    <string name="enable_bluetooth">Abilita funzionalità Bluetooth</string>
+    <string name="beacon_settings">Imposta Beacons</string>
+    <string name="enable_beacon">Abilita funzionalità Beacon</string>
+    <string name="translate_description">Puoi aiutare a migliorare le nostre traduzioni e persino aggiungere nuove lingue a questa app tramite il nostro progetto Crowdin</string>
+    <string name="translate_title">Traduzioni</string>
     <string name="security_settings">Impostazioni di sicurezza</string>
     <string name="enable_security">Attivare la protezione delle impronte digitali all\'avvio</string>
     <string name="disable_security">Disattivare la protezione delle impronte digitali all\'avvio</string>
@@ -148,8 +150,8 @@
     <string name="enable_notifications_title">Attivare le Notifiche</string>
     <string name="enable_notifications">Attivare le notifiche di questo dispositivo</string>
     <string name="notification_screen_title">Impostazioni notifiche</string>
-    <string name="notification_history">Notification history</string>
-    <string name="notification_inbox">Inbox</string>
+    <string name="notification_history">Cronologia notifiche</string>
+    <string name="notification_inbox">Posta</string>
     <string name="notification_vibrate_title">Vibrazione</string>
     <string name="notification_vibrate_on">Vibra quando si riceve una notifica</string>
     <string name="notification_vibrate_off">Non vibrare</string>
@@ -166,13 +168,13 @@
     <string name="alarmtimer_title">Tempo di Allarme</string>
     <string name="alarmtimer">Durata dell\'allarme in secondi</string>
     <!-- Theme properties -->
-    <string name="theme_default">Default</string>
-    <string name="theme_daynight">Day/Night</string>
-    <string name="theme_orange">Orange</string>
-    <string name="theme_pink">Pink</string>
-    <string name="theme_blue">Blue</string>
-    <string name="theme_green">Green</string>
-    <string name="theme_dark_blue">Dark blue</string>
+    <string name="theme_default">Predefinito</string>
+    <string name="theme_daynight">Giorno/Notte</string>
+    <string name="theme_orange">Arancia</string>
+    <string name="theme_pink">Rosa</string>
+    <string name="theme_blue">Blu</string>
+    <string name="theme_green">Verde</string>
+    <string name="theme_dark_blue">Blu scuro</string>
     <!-- Other -->
     <string name="default_values">Valori predefiniti</string>
     <string name="default_values_min_error">Il valore max dovrebbe essere superiore al valore min</string>
@@ -191,7 +193,7 @@
     <string name="error_atLeastOneItemInDrawer">Hai bisogno di almeno un dispositivo</string>
     <!--        Server update category       -->
     <string name="title_activity_update">Aggiornamento server</string>
-    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
+    <string name="error_couldNotCheckForVersion">"Impossibile controllare la versione: %1$s"</string>
     <string name="error_couldNotCheckForUpdates">"Impossibile controllare gli aggiornamenti: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"Impossibile ottenere la configurazione del server Domoticz: %1$s"</string>
     <string name="update_available_enhanced">Aggiornamento di server disponibile: %1$s versione: %2$s</string>
@@ -216,7 +218,7 @@
     <string name="debug_test_text">Test di debug</string>
     <string name="restart_required_title">È necessario riavviare</string>
     <string name="restart_now">Riavviare ora?</string>
-    <string name="check_settings">Check your settings</string>
-    <string name="report_error">Report an error</string>
-    <string name="support">Support</string>
+    <string name="check_settings">Controlla le tue impostazioni</string>
+    <string name="report_error">Segnala un errore</string>
+    <string name="support">Supporto</string>
 </resources>

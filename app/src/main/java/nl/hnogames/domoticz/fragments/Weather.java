@@ -308,7 +308,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
                 .toLowerCase()
                 .replace("temperature", "temp")
                 .replace("visibility", "counter");
-        if(weather.getSubType().equals("Barometer"))
+        if (weather.getSubType().equals("Barometer"))
             graphType = "temp";
 
         JSONObject language = null;

@@ -560,4 +560,10 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
     </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+    </queries>
 </manifest>

@@ -71,7 +71,6 @@ public class NotificationHistory extends Fragment {
     private List<NotificationInfo> notifications;
 
     @Override
-
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
@@ -148,13 +147,11 @@ public class NotificationHistory extends Fragment {
             searchViewAction = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
             searchViewAction.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
-
                 public boolean onQueryTextSubmit(String query) {
                     return false;
                 }
 
                 @Override
-
                 public boolean onQueryTextChange(String newText) {
                     if (notifications != null && notifications.size() > 0) {
                         List<NotificationInfo> filtered = new ArrayList<>();
@@ -179,25 +176,24 @@ public class NotificationHistory extends Fragment {
                 if (getActivity() != null)
                     getActivity().finish();
                 return true;
+            case R.id.delete:
+                mSharedPrefs.clearPreviousNotification();
+                CreateList(null);
+                return true;
             case R.id.action_add:
                 SendNotificationDialog dialog = new SendNotificationDialog(context, mNotificationTypes);
-                dialog.onDismissListener(new SendNotificationDialog.DismissListener() {
+                dialog.onDismissListener(message -> StaticHelper.getDomoticz(context).SendNotification(message.getTitle(), message.getText(), message.getSystems(), new SendNotificationReceiver() {
                     @Override
-                    public void OnSend(final NotificationInfo message) {
-                        StaticHelper.getDomoticz(context).SendNotification(message.getTitle(), message.getText(), message.getSystems(), new SendNotificationReceiver() {
-                            @Override
-                            public void onSuccess() {
-                                adapter.addToStart(message, true);
-                                Snackbar.make(coordinatorLayout, R.string.notification_send, Snackbar.LENGTH_LONG).show();
-                            }
-
-                            @Override
-                            public void onError(Exception error) {
-                                Snackbar.make(coordinatorLayout, R.string.notification_error_send, Snackbar.LENGTH_LONG).show();
-                            }
-                        });
+                    public void onSuccess() {
+                        adapter.addToStart(message, true);
+                        Snackbar.make(coordinatorLayout, R.string.notification_send, Snackbar.LENGTH_LONG).show();
                     }
-                });
+
+                    @Override
+                    public void onError(Exception error) {
+                        Snackbar.make(coordinatorLayout, R.string.notification_error_send, Snackbar.LENGTH_LONG).show();
+                    }
+                }));
                 dialog.show();
                 return true;
             default:
