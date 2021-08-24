@@ -24,6 +24,7 @@ package nl.hnogames.domoticz.app;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.PendingIntent;
+import android.app.job.JobScheduler;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
