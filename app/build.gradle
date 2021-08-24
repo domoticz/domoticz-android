@@ -159,12 +159,6 @@ android {
             it.name.startsWith('dex')
         }
     }
-
-    //noinspection GroovyAssignabilityCheck
-    dexOptions {
-        preDexLibraries false
-        javaMaxHeapSize "4g"
-    }
 }
 
 repositories {
@@ -179,7 +173,7 @@ allprojects {
         maven {
             url "https://maven.google.com"
         }
-        jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 
@@ -187,33 +181,34 @@ allprojects {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
+    implementation "androidx.work:work-runtime:2.6.0-rc01"
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0-beta01'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.biometric:biometric:1.0.1'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'androidx.annotation:annotation:1.1.0'
-
+    implementation 'androidx.biometric:biometric:1.1.0'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
+    implementation 'androidx.annotation:annotation:1.2.0'
     implementation 'org.reactivestreams:reactive-streams:1.0.3'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
 
-    implementation 'com.google.firebase:firebase-core:18.0.1'
-    implementation 'com.google.firebase:firebase-analytics:18.0.1'
-    implementation 'com.google.firebase:firebase-crashlytics:17.3.0'
-    implementation "com.google.firebase:firebase-messaging:21.0.1"
-    implementation "com.google.firebase:firebase-ads:19.7.0"
+    implementation 'com.google.firebase:firebase-core:19.0.1'
+    implementation 'com.google.firebase:firebase-iid:21.1.0'
+    implementation 'com.google.firebase:firebase-analytics:19.0.1'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.1'
+    implementation "com.google.firebase:firebase-messaging:22.0.0"
+    implementation "com.google.firebase:firebase-ads:19.8.0"
 
-    implementation "com.google.android.gms:play-services-analytics:17.0.0"
-    implementation "com.google.android.gms:play-services-wearable:17.0.0"
-    implementation "com.google.android.gms:play-services-maps:17.0.0"
+    implementation "com.google.android.gms:play-services-analytics:17.0.1"
+    implementation "com.google.android.gms:play-services-wearable:17.1.0"
+    implementation "com.google.android.gms:play-services-maps:17.0.1"
     implementation "com.google.android.gms:play-services-gcm:17.0.0"
-    implementation "com.google.android.gms:play-services-location:17.1.0"
+    implementation "com.google.android.gms:play-services-location:18.0.0"
     implementation "com.google.android.gms:play-services-places:17.0.0"
-    implementation "com.google.android.gms:play-services-ads:19.7.0"
+    implementation "com.google.android.gms:play-services-ads:19.8.0"
     implementation 'com.google.android.ads.consent:consent-library:1.0.8'
     implementation "com.github.nisrulz:recyclerviewhelper:27.1.1"
     implementation "org.altbeacon:android-beacon-library:2.17"
@@ -256,10 +251,11 @@ dependencies {
         exclude group: 'androidx.appcompat'
     }
     implementation 'com.github.k0shk0sh:PermissionHelper:1.1.0'
-    implementation 'com.github.zagum:SpeechRecognitionView:1.0.2'
+    implementation 'com.github.zagum:SpeechRecognitionView:1.2.2'
     implementation "com.github.skydoves:colorpickerview:2.0.1"
     implementation 'com.github.paolorotolo:appintro:v5.1.0'
     implementation 'com.52inc:scoops:1.0.0'
+    implementation 'com.isupatches:wisefy:4.0.0'
 
     implementation project(':libs:MemorizingTrustManager')
     implementation project(path: ':SeekArc_library')

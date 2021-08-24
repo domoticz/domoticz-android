@@ -1137,7 +1137,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         if (clickedSwitch != null) {
             String text = String.format(mContext.getString(R.string.set_level_switch),
                     clickedSwitch.getName(),
-                    !selector ? (value - 1) : ((value) / 10) + 1);
+                    !selector ? (value) : ((value) / 10) + 1);
             UsefulBits.showSnackbar(mContext, frameLayout, text, Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(text);

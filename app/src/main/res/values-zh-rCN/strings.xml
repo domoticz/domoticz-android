@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -113,6 +114,7 @@
     <string name="filterOn_all">所有设备</string>
     <string name="filter">筛选</string>
     <string name="filter_devices">筛选设备</string>
+    <string name="filter_range">Set range</string>
     <string name="filter_graph_empty">请指定筛选器</string>
     <string name="choose_color">选择颜色</string>
     <string name="no_data_on_domoticz">Domoticz服务器上没有数据</string>
@@ -138,4 +140,5 @@
     <string name="tasker_title">Setup automation rules with Tasker for Domoticz</string>
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
+    <string name="background_location_warning">This app collects location data to enable for geofencing services within this app, even when the app is closed or not in use.</string>
 </resources>

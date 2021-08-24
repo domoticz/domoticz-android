@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -25,6 +26,6 @@
     <string name="usage">Használat</string>
     <string name="today">Ma</string>
     <string name="total">Összesen</string>
-    <string name="favorite_added">vezérlőpulthoz hozzáadva.</string>
+    <string name="favorite_added">hozzáadva a vezérlőpulthoz.</string>
     <string name="favorite_removed">vezérlőpultról eltávolítva.</string>
 </resources>

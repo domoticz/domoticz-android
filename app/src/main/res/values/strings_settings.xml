@@ -45,6 +45,7 @@
     <string name="category_account">Accounts</string>
     <string name="category_QRCode">QR Code</string>
     <string name="category_bluetooth">Bluetooth</string>
+    <string name="category_wifi">Wifi</string>
     <string name="category_Speech">Speech</string>
     <string name="category_Reset">Reset</string>
 
