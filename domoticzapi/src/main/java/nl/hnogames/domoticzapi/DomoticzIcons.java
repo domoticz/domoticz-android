@@ -81,6 +81,11 @@ public class DomoticzIcons {
                 case "GoogleDevsHomeMini":
                     return R.drawable.ghome;
             }
+
+            if(CustomImage.contains("robot-vacuum"))
+            {
+                return R.drawable.vacum;
+            }
         }
 
         return standardImage;
