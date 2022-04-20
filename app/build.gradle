@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    compileSdkVersion 31
 
     def versionPropsFile = file('version.properties')
     if (versionPropsFile.canRead()) {
@@ -36,7 +35,7 @@ android {
             versionCode version_Code
             versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
             minSdkVersion 23
-            targetSdkVersion 30
+            targetSdkVersion 31
             multiDexEnabled true
             wearAppUnbundled true
         }
@@ -95,7 +94,7 @@ android {
 
             minSdkVersion 23
             versionNameSuffix "-dev"
-            resConfigs "en", "xxhdpi"
+            resConfigs 'en', 'xxhdpi'
         }
 
         free {
@@ -181,17 +180,17 @@ allprojects {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation "androidx.work:work-runtime:2.6.0-rc01"
-    implementation 'androidx.preference:preference:1.1.1'
+    implementation "androidx.work:work-runtime:2.8.0-alpha02"
+    implementation 'androidx.preference:preference:1.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.biometric:biometric:1.1.0'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
-    implementation 'androidx.annotation:annotation:1.2.0'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.annotation:annotation:1.3.0'
     implementation 'org.reactivestreams:reactive-streams:1.0.3'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
 

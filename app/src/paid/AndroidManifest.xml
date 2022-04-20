@@ -569,7 +569,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -577,9 +576,15 @@
 
         <service
             android:exported="true" android:name="nl.hnogames.domoticz.widgets.WidgetProviderSmallTemp$UpdateWidgetService" />
-
         <service
             android:exported="true" android:name="nl.hnogames.domoticz.widgets.SecurityWidgetProvider$UpdateSecurityWidgetService" />
+        <receiver android:name="org.altbeacon.beacon.startup.StartupBroadcastReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+            </intent-filter>
+        </receiver>
 
         <uses-library
             android:name="org.apache.http.legacy"
