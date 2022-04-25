@@ -383,30 +383,32 @@ public class UsefulBits {
 
     public static void setScheduledTasks(Context context) {
         final SharedPrefUtil mSharedPrefUtil = new SharedPrefUtil(context);
+        try {
+            if (!mSharedPrefUtil.getTaskIsScheduled()) {
+                // Only when not already scheduled
 
-        if (!mSharedPrefUtil.getTaskIsScheduled()) {
-            // Only when not already scheduled
+                if (mSharedPrefUtil.isDebugEnabled())
+                    showSimpleToast(context, "Scheduling new task", Toast.LENGTH_SHORT);
 
-            if (mSharedPrefUtil.isDebugEnabled())
-                showSimpleToast(context, "Scheduling new task", Toast.LENGTH_SHORT);
+                GcmNetworkManager mGcmNetworkManager = GcmNetworkManager.getInstance(context);
 
-            GcmNetworkManager mGcmNetworkManager = GcmNetworkManager.getInstance(context);
+                @SuppressWarnings("PointlessArithmeticExpression")
+                PeriodicTask task = new PeriodicTask.Builder()
+                        .setService(TaskService.class)                      // Service to start
+                        .setPersisted(true)                                 // Will survive reboots
+                        .setTag(TASK_TAG_PERIODIC)                          // Schedule periodic
+                        .setPeriod(60 * 60 * 24 * 1)                        // Every day
+                        .setFlex(60 * 60 * 8)                               // Flex of 8 hours
+                        .setRequiredNetwork(Task.NETWORK_STATE_UNMETERED)   // Only un metered networks
+                        .setRequiresCharging(true)                          // Only when charging
+                        .build();
 
-            @SuppressWarnings("PointlessArithmeticExpression")
-            PeriodicTask task = new PeriodicTask.Builder()
-                    .setService(TaskService.class)                      // Service to start
-                    .setPersisted(true)                                 // Will survive reboots
-                    .setTag(TASK_TAG_PERIODIC)                          // Schedule periodic
-                    .setPeriod(60 * 60 * 24 * 1)                        // Every day
-                    .setFlex(60 * 60 * 8)                               // Flex of 8 hours
-                    .setRequiredNetwork(Task.NETWORK_STATE_UNMETERED)   // Only un metered networks
-                    .setRequiresCharging(true)                          // Only when charging
-                    .build();
-
-            mGcmNetworkManager.schedule(task);
-            mSharedPrefUtil.setTaskIsScheduled(true);
-        } else if (mSharedPrefUtil.isDebugEnabled())
-            showSimpleToast(context, "Tasks already scheduled", Toast.LENGTH_SHORT);
+                mGcmNetworkManager.schedule(task);
+                mSharedPrefUtil.setTaskIsScheduled(true);
+            } else if (mSharedPrefUtil.isDebugEnabled())
+                showSimpleToast(context, "Tasks already scheduled", Toast.LENGTH_SHORT);
+        } catch (Exception ex) {
+        }
     }
 
     /**

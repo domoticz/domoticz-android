@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.app;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.PendingIntent;
-import android.app.job.JobScheduler;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -168,7 +167,7 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
             mBuilder.setContentTitle(this.getString(R.string.beacon_scan_desc));
             Intent intent = new Intent(this, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(
-                    this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
+                    this, 0, intent, PendingIntent.FLAG_IMMUTABLE
             );
             mBuilder.setContentIntent(pendingIntent);
 

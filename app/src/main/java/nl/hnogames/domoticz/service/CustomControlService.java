@@ -65,7 +65,7 @@ public class CustomControlService extends ControlsProviderService {
             Context context = getBaseContext();
             Intent intent = new Intent(context, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-            pi = PendingIntent.getActivity(context, 101, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            pi = PendingIntent.getActivity(context, 101, intent, PendingIntent.FLAG_IMMUTABLE);
         }
 
         if (!BuildConfig.LITE_VERSION) {

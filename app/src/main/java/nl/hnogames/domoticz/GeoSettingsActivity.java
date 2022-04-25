@@ -39,7 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
-import com.schibstedspain.leku.LocationPickerActivity;
+import com.adevinta.leku.LocationPickerActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;

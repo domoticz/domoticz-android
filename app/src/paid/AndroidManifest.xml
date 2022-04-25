@@ -33,6 +33,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.NFC" />
@@ -441,14 +443,13 @@
             android:exported="true" android:name="nl.hnogames.domoticz.NotificationHistoryActivity" />
 
         <activity android:exported="true"
-            android:name="com.schibstedspain.leku.LocationPickerActivity"
+            android:name="com.adevinta.leku.LocationPickerActivity"
             android:label="@string/title_add_location"
             android:parentActivityName="nl.hnogames.domoticz.GeoSettingsActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -456,7 +457,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.hnogames.domoticz.GeoSettingsActivity" />
         </activity>
-
 
         <receiver android:exported="true" android:name="nl.hnogames.domoticz.widgets.WidgetProviderLarge">
             <intent-filter>
@@ -578,7 +578,7 @@
             android:exported="true" android:name="nl.hnogames.domoticz.widgets.WidgetProviderSmallTemp$UpdateWidgetService" />
         <service
             android:exported="true" android:name="nl.hnogames.domoticz.widgets.SecurityWidgetProvider$UpdateSecurityWidgetService" />
-        <receiver android:name="org.altbeacon.beacon.startup.StartupBroadcastReceiver" android:exported="true">
+        <receiver android:name="org.altbeacon.beacon.startup.StartupBroadcastReceiver" android:exported="true" tools:replace="android:exported">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>

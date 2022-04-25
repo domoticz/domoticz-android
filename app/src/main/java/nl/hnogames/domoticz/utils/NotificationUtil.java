@@ -78,7 +78,7 @@ public class NotificationUtil {
                     CreateChannel(CHANNEL_ID, notification.getPriority(), false, context);
 
                 Intent historyIntent = new Intent(context, NotificationHistoryActivity.class);
-                PendingIntent historyPendingIntent = PendingIntent.getActivity(context, 0, historyIntent, 0);
+                PendingIntent historyPendingIntent = PendingIntent.getActivity(context, 0, historyIntent, PendingIntent.FLAG_IMMUTABLE);
                 NotificationCompat.Builder builder =
                         new NotificationCompat.Builder(context, CHANNEL_ID)
                                 .setSmallIcon(R.drawable.domoticz_white)
@@ -109,12 +109,12 @@ public class NotificationUtil {
                 Intent targetIntent = new Intent(context, MainActivity.class);
                 if (notification.getIdx() > -1)
                     targetIntent.putExtra("TARGETIDX", notification.getIdx());
-                PendingIntent contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_IMMUTABLE);
                 builder.setContentIntent(contentIntent);
 
                 if (prefUtil.isNotificationsEnabled() && alarmNot != null && alarmNot.contains(loggedNotification)) {
                     Intent stopAlarmIntent = new Intent(context, StopAlarmButtonListener.class);
-                    PendingIntent pendingAlarmIntent = PendingIntent.getService(context, 78578, stopAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingAlarmIntent = PendingIntent.getService(context, 78578, stopAlarmIntent, PendingIntent.FLAG_IMMUTABLE);
                     builder.addAction(android.R.drawable.ic_delete, "Stop", pendingAlarmIntent);
                 }
                 if (prefUtil.showAutoNotifications()) {
@@ -155,7 +155,7 @@ public class NotificationUtil {
 
     public static Notification getForegroundServiceNotification(Context context, String channelId) {
         Intent targetIntent = new Intent(context, MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_IMMUTABLE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             CreateChannel(channelId, NotificationManager.IMPORTANCE_DEFAULT, true, context);
@@ -225,7 +225,7 @@ public class NotificationUtil {
         return PendingIntent.getBroadcast(context,
                 NOTIFICATION_ID,
                 getMessageReadIntent(),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.FLAG_IMMUTABLE);
     }
 
     private static Intent getMessageReplyIntent() {
@@ -239,7 +239,7 @@ public class NotificationUtil {
         return PendingIntent.getBroadcast(context,
                 NOTIFICATION_ID,
                 getMessageReplyIntent(),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.FLAG_IMMUTABLE);
     }
 
     private static RemoteInput getVoiceReplyRemoteInput() {

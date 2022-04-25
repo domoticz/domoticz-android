@@ -210,7 +210,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-ads:19.8.0"
     implementation 'com.google.android.ads.consent:consent-library:1.0.8'
     implementation "com.github.nisrulz:recyclerviewhelper:27.1.1"
-    implementation "org.altbeacon:android-beacon-library:2.17"
+    implementation "org.altbeacon:android-beacon-library:2.19"
 
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
@@ -238,14 +238,14 @@ dependencies {
     implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
     implementation 'com.alexvasilkov:gesture-views:2.6.0'
 
-    implementation("com.mikepenz:materialdrawer:6.1.2@aar") {
+    implementation("com.mikepenz:materialdrawer:6.1.3@aar") {
         transitive = true
     }
 
     implementation 'com.github.stfalcon:chatkit:0.3.3'
     implementation 'com.github.matthiasrobbers:shortbread:1.1.0'
     annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.1.0'
-    implementation ('com.schibstedspain.android:leku:6.4.0') {
+    implementation ('com.adevinta.android:leku:9.1.4') {
         exclude group: 'com.google.android.gms'
         exclude group: 'androidx.appcompat'
     }

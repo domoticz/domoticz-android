@@ -421,7 +421,7 @@
             android:exported="true" android:name="nl.hnogames.domoticz.NotificationHistoryActivity" />
 
         <activity android:exported="true"
-            android:name="com.schibstedspain.leku.LocationPickerActivity"
+            android:name="com.adevinta.leku.LocationPickerActivity"
             android:label="@string/title_add_location"
             android:parentActivityName="nl.hnogames.domoticz.GeoSettingsActivity"
             android:windowSoftInputMode="adjustPan">
