@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|start"
                 android:src="@drawable/outline_info_black_18"
-                android:tint="@color/md_grey_300" />
+                app:tint="@color/md_grey_300" />
 
             <ImageView
                 android:id="@+id/rowIcon"
@@ -70,6 +70,7 @@
                 android:layout_marginLeft="-15dp"
                 android:contentDescription="@string/error_image_description"
                 android:paddingRight="5dp"
+                app:tint="?attr/colorAccent"
                 android:src="@drawable/clock48" />
 
             <LinearLayout

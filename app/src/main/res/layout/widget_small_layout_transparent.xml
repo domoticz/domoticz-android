@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/row_global_wrapper"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -14,10 +15,11 @@
 
         <ImageView
             android:id="@+id/rowIcon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/defaultimage" />
+            app:tint="?attr/colorAccent"
+            android:src="@drawable/bulb"  />
 
         <TextView
             android:id="@+id/title"

@@ -22,6 +22,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -31,12 +32,13 @@
 
         <ImageView
             android:id="@+id/rowIcon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:src="@drawable/defaultimage" />
+            app:tint="?attr/colorAccent"
+            android:src="@drawable/lock_a" />
 
         <TextView
             android:id="@+id/title"

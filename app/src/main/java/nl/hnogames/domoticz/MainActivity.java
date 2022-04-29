@@ -1504,13 +1504,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
         changeFragment("nl.hnogames.domoticz.fragments.Dashboard", false);
     }
 
-    @Shortcut(id = "open_switches", icon = R.drawable.dimmer, shortLabelRes = R.string.title_switches, rank = 4, activity = MainActivity.class)
+    @Shortcut(id = "open_switches", icon = R.drawable.bulb, shortLabelRes = R.string.title_switches, rank = 4, activity = MainActivity.class)
     public void OpenSwitch() {
         fromShortcut = true;
         changeFragment("nl.hnogames.domoticz.fragments.Switches", false);
     }
 
-    @Shortcut(id = "open_utilities", icon = R.drawable.harddisk, shortLabelRes = R.string.title_utilities, rank = 3, activity = MainActivity.class)
+    @Shortcut(id = "open_utilities", icon = R.drawable.solar_panel, shortLabelRes = R.string.title_utilities, rank = 3, activity = MainActivity.class)
     public void OpenUtilities() {
         fromShortcut = true;
         changeFragment("nl.hnogames.domoticz.fragments.Utilities", false);

@@ -45,8 +45,8 @@
             android:layout_alignParentTop="true"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:tint="?attr/listviewRowTintBackground"
-            android:tintMode="src_atop" />
+            android:tintMode="src_atop"
+            app:tint="?attr/listviewRowTintBackground" />
 
         <LinearLayout
             android:id="@+id/row_global_wrapper"
@@ -68,12 +68,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|start"
                     android:src="@drawable/outline_info_black_18"
-                    android:tint="@color/md_grey_300" />
+                    app:tint="@color/md_grey_300" />
 
                 <ImageView
                     android:id="@+id/rowIcon"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    app:tint="?attr/colorAccent"
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/error_image_description"
                     android:paddingRight="5dp"
