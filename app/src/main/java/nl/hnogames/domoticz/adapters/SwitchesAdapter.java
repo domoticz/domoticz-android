@@ -244,7 +244,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 holder.buttonTimer.setId(extendedStatusInfo.getIdx());
                 holder.buttonTimer.setOnClickListener(v -> handleTimerButtonClick(v.getId()));
                 if (!UsefulBits.isEmpty(extendedStatusInfo.getTimers())) {
-                    if (extendedStatusInfo.getTimers().toLowerCase().equals("false"))
+                    if (extendedStatusInfo.getTimers().equalsIgnoreCase("false"))
                         holder.buttonTimer.setVisibility(View.GONE);
                 }
 
@@ -1863,8 +1863,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             default:
                 if (holder.contentWrapper != null)
                     holder.contentWrapper.setVisibility(View.VISIBLE);
-                if (!mSharedPrefs.showExtraData())
-                    holder.signal_level.setVisibility(View.GONE);
                 holder.switch_battery_level.setVisibility(View.VISIBLE);
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.GONE);

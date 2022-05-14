@@ -46,7 +46,7 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 
 public class WelcomePage2 extends Fragment implements OnPermissionCallback {
     private PermissionFragmentHelper permissionFragmentHelper;
-    private int IMPORT_SETTINGS = 555;
+    private final int IMPORT_SETTINGS = 555;
 
     public static WelcomePage2 newInstance() {
         return new WelcomePage2();

@@ -239,8 +239,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         SwitchPreference customSortLockProperty = findPreference("lockSortCustom");
 
         // Dashboard settings
-        SwitchPreference extradataProperty = findPreference("extradata");
-        SwitchPreference dashboardAsListProperty = findPreference("dashboardAsList");
         SwitchPreference ClockPreference = findPreference("dashboardShowClock");
 
         // Notification settings
@@ -345,10 +343,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         sorting_category.setVisible(customSortProperty.isVisible() || customSortLockProperty.isVisible());
 
         // Dashboard settings
-        extradataProperty.setVisible(UsefulBits.isEmpty(filter) || extradataProperty.getTitle().toString().toLowerCase().contains(filter) || (extradataProperty.getSummary() != null && extradataProperty.getSummary().toString().toLowerCase().contains(filter)));
-        dashboardAsListProperty.setVisible(UsefulBits.isEmpty(filter) || dashboardAsListProperty.getTitle().toString().toLowerCase().contains(filter) || (dashboardAsListProperty.getSummary() != null && dashboardAsListProperty.getSummary().toString().toLowerCase().contains(filter)));
         ClockPreference.setVisible(UsefulBits.isEmpty(filter) || ClockPreference.getTitle().toString().toLowerCase().contains(filter) || (ClockPreference.getSummary() != null && ClockPreference.getSummary().toString().toLowerCase().contains(filter)));
-        dashboard_category.setVisible(extradataProperty.isVisible() || dashboardAsListProperty.isVisible() || ClockPreference.isVisible());
+        dashboard_category.setVisible(ClockPreference.isVisible());
 
         // Notification settings
         openNotificationSettings.setVisible(UsefulBits.isEmpty(filter) || openNotificationSettings.getTitle().toString().toLowerCase().contains(filter) || (openNotificationSettings.getSummary() != null && openNotificationSettings.getSummary().toString().toLowerCase().contains(filter)));

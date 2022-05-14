@@ -273,7 +273,7 @@ public class DomoticzRecyclerFragment extends Fragment {
             listener = (DomoticzFragmentListener) fragment;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                    fragment.toString() + " must implement DomoticzFragmentListener");
+                    fragment + " must implement DomoticzFragmentListener");
         }
     }
 

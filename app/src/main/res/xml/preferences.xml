@@ -116,18 +116,6 @@
         android:key="dashboard_category"
         android:title="@string/title_dashboard">
         <SwitchPreference
-            android:defaultValue="true"
-            android:key="extradata"
-            android:summaryOff="@string/show_extra_data_off"
-            android:summaryOn="@string/show_extra_data_on"
-            android:title="@string/extra_data_title" />
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="dashboardAsList"
-            android:summaryOff="@string/show_dashboard_list_on"
-            android:summaryOn="@string/show_dashboard_list_off"
-            android:title="@string/dashboard_list_title" />
-        <SwitchPreference
             android:defaultValue="false"
             android:key="dashboardShowClock"
             android:summaryOff="@string/show_dashboard_clock"

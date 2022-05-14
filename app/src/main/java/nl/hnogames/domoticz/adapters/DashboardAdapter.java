@@ -551,8 +551,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                         animation.setDuration(2000);
                         holder.pieView.startAnimation(animation);
                     }
-                    if (!mSharedPrefs.showExtraData())
-                        holder.switch_battery_level.setVisibility(View.GONE);
+                    holder.switch_battery_level.setVisibility(View.GONE);
                 } else
                     holder.pieView.setVisibility(View.GONE);
 
@@ -1862,29 +1861,15 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (holder.spSelector != null) {
             holder.spSelector.setVisibility(View.GONE);
         }
-        if (!mSharedPrefs.showExtraData()) {
-            holder.signal_level.setVisibility(View.GONE);
-            holder.switch_battery_level.setVisibility(View.GONE);
-        } else {
-            holder.signal_level.setVisibility(View.VISIBLE);
-            holder.switch_battery_level.setVisibility(View.VISIBLE);
-        }
+        holder.signal_level.setVisibility(View.GONE);
+        holder.switch_battery_level.setVisibility(View.GONE);
         holder.switch_name.setVisibility(View.VISIBLE);
 
-        if (!mSharedPrefs.showExtraData()) {
-            holder.infoIcon.setVisibility(View.GONE);
-            if (!showAsList) {
-                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.iconRow.getLayoutParams();
-                p.topMargin = 20;
-            }
-        } else {
-            holder.infoIcon.setVisibility(View.VISIBLE);
-            if (showAsList) {
-                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.iconRow.getLayoutParams();
-                p.leftMargin = -15;
-            }
+        holder.infoIcon.setVisibility(View.GONE);
+        if (!showAsList) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.iconRow.getLayoutParams();
+            p.topMargin = 20;
         }
-
         switch (button) {
             case Buttons.CLOCK:
                 if (holder.contentWrapper != null)
@@ -2095,8 +2080,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             default:
                 if (holder.contentWrapper != null)
                     holder.contentWrapper.setVisibility(View.VISIBLE);
-                if (!mSharedPrefs.showExtraData())
-                    holder.signal_level.setVisibility(View.GONE);
+                holder.signal_level.setVisibility(View.GONE);
                 holder.switch_battery_level.setVisibility(View.VISIBLE);
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.GONE);

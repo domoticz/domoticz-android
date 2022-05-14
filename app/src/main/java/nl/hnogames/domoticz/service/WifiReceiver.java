@@ -31,8 +31,8 @@ import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 public class WifiReceiver extends Worker {
     private static final String TAG = "WifiReceiver";
     public static String workTag = "wifiscanner";
-    private WorkerParameters params;
-    private Context context;
+    private final WorkerParameters params;
+    private final Context context;
 
     public WifiReceiver(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);

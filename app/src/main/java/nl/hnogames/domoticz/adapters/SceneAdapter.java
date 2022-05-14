@@ -283,7 +283,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                     holder.buttonLog.setOnClickListener(v -> handleLogButtonClick(v.getId()));
                 }
             } else throw new NullPointerException("Scene type not supported in the adapter for:\n"
-                    + mSceneInfo.toString());
+                    + mSceneInfo);
             holder.itemView.setOnClickListener(v -> listener.onItemClicked(v, position));
         }
     }

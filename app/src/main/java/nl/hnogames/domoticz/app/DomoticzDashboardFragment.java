@@ -217,37 +217,23 @@ public class DomoticzDashboardFragment extends Fragment {
             }
 
             gridView.setHasFixedSize(true);
-            if (!mSharedPrefs.showDashboardAsList()) {
-                if (isTablet) {
-                    if (isPortrait) {
-                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-                        gridView.setLayoutManager(mLayoutManager);
-                    } else {
-                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-                        gridView.setLayoutManager(mLayoutManager);
-                    }
+
+            if (isTablet) {
+                StaggeredGridLayoutManager mLayoutManager;
+                if (isPortrait) {
+                    mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
                 } else {
-                    StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-                    gridView.setLayoutManager(mLayoutManager);
+                    mLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
                 }
+                gridView.setLayoutManager(mLayoutManager);
             } else {
-                if (isTablet) {
-                    if (isPortrait) {
-                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-                        gridView.setLayoutManager(mLayoutManager);
-                    } else {
-                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
-                        gridView.setLayoutManager(mLayoutManager);
-                    }
+                StaggeredGridLayoutManager mLayoutManager;
+                if (isPortrait) {
+                    mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
                 } else {
-                    if (isPortrait) {
-                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-                        gridView.setLayoutManager(mLayoutManager);
-                    } else {
-                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-                        gridView.setLayoutManager(mLayoutManager);
-                    }
+                    mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
                 }
+                gridView.setLayoutManager(mLayoutManager);
             }
             gridView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
         } catch (Exception ignored) {
@@ -290,7 +276,7 @@ public class DomoticzDashboardFragment extends Fragment {
             listener = (DomoticzFragmentListener) fragment;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                    fragment.toString() + " must implement DomoticzFragmentListener");
+                    fragment + " must implement DomoticzFragmentListener");
         }
     }
 

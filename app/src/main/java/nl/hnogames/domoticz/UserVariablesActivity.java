@@ -27,7 +27,6 @@ import com.ftinc.scoop.Scoop;
 
 import androidx.appcompat.widget.Toolbar;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
-import nl.hnogames.domoticz.fragments.NotificationHistory;
 import nl.hnogames.domoticz.fragments.UserVariables;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
