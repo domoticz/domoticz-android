@@ -251,6 +251,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                             }
                         }
                     }
+                } else {
+                    Log.i("Devices", "Not suported device.");
                 }
             }
             if (mSharedPrefs.addClockToDashboard() && (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) && planID <= 0) {

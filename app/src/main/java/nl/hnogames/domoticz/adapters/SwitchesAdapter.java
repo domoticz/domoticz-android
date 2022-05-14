@@ -383,7 +383,10 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
-                    if (DomoticzValues.canHandleStopButton(mDeviceInfo)) {
+                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGESTOP:
+                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP:
+                    if (DomoticzValues.canHandleStopButton(mDeviceInfo) ||
+                            (mDeviceInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP || mDeviceInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGESTOP)) {
                         setButtons(holder, Buttons.BLINDS_DIMMER);
                         setBlindsRowData(mDeviceInfo, holder);
                     } else {
@@ -1071,7 +1074,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         holder.buttonUp.setOnClickListener(view -> {
             for (DevicesInfo e : data) {
                 if (e.getIdx() == view.getId()) {
-                    if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED)
+                    if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP)
                         handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
                     else
                         handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
@@ -1092,7 +1095,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         holder.buttonDown.setOnClickListener(view -> {
             for (DevicesInfo e : data) {
                 if (e.getIdx() == view.getId()) {
-                    if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED)
+                    if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP)
                         handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
                     else
                         handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
