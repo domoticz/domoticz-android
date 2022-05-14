@@ -281,6 +281,30 @@
         </activity>
 
         <activity android:exported="true"
+            android:name="nl.hnogames.domoticz.LogsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_logs"
+            android:parentActivityName="nl.hnogames.domoticz.MainActivity"
+            android:resizeableActivity="true">
+        </activity>
+
+        <activity android:exported="true"
+            android:name="nl.hnogames.domoticz.EventsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_events"
+            android:parentActivityName="nl.hnogames.domoticz.MainActivity"
+            android:resizeableActivity="true">
+        </activity>
+
+        <activity android:exported="true"
+            android:name="nl.hnogames.domoticz.UserVariablesActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_vars"
+            android:parentActivityName="nl.hnogames.domoticz.MainActivity"
+            android:resizeableActivity="true">
+        </activity>
+
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.PlanActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/cameraActivity_name"

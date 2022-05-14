@@ -988,10 +988,10 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     if (fragments[i].contains("fragments.Camera"))
                         drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
                 }
-                drawerItems.add(new DividerDrawerItem());
-                for (int i = 0; i < drawerActions.length; i++)
-                    if (fragments[i].contains("fragments.Logs") || fragments[i].contains("fragments.Events") || fragments[i].contains("fragments.UserVariables"))
-                        drawerItems.add(createSecondaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
+                //drawerItems.add(new DividerDrawerItem());
+                //for (int i = 0; i < drawerActions.length; i++)
+                //    if (fragments[i].contains("fragments.Logs") || fragments[i].contains("fragments.Events") || fragments[i].contains("fragments.UserVariables"))
+                //        drawerItems.add(createSecondaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
             }
         } catch (Exception ex) {
         }

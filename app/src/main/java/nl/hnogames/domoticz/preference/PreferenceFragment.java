@@ -70,7 +70,9 @@ import androidx.work.WorkManager;
 import nl.hnogames.domoticz.BeaconSettingsActivity;
 import nl.hnogames.domoticz.BluetoothSettingsActivity;
 import nl.hnogames.domoticz.BuildConfig;
+import nl.hnogames.domoticz.EventsActivity;
 import nl.hnogames.domoticz.GeoSettingsActivity;
+import nl.hnogames.domoticz.LogsActivity;
 import nl.hnogames.domoticz.NFCSettingsActivity;
 import nl.hnogames.domoticz.NotificationSettingsActivity;
 import nl.hnogames.domoticz.QRCodeSettingsActivity;
@@ -79,6 +81,7 @@ import nl.hnogames.domoticz.ServerListSettingsActivity;
 import nl.hnogames.domoticz.ServerSettingsActivity;
 import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.SpeechSettingsActivity;
+import nl.hnogames.domoticz.UserVariablesActivity;
 import nl.hnogames.domoticz.WifiSettingsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.helpers.StaticHelper;
@@ -151,6 +154,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         setStartUpScreenDefaultValue();
         handleImportExportButtons();
         handleInfoAndAbout();
+        handleAdvanceButtons();
         GetVersion();
     }
 
@@ -297,6 +301,9 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         // Advanced settings
         androidx.preference.Preference exportButton = findPreference("export_settings");
         androidx.preference.Preference importButton = findPreference("import_settings");
+        androidx.preference.Preference logsButton = findPreference("logs_settings");
+        androidx.preference.Preference eventsButton = findPreference("events_settings");
+        androidx.preference.Preference varsButton = findPreference("vars_settings");
         Preference PermissionsSettings = findPreference("permissionssettings");
         Preference resetApplication = findPreference("reset_settings");
 
@@ -417,7 +424,10 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         importButton.setVisible(UsefulBits.isEmpty(filter) || importButton.getTitle().toString().toLowerCase().contains(filter) || (importButton.getSummary() != null && importButton.getSummary().toString().toLowerCase().contains(filter)));
         PermissionsSettings.setVisible(UsefulBits.isEmpty(filter) || PermissionsSettings.getTitle().toString().toLowerCase().contains(filter) || (PermissionsSettings.getSummary() != null && PermissionsSettings.getSummary().toString().toLowerCase().contains(filter)));
         resetApplication.setVisible(UsefulBits.isEmpty(filter) || resetApplication.getTitle().toString().toLowerCase().contains(filter) || (resetApplication.getSummary() != null && resetApplication.getSummary().toString().toLowerCase().contains(filter)));
-        advanced_category.setVisible(exportButton.isVisible() || importButton.isVisible() || PermissionsSettings.isVisible() || resetApplication.isVisible());
+        advanced_category.setVisible(logsButton.isVisible() || eventsButton.isVisible() || varsButton.isVisible() || exportButton.isVisible() || importButton.isVisible() || PermissionsSettings.isVisible() || resetApplication.isVisible());
+        logsButton.setVisible(UsefulBits.isEmpty(filter) || logsButton.getTitle().toString().toLowerCase().contains(filter) || (logsButton.getSummary() != null && logsButton.getSummary().toString().toLowerCase().contains(filter)));
+        eventsButton.setVisible(UsefulBits.isEmpty(filter) || eventsButton.getTitle().toString().toLowerCase().contains(filter) || (eventsButton.getSummary() != null && eventsButton.getSummary().toString().toLowerCase().contains(filter)));
+        varsButton.setVisible(UsefulBits.isEmpty(filter) || varsButton.getTitle().toString().toLowerCase().contains(filter) || (varsButton.getSummary() != null && varsButton.getSummary().toString().toLowerCase().contains(filter)));
 
         // Other settings
         taskerPreference.setVisible(UsefulBits.isEmpty(filter) || taskerPreference.getTitle().toString().toLowerCase().contains(filter) || (taskerPreference.getSummary() != null && taskerPreference.getSummary().toString().toLowerCase().contains(filter)));
@@ -988,6 +998,34 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
                 td.show();
                 return true;
             });
+    }
+
+    private void handleAdvanceButtons() {
+        androidx.preference.Preference logsButton = findPreference("logs_settings");
+        androidx.preference.Preference eventsButton = findPreference("events_settings");
+        androidx.preference.Preference varsButton = findPreference("vars_settings");
+
+        if (logsButton != null) {
+            logsButton.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(mContext, LogsActivity.class);
+                startActivity(intent);
+                return true;
+            });
+        }
+        if (eventsButton != null) {
+            eventsButton.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(mContext, EventsActivity.class);
+                startActivity(intent);
+                return true;
+            });
+        }
+        if (varsButton != null) {
+            varsButton.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(mContext, UserVariablesActivity.class);
+                startActivity(intent);
+                return true;
+            });
+        }
     }
 
     private void handleImportExportButtons() {

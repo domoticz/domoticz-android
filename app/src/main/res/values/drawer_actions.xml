@@ -67,9 +67,6 @@
         <item>@string/title_utilities</item>
         <item>@string/title_plans</item>
         <item>@string/title_cameras</item>
-        <item>@string/title_logs</item>
-        <item>@string/title_events</item>
-        <item>@string/title_vars</item>
     </string-array>
 
     <string-array name="drawer_fragments" translatable="false">
@@ -82,9 +79,6 @@
         <item>nl.hnogames.domoticz.fragments.Utilities</item>
         <item>nl.hnogames.domoticz.fragments.Plans</item>
         <item>nl.hnogames.domoticz.fragments.Cameras</item>
-        <item>nl.hnogames.domoticz.fragments.Logs</item>
-        <item>nl.hnogames.domoticz.fragments.Events</item>
-        <item>nl.hnogames.domoticz.fragments.UserVariables</item>
     </string-array>
 
     <array name="drawer_icons" translatable="false">

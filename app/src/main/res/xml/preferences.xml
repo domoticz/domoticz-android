@@ -357,6 +357,15 @@
             android:key="import_settings"
             android:title="@string/import_settings" />
         <Preference
+            android:key="logs_settings"
+            android:title="@string/title_logs" />
+        <Preference
+            android:key="events_settings"
+            android:title="@string/title_events" />
+        <Preference
+            android:key="vars_settings"
+            android:title="@string/title_vars" />
+        <Preference
             android:key="permissionssettings"
             android:title="@string/permission_config" />
         <Preference
