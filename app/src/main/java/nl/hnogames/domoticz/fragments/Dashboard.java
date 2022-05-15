@@ -330,14 +330,14 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             try {
                 final switchesClickListener listener = this;
                 if (adapter == null) {
-                    if (this.planID <= 0) {
-                        adapter = new DashboardAdapter(mContext, getServerUtil(), switches, listener, false, sunrise);
-                    } else {
+                    //if (this.planID <= 0) {
+                        adapter = new DashboardAdapter(mContext, getServerUtil(), switches, listener, sunrise);
+                    /*} else {
                         gridView.setHasFixedSize(true);
                         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
                         gridView.setLayoutManager(mLayoutManager);
-                        adapter = new DashboardAdapter(mContext, getServerUtil(), switches, listener, true, sunrise);
-                    }
+                        adapter = new DashboardAdapter(mContext, getServerUtil(), switches, listener, sunrise);
+                    }*/
                     alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
                     gridView.setAdapter(adapter);
 

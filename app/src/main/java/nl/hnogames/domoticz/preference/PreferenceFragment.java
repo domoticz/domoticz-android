@@ -224,7 +224,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         // Generic settings
         ListPreference startup_screen = findPreference("startup_nav");
         MultiSelectListPreference drawerItems = findPreference("show_nav_items");
-        SwitchPreference switchButtonsPreference = findPreference("switchButtons");
         SwitchPreference CameraPreference = findPreference("dashboardShowCamera");
         SwitchPreference AlwaysOnPreference = findPreference("alwayson");
         SwitchPreference RefreshScreenPreference = findPreference("autorefresh");
@@ -325,12 +324,11 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         startup_screen.setVisible(UsefulBits.isEmpty(filter) || startup_screen.getTitle().toString().toLowerCase().contains(filter) || (CameraPreference.getSummary() != null && startup_screen.getSummary().toString().toLowerCase().contains(filter)));
         drawerItems.setVisible(UsefulBits.isEmpty(filter) || drawerItems.getTitle().toString().toLowerCase().contains(filter) || (drawerItems.getSummary() != null && drawerItems.getSummary().toString().toLowerCase().contains(filter)));
-        switchButtonsPreference.setVisible(UsefulBits.isEmpty(filter) || switchButtonsPreference.getTitle().toString().toLowerCase().contains(filter) || (switchButtonsPreference.getSummary() != null && switchButtonsPreference.getSummary().toString().toLowerCase().contains(filter)));
         CameraPreference.setVisible(UsefulBits.isEmpty(filter) || CameraPreference.getTitle().toString().toLowerCase().contains(filter) || (CameraPreference.getSummary() != null && CameraPreference.getSummary().toString().toLowerCase().contains(filter)));
         AlwaysOnPreference.setVisible(UsefulBits.isEmpty(filter) || AlwaysOnPreference.getTitle().toString().toLowerCase().contains(filter) || (AlwaysOnPreference.getSummary() != null && AlwaysOnPreference.getSummary().toString().toLowerCase().contains(filter)));
         RefreshScreenPreference.setVisible(UsefulBits.isEmpty(filter) || RefreshScreenPreference.getTitle().toString().toLowerCase().contains(filter) || (RefreshScreenPreference.getSummary() != null && RefreshScreenPreference.getSummary().toString().toLowerCase().contains(filter)));
         RefreshScreenTimerPreference.setVisible(UsefulBits.isEmpty(filter) || RefreshScreenTimerPreference.getTitle().toString().toLowerCase().contains(filter) || (RefreshScreenTimerPreference.getSummary() != null && RefreshScreenTimerPreference.getSummary().toString().toLowerCase().contains(filter)));
-        generic_category.setVisible(startup_screen.isVisible() || drawerItems.isVisible() || switchButtonsPreference.isVisible() || CameraPreference.isVisible() || AlwaysOnPreference.isVisible() || RefreshScreenPreference.isVisible() || RefreshScreenTimerPreference.isVisible());
+        generic_category.setVisible(startup_screen.isVisible() || drawerItems.isVisible() || CameraPreference.isVisible() || AlwaysOnPreference.isVisible() || RefreshScreenPreference.isVisible() || RefreshScreenTimerPreference.isVisible());
 
         // Default values settings
         oTemperatureMin.setVisible(UsefulBits.isEmpty(filter) || oTemperatureMin.getTitle().toString().toLowerCase().contains(filter) || (oTemperatureMin.getSummary() != null && oTemperatureMin.getSummary().toString().toLowerCase().contains(filter)));

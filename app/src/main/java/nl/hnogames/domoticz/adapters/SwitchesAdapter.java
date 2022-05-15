@@ -325,13 +325,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                             }
                             break;
                         default:
-                            if (mSharedPrefs.showSwitchesAsButtons()) {
-                                setButtons(holder, Buttons.BUTTONS);
-                                setOnOffButtonRowData(mDeviceInfo, holder);
-                            } else {
                                 setButtons(holder, Buttons.SWITCH);
                                 setOnOffSwitchRowData(mDeviceInfo, holder);
-                            }
                             break;
                     }
                     break;
@@ -363,21 +358,11 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 case DomoticzValues.Device.Type.Value.DIMMER:
                     if (mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.RGB) ||
                             mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW)) {
-                        if (mSharedPrefs.showSwitchesAsButtons()) {
-                            setButtons(holder, Buttons.DIMMER_BUTTONS);
-                            setDimmerOnOffButtonRowData(mDeviceInfo, holder, true);
-                        } else {
                             setButtons(holder, Buttons.DIMMER_RGB);
                             setDimmerRowData(mDeviceInfo, holder, true);
-                        }
                     } else {
-                        if (mSharedPrefs.showSwitchesAsButtons()) {
-                            setButtons(holder, Buttons.DIMMER_BUTTONS);
-                            setDimmerOnOffButtonRowData(mDeviceInfo, holder, false);
-                        } else {
                             setButtons(holder, Buttons.DIMMER);
                             setDimmerRowData(mDeviceInfo, holder, false);
-                        }
                     }
                     break;
 
@@ -396,13 +381,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     break;
 
                 case DomoticzValues.Device.Type.Value.SELECTOR:
-                    if (mSharedPrefs.showSwitchesAsButtons()) {
-                        setButtons(holder, Buttons.SELECTOR_BUTTONS);
-                        setSelectorRowData(mDeviceInfo, holder);
-                    } else {
                         setButtons(holder, Buttons.SELECTOR);
                         setSelectorRowData(mDeviceInfo, holder);
-                    }
                     break;
 
                 case DomoticzValues.Device.Type.Value.BLINDS:

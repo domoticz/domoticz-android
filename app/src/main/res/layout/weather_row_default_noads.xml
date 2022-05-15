@@ -30,8 +30,8 @@
     android:layout_marginBottom="8dp"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical"
-    android:padding="8dp"
-    app:cardCornerRadius="5dp"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="30dp"
     app:cardElevation="1dp">
 
     <RelativeLayout
@@ -66,8 +66,8 @@
 
             <ImageView
                 android:id="@+id/rowIcon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_gravity="center_vertical"
                 app:tint="?attr/colorAccent"
                 android:layout_marginLeft="-15dp"
@@ -106,6 +106,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/weather_name"
                             android:layout_marginBottom="5dp"
+                            android:layout_marginTop="-8dp"
                             android:textStyle="italic"
                             tools:text="189.00 S, Speed: 3.1m/s, Temp: 10 C, Chill: 10,5 C" />
 

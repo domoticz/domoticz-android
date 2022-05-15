@@ -49,12 +49,6 @@
             android:title="@string/enable_items" />
         <SwitchPreference
             android:defaultValue="false"
-            android:key="switchButtons"
-            android:summaryOff="@string/switch_buttons_off"
-            android:summaryOn="@string/switch_buttons_on"
-            android:title="@string/switch_buttons_title" />
-        <SwitchPreference
-            android:defaultValue="false"
             android:key="dashboardShowCamera"
             android:summaryOff="@string/show_dashboard_camera"
             android:summaryOn="@string/show_dashboard_camera"

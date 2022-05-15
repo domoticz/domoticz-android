@@ -134,8 +134,6 @@ public class SharedPrefUtil {
     @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_LOCK_SORT_CUSTOM = "lockSortCustom";
     @SuppressWarnings("FieldCanBeLocal")
-    private final String PREF_SWITCH_BUTTONS = "switchButtons";
-    @SuppressWarnings("FieldCanBeLocal")
     private final Context mContext;
     private final SharedPreferences prefs;
     private final SharedPreferences.Editor editor;
@@ -155,10 +153,6 @@ public class SharedPrefUtil {
 
     public boolean addCameraToDashboard() {
         return prefs.getBoolean(PREF_DASHBOARD_CAMERA, false);
-    }
-
-    public boolean showSwitchesAsButtons() {
-        return prefs.getBoolean(PREF_SWITCH_BUTTONS, false);
     }
 
     public int getAdsCounter() {

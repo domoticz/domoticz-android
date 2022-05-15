@@ -301,9 +301,6 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                         case DomoticzValues.Device.Type.Value.ON_OFF:
                         case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
                         case DomoticzValues.Device.Type.Value.DOORCONTACT:
-                            if (mSharedPrefs.showSwitchesAsButtons())
-                                withButton = WITHBUTTON;
-                            else
                                 withButton = WITHBUTTON;
                             break;
 

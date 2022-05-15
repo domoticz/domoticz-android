@@ -98,7 +98,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             DomoticzValues.Device.ModalSwitch.Action.CUSTOM,
             DomoticzValues.Device.ModalSwitch.Action.HEATING_OFF
     };
-    private final boolean showAsList;
     private final Context context;
     private final switchesClickListener listener;
     private final SharedPrefUtil mSharedPrefs;
@@ -118,12 +117,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             ServerUtil serverUtil,
                             ArrayList<DevicesInfo> data,
                             switchesClickListener listener,
-                            boolean showAsList,
                             SunRiseInfo sunriseInfo) {
         super();
 
         this.domoticz = StaticHelper.getDomoticz(context);
-        this.showAsList = showAsList;
         this.sunriseInfo = sunriseInfo;
         mSharedPrefs = new SharedPrefUtil(context);
 
@@ -218,17 +215,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         // Check if we're running on Android 5.0 or higher
         if (Build.VERSION.SDK_INT >= 21) {
-            if (showAsList)
-                row = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.dashboard_row_list, parent, false);
-            else
                 row = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.dashboard_row, parent, false);
         } else {
-            if (showAsList)
-                row = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.dashboard_row_list_noads, parent, false);
-            else
                 row = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.dashboard_row_noads, parent, false);
         }
@@ -330,13 +319,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             }
                             break;
                         default:
-                            if (mSharedPrefs.showSwitchesAsButtons()) {
-                                setButtons(holder, Buttons.BUTTONS);
-                                setOnOffButtonRowData(mDeviceInfo, holder);
-                            } else {
                                 setButtons(holder, Buttons.SWITCH);
                                 setOnOffSwitchRowData(mDeviceInfo, holder);
-                            }
                             break;
                     }
                     break;
@@ -368,21 +352,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 case DomoticzValues.Device.Type.Value.DIMMER:
                     if (mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.RGB) ||
                             mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW)) {
-                        if (mSharedPrefs.showSwitchesAsButtons()) {
-                            setButtons(holder, Buttons.DIMMER_BUTTONS);
-                            setDimmerOnOffButtonRowData(mDeviceInfo, holder, true);
-                        } else {
                             setButtons(holder, Buttons.DIMMER_RGB);
                             setDimmerRowData(mDeviceInfo, holder, true);
-                        }
                     } else {
-                        if (mSharedPrefs.showSwitchesAsButtons()) {
-                            setButtons(holder, Buttons.DIMMER_BUTTONS);
-                            setDimmerOnOffButtonRowData(mDeviceInfo, holder, false);
-                        } else {
                             setButtons(holder, Buttons.DIMMER);
                             setDimmerRowData(mDeviceInfo, holder, false);
-                        }
                     }
                     break;
 
@@ -401,13 +375,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     break;
 
                 case DomoticzValues.Device.Type.Value.SELECTOR:
-                    if (mSharedPrefs.showSwitchesAsButtons()) {
-                        setButtons(holder, Buttons.SELECTOR_BUTTONS);
-                        setSelectorRowData(mDeviceInfo, holder);
-                    } else {
                         setButtons(holder, Buttons.SELECTOR);
                         setSelectorRowData(mDeviceInfo, holder);
-                    }
                     break;
 
                 case DomoticzValues.Device.Type.Value.BLINDS:
@@ -477,15 +446,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0) {
                     try {
                         setAlphaIcon = false;
-                        int usage = Integer.parseInt(mDeviceInfo.getUsage().replace("Watt", "").trim());
+                        int usage = Integer.parseInt(mDeviceInfo.getUsage().replace("W", "").trim());
                         if (mDeviceInfo.getUsageDeliv() != null && mDeviceInfo.getUsageDeliv().length() > 0) {
-                            int usagedel = Integer.parseInt(mDeviceInfo.getUsageDeliv().replace("Watt", "").trim());
-                            text = context.getString(R.string.usage) + ": " + (usage - usagedel) + " Watt";
-                            holder.switch_battery_level.setText(text);
+                            int usagedel = Integer.parseInt(mDeviceInfo.getUsageDeliv().replace("W", "").trim());
+                            text = context.getString(R.string.usage) + ": " + (usage - usagedel) + " W";
                         } else {
                             text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
-                            holder.switch_battery_level.setText(text);
                         }
+                        holder.switch_battery_level.setText(text);
                     } catch (Exception ex) {
                         text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
                         holder.switch_battery_level.setText(text);
@@ -1866,10 +1834,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         holder.switch_name.setVisibility(View.VISIBLE);
 
         holder.infoIcon.setVisibility(View.GONE);
-        if (!showAsList) {
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.iconRow.getLayoutParams();
             p.topMargin = 20;
-        }
+
+        holder.switch_battery_level.setVisibility(View.VISIBLE);
         switch (button) {
             case Buttons.CLOCK:
                 if (holder.contentWrapper != null)

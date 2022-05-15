@@ -29,8 +29,8 @@
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="8dp"
     android:orientation="vertical"
-    android:padding="8dp"
-    app:cardCornerRadius="5dp"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="30dp"
     app:cardElevation="1dp">
 
     <nl.hnogames.domoticz.ads.TemplateView
@@ -71,8 +71,8 @@
 
             <ImageView
                 android:id="@+id/rowIcon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="-15dp"
                 android:contentDescription="@string/error_image_description"
@@ -109,6 +109,7 @@
                             android:id="@+id/temperature_data"
                             style="@style/row_body1"
                             android:layout_width="wrap_content"
+                            android:layout_marginTop="-8dp"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/temperature_name"
                             android:layout_alignParentStart="true"
