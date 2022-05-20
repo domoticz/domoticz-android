@@ -44,7 +44,7 @@ public class EventsActivity extends AppCompatPermissionsActivity {
         setContentView(R.layout.activity_graph);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        this.setTitle(getString(R.string.notification_show_title));
+        this.setTitle(getString(R.string.title_events));
 
         if (!UsefulBits.isEmpty(mSharedPrefs.getDisplayLanguage()))
             UsefulBits.setDisplayLanguage(this, mSharedPrefs.getDisplayLanguage());

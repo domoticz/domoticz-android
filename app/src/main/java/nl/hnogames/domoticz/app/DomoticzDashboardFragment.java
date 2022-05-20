@@ -57,6 +57,7 @@ import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.ui.Backdrop.BackdropContainer;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticz.utils.ViewUtils;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -213,11 +214,10 @@ public class DomoticzDashboardFragment extends Fragment {
                 isPortrait = true;
 
             if (getActivity() instanceof MainActivity) {
-                isTablet = !((MainActivity) getActivity()).onPhone;
+                isTablet = ViewUtils.isTablet(getContext());
             }
 
             gridView.setHasFixedSize(true);
-
             if (isTablet) {
                 StaggeredGridLayoutManager mLayoutManager;
                 if (isPortrait) {

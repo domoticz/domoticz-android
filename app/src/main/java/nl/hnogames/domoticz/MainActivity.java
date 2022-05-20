@@ -108,6 +108,7 @@ import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.TalkBackUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticz.utils.ViewUtils;
 import nl.hnogames.domoticz.utils.WidgetUtils;
 import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
@@ -130,7 +131,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
     private final String TAG = MainActivity.class.getSimpleName();
-    public boolean onPhone;
     public Exception configException;
     public FrameLayout frameLayout;
     public FloatingActionButton fabSort;
@@ -349,10 +349,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
             appRate();
             initTalkBack();
             applyLanguage();
-
-            TextView usingTabletLayout = findViewById(R.id.tabletLayout);
-            if (usingTabletLayout == null)
-                onPhone = true;
 
             if (!fromVoiceWidget && !fromQRCodeWidget) {
                 GetDomoticzAuthAndConfig();
@@ -922,8 +918,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
                             changeFragment(String.valueOf(drawerItem.getTag()), true);
                             stopCameraTimer();
                             invalidateOptionsMenu();
-                            if (onPhone)
-                                drawer.closeDrawer();
                         }
                     }
                     return false;
