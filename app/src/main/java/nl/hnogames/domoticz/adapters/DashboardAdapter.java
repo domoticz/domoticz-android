@@ -695,17 +695,17 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             });
 
             final String imageUrl = domoticz.getSnapshotUrl(mDeviceInfo.getCameraIdx());
-            holder.dummyImg.setVisibility(View.VISIBLE);
-            holder.row_wrapper.setBackground(null);
-
             Drawable cache = CameraUtil.getDrawable(imageUrl);
             if (cache == null) {
                 picasso.load(imageUrl)
                         .noPlaceholder()
+                        .noFade()
                         .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
                         .into(holder.dummyImg, new Callback() {
                             @Override
                             public void onSuccess() {
+                                holder.contentWrapper.setBackgroundDrawable(holder.dummyImg.getDrawable());
+                                holder.dummyImg.setVisibility(View.GONE);
                                 CameraUtil.setDrawable(imageUrl, holder.dummyImg.getDrawable());
                             }
 
@@ -713,7 +713,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             public void onError(Exception e) {
                                 if (holder.dummyImg.getDrawable() == null)
                                     holder.dummyImg.setVisibility(View.GONE);
-                                holder.row_wrapper.setBackgroundColor(listviewRowBackground);
                             }
                         });
             } else {
@@ -725,6 +724,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                         .into(holder.dummyImg, new Callback() {
                             @Override
                             public void onSuccess() {
+                                holder.contentWrapper.setBackgroundDrawable(holder.dummyImg.getDrawable());
+                                holder.dummyImg.setImageDrawable(null);
+                                holder.dummyImg.setVisibility(View.GONE);
                                 CameraUtil.setDrawable(imageUrl, holder.dummyImg.getDrawable());
                             }
 
@@ -732,14 +734,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             public void onError(Exception e) {
                                 if (holder.dummyImg.getDrawable() == null)
                                     holder.dummyImg.setVisibility(View.GONE);
-                                holder.row_wrapper.setBackgroundColor(listviewRowBackground);
                             }
                         });
             }
         } else {
             holder.full_screen_icon.setVisibility(View.GONE);
             holder.dummyImg.setVisibility(View.GONE);
-            holder.row_wrapper.setBackgroundColor(listviewRowBackground);
         }
     }
 
