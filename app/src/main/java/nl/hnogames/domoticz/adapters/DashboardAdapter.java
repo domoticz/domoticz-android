@@ -904,6 +904,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
                     .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
                     .addTestDevice("6C2390A9FF8F555BD01BA560068CD366")
+                    .addTestDevice("2C114D01992840EC6BF853D44CB96754")
                     .build();
 
             AdLoader adLoader = new AdLoader.Builder(context, context.getString(R.string.ad_unit_id))

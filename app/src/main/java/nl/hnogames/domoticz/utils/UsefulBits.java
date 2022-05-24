@@ -28,6 +28,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -603,6 +604,17 @@ public class UsefulBits {
         if (!marketFound) {
             Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=nl.hnogames.domoticz.premium"));
             context.startActivity(webIntent);
+        }
+    }
+
+    public static boolean checkPremiumLicense(final Context context, final SharedPrefUtil mSharedPrefs) {
+        PackageManager manager = context.getPackageManager();
+        if (manager.checkSignatures("nl.hnogames.domoticz", "nl.hnogames.domoticz.premium")
+                == PackageManager.SIGNATURE_MATCH) {
+            return true;
+        }
+        else{
+            return false;
         }
     }
 
