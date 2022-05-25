@@ -30,6 +30,7 @@ import android.os.Build;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -42,6 +43,14 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.security.ProviderInstaller;
+import com.revenuecat.purchases.CustomerInfo;
+import com.revenuecat.purchases.EntitlementInfo;
+import com.revenuecat.purchases.EntitlementInfos;
+import com.revenuecat.purchases.Purchases;
+import com.revenuecat.purchases.PurchasesConfiguration;
+import com.revenuecat.purchases.PurchasesError;
+import com.revenuecat.purchases.interfaces.ReceiveCustomerInfoCallback;
+import com.revenuecat.purchases.interfaces.ReceivePurchaserInfoListener;
 
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
@@ -62,10 +71,12 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 import de.duenndns.ssl.MemorizingTrustManager;
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.BeaconInfo;
@@ -103,6 +114,8 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
         return mInstance;
     }
 
+    public static boolean IsPremiumEnabled = false;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -129,6 +142,46 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
                 e.printStackTrace();
             }
         }
+
+        HandleSubscriptions();
+    }
+
+    public void HandleSubscriptions(){
+        Purchases.setDebugLogsEnabled(BuildConfig.DEBUG);
+        String key = getString(R.string.revenuecat_apikey);
+
+        Purchases.configure(new PurchasesConfiguration.Builder(this, key).build());
+        Purchases.getSharedInstance().getCustomerInfo(new ReceiveCustomerInfoCallback() {
+            @Override
+            public void onReceived(@NonNull CustomerInfo customerInfo) {
+                if(BuildConfig.DEBUG)
+                    Toast.makeText(getApplicationContext(), "Customer info received", Toast.LENGTH_LONG).show();
+                EntitlementInfos entitlements = customerInfo.getEntitlements();
+
+                if(entitlements == null)
+                {
+                    if(BuildConfig.DEBUG)
+                        Toast.makeText(getApplicationContext(), "No entitlements received", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                else {
+                    EntitlementInfo premium = entitlements.get("premium");
+                    if (premium !=null && premium.isActive()) {
+                        if(BuildConfig.DEBUG)
+                            Toast.makeText(getApplicationContext(), "premium is active", Toast.LENGTH_LONG).show();
+                        IsPremiumEnabled = true;
+                    } else {
+                        if(BuildConfig.DEBUG)
+                            Toast.makeText(getApplicationContext(), "premium is not active", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onError(@NonNull PurchasesError purchasesError) {
+                Toast.makeText(getApplicationContext(), purchasesError.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void StopBeaconScanning() {
