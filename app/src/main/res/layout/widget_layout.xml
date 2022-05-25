@@ -33,7 +33,8 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
-        app:tint="?attr/colorAccent"
+        android:padding="8dp"
+        android:background="@color/primary_dark"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:src="@drawable/bulb" />

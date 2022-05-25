@@ -12,9 +12,9 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
+        android:padding="8dp"
+        android:background="@color/primary_dark"
         app:tint="?attr/colorAccent"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
         android:src="@drawable/bulb" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
