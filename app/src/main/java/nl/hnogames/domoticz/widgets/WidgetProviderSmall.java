@@ -52,7 +52,6 @@ import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 public class WidgetProviderSmall extends AppWidgetProvider {
-
     private static final int iVoiceAction = -55;
     private static final int iQRCodeAction = -66;
     private static String packageName;

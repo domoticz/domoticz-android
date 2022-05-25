@@ -36,9 +36,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:paddingLeft="5dp"
-            app:tint="?attr/colorAccent"
-            android:paddingRight="5dp"
+            android:padding="8dp"
+            android:background="@color/primary_dark"
             android:src="@drawable/lock_a" />
 
         <TextView
