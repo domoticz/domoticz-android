@@ -239,6 +239,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         // Dashboard settings
         SwitchPreference ClockPreference = findPreference("dashboardShowClock");
+        SwitchPreference PlansPreference = findPreference("dashboardShowPlans");
 
         // Notification settings
         Preference openNotificationSettings = findPreference("openNotificationSettings");
@@ -342,6 +343,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         // Dashboard settings
         ClockPreference.setVisible(UsefulBits.isEmpty(filter) || ClockPreference.getTitle().toString().toLowerCase().contains(filter) || (ClockPreference.getSummary() != null && ClockPreference.getSummary().toString().toLowerCase().contains(filter)));
+        dashboard_category.setVisible(ClockPreference.isVisible());
+        PlansPreference.setVisible(UsefulBits.isEmpty(filter) || PlansPreference.getTitle().toString().toLowerCase().contains(filter) || (PlansPreference.getSummary() != null && PlansPreference.getSummary().toString().toLowerCase().contains(filter)));
         dashboard_category.setVisible(ClockPreference.isVisible());
 
         // Notification settings

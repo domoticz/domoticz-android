@@ -125,6 +125,7 @@ public class SharedPrefUtil {
     private static final String PREF_WIDGET_ENABLED = "enableWidgets";
     private static final String PREF_SORT_LIST = "customSortList";
     private static final String PREF_DASHBOARD_CLOCK = "dashboardShowClock";
+    private static final String PREF_DASHBOARD_PLANS = "dashboardShowPlans";
     private static final String PREF_DASHBOARD_CAMERA = "dashboardShowCamera";
 
     private static final int DEFAULT_STARTUP_SCREEN = 1;
@@ -145,6 +146,10 @@ public class SharedPrefUtil {
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         editor = prefs.edit();
         gson = new Gson();
+    }
+
+    public boolean addPlansToDashboard() {
+        return prefs.getBoolean(PREF_DASHBOARD_PLANS, true);
     }
 
     public boolean addClockToDashboard() {

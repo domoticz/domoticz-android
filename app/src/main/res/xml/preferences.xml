@@ -115,6 +115,12 @@
             android:summaryOff="@string/show_dashboard_clock"
             android:summaryOn="@string/show_dashboard_clock"
             android:title="@string/dashboard_clock" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="dashboardShowPlans"
+            android:summaryOff="@string/show_dashboard_plans"
+            android:summaryOn="@string/show_dashboard_plans"
+            android:title="@string/dashboard_plans" />
     </PreferenceCategory>
 
     <PreferenceCategory
