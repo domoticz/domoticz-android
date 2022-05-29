@@ -26,11 +26,13 @@
 
     <ImageView
         android:id="@+id/circle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_gravity="center_vertical"
+        android:foregroundGravity="center_vertical"
         android:layout_marginBottom="10dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/defaultimage" />

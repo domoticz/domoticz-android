@@ -22,6 +22,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\heini\\Dropbox\\Android\\key\\.altkeystore')
+            storePassword 'waterpolo'
+            keyAlias 'heinisblog'
+            keyPassword 'heinisblog'
+        }
+    }
     compileSdkVersion 31
     publishNonDefault true
 
