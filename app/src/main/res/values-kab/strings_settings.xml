@@ -74,6 +74,8 @@
     <string name="show_dashboard_list_off">Beqqeḍ tafelwit n wenẓad d iẓiki</string>
     <string name="dashboard_clock">Clock</string>
     <string name="show_dashboard_clock">Show a clock on the dashboard</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
     <string name="dashboard_camera">Camera</string>
     <string name="show_dashboard_camera">Load the camera for connected switches</string>
     <!--        Wear settings       -->

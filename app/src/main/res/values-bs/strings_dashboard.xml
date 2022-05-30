@@ -22,7 +22,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="title_dashboard">Kontrolna tabla</string>
-    <string name="delivery">Delivery</string>
+    <string name="delivery">Isporuka</string>
     <string name="usage">Upotreba</string>
     <string name="today">Danas</string>
     <string name="total">Ukupno</string>

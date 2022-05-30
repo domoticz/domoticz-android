@@ -74,6 +74,8 @@
     <string name="show_dashboard_list_off">Mostrar tablero en cuadrícula</string>
     <string name="dashboard_clock">Reloj</string>
     <string name="show_dashboard_clock">Mostrar reloj en el panel</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
     <string name="dashboard_camera">Camera</string>
     <string name="show_dashboard_camera">Load the camera for connected switches</string>
     <!--        Wear settings       -->
