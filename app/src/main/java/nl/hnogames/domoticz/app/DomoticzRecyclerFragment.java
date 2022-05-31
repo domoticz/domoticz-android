@@ -142,12 +142,9 @@ public class DomoticzRecyclerFragment extends Fragment {
         setGridViewLayout();
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
 
-        View.OnClickListener onSortClick = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sortFragment(String.valueOf(((MaterialButton) v).getText()));
-                toggleBackDrop();
-            }
+        View.OnClickListener onSortClick = v -> {
+            sortFragment(String.valueOf(((MaterialButton) v).getText()));
+            toggleBackDrop();
         };
         if (getActivity() instanceof MainActivity)
             frameLayout = ((MainActivity) getActivity()).frameLayout;
@@ -158,12 +155,9 @@ public class DomoticzRecyclerFragment extends Fragment {
 
         btnCheckSettings = root.findViewById(R.id.btnCheckSettings);
         if (btnCheckSettings != null) {
-            btnCheckSettings.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (getActivity() instanceof MainActivity) {
-                        ((MainActivity) getActivity()).OpenSettings();
-                    }
+            btnCheckSettings.setOnClickListener(v -> {
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).OpenSettings();
                 }
             });
         }
@@ -229,7 +223,12 @@ public class DomoticzRecyclerFragment extends Fragment {
                     gridView.setLayoutManager(mLayoutManager);
                 }
             } else {
-                StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+                StaggeredGridLayoutManager mLayoutManager;
+                if (isPortrait) {
+                    mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+                } else {
+                    mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                }
                 gridView.setLayoutManager(mLayoutManager);
             }
             gridView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
