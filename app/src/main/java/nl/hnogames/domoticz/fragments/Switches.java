@@ -54,10 +54,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.SwitchesAdapter;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
@@ -299,7 +299,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
             if (supportedSwitches == null || supportedSwitches.size() <= 0)
                 return supportedSwitches;
 
-            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+            if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                 ArrayList<DevicesInfo> filteredList = new ArrayList<>();
                 for (DevicesInfo d : supportedSwitches) {
                     if (d.getIdx() != MainActivity.ADS_IDX)

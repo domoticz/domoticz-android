@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -39,7 +38,6 @@ import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.google.android.material.snackbar.Snackbar;
 import com.rubengees.easyheaderfooteradapter.EasyHeaderFooterAdapter;
-import com.skydoves.colorpickerview.ColorEnvelope;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
@@ -50,16 +48,14 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.SlideInRightAnimationAdapter;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.DashboardAdapter;
-import nl.hnogames.domoticz.adapters.PlansAdapter;
 import nl.hnogames.domoticz.adapters.SmallPlansAdapter;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
@@ -309,7 +305,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 return supportedSwitches;
 
             ArrayList<DevicesInfo> filteredList = new ArrayList<>();
-            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+            if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                 for (DevicesInfo d : supportedSwitches) {
                     if (d.getIdx() != MainActivity.ADS_IDX)
                         filteredList.add(d);
@@ -339,7 +335,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 final switchesClickListener listener = this;
                 if (adapter == null) {
                     //if (this.planID <= 0) {
-                        adapter = new DashboardAdapter(mContext, getServerUtil(), switches, listener, sunrise);
+                    adapter = new DashboardAdapter(mContext, getServerUtil(), switches, listener, sunrise);
                     /*} else {
                         gridView.setHasFixedSize(true);
                         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
@@ -1399,6 +1395,37 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
     }
 
+    private void processPlans(ArrayList<PlanInfo> plans) {
+        if (plans == null)
+            return;
+        if (getView() != null) {
+            try {
+                if (planAdapter == null) {
+                    planAdapter = new SmallPlansAdapter(plans, mContext);
+                    planAdapter.setOnItemClickListener((position, v) -> {
+                        PlanInfo selectedPlan = planAdapter.getData(position);
+                        Intent intent = new Intent(mContext, PlanActivity.class);
+                        intent.putExtra("PLANNAME", selectedPlan.getName());
+                        intent.putExtra("PLANID", selectedPlan.getIdx());
+                        startActivity(intent);
+                    });
+                    alphaSlideInPlan = new SlideInRightAnimationAdapter(planAdapter);
+                    planList.setAdapter(planAdapter);
+                    planList.setVisibility(View.VISIBLE);
+                } else {
+                    planAdapter.setData(plans);
+                    planAdapter.notifyDataSetChanged();
+                    alphaSlideInPlan.notifyDataSetChanged();
+                }
+                if (state != null) {
+                    planList.getLayoutManager().onRestoreInstanceState(state);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
     private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
         ArrayList<DevicesInfo> cacheSwitches = null;
 
@@ -1439,7 +1466,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 }
             }, planID, null);
 
-            if(mSharedPrefs.addPlansToDashboard() && planID<=0) {
+            if (mSharedPrefs.addPlansToDashboard() && planID <= 0) {
                 StaticHelper.getDomoticz(mContext).getPlans(new PlansReceiver() {
                     @Override
                     public void OnReceivePlans(ArrayList<PlanInfo> plans) {
@@ -1452,36 +1479,5 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 });
             }
         }
-    }
-
-    private void processPlans(ArrayList<PlanInfo> plans) {
-            if (plans == null)
-                return;
-            if (getView() != null) {
-                try {
-                    if (planAdapter == null) {
-                        planAdapter = new SmallPlansAdapter(plans, mContext);
-                        planAdapter.setOnItemClickListener((position, v) -> {
-                            PlanInfo selectedPlan = planAdapter.getData(position);
-                            Intent intent = new Intent(mContext, PlanActivity.class);
-                            intent.putExtra("PLANNAME", selectedPlan.getName());
-                            intent.putExtra("PLANID", selectedPlan.getIdx());
-                            startActivity(intent);
-                        });
-                        alphaSlideInPlan = new SlideInRightAnimationAdapter(planAdapter);
-                        planList.setAdapter(planAdapter);
-                        planList.setVisibility(View.VISIBLE);
-                    } else {
-                        planAdapter.setData(plans);
-                        planAdapter.notifyDataSetChanged();
-                        alphaSlideInPlan.notifyDataSetChanged();
-                    }
-                    if (state != null) {
-                        planList.getLayoutManager().onRestoreInstanceState(state);
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
     }
 }

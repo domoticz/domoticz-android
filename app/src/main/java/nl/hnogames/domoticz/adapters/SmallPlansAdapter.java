@@ -26,15 +26,7 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdLoader;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
@@ -46,8 +38,6 @@ import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
-import nl.hnogames.domoticz.ads.NativeTemplateStyle;
-import nl.hnogames.domoticz.ads.TemplateView;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.PlanInfo;
 
@@ -84,7 +74,8 @@ public class SmallPlansAdapter extends RecyclerView.Adapter<SmallPlansAdapter.Da
         try {
             if (this.mDataset != null)
                 return this.mDataset.get(counter);
-        }catch (Exception ex){}
+        } catch (Exception ex) {
+        }
         return null;
     }
 
@@ -131,8 +122,8 @@ public class SmallPlansAdapter extends RecyclerView.Adapter<SmallPlansAdapter.Da
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.small_plan_row, parent, false);
+        view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.small_plan_row, parent, false);
         return new DataObjectHolder(view);
     }
 
@@ -141,11 +132,11 @@ public class SmallPlansAdapter extends RecyclerView.Adapter<SmallPlansAdapter.Da
         try {
             if (mDataset != null && mDataset.size() > 0) {
                 PlanInfo plan = mDataset.get(position);
-                    holder.itemView.setVisibility(View.VISIBLE);
-                    holder.plan.setVisibility(View.VISIBLE);
-                    String name = plan.getName();
+                holder.itemView.setVisibility(View.VISIBLE);
+                holder.plan.setVisibility(View.VISIBLE);
+                String name = plan.getName();
                 int numberOfDevices = plan.getDevices();
-                    holder.plan.setText(name+" ("+numberOfDevices+")");
+                holder.plan.setText(name + " (" + numberOfDevices + ")");
             }
         } catch (Exception ex) {
         }

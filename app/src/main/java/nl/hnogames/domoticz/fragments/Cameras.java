@@ -46,10 +46,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.CamerasAdapter;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.helpers.StaticHelper;
@@ -58,7 +58,6 @@ import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.ViewUtils;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Containers.LoginInfo;
@@ -110,7 +109,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             if (supportedSwitches == null || supportedSwitches.size() <= 0)
                 return supportedSwitches;
 
-            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+            if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                 ArrayList<CameraInfo> filteredList = new ArrayList<>();
                 for (CameraInfo d : supportedSwitches) {
                     if (d.getIdx() != MainActivity.ADS_IDX)

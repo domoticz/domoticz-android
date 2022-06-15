@@ -1,6 +1,7 @@
 package nl.hnogames.domoticz.utils;
 
 import android.content.Context;
+
 import nl.hnogames.domoticz.R;
 
 public class ViewUtils {

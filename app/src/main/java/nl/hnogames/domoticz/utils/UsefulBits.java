@@ -24,12 +24,8 @@ package nl.hnogames.domoticz.utils;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -39,18 +35,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.github.javiersantos.piracychecker.PiracyChecker;
-import com.github.javiersantos.piracychecker.PiracyCheckerUtils;
-import com.github.javiersantos.piracychecker.enums.InstallerID;
-import com.github.javiersantos.piracychecker.enums.PiracyCheckerCallback;
-import com.github.javiersantos.piracychecker.enums.PiracyCheckerError;
-import com.github.javiersantos.piracychecker.enums.PirateApp;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.revenuecat.purchases.CustomerInfo;
+import com.revenuecat.purchases.Purchases;
+import com.revenuecat.purchases.PurchasesError;
+import com.revenuecat.purchases.interfaces.PurchaseCallback;
+import com.revenuecat.purchases.models.StoreTransaction;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -61,12 +58,12 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.service.TaskService;
+import nl.hnogames.domoticz.ui.PasswordDialog;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
@@ -495,7 +492,6 @@ public class UsefulBits {
         });
     }
 
-
     public static boolean checkPlayServicesAvailable(final Activity activity) {
         GoogleApiAvailability availability = GoogleApiAvailability.getInstance();
         int resultCode = availability.isGooglePlayServicesAvailable(activity);
@@ -526,7 +522,6 @@ public class UsefulBits {
         }
     }
 
-
     public static void showSnackbar(final Context context, View coordinatorLayout, final int message_resource_id, int length) {
         try {
             if (context != null && coordinatorLayout != null)
@@ -534,7 +529,6 @@ public class UsefulBits {
         } catch (Exception ex) {
         }
     }
-
 
     public static void showSnackbar(Context context, View coordinatorLayout, final String message, int length) {
         try {
@@ -579,79 +573,37 @@ public class UsefulBits {
     }
 
     public static void openPremiumAppStore(Context context) {
-        Intent rateIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=nl.hnogames.domoticz.premium"));
-        boolean marketFound = false;
+        Purchases.getSharedInstance().purchasePackage(
+                (Activity) context,
+                AppController.premiumPackage,
+                new PurchaseCallback() {
+                    @Override
+                    public void onError(@NonNull PurchasesError purchasesError, boolean b) {
+                    }
 
-        // find all applications able to handle our rateIntent
-        final List<ResolveInfo> otherApps = context.getPackageManager().queryIntentActivities(rateIntent, 0);
-        for (ResolveInfo otherApp : otherApps) {
-            // look for Google Play application
-            if (otherApp.activityInfo.applicationInfo.packageName.equals("com.android.vending")) {
-                ActivityInfo otherAppActivity = otherApp.activityInfo;
-                ComponentName componentName = new ComponentName(
-                        otherAppActivity.applicationInfo.packageName,
-                        otherAppActivity.name
-                );
-                rateIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                rateIntent.setComponent(componentName);
-                context.startActivity(rateIntent);
-                marketFound = true;
-                break;
-            }
-        }
-
-        // if GP not present on device, open web browser
-        if (!marketFound) {
-            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=nl.hnogames.domoticz.premium"));
-            context.startActivity(webIntent);
-        }
+                    @Override
+                    public void onCompleted(@NonNull StoreTransaction storeTransaction, @NonNull CustomerInfo customerInfo) {
+                        if (customerInfo.getEntitlements().get("premium").isActive()) {
+                            AppController.IsPremiumEnabled = true;
+                        }
+                    }
+                }
+        );
     }
 
-    public static boolean checkPremiumLicense(final Context context, final SharedPrefUtil mSharedPrefs) {
-        PackageManager manager = context.getPackageManager();
-        if (manager.checkSignatures("nl.hnogames.domoticz", "nl.hnogames.domoticz.premium")
-                == PackageManager.SIGNATURE_MATCH) {
-            return true;
-        }
-        else{
-            return false;
-        }
+    public static void ShowOldVersionDialog(Context context)
+    {
+        new MaterialDialog.Builder(context)
+            .title(R.string.old_version)
+                .content(R.string.old_version_description)
+                .negativeText(R.string.cancel)
+                .positiveText(R.string.ok)
+                .onPositive((dialog, which) -> context.startActivity(
+                        new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=nl.hnogames.domoticz"))))
+            .show();
     }
 
-    public static void checkAPK(final Context context, final SharedPrefUtil mSharedPrefs) {
-        if (context == null || mSharedPrefs == null)
-            return; //should not happen
-        if (BuildConfig.LITE_VERSION)
-            return; //only validate premium versions
-
-        if (BuildConfig.DEBUG) {
-            //check with debug key
-            mSharedPrefs.setAPKValidated(PiracyCheckerUtils.getAPKSignature(context).equals(context.getString(R.string.APK_VALIDATE_DEBUG)));
-        }
-
-        if (BuildConfig.PAID_OOTT) {
-            //TODO: Implement correct piracychecker for this app!!
-            mSharedPrefs.setAPKValidated(true);
-            return;
-        } else {
-            // release build
-            PiracyChecker oPiracyChecker = new PiracyChecker(context);
-            oPiracyChecker
-                    .enableSigningCertificate(context.getString(R.string.APK_VALIDATE_PROD))
-                    .enableGooglePlayLicensing(context.getString(R.string.APK_LICENSE_PREMIUM))
-                    .enableInstallerId(InstallerID.GOOGLE_PLAY)
-                    .callback(new PiracyCheckerCallback() {
-                        @Override
-                        public void allow() {
-                            mSharedPrefs.setAPKValidated(true);
-                        }
-
-                        @Override
-                        public void dontAllow(@NonNull PiracyCheckerError piracyCheckerError, @Nullable PirateApp pirateApp) {
-                            mSharedPrefs.setAPKValidated(false);
-                        }
-                    })
-                    .start();
-        }
+    public static void RestoreSubscriptions(Context context) {
+        AppController.HandleRestoreSubscriptions(context);
     }
 }

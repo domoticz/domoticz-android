@@ -49,7 +49,6 @@ public class WelcomeViewActivity extends AppIntro2 {
 
         super.onCreate(savedInstanceState);
         skipButtonEnabled = false;
-        UsefulBits.checkAPK(this, new SharedPrefUtil(this));
 
         SliderPage sliderPage = new SliderPage();
         sliderPage.setTitle(getString(R.string.wizard_welcome));

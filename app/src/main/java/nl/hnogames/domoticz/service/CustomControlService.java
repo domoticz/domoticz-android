@@ -29,9 +29,9 @@ import java.util.function.Consumer;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import io.reactivex.processors.ReplayProcessor;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.adapters.DashboardAdapter;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.DeviceUtils;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -68,7 +68,7 @@ public class CustomControlService extends ControlsProviderService {
             pi = PendingIntent.getActivity(context, 101, intent, PendingIntent.FLAG_IMMUTABLE);
         }
 
-        if (!BuildConfig.LITE_VERSION) {
+        if (AppController.IsPremiumEnabled) {
             StaticHelper.getDomoticz(getApplicationContext()).getDevices(new DevicesReceiver() {
                 @Override
                 public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {

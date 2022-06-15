@@ -325,8 +325,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                             }
                             break;
                         default:
-                                setButtons(holder, Buttons.SWITCH);
-                                setOnOffSwitchRowData(mDeviceInfo, holder);
+                            setButtons(holder, Buttons.SWITCH);
+                            setOnOffSwitchRowData(mDeviceInfo, holder);
                             break;
                     }
                     break;
@@ -358,11 +358,11 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 case DomoticzValues.Device.Type.Value.DIMMER:
                     if (mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.RGB) ||
                             mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW)) {
-                            setButtons(holder, Buttons.DIMMER_RGB);
-                            setDimmerRowData(mDeviceInfo, holder, true);
+                        setButtons(holder, Buttons.DIMMER_RGB);
+                        setDimmerRowData(mDeviceInfo, holder, true);
                     } else {
-                            setButtons(holder, Buttons.DIMMER);
-                            setDimmerRowData(mDeviceInfo, holder, false);
+                        setButtons(holder, Buttons.DIMMER);
+                        setDimmerRowData(mDeviceInfo, holder, false);
                     }
                     break;
 
@@ -381,8 +381,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     break;
 
                 case DomoticzValues.Device.Type.Value.SELECTOR:
-                        setButtons(holder, Buttons.SELECTOR);
-                        setSelectorRowData(mDeviceInfo, holder);
+                    setButtons(holder, Buttons.SELECTOR);
+                    setSelectorRowData(mDeviceInfo, holder);
                     break;
 
                 case DomoticzValues.Device.Type.Value.BLINDS:

@@ -30,6 +30,18 @@
         <Preference
             android:key="premium_settings"
             android:title="@string/premium_title" />
+        <Preference
+            android:key="premium_restore"
+            android:title="@string/restore_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:icon="@drawable/baseline_store_white_24"
+        android:key="old_version_category"
+        android:title="@string/app_name_domoticz">
+        <Preference
+            android:key="old_version"
+            android:title="@string/old_version" />
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -27,8 +27,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -43,10 +41,10 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.MenuItemCompat;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.adapters.WidgetsAdapter;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.ui.PasswordDialog;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -151,7 +149,7 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
                     ListView listView = findViewById(R.id.list);
                     adapter = new WidgetsAdapter(SmallWidgetConfigurationActivity.this, StaticHelper.getDomoticz(SmallWidgetConfigurationActivity.this), mNewDevicesInfo);
                     listView.setOnItemClickListener((parent, view, position, id) -> {
-                        if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                        if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                             UsefulBits.showSnackbarWithAction(SmallWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG, null, v -> UsefulBits.openPremiumAppStore(SmallWidgetConfigurationActivity.this), getString(R.string.premium_category));
                             return;
                         }
