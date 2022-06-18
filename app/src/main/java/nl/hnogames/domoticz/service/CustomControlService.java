@@ -249,16 +249,7 @@ public class CustomControlService extends ControlsProviderService {
         try {
             Log.i(TAG, controlId + " act " + action);
             if (controlId.equals(prefix + "premium")) {
-                String packageID = getApplicationContext().getPackageName() + ".premium";
-                try {
-                    Intent openStore = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageID));
-                    openStore.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(openStore);
-                } catch (ActivityNotFoundException ignored) {
-                    Intent openStore = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + packageID));
-                    openStore.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(openStore);
-                }
+                //UsefulBits.openPremiumAppStore(this);
                 consumer.accept(ControlAction.RESPONSE_OK);
             } else {
                 DevicesInfo device = null;
