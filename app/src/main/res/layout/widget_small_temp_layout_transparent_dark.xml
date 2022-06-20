@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/row_global_wrapper"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -14,14 +15,15 @@
 
         <ImageView
             android:id="@+id/rowIcon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/defaultimage" />
+            android:padding="8dp"
+            app:tint="?attr/colorAccent"
+            android:src="@drawable/temperature"  />
 
         <TextView
             android:id="@+id/title"
-            style="@style/row_name_micro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rowIcon"
@@ -31,7 +33,7 @@
 
         <TextView
             android:id="@+id/desc"
-            style="@style/row_body1"
+            android:textSize="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/title"

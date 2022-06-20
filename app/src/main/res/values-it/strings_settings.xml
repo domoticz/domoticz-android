@@ -74,6 +74,8 @@
     <string name="show_dashboard_list_off">Visualizza la pagina principale come griglia</string>
     <string name="dashboard_clock">Orologio</string>
     <string name="show_dashboard_clock">Mostra un orologio sulla dashboard</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
     <string name="dashboard_camera">Camera</string>
     <string name="show_dashboard_camera">Carica la fotocamera per gli interruttori collegati</string>
     <!--        Wear settings       -->

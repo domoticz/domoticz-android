@@ -21,6 +21,8 @@
 
 package nl.hnogames.domoticzapi.Containers;
 
+import android.text.Html;
+
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -378,9 +380,10 @@ public class DevicesInfo implements Comparable, Serializable {
         if (UsefulBits.isEmpty(LevelNames))
             return null;
         String[] names = Pattern.compile("|", Pattern.LITERAL).split(LevelNames);
+
         ArrayList<String> newNames = new ArrayList<String>();
         for (int i = 0; i < names.length; i++) {
-            newNames.add(names[i]);
+            newNames.add(Html.fromHtml(names[i]).toString());
         }
         return newNames;
     }

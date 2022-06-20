@@ -29,7 +29,7 @@ public class FCMMessageInstanceService extends FirebaseMessagingService {
             return;
 
         Map data = remoteMessage.getData();
-        Log.d("GCM", "Message Received: " + data.toString());
+        Log.d("GCM", "Message Received: " + data);
 
         if (data.containsKey("message")) {
             String message = decode(data.containsKey("message") ? data.get("message").toString() : "");

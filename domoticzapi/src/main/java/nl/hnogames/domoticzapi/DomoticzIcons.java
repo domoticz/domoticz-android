@@ -40,47 +40,50 @@ public class DomoticzIcons {
                 case "Alarm":
                     return R.drawable.alarm;
                 case "Freezing":
-                    return R.drawable.freezing;
+                    return R.drawable.cold;
                 case "Amplifier":
-                    return R.drawable.volume;
+                    return R.drawable.loudspeakers;
                 case "Computer":
                 case "ComputerPC":
                     return R.drawable.computer;
                 case "Cooling":
-                    return R.drawable.cooling;
-                case "ChristmasTree":
-                    return R.drawable.christmastree;
+                    return R.drawable.air_conditioning_indoor;
                 case "Door":
-                    return R.drawable.door;
+                    return R.drawable.door_handle;
                 case "Fan":
-                    return R.drawable.wind;
-                case "Fireplace":
-                    return R.drawable.flame;
+                    return R.drawable.ventilation;
                 case "Generic":
                     return R.drawable.generic;
-                case "Harddisk":
-                    return R.drawable.harddisk;
                 case "Heating":
-                    return R.drawable.heating;
+                    return R.drawable.heater;
                 case "Light":
-                    return R.drawable.lights;
+                    return R.drawable.bulb;
                 case "Media":
-                    return R.drawable.video;
+                    return R.drawable.media;
                 case "Phone":
-                    return R.drawable.phone;
+                    return R.drawable.smartphone;
                 case "Speaker":
-                    return R.drawable.sub;
-                case "Printer":
-                    return R.drawable.printer;
+                    return R.drawable.loudspeakers;
                 case "TV":
                     return R.drawable.tv;
                 case "WallSocket":
-                    return R.drawable.wall;
+                    return R.drawable.socket_f;
                 case "Water":
-                    return R.drawable.water;
+                    return R.drawable.drop;
+                case "Printer":
+                    return R.drawable.printer;
                 case "GoogleDevsHomeMini":
-                    return R.drawable.ghome;
+                    return R.drawable.google_home;
+                case "Harddisk":
+                    return R.drawable.harddisk;
+                case "Fireplace":
+                    return R.drawable.flame;
+                case "ChristmasTree":
+                    return R.drawable.christmas;
             }
+
+            if(CustomImage.contains("robot-vacuum"))
+                return R.drawable.vacuum_robot;
         }
 
         return standardImage;
@@ -91,104 +94,100 @@ public class DomoticzIcons {
         int test = R.drawable.defaultimage;
         switch (imgType.toLowerCase()) {
             case "scene":
-                return R.drawable.generic;
+            case "push":
+            case "pushoff":
             case "group":
-                return R.drawable.generic;
+                return R.drawable.power_button;
             case "wind":
-                return R.drawable.wind;
+                return R.drawable.weather;
             case "doorbell":
-                return R.drawable.door;
+                return R.drawable.doorbell;
             case "door":
-                return R.drawable.door;
+                return R.drawable.door_handle;
             case "lightbulb":
                 if (switchType != null && switchType.length() > 0 && switchType.equals(DomoticzValues.Device.Type.Name.DUSKSENSOR))
                     if (State)
-                        return R.drawable.uvdark;
+                        return R.drawable.sun;
                     else
-                        return R.drawable.uvsunny;
+                        return R.drawable.sun;
                 else
-                    return R.drawable.lights;
-            case "push":
-                return R.drawable.pushoff;
-            case "pushoff":
-                return R.drawable.pushoff;
+                    return R.drawable.bulb;
             case "siren":
-                return R.drawable.siren;
+                return R.drawable.loudspeakers;
             case "smoke":
                 return R.drawable.smoke;
             case "uv":
-                return R.drawable.uv;
+                return R.drawable.sun;
             case "contact":
-                return R.drawable.contact;
+                return R.drawable.socket_f;
+            case "current":
+                return R.drawable.power;
             case "logitechMediaServer":
-                return R.drawable.media;
             case "media":
                 return R.drawable.media;
             case "blinds":
                 return R.drawable.down;
             case "dimmer":
                 if (switchType != null && switchType.length() > 0 && switchType.startsWith(DomoticzValues.Device.SubType.Name.RGB))
-                    return R.drawable.rgb;
+                    return R.drawable.bulb;
                 else
-                    return R.drawable.dimmer;
+                    return R.drawable.bulb;
             case "motion":
-                return R.drawable.motion;
+                return R.drawable.eye;
             case "security":
-                return R.drawable.security;
-            case "temperature":
+                return R.drawable.key;
             case "override_mini":
                 if (State)
-                    return R.drawable.heating;
+                    return R.drawable.heater;
                 else
-                    return R.drawable.cooling;
+                    return R.drawable.air_conditioning_indoor;
+            case "temperature":
+                return R.drawable.temperature;
             case "counter":
                 if (Type != null && Type.length() > 0 && Type.contains("Smart Meter")) {
                     if(switchType != null && switchType.length() > 0 && switchType.contains("Gas"))
-                        return R.drawable.gas;
+                        return R.drawable.electric_range;
                     else
-                        return R.drawable.meter;
+                        return R.drawable.power;
                 }
                 else
                     return R.drawable.up;
             case "visibility":
-                return R.drawable.visibility;
+                return R.drawable.eye;
             case "radiation":
-                return R.drawable.radiation;
+                return R.drawable.power;
             case "moisture":
             case "rain":
-                return R.drawable.rain;
+                return R.drawable.drop;
             case "leaf":
-                return R.drawable.leaf;
+                return R.drawable.houseplant;
             case "hardware":
                 return R.drawable.computer;
             case "fan":
-                return R.drawable.fan;
+                return R.drawable.ventilation;
             case "speaker":
-                return R.drawable.speaker;
-            case "current":
-                return R.drawable.wall;
+                return R.drawable.loudspeakers;
             case "text":
-                return R.drawable.text;
+                return R.drawable.computer;
             case "alert":
-                return R.drawable.siren;
+                return R.drawable.loudspeakers;
             case "gauge":
-                return R.drawable.gauge;
+                return R.drawable.thermostat;
             case "clock":
-                return R.drawable.clock48;
+                return R.drawable.clock_b;
             case "mode":
                 return R.drawable.defaultimage;
             case "utility":
-                return R.drawable.scale;
             case "scale":
-                return R.drawable.scale;
+                return R.drawable.solar_panel;
             case "lux":
-                return R.drawable.uvsunny;
+                return R.drawable.sun;
         }
         switch (Type.toLowerCase()) {
             case "heating":
-                return R.drawable.heating;
+                return R.drawable.heater;
             case "thermostat":
-                return R.drawable.flame;
+                return R.drawable.thermostat;
         }
         return test;
     }
@@ -202,46 +201,35 @@ public class DomoticzIcons {
                 case "Alarm":
                     return DeviceTypes.TYPE_GENERIC_ARM_DISARM;
                 case "Freezing":
+                case "Cooling":
                     return DeviceTypes.TYPE_GENERIC_TEMP_SETTING;
                 case "Amplifier":
+                case "GoogleDevsHomeMini":
+                case "Water":
+                case "Printer":
+                case "Speaker":
+                case "Phone":
+                case "Harddisk":
+                case "Generic":
                     return DeviceTypes.TYPE_GENERIC_ON_OFF;
                 case "Computer":
                 case "ComputerPC":
                     return DeviceTypes.TYPE_DISPLAY;
-                case "Cooling":
-                    return DeviceTypes.TYPE_GENERIC_TEMP_SETTING;
                 case "ChristmasTree":
+                case "Light":
                     return DeviceTypes.TYPE_LIGHT;
                 case "Door":
                     return DeviceTypes.TYPE_DOOR;
                 case "Fan":
                     return DeviceTypes.TYPE_FAN;
                 case "Fireplace":
-                    return DeviceTypes.TYPE_HEATER;
-                case "Generic":
-                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
-                case "Harddisk":
-                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
                 case "Heating":
                     return DeviceTypes.TYPE_HEATER;
-                case "Light":
-                    return DeviceTypes.TYPE_LIGHT;
                 case "Media":
-                    return DeviceTypes.TYPE_TV;
-                case "Phone":
-                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
-                case "Speaker":
-                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
-                case "Printer":
-                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
                 case "TV":
                     return DeviceTypes.TYPE_TV;
                 case "WallSocket":
                     return DeviceTypes.TYPE_OUTLET;
-                case "Water":
-                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
-                case "GoogleDevsHomeMini":
-                    return DeviceTypes.TYPE_GENERIC_ON_OFF;
             }
         }
 
@@ -254,7 +242,8 @@ public class DomoticzIcons {
         int test = R.drawable.defaultimage;
         switch (imgType.toLowerCase()) {
             case "scene":
-                return DeviceTypes.TYPE_LIGHT;
+            case "dimmer":
+            case "lightbulb":
             case "group":
                 return DeviceTypes.TYPE_LIGHT;
             case "wind":
@@ -263,70 +252,46 @@ public class DomoticzIcons {
                 return DeviceTypes.TYPE_DOORBELL;
             case "door":
                 return DeviceTypes.TYPE_DOOR;
-            case "lightbulb":
-                return DeviceTypes.TYPE_LIGHT;
             case "push":
-                return DeviceTypes.TYPE_GENERIC_ON_OFF;
+            case "lux":
+            case "scale":
+            case "utility":
+            case "mode":
+            case "clock":
+            case "gauge":
+            case "alert":
+            case "speaker":
+            case "contact":
+            case "siren":
             case "pushoff":
                 return DeviceTypes.TYPE_GENERIC_ON_OFF;
-            case "siren":
-                return DeviceTypes.TYPE_GENERIC_ON_OFF;
             case "smoke":
-            return DeviceTypes.TYPE_UNKNOWN;
+            case "text":
+            case "leaf":
+            case "moisture":
+            case "rain":
+            case "radiation":
+            case "visibility":
+            case "counter":
+            case "motion":
             case "uv":
                 return DeviceTypes.TYPE_UNKNOWN;
-            case "contact":
-                return DeviceTypes.TYPE_GENERIC_ON_OFF;
             case "logitechMediaServer":
-                return DeviceTypes.TYPE_TV;
             case "media":
                 return DeviceTypes.TYPE_TV;
             case "blinds":
                 return DeviceTypes.TYPE_BLINDS;
-            case "dimmer":
-                return DeviceTypes.TYPE_LIGHT;
-            case "motion":
-                return DeviceTypes.TYPE_UNKNOWN;
             case "security":
                 return DeviceTypes.TYPE_SECURITY_SYSTEM;
             case "temperature":
             case "override_mini":
                 return DeviceTypes.TYPE_HEATER;
-            case "counter":
-                return DeviceTypes.TYPE_UNKNOWN;
-            case "visibility":
-                return DeviceTypes.TYPE_UNKNOWN;
-            case "radiation":
-                return DeviceTypes.TYPE_UNKNOWN;
-            case "moisture":
-            case "rain":
-                return DeviceTypes.TYPE_UNKNOWN;
-            case "leaf":
-                return DeviceTypes.TYPE_UNKNOWN;
             case "hardware":
                 return DeviceTypes.TYPE_DISPLAY;
             case "fan":
                 return DeviceTypes.TYPE_FAN;
-            case "speaker":
-                return DeviceTypes.TYPE_GENERIC_ON_OFF;
             case "current":
                 return DeviceTypes.TYPE_OUTLET;
-            case "text":
-                return DeviceTypes.TYPE_UNKNOWN;
-            case "alert":
-                return DeviceTypes.TYPE_GENERIC_ON_OFF;
-            case "gauge":
-                return DeviceTypes.TYPE_GENERIC_ON_OFF;
-            case "clock":
-                return DeviceTypes.TYPE_GENERIC_ON_OFF;
-            case "mode":
-                return DeviceTypes.TYPE_GENERIC_ON_OFF;
-            case "utility":
-                return DeviceTypes.TYPE_GENERIC_ON_OFF;
-            case "scale":
-                return DeviceTypes.TYPE_GENERIC_ON_OFF;
-            case "lux":
-                return DeviceTypes.TYPE_GENERIC_ON_OFF;
         }
         switch (Type.toLowerCase()) {
             case "heating":

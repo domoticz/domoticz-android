@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.app;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.PendingIntent;
-import android.app.job.JobScheduler;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -43,6 +42,15 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.security.ProviderInstaller;
+import com.revenuecat.purchases.CustomerInfo;
+import com.revenuecat.purchases.EntitlementInfo;
+import com.revenuecat.purchases.EntitlementInfos;
+import com.revenuecat.purchases.Offerings;
+import com.revenuecat.purchases.Purchases;
+import com.revenuecat.purchases.PurchasesConfiguration;
+import com.revenuecat.purchases.PurchasesError;
+import com.revenuecat.purchases.interfaces.ReceiveCustomerInfoCallback;
+import com.revenuecat.purchases.interfaces.ReceiveOfferingsCallback;
 
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
@@ -63,10 +71,12 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 import de.duenndns.ssl.MemorizingTrustManager;
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.BeaconInfo;
@@ -91,7 +101,9 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
     private static final String EDDYSTONE3_LAYOUT = "s:0-1=feaa,m:2-2=10,p:3-3:-41,i:4-20v";
 
     private static final String BACKGROUND_NOTIFICATION_CHANNEL_ID = "6516581";
-
+    public static boolean IsPremiumEnabled = false;
+    public static com.revenuecat.purchases.Package premiumPackage;
+    public static CustomerInfo customer;
     private static AppController mInstance;
     public BeaconManager beaconManager;
     int socketTimeout = 1000 * 5;               // 5 seconds
@@ -102,6 +114,37 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
 
     public static synchronized AppController getInstance() {
         return mInstance;
+    }
+
+    public static void HandleRestoreSubscriptions(Context context) {
+        Purchases.getSharedInstance().restorePurchases(new ReceiveCustomerInfoCallback() {
+            @Override
+            public void onReceived(@NonNull CustomerInfo customerInfo) {
+                HandleCustomerInfo(context, customerInfo);
+            }
+
+            @Override
+            public void onError(@NonNull PurchasesError purchasesError) {
+            }
+        });
+    }
+
+    private static void HandleCustomerInfo(Context context, @NonNull CustomerInfo customerInfo) {
+        customer = customerInfo;
+        EntitlementInfos entitlements = customerInfo.getEntitlements();
+
+        if (!BuildConfig.NEW_VERSION)
+            IsPremiumEnabled = true;
+        else {
+            if (entitlements == null) {
+                return;
+            } else {
+                EntitlementInfo premium = entitlements.get("premium");
+                if (premium != null && premium.isActive()) {
+                    IsPremiumEnabled = true;
+                }
+            }
+        }
     }
 
     @Override
@@ -130,11 +173,46 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
                 e.printStackTrace();
             }
         }
+
+        HandleSubscriptions();
+    }
+
+    public void HandleSubscriptions() {
+        Purchases.setDebugLogsEnabled(BuildConfig.DEBUG);
+        String key = getString(R.string.revenuecat_apikey);
+
+        Purchases.configure(new PurchasesConfiguration.Builder(this, key).build());
+        Purchases.getSharedInstance().getOfferings(new ReceiveOfferingsCallback() {
+            @Override
+            public void onReceived(@NonNull Offerings offerings) {
+                if (offerings.getCurrent() != null) {
+                    List<com.revenuecat.purchases.Package> availablePackages = offerings.getCurrent().getAvailablePackages();
+                    if (availablePackages.size() > 0) {
+                        premiumPackage = availablePackages.get(0);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(@NonNull PurchasesError purchasesError) {
+            }
+        });
+
+        Purchases.getSharedInstance().getCustomerInfo(new ReceiveCustomerInfoCallback() {
+            @Override
+            public void onReceived(@NonNull CustomerInfo customerInfo) {
+                HandleCustomerInfo(getApplicationContext(), customerInfo);
+            }
+
+            @Override
+            public void onError(@NonNull PurchasesError purchasesError) {
+                //Toast.makeText(getApplicationContext(), purchasesError.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void StopBeaconScanning() {
         try {
-            //beaconManager.disableForegroundServiceScanning();
             beaconManager.removeMonitorNotifier(this);
             List<BeaconInfo> beacons = mSharedPrefs.getBeaconList();
             for (BeaconInfo b : beacons) {
@@ -168,7 +246,7 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
             mBuilder.setContentTitle(this.getString(R.string.beacon_scan_desc));
             Intent intent = new Intent(this, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(
-                    this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
+                    this, 0, intent, PendingIntent.FLAG_IMMUTABLE
             );
             mBuilder.setContentIntent(pendingIntent);
 

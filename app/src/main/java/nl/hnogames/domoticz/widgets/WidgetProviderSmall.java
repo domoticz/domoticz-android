@@ -52,7 +52,6 @@ import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 public class WidgetProviderSmall extends AppWidgetProvider {
-
     private static final int iVoiceAction = -55;
     private static final int iQRCodeAction = -66;
     private static String packageName;
@@ -264,21 +263,21 @@ public class WidgetProviderSmall extends AppWidgetProvider {
 
             if (toggle)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    return PendingIntent.getForegroundService(context, widget_id, intent, 0);
+                    return PendingIntent.getForegroundService(context, widget_id, intent, PendingIntent.FLAG_IMMUTABLE);
                 } else {
-                    return PendingIntent.getService(context, widget_id, intent, 0);
+                    return PendingIntent.getService(context, widget_id, intent, PendingIntent.FLAG_IMMUTABLE);
                 }
             else if (action)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    return PendingIntent.getForegroundService(context, widget_id + 8888, intent, 0);
+                    return PendingIntent.getForegroundService(context, widget_id + 8888, intent, PendingIntent.FLAG_IMMUTABLE);
                 } else {
-                    return PendingIntent.getService(context, widget_id + 8888, intent, 0);
+                    return PendingIntent.getService(context, widget_id + 8888, intent, PendingIntent.FLAG_IMMUTABLE);
                 }
             else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    return PendingIntent.getForegroundService(context, widget_id + 9999, intent, 0);
+                    return PendingIntent.getForegroundService(context, widget_id + 9999, intent, PendingIntent.FLAG_IMMUTABLE);
                 } else {
-                    return PendingIntent.getService(context, widget_id + 9999, intent, 0);
+                    return PendingIntent.getService(context, widget_id + 9999, intent, PendingIntent.FLAG_IMMUTABLE);
                 }
             }
         }
@@ -301,10 +300,7 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                         case DomoticzValues.Device.Type.Value.ON_OFF:
                         case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
                         case DomoticzValues.Device.Type.Value.DOORCONTACT:
-                            if (mSharedPrefs.showSwitchesAsButtons())
-                                withButton = WITHBUTTON;
-                            else
-                                withButton = WITHBUTTON;
+                            withButton = WITHBUTTON;
                             break;
 
                         case DomoticzValues.Device.Type.Value.X10SIREN:

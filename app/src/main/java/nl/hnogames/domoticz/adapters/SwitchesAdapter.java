@@ -244,7 +244,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 holder.buttonTimer.setId(extendedStatusInfo.getIdx());
                 holder.buttonTimer.setOnClickListener(v -> handleTimerButtonClick(v.getId()));
                 if (!UsefulBits.isEmpty(extendedStatusInfo.getTimers())) {
-                    if (extendedStatusInfo.getTimers().toLowerCase().equals("false"))
+                    if (extendedStatusInfo.getTimers().equalsIgnoreCase("false"))
                         holder.buttonTimer.setVisibility(View.GONE);
                 }
 
@@ -325,13 +325,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                             }
                             break;
                         default:
-                            if (mSharedPrefs.showSwitchesAsButtons()) {
-                                setButtons(holder, Buttons.BUTTONS);
-                                setOnOffButtonRowData(mDeviceInfo, holder);
-                            } else {
-                                setButtons(holder, Buttons.SWITCH);
-                                setOnOffSwitchRowData(mDeviceInfo, holder);
-                            }
+                            setButtons(holder, Buttons.SWITCH);
+                            setOnOffSwitchRowData(mDeviceInfo, holder);
                             break;
                     }
                     break;
@@ -363,27 +358,20 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                 case DomoticzValues.Device.Type.Value.DIMMER:
                     if (mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.RGB) ||
                             mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW)) {
-                        if (mSharedPrefs.showSwitchesAsButtons()) {
-                            setButtons(holder, Buttons.DIMMER_BUTTONS);
-                            setDimmerOnOffButtonRowData(mDeviceInfo, holder, true);
-                        } else {
-                            setButtons(holder, Buttons.DIMMER_RGB);
-                            setDimmerRowData(mDeviceInfo, holder, true);
-                        }
+                        setButtons(holder, Buttons.DIMMER_RGB);
+                        setDimmerRowData(mDeviceInfo, holder, true);
                     } else {
-                        if (mSharedPrefs.showSwitchesAsButtons()) {
-                            setButtons(holder, Buttons.DIMMER_BUTTONS);
-                            setDimmerOnOffButtonRowData(mDeviceInfo, holder, false);
-                        } else {
-                            setButtons(holder, Buttons.DIMMER);
-                            setDimmerRowData(mDeviceInfo, holder, false);
-                        }
+                        setButtons(holder, Buttons.DIMMER);
+                        setDimmerRowData(mDeviceInfo, holder, false);
                     }
                     break;
 
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
-                    if (DomoticzValues.canHandleStopButton(mDeviceInfo)) {
+                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGESTOP:
+                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP:
+                    if (DomoticzValues.canHandleStopButton(mDeviceInfo) ||
+                            (mDeviceInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP || mDeviceInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGESTOP)) {
                         setButtons(holder, Buttons.BLINDS_DIMMER);
                         setBlindsRowData(mDeviceInfo, holder);
                     } else {
@@ -393,13 +381,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     break;
 
                 case DomoticzValues.Device.Type.Value.SELECTOR:
-                    if (mSharedPrefs.showSwitchesAsButtons()) {
-                        setButtons(holder, Buttons.SELECTOR_BUTTONS);
-                        setSelectorRowData(mDeviceInfo, holder);
-                    } else {
-                        setButtons(holder, Buttons.SELECTOR);
-                        setSelectorRowData(mDeviceInfo, holder);
-                    }
+                    setButtons(holder, Buttons.SELECTOR);
+                    setSelectorRowData(mDeviceInfo, holder);
                     break;
 
                 case DomoticzValues.Device.Type.Value.BLINDS:
@@ -632,7 +615,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     .addTestDevice("1AAE9D81347967A359E372B0445549DE")
                     .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
                     .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
-                    .addTestDevice("6C2390A9FF8F555BD01BA560068CD366")
+                    .addTestDevice("2C114D01992840EC6BF853D44CB96754")
                     .build();
 
             AdLoader adLoader = new AdLoader.Builder(context, context.getString(R.string.ad_unit_id))
@@ -1071,7 +1054,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         holder.buttonUp.setOnClickListener(view -> {
             for (DevicesInfo e : data) {
                 if (e.getIdx() == view.getId()) {
-                    if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED)
+                    if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP)
                         handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
                     else
                         handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
@@ -1092,7 +1075,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         holder.buttonDown.setOnClickListener(view -> {
             for (DevicesInfo e : data) {
                 if (e.getIdx() == view.getId()) {
-                    if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED)
+                    if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP)
                         handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
                     else
                         handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
@@ -1860,8 +1843,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             default:
                 if (holder.contentWrapper != null)
                     holder.contentWrapper.setVisibility(View.VISIBLE);
-                if (!mSharedPrefs.showExtraData())
-                    holder.signal_level.setVisibility(View.GONE);
                 holder.switch_battery_level.setVisibility(View.VISIBLE);
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.GONE);

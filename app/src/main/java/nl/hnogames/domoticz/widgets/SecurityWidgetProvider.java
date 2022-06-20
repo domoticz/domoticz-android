@@ -63,9 +63,9 @@ public class SecurityWidgetProvider extends AppWidgetProvider {
         intent.putExtra("WIDGETID", widget_id);
         intent.putExtra("WIDGETPASSWORD", password);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return PendingIntent.getForegroundService(context, widget_id, intent, 0);
+            return PendingIntent.getForegroundService(context, widget_id, intent, PendingIntent.FLAG_IMMUTABLE);
         } else {
-            return PendingIntent.getService(context, widget_id, intent, 0);
+            return PendingIntent.getService(context, widget_id, intent, PendingIntent.FLAG_IMMUTABLE);
         }
     }
 

@@ -36,7 +36,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -130,7 +129,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private final int iWelcomeResultCode = 885;
     private final int iSettingsResultCode = 995;
     private final String TAG = MainActivity.class.getSimpleName();
-    public boolean onPhone;
     public Exception configException;
     public FrameLayout frameLayout;
     public FloatingActionButton fabSort;
@@ -180,9 +178,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         mSharedPrefs = new SharedPrefUtil(this);
         permissionHelper = PermissionHelper.getInstance(this);
 
-        UsefulBits.checkAPK(this, mSharedPrefs);
-
-        if (Build.VERSION.SDK_INT < 21 && (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated())) {
+        if (Build.VERSION.SDK_INT < 21 && (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated())) {
             setContentView(R.layout.activity_newmain_free);
             MobileAds.initialize(this, this.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder()
@@ -190,7 +186,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     .addTestDevice("1AAE9D81347967A359E372B0445549DE")
                     .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
                     .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
-                    .addTestDevice("6C2390A9FF8F555BD01BA560068CD366")
+                    .addTestDevice("2C114D01992840EC6BF853D44CB96754")
                     .build();
             ((AdView) findViewById(R.id.adView)).loadAd(adRequest);
         } else
@@ -236,6 +232,11 @@ public class MainActivity extends AppCompatPermissionsActivity {
             new GeoUtils(this, this).AddGeofences();
             resetWorkerThreads();
             initScreen();
+
+            if(mSharedPrefs.showOldVersionDialog()) {
+                UsefulBits.ShowOldVersionDialog(this);
+                mSharedPrefs.OldVersionDialogShown();
+            }
         }
     }
 
@@ -349,10 +350,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
             appRate();
             initTalkBack();
             applyLanguage();
-
-            TextView usingTabletLayout = findViewById(R.id.tabletLayout);
-            if (usingTabletLayout == null)
-                onPhone = true;
 
             if (!fromVoiceWidget && !fromQRCodeWidget) {
                 GetDomoticzAuthAndConfig();
@@ -844,7 +841,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 .withOnlyMainProfileImageVisible(true)
                 .withOnAccountHeaderListener((view, profile, current) -> {
                     if (!current) {
-                        if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                        if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                             if (frameLayout != null) {
                                 Snackbar.make(frameLayout, getString(R.string.category_account) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
                                         .setAction(R.string.upgrade, view1 -> UsefulBits.openPremiumAppStore(MainActivity.this))
@@ -895,7 +892,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
             for (UserInfo user : config.getUsers()) {
                 if (!allUsers.contains(user.getUsername())) {
                     ProfileDrawerItem profile = new ProfileDrawerItem().withName(user.getRightsValue(this)
-                    ).withEmail(user.getUsername())
+                            ).withEmail(user.getUsername())
                             .withIcon(R.drawable.users)
                             .withEnabled(user.isEnabled());
                     allUsers.add(user.getUsername());
@@ -922,8 +919,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
                             changeFragment(String.valueOf(drawerItem.getTag()), true);
                             stopCameraTimer();
                             invalidateOptionsMenu();
-                            if (onPhone)
-                                drawer.closeDrawer();
                         }
                     }
                     return false;
@@ -988,10 +983,10 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     if (fragments[i].contains("fragments.Camera"))
                         drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
                 }
-                drawerItems.add(new DividerDrawerItem());
-                for (int i = 0; i < drawerActions.length; i++)
-                    if (fragments[i].contains("fragments.Logs") || fragments[i].contains("fragments.Events") || fragments[i].contains("fragments.UserVariables"))
-                        drawerItems.add(createSecondaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
+                //drawerItems.add(new DividerDrawerItem());
+                //for (int i = 0; i < drawerActions.length; i++)
+                //    if (fragments[i].contains("fragments.Logs") || fragments[i].contains("fragments.Events") || fragments[i].contains("fragments.UserVariables"))
+                //        drawerItems.add(createSecondaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
             }
         } catch (Exception ex) {
         }
@@ -1504,13 +1499,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
         changeFragment("nl.hnogames.domoticz.fragments.Dashboard", false);
     }
 
-    @Shortcut(id = "open_switches", icon = R.drawable.dimmer, shortLabelRes = R.string.title_switches, rank = 4, activity = MainActivity.class)
+    @Shortcut(id = "open_switches", icon = R.drawable.bulb, shortLabelRes = R.string.title_switches, rank = 4, activity = MainActivity.class)
     public void OpenSwitch() {
         fromShortcut = true;
         changeFragment("nl.hnogames.domoticz.fragments.Switches", false);
     }
 
-    @Shortcut(id = "open_utilities", icon = R.drawable.harddisk, shortLabelRes = R.string.title_utilities, rank = 3, activity = MainActivity.class)
+    @Shortcut(id = "open_utilities", icon = R.drawable.solar_panel, shortLabelRes = R.string.title_utilities, rank = 3, activity = MainActivity.class)
     public void OpenUtilities() {
         fromShortcut = true;
         changeFragment("nl.hnogames.domoticz.fragments.Utilities", false);

@@ -21,6 +21,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/row_global_wrapper"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -37,6 +38,7 @@
         android:layout_height="40dp"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
+        app:tint="?attr/colorAccent"
         android:paddingRight="5dp"
         android:src="@drawable/clock48" />
 

@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    compileSdkVersion 31
 
     def versionPropsFile = file('version.properties')
     if (versionPropsFile.canRead()) {
@@ -36,7 +35,7 @@ android {
             versionCode version_Code
             versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
             minSdkVersion 23
-            targetSdkVersion 30
+            targetSdkVersion 31
             multiDexEnabled true
             wearAppUnbundled true
         }
@@ -88,6 +87,7 @@ android {
 
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "google_maps_key", "$System.env.GOOGLEAPIKEY"
+            resValue "string", "revenuecat_apikey", "$System.env.REVENUECATKEY"
             resValue "string", "app_name_domoticz", 'Domoticz'
             buildConfigField "boolean", "LITE_VERSION", "false"
             buildConfigField "boolean", "PAID_OOTT", "false"
@@ -95,7 +95,7 @@ android {
 
             minSdkVersion 23
             versionNameSuffix "-dev"
-            resConfigs "en", "xxhdpi"
+            resConfigs 'en', 'xxhdpi'
         }
 
         free {
@@ -110,8 +110,9 @@ android {
 
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "google_maps_key", "$System.env.GOOGLEAPIKEY"
-            resValue "string", "app_name_domoticz", 'Domoticz Lite'
-            buildConfigField "boolean", "LITE_VERSION", "true"
+            resValue "string", "revenuecat_apikey", "$System.env.REVENUECATKEY"
+            resValue "string", "app_name_domoticz", 'Domoticz'
+            buildConfigField "boolean", "NEW_VERSION", "true"
             buildConfigField "boolean", "PAID_OOTT", "false"
             dimension "tier"
         }
@@ -125,11 +126,12 @@ android {
             resValue "string", "ADMOB_COMP_KEY", "$System.env.ADMOB_COMP_KEY"
             resValue "string", "ADMOB_APP_KEY", "$System.env.ADMOBAPPKEY"
             resValue "string", "ADMOB_ADS_KEY", "$System.env.ADMOBADSKEY"
+            resValue "string", "revenuecat_apikey", "$System.env.REVENUECATKEY"
 
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "google_maps_key", "$System.env.GOOGLEAPIKEY"
-            resValue "string", "app_name_domoticz", 'Domoticz'
-            buildConfigField "boolean", "LITE_VERSION", "false"
+            resValue "string", "app_name_domoticz", 'Domoticz Premium'
+            buildConfigField "boolean", "NEW_VERSION", "false"
             buildConfigField "boolean", "PAID_OOTT", "false"
             dimension "tier"
         }
@@ -143,12 +145,13 @@ android {
             resValue "string", "ADMOB_COMP_KEY", "$System.env.ADMOB_COMP_KEY"
             resValue "string", "ADMOB_APP_KEY", "$System.env.ADMOBAPPKEY"
             resValue "string", "ADMOB_ADS_KEY", "$System.env.ADMOBADSKEY"
+            resValue "string", "revenuecat_apikey", "$System.env.REVENUECATKEY"
 
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "google_maps_key", "$System.env.GOOGLEAPIKEY"
 
             resValue "string", "app_name_domoticz", 'OOTT'
-            buildConfigField "boolean", "LITE_VERSION", "false"
+            buildConfigField "boolean", "NEW_VERSION", "false"
             buildConfigField "boolean", "PAID_OOTT", "true"
             dimension "tier"
         }
@@ -181,19 +184,20 @@ allprojects {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation "androidx.work:work-runtime:2.6.0-rc01"
-    implementation 'androidx.preference:preference:1.1.1'
+    implementation "androidx.work:work-runtime:2.8.0-alpha02"
+    implementation 'androidx.preference:preference:1.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.biometric:biometric:1.1.0'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
-    implementation 'androidx.annotation:annotation:1.2.0'
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.annotation:annotation:1.3.0'
     implementation 'org.reactivestreams:reactive-streams:1.0.3'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+    implementation 'com.revenuecat.purchases:purchases:5.0.0-rc3'
 
     implementation 'com.google.firebase:firebase-core:19.0.1'
     implementation 'com.google.firebase:firebase-iid:21.1.0'
@@ -202,20 +206,20 @@ dependencies {
     implementation "com.google.firebase:firebase-messaging:22.0.0"
     implementation "com.google.firebase:firebase-ads:19.8.0"
 
+    implementation 'com.google.android.ads.consent:consent-library:1.0.8'
     implementation "com.google.android.gms:play-services-analytics:17.0.1"
     implementation "com.google.android.gms:play-services-wearable:17.1.0"
-    implementation "com.google.android.gms:play-services-maps:17.0.1"
+    implementation "com.google.android.gms:play-services-maps:18.0.2"
     implementation "com.google.android.gms:play-services-gcm:17.0.0"
     implementation "com.google.android.gms:play-services-location:18.0.0"
     implementation "com.google.android.gms:play-services-places:17.0.0"
     implementation "com.google.android.gms:play-services-ads:19.8.0"
     implementation 'com.google.android.ads.consent:consent-library:1.0.8'
     implementation "com.github.nisrulz:recyclerviewhelper:27.1.1"
-    implementation "org.altbeacon:android-beacon-library:2.17"
+    implementation "org.altbeacon:android-beacon-library:2.19"
 
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
-
     implementation('com.github.ihsanbal:LoggingInterceptor:3.0.0') {
         exclude group: 'org.json', module: 'json'
     }
@@ -239,18 +243,21 @@ dependencies {
     implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
     implementation 'com.alexvasilkov:gesture-views:2.6.0'
 
-    implementation("com.mikepenz:materialdrawer:6.1.2@aar") {
+    implementation 'com.github.rubengees:easy-header-footer-adapter:3.0.0@aar'
+
+    implementation("com.mikepenz:materialdrawer:6.1.3@aar") {
         transitive = true
     }
 
     implementation 'com.github.stfalcon:chatkit:0.3.3'
     implementation 'com.github.matthiasrobbers:shortbread:1.1.0'
+    implementation 'androidx.core:core:1.6.0'
     annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.1.0'
-    implementation ('com.schibstedspain.android:leku:6.4.0') {
+    implementation ('com.adevinta.android:leku:9.1.4') {
         exclude group: 'com.google.android.gms'
         exclude group: 'androidx.appcompat'
     }
-    implementation 'com.github.k0shk0sh:PermissionHelper:1.1.0'
+    implementation 'com.github.k0shk0sh:PermissionHelper:1.1.1'
     implementation 'com.github.zagum:SpeechRecognitionView:1.2.2'
     implementation "com.github.skydoves:colorpickerview:2.0.1"
     implementation 'com.github.paolorotolo:appintro:v5.1.0'

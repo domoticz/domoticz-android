@@ -28,8 +28,8 @@
     android:layout_marginEnd="4dp"
     android:layout_marginBottom="8dp"
     android:orientation="vertical"
-    android:padding="8dp"
-    app:cardCornerRadius="5dp"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="30dp"
     app:cardElevation="1dp">
 
     <nl.hnogames.domoticz.ads.TemplateView
@@ -67,12 +67,12 @@
 
                 <ImageView
                     android:id="@+id/rowIcon"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_gravity="center_horizontal"
                     android:contentDescription="@string/error_image_description"
-                    android:paddingTop="-10dp"
-                    android:src="@drawable/floor" />
+                    android:visibility="gone"
+                    android:paddingTop="-10dp" />
 
                 <TextView
                     android:id="@+id/name"
@@ -83,6 +83,7 @@
 
                 <TextView
                     android:id="@+id/devices"
+                    android:layout_marginTop="-8dp"
                     style="@style/row_body1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

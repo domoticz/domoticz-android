@@ -27,9 +27,9 @@
     <string name="verylow">Nagyon alacsony</string>
     <string name="allsystems">Minden rendszer</string>
     <string name="systems">Rendszerek</string>
-    <string name="send_notification">Send notification</string>
-    <string name="notification_subject">Subject</string>
-    <string name="notification_message">Message</string>
+    <string name="send_notification">Értesítés küldése</string>
+    <string name="notification_subject">Tárgy</string>
+    <string name="notification_message">Üzenet</string>
     <string name="notification_error_system">Please choose a system to send the notification to</string>
     <string name="notification_error_message">Please fill in a message</string>
     <string name="notification_error_subject">Please fill in a subject</string>

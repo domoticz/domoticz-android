@@ -37,11 +37,11 @@ import java.util.ArrayList;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.WeatherAdapter;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
@@ -110,7 +110,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
             if (supportedSwitches == null || supportedSwitches.size() <= 0)
                 return supportedSwitches;
 
-            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+            if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                 ArrayList<WeatherInfo> filteredList = new ArrayList<>();
                 for (WeatherInfo d : supportedSwitches) {
                     if (d.getIdx() != MainActivity.ADS_IDX)

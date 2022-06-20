@@ -13,8 +13,8 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 public class WifiReceiverManager extends Worker {
     private static final String TAG = "WifiReceiverManager";
     public static String workTag = "checkwifi";
-    private WorkerParameters params;
-    private Context context;
+    private final WorkerParameters params;
+    private final Context context;
 
     public WifiReceiverManager(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
