@@ -16,6 +16,11 @@ android {
             value = 1
             println "Build Version: +1"
         }
+        if ('bundleRelease' in runTasks || 'aR' in runTasks || ':app:compilePaidReleaseSources' in runTasks || ':app:generatePaidReleaseSources' in runTasks || ':app:bundlePaidRelease' in runTasks || ':app:compileoottReleaseSources' in runTasks || ':app:generateoottReleaseSources' in runTasks || ':app:bundleoottRelease' in runTasks) {
+            value = 1
+            println "Build Version: +1"
+        }
+
         println "****************************"
 
         def versionMajor = 0
