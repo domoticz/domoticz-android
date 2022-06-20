@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.BeaconInfo;
 import nl.hnogames.domoticz.containers.BluetoothInfo;
@@ -125,7 +126,9 @@ public class SharedPrefUtil {
     private static final String PREF_WIDGET_ENABLED = "enableWidgets";
     private static final String PREF_SORT_LIST = "customSortList";
     private static final String PREF_DASHBOARD_CLOCK = "dashboardShowClock";
+    private static final String PREF_DASHBOARD_PLANS = "dashboardShowPlans";
     private static final String PREF_DASHBOARD_CAMERA = "dashboardShowCamera";
+    private static final String PREF_OLD_VERIONS_DIALOG_SHOWN = "oldVersion";
 
     private static final int DEFAULT_STARTUP_SCREEN = 1;
     private final String TAG = "Shared Pref util";
@@ -147,6 +150,10 @@ public class SharedPrefUtil {
         gson = new Gson();
     }
 
+    public boolean addPlansToDashboard() {
+        return prefs.getBoolean(PREF_DASHBOARD_PLANS, true);
+    }
+
     public boolean addClockToDashboard() {
         return prefs.getBoolean(PREF_DASHBOARD_CLOCK, false);
     }
@@ -161,6 +168,18 @@ public class SharedPrefUtil {
 
     public void setAdsCounter(int id) {
         editor.putInt(PREF_ADS_COUNTER, id).apply();
+        editor.commit();
+    }
+
+    public boolean showOldVersionDialog() {
+        if(BuildConfig.NEW_VERSION)
+            return false;
+
+        return prefs.getBoolean(PREF_OLD_VERIONS_DIALOG_SHOWN, true);
+    }
+
+    public void OldVersionDialogShown() {
+        editor.putBoolean(PREF_OLD_VERIONS_DIALOG_SHOWN, false).apply();
         editor.commit();
     }
 

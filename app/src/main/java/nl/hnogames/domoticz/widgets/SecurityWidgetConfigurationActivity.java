@@ -26,7 +26,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -40,9 +39,9 @@ import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -86,67 +85,54 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
 
         editPin = this.findViewById(R.id.securitypin);
 
-        btnConfig.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-                    UsefulBits.showSnackbarWithAction(SecurityWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG, null, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            UsefulBits.openPremiumAppStore(SecurityWidgetConfigurationActivity.this);
-                        }
-                    }, getString(R.string.upgrade));
-                    return;
-                }
+        btnConfig.setOnClickListener(view -> {
+            if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
+                UsefulBits.showSnackbarWithAction(SecurityWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG, null, v -> UsefulBits.openPremiumAppStore(SecurityWidgetConfigurationActivity.this), getString(R.string.upgrade));
+                return;
+            }
 
-                if (!mSharedPrefs.IsWidgetsEnabled()) {
-                    UsefulBits.showSnackbarWithAction(SecurityWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.widget_disabled), Snackbar.LENGTH_LONG, null, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startActivityForResult(new Intent(SecurityWidgetConfigurationActivity.this, SettingsActivity.class), 888);
-                        }
-                    }, getString(R.string.action_settings));
-                    return;
-                }
+            if (!mSharedPrefs.IsWidgetsEnabled()) {
+                UsefulBits.showSnackbarWithAction(SecurityWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.widget_disabled), Snackbar.LENGTH_LONG, null, v -> startActivityForResult(new Intent(SecurityWidgetConfigurationActivity.this, SettingsActivity.class), 888), getString(R.string.action_settings));
+                return;
+            }
 
-                InputMethodManager imm =
-                        (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(editPin.getWindowToken(), 0);
-                final String password =
-                        UsefulBits.getMd5String(editPin.getText().toString());
-                if (UsefulBits.isEmpty(password)) {
+            InputMethodManager imm =
+                    (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(editPin.getWindowToken(), 0);
+            final String password =
+                    UsefulBits.getMd5String(editPin.getText().toString());
+            if (UsefulBits.isEmpty(password)) {
+                Toast.makeText(getApplicationContext(), getString(R.string.security_wrong_code), Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if (mSettings == null) {
+                StaticHelper.getDomoticz(SecurityWidgetConfigurationActivity.this).getSettings(new SettingsReceiver() {
+                    @Override
+                    public void onReceiveSettings(SettingsInfo settings) {
+                        mSettings = settings;
+                        if (validatePassword(password)) {
+                            if (sSecurityPanel != null) {
+                                getBackground(sSecurityPanel, password, getApplicationContext().getString(R.string.status) + ": " +
+                                        sSecurityPanel.getData());
+                            }
+                        } else
+                            Toast.makeText(getApplicationContext(), getString(R.string.security_wrong_code), Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        Log.e(TAG, StaticHelper.getDomoticz(SecurityWidgetConfigurationActivity.this).getErrorMessage(error));
+                    }
+                });
+            } else {
+                if (validatePassword(password)) {
+                    if (sSecurityPanel != null) {
+                        getBackground(sSecurityPanel, password, getApplicationContext().getString(R.string.status) + ": " +
+                                sSecurityPanel.getData());
+                    }
+                } else
                     Toast.makeText(getApplicationContext(), getString(R.string.security_wrong_code), Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                if (mSettings == null) {
-                    StaticHelper.getDomoticz(SecurityWidgetConfigurationActivity.this).getSettings(new SettingsReceiver() {
-                        @Override
-                        public void onReceiveSettings(SettingsInfo settings) {
-                            mSettings = settings;
-                            if (validatePassword(password)) {
-                                if (sSecurityPanel != null) {
-                                    getBackground(sSecurityPanel, password, getApplicationContext().getString(R.string.status) + ": " +
-                                            sSecurityPanel.getData());
-                                }
-                            } else
-                                Toast.makeText(getApplicationContext(), getString(R.string.security_wrong_code), Toast.LENGTH_LONG).show();
-                        }
-
-                        @Override
-                        public void onError(Exception error) {
-                            Log.e(TAG, StaticHelper.getDomoticz(SecurityWidgetConfigurationActivity.this).getErrorMessage(error));
-                        }
-                    });
-                } else {
-                    if (validatePassword(password)) {
-                        if (sSecurityPanel != null) {
-                            getBackground(sSecurityPanel, password, getApplicationContext().getString(R.string.status) + ": " +
-                                    sSecurityPanel.getData());
-                        }
-                    } else
-                        Toast.makeText(getApplicationContext(), getString(R.string.security_wrong_code), Toast.LENGTH_LONG).show();
-                }
             }
         });
 
@@ -170,12 +156,9 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
         new MaterialDialog.Builder(this)
                 .title(this.getString(R.string.widget_background))
                 .items(new String[]{this.getString(R.string.widget_dark), this.getString(R.string.widget_light), this.getString(R.string.widget_transparent_dark), this.getString(R.string.widget_transparent_light)})
-                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        showAppWidget(mSelectedSwitch, value, password, getWidgetLayout(String.valueOf(text)));
-                        return true;
-                    }
+                .itemsCallbackSingleChoice(-1, (dialog, view, which, text) -> {
+                    showAppWidget(mSelectedSwitch, value, password, getWidgetLayout(String.valueOf(text)));
+                    return true;
                 })
                 .positiveText(R.string.ok)
                 .show();

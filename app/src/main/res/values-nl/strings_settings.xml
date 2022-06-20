@@ -74,6 +74,8 @@
     <string name="show_dashboard_list_off">Dashboard weergeven als raster</string>
     <string name="dashboard_clock">Klok</string>
     <string name="show_dashboard_clock">Een klok weergeven op het dashboard</string>
+    <string name="dashboard_plans">Ruimtes</string>
+    <string name="show_dashboard_plans">Kamers weergeven op het dashboard</string>
     <string name="dashboard_camera">Camera</string>
     <string name="show_dashboard_camera">Laad de camera achter verbonden schakelaars</string>
     <!--        Wear settings       -->

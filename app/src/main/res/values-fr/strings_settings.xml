@@ -74,6 +74,8 @@
     <string name="show_dashboard_list_off">Voir la tableau de bord comme une grille</string>
     <string name="dashboard_clock">Horloge</string>
     <string name="show_dashboard_clock">Afficher une horloge sur le tableau de bord</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
     <string name="dashboard_camera">Caméra</string>
     <string name="show_dashboard_camera">Load the camera for connected switches</string>
     <!--        Wear settings       -->

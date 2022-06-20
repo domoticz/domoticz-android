@@ -36,7 +36,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -108,7 +107,6 @@ import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.TalkBackUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.utils.ViewUtils;
 import nl.hnogames.domoticz.utils.WidgetUtils;
 import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
@@ -180,9 +178,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         mSharedPrefs = new SharedPrefUtil(this);
         permissionHelper = PermissionHelper.getInstance(this);
 
-        UsefulBits.checkAPK(this, mSharedPrefs);
-
-        if (Build.VERSION.SDK_INT < 21 && (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated())) {
+        if (Build.VERSION.SDK_INT < 21 && (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated())) {
             setContentView(R.layout.activity_newmain_free);
             MobileAds.initialize(this, this.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder()
@@ -236,6 +232,11 @@ public class MainActivity extends AppCompatPermissionsActivity {
             new GeoUtils(this, this).AddGeofences();
             resetWorkerThreads();
             initScreen();
+
+            if(mSharedPrefs.showOldVersionDialog()) {
+                UsefulBits.ShowOldVersionDialog(this);
+                mSharedPrefs.OldVersionDialogShown();
+            }
         }
     }
 
@@ -840,7 +841,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 .withOnlyMainProfileImageVisible(true)
                 .withOnAccountHeaderListener((view, profile, current) -> {
                     if (!current) {
-                        if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                        if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                             if (frameLayout != null) {
                                 Snackbar.make(frameLayout, getString(R.string.category_account) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
                                         .setAction(R.string.upgrade, view1 -> UsefulBits.openPremiumAppStore(MainActivity.this))
@@ -891,7 +892,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
             for (UserInfo user : config.getUsers()) {
                 if (!allUsers.contains(user.getUsername())) {
                     ProfileDrawerItem profile = new ProfileDrawerItem().withName(user.getRightsValue(this)
-                    ).withEmail(user.getUsername())
+                            ).withEmail(user.getUsername())
                             .withIcon(R.drawable.users)
                             .withEnabled(user.isEnabled());
                     allUsers.add(user.getUsername());

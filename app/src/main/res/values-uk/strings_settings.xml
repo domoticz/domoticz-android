@@ -74,6 +74,8 @@
     <string name="show_dashboard_list_off">Показувати елементи на головній сторінці у вигляді сітки</string>
     <string name="dashboard_clock">Годинник</string>
     <string name="show_dashboard_clock">Відображати годинник на панелі приладів</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
     <string name="dashboard_camera">Камера</string>
     <string name="show_dashboard_camera">Завантажити камеру для під\'єднаних вимикачів</string>
     <!--        Wear settings       -->

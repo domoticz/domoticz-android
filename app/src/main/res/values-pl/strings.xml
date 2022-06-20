@@ -23,7 +23,10 @@
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="premium_category">Kup premium!</string>
     <string name="premium_title">Pobierz wersję premium!</string>
+    <string name="restore_title">Restore subscriptions</string>
     <string name="premium_feature">jest opcja premium, proszę kupić płatną wersję aby wspierać deweloperów!</string>
+    <string name="old_version">Get the latest version!</string>
+    <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
     <string name="drawer_open">Otwórz wysuwaną nawigację</string>
     <string name="drawer_close">Zamknij wysuwaną nawigację</string>
     <string name="msg_please_wait">Proszę czekać...</string>

@@ -45,6 +45,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -74,6 +75,7 @@ public class DomoticzDashboardFragment extends Fragment {
     public LinearLayout lySortDevices;
     public BackdropContainer backdropContainer;
     public MaterialCardView bottomLayoutWrapper;
+    public RecyclerView planList;
     public MaterialButton sortAll, sortOn, sortOff, sortStatic, btnCheckSettings;
     public boolean isTablet = false;
     public boolean isPortrait = false;
@@ -139,7 +141,9 @@ public class DomoticzDashboardFragment extends Fragment {
             mSharedPrefs = new SharedPrefUtil(getContext());
 
         setGridViewLayout();
+        setPlanListLayout();
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
+
         bottomLayoutWrapper = root.findViewById(R.id.bottomLayoutWrapper);
         lySortDevices = root.findViewById(R.id.lySortDevices);
         if (getActivity() instanceof MainActivity)
@@ -147,57 +151,42 @@ public class DomoticzDashboardFragment extends Fragment {
 
         sortStatic = root.findViewById(R.id.btnSortStatic);
         if (sortStatic != null) {
-            sortStatic.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sortFragment(String.valueOf(sortStatic.getText()));
-                    toggleBackDrop();
-                }
+            sortStatic.setOnClickListener(v -> {
+                sortFragment(String.valueOf(sortStatic.getText()));
+                toggleBackDrop();
             });
         }
 
         btnCheckSettings = root.findViewById(R.id.btnCheckSettings);
         if (btnCheckSettings != null) {
-            btnCheckSettings.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (getActivity() instanceof MainActivity) {
-                        ((MainActivity) getActivity()).OpenSettings();
-                    }
+            btnCheckSettings.setOnClickListener(v -> {
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).OpenSettings();
                 }
             });
         }
 
         sortOn = root.findViewById(R.id.btnSortOn);
         if (sortOn != null) {
-            sortOn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sortFragment(String.valueOf(sortOn.getText()));
-                    toggleBackDrop();
-                }
+            sortOn.setOnClickListener(v -> {
+                sortFragment(String.valueOf(sortOn.getText()));
+                toggleBackDrop();
             });
         }
 
         sortOff = root.findViewById(R.id.btnSortOff);
         if (sortOff != null) {
-            sortOff.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sortFragment(String.valueOf(sortOff.getText()));
-                    toggleBackDrop();
-                }
+            sortOff.setOnClickListener(v -> {
+                sortFragment(String.valueOf(sortOff.getText()));
+                toggleBackDrop();
             });
         }
 
         sortAll = root.findViewById(R.id.btnSortAll);
         if (sortAll != null) {
-            sortAll.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sortFragment(String.valueOf(sortAll.getText()));
-                    toggleBackDrop();
-                }
+            sortAll.setOnClickListener(v -> {
+                sortFragment(String.valueOf(sortAll.getText()));
+                toggleBackDrop();
             });
         }
 
@@ -236,6 +225,17 @@ public class DomoticzDashboardFragment extends Fragment {
                 gridView.setLayoutManager(mLayoutManager);
             }
             gridView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+        } catch (Exception ignored) {
+        }
+    }
+
+    public void setPlanListLayout() {
+        try {
+            planList = root.findViewById(R.id.planList);
+            planList.setVisibility(View.GONE);
+            LinearLayoutManager layoutManager
+                    = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+            planList.setLayoutManager(layoutManager);
         } catch (Exception ignored) {
         }
     }

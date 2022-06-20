@@ -261,18 +261,18 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/textwrapper"
                                 android:layout_gravity="right"
-                                android:gravity="right"
                                 android:foregroundGravity="right"
+                                android:gravity="right"
                                 android:orientation="horizontal">
 
                                 <az.plainpie.PieView
                                     android:id="@+id/pieView"
                                     android:layout_width="60dp"
                                     android:layout_height="60dp"
-                                    android:layout_marginTop="7dp"
                                     android:layout_gravity="right"
-                                    android:gravity="right"
+                                    android:layout_marginTop="7dp"
                                     android:foregroundGravity="right"
+                                    android:gravity="right"
                                     plainpie:inner_pie_padding="5"
                                     plainpie:inner_text_visibility="true"
                                     plainpie:percentage="50"
@@ -283,8 +283,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
-                                    android:gravity="right"
                                     android:foregroundGravity="right"
+                                    android:gravity="right"
                                     app:useMaterialThemeColors="false" />
 
                                 <com.google.android.material.button.MaterialButton
@@ -292,8 +292,9 @@
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                     android:layout_width="60dp"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_weight="1"
                                     android:layout_gravity="right"
-                                    android:gravity="right"
                                     android:foregroundGravity="right"
                                     android:text="@string/button_state_on"
                                     android:textColor="?attr/buttonTextColor"
@@ -305,10 +306,9 @@
                                     android:layout_width="60dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
-                                    android:gravity="right"
-                                    android:foregroundGravity="right"
                                     android:layout_marginLeft="7dp"
                                     android:layout_weight="1"
+                                    android:foregroundGravity="right"
                                     android:text="@string/button_state_off"
                                     android:textColor="?attr/buttonTextColor"
                                     android:textSize="10dp" />
@@ -319,7 +319,6 @@
                                     android:layout_width="56dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
-                                    android:gravity="right"
                                     android:foregroundGravity="right"
                                     android:text="@string/set_temperature"
                                     android:textColor="?attr/buttonTextColor"
@@ -330,10 +329,10 @@
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
                                     android:layout_gravity="right"
-                                    android:gravity="right"
-                                    android:foregroundGravity="right"
                                     android:layout_margin="7dp"
                                     android:layout_marginTop="10dp"
+                                    android:foregroundGravity="right"
+                                    android:gravity="right"
                                     android:src="@drawable/baseline_keyboard_arrow_up_black_24"
                                     app:tint="@color/primary" />
 
@@ -342,10 +341,10 @@
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
                                     android:layout_gravity="right"
-                                    android:gravity="right"
-                                    android:foregroundGravity="right"
                                     android:layout_margin="7dp"
                                     android:layout_marginTop="10dp"
+                                    android:foregroundGravity="right"
+                                    android:gravity="right"
                                     android:src="@drawable/baseline_stop_black_24"
                                     app:tint="@color/primary" />
 

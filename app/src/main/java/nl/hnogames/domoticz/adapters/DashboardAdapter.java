@@ -215,11 +215,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         // Check if we're running on Android 5.0 or higher
         if (Build.VERSION.SDK_INT >= 21) {
-                row = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.dashboard_row, parent, false);
+            row = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.dashboard_row, parent, false);
         } else {
-                row = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.dashboard_row_noads, parent, false);
+            row = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.dashboard_row_noads, parent, false);
         }
         return new DataObjectHolder(row);
     }
@@ -319,8 +319,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             }
                             break;
                         default:
-                                setButtons(holder, Buttons.SWITCH);
-                                setOnOffSwitchRowData(mDeviceInfo, holder);
+                            setButtons(holder, Buttons.SWITCH);
+                            setOnOffSwitchRowData(mDeviceInfo, holder);
                             break;
                     }
                     break;
@@ -352,11 +352,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 case DomoticzValues.Device.Type.Value.DIMMER:
                     if (mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.RGB) ||
                             mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW)) {
-                            setButtons(holder, Buttons.DIMMER_RGB);
-                            setDimmerRowData(mDeviceInfo, holder, true);
+                        setButtons(holder, Buttons.DIMMER_RGB);
+                        setDimmerRowData(mDeviceInfo, holder, true);
                     } else {
-                            setButtons(holder, Buttons.DIMMER);
-                            setDimmerRowData(mDeviceInfo, holder, false);
+                        setButtons(holder, Buttons.DIMMER);
+                        setDimmerRowData(mDeviceInfo, holder, false);
                     }
                     break;
 
@@ -375,8 +375,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     break;
 
                 case DomoticzValues.Device.Type.Value.SELECTOR:
-                        setButtons(holder, Buttons.SELECTOR);
-                        setSelectorRowData(mDeviceInfo, holder);
+                    setButtons(holder, Buttons.SELECTOR);
+                    setSelectorRowData(mDeviceInfo, holder);
                     break;
 
                 case DomoticzValues.Device.Type.Value.BLINDS:
@@ -1835,8 +1835,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         holder.switch_name.setVisibility(View.VISIBLE);
 
         holder.infoIcon.setVisibility(View.GONE);
-            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.iconRow.getLayoutParams();
-            p.topMargin = 20;
+        ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.iconRow.getLayoutParams();
+        p.topMargin = 20;
 
         holder.switch_battery_level.setVisibility(View.VISIBLE);
         switch (button) {

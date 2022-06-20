@@ -74,6 +74,8 @@
     <string name="show_dashboard_list_off">Zobrazit řídící panel jako mřížku</string>
     <string name="dashboard_clock">Hodiny</string>
     <string name="show_dashboard_clock">Zobrazit hodiny na panelu</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
     <string name="dashboard_camera">Kamera</string>
     <string name="show_dashboard_camera">Načíst kameru pro připojené přepínače</string>
     <!--        Wear settings       -->

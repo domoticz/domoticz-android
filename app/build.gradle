@@ -111,8 +111,8 @@ android {
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "google_maps_key", "$System.env.GOOGLEAPIKEY"
             resValue "string", "revenuecat_apikey", "$System.env.REVENUECATKEY"
-            resValue "string", "app_name_domoticz", 'Domoticz Lite'
-            buildConfigField "boolean", "LITE_VERSION", "true"
+            resValue "string", "app_name_domoticz", 'Domoticz'
+            buildConfigField "boolean", "NEW_VERSION", "true"
             buildConfigField "boolean", "PAID_OOTT", "false"
             dimension "tier"
         }
@@ -130,8 +130,8 @@ android {
 
             resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
             resValue "string", "google_maps_key", "$System.env.GOOGLEAPIKEY"
-            resValue "string", "app_name_domoticz", 'Domoticz'
-            buildConfigField "boolean", "LITE_VERSION", "false"
+            resValue "string", "app_name_domoticz", 'Domoticz Premium'
+            buildConfigField "boolean", "NEW_VERSION", "false"
             buildConfigField "boolean", "PAID_OOTT", "false"
             dimension "tier"
         }
@@ -151,7 +151,7 @@ android {
             resValue "string", "google_maps_key", "$System.env.GOOGLEAPIKEY"
 
             resValue "string", "app_name_domoticz", 'OOTT'
-            buildConfigField "boolean", "LITE_VERSION", "false"
+            buildConfigField "boolean", "NEW_VERSION", "false"
             buildConfigField "boolean", "PAID_OOTT", "true"
             dimension "tier"
         }
@@ -187,12 +187,12 @@ dependencies {
     implementation "androidx.work:work-runtime:2.8.0-alpha02"
     implementation 'androidx.preference:preference:1.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.biometric:biometric:1.1.0'
-    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.annotation:annotation:1.3.0'
     implementation 'org.reactivestreams:reactive-streams:1.0.3'
@@ -209,7 +209,7 @@ dependencies {
     implementation 'com.google.android.ads.consent:consent-library:1.0.8'
     implementation "com.google.android.gms:play-services-analytics:17.0.1"
     implementation "com.google.android.gms:play-services-wearable:17.1.0"
-    implementation "com.google.android.gms:play-services-maps:17.0.1"
+    implementation "com.google.android.gms:play-services-maps:18.0.2"
     implementation "com.google.android.gms:play-services-gcm:17.0.0"
     implementation "com.google.android.gms:play-services-location:18.0.0"
     implementation "com.google.android.gms:play-services-places:17.0.0"
@@ -243,12 +243,15 @@ dependencies {
     implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
     implementation 'com.alexvasilkov:gesture-views:2.6.0'
 
+    implementation 'com.github.rubengees:easy-header-footer-adapter:3.0.0@aar'
+
     implementation("com.mikepenz:materialdrawer:6.1.3@aar") {
         transitive = true
     }
 
     implementation 'com.github.stfalcon:chatkit:0.3.3'
     implementation 'com.github.matthiasrobbers:shortbread:1.1.0'
+    implementation 'androidx.core:core:1.6.0'
     annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.1.0'
     implementation ('com.adevinta.android:leku:9.1.4') {
         exclude group: 'com.google.android.gms'

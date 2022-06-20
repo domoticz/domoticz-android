@@ -300,7 +300,7 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                         case DomoticzValues.Device.Type.Value.ON_OFF:
                         case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
                         case DomoticzValues.Device.Type.Value.DOORCONTACT:
-                                withButton = WITHBUTTON;
+                            withButton = WITHBUTTON;
                             break;
 
                         case DomoticzValues.Device.Type.Value.X10SIREN:
