@@ -48,7 +48,7 @@ public class SmallPlansAdapter extends RecyclerView.Adapter<SmallPlansAdapter.Da
     private final Context mContext;
     private final SharedPrefUtil mSharedPrefs;
     private ArrayList<PlanInfo> mDataset;
-    private boolean adLoaded = false;
+    private final boolean adLoaded = false;
 
     public SmallPlansAdapter(ArrayList<PlanInfo> data, Context mContext) {
         this.mContext = mContext;

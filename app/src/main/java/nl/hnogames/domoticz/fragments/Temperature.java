@@ -37,7 +37,6 @@ import java.util.ArrayList;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
@@ -75,7 +74,6 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
     private ArrayList<TemperatureInfo> mTempInfos;
-    private SlideInBottomAnimationAdapter alphaSlideIn;
     private ItemTouchHelper mItemTouchHelper;
 
     @Override
@@ -190,12 +188,10 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         if (getView() != null) {
             if (adapter == null) {
                 adapter = new TemperatureAdapter(mContext, StaticHelper.getDomoticz(mContext), getServerUtil(), AddAdsDevice(mTemperatureInfos), this);
-                alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-                gridView.setAdapter(alphaSlideIn);
+                gridView.setAdapter(adapter);
             } else {
                 adapter.setData(AddAdsDevice(mTemperatureInfos));
                 adapter.notifyDataSetChanged();
-                alphaSlideIn.notifyDataSetChanged();
             }
             if (mItemTouchHelper == null) {
                 mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,

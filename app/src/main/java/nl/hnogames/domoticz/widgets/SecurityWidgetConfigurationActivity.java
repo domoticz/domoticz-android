@@ -87,12 +87,14 @@ public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
 
         btnConfig.setOnClickListener(view -> {
             if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
-                UsefulBits.showSnackbarWithAction(SecurityWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG, null, v -> UsefulBits.openPremiumAppStore(SecurityWidgetConfigurationActivity.this), getString(R.string.upgrade));
+                UsefulBits.showSnackbarWithAction(SecurityWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG, null,
+                        v -> UsefulBits.openPremiumAppStore(SecurityWidgetConfigurationActivity.this, IsPremiumEnabled -> recreate()), getString(R.string.upgrade));
                 return;
             }
 
             if (!mSharedPrefs.IsWidgetsEnabled()) {
-                UsefulBits.showSnackbarWithAction(SecurityWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.widget_disabled), Snackbar.LENGTH_LONG, null, v -> startActivityForResult(new Intent(SecurityWidgetConfigurationActivity.this, SettingsActivity.class), 888), getString(R.string.action_settings));
+                UsefulBits.showSnackbarWithAction(SecurityWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.widget_disabled), Snackbar.LENGTH_LONG, null,
+                        v -> startActivityForResult(new Intent(SecurityWidgetConfigurationActivity.this, SettingsActivity.class), 888), getString(R.string.action_settings));
                 return;
             }
 

@@ -85,6 +85,7 @@ import nl.hnogames.domoticz.UserVariablesActivity;
 import nl.hnogames.domoticz.WifiSettingsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.helpers.StaticHelper;
+import nl.hnogames.domoticz.interfaces.SubscriptionsListener;
 import nl.hnogames.domoticz.service.WifiReceiver;
 import nl.hnogames.domoticz.service.WifiReceiverManager;
 import nl.hnogames.domoticz.ui.SimpleTextDialog;
@@ -98,7 +99,7 @@ import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
 
 import static android.content.Context.KEYGUARD_SERVICE;
 
-public class PreferenceFragment extends PreferenceFragmentCompat {
+public class PreferenceFragment extends PreferenceFragmentCompat implements SubscriptionsListener {
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = PreferenceFragment.class.getSimpleName();
 
@@ -833,13 +834,13 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         } else {
             if (premiumPreference != null)
                 premiumPreference.setOnPreferenceClickListener(preference -> {
-                    UsefulBits.openPremiumAppStore(mContext);
+                    UsefulBits.openPremiumAppStore(mContext, this);
                     return true;
                 });
             if (restorePreference != null)
                 restorePreference.setOnPreferenceClickListener(preference -> {
                     showSnackbar("Restoring subscriptions");
-                    UsefulBits.RestoreSubscriptions(mContext);
+                    UsefulBits.RestoreSubscriptions(mContext, this);
                     return true;
                 });
         }
@@ -1081,7 +1082,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             new Handler().postDelayed(() -> {
                 if (getView() != null) {
                     Snackbar.make(getView(), category + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
-                            .setAction(R.string.upgrade, view -> UsefulBits.openPremiumAppStore(mContext))
+                            .setAction(R.string.upgrade, view -> UsefulBits.openPremiumAppStore(mContext, this))
                             .setActionTextColor(ContextCompat.getColor(mContext, R.color.material_blue_600))
                             .show();
                 }
@@ -1125,5 +1126,13 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             }
         });
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void OnDone(boolean IsPremiumEnabled) {
+        try {
+            ((SettingsActivity) getActivity()).recreate();
+        } catch (Exception ex) {
+        }
     }
 }

@@ -39,7 +39,6 @@ import java.util.ArrayList;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.SceneAdapter;
@@ -76,7 +75,6 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     private String filter = "";
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
-    private SlideInBottomAnimationAdapter alphaSlideIn;
     private boolean itemDecorationAdded = false;
     private ItemTouchHelper mItemTouchHelper;
 
@@ -229,12 +227,10 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
 
             if (adapter == null) {
                 adapter = new SceneAdapter(mContext, StaticHelper.getDomoticz(mContext), AddAdsDevice(supportedScenes), listener);
-                alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-                gridView.setAdapter(alphaSlideIn);
+                gridView.setAdapter(adapter);
             } else {
                 adapter.setData(AddAdsDevice(supportedScenes));
                 adapter.notifyDataSetChanged();
-                alphaSlideIn.notifyDataSetChanged();
             }
             if (!isTablet && !itemDecorationAdded) {
                 gridView.addItemDecoration(new MarginItemDecoration(20));

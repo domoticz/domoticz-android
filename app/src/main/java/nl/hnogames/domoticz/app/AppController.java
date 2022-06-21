@@ -82,6 +82,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.BeaconInfo;
 import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.helpers.StaticHelper;
+import nl.hnogames.domoticz.interfaces.SubscriptionsListener;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -116,11 +117,13 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
         return mInstance;
     }
 
-    public static void HandleRestoreSubscriptions(Context context) {
+    public static void HandleRestoreSubscriptions(Context context, SubscriptionsListener listener) {
         Purchases.getSharedInstance().restorePurchases(new ReceiveCustomerInfoCallback() {
             @Override
             public void onReceived(@NonNull CustomerInfo customerInfo) {
                 HandleCustomerInfo(context, customerInfo);
+                if (listener != null)
+                    listener.OnDone(IsPremiumEnabled);
             }
 
             @Override

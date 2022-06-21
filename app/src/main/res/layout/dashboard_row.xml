@@ -82,7 +82,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:orientation="vertical"
+                            android:orientation="horizontal"
                             android:visibility="gone">
 
                             <LinearLayout
@@ -90,8 +90,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
+                                android:layout_margin="10dp"
                                 android:gravity="center"
                                 android:orientation="vertical"
                                 android:visibility="gone">
@@ -133,8 +132,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
+                                android:layout_margin="10dp"
                                 android:gravity="center"
                                 android:orientation="vertical"
                                 android:visibility="gone">
@@ -176,8 +174,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
+                                android:layout_margin="10dp"
                                 android:gravity="center"
                                 android:orientation="vertical"
                                 android:visibility="gone">

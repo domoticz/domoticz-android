@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -42,15 +41,12 @@ import com.rubengees.easyheaderfooteradapter.EasyHeaderFooterAdapter;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
@@ -59,6 +55,8 @@ import nl.hnogames.domoticz.adapters.DashboardAdapter;
 import nl.hnogames.domoticz.adapters.SmallPlansAdapter;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
+import nl.hnogames.domoticz.app.DomoticzPlansFragment;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.helpers.StaticHelper;
@@ -87,12 +85,12 @@ import nl.hnogames.domoticzapi.Interfaces.SunRiseReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
-public class Dashboard extends DomoticzDashboardFragment implements DomoticzFragmentListener,
+public class Plan extends DomoticzPlansFragment implements DomoticzFragmentListener,
         switchesClickListener, OnPermissionCallback {
 
     public static final String PERMANENT_OVERRIDE = "PermanentOverride";
     public static final String AUTO = "Auto";
-    private static final String TAG = Dashboard.class.getSimpleName();
+    private static final String TAG = Plan.class.getSimpleName();
 
     private Context mContext;
     private DashboardAdapter adapter;

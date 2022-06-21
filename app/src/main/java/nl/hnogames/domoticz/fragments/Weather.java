@@ -36,7 +36,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
@@ -72,7 +71,6 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     private Animation animShow, animHide;
     private ArrayList<WeatherInfo> mWeatherInfoList;
     private boolean itemDecorationAdded = false;
-    private SlideInBottomAnimationAdapter alphaSlideIn;
     private ItemTouchHelper mItemTouchHelper;
 
     @Override
@@ -189,12 +187,10 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     private void createListView(ArrayList<WeatherInfo> mWeatherInfos) {
         if (adapter == null) {
             adapter = new WeatherAdapter(mContext, StaticHelper.getDomoticz(mContext), getServerUtil(), AddAdsDevice(mWeatherInfos), this);
-            alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-            gridView.setAdapter(alphaSlideIn);
+            gridView.setAdapter(adapter);
         } else {
             adapter.setData(AddAdsDevice(mWeatherInfos));
             adapter.notifyDataSetChanged();
-            alphaSlideIn.notifyDataSetChanged();
         }
 
         if (!isTablet && !itemDecorationAdded) {

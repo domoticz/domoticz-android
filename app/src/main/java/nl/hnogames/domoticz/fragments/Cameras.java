@@ -45,7 +45,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.CamerasAdapter;
@@ -76,7 +75,6 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private boolean refreshTimer = false;
     private SharedPrefUtil mSharedPrefs;
-    private SlideInBottomAnimationAdapter alphaSlideIn;
     private PermissionFragmentHelper permissionFragmentHelper;
     private ItemTouchHelper mItemTouchHelper;
     private ArrayList<CameraInfo> Cameras;
@@ -185,9 +183,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             mSwipeRefreshLayout = getView().findViewById(R.id.swipe_refresh_layout);
 
             StaggeredGridLayoutManager mLayoutManager;
-            boolean isPortrait = false;
-            if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-                isPortrait = true;
+            boolean isPortrait = getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
             if (ViewUtils.isTablet(context)) {
                 if (isPortrait) {
                     mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
@@ -212,13 +208,11 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                 CameraInfo camera = Cameras.get(position);
                 CameraUtil.ProcessImage(context, camera.getIdx(), camera.getName());
             });
-            alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
-            mRecyclerView.setAdapter(alphaSlideIn);
+            mRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.setRefreshTimer(refreshTimer);
             mAdapter.setData(AddAdsDevice(Cameras));
             mAdapter.notifyDataSetChanged();
-            alphaSlideIn.notifyDataSetChanged();
         }
 
         if (mItemTouchHelper == null) {

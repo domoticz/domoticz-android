@@ -22,6 +22,7 @@
 package nl.hnogames.domoticz.adapters;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -61,7 +62,9 @@ import java.util.List;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
@@ -76,6 +79,7 @@ import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PicassoUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticz.utils.ViewUtils;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SunRiseInfo;
@@ -88,7 +92,6 @@ import rm.com.clocks.ClockImageView;
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DataObjectHolder> implements RVHAdapter {
     public static final int ID_SCENE_SWITCH = 3000;
     public static List<String> mCustomSorting;
-    private final int ID_TEXTVIEW = 1000;
     private final int ID_SWITCH = 0;
     private final int[] EVOHOME_STATE_IDS = {
             DomoticzValues.Device.ModalSwitch.Action.AUTO,
@@ -213,14 +216,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View row;
 
-        // Check if we're running on Android 5.0 or higher
-        if (Build.VERSION.SDK_INT >= 21) {
-            row = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.dashboard_row, parent, false);
-        } else {
-            row = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.dashboard_row_noads, parent, false);
-        }
+        row = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.dashboard_row, parent, false);
         return new DataObjectHolder(row);
     }
 

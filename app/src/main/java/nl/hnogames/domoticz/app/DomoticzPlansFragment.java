@@ -44,8 +44,9 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
@@ -63,20 +64,20 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
-public class DomoticzRecyclerFragment extends Fragment {
-
+public class DomoticzPlansFragment extends Fragment {
     public RecyclerView gridView;
     public SwipeRefreshLayout mSwipeRefreshLayout;
     public SharedPrefUtil mSharedPrefs;
     public PhoneConnectionUtil mPhoneConnectionUtil;
     public View frameLayout;
-    public LinearLayout lySortDevices, lySortLogs;
+    public LinearLayout lySortDevices;
     public BackdropContainer backdropContainer;
     public MaterialCardView bottomLayoutWrapper;
-    public MaterialButton sortAll, sortOn, sortOff, sortStatic, sortLogsAll, sortLogsNormal, sortLogsError, sortLogsStatus;
-    public MaterialButton btnCheckSettings;
+    public RecyclerView planList;
+    public MaterialButton sortAll, sortOn, sortOff, sortStatic, btnCheckSettings;
     public boolean isTablet = false;
     public boolean isPortrait = false;
+    public GridLayoutManager mLayoutManager;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private TextView debugText;
@@ -85,12 +86,20 @@ public class DomoticzRecyclerFragment extends Fragment {
     private String sort = "";
     private boolean backdropShown = false;
 
-    public DomoticzRecyclerFragment() {
+    public DomoticzPlansFragment() {
     }
 
     public void setTheme() {
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getActivity());
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public ServerUtil getServerUtil() {
+        return StaticHelper.getServerUtil(getContext());
     }
 
     public ConfigInfo getServerConfigInfo(Context context) {
@@ -115,17 +124,9 @@ public class DomoticzRecyclerFragment extends Fragment {
                         return user;
                 }
             }
-        } catch (Exception ignored) {
+        } catch (Exception ex) {
         }
         return null;
-    }
-
-    public String getSort() {
-        return sort;
-    }
-
-    public ServerUtil getServerUtil() {
-        return StaticHelper.getServerUtil(getContext());
     }
 
     public void sortFragment(String sort) {
@@ -137,19 +138,23 @@ public class DomoticzRecyclerFragment extends Fragment {
         gridView = root.findViewById(R.id.my_recycler_view);
         if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(getContext());
+
         setGridViewLayout();
+        setPlanListLayout();
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
 
-        View.OnClickListener onSortClick = v -> {
-            sortFragment(String.valueOf(((MaterialButton) v).getText()));
-            toggleBackDrop();
-        };
+        bottomLayoutWrapper = root.findViewById(R.id.bottomLayoutWrapper);
+        lySortDevices = root.findViewById(R.id.lySortDevices);
         if (getActivity() instanceof MainActivity)
             frameLayout = ((MainActivity) getActivity()).frameLayout;
 
-        lySortDevices = root.findViewById(R.id.lySortDevices);
-        lySortLogs = root.findViewById(R.id.lySortLogs);
-        bottomLayoutWrapper = root.findViewById(R.id.bottomLayoutWrapper);
+        sortStatic = root.findViewById(R.id.btnSortStatic);
+        if (sortStatic != null) {
+            sortStatic.setOnClickListener(v -> {
+                sortFragment(String.valueOf(sortStatic.getText()));
+                toggleBackDrop();
+            });
+        }
 
         btnCheckSettings = root.findViewById(R.id.btnCheckSettings);
         if (btnCheckSettings != null) {
@@ -160,30 +165,29 @@ public class DomoticzRecyclerFragment extends Fragment {
             });
         }
 
-        sortStatic = root.findViewById(R.id.btnSortStatic);
-        if (sortStatic != null)
-            sortStatic.setOnClickListener(onSortClick);
         sortOn = root.findViewById(R.id.btnSortOn);
-        if (sortOn != null)
-            sortOn.setOnClickListener(onSortClick);
+        if (sortOn != null) {
+            sortOn.setOnClickListener(v -> {
+                sortFragment(String.valueOf(sortOn.getText()));
+                toggleBackDrop();
+            });
+        }
+
         sortOff = root.findViewById(R.id.btnSortOff);
-        if (sortOff != null)
-            sortOff.setOnClickListener(onSortClick);
+        if (sortOff != null) {
+            sortOff.setOnClickListener(v -> {
+                sortFragment(String.valueOf(sortOff.getText()));
+                toggleBackDrop();
+            });
+        }
+
         sortAll = root.findViewById(R.id.btnSortAll);
-        if (sortAll != null)
-            sortAll.setOnClickListener(onSortClick);
-        sortLogsAll = root.findViewById(R.id.btnSortLogsAll);
-        if (sortLogsAll != null)
-            sortLogsAll.setOnClickListener(onSortClick);
-        sortLogsError = root.findViewById(R.id.btnSortLogsError);
-        if (sortLogsError != null)
-            sortLogsError.setOnClickListener(onSortClick);
-        sortLogsNormal = root.findViewById(R.id.btnSortLogsNormal);
-        if (sortLogsNormal != null)
-            sortLogsNormal.setOnClickListener(onSortClick);
-        sortLogsStatus = root.findViewById(R.id.btnSortLogsStatus);
-        if (sortLogsStatus != null)
-            sortLogsStatus.setOnClickListener(onSortClick);
+        if (sortAll != null) {
+            sortAll.setOnClickListener(v -> {
+                sortFragment(String.valueOf(sortAll.getText()));
+                toggleBackDrop();
+            });
+        }
 
         backdropContainer = root.findViewById(R.id.backdropcontainer);
         backdropContainer
@@ -192,45 +196,54 @@ public class DomoticzRecyclerFragment extends Fragment {
                 .build();
     }
 
-    public void setActionbar(String title) {
-        if (getActivity() instanceof MainActivity)
-            ((MainActivity) getActivity()).setActionbar(title);
-    }
-
-    public void setSortFab(boolean visible) {
-        if (getActivity() instanceof MainActivity) {
-            if (((MainActivity) getActivity()).fabSort != null)
-                ((MainActivity) getActivity()).fabSort.setVisibility(visible ? View.VISIBLE : View.GONE);
-        }
-    }
-
     public void setGridViewLayout() {
         try {
-            if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-                isPortrait = true;
+            isPortrait = getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+
             if (getActivity() instanceof MainActivity) {
                 isTablet = ViewUtils.isTablet(getContext());
             }
+            Log.d("orientationchanged", "Event: setGridViewLayout Portrait:" + isPortrait + " Tablet:" + isTablet);
 
+            gridView.setHasFixedSize(true);
             if (isTablet) {
-                if (isPortrait) {
-                    StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-                    gridView.setLayoutManager(mLayoutManager);
-                } else {
-                    StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-                    gridView.setLayoutManager(mLayoutManager);
-                }
+                //if (isPortrait) {
+                    mLayoutManager = new GridLayoutManager(getContext(), 3);
+                    Log.d("orientationchanged", "Event: GridLayoutManager span 3");
+               // } else {
+               //     mLayoutManager = new GridLayoutManager(getContext(), 4);
+               //     Log.d("orientationchanged", "Event: GridLayoutManager span 4");
+               // }
             } else {
-                StaggeredGridLayoutManager mLayoutManager;
-                if (isPortrait) {
-                    mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-                } else {
-                    mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-                }
-                gridView.setLayoutManager(mLayoutManager);
+               // if (isPortrait) {
+                    mLayoutManager = new GridLayoutManager(getContext(), 2);
+                    Log.d("orientationchanged", "Event: GridLayoutManager span 2");
+                //} else {
+                //    mLayoutManager = new GridLayoutManager(getContext(), 3);
+                //    Log.d("orientationchanged", "Event: GridLayoutManager span 3");
+               // }
             }
-            //gridView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
-        } catch (Exception ex) {
+
+            mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    return 1;
+                }
+            });
+
+            gridView.setLayoutManager(mLayoutManager);
+        } catch (Exception ignored) {
+        }
+    }
+
+    public void setPlanListLayout() {
+        try {
+            planList = root.findViewById(R.id.planList);
+            planList.setVisibility(View.GONE);
+            LinearLayoutManager layoutManager
+                    = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+            planList.setLayoutManager(layoutManager);
+        } catch (Exception ignored) {
         }
     }
 
@@ -239,7 +252,6 @@ public class DomoticzRecyclerFragment extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         root = (ViewGroup) inflater.inflate(R.layout.fragment_cameras, null);
-
         initViews(root);
         setTheme();
         return root;
@@ -304,7 +316,6 @@ public class DomoticzRecyclerFragment extends Fragment {
      */
     public void checkConnection() {
         if (listener == null) {
-            //Get listener
             List<Fragment> fragments = getFragmentManager().getFragments();
             onAttachFragment(fragments.get(0) != null ? fragments.get(0) : fragments.get(1));
         }
@@ -345,6 +356,7 @@ public class DomoticzRecyclerFragment extends Fragment {
         showSpinner(false);
         error.printStackTrace();
         String errorMessage = StaticHelper.getDomoticz(getActivity()).getErrorMessage(error);
+
         if (mPhoneConnectionUtil == null)
             mPhoneConnectionUtil = new PhoneConnectionUtil(getContext());
         if (mPhoneConnectionUtil.isNetworkAvailable()) {
@@ -362,8 +374,19 @@ public class DomoticzRecyclerFragment extends Fragment {
         }
     }
 
-    private void setErrorMessage(String message) {
+    public void setActionbar(String title) {
+        if (getActivity() instanceof MainActivity)
+            ((MainActivity) getActivity()).setActionbar(title);
+    }
 
+    public void setSortFab(boolean visible) {
+        if (getActivity() instanceof MainActivity) {
+            if (((MainActivity) getActivity()).fabSort != null)
+                ((MainActivity) getActivity()).fabSort.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private void setErrorMessage(String message) {
         if (debug) addDebugText(message);
         else {
             Logger(fragmentName, message);
@@ -377,7 +400,8 @@ public class DomoticzRecyclerFragment extends Fragment {
             if (debug) {
                 if (debugText != null) {
                     String temp = debugText.getText().toString();
-                    if (temp.isEmpty() || temp.equals("")) debugText.setText(text);
+                    if (temp.isEmpty())
+                        debugText.setText(text);
                     else {
                         temp = temp + "\n";
                         temp = temp + text;

@@ -31,7 +31,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -45,11 +44,10 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
@@ -79,6 +77,7 @@ public class DomoticzDashboardFragment extends Fragment {
     public MaterialButton sortAll, sortOn, sortOff, sortStatic, btnCheckSettings;
     public boolean isTablet = false;
     public boolean isPortrait = false;
+    public GridLayoutManager mLayoutManager;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private TextView debugText;
@@ -199,32 +198,42 @@ public class DomoticzDashboardFragment extends Fragment {
 
     public void setGridViewLayout() {
         try {
-            if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-                isPortrait = true;
+            isPortrait = getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
 
             if (getActivity() instanceof MainActivity) {
                 isTablet = ViewUtils.isTablet(getContext());
             }
+            Log.d("orientationchanged", "Event: setGridViewLayout Portrait:" + isPortrait + " Tablet:" + isTablet);
 
             gridView.setHasFixedSize(true);
             if (isTablet) {
-                StaggeredGridLayoutManager mLayoutManager;
-                if (isPortrait) {
-                    mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-                } else {
-                    mLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
-                }
-                gridView.setLayoutManager(mLayoutManager);
+                //if (isPortrait) {
+                    mLayoutManager = new GridLayoutManager(getContext(), 3);
+                    Log.d("orientationchanged", "Event: GridLayoutManager span 3");
+               // } else {
+               //     mLayoutManager = new GridLayoutManager(getContext(), 4);
+               //     Log.d("orientationchanged", "Event: GridLayoutManager span 4");
+               // }
             } else {
-                StaggeredGridLayoutManager mLayoutManager;
-                if (isPortrait) {
-                    mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-                } else {
-                    mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-                }
-                gridView.setLayoutManager(mLayoutManager);
+               // if (isPortrait) {
+                    mLayoutManager = new GridLayoutManager(getContext(), 2);
+                    Log.d("orientationchanged", "Event: GridLayoutManager span 2");
+                //} else {
+                //    mLayoutManager = new GridLayoutManager(getContext(), 3);
+                //    Log.d("orientationchanged", "Event: GridLayoutManager span 3");
+               // }
             }
-            gridView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+
+            mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    int spanSize =position == 0 && mSharedPrefs.addClockToDashboard() ? 2 : 1;
+                    Log.d("orientationchanged", "Span size: "+spanSize+" for position "+position);
+                    return spanSize;
+                }
+            });
+
+            gridView.setLayoutManager(mLayoutManager);
         } catch (Exception ignored) {
         }
     }

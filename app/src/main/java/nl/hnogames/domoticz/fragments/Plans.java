@@ -39,7 +39,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
@@ -67,7 +66,6 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     private SharedPrefUtil mSharedPrefs;
     private PlansAdapter mAdapter;
     private ArrayList<PlanInfo> mPlans;
-    private SlideInBottomAnimationAdapter alphaSlideIn;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ItemTouchHelper mItemTouchHelper;
 
@@ -146,9 +144,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
             mSwipeRefreshLayout = getView().findViewById(R.id.swipe_refresh_layout);
 
             StaggeredGridLayoutManager mLayoutManager;
-            boolean isPortrait = false;
-            if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-                isPortrait = true;
+            boolean isPortrait = getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
             if (ViewUtils.isTablet(getContext())) {
                 if (isPortrait) {
                     mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
@@ -186,12 +182,10 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
                 } catch (Exception ignored) {
                 }
             });
-            alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
-            mRecyclerView.setAdapter(alphaSlideIn);
+            mRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.setData(AddAdsDevice(this.mPlans));
             mAdapter.notifyDataSetChanged();
-            alphaSlideIn.notifyDataSetChanged();
         }
 
         if (mItemTouchHelper == null) {
