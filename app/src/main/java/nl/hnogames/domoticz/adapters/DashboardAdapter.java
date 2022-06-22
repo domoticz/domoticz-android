@@ -735,7 +735,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                         });
             }
         } else {
-            holder.contentWrapper.setBackgroundDrawable(null);
+            holder.contentWrapper.setBackgroundColor(listviewRowBackground);
             holder.full_screen_icon.setVisibility(View.GONE);
             holder.dummyImg.setVisibility(View.GONE);
         }
