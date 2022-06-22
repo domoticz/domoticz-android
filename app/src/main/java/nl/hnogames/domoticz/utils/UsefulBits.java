@@ -572,6 +572,11 @@ public class UsefulBits {
     }
 
     public static void openPremiumAppStore(Context context, SubscriptionsListener listener) {
+        if(AppController.premiumPackage == null)
+        {
+            return;
+        }
+
         Purchases.getSharedInstance().purchasePackage(
                 (Activity) context,
                 AppController.premiumPackage,
@@ -605,6 +610,6 @@ public class UsefulBits {
     }
 
     public static void RestoreSubscriptions(Context context, SubscriptionsListener listener) {
-        AppController.HandleRestoreSubscriptions(context, listener);
+        AppController.HandleRestoreSubscriptions(listener);
     }
 }
