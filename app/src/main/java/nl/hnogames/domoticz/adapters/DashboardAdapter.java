@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.adapters;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -446,31 +445,31 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                         int usage = Integer.parseInt(mDeviceInfo.getUsage().replace("W", "").trim());
                         if (mDeviceInfo.getUsageDeliv() != null && mDeviceInfo.getUsageDeliv().length() > 0) {
                             int usagedel = Integer.parseInt(mDeviceInfo.getUsageDeliv().replace("W", "").trim());
-                            text = context.getString(R.string.usage) + ": " + (usage - usagedel) + " W";
+                            text = context.getString(R.string.usage) + ": " + (usage - usagedel) + "W";
                         } else {
-                            text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
+                            text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage().replace(" Watt", "W");
                         }
                         holder.switch_battery_level.setText(text);
                     } catch (Exception ex) {
-                        text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
+                        text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage().replace(" Watt", "W");
                         holder.switch_battery_level.setText(text);
                     }
                 }
 
                 if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0) {
                     setAlphaIcon = false;
-                    holder.switch_battery_level.append("\r\n" + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
                 }
                 if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&
                         !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
-                    holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
 
                 if (mDeviceInfo.getCounterDelivToday() != null && mDeviceInfo.getCounterDelivToday().length() > 0) {
                     setAlphaIcon = false;
-                    holder.switch_battery_level.append("\r\n" + context.getString(R.string.delivery) + ": " + mDeviceInfo.getCounterDelivToday());
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.delivery) + ": " + mDeviceInfo.getCounterDelivToday());
                     if (mDeviceInfo.getCounterDeliv() != null && mDeviceInfo.getCounterDeliv().length() > 0 &&
                             !mDeviceInfo.getCounterDeliv().equals(mDeviceInfo.getData()))
-                        holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounterDeliv());
+                        holder.switch_battery_level.append("\n" + context.getString(R.string.total) + ": " + mDeviceInfo.getCounterDeliv());
                 }
 
                 if (mDeviceInfo.getType() != null && mDeviceInfo.getType().length() > 0 &&
@@ -479,27 +478,30 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     text = context.getString(R.string.direction) + " " + mDeviceInfo.getDirection() + " " + mDeviceInfo.getDirectionStr();
                     holder.switch_battery_level.setText(text);
                 }
+
                 if (!UsefulBits.isEmpty(mDeviceInfo.getRain())) {
                     setAlphaIcon = false;
                     text = context.getString(R.string.rain) + ": " + mDeviceInfo.getRain();
                     holder.switch_battery_level.setText(text);
                 }
+
                 if (!UsefulBits.isEmpty(mDeviceInfo.getRainRate())) {
                     setAlphaIcon = false;
-                    holder.switch_battery_level.append(", " + context.getString(R.string.rainrate) + ": " + mDeviceInfo.getRainRate());
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.rainrate) + ": " + mDeviceInfo.getRainRate());
                 }
+
                 if (!UsefulBits.isEmpty(mDeviceInfo.getForecastStr()))
                     holder.switch_battery_level.setText(mDeviceInfo.getForecastStr());
                 if (!UsefulBits.isEmpty(mDeviceInfo.getSpeed()))
-                    holder.switch_battery_level.append(", " + context.getString(R.string.speed) + ": " + mDeviceInfo.getSpeed() + " " + windSign);
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.speed) + ": " + mDeviceInfo.getSpeed() + " " + windSign);
                 if (mDeviceInfo.getDewPoint() > 0)
-                    holder.switch_battery_level.append(", " + context.getString(R.string.dewPoint) + ": " + mDeviceInfo.getDewPoint() + " " + tempSign);
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.dewPoint) + ": " + mDeviceInfo.getDewPoint() + " " + tempSign);
 
                 if ((mDeviceInfo.getType() != null && mDeviceInfo.getType().equals(DomoticzValues.Device.Type.Value.TEMP)) ||
                         !Double.isNaN(mDeviceInfo.getTemperature())) {
                     setAlphaIcon = false;
-                    holder.switch_battery_level.append(", " + context.getString(R.string.temp) + ": " + mDeviceInfo.getTemperature() + " " + tempSign);
-                    holder.pieView.setVisibility(View.VISIBLE);
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.temp) + ": " + mDeviceInfo.getTemperature() + " " + tempSign);
+                    holder.pieView.setVisibility(View.GONE);
                     double temp = mDeviceInfo.getTemperature();
                     if (tempSign != null && !tempSign.equals("C"))
                         temp = temp / 2;
@@ -516,16 +518,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                         animation.setDuration(2000);
                         holder.pieView.startAnimation(animation);
                     }
-                    holder.switch_battery_level.setVisibility(View.GONE);
+                    //holder.switch_battery_level.setVisibility(View.GONE);
                 } else
                     holder.pieView.setVisibility(View.GONE);
 
                 if (mDeviceInfo.getBarometer() > 0)
-                    holder.switch_battery_level.append(", " + context.getString(R.string.pressure) + ": " + mDeviceInfo.getBarometer());
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.pressure) + ": " + mDeviceInfo.getBarometer());
                 if (!UsefulBits.isEmpty(mDeviceInfo.getChill()))
-                    holder.switch_battery_level.append(", " + context.getString(R.string.chill) + ": " + mDeviceInfo.getChill() + " " + tempSign);
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.chill) + ": " + mDeviceInfo.getChill() + " " + tempSign);
                 if (!UsefulBits.isEmpty(mDeviceInfo.getHumidityStatus()))
-                    holder.switch_battery_level.append(", " + context.getString(R.string.humidity) + ": " + mDeviceInfo.getHumidityStatus());
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.humidity) + ": " + mDeviceInfo.getHumidityStatus());
             }
 
             if (mDeviceInfo.getTypeImg().equals("counter") || mDeviceInfo.getTypeImg().equals("current"))
@@ -985,7 +987,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             modeIconRes = getEvohomeStateIconResource(mDeviceInfo.getStatus());
         } else {
             holder.buttonSet.setVisibility(View.GONE);
-            holder.pieView.setVisibility(View.VISIBLE);
+            holder.pieView.setVisibility(View.GONE);
 
             double temp = temperature;
             if (!UsefulBits.isEmpty(sign) && !sign.equals("C"))

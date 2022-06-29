@@ -256,7 +256,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="-8dp"
                                         android:layout_marginTop="-8dp"
-                                        android:maxLines="3"
+                                        android:maxLines="5"
                                         android:text="@string/battery_level" />
                                 </LinearLayout>
                             </LinearLayout>
@@ -268,6 +268,7 @@
                                 android:layout_below="@+id/textwrapper"
                                 android:layout_gravity="right"
                                 android:gravity="right"
+                                android:layout_marginTop="8dp"
                                 android:foregroundGravity="right"
                                 android:orientation="horizontal">
 
@@ -279,6 +280,7 @@
                                     android:layout_gravity="right"
                                     android:gravity="right"
                                     android:foregroundGravity="right"
+                                    android:visibility="gone"
                                     plainpie:inner_pie_padding="5"
                                     plainpie:inner_text_visibility="true"
                                     plainpie:percentage="50"
