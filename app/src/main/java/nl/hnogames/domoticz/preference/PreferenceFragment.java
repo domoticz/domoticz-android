@@ -250,9 +250,11 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         // Geofence settings
         Preference GeoSettings = findPreference("geo_settings");
-
+        
         // NFC settings
         SwitchPreference EnableNFCPreference = findPreference("enableNFC");
+        SwitchPreference AutoPreference = findPreference("enableAutoItems");
+     
         Preference NFCPreference = findPreference("nfc_settings");
 
         // Speech settings
@@ -803,6 +805,15 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             WearPreference.setOnPreferenceChangeListener((preference, newValue) -> {
                 if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_wear));
+                    return false;
+                }
+                return true;
+            });
+
+        if (AutoPreference != null)
+            AutoPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_auto));
                     return false;
                 }
                 return true;
