@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -25,10 +26,10 @@
     <string name="security_arm_home">Arma in casa</string>
     <string name="security_arm_away">Arma fuori casa</string>
     <string name="security_wrong_code">Codice errato inserito!</string>
-    <string name="security_no_rights">You do not have the rights for this action!</string>
+    <string name="security_no_rights">Non hai i diritti per questa azione!</string>
     <string name="security_generic_error">Non posso cambiare la modalità di sicurezza</string>
     <string name="security_wrong_password_fingerprint">La password inserita non è corretta, la password dell\'account domoticz è l\'alternativa alle impronte digitali nel caso ci siano problemi...!</string>
     <string name="show_password">Mostra Password</string>
-    <string name="fingerprint_make_sure">We need to make sure its you</string>
-    <string name="fingerprint_dialog_description">Touch your finger on the fingerprint sensor to authorise your account.</string>
+    <string name="fingerprint_make_sure">Abbiamo bisogno di assicurarsi che sia tu</string>
+    <string name="fingerprint_dialog_description">Metti il dito sul sensore di impronte digitali per autorizzare il tuo account.</string>
 </resources>

@@ -231,7 +231,7 @@
                                 android:layout_centerHorizontal="true"
                                 android:contentDescription="@string/error_image_description"
                                 android:src="@drawable/baseline_error_outline_white_36"
-                                android:tint="?attr/preferenceIconColor" />
+                                app:tint="?attr/preferenceIconColor" />
 
                             <TextView
                                 android:id="@+id/errorTextOops"
@@ -278,6 +278,16 @@
                     </ScrollView>
                 </RelativeLayout>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/planList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:visibility="gone"
+                    android:background="?attr/recyclerBackground"
+                    android:scrollbars="none" />
+
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/swipe_refresh_layout"
                     android:layout_width="match_parent"
@@ -294,6 +304,7 @@
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             </LinearLayout>
+
         </com.google.android.material.card.MaterialCardView>
     </nl.hnogames.domoticz.ui.Backdrop.BackdropContainer>
 </LinearLayout>

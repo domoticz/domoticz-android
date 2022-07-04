@@ -57,6 +57,7 @@ import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.ui.Backdrop.BackdropContainer;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticz.utils.ViewUtils;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -141,12 +142,9 @@ public class DomoticzRecyclerFragment extends Fragment {
         setGridViewLayout();
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
 
-        View.OnClickListener onSortClick = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sortFragment(String.valueOf(((MaterialButton) v).getText()));
-                toggleBackDrop();
-            }
+        View.OnClickListener onSortClick = v -> {
+            sortFragment(String.valueOf(((MaterialButton) v).getText()));
+            toggleBackDrop();
         };
         if (getActivity() instanceof MainActivity)
             frameLayout = ((MainActivity) getActivity()).frameLayout;
@@ -157,12 +155,9 @@ public class DomoticzRecyclerFragment extends Fragment {
 
         btnCheckSettings = root.findViewById(R.id.btnCheckSettings);
         if (btnCheckSettings != null) {
-            btnCheckSettings.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (getActivity() instanceof MainActivity) {
-                        ((MainActivity) getActivity()).OpenSettings();
-                    }
+            btnCheckSettings.setOnClickListener(v -> {
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).OpenSettings();
                 }
             });
         }
@@ -216,19 +211,24 @@ public class DomoticzRecyclerFragment extends Fragment {
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
                 isPortrait = true;
             if (getActivity() instanceof MainActivity) {
-                isTablet = !
-                        ((MainActivity) getActivity()).onPhone;
+                isTablet = ViewUtils.isTablet(getContext());
             }
+
             if (isTablet) {
                 if (isPortrait) {
-                    StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+                    StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
                     gridView.setLayoutManager(mLayoutManager);
                 } else {
-                    StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                    StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
                     gridView.setLayoutManager(mLayoutManager);
                 }
             } else {
-                StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+                StaggeredGridLayoutManager mLayoutManager;
+                if (isPortrait) {
+                    mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+                } else {
+                    mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                }
                 gridView.setLayoutManager(mLayoutManager);
             }
             gridView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
@@ -273,7 +273,7 @@ public class DomoticzRecyclerFragment extends Fragment {
             listener = (DomoticzFragmentListener) fragment;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                    fragment.toString() + " must implement DomoticzFragmentListener");
+                    fragment + " must implement DomoticzFragmentListener");
         }
     }
 

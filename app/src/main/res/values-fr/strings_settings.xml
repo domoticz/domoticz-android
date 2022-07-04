@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -42,6 +43,7 @@
     <string name="category_account">Comptes</string>
     <string name="category_QRCode">QR Code</string>
     <string name="category_bluetooth">Bluetooth</string>
+    <string name="category_wifi">Wifi</string>
     <string name="category_Speech">Commande vocale.</string>
     <string name="category_Reset">Ràz</string>
     <string name="category_help">Contribuer</string>
@@ -72,7 +74,9 @@
     <string name="show_dashboard_list_off">Voir la tableau de bord comme une grille</string>
     <string name="dashboard_clock">Horloge</string>
     <string name="show_dashboard_clock">Afficher une horloge sur le tableau de bord</string>
-    <string name="dashboard_camera">Camera</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
+    <string name="dashboard_camera">Caméra</string>
     <string name="show_dashboard_camera">Load the camera for connected switches</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Activer Android Wear</string>
@@ -171,8 +175,8 @@
     <string name="theme_orange">Orange</string>
     <string name="theme_pink">Rose</string>
     <string name="theme_blue">Bleu</string>
-    <string name="theme_green">Green</string>
-    <string name="theme_dark_blue">Dark blue</string>
+    <string name="theme_green">Vert</string>
+    <string name="theme_dark_blue">Bleu foncé</string>
     <!-- Other -->
     <string name="default_values">Valeur par défaut</string>
     <string name="default_values_min_error">La valeur maximale doit être supérieure à la valeur Minimale</string>

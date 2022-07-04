@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -22,7 +23,10 @@
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="premium_category">Achetez le premium !</string>
     <string name="premium_title">Téléchargez la version premium !</string>
+    <string name="restore_title">Restore subscriptions</string>
     <string name="premium_feature">est une fonction premium s\'il vous plaît acheter la version payante pour soutenir les développeurs !</string>
+    <string name="old_version">Get the latest version!</string>
+    <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
     <string name="drawer_open">Ouvrir le menu</string>
     <string name="drawer_close">Fermer le menu</string>
     <string name="msg_please_wait">Patientez&#8230;</string>
@@ -113,6 +117,7 @@
     <string name="filterOn_all">Tous les dispositifs</string>
     <string name="filter">Filtrer</string>
     <string name="filter_devices">Filtrer les dispositifs</string>
+    <string name="filter_range">Définir la plage</string>
     <string name="filter_graph_empty">Veuillez spécifier un filtre</string>
     <string name="choose_color">Sélectionnez la couleur</string>
     <string name="no_data_on_domoticz">Aucune donnée sur le serveur Domoticz</string>
@@ -138,4 +143,5 @@
     <string name="tasker_title">Configurer les règles d\'automatisation avec Tasker pour Domoticz</string>
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Configurer les règles d\'automatisation avec Tasker pour Domoticz</string>
+    <string name="background_location_warning">Cette application collecte les données de localisation pour permettre le géorepérage des services, même lorsque elle est fermée ou non utilisée.</string>
 </resources>

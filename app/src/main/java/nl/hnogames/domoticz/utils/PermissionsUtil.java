@@ -64,7 +64,8 @@ public class PermissionsUtil {
     //these permissions are needed for bluetooth
     public static final String[] INITIAL_BLUETOOTH_PERMS = {
             Manifest.permission.BLUETOOTH,
-            Manifest.permission.BLUETOOTH_ADMIN
+            Manifest.permission.BLUETOOTH_ADMIN,
+            Manifest.permission.BLUETOOTH_SCAN
     };
     //these permissions are needed for recording audio
     public static final String[] INITIAL_AUDIO_PERMS = {
@@ -78,6 +79,7 @@ public class PermissionsUtil {
     public static final String[] INITIAL_BEACON_PERMS = {
             Manifest.permission.BLUETOOTH,
             Manifest.permission.BLUETOOTH_ADMIN,
+            Manifest.permission.BLUETOOTH_SCAN,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
     };
@@ -117,7 +119,7 @@ public class PermissionsUtil {
     }
 
     public static boolean canAccessBluetooth(Context context) {
-        return (hasPermission(Manifest.permission.BLUETOOTH, context)) && (hasPermission(Manifest.permission.BLUETOOTH_ADMIN, context));
+        return (hasPermission(Manifest.permission.BLUETOOTH, context)) && hasPermission(Manifest.permission.BLUETOOTH_SCAN, context) && (hasPermission(Manifest.permission.BLUETOOTH_ADMIN, context));
     }
 
     public static boolean canAccessDeviceState(Context context) {

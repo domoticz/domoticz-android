@@ -98,7 +98,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             DomoticzValues.Device.ModalSwitch.Action.CUSTOM,
             DomoticzValues.Device.ModalSwitch.Action.HEATING_OFF
     };
-    private final boolean showAsList;
     private final Context context;
     private final switchesClickListener listener;
     private final SharedPrefUtil mSharedPrefs;
@@ -118,12 +117,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             ServerUtil serverUtil,
                             ArrayList<DevicesInfo> data,
                             switchesClickListener listener,
-                            boolean showAsList,
                             SunRiseInfo sunriseInfo) {
         super();
 
         this.domoticz = StaticHelper.getDomoticz(context);
-        this.showAsList = showAsList;
         this.sunriseInfo = sunriseInfo;
         mSharedPrefs = new SharedPrefUtil(context);
 
@@ -218,19 +215,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         // Check if we're running on Android 5.0 or higher
         if (Build.VERSION.SDK_INT >= 21) {
-            if (showAsList)
-                row = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.dashboard_row_list, parent, false);
-            else
-                row = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.dashboard_row, parent, false);
+            row = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.dashboard_row, parent, false);
         } else {
-            if (showAsList)
-                row = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.dashboard_row_list_noads, parent, false);
-            else
-                row = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.dashboard_row_noads, parent, false);
+            row = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.dashboard_row_noads, parent, false);
         }
         return new DataObjectHolder(row);
     }
@@ -330,13 +319,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             }
                             break;
                         default:
-                            if (mSharedPrefs.showSwitchesAsButtons()) {
-                                setButtons(holder, Buttons.BUTTONS);
-                                setOnOffButtonRowData(mDeviceInfo, holder);
-                            } else {
-                                setButtons(holder, Buttons.SWITCH);
-                                setOnOffSwitchRowData(mDeviceInfo, holder);
-                            }
+                            setButtons(holder, Buttons.SWITCH);
+                            setOnOffSwitchRowData(mDeviceInfo, holder);
                             break;
                     }
                     break;
@@ -368,27 +352,20 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 case DomoticzValues.Device.Type.Value.DIMMER:
                     if (mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.RGB) ||
                             mDeviceInfo.getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW)) {
-                        if (mSharedPrefs.showSwitchesAsButtons()) {
-                            setButtons(holder, Buttons.DIMMER_BUTTONS);
-                            setDimmerOnOffButtonRowData(mDeviceInfo, holder, true);
-                        } else {
-                            setButtons(holder, Buttons.DIMMER_RGB);
-                            setDimmerRowData(mDeviceInfo, holder, true);
-                        }
+                        setButtons(holder, Buttons.DIMMER_RGB);
+                        setDimmerRowData(mDeviceInfo, holder, true);
                     } else {
-                        if (mSharedPrefs.showSwitchesAsButtons()) {
-                            setButtons(holder, Buttons.DIMMER_BUTTONS);
-                            setDimmerOnOffButtonRowData(mDeviceInfo, holder, false);
-                        } else {
-                            setButtons(holder, Buttons.DIMMER);
-                            setDimmerRowData(mDeviceInfo, holder, false);
-                        }
+                        setButtons(holder, Buttons.DIMMER);
+                        setDimmerRowData(mDeviceInfo, holder, false);
                     }
                     break;
 
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
-                    if (DomoticzValues.canHandleStopButton(mDeviceInfo)) {
+                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGESTOP:
+                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP:
+                    if (DomoticzValues.canHandleStopButton(mDeviceInfo) ||
+                            (mDeviceInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP || mDeviceInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGESTOP)) {
                         setButtons(holder, Buttons.BLINDS_DIMMER);
                         setBlindsRowData(mDeviceInfo, holder);
                     } else {
@@ -398,13 +375,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     break;
 
                 case DomoticzValues.Device.Type.Value.SELECTOR:
-                    if (mSharedPrefs.showSwitchesAsButtons()) {
-                        setButtons(holder, Buttons.SELECTOR_BUTTONS);
-                        setSelectorRowData(mDeviceInfo, holder);
-                    } else {
-                        setButtons(holder, Buttons.SELECTOR);
-                        setSelectorRowData(mDeviceInfo, holder);
-                    }
+                    setButtons(holder, Buttons.SELECTOR);
+                    setSelectorRowData(mDeviceInfo, holder);
                     break;
 
                 case DomoticzValues.Device.Type.Value.BLINDS:
@@ -474,15 +446,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0) {
                     try {
                         setAlphaIcon = false;
-                        int usage = Integer.parseInt(mDeviceInfo.getUsage().replace("Watt", "").trim());
+                        int usage = Integer.parseInt(mDeviceInfo.getUsage().replace("W", "").trim());
                         if (mDeviceInfo.getUsageDeliv() != null && mDeviceInfo.getUsageDeliv().length() > 0) {
-                            int usagedel = Integer.parseInt(mDeviceInfo.getUsageDeliv().replace("Watt", "").trim());
-                            text = context.getString(R.string.usage) + ": " + (usage - usagedel) + " Watt";
-                            holder.switch_battery_level.setText(text);
+                            int usagedel = Integer.parseInt(mDeviceInfo.getUsageDeliv().replace("W", "").trim());
+                            text = context.getString(R.string.usage) + ": " + (usage - usagedel) + " W";
                         } else {
                             text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
-                            holder.switch_battery_level.setText(text);
                         }
+                        holder.switch_battery_level.setText(text);
                     } catch (Exception ex) {
                         text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
                         holder.switch_battery_level.setText(text);
@@ -548,8 +519,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                         animation.setDuration(2000);
                         holder.pieView.startAnimation(animation);
                     }
-                    if (!mSharedPrefs.showExtraData())
-                        holder.switch_battery_level.setVisibility(View.GONE);
+                    holder.switch_battery_level.setVisibility(View.GONE);
                 } else
                     holder.pieView.setVisibility(View.GONE);
 
@@ -725,17 +695,17 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             });
 
             final String imageUrl = domoticz.getSnapshotUrl(mDeviceInfo.getCameraIdx());
-            holder.dummyImg.setVisibility(View.VISIBLE);
-            holder.row_wrapper.setBackground(null);
-
             Drawable cache = CameraUtil.getDrawable(imageUrl);
             if (cache == null) {
                 picasso.load(imageUrl)
                         .noPlaceholder()
+                        .noFade()
                         .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
                         .into(holder.dummyImg, new Callback() {
                             @Override
                             public void onSuccess() {
+                                holder.contentWrapper.setBackgroundDrawable(holder.dummyImg.getDrawable());
+                                holder.dummyImg.setVisibility(View.GONE);
                                 CameraUtil.setDrawable(imageUrl, holder.dummyImg.getDrawable());
                             }
 
@@ -743,7 +713,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             public void onError(Exception e) {
                                 if (holder.dummyImg.getDrawable() == null)
                                     holder.dummyImg.setVisibility(View.GONE);
-                                holder.row_wrapper.setBackgroundColor(listviewRowBackground);
                             }
                         });
             } else {
@@ -755,6 +724,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                         .into(holder.dummyImg, new Callback() {
                             @Override
                             public void onSuccess() {
+                                holder.contentWrapper.setBackgroundDrawable(holder.dummyImg.getDrawable());
+                                holder.dummyImg.setImageDrawable(null);
+                                holder.dummyImg.setVisibility(View.GONE);
                                 CameraUtil.setDrawable(imageUrl, holder.dummyImg.getDrawable());
                             }
 
@@ -762,14 +734,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             public void onError(Exception e) {
                                 if (holder.dummyImg.getDrawable() == null)
                                     holder.dummyImg.setVisibility(View.GONE);
-                                holder.row_wrapper.setBackgroundColor(listviewRowBackground);
                             }
                         });
             }
         } else {
             holder.full_screen_icon.setVisibility(View.GONE);
             holder.dummyImg.setVisibility(View.GONE);
-            holder.row_wrapper.setBackgroundColor(listviewRowBackground);
         }
     }
 
@@ -934,6 +904,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
                     .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
                     .addTestDevice("6C2390A9FF8F555BD01BA560068CD366")
+                    .addTestDevice("2C114D01992840EC6BF853D44CB96754")
                     .build();
 
             AdLoader adLoader = new AdLoader.Builder(context, context.getString(R.string.ad_unit_id))
@@ -1227,7 +1198,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         holder.buttonUp.setOnClickListener(view -> {
             for (DevicesInfo e : data) {
                 if (e.getIdx() == view.getId()) {
-                    if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED)
+                    if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP)
                         handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
                     else
                         handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
@@ -1248,7 +1219,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         holder.buttonDown.setOnClickListener(view -> {
             for (DevicesInfo e : data) {
                 if (e.getIdx() == view.getId()) {
-                    if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED)
+                    if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP)
                         handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
                     else
                         handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
@@ -1270,7 +1241,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 @Override
                 public void onStopTrackingTouch(@NonNull Slider slider) {
                     int progress = (Math.round(slider.getValue()));
-                    handleDimmerChange((int) slider.getTag(), progress + 1, false);
+                    handleDimmerChange((int) slider.getTag(), progress, false);
                     mDeviceInfo.setLevel(progress);
                 }
             });
@@ -1453,7 +1424,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     }
                 } catch (Exception ex) {/*else we don't use a switch, but buttons */}
 
-                handleDimmerChange((int) slider.getTag(), progress + 1, false);
+                handleDimmerChange((int) slider.getTag(), progress, false);
                 mDeviceInfo.setLevel(progress);
             }
         });
@@ -1559,7 +1530,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 int progress = (Math.round(slider.getValue()));
-                handleDimmerChange((int) slider.getTag(), progress + 1, false);
+                handleDimmerChange((int) slider.getTag(), progress, false);
                 mDeviceInfo.setLevel(progress);
             }
         });
@@ -1720,7 +1691,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
      * @param selector True if it's a selector device
      */
     private void handleDimmerChange(final int idx, final int value, boolean selector) {
-        listener.onDimmerChange(idx, value, selector);
+        listener.onDimmerChange(idx, value > 100 ? 100 : value, selector);
     }
 
     /**
@@ -1859,29 +1830,15 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (holder.spSelector != null) {
             holder.spSelector.setVisibility(View.GONE);
         }
-        if (!mSharedPrefs.showExtraData()) {
-            holder.signal_level.setVisibility(View.GONE);
-            holder.switch_battery_level.setVisibility(View.GONE);
-        } else {
-            holder.signal_level.setVisibility(View.VISIBLE);
-            holder.switch_battery_level.setVisibility(View.VISIBLE);
-        }
+        holder.signal_level.setVisibility(View.GONE);
+        holder.switch_battery_level.setVisibility(View.GONE);
         holder.switch_name.setVisibility(View.VISIBLE);
 
-        if (!mSharedPrefs.showExtraData()) {
-            holder.infoIcon.setVisibility(View.GONE);
-            if (!showAsList) {
-                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.iconRow.getLayoutParams();
-                p.topMargin = 20;
-            }
-        } else {
-            holder.infoIcon.setVisibility(View.VISIBLE);
-            if (showAsList) {
-                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.iconRow.getLayoutParams();
-                p.leftMargin = -15;
-            }
-        }
+        holder.infoIcon.setVisibility(View.GONE);
+        ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.iconRow.getLayoutParams();
+        p.topMargin = 20;
 
+        holder.switch_battery_level.setVisibility(View.VISIBLE);
         switch (button) {
             case Buttons.CLOCK:
                 if (holder.contentWrapper != null)
@@ -2092,8 +2049,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             default:
                 if (holder.contentWrapper != null)
                     holder.contentWrapper.setVisibility(View.VISIBLE);
-                if (!mSharedPrefs.showExtraData())
-                    holder.signal_level.setVisibility(View.GONE);
+                holder.signal_level.setVisibility(View.GONE);
                 holder.switch_battery_level.setVisibility(View.VISIBLE);
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.GONE);

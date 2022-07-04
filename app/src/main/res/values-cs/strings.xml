@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -20,9 +21,12 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- only temporarily to suppress the missing translations errors for now!! -->
-    <string name="premium_category">Koupit premium!</string>
+    <string name="premium_category">Koupit prémiovou verzi</string>
     <string name="premium_title">Získejte verzi premium!</string>
+    <string name="restore_title">Restore subscriptions</string>
     <string name="premium_feature">Toto je prémiová funkce, kupte si placenou verzi aplikace a podpořte tak vývojáře!</string>
+    <string name="old_version">Get the latest version!</string>
+    <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
     <string name="drawer_open">Otevřít navigační panel</string>
     <string name="drawer_close">Zavřít navigační panel</string>
     <string name="msg_please_wait">Čekejte prosím&#8230;</string>
@@ -97,12 +101,12 @@
     <string name="retry">Zkusit znovu</string>
     <string name="undo">Zpět</string>
     <string name="something_deleted">%1$s odstraněné</string>
-    <string name="remove_last_server">You can\'t remove the last server in the list.</string>
+    <string name="remove_last_server">Poslední server v seznamu nelze odebrat.</string>
     <string name="switch_on">Zapnout přepínač</string>
     <string name="switch_off">Vypnout přepínač</string>
     <string name="switch_night">Otáčením přepínače na noční světlo</string>
     <string name="switch_full">Otáčením přepínače do plného světla</string>
-    <string name="switch_connection_removed">Switch connection removed.</string>
+    <string name="switch_connection_removed">Spínač odstraněn</string>
     <string name="blind_up">Vytáhnout žaluzie</string>
     <string name="blind_down">Stáhnout žaluzie</string>
     <string name="blind_stop">Zastavit žaluzie</string>
@@ -113,6 +117,7 @@
     <string name="filterOn_all">Všechna zařízení</string>
     <string name="filter">Filter</string>
     <string name="filter_devices">Filtrovat zařízení</string>
+    <string name="filter_range">Nastavit rozsah</string>
     <string name="filter_graph_empty">Prosím upřesněte filtr</string>
     <string name="choose_color">Vybrat barvu</string>
     <string name="no_data_on_domoticz">Žádná data na serveru Domoticz</string>
@@ -133,9 +138,10 @@
     <string name="use_demo_setup">Použít ukázkové nastavení</string>
     <string name="auto_refresh_time">Obnovit časovač</string>
     <string name="set_auto_refresh_time">Nastavit specifický časovač pro automatickou obnovu v sekundách.</string>
-    <string name="error_authentication_basicauth">IMPORTANT: Please check if your Domoticz system uses Login Page as the authentication method. Basic Auth is going to be removed from Domoticz from next update!</string>
-    <string name="category_other">Other</string>
-    <string name="tasker_title">Setup automation rules with Tasker for Domoticz</string>
-    <string name="category_tasker">Tasker</string>
-    <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
+    <string name="error_authentication_basicauth">DŮLEŽITÉ: Zkontrolujte, zda váš systém Domoticz používá jako metodu autentizace přihlašovací stránku. Základní Auth bude odstraněn z Domoticz z příští aktualizace!</string>
+    <string name="category_other">Jiné</string>
+    <string name="tasker_title">Nastavit pravidla automatizace s Tasker pro Domoticz</string>
+    <string name="category_tasker">Aplikace Tasker</string>
+    <string name="wizard_widgets_tasker">Nastavit pravidla automatizace s Tasker pro Domoticz</string>
+    <string name="background_location_warning">Tato aplikace shromažďuje lokalizační data pro povolení geofencingových služeb v této aplikaci, a to i v případě, že je aplikace zavřená nebo není používána.</string>
 </resources>

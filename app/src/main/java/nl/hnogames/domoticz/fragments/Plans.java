@@ -23,6 +23,7 @@ package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -39,11 +40,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.PlansAdapter;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.helpers.StaticHelper;
@@ -51,6 +52,7 @@ import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticz.utils.ViewUtils;
 import nl.hnogames.domoticzapi.Containers.PlanInfo;
 import nl.hnogames.domoticzapi.Interfaces.PlansReceiver;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
@@ -142,9 +144,27 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         if (mRecyclerView == null) {
             mRecyclerView = getView().findViewById(R.id.my_recycler_view);
             mSwipeRefreshLayout = getView().findViewById(R.id.swipe_refresh_layout);
-            mRecyclerView.setHasFixedSize(true);
-            StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+
+            StaggeredGridLayoutManager mLayoutManager;
+            boolean isPortrait = false;
+            if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+                isPortrait = true;
+            if (ViewUtils.isTablet(getContext())) {
+                if (isPortrait) {
+                    mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+                } else {
+                    mLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
+                }
+            } else {
+                if (isPortrait) {
+                    mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                } else {
+                    mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+                }
+            }
+
             mRecyclerView.setLayoutManager(mLayoutManager);
+            mRecyclerView.setHasFixedSize(false);
         }
 
         if (mAdapter == null) {
@@ -194,7 +214,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
             if (supportedSwitches == null || supportedSwitches.size() <= 0)
                 return supportedSwitches;
 
-            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+            if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                 ArrayList<PlanInfo> filteredList = new ArrayList<>();
                 for (PlanInfo d : supportedSwitches) {
                     if (d.getIdx() != MainActivity.ADS_IDX)

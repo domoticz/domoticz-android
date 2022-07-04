@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -42,6 +43,7 @@
     <string name="category_account">Felhasználói fiókok</string>
     <string name="category_QRCode">QR kód</string>
     <string name="category_bluetooth">Bluetooth</string>
+    <string name="category_wifi">WiFi</string>
     <string name="category_Speech">Beszéd</string>
     <string name="category_Reset">Visszaállitás</string>
     <string name="category_help">hozzájárulás</string>
@@ -72,6 +74,8 @@
     <string name="show_dashboard_list_off">Kezdőlap megjelenítése rácsként</string>
     <string name="dashboard_clock">óra</string>
     <string name="show_dashboard_clock">óra megjelenítése a vezérlő pulton</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
     <string name="dashboard_camera">Kamera</string>
     <string name="show_dashboard_camera">kamera képének betöltése a csatlakoztatott kapcsolónál</string>
     <!--        Wear settings       -->

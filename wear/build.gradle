@@ -22,26 +22,28 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\heini\\Dropbox\\Android\\key\\.altkeystore')
+            storePassword 'waterpolo'
+            keyAlias 'heinisblog'
+            keyPassword 'heinisblog'
+        }
+    }
+    compileSdkVersion 31
     publishNonDefault true
 
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 29
-        versionCode 9007
-        versionName "1.3.8"
+        targetSdkVersion 31
+        versionCode 9010
+        versionName "1.4.0"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    lintOptions {
-        checkReleaseBuilds false
-        disable 'MissingTranslation'
-        abortOnError false
     }
 
     flavorDimensions "tier"
@@ -53,7 +55,7 @@ android {
             dimension "tier"
             minSdkVersion 21
             versionNameSuffix "-dev"
-            resConfigs "en", "xxhdpi"
+            resConfigs 'en', 'xxhdpi'
         }
         free {
             applicationId 'nl.hnogames.domoticz'
@@ -74,17 +76,22 @@ android {
             dimension "tier"
         }
     }
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+        disable 'MissingTranslation'
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.wear:wear:1.0.0'
-    implementation 'com.google.android.support:wearable:2.5.0'
-    compileOnly 'com.google.android.wearable:wearable:2.5.0'
+    implementation 'androidx.wear:wear:1.2.0'
+    implementation 'com.google.android.support:wearable:2.9.0'
+    compileOnly 'com.google.android.wearable:wearable:2.9.0'
 
-    implementation 'com.google.android.gms:play-services-wearable:17.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha02'
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.android.gms:play-services-wearable:17.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.picasso:picasso:2.71828'
 }

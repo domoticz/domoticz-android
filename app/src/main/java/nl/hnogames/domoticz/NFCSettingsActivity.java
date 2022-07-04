@@ -125,7 +125,7 @@ public class NFCSettingsActivity extends AppCompatAssistActivity implements NFCC
 
         try {
             // creating pending intent:
-            PendingIntent mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+            PendingIntent mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_IMMUTABLE);
 
             // creating intent receiver for NFC events:
             IntentFilter filter = new IntentFilter();

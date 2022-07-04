@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -42,6 +43,7 @@
     <string name="category_account">Účty</string>
     <string name="category_QRCode">QR kód</string>
     <string name="category_bluetooth">Bluetooth</string>
+    <string name="category_wifi">Wifi</string>
     <string name="category_Speech">Řeč</string>
     <string name="category_Reset">Obnovit</string>
     <string name="category_help">Zapojte se</string>
@@ -72,8 +74,10 @@
     <string name="show_dashboard_list_off">Zobrazit řídící panel jako mřížku</string>
     <string name="dashboard_clock">Hodiny</string>
     <string name="show_dashboard_clock">Zobrazit hodiny na panelu</string>
-    <string name="dashboard_camera">Camera</string>
-    <string name="show_dashboard_camera">Load the camera for connected switches</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
+    <string name="dashboard_camera">Kamera</string>
+    <string name="show_dashboard_camera">Načíst kameru pro připojené přepínače</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Vlastní položky Android Wear</string>
     <string name="custom_wear_select">Zvolte Wear přepínače</string>
@@ -118,8 +122,8 @@
     <string name="qrcode_enable_settings">Povolit funkce QR kódů</string>
     <string name="bluetooth_settings">Nastavit Bluetooth zařízení</string>
     <string name="enable_bluetooth">Povolit funkce Bluetooth</string>
-    <string name="beacon_settings">Setup Beacons</string>
-    <string name="enable_beacon">Enable Beacon functionality</string>
+    <string name="beacon_settings">Nastavit majáky</string>
+    <string name="enable_beacon">Povolit funkci majáku</string>
     <string name="translate_description">Můžete pomoci zdokonalit naše překlady a také přidávat nové jazykové mutace prostřednictvím našeho projektu na Crowdin</string>
     <string name="translate_title">Překlady</string>
     <string name="security_settings">Nastavení zabezpečení</string>
@@ -148,8 +152,8 @@
     <string name="enable_notifications_title">Povolit oznámení</string>
     <string name="enable_notifications">Povolit oznámení na tomto zařízení</string>
     <string name="notification_screen_title">Nastavení oznámení</string>
-    <string name="notification_history">Notification history</string>
-    <string name="notification_inbox">Inbox</string>
+    <string name="notification_history">Historie oznámení</string>
+    <string name="notification_inbox">Doručená</string>
     <string name="notification_vibrate_title">Vibrovat</string>
     <string name="notification_vibrate_on">Vibrovat při doručení oznámení</string>
     <string name="notification_vibrate_off">Nevibrovat</string>
@@ -166,13 +170,13 @@
     <string name="alarmtimer_title">Časovač alarmu</string>
     <string name="alarmtimer">Počet sekund do alarmu</string>
     <!-- Theme properties -->
-    <string name="theme_default">Default</string>
-    <string name="theme_daynight">Day/Night</string>
-    <string name="theme_orange">Orange</string>
-    <string name="theme_pink">Pink</string>
-    <string name="theme_blue">Blue</string>
-    <string name="theme_green">Green</string>
-    <string name="theme_dark_blue">Dark blue</string>
+    <string name="theme_default">Výchozí</string>
+    <string name="theme_daynight">den/noc</string>
+    <string name="theme_orange">Oranžová</string>
+    <string name="theme_pink">Růžová</string>
+    <string name="theme_blue">Modrá</string>
+    <string name="theme_green">Zelená</string>
+    <string name="theme_dark_blue">Tmavě modrá</string>
     <!-- Other -->
     <string name="default_values">Výchozí hodnoty</string>
     <string name="default_values_min_error">Maximální hodnota by měla být vyšší než minimální hodnota</string>
@@ -216,7 +220,7 @@
     <string name="debug_test_text">Zkouška ladění</string>
     <string name="restart_required_title">Je vyžadován restart</string>
     <string name="restart_now">Chcete nyní restartovat?</string>
-    <string name="check_settings">Check your settings</string>
-    <string name="report_error">Report an error</string>
-    <string name="support">Support</string>
+    <string name="check_settings">Zkontrolujte nastavení</string>
+    <string name="report_error">Odeslat zprávu o chybách</string>
+    <string name="support">Podpora</string>
 </resources>

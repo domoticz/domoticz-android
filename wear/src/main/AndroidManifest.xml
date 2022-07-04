@@ -32,7 +32,7 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault">
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.SplashActivity"
             android:label="@string/app_name"
             android:launchMode = "singleTop">
@@ -42,25 +42,25 @@
             </intent-filter>
         </activity>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.WearActivity"
             android:launchMode = "singleTop">
         </activity>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.ErrorActivity">
         </activity>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.SendActivity">
         </activity>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.app.DomoticzActivity"
             android:launchMode = "singleTop">
         </activity>
 
-        <activity
+        <activity android:exported="true"
             android:name="android.support.wearable.activity.ConfirmationActivity">
         </activity>
 

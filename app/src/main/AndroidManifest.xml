@@ -69,6 +69,9 @@
         android:name="nl.hnogames.domoticz.premium.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <application
         android:allowBackup="false"
         android:name="nl.hnogames.domoticz.app.AppController"
@@ -85,15 +88,14 @@
             </intent-filter>
         </service>
 		
-        <activity android:name="nl.hnogames.domoticz.service.NFCServiceActivity">
+        <activity
+            android:exported="true"
+            android:name="nl.hnogames.domoticz.service.NFCServiceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-                <category android:name="android.intent.category.DEFAULT" />
                 <data
                     android:host="domoticz"
                     android:scheme="app" />
@@ -121,12 +123,12 @@
             <intent-filter>
                 <action android:name="android.location.PROVIDERS_CHANGED" />
                 <action android:name="android.location.MODE_CHANGED" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
 
-        <service android:name="nl.hnogames.domoticz.service.WearMessageListenerService">
+        <service android:exported="true"
+        android:name="nl.hnogames.domoticz.service.WearMessageListenerService">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
                 <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
@@ -139,7 +141,8 @@
             </intent-filter>
         </service>
 
-        <service android:name="nl.hnogames.domoticz.service.StopAlarmButtonListener" />
+        <service
+            android:exported="true" android:name="nl.hnogames.domoticz.service.StopAlarmButtonListener" />
 
         <service
             android:name="nl.hnogames.domoticz.service.TaskService"
@@ -158,7 +161,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name="nl.hnogames.domoticz.service.BootUpReceiver">
+        <receiver android:exported="true" android:name="nl.hnogames.domoticz.service.BootUpReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
@@ -168,16 +171,16 @@
         </receiver>
 
         <receiver
+            android:exported="true"
             android:name="nl.hnogames.domoticz.service.GeofenceBroadcastReceiver"
-            android:enabled="true"
-            android:exported="true" />
+            android:enabled="true" />
 
         <service
             android:name="nl.hnogames.domoticz.service.GeofenceTransitionsIntentService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name_domoticz"
@@ -217,7 +220,7 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.SettingsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/settingsActivity_name"
@@ -228,7 +231,7 @@
                 android:value="nl.hnogames.domoticz.MainActivity" />
         </activity>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.NotificationSettingsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/notification_screen_title"
@@ -243,7 +246,7 @@
                 android:value="nl.hnogames.domoticz.SettingsActivity" />
         </activity>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.CameraActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/cameraActivity_name"
@@ -254,7 +257,7 @@
                 android:value="nl.hnogames.domoticz.MainActivity" />
         </activity>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.GraphActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/wizard_graph"
@@ -265,7 +268,7 @@
                 android:value="nl.hnogames.domoticz.MainActivity" />
         </activity>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.TempGraphsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/wizard_graph"
@@ -276,7 +279,31 @@
                 android:value="nl.hnogames.domoticz.MainActivity" />
         </activity>
 
-        <activity
+        <activity android:exported="true"
+            android:name="nl.hnogames.domoticz.LogsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_logs"
+            android:parentActivityName="nl.hnogames.domoticz.MainActivity"
+            android:resizeableActivity="true">
+        </activity>
+
+        <activity android:exported="true"
+            android:name="nl.hnogames.domoticz.EventsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_events"
+            android:parentActivityName="nl.hnogames.domoticz.MainActivity"
+            android:resizeableActivity="true">
+        </activity>
+
+        <activity android:exported="true"
+            android:name="nl.hnogames.domoticz.UserVariablesActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_vars"
+            android:parentActivityName="nl.hnogames.domoticz.MainActivity"
+            android:resizeableActivity="true">
+        </activity>
+
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.PlanActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/cameraActivity_name"
@@ -287,7 +314,7 @@
                 android:value="nl.hnogames.domoticz.MainActivity" />
         </activity>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.ServerSettingsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_server_settings"
@@ -298,7 +325,7 @@
                 android:value="nl.hnogames.domoticz.SettingsActivity" />
         </activity>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.GeoSettingsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_server_settings"
@@ -309,7 +336,7 @@
                 android:value="nl.hnogames.domoticz.GeoSettingsActivity" />
         </activity>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.NFCSettingsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/category_nfc"
@@ -321,7 +348,7 @@
             </intent-filter>
         </activity>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.BluetoothSettingsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/category_bluetooth"
@@ -331,7 +358,17 @@
                 android:value="nl.hnogames.domoticz.SettingsActivity" />
         </activity>
 
-        <activity
+        <activity android:exported="true"
+            android:name="nl.hnogames.domoticz.WifiSettingsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/category_bluetooth"
+            android:parentActivityName="nl.hnogames.domoticz.SettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nl.hnogames.domoticz.SettingsActivity" />
+        </activity>
+
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.BeaconSettingsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/category_bluetooth"
@@ -341,26 +378,26 @@
                 android:value="nl.hnogames.domoticz.SettingsActivity" />
         </activity>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.SpeechSettingsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/category_Speech"
             android:parentActivityName="nl.hnogames.domoticz.SettingsActivity"
             android:resizeableActivity="true" />
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.QRCodeSettingsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/category_QRCode"
             android:parentActivityName="nl.hnogames.domoticz.SettingsActivity"
             android:resizeableActivity="true" />
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.QRCodeCaptureActivity"
             android:label="@string/category_QRCode"
             android:parentActivityName="nl.hnogames.domoticz.QRCodeSettingsActivity" />
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.ServerListSettingsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_server_settings"
@@ -371,7 +408,7 @@
                 android:value="nl.hnogames.domoticz.ServerListSettingsActivity" />
         </activity>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.welcome.WelcomeViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/welcome_title_activity_welcome"
@@ -380,9 +417,11 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
@@ -392,7 +431,7 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/ADMOB_APP_KEY" />
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.UpdateActivity"
             android:label="@string/title_activity_update"
             android:parentActivityName="nl.hnogames.domoticz.MainActivity">
@@ -401,12 +440,14 @@
                 android:value="nl.hnogames.domoticz.MainActivity" />
         </activity>
 
-        <activity android:name="nl.hnogames.domoticz.ui.ScoopSettingsActivity" />
-
-        <activity android:name="nl.hnogames.domoticz.NotificationHistoryActivity" />
+        <activity
+            android:exported="true" android:name="nl.hnogames.domoticz.ui.ScoopSettingsActivity" />
 
         <activity
-            android:name="com.schibstedspain.leku.LocationPickerActivity"
+            android:exported="true" android:name="nl.hnogames.domoticz.NotificationHistoryActivity" />
+
+        <activity android:exported="true"
+            android:name="com.adevinta.leku.LocationPickerActivity"
             android:label="@string/title_add_location"
             android:parentActivityName="nl.hnogames.domoticz.GeoSettingsActivity"
             android:windowSoftInputMode="adjustPan">
@@ -423,7 +464,7 @@
         </activity>
 
 
-        <receiver android:name="nl.hnogames.domoticz.widgets.WidgetProviderLarge">
+        <receiver android:exported="true" android:name="nl.hnogames.domoticz.widgets.WidgetProviderLarge">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -432,13 +473,14 @@
                 android:resource="@xml/appwidgetprovider" />
         </receiver>
 
-        <service android:name="nl.hnogames.domoticz.widgets.WidgetIntentService">
+        <service
+            android:exported="true" android:name="nl.hnogames.domoticz.widgets.WidgetIntentService">
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidgetprovider" />
         </service>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.widgets.WidgetConfigurationActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Domoticz Widget Config"
@@ -455,9 +497,10 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <service android:name="nl.hnogames.domoticz.widgets.WidgetProviderLarge$UpdateWidgetService" />
+        <service
+            android:exported="true" android:name="nl.hnogames.domoticz.widgets.WidgetProviderLarge$UpdateWidgetService" />
 
-        <receiver android:name="nl.hnogames.domoticz.widgets.WidgetProviderSmall">
+        <receiver android:exported="true" android:name="nl.hnogames.domoticz.widgets.WidgetProviderSmall">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -466,7 +509,7 @@
                 android:resource="@xml/smallwidgetprovider" />
         </receiver>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.widgets.SmallWidgetConfigurationActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Domoticz Widget Config"
@@ -483,9 +526,10 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <service android:name="nl.hnogames.domoticz.widgets.WidgetProviderSmall$UpdateWidgetService" />
+        <service
+            android:exported="true" android:name="nl.hnogames.domoticz.widgets.WidgetProviderSmall$UpdateWidgetService" />
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.widgets.SecurityWidgetConfigurationActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Domoticz Security Panel Widget Config"
@@ -495,7 +539,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="nl.hnogames.domoticz.widgets.SecurityWidgetProvider">
+        <receiver android:exported="true" android:name="nl.hnogames.domoticz.widgets.SecurityWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -504,13 +548,14 @@
                 android:resource="@xml/securitywidgetprovider" />
         </receiver>
 
-        <service android:name="nl.hnogames.domoticz.widgets.SecurityWidgetIntentService">
+        <service
+            android:exported="true" android:name="nl.hnogames.domoticz.widgets.SecurityWidgetIntentService">
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/securitywidgetprovider" />
         </service>
 
-        <receiver android:name="nl.hnogames.domoticz.widgets.WidgetProviderSmallTemp">
+        <receiver android:exported="true" android:name="nl.hnogames.domoticz.widgets.WidgetProviderSmallTemp">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -519,7 +564,7 @@
                 android:resource="@xml/smalltempwidgetprovider" />
         </receiver>
 
-        <activity
+        <activity android:exported="true"
             android:name="nl.hnogames.domoticz.widgets.SmallTempWidgetConfigurationActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="Domoticz Widget Config"
@@ -536,9 +581,11 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <service android:name="nl.hnogames.domoticz.widgets.WidgetProviderSmallTemp$UpdateWidgetService" />
+        <service
+            android:exported="true" android:name="nl.hnogames.domoticz.widgets.WidgetProviderSmallTemp$UpdateWidgetService" />
 
-        <service android:name="nl.hnogames.domoticz.widgets.SecurityWidgetProvider$UpdateSecurityWidgetService" />
+        <service
+            android:exported="true" android:name="nl.hnogames.domoticz.widgets.SecurityWidgetProvider$UpdateSecurityWidgetService" />
 
         <uses-library
             android:name="org.apache.http.legacy"

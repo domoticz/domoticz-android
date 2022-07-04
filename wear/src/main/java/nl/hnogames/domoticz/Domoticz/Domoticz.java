@@ -28,55 +28,58 @@ import nl.hnogames.domoticz.R;
 
 public class Domoticz {
 
-    @SuppressWarnings("SpellCheckingInspection")
     public static int getDrawableIcon(String imgType, String Type, String switchType, boolean State, boolean useCustomImage, String CustomImage) {
         int standardImage = getDrawableIcon(imgType, Type, switchType, State);
+
         if (useCustomImage && CustomImage != null && CustomImage.length() > 0) {
             switch (CustomImage) {
                 case "Alarm":
                     return R.drawable.alarm;
                 case "Freezing":
-                    return R.drawable.freezing;
+                    return R.drawable.cold;
                 case "Amplifier":
-                    return R.drawable.volume;
+                    return R.drawable.loudspeakers;
                 case "Computer":
                 case "ComputerPC":
                     return R.drawable.computer;
                 case "Cooling":
-                    return R.drawable.cooling;
-                case "ChristmasTree":
-                    return R.drawable.christmastree;
+                    return R.drawable.air_conditioning_indoor;
                 case "Door":
-                    return R.drawable.door;
+                    return R.drawable.door_handle;
                 case "Fan":
-                    return R.drawable.wind;
-                case "Fireplace":
-                    return R.drawable.flame;
+                    return R.drawable.ventilation;
                 case "Generic":
                     return R.drawable.generic;
-                case "Harddisk":
-                    return R.drawable.harddisk;
                 case "Heating":
-                    return R.drawable.heating;
+                    return R.drawable.heater;
                 case "Light":
-                    return R.drawable.lights;
+                    return R.drawable.bulb;
                 case "Media":
-                    return R.drawable.video;
+                    return R.drawable.media;
                 case "Phone":
-                    return R.drawable.phone;
+                    return R.drawable.smartphone;
                 case "Speaker":
-                    return R.drawable.sub;
-                case "Printer":
-                    return R.drawable.printer;
+                    return R.drawable.loudspeakers;
                 case "TV":
                     return R.drawable.tv;
                 case "WallSocket":
-                    return R.drawable.wall;
+                    return R.drawable.socket_f;
                 case "Water":
-                    return R.drawable.water;
+                    return R.drawable.drop;
+                case "Printer":
+                    return R.drawable.printer;
                 case "GoogleDevsHomeMini":
-                    return R.drawable.ghome;
+                    return R.drawable.google_home;
+                case "Harddisk":
+                    return R.drawable.harddisk;
+                case "Fireplace":
+                    return R.drawable.flame;
+                case "ChristmasTree":
+                    return R.drawable.christmas;
             }
+
+            if(CustomImage.contains("robot-vacuum"))
+                return R.drawable.vacuum_robot;
         }
 
         return standardImage;
@@ -87,100 +90,100 @@ public class Domoticz {
         int test = R.drawable.defaultimage;
         switch (imgType.toLowerCase()) {
             case "scene":
-                return R.drawable.generic;
+            case "push":
+            case "pushoff":
             case "group":
-                return R.drawable.generic;
+                return R.drawable.power_button;
             case "wind":
-                return R.drawable.wind;
+                return R.drawable.weather;
             case "doorbell":
-                return R.drawable.door;
+                return R.drawable.doorbell;
             case "door":
-                return R.drawable.door;
+                return R.drawable.door_handle;
             case "lightbulb":
                 if (switchType != null && switchType.length() > 0 && switchType.equals(Device.Type.Name.DUSKSENSOR))
                     if (State)
-                        return R.drawable.uvdark;
+                        return R.drawable.sun;
                     else
-                        return R.drawable.uvsunny;
+                        return R.drawable.sun;
                 else
-                    return R.drawable.lights;
-            case "push":
-                return R.drawable.pushoff;
-            case "pushoff":
-                return R.drawable.pushoff;
+                    return R.drawable.bulb;
             case "siren":
-                return R.drawable.siren;
+                return R.drawable.loudspeakers;
             case "smoke":
                 return R.drawable.smoke;
             case "uv":
-                return R.drawable.uv;
+                return R.drawable.sun;
             case "contact":
-                return R.drawable.contact;
+                return R.drawable.socket_f;
+            case "current":
+                return R.drawable.power;
             case "logitechMediaServer":
-                return R.drawable.media;
             case "media":
                 return R.drawable.media;
             case "blinds":
                 return R.drawable.down;
             case "dimmer":
                 if (switchType != null && switchType.length() > 0 && switchType.startsWith(Device.SubType.Name.RGB))
-                    return R.drawable.rgb;
+                    return R.drawable.bulb;
                 else
-                    return R.drawable.dimmer;
+                    return R.drawable.bulb;
             case "motion":
-                return R.drawable.motion;
+                return R.drawable.eye;
             case "security":
-                return R.drawable.security;
-            case "temperature":
+                return R.drawable.key;
             case "override_mini":
                 if (State)
-                    return R.drawable.heating;
+                    return R.drawable.heater;
                 else
-                    return R.drawable.cooling;
+                    return R.drawable.air_conditioning_indoor;
+            case "temperature":
+                return R.drawable.temperature;
             case "counter":
-                if (Type != null && Type.length() > 0 && Type.equals("P1 Smart Meter"))
-                    return R.drawable.wall;
+                if (Type != null && Type.length() > 0 && Type.contains("Smart Meter")) {
+                    if(switchType != null && switchType.length() > 0 && switchType.contains("Gas"))
+                        return R.drawable.electric_range;
+                    else
+                        return R.drawable.power;
+                }
                 else
                     return R.drawable.up;
             case "visibility":
-                return R.drawable.visibility;
+                return R.drawable.eye;
             case "radiation":
-                return R.drawable.radiation;
+                return R.drawable.power;
             case "moisture":
             case "rain":
-                return R.drawable.rain;
+                return R.drawable.drop;
             case "leaf":
-                return R.drawable.leaf;
+                return R.drawable.houseplant;
             case "hardware":
                 return R.drawable.computer;
             case "fan":
-                return R.drawable.fan;
+                return R.drawable.ventilation;
             case "speaker":
-                return R.drawable.speaker;
-            case "current":
-                return R.drawable.wall;
+                return R.drawable.loudspeakers;
             case "text":
-                return R.drawable.text;
+                return R.drawable.computer;
             case "alert":
-                return R.drawable.siren;
+                return R.drawable.loudspeakers;
             case "gauge":
-                return R.drawable.gauge;
+                return R.drawable.thermostat;
             case "clock":
-                return R.drawable.clock48;
+                return R.drawable.clock_b;
             case "mode":
                 return R.drawable.defaultimage;
             case "utility":
-                return R.drawable.scale;
             case "scale":
-                return R.drawable.scale;
+                return R.drawable.solar_panel;
             case "lux":
-                return R.drawable.uvsunny;
+                return R.drawable.sun;
         }
         switch (Type.toLowerCase()) {
             case "heating":
-                return R.drawable.heating;
+                return R.drawable.heater;
             case "thermostat":
-                return R.drawable.flame;
+                return R.drawable.thermostat;
         }
         return test;
     }
