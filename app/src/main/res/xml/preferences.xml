@@ -30,6 +30,18 @@
         <Preference
             android:key="premium_settings"
             android:title="@string/premium_title" />
+        <Preference
+            android:key="premium_restore"
+            android:title="@string/restore_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:icon="@drawable/baseline_store_white_24"
+        android:key="old_version_category"
+        android:title="@string/app_name_domoticz">
+        <Preference
+            android:key="old_version"
+            android:title="@string/old_version" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -47,12 +59,6 @@
             android:entryValues="@array/drawer_actions"
             android:key="show_nav_items"
             android:title="@string/enable_items" />
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="switchButtons"
-            android:summaryOff="@string/switch_buttons_off"
-            android:summaryOn="@string/switch_buttons_on"
-            android:title="@string/switch_buttons_title" />
         <SwitchPreference
             android:defaultValue="false"
             android:key="dashboardShowCamera"
@@ -116,23 +122,17 @@
         android:key="dashboard_category"
         android:title="@string/title_dashboard">
         <SwitchPreference
-            android:defaultValue="true"
-            android:key="extradata"
-            android:summaryOff="@string/show_extra_data_off"
-            android:summaryOn="@string/show_extra_data_on"
-            android:title="@string/extra_data_title" />
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="dashboardAsList"
-            android:summaryOff="@string/show_dashboard_list_on"
-            android:summaryOn="@string/show_dashboard_list_off"
-            android:title="@string/dashboard_list_title" />
-        <SwitchPreference
             android:defaultValue="false"
             android:key="dashboardShowClock"
             android:summaryOff="@string/show_dashboard_clock"
             android:summaryOn="@string/show_dashboard_clock"
             android:title="@string/dashboard_clock" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="dashboardShowPlans"
+            android:summaryOff="@string/show_dashboard_plans"
+            android:summaryOn="@string/show_dashboard_plans"
+            android:title="@string/dashboard_plans" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -356,6 +356,15 @@
         <Preference
             android:key="import_settings"
             android:title="@string/import_settings" />
+        <Preference
+            android:key="logs_settings"
+            android:title="@string/title_logs" />
+        <Preference
+            android:key="events_settings"
+            android:title="@string/title_events" />
+        <Preference
+            android:key="vars_settings"
+            android:title="@string/title_vars" />
         <Preference
             android:key="permissionssettings"
             android:title="@string/permission_config" />

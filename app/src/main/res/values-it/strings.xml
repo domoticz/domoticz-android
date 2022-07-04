@@ -23,7 +23,10 @@
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="premium_category">Acquista la versione premium!</string>
     <string name="premium_title">Ottieni la versione premium!</string>
+    <string name="restore_title">Restore subscriptions</string>
     <string name="premium_feature">è una funzionalità disponibile nella versione premium, si prega di acquistare la versione a pagamento per supportare gli sviluppatori!</string>
+    <string name="old_version">Get the latest version!</string>
+    <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
     <string name="drawer_open">Apri il pannello di navigazione</string>
     <string name="drawer_close">Chiudi pannello di navigazione</string>
     <string name="msg_please_wait">Attendere prego&#8230;</string>

@@ -255,6 +255,7 @@ public class Domoticz {
             case DomoticzValues.Device.Type.Value.X10SIREN:
             case DomoticzValues.Device.Type.Value.DOORCONTACT:
             case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
+            case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP:
             case DomoticzValues.Device.Type.Value.BLINDINVERTED:
             case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
             case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
@@ -263,6 +264,7 @@ public class Domoticz {
             case DomoticzValues.Device.Type.Value.DIMMER:
                 return true;
         }
+
         if (DomoticzValues.Scene.Type.GROUP.equals(testSwitch.getType()))
             return true;
         return false;
@@ -280,10 +282,12 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Value.ON_OFF);
         switchesSupported.add(DomoticzValues.Device.Type.Value.DIMMER);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDPERCENTAGE);
+        switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED);
+        switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDPERCENTAGESTOP);
+        switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDVENETIAN);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDVENETIANUS);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDINVERTED);
-        switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDS);
         switchesSupported.add(DomoticzValues.Device.Type.Value.MOTION);
         switchesSupported.add(DomoticzValues.Device.Type.Value.CONTACT);
@@ -306,11 +310,13 @@ public class Domoticz {
         List<String> switchesSupported = new ArrayList<>();
         switchesSupported.add(DomoticzValues.Device.Type.Name.ON_OFF);
         switchesSupported.add(DomoticzValues.Device.Type.Name.DIMMER);
-        switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDPERCENTAGE);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDVENETIAN);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDVENETIANUS);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDINVERTED);
+        switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDPERCENTAGE);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDPERCENTAGEINVERTED);
+        switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDPERCENTAGESTOP);
+        switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDPERCENTAGEINVERTEDSTOP);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDS);
         switchesSupported.add(DomoticzValues.Device.Type.Name.PUSH_ON_BUTTON);
         switchesSupported.add(DomoticzValues.Device.Type.Name.PUSH_OFF_BUTTON);

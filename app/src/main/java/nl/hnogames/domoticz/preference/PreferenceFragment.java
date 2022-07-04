@@ -70,7 +70,9 @@ import androidx.work.WorkManager;
 import nl.hnogames.domoticz.BeaconSettingsActivity;
 import nl.hnogames.domoticz.BluetoothSettingsActivity;
 import nl.hnogames.domoticz.BuildConfig;
+import nl.hnogames.domoticz.EventsActivity;
 import nl.hnogames.domoticz.GeoSettingsActivity;
+import nl.hnogames.domoticz.LogsActivity;
 import nl.hnogames.domoticz.NFCSettingsActivity;
 import nl.hnogames.domoticz.NotificationSettingsActivity;
 import nl.hnogames.domoticz.QRCodeSettingsActivity;
@@ -79,9 +81,11 @@ import nl.hnogames.domoticz.ServerListSettingsActivity;
 import nl.hnogames.domoticz.ServerSettingsActivity;
 import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.SpeechSettingsActivity;
+import nl.hnogames.domoticz.UserVariablesActivity;
 import nl.hnogames.domoticz.WifiSettingsActivity;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.helpers.StaticHelper;
+import nl.hnogames.domoticz.interfaces.SubscriptionsListener;
 import nl.hnogames.domoticz.service.WifiReceiver;
 import nl.hnogames.domoticz.service.WifiReceiverManager;
 import nl.hnogames.domoticz.ui.SimpleTextDialog;
@@ -95,7 +99,7 @@ import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
 
 import static android.content.Context.KEYGUARD_SERVICE;
 
-public class PreferenceFragment extends PreferenceFragmentCompat {
+public class PreferenceFragment extends PreferenceFragmentCompat implements SubscriptionsListener {
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final String TAG = PreferenceFragment.class.getSimpleName();
 
@@ -144,13 +148,12 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         mSharedPrefs = new SharedPrefUtil(mContext);
         mConfigInfo = StaticHelper.getServerUtil(getActivity()).getActiveServer().getConfigInfo(mContext);
 
-        UsefulBits.checkAPK(mContext, mSharedPrefs);
-
         setIconColor();
         setPreferences();
         setStartUpScreenDefaultValue();
         handleImportExportButtons();
         handleInfoAndAbout();
+        handleAdvanceButtons();
         GetVersion();
     }
 
@@ -194,6 +197,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         PreferenceScreen preferenceScreen = findPreference("settingsscreen");
 
         // Categories
+        PreferenceCategory old_version_category = findPreference("old_version_category");
         PreferenceCategory premiumCategory = findPreference("premium_category");
         PreferenceCategory dashboard_category = findPreference("dashboard_category");
         PreferenceCategory generic_category = findPreference("generic_category");
@@ -220,7 +224,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         // Generic settings
         ListPreference startup_screen = findPreference("startup_nav");
         MultiSelectListPreference drawerItems = findPreference("show_nav_items");
-        SwitchPreference switchButtonsPreference = findPreference("switchButtons");
         SwitchPreference CameraPreference = findPreference("dashboardShowCamera");
         SwitchPreference AlwaysOnPreference = findPreference("alwayson");
         SwitchPreference RefreshScreenPreference = findPreference("autorefresh");
@@ -235,9 +238,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         SwitchPreference customSortLockProperty = findPreference("lockSortCustom");
 
         // Dashboard settings
-        SwitchPreference extradataProperty = findPreference("extradata");
-        SwitchPreference dashboardAsListProperty = findPreference("dashboardAsList");
         SwitchPreference ClockPreference = findPreference("dashboardShowClock");
+        SwitchPreference PlansPreference = findPreference("dashboardShowPlans");
 
         // Notification settings
         Preference openNotificationSettings = findPreference("openNotificationSettings");
@@ -297,6 +299,9 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         // Advanced settings
         androidx.preference.Preference exportButton = findPreference("export_settings");
         androidx.preference.Preference importButton = findPreference("import_settings");
+        androidx.preference.Preference logsButton = findPreference("logs_settings");
+        androidx.preference.Preference eventsButton = findPreference("events_settings");
+        androidx.preference.Preference varsButton = findPreference("vars_settings");
         Preference PermissionsSettings = findPreference("permissionssettings");
         Preference resetApplication = findPreference("reset_settings");
 
@@ -305,6 +310,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         // Premium settings
         Preference premiumPreference = findPreference("premium_settings");
+        Preference restorePreference = findPreference("premium_restore");
+        Preference oldVersionPreference = findPreference("old_version");
 
         // About settings
         Preference ReportErrorSettings = findPreference("report");
@@ -316,16 +323,21 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         if (premiumPreference != null) {
             premiumCategory.setVisible(UsefulBits.isEmpty(filter));
             premiumPreference.setVisible(UsefulBits.isEmpty(filter));
+            restorePreference.setVisible(UsefulBits.isEmpty(filter));
+        }
+
+        if (oldVersionPreference != null) {
+            old_version_category.setVisible(UsefulBits.isEmpty(filter));
+            oldVersionPreference.setVisible(UsefulBits.isEmpty(filter));
         }
 
         startup_screen.setVisible(UsefulBits.isEmpty(filter) || startup_screen.getTitle().toString().toLowerCase().contains(filter) || (CameraPreference.getSummary() != null && startup_screen.getSummary().toString().toLowerCase().contains(filter)));
         drawerItems.setVisible(UsefulBits.isEmpty(filter) || drawerItems.getTitle().toString().toLowerCase().contains(filter) || (drawerItems.getSummary() != null && drawerItems.getSummary().toString().toLowerCase().contains(filter)));
-        switchButtonsPreference.setVisible(UsefulBits.isEmpty(filter) || switchButtonsPreference.getTitle().toString().toLowerCase().contains(filter) || (switchButtonsPreference.getSummary() != null && switchButtonsPreference.getSummary().toString().toLowerCase().contains(filter)));
         CameraPreference.setVisible(UsefulBits.isEmpty(filter) || CameraPreference.getTitle().toString().toLowerCase().contains(filter) || (CameraPreference.getSummary() != null && CameraPreference.getSummary().toString().toLowerCase().contains(filter)));
         AlwaysOnPreference.setVisible(UsefulBits.isEmpty(filter) || AlwaysOnPreference.getTitle().toString().toLowerCase().contains(filter) || (AlwaysOnPreference.getSummary() != null && AlwaysOnPreference.getSummary().toString().toLowerCase().contains(filter)));
         RefreshScreenPreference.setVisible(UsefulBits.isEmpty(filter) || RefreshScreenPreference.getTitle().toString().toLowerCase().contains(filter) || (RefreshScreenPreference.getSummary() != null && RefreshScreenPreference.getSummary().toString().toLowerCase().contains(filter)));
         RefreshScreenTimerPreference.setVisible(UsefulBits.isEmpty(filter) || RefreshScreenTimerPreference.getTitle().toString().toLowerCase().contains(filter) || (RefreshScreenTimerPreference.getSummary() != null && RefreshScreenTimerPreference.getSummary().toString().toLowerCase().contains(filter)));
-        generic_category.setVisible(startup_screen.isVisible() || drawerItems.isVisible() || switchButtonsPreference.isVisible() || CameraPreference.isVisible() || AlwaysOnPreference.isVisible() || RefreshScreenPreference.isVisible() || RefreshScreenTimerPreference.isVisible());
+        generic_category.setVisible(startup_screen.isVisible() || drawerItems.isVisible() || CameraPreference.isVisible() || AlwaysOnPreference.isVisible() || RefreshScreenPreference.isVisible() || RefreshScreenTimerPreference.isVisible());
 
         // Default values settings
         oTemperatureMin.setVisible(UsefulBits.isEmpty(filter) || oTemperatureMin.getTitle().toString().toLowerCase().contains(filter) || (oTemperatureMin.getSummary() != null && oTemperatureMin.getSummary().toString().toLowerCase().contains(filter)));
@@ -338,10 +350,10 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         sorting_category.setVisible(customSortProperty.isVisible() || customSortLockProperty.isVisible());
 
         // Dashboard settings
-        extradataProperty.setVisible(UsefulBits.isEmpty(filter) || extradataProperty.getTitle().toString().toLowerCase().contains(filter) || (extradataProperty.getSummary() != null && extradataProperty.getSummary().toString().toLowerCase().contains(filter)));
-        dashboardAsListProperty.setVisible(UsefulBits.isEmpty(filter) || dashboardAsListProperty.getTitle().toString().toLowerCase().contains(filter) || (dashboardAsListProperty.getSummary() != null && dashboardAsListProperty.getSummary().toString().toLowerCase().contains(filter)));
         ClockPreference.setVisible(UsefulBits.isEmpty(filter) || ClockPreference.getTitle().toString().toLowerCase().contains(filter) || (ClockPreference.getSummary() != null && ClockPreference.getSummary().toString().toLowerCase().contains(filter)));
-        dashboard_category.setVisible(extradataProperty.isVisible() || dashboardAsListProperty.isVisible() || ClockPreference.isVisible());
+        dashboard_category.setVisible(ClockPreference.isVisible());
+        PlansPreference.setVisible(UsefulBits.isEmpty(filter) || PlansPreference.getTitle().toString().toLowerCase().contains(filter) || (PlansPreference.getSummary() != null && PlansPreference.getSummary().toString().toLowerCase().contains(filter)));
+        dashboard_category.setVisible(ClockPreference.isVisible());
 
         // Notification settings
         openNotificationSettings.setVisible(UsefulBits.isEmpty(filter) || openNotificationSettings.getTitle().toString().toLowerCase().contains(filter) || (openNotificationSettings.getSummary() != null && openNotificationSettings.getSummary().toString().toLowerCase().contains(filter)));
@@ -417,7 +429,10 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         importButton.setVisible(UsefulBits.isEmpty(filter) || importButton.getTitle().toString().toLowerCase().contains(filter) || (importButton.getSummary() != null && importButton.getSummary().toString().toLowerCase().contains(filter)));
         PermissionsSettings.setVisible(UsefulBits.isEmpty(filter) || PermissionsSettings.getTitle().toString().toLowerCase().contains(filter) || (PermissionsSettings.getSummary() != null && PermissionsSettings.getSummary().toString().toLowerCase().contains(filter)));
         resetApplication.setVisible(UsefulBits.isEmpty(filter) || resetApplication.getTitle().toString().toLowerCase().contains(filter) || (resetApplication.getSummary() != null && resetApplication.getSummary().toString().toLowerCase().contains(filter)));
-        advanced_category.setVisible(exportButton.isVisible() || importButton.isVisible() || PermissionsSettings.isVisible() || resetApplication.isVisible());
+        advanced_category.setVisible(logsButton.isVisible() || eventsButton.isVisible() || varsButton.isVisible() || exportButton.isVisible() || importButton.isVisible() || PermissionsSettings.isVisible() || resetApplication.isVisible());
+        logsButton.setVisible(UsefulBits.isEmpty(filter) || logsButton.getTitle().toString().toLowerCase().contains(filter) || (logsButton.getSummary() != null && logsButton.getSummary().toString().toLowerCase().contains(filter)));
+        eventsButton.setVisible(UsefulBits.isEmpty(filter) || eventsButton.getTitle().toString().toLowerCase().contains(filter) || (eventsButton.getSummary() != null && eventsButton.getSummary().toString().toLowerCase().contains(filter)));
+        varsButton.setVisible(UsefulBits.isEmpty(filter) || varsButton.getTitle().toString().toLowerCase().contains(filter) || (varsButton.getSummary() != null && varsButton.getSummary().toString().toLowerCase().contains(filter)));
 
         // Other settings
         taskerPreference.setVisible(UsefulBits.isEmpty(filter) || taskerPreference.getTitle().toString().toLowerCase().contains(filter) || (taskerPreference.getSummary() != null && taskerPreference.getSummary().toString().toLowerCase().contains(filter)));
@@ -490,7 +505,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (customSortProperty != null)
             customSortProperty.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.sort_custom_on));
                     return false;
                 } else {
@@ -501,7 +516,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (ThemePreference != null)
             ThemePreference.setOnPreferenceClickListener(preference -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_theme));
                     return false;
                 } else {
@@ -512,7 +527,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (ClockPreference != null)
             ClockPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_clock));
                     return false;
                 }
@@ -521,7 +536,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (CameraPreference != null)
             CameraPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.dashboard_camera));
                     return false;
                 }
@@ -530,7 +545,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (MultiServerPreference != null)
             MultiServerPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.multi_server));
                     return false;
                 }
@@ -589,7 +604,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (GeoSettings != null)
             GeoSettings.setOnPreferenceClickListener(preference -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.geofence));
                     return false;
                 } else {
@@ -601,7 +616,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (EnableNFCPreference != null)
             EnableNFCPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_nfc));
                     return false;
                 }
@@ -615,7 +630,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (EnableBluetoothPreference != null)
             EnableBluetoothPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_bluetooth));
                     return false;
                 }
@@ -624,7 +639,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (EnableWifiPreference != null)
             EnableWifiPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_wifi));
                     return false;
                 }
@@ -643,7 +658,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (EnableBeaconPreference != null)
             EnableBeaconPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.beacon));
                     return false;
                 }
@@ -662,7 +677,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (EnableQRCodePreference != null)
             EnableQRCodePreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_QRCode));
                     return false;
                 }
@@ -672,7 +687,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (EnableSpeechPreference != null)
             EnableSpeechPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_Speech));
                     return false;
                 }
@@ -681,7 +696,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (EnableTalkBackPreference != null)
             EnableTalkBackPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_talk_back));
                     return false;
                 }
@@ -690,7 +705,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (NFCPreference != null)
             NFCPreference.setOnPreferenceClickListener(preference -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_nfc));
                     return false;
                 } else {
@@ -702,7 +717,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (QRCodePreference != null)
             QRCodePreference.setOnPreferenceClickListener(preference -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_QRCode));
                     return false;
                 } else {
@@ -714,7 +729,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (WifiPreference != null)
             WifiPreference.setOnPreferenceClickListener(preference -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_wifi));
                     return false;
                 } else {
@@ -726,7 +741,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (BluetoothPreference != null)
             BluetoothPreference.setOnPreferenceClickListener(preference -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_bluetooth));
                     return false;
                 } else {
@@ -738,7 +753,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (BeaconPreference != null)
             BeaconPreference.setOnPreferenceClickListener(preference -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.beacon));
                     return false;
                 } else {
@@ -750,7 +765,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (SpeechPreference != null)
             SpeechPreference.setOnPreferenceClickListener(preference -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_Speech));
                     return false;
                 } else {
@@ -762,7 +777,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (WidgetsEnablePreference != null)
             WidgetsEnablePreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_widgets));
                     return false;
                 } else {
@@ -787,7 +802,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (WearPreference != null)
             WearPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_wear));
                     return false;
                 }
@@ -796,7 +811,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (AlwaysOnPreference != null)
             AlwaysOnPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.always_on_title));
                     return false;
                 }
@@ -805,25 +820,39 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
 
         if (RefreshScreenPreference != null)
             RefreshScreenPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.always_auto_refresh));
                     return false;
                 }
                 return true;
             });
 
-        if (!BuildConfig.LITE_VERSION) {
-            if (preferenceScreen != null && premiumCategory != null)
+        if (AppController.IsPremiumEnabled) {
+            if (preferenceScreen != null && premiumCategory != null) {
                 preferenceScreen.removePreference(premiumCategory);
+            }
         } else {
             if (premiumPreference != null)
                 premiumPreference.setOnPreferenceClickListener(preference -> {
-                    String packageID = mContext.getPackageName() + ".premium";
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageID)));
-                    } catch (ActivityNotFoundException ignored) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + packageID)));
-                    }
+                    UsefulBits.openPremiumAppStore(mContext, this);
+                    return true;
+                });
+            if (restorePreference != null)
+                restorePreference.setOnPreferenceClickListener(preference -> {
+                    showSnackbar("Restoring subscriptions");
+                    UsefulBits.RestoreSubscriptions(mContext, this);
+                    return true;
+                });
+        }
+
+        if (BuildConfig.NEW_VERSION || BuildConfig.PAID_OOTT) {
+            if (preferenceScreen != null && old_version_category != null) {
+                preferenceScreen.removePreference(old_version_category);
+            }
+        } else {
+            if (oldVersionPreference != null)
+                oldVersionPreference.setOnPreferenceClickListener(preference -> {
+                    UsefulBits.ShowOldVersionDialog(mContext);
                     return true;
                 });
         }
@@ -894,7 +923,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             FingerPrintPreference.setOnPreferenceChangeListener((preference, newValue) -> {
                 if (mSharedPrefs.isStartupSecurityEnabled())
                     return true;
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_startup_security));
                     return false;
                 } else {
@@ -990,6 +1019,34 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             });
     }
 
+    private void handleAdvanceButtons() {
+        androidx.preference.Preference logsButton = findPreference("logs_settings");
+        androidx.preference.Preference eventsButton = findPreference("events_settings");
+        androidx.preference.Preference varsButton = findPreference("vars_settings");
+
+        if (logsButton != null) {
+            logsButton.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(mContext, LogsActivity.class);
+                startActivity(intent);
+                return true;
+            });
+        }
+        if (eventsButton != null) {
+            eventsButton.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(mContext, EventsActivity.class);
+                startActivity(intent);
+                return true;
+            });
+        }
+        if (varsButton != null) {
+            varsButton.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(mContext, UserVariablesActivity.class);
+                startActivity(intent);
+                return true;
+            });
+        }
+    }
+
     private void handleImportExportButtons() {
         androidx.preference.Preference exportButton = findPreference("export_settings");
         androidx.preference.Preference importButton = findPreference("import_settings");
@@ -1025,7 +1082,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             new Handler().postDelayed(() -> {
                 if (getView() != null) {
                     Snackbar.make(getView(), category + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
-                            .setAction(R.string.upgrade, view -> UsefulBits.openPremiumAppStore(mContext))
+                            .setAction(R.string.upgrade, view -> UsefulBits.openPremiumAppStore(mContext, this))
                             .setActionTextColor(ContextCompat.getColor(mContext, R.color.material_blue_600))
                             .show();
                 }
@@ -1069,5 +1126,13 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
             }
         });
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void OnDone(boolean IsPremiumEnabled) {
+        try {
+            ((SettingsActivity) getActivity()).recreate();
+        } catch (Exception ex) {
+        }
     }
 }

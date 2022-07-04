@@ -27,8 +27,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -43,10 +41,10 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.MenuItemCompat;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.adapters.WidgetsAdapter;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.ui.PasswordDialog;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -150,53 +148,42 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
 
                     ListView listView = findViewById(R.id.list);
                     adapter = new WidgetsAdapter(SmallWidgetConfigurationActivity.this, StaticHelper.getDomoticz(SmallWidgetConfigurationActivity.this), mNewDevicesInfo);
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-                                UsefulBits.showSnackbarWithAction(SmallWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG, null, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        UsefulBits.openPremiumAppStore(SmallWidgetConfigurationActivity.this);
-                                    }
-                                }, getString(R.string.premium_category));
-                                return;
-                            }
+                    listView.setOnItemClickListener((parent, view, position, id) -> {
+                        if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
+                            UsefulBits.showSnackbarWithAction(SmallWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG, null,
+                                    v -> UsefulBits.openPremiumAppStore(SmallWidgetConfigurationActivity.this, IsPremiumEnabled -> recreate()), getString(R.string.premium_category));
+                            return;
+                        }
 
-                            if (!mSharedPrefs.IsWidgetsEnabled()) {
-                                UsefulBits.showSnackbarWithAction(SmallWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.widget_disabled), Snackbar.LENGTH_LONG, null, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        startActivityForResult(new Intent(SmallWidgetConfigurationActivity.this, SettingsActivity.class), 888);
-                                    }
-                                }, getString(R.string.upgrade));
-                                return;
-                            }
+                        if (!mSharedPrefs.IsWidgetsEnabled()) {
+                            UsefulBits.showSnackbarWithAction(SmallWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.widget_disabled), Snackbar.LENGTH_LONG, null,
+                                    v -> startActivityForResult(new Intent(SmallWidgetConfigurationActivity.this, SettingsActivity.class), 888), getString(R.string.upgrade));
+                            return;
+                        }
 
-                            final DevicesInfo mDeviceInfo = (DevicesInfo) adapter.getItem(position);
-                            if (mDeviceInfo.isProtected()) {
-                                PasswordDialog passwordDialog = new PasswordDialog(
-                                        SmallWidgetConfigurationActivity.this, StaticHelper.getDomoticz(SmallWidgetConfigurationActivity.this));
-                                passwordDialog.show();
-                                passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
-                                    @Override
-                                    public void onDismiss(String password) {
-                                        if (mDeviceInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
-                                            showSelectorDialog(mDeviceInfo, password);
-                                        else
-                                            getBackground(mDeviceInfo, password, null);
-                                    }
+                        final DevicesInfo mDeviceInfo = (DevicesInfo) adapter.getItem(position);
+                        if (mDeviceInfo.isProtected()) {
+                            PasswordDialog passwordDialog = new PasswordDialog(
+                                    SmallWidgetConfigurationActivity.this, StaticHelper.getDomoticz(SmallWidgetConfigurationActivity.this));
+                            passwordDialog.show();
+                            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                                @Override
+                                public void onDismiss(String password) {
+                                    if (mDeviceInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
+                                        showSelectorDialog(mDeviceInfo, password);
+                                    else
+                                        getBackground(mDeviceInfo, password, null);
+                                }
 
-                                    @Override
-                                    public void onCancel() {
-                                    }
-                                });
-                            } else {
-                                if (mDeviceInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
-                                    showSelectorDialog(mDeviceInfo, null);
-                                else
-                                    getBackground(mDeviceInfo, null, null);
-                            }
+                                @Override
+                                public void onCancel() {
+                                }
+                            });
+                        } else {
+                            if (mDeviceInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.SELECTOR)
+                                showSelectorDialog(mDeviceInfo, null);
+                            else
+                                getBackground(mDeviceInfo, null, null);
                         }
                     });
                     listView.setAdapter(adapter);
@@ -225,12 +212,7 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
         new MaterialDialog.Builder(this)
                 .title(R.string.selector_value)
                 .items(levelNames)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        getBackground(selector, pass, String.valueOf(text));
-                    }
-                })
+                .itemsCallback((dialog, view, which, text) -> getBackground(selector, pass, String.valueOf(text)))
                 .show();
     }
 
@@ -255,12 +237,9 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
         new MaterialDialog.Builder(this)
                 .title(this.getString(R.string.widget_background))
                 .items(new String[]{this.getString(R.string.widget_dark), this.getString(R.string.widget_light), this.getString(R.string.widget_transparent_dark), this.getString(R.string.widget_transparent_light)})
-                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        showAppWidget(mSelectedSwitch, password, value, getWidgetLayout(String.valueOf(text), mSelectedSwitch));
-                        return true;
-                    }
+                .itemsCallbackSingleChoice(-1, (dialog, view, which, text) -> {
+                    showAppWidget(mSelectedSwitch, password, value, getWidgetLayout(String.valueOf(text), mSelectedSwitch));
+                    return true;
                 })
                 .positiveText(R.string.ok)
                 .show();

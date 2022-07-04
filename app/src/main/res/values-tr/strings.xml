@@ -23,7 +23,10 @@
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="premium_category">Pro versiyon satın alın</string>
     <string name="premium_title">Pro versiyona geç!</string>
+    <string name="restore_title">Restore subscriptions</string>
     <string name="premium_feature">is a premium feature, please buy the paid version to support the developers!</string>
+    <string name="old_version">Get the latest version!</string>
+    <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
     <string name="drawer_open">Gezinti menüsünü aç</string>
     <string name="drawer_close">Gezinti menüsünü kapat</string>
     <string name="msg_please_wait">Lütfen bekleyin&#8230;</string>

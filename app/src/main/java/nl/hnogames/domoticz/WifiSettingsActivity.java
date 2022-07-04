@@ -74,7 +74,6 @@ public class WifiSettingsActivity extends AppCompatPermissionsActivity implement
     private WifiAdapter adapter;
     private Toolbar toolbar;
     private SwitchMaterial notificationSwitch;
-    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

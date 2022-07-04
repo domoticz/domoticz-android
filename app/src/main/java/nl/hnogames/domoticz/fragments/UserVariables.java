@@ -33,7 +33,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.UserVariablesAdapter;
@@ -56,7 +55,6 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     private Context mContext;
     private String filter = "";
     private boolean itemDecorationAdded = false;
-    private SlideInBottomAnimationAdapter alphaSlideIn;
 
     @Override
     public void onConnectionFailed() {
@@ -117,12 +115,10 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
         if (getView() != null) {
             if (adapter == null) {
                 adapter = new UserVariablesAdapter(mContext, StaticHelper.getDomoticz(mContext), mUserVariableInfos, this);
-                alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-                gridView.setAdapter(alphaSlideIn);
+                gridView.setAdapter(adapter);
             } else {
                 adapter.setData(mUserVariableInfos);
                 adapter.notifyDataSetChanged();
-                alphaSlideIn.notifyDataSetChanged();
             }
             if (!isTablet && !itemDecorationAdded) {
                 gridView.addItemDecoration(new MarginItemDecoration(20));

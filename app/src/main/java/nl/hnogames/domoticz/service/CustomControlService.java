@@ -1,10 +1,8 @@
 package nl.hnogames.domoticz.service;
 
 import android.app.PendingIntent;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.service.controls.Control;
 import android.service.controls.ControlsProviderService;
@@ -29,9 +27,9 @@ import java.util.function.Consumer;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import io.reactivex.processors.ReplayProcessor;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.adapters.DashboardAdapter;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.DeviceUtils;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -65,10 +63,10 @@ public class CustomControlService extends ControlsProviderService {
             Context context = getBaseContext();
             Intent intent = new Intent(context, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-            pi = PendingIntent.getActivity(context, 101, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            pi = PendingIntent.getActivity(context, 101, intent, PendingIntent.FLAG_IMMUTABLE);
         }
 
-        if (!BuildConfig.LITE_VERSION) {
+        if (AppController.IsPremiumEnabled) {
             StaticHelper.getDomoticz(getApplicationContext()).getDevices(new DevicesReceiver() {
                 @Override
                 public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
@@ -249,16 +247,7 @@ public class CustomControlService extends ControlsProviderService {
         try {
             Log.i(TAG, controlId + " act " + action);
             if (controlId.equals(prefix + "premium")) {
-                String packageID = getApplicationContext().getPackageName() + ".premium";
-                try {
-                    Intent openStore = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageID));
-                    openStore.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(openStore);
-                } catch (ActivityNotFoundException ignored) {
-                    Intent openStore = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + packageID));
-                    openStore.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(openStore);
-                }
+                //UsefulBits.openPremiumAppStore(this);
                 consumer.accept(ControlAction.RESPONSE_OK);
             } else {
                 DevicesInfo device = null;

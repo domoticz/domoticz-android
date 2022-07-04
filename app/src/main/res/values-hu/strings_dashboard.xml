@@ -22,7 +22,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="title_dashboard">Vezérlőpult</string>
-    <string name="delivery">Delivery</string>
+    <string name="delivery">Kézbesítés</string>
     <string name="usage">Használat</string>
     <string name="today">Ma</string>
     <string name="total">Összesen</string>

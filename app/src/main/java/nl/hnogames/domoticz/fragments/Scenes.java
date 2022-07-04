@@ -39,11 +39,10 @@ import java.util.ArrayList;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.SceneAdapter;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
@@ -76,7 +75,6 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     private String filter = "";
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
-    private SlideInBottomAnimationAdapter alphaSlideIn;
     private boolean itemDecorationAdded = false;
     private ItemTouchHelper mItemTouchHelper;
 
@@ -149,7 +147,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
             if (supportedSwitches == null || supportedSwitches.size() <= 0)
                 return supportedSwitches;
 
-            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+            if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                 ArrayList<SceneInfo> filteredList = new ArrayList<>();
                 for (SceneInfo d : supportedSwitches) {
                     if (d.getIdx() != MainActivity.ADS_IDX)
@@ -229,12 +227,10 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
 
             if (adapter == null) {
                 adapter = new SceneAdapter(mContext, StaticHelper.getDomoticz(mContext), AddAdsDevice(supportedScenes), listener);
-                alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-                gridView.setAdapter(alphaSlideIn);
+                gridView.setAdapter(adapter);
             } else {
                 adapter.setData(AddAdsDevice(supportedScenes));
                 adapter.notifyDataSetChanged();
-                alphaSlideIn.notifyDataSetChanged();
             }
             if (!isTablet && !itemDecorationAdded) {
                 gridView.addItemDecoration(new MarginItemDecoration(20));

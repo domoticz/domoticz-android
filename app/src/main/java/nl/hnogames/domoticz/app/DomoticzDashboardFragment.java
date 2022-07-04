@@ -31,7 +31,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -45,10 +44,10 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
@@ -57,6 +56,7 @@ import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.ui.Backdrop.BackdropContainer;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticz.utils.ViewUtils;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -73,9 +73,11 @@ public class DomoticzDashboardFragment extends Fragment {
     public LinearLayout lySortDevices;
     public BackdropContainer backdropContainer;
     public MaterialCardView bottomLayoutWrapper;
+    public RecyclerView planList;
     public MaterialButton sortAll, sortOn, sortOff, sortStatic, btnCheckSettings;
     public boolean isTablet = false;
     public boolean isPortrait = false;
+    public GridLayoutManager mLayoutManager;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private TextView debugText;
@@ -138,7 +140,9 @@ public class DomoticzDashboardFragment extends Fragment {
             mSharedPrefs = new SharedPrefUtil(getContext());
 
         setGridViewLayout();
+        setPlanListLayout();
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
+
         bottomLayoutWrapper = root.findViewById(R.id.bottomLayoutWrapper);
         lySortDevices = root.findViewById(R.id.lySortDevices);
         if (getActivity() instanceof MainActivity)
@@ -146,57 +150,42 @@ public class DomoticzDashboardFragment extends Fragment {
 
         sortStatic = root.findViewById(R.id.btnSortStatic);
         if (sortStatic != null) {
-            sortStatic.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sortFragment(String.valueOf(sortStatic.getText()));
-                    toggleBackDrop();
-                }
+            sortStatic.setOnClickListener(v -> {
+                sortFragment(String.valueOf(sortStatic.getText()));
+                toggleBackDrop();
             });
         }
 
         btnCheckSettings = root.findViewById(R.id.btnCheckSettings);
         if (btnCheckSettings != null) {
-            btnCheckSettings.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (getActivity() instanceof MainActivity) {
-                        ((MainActivity) getActivity()).OpenSettings();
-                    }
+            btnCheckSettings.setOnClickListener(v -> {
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).OpenSettings();
                 }
             });
         }
 
         sortOn = root.findViewById(R.id.btnSortOn);
         if (sortOn != null) {
-            sortOn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sortFragment(String.valueOf(sortOn.getText()));
-                    toggleBackDrop();
-                }
+            sortOn.setOnClickListener(v -> {
+                sortFragment(String.valueOf(sortOn.getText()));
+                toggleBackDrop();
             });
         }
 
         sortOff = root.findViewById(R.id.btnSortOff);
         if (sortOff != null) {
-            sortOff.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sortFragment(String.valueOf(sortOff.getText()));
-                    toggleBackDrop();
-                }
+            sortOff.setOnClickListener(v -> {
+                sortFragment(String.valueOf(sortOff.getText()));
+                toggleBackDrop();
             });
         }
 
         sortAll = root.findViewById(R.id.btnSortAll);
         if (sortAll != null) {
-            sortAll.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sortFragment(String.valueOf(sortAll.getText()));
-                    toggleBackDrop();
-                }
+            sortAll.setOnClickListener(v -> {
+                sortFragment(String.valueOf(sortAll.getText()));
+                toggleBackDrop();
             });
         }
 
@@ -209,47 +198,53 @@ public class DomoticzDashboardFragment extends Fragment {
 
     public void setGridViewLayout() {
         try {
-            if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-                isPortrait = true;
+            isPortrait = getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
 
             if (getActivity() instanceof MainActivity) {
-                isTablet = !((MainActivity) getActivity()).onPhone;
+                isTablet = ViewUtils.isTablet(getContext());
             }
+            Log.d("orientationchanged", "Event: setGridViewLayout Portrait:" + isPortrait + " Tablet:" + isTablet);
 
             gridView.setHasFixedSize(true);
-            if (!mSharedPrefs.showDashboardAsList()) {
-                if (isTablet) {
-                    if (isPortrait) {
-                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-                        gridView.setLayoutManager(mLayoutManager);
-                    } else {
-                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-                        gridView.setLayoutManager(mLayoutManager);
-                    }
-                } else {
-                    StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-                    gridView.setLayoutManager(mLayoutManager);
-                }
+            if (isTablet) {
+                //if (isPortrait) {
+                    mLayoutManager = new GridLayoutManager(getContext(), 3);
+                    Log.d("orientationchanged", "Event: GridLayoutManager span 3");
+               // } else {
+               //     mLayoutManager = new GridLayoutManager(getContext(), 4);
+               //     Log.d("orientationchanged", "Event: GridLayoutManager span 4");
+               // }
             } else {
-                if (isTablet) {
-                    if (isPortrait) {
-                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-                        gridView.setLayoutManager(mLayoutManager);
-                    } else {
-                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
-                        gridView.setLayoutManager(mLayoutManager);
-                    }
-                } else {
-                    if (isPortrait) {
-                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-                        gridView.setLayoutManager(mLayoutManager);
-                    } else {
-                        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-                        gridView.setLayoutManager(mLayoutManager);
-                    }
-                }
+               // if (isPortrait) {
+                    mLayoutManager = new GridLayoutManager(getContext(), 2);
+                    Log.d("orientationchanged", "Event: GridLayoutManager span 2");
+                //} else {
+                //    mLayoutManager = new GridLayoutManager(getContext(), 3);
+                //    Log.d("orientationchanged", "Event: GridLayoutManager span 3");
+               // }
             }
-            gridView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+
+            mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    int spanSize =position == 0 && mSharedPrefs.addClockToDashboard() ? 2 : 1;
+                    Log.d("orientationchanged", "Span size: "+spanSize+" for position "+position);
+                    return spanSize;
+                }
+            });
+
+            gridView.setLayoutManager(mLayoutManager);
+        } catch (Exception ignored) {
+        }
+    }
+
+    public void setPlanListLayout() {
+        try {
+            planList = root.findViewById(R.id.planList);
+            planList.setVisibility(View.GONE);
+            LinearLayoutManager layoutManager
+                    = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+            planList.setLayoutManager(layoutManager);
         } catch (Exception ignored) {
         }
     }
@@ -290,7 +285,7 @@ public class DomoticzDashboardFragment extends Fragment {
             listener = (DomoticzFragmentListener) fragment;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                    fragment.toString() + " must implement DomoticzFragmentListener");
+                    fragment + " must implement DomoticzFragmentListener");
         }
     }
 

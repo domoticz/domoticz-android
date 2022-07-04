@@ -74,6 +74,8 @@
     <string name="show_dashboard_list_off">Показать панель как сетку</string>
     <string name="dashboard_clock">Часы</string>
     <string name="show_dashboard_clock">Показывать часы на панели устройств</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
     <string name="dashboard_camera">Camera</string>
     <string name="show_dashboard_camera">Load the camera for connected switches</string>
     <!--        Wear settings       -->
