@@ -61,7 +61,9 @@ import java.util.List;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
@@ -76,6 +78,7 @@ import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PicassoUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticz.utils.ViewUtils;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SunRiseInfo;
@@ -83,12 +86,10 @@ import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
-import rm.com.clocks.ClockImageView;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DataObjectHolder> implements RVHAdapter {
     public static final int ID_SCENE_SWITCH = 3000;
     public static List<String> mCustomSorting;
-    private final int ID_TEXTVIEW = 1000;
     private final int ID_SWITCH = 0;
     private final int[] EVOHOME_STATE_IDS = {
             DomoticzValues.Device.ModalSwitch.Action.AUTO,
@@ -103,7 +104,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     private final SharedPrefUtil mSharedPrefs;
     private final ConfigInfo mConfigInfo;
     private final ItemFilter mFilter = new ItemFilter();
-    private final SunRiseInfo sunriseInfo;
     private final Domoticz domoticz;
     @ColorInt
     private final int listviewRowBackground;
@@ -116,12 +116,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public DashboardAdapter(Context context,
                             ServerUtil serverUtil,
                             ArrayList<DevicesInfo> data,
-                            switchesClickListener listener,
-                            SunRiseInfo sunriseInfo) {
+                            switchesClickListener listener) {
         super();
 
         this.domoticz = StaticHelper.getDomoticz(context);
-        this.sunriseInfo = sunriseInfo;
         mSharedPrefs = new SharedPrefUtil(context);
 
         TypedValue typedValue = new TypedValue();
@@ -213,14 +211,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View row;
 
-        // Check if we're running on Android 5.0 or higher
-        if (Build.VERSION.SDK_INT >= 21) {
-            row = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.dashboard_row, parent, false);
-        } else {
-            row = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.dashboard_row_noads, parent, false);
-        }
+        row = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.dashboard_row, parent, false);
         return new DataObjectHolder(row);
     }
 
@@ -257,10 +249,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         holder.pieView.setVisibility(View.GONE);
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
                 (mDeviceInfo.getSwitchType() == null)) {
-            if (mDeviceInfo.getType() != null && mDeviceInfo.getType().equals("sunrise")) {
-                setButtons(holder, Buttons.CLOCK);
-                setClockRowData(holder);
-            } else if (mDeviceInfo.getType() != null && mDeviceInfo.getType().equals("advertisement")) {
+            if (mDeviceInfo.getType() != null && mDeviceInfo.getType().equals("advertisement")) {
                 setButtons(holder, Buttons.ADS);
                 setAdsLayout(holder);
             } else if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
@@ -449,31 +438,31 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                         int usage = Integer.parseInt(mDeviceInfo.getUsage().replace("W", "").trim());
                         if (mDeviceInfo.getUsageDeliv() != null && mDeviceInfo.getUsageDeliv().length() > 0) {
                             int usagedel = Integer.parseInt(mDeviceInfo.getUsageDeliv().replace("W", "").trim());
-                            text = context.getString(R.string.usage) + ": " + (usage - usagedel) + " W";
+                            text = context.getString(R.string.usage) + ": " + (usage - usagedel) + "W";
                         } else {
-                            text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
+                            text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage().replace(" Watt", "W");
                         }
                         holder.switch_battery_level.setText(text);
                     } catch (Exception ex) {
-                        text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage();
+                        text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage().replace(" Watt", "W");
                         holder.switch_battery_level.setText(text);
                     }
                 }
 
                 if (mDeviceInfo.getCounterToday() != null && mDeviceInfo.getCounterToday().length() > 0) {
                     setAlphaIcon = false;
-                    holder.switch_battery_level.append("\r\n" + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
                 }
                 if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&
                         !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
-                    holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
 
                 if (mDeviceInfo.getCounterDelivToday() != null && mDeviceInfo.getCounterDelivToday().length() > 0) {
                     setAlphaIcon = false;
-                    holder.switch_battery_level.append("\r\n" + context.getString(R.string.delivery) + ": " + mDeviceInfo.getCounterDelivToday());
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.delivery) + ": " + mDeviceInfo.getCounterDelivToday());
                     if (mDeviceInfo.getCounterDeliv() != null && mDeviceInfo.getCounterDeliv().length() > 0 &&
                             !mDeviceInfo.getCounterDeliv().equals(mDeviceInfo.getData()))
-                        holder.switch_battery_level.append(" " + context.getString(R.string.total) + ": " + mDeviceInfo.getCounterDeliv());
+                        holder.switch_battery_level.append("\n" + context.getString(R.string.total) + ": " + mDeviceInfo.getCounterDeliv());
                 }
 
                 if (mDeviceInfo.getType() != null && mDeviceInfo.getType().length() > 0 &&
@@ -482,27 +471,30 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     text = context.getString(R.string.direction) + " " + mDeviceInfo.getDirection() + " " + mDeviceInfo.getDirectionStr();
                     holder.switch_battery_level.setText(text);
                 }
+
                 if (!UsefulBits.isEmpty(mDeviceInfo.getRain())) {
                     setAlphaIcon = false;
                     text = context.getString(R.string.rain) + ": " + mDeviceInfo.getRain();
                     holder.switch_battery_level.setText(text);
                 }
+
                 if (!UsefulBits.isEmpty(mDeviceInfo.getRainRate())) {
                     setAlphaIcon = false;
-                    holder.switch_battery_level.append(", " + context.getString(R.string.rainrate) + ": " + mDeviceInfo.getRainRate());
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.rainrate) + ": " + mDeviceInfo.getRainRate());
                 }
+
                 if (!UsefulBits.isEmpty(mDeviceInfo.getForecastStr()))
                     holder.switch_battery_level.setText(mDeviceInfo.getForecastStr());
                 if (!UsefulBits.isEmpty(mDeviceInfo.getSpeed()))
-                    holder.switch_battery_level.append(", " + context.getString(R.string.speed) + ": " + mDeviceInfo.getSpeed() + " " + windSign);
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.speed) + ": " + mDeviceInfo.getSpeed() + " " + windSign);
                 if (mDeviceInfo.getDewPoint() > 0)
-                    holder.switch_battery_level.append(", " + context.getString(R.string.dewPoint) + ": " + mDeviceInfo.getDewPoint() + " " + tempSign);
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.dewPoint) + ": " + mDeviceInfo.getDewPoint() + " " + tempSign);
 
                 if ((mDeviceInfo.getType() != null && mDeviceInfo.getType().equals(DomoticzValues.Device.Type.Value.TEMP)) ||
                         !Double.isNaN(mDeviceInfo.getTemperature())) {
                     setAlphaIcon = false;
-                    holder.switch_battery_level.append(", " + context.getString(R.string.temp) + ": " + mDeviceInfo.getTemperature() + " " + tempSign);
-                    holder.pieView.setVisibility(View.VISIBLE);
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.temp) + ": " + mDeviceInfo.getTemperature() + " " + tempSign);
+                    holder.pieView.setVisibility(View.GONE);
                     double temp = mDeviceInfo.getTemperature();
                     if (tempSign != null && !tempSign.equals("C"))
                         temp = temp / 2;
@@ -519,16 +511,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                         animation.setDuration(2000);
                         holder.pieView.startAnimation(animation);
                     }
-                    holder.switch_battery_level.setVisibility(View.GONE);
+                    //holder.switch_battery_level.setVisibility(View.GONE);
                 } else
                     holder.pieView.setVisibility(View.GONE);
 
                 if (mDeviceInfo.getBarometer() > 0)
-                    holder.switch_battery_level.append(", " + context.getString(R.string.pressure) + ": " + mDeviceInfo.getBarometer());
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.pressure) + ": " + mDeviceInfo.getBarometer());
                 if (!UsefulBits.isEmpty(mDeviceInfo.getChill()))
-                    holder.switch_battery_level.append(", " + context.getString(R.string.chill) + ": " + mDeviceInfo.getChill() + " " + tempSign);
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.chill) + ": " + mDeviceInfo.getChill() + " " + tempSign);
                 if (!UsefulBits.isEmpty(mDeviceInfo.getHumidityStatus()))
-                    holder.switch_battery_level.append(", " + context.getString(R.string.humidity) + ": " + mDeviceInfo.getHumidityStatus());
+                    holder.switch_battery_level.append("\n" + context.getString(R.string.humidity) + ": " + mDeviceInfo.getHumidityStatus());
             }
 
             if (mDeviceInfo.getTypeImg().equals("counter") || mDeviceInfo.getTypeImg().equals("current"))
@@ -738,6 +730,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                         });
             }
         } else {
+            holder.contentWrapper.setBackgroundColor(listviewRowBackground);
             holder.full_screen_icon.setVisibility(View.GONE);
             holder.dummyImg.setVisibility(View.GONE);
         }
@@ -852,40 +845,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     }
 
     /**
-     * Set the data for the clock row
-     *
-     * @param holder Holder to use
-     */
-    private void setClockRowData(DataObjectHolder holder) {
-        try {
-            if (this.sunriseInfo != null) {
-                String sunrise = sunriseInfo.getSunrise();
-                if (!UsefulBits.isEmpty(sunrise) && sunrise.indexOf(":") > 0) {
-                    holder.sunrise.setHours(Integer.valueOf(sunrise.substring(0, sunrise.indexOf(":"))));
-                    holder.sunrise.setMinutes(Integer.valueOf(sunrise.substring(sunrise.indexOf(":") + 1)));
-                    holder.sunriseText.setText(sunrise);
-                }
-
-                String sunset = sunriseInfo.getSunset();
-                if (!UsefulBits.isEmpty(sunset) && sunset.indexOf(":") > 0) {
-                    holder.sunset.setHours(Integer.valueOf(sunset.substring(0, sunset.indexOf(":"))));
-                    holder.sunset.setMinutes(Integer.valueOf(sunset.substring(sunset.indexOf(":") + 1)));
-                    holder.sunsetText.setText(sunset);
-                }
-
-                String current = sunriseInfo.getServerTime();
-                if (!UsefulBits.isEmpty(current) && current.indexOf(":") > 0) {
-                    current = current.substring((current.indexOf(":") - 2), (current.indexOf(":") + 3));
-                    holder.clock.setHours(Integer.valueOf(current.substring(0, current.indexOf(":"))));
-                    holder.clock.setMinutes(Integer.valueOf(current.substring(current.indexOf(":") + 1)));
-                    holder.clockText.setText(current);
-                }
-            }
-        } catch (Exception ignored) {
-        }
-    }
-
-    /**
      * Set the data for the ads row
      *
      * @param holder Holder to use
@@ -987,7 +946,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             modeIconRes = getEvohomeStateIconResource(mDeviceInfo.getStatus());
         } else {
             holder.buttonSet.setVisibility(View.GONE);
-            holder.pieView.setVisibility(View.VISIBLE);
+            holder.pieView.setVisibility(View.GONE);
 
             double temp = temperature;
             if (!UsefulBits.isEmpty(sign) && !sign.equals("C"))
@@ -1776,18 +1735,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (holder.adview != null) {
             holder.adview.setVisibility(View.GONE);
         }
-        if (holder.clockLayoutWrapper != null) {
-            holder.clockLayoutWrapper.setVisibility(View.GONE);
-        }
-        if (holder.clockLayout != null) {
-            holder.clockLayout.setVisibility(View.GONE);
-        }
-        if (holder.sunriseLayout != null) {
-            holder.sunriseLayout.setVisibility(View.GONE);
-        }
-        if (holder.sunsetLayout != null) {
-            holder.sunsetLayout.setVisibility(View.GONE);
-        }
         if (holder.buttonColor != null) {
             holder.buttonColor.setVisibility(View.GONE);
         }
@@ -1843,14 +1790,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             case Buttons.CLOCK:
                 if (holder.contentWrapper != null)
                     holder.contentWrapper.setVisibility(View.VISIBLE);
-                if (holder.clockLayout != null)
-                    holder.clockLayout.setVisibility(View.VISIBLE);
-                if (holder.clockLayoutWrapper != null)
-                    holder.clockLayoutWrapper.setVisibility(View.VISIBLE);
-                if (holder.sunriseLayout != null)
-                    holder.sunriseLayout.setVisibility(View.VISIBLE);
-                if (holder.sunsetLayout != null)
-                    holder.sunsetLayout.setVisibility(View.VISIBLE);
                 if (holder.switch_name != null)
                     holder.switch_name.setVisibility(View.GONE);
                 if (holder.signal_level != null)
@@ -2135,13 +2074,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         RelativeLayout contentWrapper;
         ImageView dummyImg;
         Spinner spSelector;
-        LinearLayout extraPanel, clockLayoutWrapper, row_wrapper;
+        LinearLayout extraPanel, row_wrapper;
         RelativeLayout details;
         PieView pieView;
         ImageView infoIcon, full_screen_icon;
-        ClockImageView clock, sunrise, sunset;
-        LinearLayout clockLayout, sunriseLayout, sunsetLayout;
-        TextView clockText, sunriseText, sunsetText;
         TemplateView adview;
 
         public DataObjectHolder(View itemView) {
@@ -2173,16 +2109,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             full_screen_icon = itemView.findViewById(R.id.full_screen_icon);
 
             row_wrapper = itemView.findViewById(R.id.row_wrapper);
-            clockLayoutWrapper = itemView.findViewById(R.id.clockLayoutWrapper);
-            clockText = itemView.findViewById(R.id.clockText);
-            sunriseText = itemView.findViewById(R.id.sunriseText);
-            sunsetText = itemView.findViewById(R.id.sunsetText);
-            sunsetLayout = itemView.findViewById(R.id.sunsetLayout);
-            clockLayout = itemView.findViewById(R.id.clockLayout);
-            sunriseLayout = itemView.findViewById(R.id.sunriseLayout);
-            clock = itemView.findViewById(R.id.clock);
-            sunrise = itemView.findViewById(R.id.sunrise);
-            sunset = itemView.findViewById(R.id.sunset);
             dummyImg = itemView.findViewById(R.id.dummyImg);
 
             if (buttonLog != null)
@@ -2193,11 +2119,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 extraPanel.setVisibility(View.GONE);
             if (details != null)
                 details.setVisibility(View.VISIBLE);
-
-            clockLayoutWrapper.setVisibility(View.GONE);
-            clockLayout.setVisibility(View.GONE);
-            sunriseLayout.setVisibility(View.GONE);
-            sunsetLayout.setVisibility(View.GONE);
 
             pieView.setVisibility(View.GONE);//default
         }

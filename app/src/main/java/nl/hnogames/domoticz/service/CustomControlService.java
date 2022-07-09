@@ -1,10 +1,8 @@
 package nl.hnogames.domoticz.service;
 
 import android.app.PendingIntent;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.service.controls.Control;
 import android.service.controls.ControlsProviderService;

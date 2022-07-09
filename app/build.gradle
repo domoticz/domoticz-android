@@ -16,6 +16,11 @@ android {
             value = 1
             println "Build Version: +1"
         }
+        if ('bundleRelease' in runTasks || 'aR' in runTasks || ':app:compilePaidReleaseSources' in runTasks || ':app:generatePaidReleaseSources' in runTasks || ':app:bundlePaidRelease' in runTasks || ':app:compileoottReleaseSources' in runTasks || ':app:generateoottReleaseSources' in runTasks || ':app:bundleoottRelease' in runTasks) {
+            value = 1
+            println "Build Version: +1"
+        }
+
         println "****************************"
 
         def versionMajor = 0
@@ -239,7 +244,6 @@ dependencies {
     implementation 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
     implementation 'me.dm7.barcodescanner:zxing:1.9.8'
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
-    implementation 'jp.wasabeef:recyclerview-animators:2.3.0'
     implementation 'com.github.javiersantos:PiracyChecker:1.1'
     implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
     implementation 'com.alexvasilkov:gesture-views:2.6.0'

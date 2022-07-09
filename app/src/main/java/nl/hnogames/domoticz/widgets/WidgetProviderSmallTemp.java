@@ -75,10 +75,13 @@ public class WidgetProviderSmallTemp extends AppWidgetProvider {
                 Intent intent = new Intent(context, UpdateWidgetService.class);
                 intent.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
                 intent.setAction("FROM WIDGET PROVIDER");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    context.startForegroundService(intent);
-                } else
-                    context.startService(intent);
+                try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context.startForegroundService(intent);
+                    } else
+                        context.startService(intent);
+                } catch (Exception ex) {
+                }
             }
         }
     }

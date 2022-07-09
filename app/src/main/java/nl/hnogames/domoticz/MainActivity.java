@@ -233,7 +233,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
             resetWorkerThreads();
             initScreen();
 
-            if(mSharedPrefs.showOldVersionDialog()) {
+            if (mSharedPrefs.showOldVersionDialog()) {
                 UsefulBits.ShowOldVersionDialog(this);
                 mSharedPrefs.OldVersionDialogShown();
             }
@@ -844,7 +844,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                         if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                             if (frameLayout != null) {
                                 Snackbar.make(frameLayout, getString(R.string.category_account) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG)
-                                        .setAction(R.string.upgrade, view1 -> UsefulBits.openPremiumAppStore(MainActivity.this))
+                                        .setAction(R.string.upgrade, view1 -> UsefulBits.openPremiumAppStore(MainActivity.this, IsPremiumEnabled -> recreate()))
                                         .setActionTextColor(ContextCompat.getColor(MainActivity.this, R.color.primary))
                                         .show();
                             }

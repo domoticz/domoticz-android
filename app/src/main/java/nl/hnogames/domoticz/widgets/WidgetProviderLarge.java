@@ -77,16 +77,19 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                 WidgetProviderLarge.class);
         int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
 
-        if (allWidgetIds != null) {
-            for (int mAppWidgetId : allWidgetIds) {
-                Intent intent = new Intent(context, UpdateWidgetService.class);
-                intent.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
-                intent.setAction("FROM WIDGET PROVIDER");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    context.startForegroundService(intent);
-                } else
-                    context.startService(intent);
+        try {
+            if (allWidgetIds != null) {
+                for (int mAppWidgetId : allWidgetIds) {
+                    Intent intent = new Intent(context, UpdateWidgetService.class);
+                    intent.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
+                    intent.setAction("FROM WIDGET PROVIDER");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context.startForegroundService(intent);
+                    } else
+                        context.startService(intent);
+                }
             }
+        } catch (Exception ex) {
         }
     }
 

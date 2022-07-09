@@ -87,7 +87,7 @@
                 <action android:name="android.service.controls.ControlsProviderService"/>
             </intent-filter>
         </service>
-		
+
         <activity
             android:exported="true"
             android:name="nl.hnogames.domoticz.service.NFCServiceActivity">
@@ -128,7 +128,7 @@
         </receiver>
 
         <service android:exported="true"
-        android:name="nl.hnogames.domoticz.service.WearMessageListenerService">
+            android:name="nl.hnogames.domoticz.service.WearMessageListenerService">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
                 <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
@@ -182,7 +182,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.MainActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/app_name_domoticz"
             android:launchMode="singleTop"
             android:resizeableActivity="true">
@@ -222,7 +222,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.SettingsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/settingsActivity_name"
             android:parentActivityName="nl.hnogames.domoticz.MainActivity"
             android:resizeableActivity="true">
@@ -233,7 +233,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.NotificationSettingsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/notification_screen_title"
             android:parentActivityName="nl.hnogames.domoticz.SettingsActivity"
             android:resizeableActivity="true">
@@ -248,7 +248,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.CameraActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/cameraActivity_name"
             android:parentActivityName="nl.hnogames.domoticz.MainActivity"
             android:resizeableActivity="true">
@@ -259,7 +259,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.GraphActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/wizard_graph"
             android:parentActivityName="nl.hnogames.domoticz.MainActivity"
             android:resizeableActivity="true">
@@ -270,7 +270,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.TempGraphsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/wizard_graph"
             android:parentActivityName="nl.hnogames.domoticz.MainActivity"
             android:resizeableActivity="true">
@@ -281,7 +281,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.LogsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/title_logs"
             android:parentActivityName="nl.hnogames.domoticz.MainActivity"
             android:resizeableActivity="true">
@@ -289,7 +289,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.EventsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/title_events"
             android:parentActivityName="nl.hnogames.domoticz.MainActivity"
             android:resizeableActivity="true">
@@ -297,7 +297,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.UserVariablesActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/title_vars"
             android:parentActivityName="nl.hnogames.domoticz.MainActivity"
             android:resizeableActivity="true">
@@ -305,7 +305,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.PlanActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/cameraActivity_name"
             android:parentActivityName="nl.hnogames.domoticz.PlanActivity"
             android:resizeableActivity="true">
@@ -316,7 +316,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.ServerSettingsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/title_activity_server_settings"
             android:parentActivityName="nl.hnogames.domoticz.SettingsActivity"
             android:resizeableActivity="true">
@@ -327,7 +327,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.GeoSettingsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/title_activity_server_settings"
             android:parentActivityName="nl.hnogames.domoticz.SettingsActivity"
             android:resizeableActivity="true">
@@ -338,7 +338,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.NFCSettingsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/category_nfc"
             android:parentActivityName="nl.hnogames.domoticz.SettingsActivity"
             android:resizeableActivity="true">
@@ -350,7 +350,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.BluetoothSettingsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/category_bluetooth"
             android:parentActivityName="nl.hnogames.domoticz.SettingsActivity">
             <meta-data
@@ -360,7 +360,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.WifiSettingsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/category_bluetooth"
             android:parentActivityName="nl.hnogames.domoticz.SettingsActivity">
             <meta-data
@@ -370,7 +370,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.BeaconSettingsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/category_bluetooth"
             android:parentActivityName="nl.hnogames.domoticz.SettingsActivity">
             <meta-data
@@ -380,14 +380,14 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.SpeechSettingsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/category_Speech"
             android:parentActivityName="nl.hnogames.domoticz.SettingsActivity"
             android:resizeableActivity="true" />
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.QRCodeSettingsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/category_QRCode"
             android:parentActivityName="nl.hnogames.domoticz.SettingsActivity"
             android:resizeableActivity="true" />
@@ -399,7 +399,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.ServerListSettingsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/title_activity_server_settings"
             android:parentActivityName="nl.hnogames.domoticz.SettingsActivity"
             android:resizeableActivity="true">
@@ -410,7 +410,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.welcome.WelcomeViewActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="@string/welcome_title_activity_welcome"
             android:resizeableActivity="true" />
 
@@ -482,7 +482,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.widgets.WidgetConfigurationActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="Domoticz Widget Config"
             android:resizeableActivity="true">
             <intent-filter>
@@ -511,7 +511,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.widgets.SmallWidgetConfigurationActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="Domoticz Widget Config"
             android:resizeableActivity="true">
             <intent-filter>
@@ -531,7 +531,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.widgets.SecurityWidgetConfigurationActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="Domoticz Security Panel Widget Config"
             android:resizeableActivity="true">
             <intent-filter>
@@ -566,7 +566,7 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.widgets.SmallTempWidgetConfigurationActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
+
             android:label="Domoticz Widget Config"
             android:resizeableActivity="true">
             <intent-filter>

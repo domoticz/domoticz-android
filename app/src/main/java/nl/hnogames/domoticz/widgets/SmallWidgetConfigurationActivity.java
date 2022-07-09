@@ -150,12 +150,14 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
                     adapter = new WidgetsAdapter(SmallWidgetConfigurationActivity.this, StaticHelper.getDomoticz(SmallWidgetConfigurationActivity.this), mNewDevicesInfo);
                     listView.setOnItemClickListener((parent, view, position, id) -> {
                         if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
-                            UsefulBits.showSnackbarWithAction(SmallWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG, null, v -> UsefulBits.openPremiumAppStore(SmallWidgetConfigurationActivity.this), getString(R.string.premium_category));
+                            UsefulBits.showSnackbarWithAction(SmallWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG, null,
+                                    v -> UsefulBits.openPremiumAppStore(SmallWidgetConfigurationActivity.this, IsPremiumEnabled -> recreate()), getString(R.string.premium_category));
                             return;
                         }
 
                         if (!mSharedPrefs.IsWidgetsEnabled()) {
-                            UsefulBits.showSnackbarWithAction(SmallWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.widget_disabled), Snackbar.LENGTH_LONG, null, v -> startActivityForResult(new Intent(SmallWidgetConfigurationActivity.this, SettingsActivity.class), 888), getString(R.string.upgrade));
+                            UsefulBits.showSnackbarWithAction(SmallWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.widget_disabled), Snackbar.LENGTH_LONG, null,
+                                    v -> startActivityForResult(new Intent(SmallWidgetConfigurationActivity.this, SettingsActivity.class), 888), getString(R.string.upgrade));
                             return;
                         }
 

@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -41,7 +40,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.google.android.material.snackbar.Snackbar;
-import com.skydoves.colorpickerview.ColorEnvelope;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
@@ -52,8 +50,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.SwitchesAdapter;
@@ -104,7 +100,6 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     private boolean itemDecorationAdded = false;
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
-    private SlideInBottomAnimationAdapter alphaSlideIn;
     private ItemTouchHelper mItemTouchHelper;
     private PermissionFragmentHelper permissionFragmentHelper;
 
@@ -248,12 +243,10 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 if (adapter == null) {
                     final switchesClickListener listener = this;
                     adapter = new SwitchesAdapter(mContext, getServerUtil(), AddAdsDevice(supportedSwitches), listener);
-                    alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-                    gridView.setAdapter(alphaSlideIn);
+                    gridView.setAdapter(adapter);
                 } else {
                     adapter.setData(AddAdsDevice(supportedSwitches));
                     adapter.notifyDataSetChanged();
-                    alphaSlideIn.notifyDataSetChanged();
                 }
                 if (!isTablet && !itemDecorationAdded) {
                     gridView.addItemDecoration(new MarginItemDecoration(20));
@@ -273,13 +266,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 }
 
                 mSwipeRefreshLayout.setRefreshing(false);
-                mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-
-                    public void onRefresh() {
-                        getSwitchesData();
-                    }
-                });
+                mSwipeRefreshLayout.setOnRefreshListener(() -> getSwitchesData());
 
                 if (state != null) {
                     gridView.getLayoutManager().onRestoreInstanceState(state);
@@ -337,12 +324,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         infoDialog.setBatteryLevel(String.valueOf(mSwitch.getBatteryLevel()));
         infoDialog.setIsFavorite(mSwitch.getFavoriteBoolean());
         infoDialog.show();
-        infoDialog.onDismissListener(new SwitchInfoDialog.DismissListener() {
-            @Override
-
-            public void onDismiss(boolean isChanged, boolean isFavorite) {
-                if (isChanged) changeFavorite(mSwitch, isFavorite);
-            }
+        infoDialog.onDismissListener((isChanged, isFavorite) -> {
+            if (isChanged) changeFavorite(mSwitch, isFavorite);
         });
     }
 
@@ -533,33 +516,25 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         } else {
             ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(getContext());
             builder.setTitle(getString(R.string.choose_color));
-            builder.setPositiveButton(getString(R.string.ok), new ColorEnvelopeListener() {
-                @Override
-                public void onColorSelected(final ColorEnvelope envelope, boolean fromUser) {
-                    if (getSwitch(idx).isProtected()) {
-                        PasswordDialog passwordDialog = new PasswordDialog(
-                                mContext, StaticHelper.getDomoticz(mContext));
-                        passwordDialog.show();
-                        passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
-                            @Override
-                            public void onDismiss(String password) {
-                                setRGBColor(envelope.getColor(), idx, password, true);
-                            }
+            builder.setPositiveButton(getString(R.string.ok), (ColorEnvelopeListener) (envelope, fromUser) -> {
+                if (getSwitch(idx).isProtected()) {
+                    PasswordDialog passwordDialog = new PasswordDialog(
+                            mContext, StaticHelper.getDomoticz(mContext));
+                    passwordDialog.show();
+                    passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                        @Override
+                        public void onDismiss(String password) {
+                            setRGBColor(envelope.getColor(), idx, password, true);
+                        }
 
-                            @Override
-                            public void onCancel() {
-                            }
-                        });
-                    } else
-                        setRGBColor(envelope.getColor(), idx, null, true);
-                }
+                        @Override
+                        public void onCancel() {
+                        }
+                    });
+                } else
+                    setRGBColor(envelope.getColor(), idx, null, true);
             });
-            builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
+            builder.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> dialogInterface.dismiss());
             builder.show();
         }
     }
@@ -713,12 +688,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 getSwitch(idx));
         securityDialog.show();
 
-        securityDialog.onDismissListener(new SecurityPanelDialog.DismissListener() {
-            @Override
-
-            public void onDismiss() {
-                getSwitchesData();//refresh
-            }
+        securityDialog.onDismissListener(() -> {
+            getSwitchesData();//refresh
         });
     }
 
@@ -727,27 +698,23 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         new MaterialDialog.Builder(mContext)
                 .title(R.string.choose_status)
                 .items(itemsRes)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
+                .itemsCallback((dialog, view, which, text) -> {
+                    if (getSwitch(idx).isProtected()) {
+                        PasswordDialog passwordDialog = new PasswordDialog(
+                                mContext, StaticHelper.getDomoticz(mContext));
+                        passwordDialog.show();
+                        passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                            @Override
+                            public void onDismiss(String password) {
+                                setState(idx, stateIds[which], password);
+                            }
 
-                    public void onSelection(MaterialDialog dialog, View view, final int which, CharSequence text) {
-                        if (getSwitch(idx).isProtected()) {
-                            PasswordDialog passwordDialog = new PasswordDialog(
-                                    mContext, StaticHelper.getDomoticz(mContext));
-                            passwordDialog.show();
-                            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
-                                @Override
-                                public void onDismiss(String password) {
-                                    setState(idx, stateIds[which], password);
-                                }
-
-                                @Override
-                                public void onCancel() {
-                                }
-                            });
-                        } else
-                            setState(idx, stateIds[which], null);
-                    }
+                            @Override
+                            public void onCancel() {
+                            }
+                        });
+                    } else
+                        setState(idx, stateIds[which], null);
                 })
                 .show();
     }
@@ -757,14 +724,10 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         new MaterialDialog.Builder(mContext)
                 .title(R.string.choose_status)
                 .items(levelNames)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-
-                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        for (int i = 0; i < levelNames.length; i++) {
-                            if (levelNames[i].equals(text)) {
-                                onDimmerChange(idx, i * 10, true);
-                            }
+                .itemsCallback((dialog, view, which, text) -> {
+                    for (int i = 0; i < levelNames.length; i++) {
+                        if (levelNames[i].equals(text)) {
+                            onDimmerChange(idx, i * 10, true);
                         }
                     }
                 })

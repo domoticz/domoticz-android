@@ -35,7 +35,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -62,8 +61,8 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.helpers.StaticHelper;
+import nl.hnogames.domoticz.interfaces.SubscriptionsListener;
 import nl.hnogames.domoticz.service.TaskService;
-import nl.hnogames.domoticz.ui.PasswordDialog;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
@@ -572,7 +571,11 @@ public class UsefulBits {
         }
     }
 
-    public static void openPremiumAppStore(Context context) {
+    public static void openPremiumAppStore(Context context, SubscriptionsListener listener) {
+        if (AppController.premiumPackage == null) {
+            return;
+        }
+
         Purchases.getSharedInstance().purchasePackage(
                 (Activity) context,
                 AppController.premiumPackage,
@@ -586,24 +589,26 @@ public class UsefulBits {
                         if (customerInfo.getEntitlements().get("premium").isActive()) {
                             AppController.IsPremiumEnabled = true;
                         }
+
+                        if (listener != null)
+                            listener.OnDone(AppController.IsPremiumEnabled);
                     }
                 }
         );
     }
 
-    public static void ShowOldVersionDialog(Context context)
-    {
+    public static void ShowOldVersionDialog(Context context) {
         new MaterialDialog.Builder(context)
-            .title(R.string.old_version)
+                .title(R.string.old_version)
                 .content(R.string.old_version_description)
                 .negativeText(R.string.cancel)
                 .positiveText(R.string.ok)
                 .onPositive((dialog, which) -> context.startActivity(
                         new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=nl.hnogames.domoticz"))))
-            .show();
+                .show();
     }
 
-    public static void RestoreSubscriptions(Context context) {
-        AppController.HandleRestoreSubscriptions(context);
+    public static void RestoreSubscriptions(Context context, SubscriptionsListener listener) {
+        AppController.HandleRestoreSubscriptions(listener);
     }
 }

@@ -82,6 +82,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.BeaconInfo;
 import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.helpers.StaticHelper;
+import nl.hnogames.domoticz.interfaces.SubscriptionsListener;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -116,11 +117,13 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
         return mInstance;
     }
 
-    public static void HandleRestoreSubscriptions(Context context) {
+    public static void HandleRestoreSubscriptions(SubscriptionsListener listener) {
         Purchases.getSharedInstance().restorePurchases(new ReceiveCustomerInfoCallback() {
             @Override
             public void onReceived(@NonNull CustomerInfo customerInfo) {
-                HandleCustomerInfo(context, customerInfo);
+                HandleCustomerInfo(customerInfo);
+                if (listener != null)
+                    listener.OnDone(IsPremiumEnabled);
             }
 
             @Override
@@ -129,20 +132,16 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
         });
     }
 
-    private static void HandleCustomerInfo(Context context, @NonNull CustomerInfo customerInfo) {
+    private static void HandleCustomerInfo(@NonNull CustomerInfo customerInfo) {
         customer = customerInfo;
         EntitlementInfos entitlements = customerInfo.getEntitlements();
 
         if (!BuildConfig.NEW_VERSION)
             IsPremiumEnabled = true;
         else {
-            if (entitlements == null) {
-                return;
-            } else {
-                EntitlementInfo premium = entitlements.get("premium");
-                if (premium != null && premium.isActive()) {
-                    IsPremiumEnabled = true;
-                }
+            EntitlementInfo premium = entitlements.get("premium");
+            if (premium != null && premium.isActive()) {
+                IsPremiumEnabled = true;
             }
         }
     }
@@ -201,12 +200,11 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
         Purchases.getSharedInstance().getCustomerInfo(new ReceiveCustomerInfoCallback() {
             @Override
             public void onReceived(@NonNull CustomerInfo customerInfo) {
-                HandleCustomerInfo(getApplicationContext(), customerInfo);
+                HandleCustomerInfo(customerInfo);
             }
 
             @Override
             public void onError(@NonNull PurchasesError purchasesError) {
-                //Toast.makeText(getApplicationContext(), purchasesError.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

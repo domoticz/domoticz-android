@@ -30,7 +30,6 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.EventsAdapter;
@@ -53,7 +52,6 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     private EventsAdapter adapter;
     private Context mContext;
     private String filter = "";
-    private SlideInBottomAnimationAdapter alphaSlideIn;
     private boolean itemDecorationAdded = false;
 
     @Override
@@ -145,8 +143,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
                         });
                     }
                 });
-                alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-                gridView.setAdapter(alphaSlideIn);
+                gridView.setAdapter(adapter);
                 if (!isTablet && !itemDecorationAdded) {
                     gridView.addItemDecoration(new MarginItemDecoration(20));
                     itemDecorationAdded = true;
@@ -154,7 +151,6 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
             } else {
                 adapter.setData(mEventInfos);
                 adapter.notifyDataSetChanged();
-                alphaSlideIn.notifyDataSetChanged();
             }
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

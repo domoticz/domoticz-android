@@ -21,6 +21,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:plainpie="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="?attr/listviewRowBackground"
     android:id="@+id/card_global_wrapper"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -76,146 +77,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <LinearLayout
-                            android:id="@+id/clockLayoutWrapper"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:visibility="gone">
-
-                            <LinearLayout
-                                android:id="@+id/sunriseLayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                android:visibility="gone">
-
-                                <TextView
-                                    style="@style/row_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:paddingLeft="0dp"
-                                    android:text="@string/sunrise" />
-
-                                <rm.com.clocks.ClockImageView
-                                    android:id="@+id/sunrise"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:layout_gravity="center"
-                                    android:foregroundGravity="center"
-                                    android:gravity="center"
-                                    app:clockColor="?attr/highlightColor"
-                                    app:frameWidth="thin"
-                                    app:hours="16"
-                                    app:indeterminateSpeed="2"
-                                    app:minutes="20"
-                                    app:pointerWidth="thin"
-                                    app:timeSetDuration="400" />
-
-                                <TextView
-                                    android:id="@+id/sunriseText"
-                                    style="@style/row_body1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:paddingLeft="0dp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/clockLayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                android:visibility="gone">
-
-                                <TextView
-                                    style="@style/row_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:paddingLeft="0dp"
-                                    android:text="@string/now" />
-
-                                <rm.com.clocks.ClockImageView
-                                    android:id="@+id/clock"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:layout_gravity="center"
-                                    android:foregroundGravity="center"
-                                    android:gravity="center"
-                                    app:clockColor="?attr/highlightColor"
-                                    app:frameWidth="thin"
-                                    app:hours="16"
-                                    app:indeterminateSpeed="2"
-                                    app:minutes="20"
-                                    app:pointerWidth="thin"
-                                    app:timeSetDuration="400" />
-
-                                <TextView
-                                    android:id="@+id/clockText"
-                                    style="@style/row_body1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:paddingLeft="0dp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/sunsetLayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                android:visibility="gone">
-
-                                <TextView
-                                    style="@style/row_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:paddingLeft="0dp"
-                                    android:text="@string/sunset" />
-
-                                <rm.com.clocks.ClockImageView
-                                    android:id="@+id/sunset"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:layout_gravity="center"
-                                    android:foregroundGravity="center"
-                                    android:gravity="center"
-                                    app:clockColor="?attr/highlightColor"
-                                    app:frameWidth="thin"
-                                    app:hours="16"
-                                    app:indeterminateSpeed="2"
-                                    app:minutes="20"
-                                    app:pointerWidth="thin"
-                                    app:timeSetDuration="400" />
-
-                                <TextView
-                                    android:id="@+id/sunsetText"
-                                    style="@style/row_body1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:paddingLeft="0dp" />
-                            </LinearLayout>
-
-                        </LinearLayout>
-
                         <RelativeLayout
                             android:id="@+id/details"
                             android:layout_width="match_parent"
@@ -227,8 +88,8 @@
                             <LinearLayout
                                 android:id="@+id/textwrapper"
                                 android:layout_width="match_parent"
-                                android:layout_marginLeft="48dp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginLeft="48dp"
                                 android:foregroundGravity="center_vertical"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
@@ -258,7 +119,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="-8dp"
                                         android:layout_marginTop="-8dp"
-                                        android:maxLines="3"
+                                        android:maxLines="5"
                                         android:text="@string/battery_level" />
                                 </LinearLayout>
                             </LinearLayout>
@@ -269,18 +130,19 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/textwrapper"
                                 android:layout_gravity="right"
-                                android:gravity="right"
                                 android:foregroundGravity="right"
+                                android:gravity="right"
                                 android:orientation="horizontal">
 
                                 <az.plainpie.PieView
                                     android:id="@+id/pieView"
                                     android:layout_width="60dp"
                                     android:layout_height="60dp"
-                                    android:layout_marginTop="7dp"
                                     android:layout_gravity="right"
-                                    android:gravity="right"
+                                    android:layout_marginTop="7dp"
                                     android:foregroundGravity="right"
+                                    android:visibility="gone"
+                                    android:gravity="right"
                                     plainpie:inner_pie_padding="5"
                                     plainpie:inner_text_visibility="true"
                                     plainpie:percentage="50"
@@ -291,8 +153,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
-                                    android:gravity="right"
                                     android:foregroundGravity="right"
+                                    android:gravity="right"
                                     app:useMaterialThemeColors="false" />
 
                                 <com.google.android.material.button.MaterialButton
@@ -300,9 +162,9 @@
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                     android:layout_width="60dp"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
                                     android:layout_marginLeft="8dp"
                                     android:layout_weight="1"
-                                    android:layout_gravity="right"
                                     android:foregroundGravity="right"
                                     android:text="@string/button_state_on"
                                     android:textColor="?attr/buttonTextColor"
@@ -314,9 +176,9 @@
                                     android:layout_width="60dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
-                                    android:foregroundGravity="right"
                                     android:layout_marginLeft="7dp"
                                     android:layout_weight="1"
+                                    android:foregroundGravity="right"
                                     android:text="@string/button_state_off"
                                     android:textColor="?attr/buttonTextColor"
                                     android:textSize="10dp" />
@@ -337,10 +199,10 @@
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
                                     android:layout_gravity="right"
-                                    android:gravity="right"
-                                    android:foregroundGravity="right"
                                     android:layout_margin="7dp"
                                     android:layout_marginTop="10dp"
+                                    android:foregroundGravity="right"
+                                    android:gravity="right"
                                     android:src="@drawable/baseline_keyboard_arrow_up_black_24"
                                     app:tint="@color/primary" />
 
@@ -349,10 +211,10 @@
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
                                     android:layout_gravity="right"
-                                    android:gravity="right"
-                                    android:foregroundGravity="right"
                                     android:layout_margin="7dp"
                                     android:layout_marginTop="10dp"
+                                    android:foregroundGravity="right"
+                                    android:gravity="right"
                                     android:src="@drawable/baseline_stop_black_24"
                                     app:tint="@color/primary" />
 

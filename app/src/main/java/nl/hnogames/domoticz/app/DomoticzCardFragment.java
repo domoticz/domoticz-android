@@ -101,12 +101,9 @@ public class DomoticzCardFragment extends Fragment {
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
         btnCheckSettings = root.findViewById(R.id.btnCheckSettings);
         if (btnCheckSettings != null) {
-            btnCheckSettings.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (getActivity() instanceof MainActivity) {
-                        ((MainActivity) getActivity()).OpenSettings();
-                    }
+            btnCheckSettings.setOnClickListener(v -> {
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).OpenSettings();
                 }
             });
         }

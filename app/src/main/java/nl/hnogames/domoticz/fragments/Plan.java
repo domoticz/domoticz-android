@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -42,15 +41,12 @@ import com.rubengees.easyheaderfooteradapter.EasyHeaderFooterAdapter;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
@@ -59,6 +55,8 @@ import nl.hnogames.domoticz.adapters.DashboardAdapter;
 import nl.hnogames.domoticz.adapters.SmallPlansAdapter;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
+import nl.hnogames.domoticz.app.DomoticzPlansFragment;
+import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
 import nl.hnogames.domoticz.helpers.StaticHelper;
@@ -87,12 +85,12 @@ import nl.hnogames.domoticzapi.Interfaces.SunRiseReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
-public class Dashboard extends DomoticzDashboardFragment implements DomoticzFragmentListener,
+public class Plan extends DomoticzPlansFragment implements DomoticzFragmentListener,
         switchesClickListener, OnPermissionCallback {
 
     public static final String PERMANENT_OVERRIDE = "PermanentOverride";
     public static final String AUTO = "Auto";
-    private static final String TAG = Dashboard.class.getSimpleName();
+    private static final String TAG = Plan.class.getSimpleName();
 
     private Context mContext;
     private DashboardAdapter adapter;
@@ -136,7 +134,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-        //setGridViewLayout();
+        setGridViewLayout();
         processDashboard();
     }
 
@@ -180,6 +178,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     }
 
     @Override
+
     public void onConnectionOk() {
         super.showSpinner(true);
 
@@ -259,20 +258,44 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     Log.i("Devices", "Not suported device.");
                 }
             }
-            createListView(AddAdsDevice(supportedSwitches));
-
             if (mSharedPrefs.addClockToDashboard() && (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) && planID <= 0) {
                 StaticHelper.getDomoticz(mContext).getSunRise(new SunRiseReceiver() {
                     @Override
                     public void onReceive(SunRiseInfo mSunRiseInfo) {
-                        setClockLayout(mSunRiseInfo);
+                        createListView(AddAdsDevice(AddClockDevice(mSunRiseInfo, supportedSwitches)), mSunRiseInfo);
                     }
 
                     @Override
-                    public void onError(Exception error) {                    }
+                    public void onError(Exception error) {
+                        createListView(AddAdsDevice(supportedSwitches), null);
+                    }
                 });
+            } else {
+                createListView(AddAdsDevice(supportedSwitches), null);
             }
         }
+    }
+
+    private ArrayList<DevicesInfo> AddClockDevice(SunRiseInfo mSunRiseInfo, ArrayList<DevicesInfo> supportedSwitches) {
+        if (mSunRiseInfo != null) {
+            boolean alreadySpecified = false;
+            for (DevicesInfo d : supportedSwitches) {
+                if (d.getType().equals("sunrise"))
+                    alreadySpecified = true;
+            }
+            if (!alreadySpecified) {
+                DevicesInfo sunrise = new DevicesInfo();
+                sunrise.setIdx(-9999);
+                sunrise.setName("Clock");
+                sunrise.setType("sunrise");
+                sunrise.setDescription("Clock");
+                sunrise.setFavoriteBoolean(true);
+                sunrise.setIsProtected(false);
+                sunrise.setStatusBoolean(false);
+                supportedSwitches.add(0, sunrise);
+            }
+        }
+        return supportedSwitches;
     }
 
     private ArrayList<DevicesInfo> AddAdsDevice(ArrayList<DevicesInfo> supportedSwitches) {
@@ -303,7 +326,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     }
 
     // add dynamic list view
-    private void createListView(ArrayList<DevicesInfo> switches) {
+    private void createListView(ArrayList<DevicesInfo> switches, SunRiseInfo sunrise) {
         if (switches == null)
             return;
         if (getView() != null) {
@@ -312,8 +335,9 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 if (adapter == null) {
                     adapter = new DashboardAdapter(mContext, getServerUtil(), switches, listener);
                     EasyHeaderFooterAdapter easyHeaderFooterAdapter = new EasyHeaderFooterAdapter(adapter);
-                    easyHeaderFooterAdapter.setHeader(headerLayout);
+                    easyHeaderFooterAdapter.setHeader(planList);
                     gridView.setAdapter(easyHeaderFooterAdapter);
+
                 } else {
                     adapter.setData(switches);
                     adapter.notifyDataSetChanged();

@@ -174,7 +174,7 @@ public class SharedPrefUtil {
     }
 
     public boolean showOldVersionDialog() {
-        if(BuildConfig.NEW_VERSION)
+        if (BuildConfig.NEW_VERSION)
             return false;
 
         return prefs.getBoolean(PREF_OLD_VERIONS_DIALOG_SHOWN, true);
