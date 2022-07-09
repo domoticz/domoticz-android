@@ -136,7 +136,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     public void refreshFragment() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-        setGridViewLayout();
+        //setGridViewLayout();
         processDashboard();
     }
 
@@ -180,7 +180,6 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     }
 
     @Override
-
     public void onConnectionOk() {
         super.showSpinner(true);
 
@@ -260,44 +259,20 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     Log.i("Devices", "Not suported device.");
                 }
             }
+            createListView(AddAdsDevice(supportedSwitches));
+
             if (mSharedPrefs.addClockToDashboard() && (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) && planID <= 0) {
                 StaticHelper.getDomoticz(mContext).getSunRise(new SunRiseReceiver() {
                     @Override
                     public void onReceive(SunRiseInfo mSunRiseInfo) {
-                        createListView(AddAdsDevice(AddClockDevice(mSunRiseInfo, supportedSwitches)), mSunRiseInfo);
+                        setClockLayout(mSunRiseInfo);
                     }
 
                     @Override
-                    public void onError(Exception error) {
-                        createListView(AddAdsDevice(supportedSwitches), null);
-                    }
+                    public void onError(Exception error) {                    }
                 });
-            } else {
-                createListView(AddAdsDevice(supportedSwitches), null);
             }
         }
-    }
-
-    private ArrayList<DevicesInfo> AddClockDevice(SunRiseInfo mSunRiseInfo, ArrayList<DevicesInfo> supportedSwitches) {
-        if (mSunRiseInfo != null) {
-            boolean alreadySpecified = false;
-            for (DevicesInfo d : supportedSwitches) {
-                if (d.getType().equals("sunrise"))
-                    alreadySpecified = true;
-            }
-            if (!alreadySpecified) {
-                DevicesInfo sunrise = new DevicesInfo();
-                sunrise.setIdx(-9999);
-                sunrise.setName("Clock");
-                sunrise.setType("sunrise");
-                sunrise.setDescription("Clock");
-                sunrise.setFavoriteBoolean(true);
-                sunrise.setIsProtected(false);
-                sunrise.setStatusBoolean(false);
-                supportedSwitches.add(0, sunrise);
-            }
-        }
-        return supportedSwitches;
     }
 
     private ArrayList<DevicesInfo> AddAdsDevice(ArrayList<DevicesInfo> supportedSwitches) {
@@ -328,18 +303,17 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     }
 
     // add dynamic list view
-    private void createListView(ArrayList<DevicesInfo> switches, SunRiseInfo sunrise) {
+    private void createListView(ArrayList<DevicesInfo> switches) {
         if (switches == null)
             return;
         if (getView() != null) {
             try {
                 final switchesClickListener listener = this;
                 if (adapter == null) {
-                    adapter = new DashboardAdapter(mContext, getServerUtil(), switches, listener, sunrise);
+                    adapter = new DashboardAdapter(mContext, getServerUtil(), switches, listener);
                     EasyHeaderFooterAdapter easyHeaderFooterAdapter = new EasyHeaderFooterAdapter(adapter);
-                    easyHeaderFooterAdapter.setHeader(planList);
+                    easyHeaderFooterAdapter.setHeader(headerLayout);
                     gridView.setAdapter(easyHeaderFooterAdapter);
-
                 } else {
                     adapter.setData(switches);
                     adapter.notifyDataSetChanged();

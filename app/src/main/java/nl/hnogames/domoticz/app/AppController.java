@@ -127,7 +127,8 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
             }
 
             @Override
-            public void onError(@NonNull PurchasesError purchasesError) {  }
+            public void onError(@NonNull PurchasesError purchasesError) {
+            }
         });
     }
 

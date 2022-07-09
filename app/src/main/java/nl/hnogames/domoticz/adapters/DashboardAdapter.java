@@ -86,7 +86,6 @@ import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
-import rm.com.clocks.ClockImageView;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DataObjectHolder> implements RVHAdapter {
     public static final int ID_SCENE_SWITCH = 3000;
@@ -105,7 +104,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     private final SharedPrefUtil mSharedPrefs;
     private final ConfigInfo mConfigInfo;
     private final ItemFilter mFilter = new ItemFilter();
-    private final SunRiseInfo sunriseInfo;
     private final Domoticz domoticz;
     @ColorInt
     private final int listviewRowBackground;
@@ -118,12 +116,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public DashboardAdapter(Context context,
                             ServerUtil serverUtil,
                             ArrayList<DevicesInfo> data,
-                            switchesClickListener listener,
-                            SunRiseInfo sunriseInfo) {
+                            switchesClickListener listener) {
         super();
 
         this.domoticz = StaticHelper.getDomoticz(context);
-        this.sunriseInfo = sunriseInfo;
         mSharedPrefs = new SharedPrefUtil(context);
 
         TypedValue typedValue = new TypedValue();
@@ -253,10 +249,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         holder.pieView.setVisibility(View.GONE);
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
                 (mDeviceInfo.getSwitchType() == null)) {
-            if (mDeviceInfo.getType() != null && mDeviceInfo.getType().equals("sunrise")) {
-                setButtons(holder, Buttons.CLOCK);
-                setClockRowData(holder);
-            } else if (mDeviceInfo.getType() != null && mDeviceInfo.getType().equals("advertisement")) {
+            if (mDeviceInfo.getType() != null && mDeviceInfo.getType().equals("advertisement")) {
                 setButtons(holder, Buttons.ADS);
                 setAdsLayout(holder);
             } else if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
@@ -849,40 +842,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 false,
                 false,
                 null)).into(holder.iconRow);
-    }
-
-    /**
-     * Set the data for the clock row
-     *
-     * @param holder Holder to use
-     */
-    private void setClockRowData(DataObjectHolder holder) {
-        try {
-            if (this.sunriseInfo != null) {
-                String sunrise = sunriseInfo.getSunrise();
-                if (!UsefulBits.isEmpty(sunrise) && sunrise.indexOf(":") > 0) {
-                    holder.sunrise.setHours(Integer.valueOf(sunrise.substring(0, sunrise.indexOf(":"))));
-                    holder.sunrise.setMinutes(Integer.valueOf(sunrise.substring(sunrise.indexOf(":") + 1)));
-                    holder.sunriseText.setText(sunrise);
-                }
-
-                String sunset = sunriseInfo.getSunset();
-                if (!UsefulBits.isEmpty(sunset) && sunset.indexOf(":") > 0) {
-                    holder.sunset.setHours(Integer.valueOf(sunset.substring(0, sunset.indexOf(":"))));
-                    holder.sunset.setMinutes(Integer.valueOf(sunset.substring(sunset.indexOf(":") + 1)));
-                    holder.sunsetText.setText(sunset);
-                }
-
-                String current = sunriseInfo.getServerTime();
-                if (!UsefulBits.isEmpty(current) && current.indexOf(":") > 0) {
-                    current = current.substring((current.indexOf(":") - 2), (current.indexOf(":") + 3));
-                    holder.clock.setHours(Integer.valueOf(current.substring(0, current.indexOf(":"))));
-                    holder.clock.setMinutes(Integer.valueOf(current.substring(current.indexOf(":") + 1)));
-                    holder.clockText.setText(current);
-                }
-            }
-        } catch (Exception ignored) {
-        }
     }
 
     /**
@@ -1776,18 +1735,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (holder.adview != null) {
             holder.adview.setVisibility(View.GONE);
         }
-        if (holder.clockLayoutWrapper != null) {
-            holder.clockLayoutWrapper.setVisibility(View.GONE);
-        }
-        if (holder.clockLayout != null) {
-            holder.clockLayout.setVisibility(View.GONE);
-        }
-        if (holder.sunriseLayout != null) {
-            holder.sunriseLayout.setVisibility(View.GONE);
-        }
-        if (holder.sunsetLayout != null) {
-            holder.sunsetLayout.setVisibility(View.GONE);
-        }
         if (holder.buttonColor != null) {
             holder.buttonColor.setVisibility(View.GONE);
         }
@@ -1843,14 +1790,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             case Buttons.CLOCK:
                 if (holder.contentWrapper != null)
                     holder.contentWrapper.setVisibility(View.VISIBLE);
-                if (holder.clockLayout != null)
-                    holder.clockLayout.setVisibility(View.VISIBLE);
-                if (holder.clockLayoutWrapper != null)
-                    holder.clockLayoutWrapper.setVisibility(View.VISIBLE);
-                if (holder.sunriseLayout != null)
-                    holder.sunriseLayout.setVisibility(View.VISIBLE);
-                if (holder.sunsetLayout != null)
-                    holder.sunsetLayout.setVisibility(View.VISIBLE);
                 if (holder.switch_name != null)
                     holder.switch_name.setVisibility(View.GONE);
                 if (holder.signal_level != null)
@@ -2135,13 +2074,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         RelativeLayout contentWrapper;
         ImageView dummyImg;
         Spinner spSelector;
-        LinearLayout extraPanel, clockLayoutWrapper, row_wrapper;
+        LinearLayout extraPanel, row_wrapper;
         RelativeLayout details;
         PieView pieView;
         ImageView infoIcon, full_screen_icon;
-        ClockImageView clock, sunrise, sunset;
-        LinearLayout clockLayout, sunriseLayout, sunsetLayout;
-        TextView clockText, sunriseText, sunsetText;
         TemplateView adview;
 
         public DataObjectHolder(View itemView) {
@@ -2173,16 +2109,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             full_screen_icon = itemView.findViewById(R.id.full_screen_icon);
 
             row_wrapper = itemView.findViewById(R.id.row_wrapper);
-            clockLayoutWrapper = itemView.findViewById(R.id.clockLayoutWrapper);
-            clockText = itemView.findViewById(R.id.clockText);
-            sunriseText = itemView.findViewById(R.id.sunriseText);
-            sunsetText = itemView.findViewById(R.id.sunsetText);
-            sunsetLayout = itemView.findViewById(R.id.sunsetLayout);
-            clockLayout = itemView.findViewById(R.id.clockLayout);
-            sunriseLayout = itemView.findViewById(R.id.sunriseLayout);
-            clock = itemView.findViewById(R.id.clock);
-            sunrise = itemView.findViewById(R.id.sunrise);
-            sunset = itemView.findViewById(R.id.sunset);
             dummyImg = itemView.findViewById(R.id.dummyImg);
 
             if (buttonLog != null)
@@ -2193,11 +2119,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 extraPanel.setVisibility(View.GONE);
             if (details != null)
                 details.setVisibility(View.VISIBLE);
-
-            clockLayoutWrapper.setVisibility(View.GONE);
-            clockLayout.setVisibility(View.GONE);
-            sunriseLayout.setVisibility(View.GONE);
-            sunsetLayout.setVisibility(View.GONE);
 
             pieView.setVisibility(View.GONE);//default
         }

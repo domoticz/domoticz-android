@@ -572,8 +572,7 @@ public class UsefulBits {
     }
 
     public static void openPremiumAppStore(Context context, SubscriptionsListener listener) {
-        if(AppController.premiumPackage == null)
-        {
+        if (AppController.premiumPackage == null) {
             return;
         }
 

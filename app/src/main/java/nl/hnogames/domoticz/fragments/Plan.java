@@ -333,7 +333,7 @@ public class Plan extends DomoticzPlansFragment implements DomoticzFragmentListe
             try {
                 final switchesClickListener listener = this;
                 if (adapter == null) {
-                    adapter = new DashboardAdapter(mContext, getServerUtil(), switches, listener, sunrise);
+                    adapter = new DashboardAdapter(mContext, getServerUtil(), switches, listener);
                     EasyHeaderFooterAdapter easyHeaderFooterAdapter = new EasyHeaderFooterAdapter(adapter);
                     easyHeaderFooterAdapter.setHeader(planList);
                     gridView.setAdapter(easyHeaderFooterAdapter);
