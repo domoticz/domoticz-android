@@ -813,7 +813,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
 
         if (AutoPreference != null)
             AutoPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_auto));
                     return false;
                 }

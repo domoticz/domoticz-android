@@ -347,28 +347,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="car_category"
-        android:icon="@drawable/baseline_directions_car_white_24"
-        android:title="@string/category_auto">
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="enableAutoItems"
-            android:summaryOff="@string/auto_custom_off"
-            android:summaryOn="@string/autolist_custom_on"
-            android:title="@string/enable_autolist_select" />
-        <nl.hnogames.domoticz.preference.AutoMultiSelectListPreference
-            android:defaultValue="@array/empty_array"
-            android:dependency="enableAutoItems"
-            android:dialogTitle="@string/custom_autolist_select"
-            android:entries="@array/empty_array"
-            android:entryValues="@array/empty_array"
-            android:key="autolistItems"
-            android:summary="@string/custom_autolist_select_desc"
-            android:title="@string/custom_autolist_select"
-            customPreference:selectAllValuesByDefault="true" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:key="advanced_category"
         android:icon="@drawable/baseline_settings_white_24"
         android:title="@string/category_advanced">
