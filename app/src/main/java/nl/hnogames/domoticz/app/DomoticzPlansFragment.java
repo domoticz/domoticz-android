@@ -206,31 +206,14 @@ public class DomoticzPlansFragment extends Fragment {
             Log.d("orientationchanged", "Event: setGridViewLayout Portrait:" + isPortrait + " Tablet:" + isTablet);
 
             gridView.setHasFixedSize(true);
+            boolean showAsList = mSharedPrefs.showDashboardAsList();
             if (isTablet) {
-                //if (isPortrait) {
-                mLayoutManager = new GridLayoutManager(getContext(), 3);
+                mLayoutManager = new GridLayoutManager(getContext(), showAsList?2:3);
                 Log.d("orientationchanged", "Event: GridLayoutManager span 3");
-                // } else {
-                //     mLayoutManager = new GridLayoutManager(getContext(), 4);
-                //     Log.d("orientationchanged", "Event: GridLayoutManager span 4");
-                // }
             } else {
-                // if (isPortrait) {
-                mLayoutManager = new GridLayoutManager(getContext(), 2);
+                mLayoutManager = new GridLayoutManager(getContext(), showAsList?1:2);
                 Log.d("orientationchanged", "Event: GridLayoutManager span 2");
-                //} else {
-                //    mLayoutManager = new GridLayoutManager(getContext(), 3);
-                //    Log.d("orientationchanged", "Event: GridLayoutManager span 3");
-                // }
             }
-
-            mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                @Override
-                public int getSpanSize(int position) {
-                    return 1;
-                }
-            });
-
             gridView.setLayoutManager(mLayoutManager);
         } catch (Exception ignored) {
         }

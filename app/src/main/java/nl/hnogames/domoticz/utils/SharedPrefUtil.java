@@ -71,6 +71,7 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 public class SharedPrefUtil {
     private static final String PREF_ADS_COUNTER = "adsCounter";
 
+    private static final String PREF_DASHBOARD_LIST = "dashboardAsList2";
     private static final int NR_OF_HISTORY = 100;
     private static final String PREF_MULTI_SERVER = "enableMultiServers";
     private static final String PREF_STARTUP_PROTECTION_ENABLED = "enableSecurity";
@@ -162,6 +163,10 @@ public class SharedPrefUtil {
 
     public boolean addCameraToDashboard() {
         return prefs.getBoolean(PREF_DASHBOARD_CAMERA, false);
+    }
+
+    public boolean showDashboardAsList() {
+        return prefs.getBoolean(PREF_DASHBOARD_LIST, false);
     }
 
     public int getAdsCounter() {

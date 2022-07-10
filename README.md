@@ -132,7 +132,8 @@ All Android Wear devices are supported.
 
 # Android Auto
 -----
-Toggle switches directly in Android Auto
+Work in progress >> Toggle switches directly in Android Auto
+This is not available in the play store!!
 ![android-auto](https://user-images.githubusercontent.com/48728684/100537622-38545c00-322a-11eb-8f36-1fe481f1d3b0.png)
 
 
