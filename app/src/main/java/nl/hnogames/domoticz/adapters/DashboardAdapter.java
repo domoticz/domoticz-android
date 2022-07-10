@@ -61,9 +61,7 @@ import java.util.List;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
 import github.nisrulz.recyclerviewhelper.RVHAdapter;
@@ -78,10 +76,8 @@ import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PicassoUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.utils.ViewUtils;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Containers.SunRiseInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -112,6 +108,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public ArrayList<DevicesInfo> filteredData = null;
     private int previousDimmerValue;
     private boolean adLoaded = false;
+    private boolean showAsList;
 
     public DashboardAdapter(Context context,
                             ServerUtil serverUtil,
@@ -121,6 +118,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         this.domoticz = StaticHelper.getDomoticz(context);
         mSharedPrefs = new SharedPrefUtil(context);
+
+        showAsList = mSharedPrefs.showDashboardAsList();
 
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = context.getTheme();
@@ -211,8 +210,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View row;
 
-        row = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.dashboard_row, parent, false);
+        if (showAsList)
+            row = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.dashboard_row_list, parent, false);
+        else
+            row = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.dashboard_row, parent, false);
+
         return new DataObjectHolder(row);
     }
 
@@ -1777,7 +1781,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (holder.spSelector != null) {
             holder.spSelector.setVisibility(View.GONE);
         }
-        holder.signal_level.setVisibility(View.GONE);
+        //holder.signal_level.setVisibility(View.GONE);
         holder.switch_battery_level.setVisibility(View.GONE);
         holder.switch_name.setVisibility(View.VISIBLE);
 
@@ -1988,8 +1992,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             default:
                 if (holder.contentWrapper != null)
                     holder.contentWrapper.setVisibility(View.VISIBLE);
-                holder.signal_level.setVisibility(View.GONE);
+                //holder.signal_level.setVisibility(View.GONE);
                 holder.switch_battery_level.setVisibility(View.VISIBLE);
+                if(showAsList) {
+                    holder.onOffSwitch.setVisibility(View.INVISIBLE);
+                }
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.GONE);
                 break;

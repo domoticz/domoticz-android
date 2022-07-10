@@ -161,6 +161,7 @@
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                     android:layout_width="56dp"
                                     android:layout_height="wrap_content"
+                                    android:background="@drawable/button_status"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
                                     android:layout_gravity="right"
@@ -250,6 +251,7 @@
                                         android:id="@+id/on_button"
                                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                         android:layout_width="60dp"
+                                        android:background="@drawable/button_status"
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentRight="true"
                                         android:layout_centerVertical="true"
@@ -259,6 +261,7 @@
 
                                     <com.google.android.material.button.MaterialButton
                                         android:id="@+id/off_button"
+                                        android:background="@drawable/button_status"
                                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                         android:layout_width="60dp"
                                         android:layout_height="wrap_content"
@@ -280,6 +283,7 @@
                                     android:id="@+id/color_button"
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                     android:layout_width="wrap_content"
+                                    android:background="@drawable/button_status"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
