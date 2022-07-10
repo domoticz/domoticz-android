@@ -240,6 +240,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
         // Dashboard settings
         SwitchPreference ClockPreference = findPreference("dashboardShowClock");
         SwitchPreference PlansPreference = findPreference("dashboardShowPlans");
+        SwitchPreference dashboardAsListProperty = findPreference("dashboardAsList2");
 
         // Notification settings
         Preference openNotificationSettings = findPreference("openNotificationSettings");
@@ -251,9 +252,10 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
 
         // Geofence settings
         Preference GeoSettings = findPreference("geo_settings");
-
+        
         // NFC settings
         SwitchPreference EnableNFCPreference = findPreference("enableNFC");
+        SwitchPreference AutoPreference = findPreference("enableAutoItems");
         Preference NFCPreference = findPreference("nfc_settings");
 
         // Speech settings
@@ -333,7 +335,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
 
         startup_screen.setVisible(UsefulBits.isEmpty(filter) || startup_screen.getTitle().toString().toLowerCase().contains(filter) || (CameraPreference.getSummary() != null && startup_screen.getSummary().toString().toLowerCase().contains(filter)));
         drawerItems.setVisible(UsefulBits.isEmpty(filter) || drawerItems.getTitle().toString().toLowerCase().contains(filter) || (drawerItems.getSummary() != null && drawerItems.getSummary().toString().toLowerCase().contains(filter)));
-        CameraPreference.setVisible(UsefulBits.isEmpty(filter) || CameraPreference.getTitle().toString().toLowerCase().contains(filter) || (CameraPreference.getSummary() != null && CameraPreference.getSummary().toString().toLowerCase().contains(filter)));
         AlwaysOnPreference.setVisible(UsefulBits.isEmpty(filter) || AlwaysOnPreference.getTitle().toString().toLowerCase().contains(filter) || (AlwaysOnPreference.getSummary() != null && AlwaysOnPreference.getSummary().toString().toLowerCase().contains(filter)));
         RefreshScreenPreference.setVisible(UsefulBits.isEmpty(filter) || RefreshScreenPreference.getTitle().toString().toLowerCase().contains(filter) || (RefreshScreenPreference.getSummary() != null && RefreshScreenPreference.getSummary().toString().toLowerCase().contains(filter)));
         RefreshScreenTimerPreference.setVisible(UsefulBits.isEmpty(filter) || RefreshScreenTimerPreference.getTitle().toString().toLowerCase().contains(filter) || (RefreshScreenTimerPreference.getSummary() != null && RefreshScreenTimerPreference.getSummary().toString().toLowerCase().contains(filter)));
@@ -351,9 +352,10 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
 
         // Dashboard settings
         ClockPreference.setVisible(UsefulBits.isEmpty(filter) || ClockPreference.getTitle().toString().toLowerCase().contains(filter) || (ClockPreference.getSummary() != null && ClockPreference.getSummary().toString().toLowerCase().contains(filter)));
-        dashboard_category.setVisible(ClockPreference.isVisible());
+        dashboardAsListProperty.setVisible(UsefulBits.isEmpty(filter) || dashboardAsListProperty.getTitle().toString().toLowerCase().contains(filter) || (dashboardAsListProperty.getSummary() != null && dashboardAsListProperty.getSummary().toString().toLowerCase().contains(filter)));
         PlansPreference.setVisible(UsefulBits.isEmpty(filter) || PlansPreference.getTitle().toString().toLowerCase().contains(filter) || (PlansPreference.getSummary() != null && PlansPreference.getSummary().toString().toLowerCase().contains(filter)));
-        dashboard_category.setVisible(ClockPreference.isVisible());
+        CameraPreference.setVisible(UsefulBits.isEmpty(filter) || CameraPreference.getTitle().toString().toLowerCase().contains(filter) || (CameraPreference.getSummary() != null && CameraPreference.getSummary().toString().toLowerCase().contains(filter)));
+        dashboard_category.setVisible(ClockPreference.isVisible() || dashboardAsListProperty.isVisible() || CameraPreference.isVisible() || PlansPreference.isVisible() );
 
         // Notification settings
         openNotificationSettings.setVisible(UsefulBits.isEmpty(filter) || openNotificationSettings.getTitle().toString().toLowerCase().contains(filter) || (openNotificationSettings.getSummary() != null && openNotificationSettings.getSummary().toString().toLowerCase().contains(filter)));
@@ -804,6 +806,15 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
             WearPreference.setOnPreferenceChangeListener((preference, newValue) -> {
                 if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                     showPremiumSnackbar(getString(R.string.category_wear));
+                    return false;
+                }
+                return true;
+            });
+
+        if (AutoPreference != null)
+            AutoPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
+                    showPremiumSnackbar(getString(R.string.category_auto));
                     return false;
                 }
                 return true;

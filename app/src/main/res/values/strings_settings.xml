@@ -99,6 +99,11 @@
     <!--        Auto settings       -->
     <string name="auto_custom_on">Enable Android Auto Notifications</string>
     <string name="auto_custom_off">Disable Android Auto Notifications</string>
+    <string name="enable_autolist_select">Android Auto custom items</string>
+    <string name="custom_autolist_select">Select Android Auto switches</string>
+    <string name="custom_autolist_select_desc">Select which switches you like to see on your Android Auto device</string>
+    <string name="autolist_custom_on">Enable Android Auto custom items</string>
+    <string name="autolist_custom_off">Disable Android Auto custom items</string>
 
     <!--        Geofencing settings -->
     <string name="geofencing_configure">Configure Geofencing</string>
