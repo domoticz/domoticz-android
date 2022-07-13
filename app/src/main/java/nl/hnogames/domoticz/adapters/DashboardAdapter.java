@@ -407,7 +407,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                                    DataObjectHolder holder) {
         try {
             String text;
-            holder.switch_battery_level.setMaxLines(3);
             holder.isProtected = mDeviceInfo.isProtected();
             if (holder.switch_name != null) {
                 holder.switch_name.setText(mDeviceInfo.getName());
@@ -434,7 +433,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if (holder.switch_battery_level != null) {
                 text = context.getString(R.string.status)
                         + ": "
-                        + mDeviceInfo.getData();
+                        + mDeviceInfo.getData().replace(" Watt", "W");
                 holder.switch_battery_level.setText(text);
                 if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0) {
                     try {
@@ -457,16 +456,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     setAlphaIcon = false;
                     holder.switch_battery_level.append("\n" + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
                 }
-                if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&
-                        !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
-                    holder.switch_battery_level.append("\n" + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
 
                 if (mDeviceInfo.getCounterDelivToday() != null && mDeviceInfo.getCounterDelivToday().length() > 0) {
                     setAlphaIcon = false;
                     holder.switch_battery_level.append("\n" + context.getString(R.string.delivery) + ": " + mDeviceInfo.getCounterDelivToday());
-                    if (mDeviceInfo.getCounterDeliv() != null && mDeviceInfo.getCounterDeliv().length() > 0 &&
-                            !mDeviceInfo.getCounterDeliv().equals(mDeviceInfo.getData()))
-                        holder.switch_battery_level.append("\n" + context.getString(R.string.total) + ": " + mDeviceInfo.getCounterDeliv());
                 }
 
                 if (mDeviceInfo.getType() != null && mDeviceInfo.getType().length() > 0 &&
