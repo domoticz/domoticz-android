@@ -431,16 +431,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
             boolean setAlphaIcon = true;
             if (holder.switch_battery_level != null) {
-                text = context.getString(R.string.status)
-                        + ": "
-                        + mDeviceInfo.getData().replace(" Watt", "W");
+                text = mDeviceInfo.getData().replace(" Watt", "W");
                 holder.switch_battery_level.setText(text);
                 if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0) {
                     try {
                         setAlphaIcon = false;
-                        int usage = Integer.parseInt(mDeviceInfo.getUsage().replace("W", "").trim());
+                        int usage = Integer.parseInt(mDeviceInfo.getUsage().replace("Watt", "").trim());
                         if (mDeviceInfo.getUsageDeliv() != null && mDeviceInfo.getUsageDeliv().length() > 0) {
-                            int usagedel = Integer.parseInt(mDeviceInfo.getUsageDeliv().replace("W", "").trim());
+                            int usagedel = Integer.parseInt(mDeviceInfo.getUsageDeliv().replace("Watt", "").trim());
                             text = context.getString(R.string.usage) + ": " + (usage - usagedel) + "W";
                         } else {
                             text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage().replace(" Watt", "W");
@@ -577,8 +575,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
-        text = context.getString(R.string.status) + ": " +
-                mDeviceInfo.getData();
+        text = mDeviceInfo.getData();
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
@@ -631,8 +628,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.signal_level.setText(text);
         }
         if (holder.switch_battery_level != null) {
-            text = context.getString(R.string.status) + ": " +
-                    mDeviceInfo.getData();
+            text = mDeviceInfo.getData();
             holder.switch_battery_level.setText(text);
         }
 
@@ -753,8 +749,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.signal_level.setText(text);
         }
 
-        text = context.getString(R.string.status) + ": " +
-                mDeviceInfo.getData();
+        text = mDeviceInfo.getData();
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
@@ -1023,7 +1018,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.signal_level.setText(text);
         }
         if (holder.switch_battery_level != null) {
-            text = context.getString(R.string.status) + ": " + mDevicesInfo.getData();
+            text = mDevicesInfo.getData();
             holder.switch_battery_level.setText(text);
         }
 
@@ -1078,8 +1073,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
-        text = context.getString(R.string.status) + ": " +
-                mDeviceInfo.getData();
+        text = mDeviceInfo.getData();
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
@@ -1145,8 +1139,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
 
         if (holder.switch_battery_level != null) {
-            text = context.getString(R.string.status) + ": " +
-                    mDeviceInfo.getData();
+            text = mDeviceInfo.getData();
             holder.switch_battery_level.setText(text);
         }
 
@@ -1238,8 +1231,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
 
         if (holder.switch_battery_level != null) {
-            text = context.getString(R.string.status) + ": " +
-                    mDeviceInfo.getStatus();
+            text = mDeviceInfo.getStatus();
             holder.switch_battery_level.setText(text);
         }
 
@@ -1313,8 +1305,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
 
         if (holder.switch_battery_level != null) {
-            text = context.getString(R.string.status) + ": " +
-                    mDeviceInfo.getStatus();
+            text = mDeviceInfo.getStatus();
             holder.switch_battery_level.setText(text);
         }
 
@@ -1430,8 +1421,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
 
         if (holder.switch_battery_level != null) {
-            text = context.getString(R.string.status) + ": " +
-                    mDeviceInfo.getStatus();
+            text = mDeviceInfo.getStatus();
             holder.switch_battery_level.setText(text);
         }
 
@@ -1531,8 +1521,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                         mDeviceInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
-        text = context.getString(R.string.status) + ": " +
-                getStatus(stateArrayRes, stateNamesArrayRes, mDeviceInfo.getStatus());
+        text = getStatus(stateArrayRes, stateNamesArrayRes, mDeviceInfo.getStatus());
         holder.switch_battery_level.setText(text);
 
         if (holder.buttonSetStatus != null) {
