@@ -47,11 +47,12 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
 import nl.hnogames.domoticz.ads.TemplateView;
+import nl.hnogames.domoticz.helpers.ItemMoveAdapter;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.PlanInfo;
 
 @SuppressWarnings("unused")
-public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHolder> implements RVHAdapter {
+public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHolder> implements ItemMoveAdapter {
     public static List<String> mCustomSorting;
     private static onClickListener onClickListener;
     private final Context mContext;

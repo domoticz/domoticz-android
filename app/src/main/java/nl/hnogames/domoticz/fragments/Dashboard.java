@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -42,15 +41,12 @@ import com.rubengees.easyheaderfooteradapter.EasyHeaderFooterAdapter;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
@@ -60,7 +56,7 @@ import nl.hnogames.domoticz.adapters.SmallPlansAdapter;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
-import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.helpers.SimpleItemTouchHelperCallback;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.switchesClickListener;
@@ -162,8 +158,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
                         mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                     if (mItemTouchHelper == null) {
-                        mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                                false));
+                        mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter, isTablet || !mSharedPrefs.showDashboardAsList() ? true: false));
                     }
                     mItemTouchHelper.attachToRecyclerView(gridView);
                 } else {
@@ -328,8 +323,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 }
 
                 if (mItemTouchHelper == null) {
-                    mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                            false));
+                    mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter, isTablet || !mSharedPrefs.showDashboardAsList() ? true: false));
                 }
                 if ((UsefulBits.isEmpty(planName) || planName.length() <= 0) &&
                         (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&

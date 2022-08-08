@@ -54,6 +54,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
 import nl.hnogames.domoticz.ads.TemplateView;
+import nl.hnogames.domoticz.helpers.ItemMoveAdapter;
 import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PicassoUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -61,7 +62,7 @@ import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 
 @SuppressWarnings("unused")
-public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObjectHolder> implements RVHAdapter {
+public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObjectHolder> implements ItemMoveAdapter {
     public static List<String> mCustomSorting;
     private static onClickListener onClickListener;
     private final Context mContext;

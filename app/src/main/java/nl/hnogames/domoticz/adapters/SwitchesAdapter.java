@@ -67,6 +67,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
 import nl.hnogames.domoticz.ads.TemplateView;
+import nl.hnogames.domoticz.helpers.ItemMoveAdapter;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.switchesClickListener;
 import nl.hnogames.domoticz.utils.CameraUtil;
@@ -81,7 +82,7 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 @SuppressWarnings("unused")
-public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataObjectHolder> implements RVHAdapter {
+public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataObjectHolder> implements ItemMoveAdapter {
     public static final int ID_SCENE_SWITCH = 2000;
     public static List<String> mCustomSorting;
     private final int ID_TEXTVIEW = 1000;

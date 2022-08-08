@@ -460,7 +460,6 @@
                     android:id="@+id/swipe_refresh_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/my_recycler_view"
                         android:layout_width="match_parent"

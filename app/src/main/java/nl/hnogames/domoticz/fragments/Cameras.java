@@ -50,7 +50,7 @@ import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.CamerasAdapter;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
-import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.helpers.SimpleItemTouchHelperCallback;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.utils.CameraUtil;
@@ -216,8 +216,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         }
 
         if (mItemTouchHelper == null) {
-            mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(mAdapter, true, false,
-                    false));
+            mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(mAdapter, true));
         }
         if (mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
             mItemTouchHelper.attachToRecyclerView(mRecyclerView);

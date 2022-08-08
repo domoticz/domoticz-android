@@ -45,7 +45,7 @@ import nl.hnogames.domoticz.adapters.SceneAdapter;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
-import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.helpers.SimpleItemTouchHelperCallback;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.ScenesClickListener;
@@ -125,8 +125,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                         (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
                         mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                     if (mItemTouchHelper == null) {
-                        mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                                false));
+                        mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter, false));
                     }
                     mItemTouchHelper.attachToRecyclerView(gridView);
                 } else {
@@ -237,8 +236,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                 itemDecorationAdded = true;
             }
             if (mItemTouchHelper == null) {
-                mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                        false));
+                mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter, isTablet ? true: false));
             }
             if ((UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
                     mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {

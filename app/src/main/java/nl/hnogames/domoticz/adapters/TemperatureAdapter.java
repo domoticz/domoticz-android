@@ -60,6 +60,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
 import nl.hnogames.domoticz.ads.TemplateView;
+import nl.hnogames.domoticz.helpers.ItemMoveAdapter;
 import nl.hnogames.domoticz.interfaces.TemperatureClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -71,7 +72,7 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 @SuppressWarnings("unused")
-public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.DataObjectHolder> implements RVHAdapter {
+public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.DataObjectHolder> implements ItemMoveAdapter {
 
     @SuppressWarnings("unused")
     private static final String TAG = TemperatureAdapter.class.getSimpleName();

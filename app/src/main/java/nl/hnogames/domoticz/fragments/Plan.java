@@ -58,7 +58,7 @@ import nl.hnogames.domoticz.app.DomoticzDashboardFragment;
 import nl.hnogames.domoticz.app.DomoticzPlansFragment;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
-import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.helpers.SimpleItemTouchHelperCallback;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.switchesClickListener;
@@ -160,8 +160,7 @@ public class Plan extends DomoticzPlansFragment implements DomoticzFragmentListe
                         (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
                         mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                     if (mItemTouchHelper == null) {
-                        mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                                false));
+                        mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter, true));
                     }
                     mItemTouchHelper.attachToRecyclerView(gridView);
                 } else {
@@ -352,8 +351,7 @@ public class Plan extends DomoticzPlansFragment implements DomoticzFragmentListe
                 }
 
                 if (mItemTouchHelper == null) {
-                    mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                            false));
+                    mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter, true));
                 }
                 if ((UsefulBits.isEmpty(planName) || planName.length() <= 0) &&
                         (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&

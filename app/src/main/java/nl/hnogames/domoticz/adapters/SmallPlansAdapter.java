@@ -38,11 +38,12 @@ import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.helpers.ItemMoveAdapter;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.PlanInfo;
 
 @SuppressWarnings("unused")
-public class SmallPlansAdapter extends RecyclerView.Adapter<SmallPlansAdapter.DataObjectHolder> implements RVHAdapter {
+public class SmallPlansAdapter extends RecyclerView.Adapter<SmallPlansAdapter.DataObjectHolder> implements ItemMoveAdapter {
     public static List<String> mCustomSorting;
     private static onClickListener onClickListener;
     private final Context mContext;

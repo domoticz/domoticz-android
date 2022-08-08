@@ -70,6 +70,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
 import nl.hnogames.domoticz.ads.TemplateView;
+import nl.hnogames.domoticz.helpers.ItemMoveAdapter;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.switchesClickListener;
 import nl.hnogames.domoticz.utils.CameraUtil;
@@ -83,7 +84,7 @@ import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
-public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DataObjectHolder> implements RVHAdapter {
+public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DataObjectHolder> implements ItemMoveAdapter {
     public static final int ID_SCENE_SWITCH = 3000;
     public static List<String> mCustomSorting;
     private final int ID_SWITCH = 0;
@@ -2002,17 +2003,19 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     }
 
     private void swap(int firstPosition, int secondPosition) {
-        if (firstPosition == (secondPosition + 1) || firstPosition == (secondPosition - 1)) {
-            Collections.swap(filteredData, firstPosition, secondPosition);
-            notifyItemMoved(firstPosition, secondPosition);
+        int from = firstPosition-1;
+        int to = secondPosition-1;
+        if (from == (to + 1) || from == (to - 1)) {
+            Collections.swap(filteredData, from, to);
+            notifyItemMoved(from, to);
         } else {
-            if (firstPosition < secondPosition) {
-                for (int i = firstPosition; i < secondPosition; i++) {
+            if (from < to) {
+                for (int i = from; i < to; i++) {
                     Collections.swap(filteredData, i, i + 1);
                     notifyItemMoved(i, i + 1);
                 }
             } else {
-                for (int i = firstPosition; i > secondPosition; i--) {
+                for (int i = from; i > to; i--) {
                     Collections.swap(filteredData, i, i - 1);
                     notifyItemMoved(i, i - 1);
                 }

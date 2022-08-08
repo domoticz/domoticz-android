@@ -54,6 +54,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
 import nl.hnogames.domoticz.ads.TemplateView;
+import nl.hnogames.domoticz.helpers.ItemMoveAdapter;
 import nl.hnogames.domoticz.interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -63,7 +64,7 @@ import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
 
 @SuppressWarnings("unused")
-public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHolder> implements RVHAdapter {
+public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHolder> implements ItemMoveAdapter {
 
     @SuppressWarnings("unused")
     private static final String TAG = SceneAdapter.class.getSimpleName();

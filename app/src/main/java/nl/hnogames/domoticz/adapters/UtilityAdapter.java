@@ -54,6 +54,7 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
 import nl.hnogames.domoticz.ads.TemplateView;
+import nl.hnogames.domoticz.helpers.ItemMoveAdapter;
 import nl.hnogames.domoticz.interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
@@ -62,7 +63,7 @@ import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
 
 @SuppressWarnings("unused")
-public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObjectHolder> implements RVHAdapter {
+public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObjectHolder> implements ItemMoveAdapter {
 
     private static final String TAG = UtilityAdapter.class.getSimpleName();
     public static List<String> mCustomSorting;
