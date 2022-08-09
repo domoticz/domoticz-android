@@ -35,6 +35,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import nl.hnogames.domoticz.R;
 
+@RequiresApi(api = Build.VERSION_CODES.S)
 public class PermissionsUtil {
 
     //these permissions are needed for Wifi scanning
@@ -65,6 +66,7 @@ public class PermissionsUtil {
     public static final String[] INITIAL_BLUETOOTH_PERMS = {
             Manifest.permission.BLUETOOTH,
             Manifest.permission.BLUETOOTH_ADMIN,
+            Manifest.permission.BLUETOOTH_CONNECT,
             Manifest.permission.BLUETOOTH_SCAN
     };
     //these permissions are needed for recording audio
@@ -80,6 +82,7 @@ public class PermissionsUtil {
             Manifest.permission.BLUETOOTH,
             Manifest.permission.BLUETOOTH_ADMIN,
             Manifest.permission.BLUETOOTH_SCAN,
+            Manifest.permission.BLUETOOTH_CONNECT,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
     };
@@ -119,7 +122,11 @@ public class PermissionsUtil {
     }
 
     public static boolean canAccessBluetooth(Context context) {
-        return (hasPermission(Manifest.permission.BLUETOOTH, context)) && hasPermission(Manifest.permission.BLUETOOTH_SCAN, context) && (hasPermission(Manifest.permission.BLUETOOTH_ADMIN, context));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return (hasPermission(Manifest.permission.BLUETOOTH, context)) && hasPermission(Manifest.permission.BLUETOOTH_SCAN, context) && (hasPermission(Manifest.permission.BLUETOOTH_ADMIN, context) && (hasPermission(Manifest.permission.BLUETOOTH_CONNECT, context)));
+        } else {
+            return (hasPermission(Manifest.permission.BLUETOOTH, context)) && (hasPermission(Manifest.permission.BLUETOOTH_ADMIN, context));
+        }
     }
 
     public static boolean canAccessDeviceState(Context context) {

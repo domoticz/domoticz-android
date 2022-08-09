@@ -88,8 +88,6 @@
             </intent-filter>
         </service>
 
-
-
         <receiver
             android:name="nl.hnogames.domoticz.service.BluetoothConnectionReceiver"
             android:enabled="true"
