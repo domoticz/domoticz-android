@@ -20,6 +20,7 @@
   -->
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -37,6 +38,44 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/toolbarBackground"
             android:theme="@style/AppThemeToolbarStyle" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:id="@+id/bluetooth_notifications_onoff"
+                style="@style/row_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/switch_notifications_button"
+                android:text="@string/title_notification_bluetooth" />
+
+            <TextView
+                android:id="@+id/bluetooth_notifications_description"
+                style="@style/row_body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bluetooth_notifications_onoff"
+                android:layout_alignEnd="@+id/bluetooth_notifications_onoff"
+                android:layout_alignRight="@+id/bluetooth_notifications_onoff"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:text="@string/description_notification_bluetooth" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch_notifications_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingLeft="10dp"
+                app:useMaterialThemeColors="false" />
+        </RelativeLayout>
 
         <ListView
             android:id="@+id/listView"
