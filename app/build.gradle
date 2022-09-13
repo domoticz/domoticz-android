@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
 
     def versionPropsFile = file('version.properties')
     if (versionPropsFile.canRead()) {
@@ -40,7 +40,7 @@ android {
             versionCode version_Code
             versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
             minSdkVersion 23
-            targetSdkVersion 31
+            targetSdkVersion 33
             multiDexEnabled true
             wearAppUnbundled true
         }
