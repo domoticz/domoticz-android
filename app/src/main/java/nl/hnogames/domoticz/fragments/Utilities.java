@@ -191,7 +191,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 adapter.notifyDataSetChanged();
             }
             if (mItemTouchHelper == null) {
-                mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter, isTablet ? true: false));
+                mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter, isTablet));
             }
             if ((UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
                     mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {

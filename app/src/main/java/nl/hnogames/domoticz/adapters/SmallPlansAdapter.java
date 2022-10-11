@@ -34,7 +34,6 @@ import java.util.Collections;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
-import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
@@ -48,8 +47,8 @@ public class SmallPlansAdapter extends RecyclerView.Adapter<SmallPlansAdapter.Da
     private static onClickListener onClickListener;
     private final Context mContext;
     private final SharedPrefUtil mSharedPrefs;
-    private ArrayList<PlanInfo> mDataset;
     private final boolean adLoaded = false;
+    private ArrayList<PlanInfo> mDataset;
 
     public SmallPlansAdapter(ArrayList<PlanInfo> data, Context mContext) {
         this.mContext = mContext;

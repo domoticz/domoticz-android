@@ -158,7 +158,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
                         mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                     if (mItemTouchHelper == null) {
-                        mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter, isTablet || !mSharedPrefs.showDashboardAsList() ? true: false));
+                        mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter, isTablet || !mSharedPrefs.showDashboardAsList()));
                     }
                     mItemTouchHelper.attachToRecyclerView(gridView);
                 } else {
@@ -264,7 +264,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     }
 
                     @Override
-                    public void onError(Exception error) {                    }
+                    public void onError(Exception error) {
+                    }
                 });
             }
         }
@@ -323,7 +324,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 }
 
                 if (mItemTouchHelper == null) {
-                    mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter, isTablet || !mSharedPrefs.showDashboardAsList() ? true: false));
+                    mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter, isTablet || !mSharedPrefs.showDashboardAsList()));
                 }
                 if ((UsefulBits.isEmpty(planName) || planName.length() <= 0) &&
                         (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&

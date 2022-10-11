@@ -64,7 +64,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
-import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
@@ -109,7 +108,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public ArrayList<DevicesInfo> filteredData = null;
     private int previousDimmerValue;
     private boolean adLoaded = false;
-    private boolean showAsList;
+    private final boolean showAsList;
 
     public DashboardAdapter(Context context,
                             ServerUtil serverUtil,
@@ -1977,7 +1976,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.contentWrapper.setVisibility(View.VISIBLE);
                 //holder.signal_level.setVisibility(View.GONE);
                 holder.switch_battery_level.setVisibility(View.VISIBLE);
-                if(showAsList) {
+                if (showAsList) {
                     holder.onOffSwitch.setVisibility(View.INVISIBLE);
                 }
                 if (holder.adview != null)
@@ -2003,8 +2002,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     }
 
     private void swap(int firstPosition, int secondPosition) {
-        int from = firstPosition-1;
-        int to = secondPosition-1;
+        int from = firstPosition - 1;
+        int to = secondPosition - 1;
         if (from == (to + 1) || from == (to - 1)) {
             Collections.swap(filteredData, from, to);
             notifyItemMoved(from, to);

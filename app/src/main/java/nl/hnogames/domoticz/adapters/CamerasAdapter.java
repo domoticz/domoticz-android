@@ -48,7 +48,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;

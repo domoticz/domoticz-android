@@ -62,7 +62,6 @@ import java.util.List;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;

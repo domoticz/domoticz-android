@@ -252,7 +252,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
 
         // Geofence settings
         Preference GeoSettings = findPreference("geo_settings");
-        
+
         // NFC settings
         SwitchPreference EnableNFCPreference = findPreference("enableNFC");
         SwitchPreference AutoPreference = findPreference("enableAutoItems");
@@ -355,7 +355,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
         dashboardAsListProperty.setVisible(UsefulBits.isEmpty(filter) || dashboardAsListProperty.getTitle().toString().toLowerCase().contains(filter) || (dashboardAsListProperty.getSummary() != null && dashboardAsListProperty.getSummary().toString().toLowerCase().contains(filter)));
         PlansPreference.setVisible(UsefulBits.isEmpty(filter) || PlansPreference.getTitle().toString().toLowerCase().contains(filter) || (PlansPreference.getSummary() != null && PlansPreference.getSummary().toString().toLowerCase().contains(filter)));
         CameraPreference.setVisible(UsefulBits.isEmpty(filter) || CameraPreference.getTitle().toString().toLowerCase().contains(filter) || (CameraPreference.getSummary() != null && CameraPreference.getSummary().toString().toLowerCase().contains(filter)));
-        dashboard_category.setVisible(ClockPreference.isVisible() || dashboardAsListProperty.isVisible() || CameraPreference.isVisible() || PlansPreference.isVisible() );
+        dashboard_category.setVisible(ClockPreference.isVisible() || dashboardAsListProperty.isVisible() || CameraPreference.isVisible() || PlansPreference.isVisible());
 
         // Notification settings
         openNotificationSettings.setVisible(UsefulBits.isEmpty(filter) || openNotificationSettings.getTitle().toString().toLowerCase().contains(filter) || (openNotificationSettings.getSummary() != null && openNotificationSettings.getSummary().toString().toLowerCase().contains(filter)));

@@ -54,7 +54,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
-import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;

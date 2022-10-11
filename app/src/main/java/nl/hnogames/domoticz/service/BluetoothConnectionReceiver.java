@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,7 +55,7 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
         }
 
         if (connectedDevice != null && connectedDevice.isEnabled()) {
-           //Toast.makeText(context, context.getString(R.string.bluetooth) + " " + connectedDevice.getName(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, context.getString(R.string.bluetooth) + " " + connectedDevice.getName(), Toast.LENGTH_SHORT).show();
             if (mSharedPrefs.isBluetoothNotificationsEnabled()) {
                 NotificationUtil.sendSimpleNotification(new NotificationInfo(-1,
                         context.getString(R.string.bluetooth),

@@ -20,14 +20,14 @@ import nl.hnogames.domoticz.interfaces.OnDiscoveredTagListener;
 public class TagDispatcher {
     private static final int DELAY_PRESENCE = 5000;
 
-    private OnDiscoveredTagListener tagDiscoveredListener;
-    private boolean handleUnavailableNfc;
-    private boolean disableSounds;
-    private boolean dispatchOnUiThread;
-    private boolean broadcomWorkaround;
-    private boolean noReaderMode;
-    private boolean disableNdefCheck;
-    private Activity activity;
+    private final OnDiscoveredTagListener tagDiscoveredListener;
+    private final boolean handleUnavailableNfc;
+    private final boolean disableSounds;
+    private final boolean dispatchOnUiThread;
+    private final boolean broadcomWorkaround;
+    private final boolean noReaderMode;
+    private final boolean disableNdefCheck;
+    private final Activity activity;
 
     public TagDispatcher(TagDispatcherBuilder tagDispatcherBuilder) {
         this.activity = tagDispatcherBuilder.activity;
