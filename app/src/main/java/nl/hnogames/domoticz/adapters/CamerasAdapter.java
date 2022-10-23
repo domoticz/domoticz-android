@@ -231,6 +231,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
                     .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
                     .addTestDevice("6C2390A9FF8F555BD01BA560068CD366")
                     .addTestDevice("2C114D01992840EC6BF853D44CB96754")
+                    .addTestDevice("7ABE5FC9B0E902B7CF857CE3A57831AB")
                     .build();
 
             AdLoader adLoader = new AdLoader.Builder(mContext, mContext.getString(R.string.ad_unit_id))

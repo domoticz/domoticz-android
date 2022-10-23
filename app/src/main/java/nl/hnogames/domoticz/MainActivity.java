@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     .addTestDevice("1AAE9D81347967A359E372B0445549DE")
                     .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
                     .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
-                    .addTestDevice("2C114D01992840EC6BF853D44CB96754")
+                    .addTestDevice("7ABE5FC9B0E902B7CF857CE3A57831AB")
                     .build();
             ((AdView) findViewById(R.id.adView)).loadAd(adRequest);
         } else

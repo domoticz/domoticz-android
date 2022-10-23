@@ -616,6 +616,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
                     .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
                     .addTestDevice("2C114D01992840EC6BF853D44CB96754")
+                    .addTestDevice("7ABE5FC9B0E902B7CF857CE3A57831AB")
                     .build();
 
             AdLoader adLoader = new AdLoader.Builder(context, context.getString(R.string.ad_unit_id))
