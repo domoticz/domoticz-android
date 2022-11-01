@@ -29,8 +29,8 @@
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="8dp"
     android:orientation="vertical"
-    android:padding="8dp"
-    app:cardCornerRadius="5dp"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="30dp"
     app:cardElevation="1dp">
 
     <nl.hnogames.domoticz.ads.TemplateView
@@ -67,12 +67,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|start"
                 android:src="@drawable/outline_info_black_18"
-                android:tint="@color/md_grey_300" />
+                app:tint="@color/md_grey_300" />
 
             <ImageView
                 android:id="@+id/rowIcon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="35dp"
+                app:tint="?attr/colorAccent"
+                android:layout_height="35dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="-15dp"
                 android:contentDescription="@string/error_image_description"
@@ -99,6 +100,7 @@
                         <TextView
                             android:id="@+id/weather_name"
                             style="@style/row_name"
+                            android:layout_marginTop="-10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="Utility name" />
@@ -108,6 +110,7 @@
                             style="@style/row_body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="-8dp"
                             android:layout_below="@id/weather_name"
                             android:layout_marginBottom="5dp"
                             android:textStyle="italic"

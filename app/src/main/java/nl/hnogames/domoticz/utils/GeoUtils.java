@@ -53,7 +53,6 @@ public class GeoUtils {
         this.mActivity = activity;
 
         this.mSharedPrefs = new SharedPrefUtil(mContext);
-
         mGeofencePendingIntent = null;
         mGeofencingClient = LocationServices.getGeofencingClient(mActivity != null ? mActivity : mContext);
     }
@@ -100,9 +99,7 @@ public class GeoUtils {
             return mGeofencePendingIntent;
         }
         Intent intent = new Intent(mContext, GeofenceBroadcastReceiver.class);
-        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when
-        // calling addGeofences() and removeGeofences().
-        mGeofencePendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mGeofencePendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_MUTABLE);
         return mGeofencePendingIntent;
     }
 

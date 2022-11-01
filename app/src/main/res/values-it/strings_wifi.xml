@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wifi_not_supported">Wifi non supportato in questo dispositivo</string>
+    <string name="wifi_register">Accedere a rete wifi</string>
+    <string name="wifi_found">Trovata nuova rete wifi</string>
+    <string name="wifi_edit">Modifica proprietà punto di accesso wifi</string>
+    <string name="wifi_name">Assegna un nome a questa punto di accesso wifi</string>
+    <string name="wifi_desc">Controlla elenco punti di accesso wifi già accoppiati</string>
+    <string name="wifi_exists">Questo punto di accesso wifi è già configurato in Domoticz</string>
+    <string name="wifi_turned_off">È necessario accendere il wifi del proprio dispositivo</string>
+    <string name="wifi_saved">Nuovo punto di accesso wifi salvato</string>
+    <string name="wifi_settings">Impostazioni punti di accesso wifi</string>
+    <string name="enable_wifi">Abilita funzionalità wifi</string>
+    <string name="wifi_disabled">Automazione wifi disabilitata, si prega di configurarla tramite i settaggi</string>
+    <string name="noSwitchSelected_explanation_wifi">Perché un punto di accesso wifi possa automatizzare qualcosa in Domoticz, un interruttore deve essere collegato ad esso</string>
+    <string name="title_notification_wifi">Attivare le Notifiche</string>
+    <string name="description_notification_wifi">Mostra le notifiche quando ci si connette o disconnette con punto di accesso wifi.</string>
+    <string name="wifi_connected_to">"Connesso a %1$s"</string>
+    <string name="wifi_disconnected_to">Disconnected to  %1$s</string>
+    <string name="wifi_connected_to_text">Connesso a uno dei punti di accesso registrati</string>
+    <string name="wifi_disconnected_to_text">Disconnesso da uno dei punti di accesso registrati</string>
+</resources>

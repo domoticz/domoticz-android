@@ -23,6 +23,7 @@ package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,19 +45,19 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.CamerasAdapter;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzCardFragment;
-import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.helpers.SimpleItemTouchHelperCallback;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
+import nl.hnogames.domoticz.utils.ViewUtils;
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
@@ -74,7 +75,6 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private boolean refreshTimer = false;
     private SharedPrefUtil mSharedPrefs;
-    private SlideInBottomAnimationAdapter alphaSlideIn;
     private PermissionFragmentHelper permissionFragmentHelper;
     private ItemTouchHelper mItemTouchHelper;
     private ArrayList<CameraInfo> Cameras;
@@ -107,7 +107,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
             if (supportedSwitches == null || supportedSwitches.size() <= 0)
                 return supportedSwitches;
 
-            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+            if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                 ArrayList<CameraInfo> filteredList = new ArrayList<>();
                 for (CameraInfo d : supportedSwitches) {
                     if (d.getIdx() != MainActivity.ADS_IDX)
@@ -181,7 +181,23 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         if (mRecyclerView == null) {
             mRecyclerView = getView().findViewById(R.id.my_recycler_view);
             mSwipeRefreshLayout = getView().findViewById(R.id.swipe_refresh_layout);
-            StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+
+            StaggeredGridLayoutManager mLayoutManager;
+            boolean isPortrait = getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+            if (ViewUtils.isTablet(context)) {
+                if (isPortrait) {
+                    mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+                } else {
+                    mLayoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
+                }
+            } else {
+                if (isPortrait) {
+                    mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                } else {
+                    mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+                }
+            }
+
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setHasFixedSize(false);
         }
@@ -192,18 +208,15 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
                 CameraInfo camera = Cameras.get(position);
                 CameraUtil.ProcessImage(context, camera.getIdx(), camera.getName());
             });
-            alphaSlideIn = new SlideInBottomAnimationAdapter(mAdapter);
-            mRecyclerView.setAdapter(alphaSlideIn);
+            mRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.setRefreshTimer(refreshTimer);
             mAdapter.setData(AddAdsDevice(Cameras));
             mAdapter.notifyDataSetChanged();
-            alphaSlideIn.notifyDataSetChanged();
         }
 
         if (mItemTouchHelper == null) {
-            mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(mAdapter, true, false,
-                    false));
+            mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(mAdapter, true));
         }
         if (mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
             mItemTouchHelper.attachToRecyclerView(mRecyclerView);

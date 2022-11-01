@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -42,6 +43,7 @@
     <string name="category_account">Računi</string>
     <string name="category_QRCode">QR kod</string>
     <string name="category_bluetooth">Bluetooth</string>
+    <string name="category_wifi">Wifi</string>
     <string name="category_Speech">Govor</string>
     <string name="category_Reset">Resetuj</string>
     <string name="category_help">Contribute</string>
@@ -72,6 +74,8 @@
     <string name="show_dashboard_list_off">Prikaži ploče u mreži</string>
     <string name="dashboard_clock">Clock</string>
     <string name="show_dashboard_clock">Show a clock on the dashboard</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
     <string name="dashboard_camera">Camera</string>
     <string name="show_dashboard_camera">Load the camera for connected switches</string>
     <!--        Wear settings       -->

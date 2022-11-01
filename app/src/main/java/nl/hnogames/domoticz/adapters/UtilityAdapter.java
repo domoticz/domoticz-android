@@ -48,12 +48,12 @@ import java.util.Collections;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
-import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
 import nl.hnogames.domoticz.ads.TemplateView;
+import nl.hnogames.domoticz.helpers.ItemMoveAdapter;
 import nl.hnogames.domoticz.interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
@@ -62,7 +62,7 @@ import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
 
 @SuppressWarnings("unused")
-public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObjectHolder> implements RVHAdapter {
+public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObjectHolder> implements ItemMoveAdapter {
 
     private static final String TAG = UtilityAdapter.class.getSimpleName();
     public static List<String> mCustomSorting;
@@ -206,6 +206,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                     .addTestDevice("1AAE9D81347967A359E372B0445549DE")
                     .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
                     .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
+                    .addTestDevice("7ABE5FC9B0E902B7CF857CE3A57831AB")
                     .addTestDevice("6C2390A9FF8F555BD01BA560068CD366")
                     .build();
 

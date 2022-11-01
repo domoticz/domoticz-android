@@ -37,15 +37,14 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.UtilityAdapter;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
-import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.helpers.SimpleItemTouchHelperCallback;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.UtilityClickListener;
@@ -74,7 +73,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     private boolean itemDecorationAdded = false;
     private String filter = "";
     private LinearLayout lExtraPanel = null;
-    private SlideInBottomAnimationAdapter alphaSlideIn;
     private Animation animShow, animHide;
     private ItemTouchHelper mItemTouchHelper;
 
@@ -118,7 +116,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             if (supportedSwitches == null || supportedSwitches.size() <= 0)
                 return supportedSwitches;
 
-            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+            if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                 ArrayList<UtilitiesInfo> filteredList = new ArrayList<>();
                 for (UtilitiesInfo d : supportedSwitches) {
                     if (d.getIdx() != MainActivity.ADS_IDX)
@@ -146,8 +144,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                         (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
                         mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                     if (mItemTouchHelper == null) {
-                        mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                                false));
+                        mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter, false));
                     }
                     mItemTouchHelper.attachToRecyclerView(gridView);
                 } else {
@@ -188,16 +185,13 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         if (getView() != null) {
             if (adapter == null) {
                 adapter = new UtilityAdapter(mContext, StaticHelper.getDomoticz(mContext), AddAdsDevice(mUtilitiesInfos), this);
-                alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-                gridView.setAdapter(alphaSlideIn);
+                gridView.setAdapter(adapter);
             } else {
                 adapter.setData(AddAdsDevice(mUtilitiesInfos));
                 adapter.notifyDataSetChanged();
-                alphaSlideIn.notifyDataSetChanged();
             }
             if (mItemTouchHelper == null) {
-                mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                        false));
+                mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter, isTablet));
             }
             if ((UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
                     mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {

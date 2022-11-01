@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -22,7 +23,10 @@
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="premium_category">Acquista la versione premium!</string>
     <string name="premium_title">Ottieni la versione premium!</string>
+    <string name="restore_title">Restore subscriptions</string>
     <string name="premium_feature">è una funzionalità disponibile nella versione premium, si prega di acquistare la versione a pagamento per supportare gli sviluppatori!</string>
+    <string name="old_version">Get the latest version!</string>
+    <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
     <string name="drawer_open">Apri il pannello di navigazione</string>
     <string name="drawer_close">Chiudi pannello di navigazione</string>
     <string name="msg_please_wait">Attendere prego&#8230;</string>
@@ -31,8 +35,8 @@
     <string name="button_state_off">Off</string>
     <string name="button_state_closed">Chiuso</string>
     <string name="button_state_open">Aperto</string>
-    <string name="button_state_lock">Lock</string>
-    <string name="button_state_unlock">Unlock</string>
+    <string name="button_state_lock">Blocca</string>
+    <string name="button_state_unlock">Sblocca</string>
     <string name="button_status_log">Log</string>
     <string name="button_status_day">Giorno</string>
     <string name="button_status_week">Settimana</string>
@@ -43,17 +47,17 @@
     <string name="button_color">Colore</string>
     <string name="button_arm">Arma</string>
     <string name="button_disarm">Disarma</string>
-    <string name="button_state_full_light">Full light</string>
-    <string name="button_state_night">Night light</string>
-    <string name="sunrise">Sunrise</string>
-    <string name="sunset">Sunset</string>
-    <string name="now">Now</string>
-    <string name="astrTwilightStart">Astronomical twilight start</string>
-    <string name="astrTwilightEnd">Astronomical twilight end</string>
-    <string name="civTwilightStart">Civil twilight start</string>
-    <string name="civTwilightEnd">Civil twilight end</string>
-    <string name="nautTwilightStart">Nautical twilight start</string>
-    <string name="nautTwilightEnd">Nautical twilight end</string>
+    <string name="button_state_full_light">Luce piena</string>
+    <string name="button_state_night">Luce notturna</string>
+    <string name="sunrise">Alba</string>
+    <string name="sunset">Tramonto</string>
+    <string name="now">Ora</string>
+    <string name="astrTwilightStart">Avvio astronomico crepuscolo</string>
+    <string name="astrTwilightEnd">Fine crepuscolo astronomico</string>
+    <string name="civTwilightStart">Avvio crepuscolo civile</string>
+    <string name="civTwilightEnd">Fine crepuscolo civile</string>
+    <string name="nautTwilightStart">Avvio crepuscolo nautico</string>
+    <string name="nautTwilightEnd">Fine crepuscolo nautico</string>
     <string name="last_update">Ultimo contatto</string>
     <string name="signal_level">Livello segnale</string>
     <string name="battery_level">Livello batteria</string>
@@ -61,7 +65,7 @@
     <string name="hardware">Hardware</string>
     <string name="temperature">Temperatura</string>
     <string name="status">Stato</string>
-    <string name="switch_rgb_wwcolor">RGB color or warm white</string>
+    <string name="switch_rgb_wwcolor">Colore RGB o bianco caldo</string>
     <string name="set_point">Set point</string>
     <string name="set_point_min">Valore del set point min</string>
     <string name="set_point_min_description">Temperatura min impostabile dal termostato</string>
@@ -97,12 +101,12 @@
     <string name="retry">Riprova</string>
     <string name="undo">Annulla</string>
     <string name="something_deleted">%1$s cancellato</string>
-    <string name="remove_last_server">You can\'t remove the last server in the list.</string>
+    <string name="remove_last_server">Non è possibile rimuovere l\'ultimo server nella lista.</string>
     <string name="switch_on">Interruttore on</string>
     <string name="switch_off">Interruttore off</string>
-    <string name="switch_night">Turning switch to night light</string>
-    <string name="switch_full">Turning switch to full light</string>
-    <string name="switch_connection_removed">Switch connection removed.</string>
+    <string name="switch_night">Commutazione alla luce notturna</string>
+    <string name="switch_full">Commutatore di commutazione a luce piena</string>
+    <string name="switch_connection_removed">Cambia connessione rimossa.</string>
     <string name="blind_up">Tapparella su</string>
     <string name="blind_down">Tapparella giu</string>
     <string name="blind_stop">Ferma la tapparella</string>
@@ -113,6 +117,7 @@
     <string name="filterOn_all">Tutti i dispositivi</string>
     <string name="filter">Filtro</string>
     <string name="filter_devices">Filtro dispositivi</string>
+    <string name="filter_range">Imposta l\'intervallo</string>
     <string name="filter_graph_empty">Si prega di specificare un filtro</string>
     <string name="choose_color">Scegli un colore</string>
     <string name="no_data_on_domoticz">Nessun dato sul server Domoticz</string>
@@ -126,16 +131,17 @@
     <string name="continue_question">Continuare?</string>
     <string name="cant_remove_default_server">Non è possibile rimuovere il server di default</string>
     <string name="restart_required_msg">Per rendere effettive le impostazioni di lingua è necessario riavviare</string>
-    <string name="filter_all">All</string>
-    <string name="filter_normal">Normal</string>
-    <string name="filter_status">Status</string>
-    <string name="filter_error">Error</string>
-    <string name="use_demo_setup">Use demo setup</string>
-    <string name="auto_refresh_time">Refresh timer</string>
-    <string name="set_auto_refresh_time">Set a specific timer for the auto refresh in seconds.</string>
-    <string name="error_authentication_basicauth">IMPORTANT: Please check if your Domoticz system uses Login Page as the authentication method. Basic Auth is going to be removed from Domoticz from next update!</string>
-    <string name="category_other">Other</string>
-    <string name="tasker_title">Setup automation rules with Tasker for Domoticz</string>
+    <string name="filter_all">Tutti</string>
+    <string name="filter_normal">Normale</string>
+    <string name="filter_status">Stato</string>
+    <string name="filter_error">Errore</string>
+    <string name="use_demo_setup">Utilizza dati demo</string>
+    <string name="auto_refresh_time">Timer di aggiornamento</string>
+    <string name="set_auto_refresh_time">Imposta un timer in secondi per l\'aggiornamento </string>
+    <string name="error_authentication_basicauth">IMPORTANTE: Si prega di verificare se il sistema Domoticz utilizza Login Page come metodo di autenticazione. Auth di base sta per essere rimosso da Domoticz dal prossimo aggiornamento!</string>
+    <string name="category_other">Altro</string>
+    <string name="tasker_title">Imposta regole di automazione con Tasker per Domoticz</string>
     <string name="category_tasker">Tasker</string>
-    <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
+    <string name="wizard_widgets_tasker">Imposta regole di automazione con Tasker per Domoticz</string>
+    <string name="background_location_warning">Questa app raccoglie i dati della posizione per abilitare i servizi di geofencing all\'interno di questa app, anche quando l\'app è chiusa o non è in uso.</string>
 </resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wifi_not_supported">Wifi wordt niet ondersteund op dit apparaat</string>
+    <string name="wifi_register">Maak een verbinding met een wifi access point</string>
+    <string name="wifi_found">Nieuw wifi access point gevonden</string>
+    <string name="wifi_edit">Wifi access point verbinding aanpassen</string>
+    <string name="wifi_name">Geef deze Wifi Access Point een naam. </string>
+    <string name="wifi_desc">Controleer de lijst van gekoppelde wifi access points. </string>
+    <string name="wifi_exists">Deze wifi access point is al geconfigureerd op Domoticz. </string>
+    <string name="wifi_turned_off">Wifi moet worden ingeschakeld in uw telefoon instellingen. </string>
+    <string name="wifi_saved">Er is een nieuwe wifi access point opgeslagen</string>
+    <string name="wifi_settings">Configureer wifi access point verbindingen</string>
+    <string name="enable_wifi">Inschakelen van de wifi functionaliteit</string>
+    <string name="wifi_disabled">Wifi automatisering uitgeschakeld, controleer uw instellingen.</string>
+    <string name="noSwitchSelected_explanation_wifi">Er moet eerst een schakelaar worden gekoppeld aan deze wifi access point.</string>
+    <string name="title_notification_wifi">Notificaties activeren</string>
+    <string name="description_notification_wifi">Toon een melding wanneer u een verbinding maakt of een verbinding verliest met een wifi access point.</string>
+    <string name="wifi_connected_to">"Verbonden met %1$s"</string>
+    <string name="wifi_disconnected_to">Verbinding verbroken met %1$s</string>
+    <string name="wifi_connected_to_text">Verbonden met een van de geregistreerde wifi access points.</string>
+    <string name="wifi_disconnected_to_text">Verbinding met een van de geregistreerde wifi access points verbroken.</string>
+</resources>

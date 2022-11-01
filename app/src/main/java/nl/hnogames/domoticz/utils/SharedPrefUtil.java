@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.BeaconInfo;
 import nl.hnogames.domoticz.containers.BluetoothInfo;
@@ -59,6 +60,7 @@ import nl.hnogames.domoticz.containers.NFCInfo;
 import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.containers.QRCodeInfo;
 import nl.hnogames.domoticz.containers.SpeechInfo;
+import nl.hnogames.domoticz.containers.WifiInfo;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticzapi.Containers.Language;
 import nl.hnogames.domoticzapi.Containers.ServerUpdateInfo;
@@ -69,15 +71,19 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 public class SharedPrefUtil {
     private static final String PREF_ADS_COUNTER = "adsCounter";
 
+    private static final String PREF_DASHBOARD_LIST = "dashboardAsList2";
     private static final int NR_OF_HISTORY = 100;
     private static final String PREF_MULTI_SERVER = "enableMultiServers";
     private static final String PREF_STARTUP_PROTECTION_ENABLED = "enableSecurity";
     private static final String PREF_CUSTOM_WEAR = "enableWearItems";
+    private static final String PREF_CUSTOM_AUTOLIST = "enableAutoItems";
     private static final String PREF_CUSTOM_AUTO = "enableAutoNotifications";
     private static final String PREF_ENABLE_NFC = "enableNFC";
     private static final String PREF_ENABLE_Bluetooth = "enableBluetooth";
+    private static final String PREF_ENABLE_WIFI = "enableWifi";
     private static final String PREF_ENABLE_BEACON = "enableBeacon";
     private static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
+    private static final String PREF_CUSTOM_AUTO_ITEMS = "autolistItems";
     private static final String PREF_ALWAYS_ON = "alwayson";
     private static final String PREF_AUTO_REFRESH = "autorefresh";
     private static final String PREF_AUTO_REFRESH_TIMER = "autorefreshTimer";
@@ -86,18 +92,21 @@ public class SharedPrefUtil {
     private static final String PREF_DISPLAY_LANGUAGE = "displayLanguage";
     private static final String PREF_SAVED_LANGUAGE = "savedLanguage";
     private static final String PREF_SAVED_LANGUAGE_DATE = "savedLanguageDate";
-    private static final String PREF_EXTRA_DATA = "extradata";
     private static final String PREF_STARTUP_SCREEN = "startup_nav";
     private static final String PREF_TASK_SCHEDULED = "task_scheduled";
     private static final String PREF_NAVIGATION_ITEMS = "show_nav_items";
     private static final String PREF_NFC_TAGS = "nfc_tags";
     private static final String PREF_BLUETOOTH = "bluetooth";
+    private static final String PREF_WIFI = "wifi";
+    private static final String PREF_LAST_WIFI = "lastWifiConnection";
     private static final String PREF_BEACON = "beacon";
     private static final String PREF_QR_CODES = "qr_codes";
     private static final String PREF_SPEECH_COMMANDS = "speech_commands";
     private static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
     private static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
     private static final String PREF_GEOFENCE_NOTIFICATIONS_ENABLED = "geofence_notifications_enabled";
+    private static final String PREF_BLUETOOTH_NOTIFICATIONS_ENABLED = "bluetooth_notifications_enabled";
+    private static final String PREF_WIFI_NOTIFICATIONS_ENABLED = "wifi_notifications_enabled";
     private static final String PREF_BEACON_NOTIFICATIONS_ENABLED = "beacon_notifications_enabled";
     private static final String PREF_SPEECH_ENABLED = "enableSpeech";
     private static final String PREF_QRCODE_ENABLED = "enableQRCode";
@@ -121,7 +130,9 @@ public class SharedPrefUtil {
     private static final String PREF_WIDGET_ENABLED = "enableWidgets";
     private static final String PREF_SORT_LIST = "customSortList";
     private static final String PREF_DASHBOARD_CLOCK = "dashboardShowClock";
+    private static final String PREF_DASHBOARD_PLANS = "dashboardShowPlans";
     private static final String PREF_DASHBOARD_CAMERA = "dashboardShowCamera";
+    private static final String PREF_OLD_VERIONS_DIALOG_SHOWN = "oldVersion";
 
     private static final int DEFAULT_STARTUP_SCREEN = 1;
     private final String TAG = "Shared Pref util";
@@ -130,9 +141,6 @@ public class SharedPrefUtil {
     @SuppressWarnings("FieldCanBeLocal")
     private final String PREF_LOCK_SORT_CUSTOM = "lockSortCustom";
     @SuppressWarnings("FieldCanBeLocal")
-    private final String PREF_SWITCH_BUTTONS = "switchButtons";
-    @SuppressWarnings("FieldCanBeLocal")
-    private final String PREF_DASHBOARD_LIST = "dashboardAsList";
     private final Context mContext;
     private final SharedPreferences prefs;
     private final SharedPreferences.Editor editor;
@@ -146,8 +154,8 @@ public class SharedPrefUtil {
         gson = new Gson();
     }
 
-    public boolean showDashboardAsList() {
-        return prefs.getBoolean(PREF_DASHBOARD_LIST, true);
+    public boolean addPlansToDashboard() {
+        return prefs.getBoolean(PREF_DASHBOARD_PLANS, true);
     }
 
     public boolean addClockToDashboard() {
@@ -158,8 +166,8 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_DASHBOARD_CAMERA, false);
     }
 
-    public boolean showSwitchesAsButtons() {
-        return prefs.getBoolean(PREF_SWITCH_BUTTONS, false);
+    public boolean showDashboardAsList() {
+        return prefs.getBoolean(PREF_DASHBOARD_LIST, false);
     }
 
     public int getAdsCounter() {
@@ -168,6 +176,18 @@ public class SharedPrefUtil {
 
     public void setAdsCounter(int id) {
         editor.putInt(PREF_ADS_COUNTER, id).apply();
+        editor.commit();
+    }
+
+    public boolean showOldVersionDialog() {
+        if (BuildConfig.NEW_VERSION)
+            return false;
+
+        return prefs.getBoolean(PREF_OLD_VERIONS_DIALOG_SHOWN, true);
+    }
+
+    public void OldVersionDialogShown() {
+        editor.putBoolean(PREF_OLD_VERIONS_DIALOG_SHOWN, false).apply();
         editor.commit();
     }
 
@@ -670,7 +690,6 @@ public class SharedPrefUtil {
         editor.putStringSet(PREF_RECEIVED_NOTIFICATIONS, null).apply();
     }
 
-
     public void removeWizard() {
         // 1 if start up screen is 0 (wizard) change to dashboard
         if (getStartupScreenIndex() == 0) setStartupScreenIndex(DEFAULT_STARTUP_SCREEN);
@@ -767,6 +786,21 @@ public class SharedPrefUtil {
 
     public String getStartupScreen() {
         return prefs.getString(PREF_STARTUP_SCREEN, null);
+    }
+
+    public String[] getAutoSwitches() {
+        if (!prefs.contains(PREF_CUSTOM_AUTO_ITEMS)) return null;
+        Set<String> selections = prefs.getStringSet(PREF_CUSTOM_AUTO_ITEMS, null);
+        if (selections != null) {
+            String[] selectionValues = new String[selections.size()];
+
+            int i = 0;
+            for (String s : selections) {
+                selectionValues[i] = s;
+                i++;
+            }
+            return selectionValues;
+        } else return null;
     }
 
     public String[] getWearSwitches() {
@@ -895,12 +929,12 @@ public class SharedPrefUtil {
         editor.putBoolean(PREF_ADVANCED_SETTINGS_ENABLED, enabled).apply();
     }
 
-    public boolean showExtraData() {
-        return prefs.getBoolean(PREF_EXTRA_DATA, true);
-    }
-
     public boolean showCustomWear() {
         return prefs.getBoolean(PREF_CUSTOM_WEAR, false);
+    }
+
+    public boolean showCustomAndroidAuto() {
+        return prefs.getBoolean(PREF_CUSTOM_AUTOLIST, false);
     }
 
     public boolean showAutoNotifications() {
@@ -913,6 +947,10 @@ public class SharedPrefUtil {
 
     public boolean isBluetoothEnabled() {
         return prefs.getBoolean(PREF_ENABLE_Bluetooth, false);
+    }
+
+    public boolean isWifiEnabled() {
+        return prefs.getBoolean(PREF_ENABLE_WIFI, false);
     }
 
     public boolean isBeaconEnabled() {
@@ -959,6 +997,24 @@ public class SharedPrefUtil {
         editor.commit();
     }
 
+    public boolean isBluetoothNotificationsEnabled() {
+        return prefs.getBoolean(PREF_BLUETOOTH_NOTIFICATIONS_ENABLED, false);
+    }
+
+    public void setBluetoothNotificationsEnabled(boolean enabled) {
+        editor.putBoolean(PREF_BLUETOOTH_NOTIFICATIONS_ENABLED, enabled).apply();
+        editor.commit();
+    }
+
+    public boolean isWifiNotificationsEnabled() {
+        return prefs.getBoolean(PREF_WIFI_NOTIFICATIONS_ENABLED, false);
+    }
+
+    public void setWifiNotificationsEnabled(boolean enabled) {
+        editor.putBoolean(PREF_WIFI_NOTIFICATIONS_ENABLED, enabled).apply();
+        editor.commit();
+    }
+
     public boolean isBeaconNotificationsEnabled() {
         return prefs.getBoolean(PREF_BEACON_NOTIFICATIONS_ENABLED, false);
     }
@@ -1002,6 +1058,39 @@ public class SharedPrefUtil {
         } else
             return null;
 
+        return oReturnValue;
+    }
+
+    public void saveWifiList(List<WifiInfo> list) {
+        editor.putString(PREF_WIFI, gson.toJson(list));
+        editor.commit();
+    }
+
+    public void saveLastWifi(WifiInfo wifi) {
+        editor.putString(PREF_LAST_WIFI, gson.toJson(wifi));
+        editor.commit();
+    }
+
+    public WifiInfo getLastWifi() {
+        List<WifiInfo> Wifis;
+        if (prefs.contains(PREF_LAST_WIFI)) {
+            String jsonWifi = prefs.getString(PREF_LAST_WIFI, null);
+            return gson.fromJson(jsonWifi, WifiInfo.class);
+        } else
+            return null;
+    }
+
+    public ArrayList<WifiInfo> getWifiList() {
+        ArrayList<WifiInfo> oReturnValue;
+        List<WifiInfo> Wifis;
+        if (prefs.contains(PREF_WIFI)) {
+            String jsonWifis = prefs.getString(PREF_WIFI, null);
+            WifiInfo[] item = gson.fromJson(jsonWifis,
+                    WifiInfo[].class);
+            Wifis = Arrays.asList(item);
+            oReturnValue = new ArrayList<>(Wifis);
+        } else
+            return null;
         return oReturnValue;
     }
 

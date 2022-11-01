@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -22,7 +23,10 @@
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="premium_category">Buy premium!</string>
     <string name="premium_title">Get the premium version!</string>
+    <string name="restore_title">Restore subscriptions</string>
     <string name="premium_feature">is a premium feature, please buy the paid version to support the developers!</string>
+    <string name="old_version">Get the latest version!</string>
+    <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="msg_please_wait">Vă rugăm aşteptaţi&#8230;</string>
@@ -113,6 +117,7 @@
     <string name="filterOn_all">All devices</string>
     <string name="filter">Filter</string>
     <string name="filter_devices">Filter devices</string>
+    <string name="filter_range">Set range</string>
     <string name="filter_graph_empty">Please specify a filter</string>
     <string name="choose_color">Choose color</string>
     <string name="no_data_on_domoticz">No data on Domoticz server</string>
@@ -138,4 +143,5 @@
     <string name="tasker_title">Setup automation rules with Tasker for Domoticz</string>
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
+    <string name="background_location_warning">This app collects location data to enable for geofencing services within this app, even when the app is closed or not in use.</string>
 </resources>

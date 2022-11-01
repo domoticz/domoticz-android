@@ -32,7 +32,7 @@ import java.util.TimerTask;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
-import nl.hnogames.domoticz.fragments.Dashboard;
+import nl.hnogames.domoticz.fragments.Plan;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -40,7 +40,7 @@ import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 
 public class PlanActivity extends AppCompatAssistActivity {
     private Timer autoRefreshTimer = null;
-    private Dashboard dash;
+    private Plan dash;
     private SharedPrefUtil mSharedPrefs;
     private Toolbar toolbar;
 
@@ -91,7 +91,7 @@ public class PlanActivity extends AppCompatAssistActivity {
             int selectedPlanID = bundle.getInt("PLANID");
             this.setTitle(selectedPlan);
 
-            dash = new Dashboard();
+            dash = new Plan();
             dash.selectedPlan(selectedPlanID, selectedPlan);
             if (getSupportActionBar() != null)
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);

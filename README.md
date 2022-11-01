@@ -128,10 +128,23 @@ Toggle switches with your Android Wear device!
 All Android Wear devices are supported.  
 ![wear](https://cloud.githubusercontent.com/assets/14561640/11994714/ae6705ba-aa43-11e5-8e0c-5586607cdc6d.png)
 
+
+
 # Android Auto
 -----
-Toggle switches directly in Android Auto
+Work in progress >> Toggle switches directly in Android Auto
+This is not available in the play store!!
 ![android-auto](https://user-images.githubusercontent.com/48728684/100537622-38545c00-322a-11eb-8f36-1fe481f1d3b0.png)
+
+
+
+# Donation
+
+If you like to support the Domoticz apps, you could always buy me a cup of coffee!   
+(Thanks!)  
+[![PayPal donate button](https://img.shields.io/badge/paypal-donate-yellow.svg)](https://www.paypal.me/markheinis)
+
+
 
 # Credits
 -----

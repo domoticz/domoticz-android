@@ -45,6 +45,7 @@
     <string name="category_account">Accounts</string>
     <string name="category_QRCode">QR Code</string>
     <string name="category_bluetooth">Bluetooth</string>
+    <string name="category_wifi">Wifi</string>
     <string name="category_Speech">Speech</string>
     <string name="category_Reset">Reset</string>
 
@@ -82,6 +83,9 @@
     <string name="dashboard_clock">Clock</string>
     <string name="show_dashboard_clock">Show a clock on the dashboard</string>
 
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
+
     <string name="dashboard_camera">Camera</string>
     <string name="show_dashboard_camera">Load the camera for connected switches</string>
 
@@ -95,6 +99,11 @@
     <!--        Auto settings       -->
     <string name="auto_custom_on">Enable Android Auto Notifications</string>
     <string name="auto_custom_off">Disable Android Auto Notifications</string>
+    <string name="enable_autolist_select">Android Auto custom items</string>
+    <string name="custom_autolist_select">Select Android Auto switches</string>
+    <string name="custom_autolist_select_desc">Select which switches you like to see on your Android Auto device</string>
+    <string name="autolist_custom_on">Enable Android Auto custom items</string>
+    <string name="autolist_custom_off">Disable Android Auto custom items</string>
 
     <!--        Geofencing settings -->
     <string name="geofencing_configure">Configure Geofencing</string>

@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -22,7 +23,10 @@
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="premium_category">Køb premium!</string>
     <string name="premium_title">Køb premium udgaven!</string>
+    <string name="restore_title">Restore subscriptions</string>
     <string name="premium_feature">er en premium funktion, venligst køb den betalte version for at støtte udviklerne!</string>
+    <string name="old_version">Get the latest version!</string>
+    <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
     <string name="drawer_open">Åbn navigationsliste</string>
     <string name="drawer_close">Luk navigationsliste</string>
     <string name="msg_please_wait">Vent venligst&#8230;</string>
@@ -113,6 +117,7 @@
     <string name="filterOn_all">Alle enheder</string>
     <string name="filter">Filter</string>
     <string name="filter_devices">Filtrer enheder</string>
+    <string name="filter_range">Set range</string>
     <string name="filter_graph_empty">Angiv et filter</string>
     <string name="choose_color">Vælg farve</string>
     <string name="no_data_on_domoticz">Ingen data på Domoticz server</string>
@@ -138,4 +143,5 @@
     <string name="tasker_title">Setup automation rules with Tasker for Domoticz</string>
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
+    <string name="background_location_warning">This app collects location data to enable for geofencing services within this app, even when the app is closed or not in use.</string>
 </resources>

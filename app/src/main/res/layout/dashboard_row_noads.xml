@@ -25,252 +25,114 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical"
-    android:paddingStart="8dp"
-    android:paddingTop="4dp"
-    android:paddingEnd="8dp"
-    android:paddingBottom="4dp"
-    app:cardCornerRadius="5dp"
+    app:cardCornerRadius="30dp"
     app:cardElevation="1dp">
 
     <RelativeLayout
         android:id="@+id/contentWrapper"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/dummyImg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
             android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:tint="?attr/listviewRowTintBackground"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
             android:tintMode="src_atop"
-            android:visibility="gone" />
+            app:tint="?attr/listviewRowTintBackground" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingTop="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp">
 
             <LinearLayout
                 android:id="@+id/row_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/listviewRowBackground"
-                android:orientation="horizontal"
-                android:padding="8dp">
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <ImageView
-                        android:id="@+id/rowIcon"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="10dp"
-                        android:contentDescription="@string/error_image_description"
-                        android:src="@drawable/clock48" />
-
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-
-                        <LinearLayout
-                            android:id="@+id/clockLayoutWrapper"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:visibility="gone">
-
-                            <LinearLayout
-                                android:id="@+id/sunriseLayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                android:visibility="gone">
-
-                                <TextView
-                                    style="@style/row_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:paddingLeft="0dp"
-                                    android:text="@string/sunrise" />
-
-                                <rm.com.clocks.ClockImageView
-                                    android:id="@+id/sunrise"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:layout_gravity="center"
-                                    android:foregroundGravity="center"
-                                    android:gravity="center"
-                                    app:clockColor="?attr/highlightColor"
-                                    app:frameWidth="thin"
-                                    app:hours="16"
-                                    app:indeterminateSpeed="2"
-                                    app:minutes="20"
-                                    app:pointerWidth="thin"
-                                    app:timeSetDuration="400" />
-
-                                <TextView
-                                    android:id="@+id/sunriseText"
-                                    style="@style/row_body1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:paddingLeft="0dp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/clockLayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                android:visibility="gone">
-
-                                <TextView
-                                    style="@style/row_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:paddingLeft="0dp"
-                                    android:text="@string/now" />
-
-                                <rm.com.clocks.ClockImageView
-                                    android:id="@+id/clock"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:layout_gravity="center"
-                                    android:foregroundGravity="center"
-                                    android:gravity="center"
-                                    app:clockColor="?attr/highlightColor"
-                                    app:frameWidth="thin"
-                                    app:hours="16"
-                                    app:indeterminateSpeed="2"
-                                    app:minutes="20"
-                                    app:pointerWidth="thin"
-                                    app:timeSetDuration="400" />
-
-                                <TextView
-                                    android:id="@+id/clockText"
-                                    style="@style/row_body1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:paddingLeft="0dp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/sunsetLayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                android:visibility="gone">
-
-                                <TextView
-                                    style="@style/row_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:paddingLeft="0dp"
-                                    android:text="@string/sunset" />
-
-                                <rm.com.clocks.ClockImageView
-                                    android:id="@+id/sunset"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:layout_gravity="center"
-                                    android:foregroundGravity="center"
-                                    android:gravity="center"
-                                    app:clockColor="?attr/highlightColor"
-                                    app:frameWidth="thin"
-                                    app:hours="16"
-                                    app:indeterminateSpeed="2"
-                                    app:minutes="20"
-                                    app:pointerWidth="thin"
-                                    app:timeSetDuration="400" />
-
-                                <TextView
-                                    android:id="@+id/sunsetText"
-                                    style="@style/row_body1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:paddingLeft="0dp" />
-                            </LinearLayout>
-
-                        </LinearLayout>
 
                         <RelativeLayout
                             android:id="@+id/details"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:foregroundGravity="center_vertical"
+                            android:gravity="center_vertical"
                             android:orientation="vertical">
 
                             <LinearLayout
                                 android:id="@+id/textwrapper"
                                 android:layout_width="match_parent"
+                                android:layout_marginLeft="48dp"
                                 android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:gravity="center_horizontal"
-                                android:orientation="vertical">
+                                android:foregroundGravity="center_vertical"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
 
-                                <TextView
-                                    android:id="@+id/switch_name"
-                                    style="@style/row_name"
-                                    android:layout_width="wrap_content"
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:gravity="center_horizontal"
-                                    android:maxLines="2"
-                                    android:paddingBottom="7dp" />
+                                    android:foregroundGravity="center_vertical"
+                                    android:gravity="center_vertical"
+                                    android:orientation="vertical">
 
-                                <TextView
-                                    android:id="@+id/switch_battery_level"
-                                    style="@style/row_body1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="-10dp"
-                                    android:gravity="center_horizontal"
-                                    android:text="@string/battery_level" />
+                                    <TextView
+                                        android:id="@+id/switch_name"
+                                        style="@style/row_name"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="-8dp"
+                                        android:layout_marginTop="-10dp"
+                                        android:ellipsize="end"
+                                        android:maxLines="2"
+                                        android:text="Name" />
+
+                                    <TextView
+                                        android:id="@+id/switch_battery_level"
+                                        style="@style/row_body1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="-8dp"
+                                        android:layout_marginTop="-8dp"
+                                        android:maxLines="3"
+                                        android:text="@string/battery_level" />
+                                </LinearLayout>
                             </LinearLayout>
 
                             <LinearLayout
                                 android:id="@+id/linearLayout4ttt"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/textwrapper"
-                                android:layout_centerHorizontal="true"
-                                android:gravity="center_horizontal"
-                                android:orientation="horizontal"
-                                android:paddingBottom="5dp">
+                                android:layout_gravity="right"
+                                android:foregroundGravity="right"
+                                android:gravity="right"
+                                android:orientation="horizontal">
 
                                 <az.plainpie.PieView
                                     android:id="@+id/pieView"
                                     android:layout_width="60dp"
                                     android:layout_height="60dp"
+                                    android:layout_gravity="right"
                                     android:layout_marginTop="7dp"
+                                    android:foregroundGravity="right"
+                                    android:gravity="right"
                                     plainpie:inner_pie_padding="5"
                                     plainpie:inner_text_visibility="true"
                                     plainpie:percentage="50"
@@ -280,8 +142,9 @@
                                     android:id="@+id/switch_button"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
+                                    android:layout_gravity="right"
+                                    android:foregroundGravity="right"
+                                    android:gravity="right"
                                     app:useMaterialThemeColors="false" />
 
                                 <com.google.android.material.button.MaterialButton
@@ -289,11 +152,12 @@
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                     android:layout_width="60dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_weight="1"
+                                    android:layout_gravity="right"
+                                    android:foregroundGravity="right"
                                     android:text="@string/button_state_on"
                                     android:textColor="?attr/buttonTextColor"
-
                                     android:textSize="10dp" />
 
                                 <com.google.android.material.button.MaterialButton
@@ -301,8 +165,10 @@
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                     android:layout_width="60dp"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
                                     android:layout_marginLeft="7dp"
                                     android:layout_weight="1"
+                                    android:foregroundGravity="right"
                                     android:text="@string/button_state_off"
                                     android:textColor="?attr/buttonTextColor"
                                     android:textSize="10dp" />
@@ -312,9 +178,8 @@
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                     android:layout_width="56dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
                                     android:layout_gravity="right"
+                                    android:foregroundGravity="right"
                                     android:text="@string/set_temperature"
                                     android:textColor="?attr/buttonTextColor"
                                     android:textSize="10dp" />
@@ -323,59 +188,67 @@
                                     android:id="@+id/switch_button_up"
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
+                                    android:layout_gravity="right"
                                     android:layout_margin="7dp"
                                     android:layout_marginTop="10dp"
+                                    android:foregroundGravity="right"
+                                    android:gravity="right"
                                     android:src="@drawable/baseline_keyboard_arrow_up_black_24"
-                                    android:tint="@color/primary" />
+                                    app:tint="@color/primary" />
 
                                 <ImageView
                                     android:id="@+id/switch_button_stop"
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
+                                    android:layout_gravity="right"
                                     android:layout_margin="7dp"
                                     android:layout_marginTop="10dp"
+                                    android:foregroundGravity="right"
+                                    android:gravity="right"
                                     android:src="@drawable/baseline_stop_black_24"
-                                    android:tint="@color/primary" />
+                                    app:tint="@color/primary" />
 
                                 <ImageView
                                     android:id="@+id/switch_button_down"
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
+                                    android:layout_gravity="right"
                                     android:layout_margin="7dp"
                                     android:layout_marginTop="10dp"
+                                    android:foregroundGravity="right"
                                     android:src="@drawable/baseline_keyboard_arrow_down_black_24"
-                                    android:tint="@color/primary" />
+                                    app:tint="@color/primary" />
                             </LinearLayout>
 
                             <LinearLayout
                                 android:id="@+id/linearLayout444"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/linearLayout4ttt"
-                                android:layout_centerHorizontal="true"
-                                android:gravity="center_horizontal"
-                                android:orientation="vertical"
-                                android:paddingBottom="10dp">
+                                android:orientation="vertical">
 
                                 <com.google.android.material.slider.Slider
                                     android:id="@+id/switch_dimmer"
                                     android:layout_width="129dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="bottom"
+                                    android:layout_gravity="right|bottom"
+                                    android:foregroundGravity="right"
                                     android:minWidth="150dp" />
 
                                 <Spinner
                                     android:id="@+id/spSelector"
                                     android:layout_width="129dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="bottom"
+                                    android:layout_gravity="right|bottom"
+                                    android:foregroundGravity="right"
                                     android:minWidth="150dp" />
 
                                 <com.google.android.material.switchmaterial.SwitchMaterial
                                     android:id="@+id/switch_dimmer_switch"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="right"
+                                    android:layout_gravity="right|bottom"
+                                    android:foregroundGravity="right"
                                     app:useMaterialThemeColors="false" />
 
                                 <com.google.android.material.button.MaterialButton
@@ -383,11 +256,10 @@
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_gravity="right"
+                                    android:layout_gravity="right|bottom"
                                     android:layout_marginTop="5dp"
                                     android:layout_marginBottom="5dp"
+                                    android:foregroundGravity="right"
                                     android:text="@string/button_color"
                                     android:textColor="?attr/buttonTextColor"
                                     android:textSize="10dp" />
@@ -406,12 +278,25 @@
                         android:gravity="end"
                         android:text="@string/signal_level"
                         android:textSize="8sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic"
+                        android:visibility="gone" />
+
+                    <include
+                        layout="@layout/log_timer_button_row_default"
+                        android:visibility="gone" />
                 </LinearLayout>
             </LinearLayout>
-
-            <include layout="@layout/log_timer_button_row_default" />
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/rowIcon"
+            android:layout_width="30dp"
+            android:layout_height="42dp"
+            android:contentDescription="@string/error_image_description"
+            android:layout_marginLeft="16dp"
+            android:paddingTop="12dp"
+            android:src="@drawable/clock48"
+            app:tint="?attr/colorAccent" />
 
         <ImageView
             android:id="@+id/full_screen_icon"
@@ -422,7 +307,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:src="@drawable/baseline_fullscreen_white_24"
-            android:tint="@color/md_grey_300" />
+            app:tint="@color/md_grey_300" />
 
         <ImageView
             android:id="@+id/widget_info_icon"
@@ -430,9 +315,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:visibility="gone"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:src="@drawable/outline_info_black_18"
-            android:tint="@color/md_grey_300" />
+            app:tint="@color/md_grey_300" />
     </RelativeLayout>
+
 </com.google.android.material.card.MaterialCardView>

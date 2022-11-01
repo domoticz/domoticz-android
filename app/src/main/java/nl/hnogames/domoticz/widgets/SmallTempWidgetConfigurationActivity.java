@@ -27,8 +27,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -43,10 +41,10 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.MenuItemCompat;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.adapters.TemperatureWidgetAdapter;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.ui.PasswordDialog;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -129,49 +127,38 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
 
                     ListView listView = findViewById(R.id.list);
                     adapter = new TemperatureWidgetAdapter(SmallTempWidgetConfigurationActivity.this, StaticHelper.getDomoticz(SmallTempWidgetConfigurationActivity.this), StaticHelper.getDomoticz(SmallTempWidgetConfigurationActivity.this).getServerUtil(), mNewDevicesInfo);
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    listView.setOnItemClickListener((parent, view, position, id) -> {
 
-                            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
-                                UsefulBits.showSnackbarWithAction(SmallTempWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG, null, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        UsefulBits.openPremiumAppStore(SmallTempWidgetConfigurationActivity.this);
-                                    }
-                                }, getString(R.string.upgrade));
-                                return;
-                            }
+                        if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
+                            UsefulBits.showSnackbarWithAction(SmallTempWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG, null,
+                                    v -> UsefulBits.openPremiumAppStore(SmallTempWidgetConfigurationActivity.this, IsPremiumEnabled -> recreate()), getString(R.string.upgrade));
+                            return;
+                        }
 
-                            if (!mSharedPrefs.IsWidgetsEnabled()) {
-                                UsefulBits.showSnackbarWithAction(SmallTempWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.widget_disabled), Snackbar.LENGTH_LONG, null, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        startActivityForResult(new Intent(SmallTempWidgetConfigurationActivity.this, SettingsActivity.class), 888);
-                                    }
-                                }, getString(R.string.action_settings));
-                                return;
-                            }
+                        if (!mSharedPrefs.IsWidgetsEnabled()) {
+                            UsefulBits.showSnackbarWithAction(SmallTempWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.widget_disabled), Snackbar.LENGTH_LONG, null,
+                                    v -> startActivityForResult(new Intent(SmallTempWidgetConfigurationActivity.this, SettingsActivity.class), 888), getString(R.string.action_settings));
+                            return;
+                        }
 
-                            final TemperatureInfo mDeviceInfo = (TemperatureInfo) adapter.getItem(position);
+                        final TemperatureInfo mDeviceInfo = (TemperatureInfo) adapter.getItem(position);
 
-                            if (mDeviceInfo.isProtected()) {
-                                PasswordDialog passwordDialog = new PasswordDialog(
-                                        SmallTempWidgetConfigurationActivity.this, StaticHelper.getDomoticz(SmallTempWidgetConfigurationActivity.this));
-                                passwordDialog.show();
-                                passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
-                                    @Override
-                                    public void onDismiss(String password) {
-                                        getBackground(mDeviceInfo, password, null);
-                                    }
+                        if (mDeviceInfo.isProtected()) {
+                            PasswordDialog passwordDialog = new PasswordDialog(
+                                    SmallTempWidgetConfigurationActivity.this, StaticHelper.getDomoticz(SmallTempWidgetConfigurationActivity.this));
+                            passwordDialog.show();
+                            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                                @Override
+                                public void onDismiss(String password) {
+                                    getBackground(mDeviceInfo, password, null);
+                                }
 
-                                    @Override
-                                    public void onCancel() {
-                                    }
-                                });
-                            } else {
-                                getBackground(mDeviceInfo, null, null);
-                            }
+                                @Override
+                                public void onCancel() {
+                                }
+                            });
+                        } else {
+                            getBackground(mDeviceInfo, null, null);
                         }
                     });
                     listView.setAdapter(adapter);
@@ -209,12 +196,9 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
         new MaterialDialog.Builder(this)
                 .title(this.getString(R.string.widget_background))
                 .items(new String[]{this.getString(R.string.widget_dark), this.getString(R.string.widget_light), this.getString(R.string.widget_transparent_dark), this.getString(R.string.widget_transparent_light)})
-                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        showAppWidget(mSelectedTemperatureInfo, password, value, getWidgetLayout(String.valueOf(text)));
-                        return true;
-                    }
+                .itemsCallbackSingleChoice(-1, (dialog, view, which, text) -> {
+                    showAppWidget(mSelectedTemperatureInfo, password, value, getWidgetLayout(String.valueOf(text)));
+                    return true;
                 })
                 .positiveText(R.string.ok)
                 .show();

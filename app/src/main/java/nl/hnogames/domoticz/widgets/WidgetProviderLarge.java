@@ -77,16 +77,19 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                 WidgetProviderLarge.class);
         int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
 
-        if (allWidgetIds != null) {
-            for (int mAppWidgetId : allWidgetIds) {
-                Intent intent = new Intent(context, UpdateWidgetService.class);
-                intent.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
-                intent.setAction("FROM WIDGET PROVIDER");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    context.startForegroundService(intent);
-                } else
-                    context.startService(intent);
+        try {
+            if (allWidgetIds != null) {
+                for (int mAppWidgetId : allWidgetIds) {
+                    Intent intent = new Intent(context, UpdateWidgetService.class);
+                    intent.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
+                    intent.setAction("FROM WIDGET PROVIDER");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context.startForegroundService(intent);
+                    } else
+                        context.startService(intent);
+                }
             }
+        } catch (Exception ex) {
         }
     }
 
@@ -324,21 +327,21 @@ public class WidgetProviderLarge extends AppWidgetProvider {
 
             if (toggle)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    return PendingIntent.getForegroundService(context, widget_id, intent, 0);
+                    return PendingIntent.getForegroundService(context, widget_id, intent, PendingIntent.FLAG_IMMUTABLE);
                 } else {
-                    return PendingIntent.getService(context, widget_id, intent, 0);
+                    return PendingIntent.getService(context, widget_id, intent, PendingIntent.FLAG_IMMUTABLE);
                 }
             else if (action)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    return PendingIntent.getForegroundService(context, widget_id + 8888, intent, 0);
+                    return PendingIntent.getForegroundService(context, widget_id + 8888, intent, PendingIntent.FLAG_IMMUTABLE);
                 } else {
-                    return PendingIntent.getService(context, widget_id + 8888, intent, 0);
+                    return PendingIntent.getService(context, widget_id + 8888, intent, PendingIntent.FLAG_IMMUTABLE);
                 }
             else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    return PendingIntent.getForegroundService(context, widget_id + 9999, intent, 0);
+                    return PendingIntent.getForegroundService(context, widget_id + 9999, intent, PendingIntent.FLAG_IMMUTABLE);
                 } else {
-                    return PendingIntent.getService(context, widget_id + 9999, intent, 0);
+                    return PendingIntent.getService(context, widget_id + 9999, intent, PendingIntent.FLAG_IMMUTABLE);
                 }
             }
         }
@@ -367,9 +370,9 @@ public class WidgetProviderLarge extends AppWidgetProvider {
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                return PendingIntent.getForegroundService(context, requestCode, intent, 0);
+                return PendingIntent.getForegroundService(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE);
             } else {
-                return PendingIntent.getService(context, requestCode, intent, 0);
+                return PendingIntent.getService(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE);
             }
         }
 

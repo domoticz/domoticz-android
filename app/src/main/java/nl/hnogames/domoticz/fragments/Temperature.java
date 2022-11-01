@@ -37,15 +37,14 @@ import java.util.ArrayList;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.TemperatureAdapter;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
-import nl.hnogames.domoticz.helpers.RVHItemTouchHelperCallback;
+import nl.hnogames.domoticz.helpers.SimpleItemTouchHelperCallback;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
 import nl.hnogames.domoticz.interfaces.TemperatureClickListener;
@@ -75,7 +74,6 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     private LinearLayout lExtraPanel = null;
     private Animation animShow, animHide;
     private ArrayList<TemperatureInfo> mTempInfos;
-    private SlideInBottomAnimationAdapter alphaSlideIn;
     private ItemTouchHelper mItemTouchHelper;
 
     @Override
@@ -112,7 +110,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
             if (supportedSwitches == null || supportedSwitches.size() <= 0)
                 return supportedSwitches;
 
-            if (BuildConfig.LITE_VERSION || !mSharedPrefs.isAPKValidated()) {
+            if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                 ArrayList<TemperatureInfo> filteredList = new ArrayList<>();
                 for (TemperatureInfo d : supportedSwitches) {
                     if (d.getIdx() != MainActivity.ADS_IDX)
@@ -147,8 +145,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                         (UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
                         mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {
                     if (mItemTouchHelper == null) {
-                        mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                                false));
+                        mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter, false));
                     }
                     mItemTouchHelper.attachToRecyclerView(gridView);
                 } else {
@@ -190,16 +187,13 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         if (getView() != null) {
             if (adapter == null) {
                 adapter = new TemperatureAdapter(mContext, StaticHelper.getDomoticz(mContext), getServerUtil(), AddAdsDevice(mTemperatureInfos), this);
-                alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-                gridView.setAdapter(alphaSlideIn);
+                gridView.setAdapter(adapter);
             } else {
                 adapter.setData(AddAdsDevice(mTemperatureInfos));
                 adapter.notifyDataSetChanged();
-                alphaSlideIn.notifyDataSetChanged();
             }
             if (mItemTouchHelper == null) {
-                mItemTouchHelper = new ItemTouchHelper(new RVHItemTouchHelperCallback(adapter, true, false,
-                        false));
+                mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter, isTablet));
             }
             if ((UsefulBits.isEmpty(super.getSort()) || super.getSort().equals(mContext.getString(R.string.filterOn_all))) &&
                     mSharedPrefs.enableCustomSorting() && !mSharedPrefs.isCustomSortingLocked()) {

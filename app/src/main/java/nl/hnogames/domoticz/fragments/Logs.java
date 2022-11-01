@@ -31,7 +31,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.LogAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
@@ -48,7 +47,6 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     private LogAdapter adapter;
     private Context mContext;
     private String filter = "";
-    private SlideInBottomAnimationAdapter alphaSlideIn;
     private boolean itemDecorationAdded = false;
 
     @Override
@@ -121,12 +119,10 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
         if (getView() != null) {
             if (adapter == null) {
                 adapter = new LogAdapter(mContext, StaticHelper.getDomoticz(mContext), mLogInfos);
-                alphaSlideIn = new SlideInBottomAnimationAdapter(adapter);
-                gridView.setAdapter(alphaSlideIn);
+                gridView.setAdapter(adapter);
             } else {
                 adapter.setData(mLogInfos);
                 adapter.notifyDataSetChanged();
-                alphaSlideIn.notifyDataSetChanged();
             }
             if (!isTablet && !itemDecorationAdded) {
                 gridView.addItemDecoration(new MarginItemDecoration(20));
