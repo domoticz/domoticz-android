@@ -105,6 +105,7 @@ public class SharedPrefUtil {
     private static final String PREF_GEOFENCE_LOCATIONS = "geofence_locations";
     private static final String PREF_GEOFENCE_ENABLED = "geofence_enabled";
     private static final String PREF_GEOFENCE_NOTIFICATIONS_ENABLED = "geofence_notifications_enabled";
+    private static final String PREF_BLUETOOTH_NOTIFICATIONS_ENABLED = "bluetooth_notifications_enabled";
     private static final String PREF_WIFI_NOTIFICATIONS_ENABLED = "wifi_notifications_enabled";
     private static final String PREF_BEACON_NOTIFICATIONS_ENABLED = "beacon_notifications_enabled";
     private static final String PREF_SPEECH_ENABLED = "enableSpeech";
@@ -993,6 +994,15 @@ public class SharedPrefUtil {
 
     public void setGeofenceNotificationsEnabled(boolean enabled) {
         editor.putBoolean(PREF_GEOFENCE_NOTIFICATIONS_ENABLED, enabled).apply();
+        editor.commit();
+    }
+
+    public boolean isBluetoothNotificationsEnabled() {
+        return prefs.getBoolean(PREF_BLUETOOTH_NOTIFICATIONS_ENABLED, false);
+    }
+
+    public void setBluetoothNotificationsEnabled(boolean enabled) {
+        editor.putBoolean(PREF_BLUETOOTH_NOTIFICATIONS_ENABLED, enabled).apply();
         editor.commit();
     }
 

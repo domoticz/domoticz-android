@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
 
     def versionPropsFile = file('version.properties')
     if (versionPropsFile.canRead()) {
@@ -40,7 +40,7 @@ android {
             versionCode version_Code
             versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
             minSdkVersion 23
-            targetSdkVersion 31
+            targetSdkVersion 33
             multiDexEnabled true
             wearAppUnbundled true
         }
@@ -189,6 +189,7 @@ allprojects {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
+    implementation 'androidx.core:core:1.8.0'
     implementation "androidx.work:work-runtime:2.8.0-alpha02"
     implementation 'androidx.preference:preference:1.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -256,7 +257,7 @@ dependencies {
 
     implementation 'com.github.stfalcon:chatkit:0.3.3'
     implementation 'com.github.matthiasrobbers:shortbread:1.1.0'
-    implementation 'androidx.core:core:1.6.0'
+
     annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.1.0'
     implementation ('com.adevinta.android:leku:9.1.4') {
         exclude group: 'com.google.android.gms'

@@ -20,11 +20,8 @@ import com.google.android.libraries.car.app.model.Row;
 import com.google.android.libraries.car.app.model.Template;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.DefaultLifecycleObserver;
@@ -49,7 +46,9 @@ class AutoScreen extends Screen implements DefaultLifecycleObserver {
     ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();
     ListTemplate.Builder templateBuilder = ListTemplate.builder();
     boolean isFinishedLoading = false;
+    int x = 0;
     private SharedPrefUtil mSharedPrefs;
+    private ItemList.Builder itemlist;
 
     protected AutoScreen(@NonNull @NotNull CarContext carContext) {
         super(carContext);
@@ -82,10 +81,7 @@ class AutoScreen extends Screen implements DefaultLifecycleObserver {
         Log.d("android auto", "errorHandling: ", error);
     }
 
-    private ItemList.Builder itemlist;
-    int x = 0;
-    public void AddDeviceToList(DevicesInfo mDevicesInfo)
-    {
+    public void AddDeviceToList(DevicesInfo mDevicesInfo) {
         supportedSwitches.add(mDevicesInfo);
         CharSequence charSequence;
 
@@ -129,7 +125,7 @@ class AutoScreen extends Screen implements DefaultLifecycleObserver {
     public void getSwitch() {
         try {
             itemlist = ItemList.builder();
-            x=0;
+            x = 0;
             StaticHelper.getDomoticz(getCarContext()).getDevices(new DevicesReceiver() {
                 @Override
                 public void onReceiveDevices(ArrayList<DevicesInfo> switches) {

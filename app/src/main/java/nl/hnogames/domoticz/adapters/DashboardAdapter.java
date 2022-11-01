@@ -64,12 +64,12 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
-import github.nisrulz.recyclerviewhelper.RVHAdapter;
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
 import nl.hnogames.domoticz.ads.TemplateView;
+import nl.hnogames.domoticz.helpers.ItemMoveAdapter;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.switchesClickListener;
 import nl.hnogames.domoticz.utils.CameraUtil;
@@ -83,7 +83,7 @@ import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
-public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DataObjectHolder> implements RVHAdapter {
+public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DataObjectHolder> implements ItemMoveAdapter {
     public static final int ID_SCENE_SWITCH = 3000;
     public static List<String> mCustomSorting;
     private final int ID_SWITCH = 0;
@@ -108,7 +108,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public ArrayList<DevicesInfo> filteredData = null;
     private int previousDimmerValue;
     private boolean adLoaded = false;
-    private boolean showAsList;
+    private final boolean showAsList;
 
     public DashboardAdapter(Context context,
                             ServerUtil serverUtil,
@@ -407,7 +407,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                                    DataObjectHolder holder) {
         try {
             String text;
-            holder.switch_battery_level.setMaxLines(3);
             holder.isProtected = mDeviceInfo.isProtected();
             if (holder.switch_name != null) {
                 holder.switch_name.setText(mDeviceInfo.getName());
@@ -432,16 +431,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
             boolean setAlphaIcon = true;
             if (holder.switch_battery_level != null) {
-                text = context.getString(R.string.status)
-                        + ": "
-                        + mDeviceInfo.getData();
+                text = mDeviceInfo.getData().replace(" Watt", "W");
                 holder.switch_battery_level.setText(text);
                 if (mDeviceInfo.getUsage() != null && mDeviceInfo.getUsage().length() > 0) {
                     try {
                         setAlphaIcon = false;
-                        int usage = Integer.parseInt(mDeviceInfo.getUsage().replace("W", "").trim());
+                        int usage = Integer.parseInt(mDeviceInfo.getUsage().replace("Watt", "").trim());
                         if (mDeviceInfo.getUsageDeliv() != null && mDeviceInfo.getUsageDeliv().length() > 0) {
-                            int usagedel = Integer.parseInt(mDeviceInfo.getUsageDeliv().replace("W", "").trim());
+                            int usagedel = Integer.parseInt(mDeviceInfo.getUsageDeliv().replace("Watt", "").trim());
                             text = context.getString(R.string.usage) + ": " + (usage - usagedel) + "W";
                         } else {
                             text = context.getString(R.string.usage) + ": " + mDeviceInfo.getUsage().replace(" Watt", "W");
@@ -457,16 +454,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     setAlphaIcon = false;
                     holder.switch_battery_level.append("\n" + context.getString(R.string.today) + ": " + mDeviceInfo.getCounterToday());
                 }
-                if (mDeviceInfo.getCounter() != null && mDeviceInfo.getCounter().length() > 0 &&
-                        !mDeviceInfo.getCounter().equals(mDeviceInfo.getData()))
-                    holder.switch_battery_level.append("\n" + context.getString(R.string.total) + ": " + mDeviceInfo.getCounter());
 
                 if (mDeviceInfo.getCounterDelivToday() != null && mDeviceInfo.getCounterDelivToday().length() > 0) {
                     setAlphaIcon = false;
                     holder.switch_battery_level.append("\n" + context.getString(R.string.delivery) + ": " + mDeviceInfo.getCounterDelivToday());
-                    if (mDeviceInfo.getCounterDeliv() != null && mDeviceInfo.getCounterDeliv().length() > 0 &&
-                            !mDeviceInfo.getCounterDeliv().equals(mDeviceInfo.getData()))
-                        holder.switch_battery_level.append("\n" + context.getString(R.string.total) + ": " + mDeviceInfo.getCounterDeliv());
                 }
 
                 if (mDeviceInfo.getType() != null && mDeviceInfo.getType().length() > 0 &&
@@ -584,8 +575,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
-        text = context.getString(R.string.status) + ": " +
-                mDeviceInfo.getData();
+        text = mDeviceInfo.getData();
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
@@ -638,8 +628,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.signal_level.setText(text);
         }
         if (holder.switch_battery_level != null) {
-            text = context.getString(R.string.status) + ": " +
-                    mDeviceInfo.getData();
+            text = mDeviceInfo.getData();
             holder.switch_battery_level.setText(text);
         }
 
@@ -760,8 +749,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.signal_level.setText(text);
         }
 
-        text = context.getString(R.string.status) + ": " +
-                mDeviceInfo.getData();
+        text = mDeviceInfo.getData();
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
@@ -868,6 +856,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
                     .addTestDevice("6C2390A9FF8F555BD01BA560068CD366")
                     .addTestDevice("2C114D01992840EC6BF853D44CB96754")
+                    .addTestDevice("7ABE5FC9B0E902B7CF857CE3A57831AB")
                     .build();
 
             AdLoader adLoader = new AdLoader.Builder(context, context.getString(R.string.ad_unit_id))
@@ -1030,7 +1019,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.signal_level.setText(text);
         }
         if (holder.switch_battery_level != null) {
-            text = context.getString(R.string.status) + ": " + mDevicesInfo.getData();
+            text = mDevicesInfo.getData();
             holder.switch_battery_level.setText(text);
         }
 
@@ -1085,8 +1074,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (holder.signal_level != null)
             holder.signal_level.setText(text);
 
-        text = context.getString(R.string.status) + ": " +
-                mDeviceInfo.getData();
+        text = mDeviceInfo.getData();
         if (holder.switch_battery_level != null)
             holder.switch_battery_level.setText(text);
 
@@ -1152,8 +1140,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
 
         if (holder.switch_battery_level != null) {
-            text = context.getString(R.string.status) + ": " +
-                    mDeviceInfo.getData();
+            text = mDeviceInfo.getData();
             holder.switch_battery_level.setText(text);
         }
 
@@ -1245,8 +1232,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
 
         if (holder.switch_battery_level != null) {
-            text = context.getString(R.string.status) + ": " +
-                    mDeviceInfo.getStatus();
+            text = mDeviceInfo.getStatus();
             holder.switch_battery_level.setText(text);
         }
 
@@ -1320,8 +1306,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
 
         if (holder.switch_battery_level != null) {
-            text = context.getString(R.string.status) + ": " +
-                    mDeviceInfo.getStatus();
+            text = mDeviceInfo.getStatus();
             holder.switch_battery_level.setText(text);
         }
 
@@ -1437,8 +1422,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
 
         if (holder.switch_battery_level != null) {
-            text = context.getString(R.string.status) + ": " +
-                    mDeviceInfo.getStatus();
+            text = mDeviceInfo.getStatus();
             holder.switch_battery_level.setText(text);
         }
 
@@ -1538,8 +1522,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                         mDeviceInfo.getLastUpdateDateTime().getTime());
         holder.signal_level.setText(text);
 
-        text = context.getString(R.string.status) + ": " +
-                getStatus(stateArrayRes, stateNamesArrayRes, mDeviceInfo.getStatus());
+        text = getStatus(stateArrayRes, stateNamesArrayRes, mDeviceInfo.getStatus());
         holder.switch_battery_level.setText(text);
 
         if (holder.buttonSetStatus != null) {
@@ -1994,7 +1977,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.contentWrapper.setVisibility(View.VISIBLE);
                 //holder.signal_level.setVisibility(View.GONE);
                 holder.switch_battery_level.setVisibility(View.VISIBLE);
-                if(showAsList) {
+                if (showAsList) {
                     holder.onOffSwitch.setVisibility(View.INVISIBLE);
                 }
                 if (holder.adview != null)
@@ -2020,17 +2003,19 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     }
 
     private void swap(int firstPosition, int secondPosition) {
-        if (firstPosition == (secondPosition + 1) || firstPosition == (secondPosition - 1)) {
-            Collections.swap(filteredData, firstPosition, secondPosition);
-            notifyItemMoved(firstPosition, secondPosition);
+        int from = firstPosition - 1;
+        int to = secondPosition - 1;
+        if (from == (to + 1) || from == (to - 1)) {
+            Collections.swap(filteredData, from, to);
+            notifyItemMoved(from, to);
         } else {
-            if (firstPosition < secondPosition) {
-                for (int i = firstPosition; i < secondPosition; i++) {
+            if (from < to) {
+                for (int i = from; i < to; i++) {
                     Collections.swap(filteredData, i, i + 1);
                     notifyItemMoved(i, i + 1);
                 }
             } else {
-                for (int i = firstPosition; i > secondPosition; i--) {
+                for (int i = from; i > to; i--) {
                     Collections.swap(filteredData, i, i - 1);
                     notifyItemMoved(i, i - 1);
                 }
