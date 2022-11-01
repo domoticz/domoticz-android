@@ -30,6 +30,7 @@ import com.ftinc.scoop.Scoop;
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import nl.hnogames.domoticz.containers.NFCInfo;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;

@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.core.app.ActivityCompat;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.BluetoothInfo;
 import nl.hnogames.domoticz.containers.NotificationInfo;

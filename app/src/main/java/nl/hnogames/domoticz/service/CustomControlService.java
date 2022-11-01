@@ -26,6 +26,7 @@ import java.util.function.Consumer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+
 import io.reactivex.processors.ReplayProcessor;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.adapters.DashboardAdapter;
