@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -121,12 +122,18 @@ class AutoScreen extends Screen implements DefaultLifecycleObserver {
 
     public void getSwitch() {
         try {
+            Log.d("AA Service", "getSwitch triggered");
+            x = 0;
+            itemlist = new ItemList.Builder();
             if (mSharedPrefs == null)
                 mSharedPrefs = new SharedPrefUtil(getCarContext());
-
-            Log.d("AA Service", "getSwitch triggered");
-            itemlist = new ItemList.Builder();
-            x = 0;
+            if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
+                itemlist.addItem(new Row.Builder().setTitle("Android Auto " + getCarContext().getString(R.string.premium_feature)).build());
+                templateBuilder.setLoading(false);
+                templateBuilder.setSingleList(itemlist.build());
+                isFinishedLoading = true;
+                return;
+            }
             StaticHelper.getDomoticz(getCarContext()).getDevices(new DevicesReceiver() {
                 @Override
                 public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
