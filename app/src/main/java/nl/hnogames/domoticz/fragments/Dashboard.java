@@ -1135,22 +1135,22 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     }
 
     private void setBlindState(final DevicesInfo clickedSwitch, final int jsonAction, final String password) {
-        if ((jsonAction == DomoticzValues.Device.Blind.Action.UP || jsonAction == DomoticzValues.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() != DomoticzValues.Device.Type.Value.BLINDINVERTED)) {
+        if ((jsonAction == DomoticzValues.Device.Blind.Action.OPEN || jsonAction == DomoticzValues.Device.Blind.Action.UP || jsonAction == DomoticzValues.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() != DomoticzValues.Device.Type.Value.BLINDINVERTED)) {
+            clickedSwitch.setStatus(DomoticzValues.Device.Blind.State.OPEN);
             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.blind_up);
-            clickedSwitch.setStatus(DomoticzValues.Device.Blind.State.OPEN);
-        } else if ((jsonAction == DomoticzValues.Device.Blind.Action.DOWN || jsonAction == DomoticzValues.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() != DomoticzValues.Device.Type.Value.BLINDINVERTED)) {
+        } else if ((jsonAction == DomoticzValues.Device.Blind.Action.CLOSE || jsonAction == DomoticzValues.Device.Blind.Action.DOWN || jsonAction == DomoticzValues.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() != DomoticzValues.Device.Type.Value.BLINDINVERTED)) {
             clickedSwitch.setStatus(DomoticzValues.Device.Blind.State.CLOSED);
             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.blind_down) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.blind_down);
-        } else if ((jsonAction == DomoticzValues.Device.Blind.Action.UP || jsonAction == DomoticzValues.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED)) {
+        } else if ((jsonAction == DomoticzValues.Device.Blind.Action.OPEN || jsonAction == DomoticzValues.Device.Blind.Action.UP || jsonAction == DomoticzValues.Device.Blind.Action.OFF) && (clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED)) {
             clickedSwitch.setStatus(DomoticzValues.Device.Blind.State.CLOSED);
             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.blind_down) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(R.string.blind_down);
-        } else if ((jsonAction == DomoticzValues.Device.Blind.Action.DOWN || jsonAction == DomoticzValues.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED)) {
+        } else if ((jsonAction == DomoticzValues.Device.Blind.Action.CLOSE ||jsonAction == DomoticzValues.Device.Blind.Action.DOWN || jsonAction == DomoticzValues.Device.Blind.Action.ON) && (clickedSwitch.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED)) {
             clickedSwitch.setStatus(DomoticzValues.Device.Blind.State.OPEN);
             UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.blind_up) + ": " + clickedSwitch.getName(), Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
@@ -1173,8 +1173,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
                 } else {
                     successHandling(result, false);
-                    //processDashboard();
-                    changeAdapterData(clickedSwitch);
+                    processDashboard();
+                    //changeAdapterData(clickedSwitch);
                 }
             }
 

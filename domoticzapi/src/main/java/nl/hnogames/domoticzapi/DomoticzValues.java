@@ -131,6 +131,8 @@ public class DomoticzValues {
                 int ON = 33;
                 int OFF = 34;
                 int DOWN = 32;
+                int OPEN = 35;
+                int CLOSE = 36;
             }
         }
 
@@ -390,6 +392,8 @@ public class DomoticzValues {
             String DOWN = "Down";
             String PLUS = "Plus";
             String MIN = "Min";
+            String CLOSE = "Close";
+            String OPEN = "Open";
         }
 
         interface ModalAction {

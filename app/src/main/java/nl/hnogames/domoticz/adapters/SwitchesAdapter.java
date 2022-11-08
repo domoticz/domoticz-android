@@ -1056,9 +1056,9 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             for (DevicesInfo e : data) {
                 if (e.getIdx() == view.getId()) {
                     if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP)
-                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
+                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.CLOSE);
                     else
-                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
+                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OPEN);
                 }
             }
         });
@@ -1077,9 +1077,9 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             for (DevicesInfo e : data) {
                 if (e.getIdx() == view.getId()) {
                     if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP)
-                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
+                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OPEN);
                     else
-                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
+                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.CLOSE);
                 }
             }
         });

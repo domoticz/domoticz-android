@@ -76,6 +76,14 @@ public class DomoticzUrls {
                 actionUrl = DomoticzValues.Url.Action.UP;
                 break;
 
+            case DomoticzValues.Device.Blind.Action.CLOSE:
+                actionUrl = DomoticzValues.Url.Action.CLOSE;
+                break;
+
+            case DomoticzValues.Device.Blind.Action.OPEN:
+                actionUrl = DomoticzValues.Url.Action.OPEN;
+                break;
+
             case DomoticzValues.Device.Blind.Action.STOP:
                 actionUrl = DomoticzValues.Url.Action.STOP;
                 break;

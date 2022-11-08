@@ -391,7 +391,7 @@ public class DevicesInfo implements Comparable, Serializable {
     public boolean getStatusBoolean() {
         try {
             boolean statusBoolean = true;
-            if (status.equalsIgnoreCase(DomoticzValues.Device.Blind.State.OFF) || status.equalsIgnoreCase(DomoticzValues.Device.Blind.State.CLOSED))
+            if (status.equalsIgnoreCase(DomoticzValues.Device.Blind.State.ON) || status.equalsIgnoreCase(DomoticzValues.Device.Blind.State.OPEN))
                 statusBoolean = false;
             else if ((status.equalsIgnoreCase(DomoticzValues.Device.Door.State.UNLOCKED) && switchTypeVal == DomoticzValues.Device.Type.Value.DOORLOCK) ||
                     (status.equalsIgnoreCase(DomoticzValues.Device.Door.State.UNLOCKED) && switchTypeVal == DomoticzValues.Device.Type.Value.DOORLOCKINVERTED))
