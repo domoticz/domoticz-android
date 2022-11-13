@@ -37,6 +37,7 @@ import com.google.android.gms.location.LocationServices;
 import java.util.List;
 
 import androidx.core.app.ActivityCompat;
+
 import nl.hnogames.domoticz.service.GeofenceBroadcastReceiver;
 
 public class GeoUtils {

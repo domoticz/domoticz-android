@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import androidx.recyclerview.widget.RecyclerView;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.interfaces.EventsClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;

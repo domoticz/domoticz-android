@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
+
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.UsefulBits;
 
@@ -99,6 +100,9 @@ public class DevicesInfo implements Comparable, Serializable {
     private boolean statusBoolean;
     private boolean isProtected;
     private boolean isLevelOffHidden;
+
+    private boolean ReverseState;
+    private boolean ReversePosition;
 
     public DevicesInfo(JSONObject row) throws JSONException {
         this.jsonObject = row.toString();
@@ -228,6 +232,16 @@ public class DevicesInfo implements Comparable, Serializable {
             isLevelOffHidden = row.getBoolean("LevelOffHidden");
         } catch (Exception e) {
             isLevelOffHidden = false;
+        }
+        try {
+            ReversePosition = row.getBoolean("ReversePosition");
+        } catch (Exception e) {
+            ReversePosition = false;
+        }
+        try {
+            ReverseState = row.getBoolean("ReverseState");
+        } catch (Exception e) {
+            ReverseState = false;
         }
         try {
             if (row.has("SignalLevel"))
@@ -538,6 +552,14 @@ public class DevicesInfo implements Comparable, Serializable {
 
     public boolean isLevelOffHidden() {
         return isLevelOffHidden;
+    }
+
+    public boolean ReversePosition() {
+        return ReversePosition;
+    }
+
+    public boolean ReverseState() {
+        return ReverseState;
     }
 
     public void setIsProtected(boolean isProtected) {

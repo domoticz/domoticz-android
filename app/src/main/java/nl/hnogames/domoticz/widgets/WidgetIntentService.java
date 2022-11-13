@@ -32,6 +32,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
+
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
@@ -131,10 +132,8 @@ public class WidgetIntentService extends Service {
                 case DomoticzValues.Device.Type.Value.DOORCONTACT:
                 case DomoticzValues.Device.Type.Value.SELECTOR:
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
-                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
                     return true;
                 case DomoticzValues.Device.Type.Value.BLINDS:
-                case DomoticzValues.Device.Type.Value.BLINDINVERTED:
                     return !DomoticzValues.canHandleStopButton(mExtendedStatusInfo);
             }
         }

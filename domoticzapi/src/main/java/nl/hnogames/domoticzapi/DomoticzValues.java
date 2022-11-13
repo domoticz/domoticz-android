@@ -174,10 +174,7 @@ public class DomoticzValues {
                 int BLINDPERCENTAGE = 13;
                 int BLINDVENETIAN = 15;
                 int BLINDVENETIANUS = 14;
-                int BLINDINVERTED = 6;
-                int BLINDPERCENTAGEINVERTED = 16;
                 int BLINDPERCENTAGESTOP = 21;
-                int BLINDPERCENTAGEINVERTEDSTOP = 22;
                 int SELECTOR = 18;
                 int DOORLOCK = 19;
                 int DOORLOCKINVERTED = 20;
@@ -204,11 +201,8 @@ public class DomoticzValues {
                 String DOORCONTACT = "Door Contact";
                 String BLINDVENETIAN = "Venetian Blinds EU";
                 String BLINDVENETIANUS = "Venetian Blinds US";
-                String BLINDINVERTED = "Blinds Inverted";
                 String BLINDPERCENTAGE = "Blinds Percentage";
-                String BLINDPERCENTAGEINVERTED = "Blinds Percentage Inverted";
                 String BLINDPERCENTAGESTOP = "Blinds + Stop";
-                String BLINDPERCENTAGEINVERTEDSTOP = "Blinds Inverted + Stop";
                 String TEMPHUMIDITYBARO = "Temp + Humidity + Baro";
                 String WIND = "Wind";
                 String SELECTOR = "Selector";

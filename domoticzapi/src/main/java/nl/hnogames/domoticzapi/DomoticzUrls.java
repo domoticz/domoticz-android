@@ -170,7 +170,7 @@ public class DomoticzUrls {
         }
 
         switch (jsonSetUrl) {
-             case DomoticzValues.Json.Url.Set.SCENES:
+            case DomoticzValues.Json.Url.Set.SCENES:
                 url = DomoticzValues.Url.Scene.GET;
                 jsonUrl = url
                         + String.valueOf(idx)

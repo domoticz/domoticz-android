@@ -22,6 +22,7 @@ import com.google.android.gms.ads.formats.UnifiedNativeAdView;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
 import nl.hnogames.domoticz.R;
 
 /**

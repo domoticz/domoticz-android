@@ -33,6 +33,7 @@ import com.fastaccess.permission.base.PermissionHelper;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+
 import nl.hnogames.domoticz.R;
 
 @RequiresApi(api = Build.VERSION_CODES.S)

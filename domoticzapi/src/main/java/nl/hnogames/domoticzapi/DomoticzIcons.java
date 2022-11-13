@@ -82,7 +82,7 @@ public class DomoticzIcons {
                     return R.drawable.christmas;
             }
 
-            if(CustomImage.contains("robot-vacuum"))
+            if (CustomImage.contains("robot-vacuum"))
                 return R.drawable.vacuum_robot;
         }
 
@@ -145,12 +145,11 @@ public class DomoticzIcons {
                 return R.drawable.temperature;
             case "counter":
                 if (Type != null && Type.length() > 0 && Type.contains("Smart Meter")) {
-                    if(switchType != null && switchType.length() > 0 && switchType.contains("Gas"))
+                    if (switchType != null && switchType.length() > 0 && switchType.contains("Gas"))
                         return R.drawable.electric_range;
                     else
                         return R.drawable.power;
-                }
-                else
+                } else
                     return R.drawable.up;
             case "visibility":
                 return R.drawable.eye;

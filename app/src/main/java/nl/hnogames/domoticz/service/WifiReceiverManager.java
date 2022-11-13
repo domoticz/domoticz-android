@@ -8,6 +8,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 
 public class WifiReceiverManager extends Worker {
