@@ -55,9 +55,10 @@ public class PermissionsUtil {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
-    //these permissions are needed for getting device id
+    //these permissions are needed for getting device id / notifications
     public static final String[] INITIAL_DEVICE_PERMS = {
-            Manifest.permission.READ_PHONE_STATE
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.POST_NOTIFICATIONS
     };
     //these permissions are needed for scanning qrcodes
     public static final String[] INITIAL_CAMERA_PERMS = {
