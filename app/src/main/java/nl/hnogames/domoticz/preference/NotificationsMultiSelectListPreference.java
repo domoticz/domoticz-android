@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 import androidx.preference.MultiSelectListPreference;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 

@@ -1,17 +1,23 @@
 package nl.hnogames.domoticz.service;
 
+import android.Manifest;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
+import android.content.pm.PackageManager;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import androidx.core.app.ActivityCompat;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.BluetoothInfo;
+import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.helpers.StaticHelper;
+import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.WidgetUtils;
@@ -34,6 +40,10 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
         if (!mSharedPrefs.isBluetoothEnabled())
             return;
 
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
         List<BluetoothInfo> connectedDevices = mSharedPrefs.getBluetoothList();
         if (connectedDevices == null)
             return;
@@ -46,11 +56,15 @@ public class BluetoothConnectionReceiver extends BroadcastReceiver {
         }
 
         if (connectedDevice != null && connectedDevice.isEnabled()) {
+            //Toast.makeText(context, context.getString(R.string.bluetooth) + " " + connectedDevice.getName(), Toast.LENGTH_SHORT).show();
+            if (mSharedPrefs.isBluetoothNotificationsEnabled()) {
+                NotificationUtil.sendSimpleNotification(new NotificationInfo(-1,
+                        context.getString(R.string.bluetooth),
+                        String.format(context.getString(R.string.bluetooth_event_triggered), connectedDevice.getName()),
+                        0, new Date()), context);
+            }
             handleSwitch(context, connectedDevice.getSwitchIdx(), connectedDevice.getSwitchPassword(), (BluetoothDevice.ACTION_ACL_CONNECTED.equals(intent.getAction())),
                     connectedDevice.getValue(), connectedDevice.isSceneOrGroup());
-            Toast.makeText(context, context.getString(R.string.bluetooth) + " " + connectedDevice.getName(), Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, context.getString(R.string.bluetooth_disabled), Toast.LENGTH_SHORT).show();
         }
     }
 

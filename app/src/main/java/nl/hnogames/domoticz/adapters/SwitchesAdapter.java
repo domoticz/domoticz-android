@@ -62,11 +62,12 @@ import java.util.List;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import github.nisrulz.recyclerviewhelper.RVHAdapter;
+
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
 import nl.hnogames.domoticz.ads.TemplateView;
+import nl.hnogames.domoticz.helpers.ItemMoveAdapter;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.switchesClickListener;
 import nl.hnogames.domoticz.utils.CameraUtil;
@@ -81,7 +82,7 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.ServerUtil;
 
 @SuppressWarnings("unused")
-public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataObjectHolder> implements RVHAdapter {
+public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataObjectHolder> implements ItemMoveAdapter {
     public static final int ID_SCENE_SWITCH = 2000;
     public static List<String> mCustomSorting;
     private final int ID_TEXTVIEW = 1000;
@@ -367,11 +368,9 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     break;
 
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
-                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGESTOP:
-                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP:
                     if (DomoticzValues.canHandleStopButton(mDeviceInfo) ||
-                            (mDeviceInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP || mDeviceInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGESTOP)) {
+                            (mDeviceInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGESTOP)) {
                         setButtons(holder, Buttons.BLINDS_DIMMER);
                         setBlindsRowData(mDeviceInfo, holder);
                     } else {
@@ -386,7 +385,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     break;
 
                 case DomoticzValues.Device.Type.Value.BLINDS:
-                case DomoticzValues.Device.Type.Value.BLINDINVERTED:
                     if (DomoticzValues.canHandleStopButton(mDeviceInfo)) {
                         setButtons(holder, Buttons.BLINDS);
                     } else {
@@ -611,11 +609,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
             MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
             AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4")
-                    .addTestDevice("1AAE9D81347967A359E372B0445549DE")
-                    .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
-                    .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
-                    .addTestDevice("2C114D01992840EC6BF853D44CB96754")
+                    .addTestDevice("0095CAF9DD12F33E5417335E1EC5FCAD")
                     .build();
 
             AdLoader adLoader = new AdLoader.Builder(context, context.getString(R.string.ad_unit_id))
@@ -1054,10 +1048,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         holder.buttonUp.setOnClickListener(view -> {
             for (DevicesInfo e : data) {
                 if (e.getIdx() == view.getId()) {
-                    if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP)
-                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
-                    else
-                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
+                    handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OPEN);
                 }
             }
         });
@@ -1075,10 +1066,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         holder.buttonDown.setOnClickListener(view -> {
             for (DevicesInfo e : data) {
                 if (e.getIdx() == view.getId()) {
-                    if (e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED || e.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP)
-                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OFF);
-                    else
-                        handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.ON);
+                    handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.CLOSE);
                 }
             }
         });

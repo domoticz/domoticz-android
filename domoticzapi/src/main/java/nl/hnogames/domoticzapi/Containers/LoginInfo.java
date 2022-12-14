@@ -39,7 +39,8 @@ public class LoginInfo implements Serializable {
     private String Version;
     private JSONObject json;
 
-    public LoginInfo(){}
+    public LoginInfo() {
+    }
 
     public LoginInfo(JSONObject row) throws JSONException {
         json = row;

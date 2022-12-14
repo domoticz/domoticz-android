@@ -36,6 +36,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
 import com.ftinc.scoop.Scoop;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ import java.util.Set;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.containers.BluetoothInfo;
 import nl.hnogames.domoticz.helpers.StaticHelper;
@@ -68,6 +70,7 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
     private nl.hnogames.domoticz.adapters.BluetoothAdapter adapter;
     private PermissionHelper permissionHelper;
     private BluetoothAdapter mBluetoothAdapter;
+    private SwitchMaterial switch_notifications_button;
     private Toolbar toolbar;
 
     @Override
@@ -85,6 +88,7 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
+
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setTitle(R.string.category_bluetooth);
@@ -92,6 +96,10 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
         BluetoothList = mSharedPrefs.getBluetoothList();
         adapter = new nl.hnogames.domoticz.adapters.BluetoothAdapter(this, BluetoothList, this);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        switch_notifications_button = findViewById(R.id.switch_notifications_button);
+        switch_notifications_button.setChecked(mSharedPrefs.isBluetoothNotificationsEnabled());
+        switch_notifications_button.setOnCheckedChangeListener((buttonView, isChecked) -> mSharedPrefs.setBluetoothNotificationsEnabled(isChecked));
 
         createListView();
     }

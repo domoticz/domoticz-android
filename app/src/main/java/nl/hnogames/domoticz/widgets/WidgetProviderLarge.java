@@ -37,6 +37,7 @@ import android.widget.RemoteViews;
 import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.NotificationUtil;
@@ -226,7 +227,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                             UpdateWidgetService.this,
                                             appWidgetId,
                                             s.getIdx(),
-                                            s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED ? DomoticzValues.Device.Blind.Action.ON : DomoticzValues.Device.Blind.Action.OFF));
+                                            DomoticzValues.Device.Blind.Action.OFF));
                                     views.setViewVisibility(R.id.switch_button_up, View.VISIBLE);
 
                                     views.setOnClickPendingIntent(R.id.switch_button_stop, buildBlindPendingIntent(
@@ -239,7 +240,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                                             UpdateWidgetService.this,
                                             appWidgetId,
                                             s.getIdx(),
-                                            s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDINVERTED ? DomoticzValues.Device.Blind.Action.OFF : DomoticzValues.Device.Blind.Action.ON));
+                                            DomoticzValues.Device.Blind.Action.ON));
                                     views.setViewVisibility(R.id.switch_button_down, View.VISIBLE);
                                 } else {
                                     views.setViewVisibility(R.id.on_button, View.GONE);
@@ -416,12 +417,10 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                             break;
 
                         case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
-                        case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
                             withButton = BUTTON_2;
                             break;
 
                         case DomoticzValues.Device.Type.Value.BLINDS:
-                        case DomoticzValues.Device.Type.Value.BLINDINVERTED:
                             if (DomoticzValues.canHandleStopButton(s))
                                 withButton = BUTTON_3;
                             else

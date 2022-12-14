@@ -12,6 +12,7 @@ import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.LocationInfo;
 import nl.hnogames.domoticz.containers.NotificationInfo;

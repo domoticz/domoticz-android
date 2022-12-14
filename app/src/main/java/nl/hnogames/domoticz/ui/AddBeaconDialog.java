@@ -30,6 +30,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatEditText;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.BeaconInfo;
 import nl.hnogames.domoticz.utils.UsefulBits;

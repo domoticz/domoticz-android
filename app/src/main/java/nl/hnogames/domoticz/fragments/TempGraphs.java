@@ -60,6 +60,7 @@ import java.util.Map;
 
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;

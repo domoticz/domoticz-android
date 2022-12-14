@@ -30,7 +30,7 @@ import com.ftinc.scoop.Scoop;
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
-import nl.hnogames.domoticz.NFCSettingsActivity;
+
 import nl.hnogames.domoticz.containers.NFCInfo;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
@@ -40,9 +40,8 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
-
 public class NFCServiceActivity extends AppCompatActivity {
-    private final String TAG = NFCSettingsActivity.class.getSimpleName();
+    private final String TAG = NFCServiceActivity.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,6 +69,7 @@ public class NFCServiceActivity extends AppCompatActivity {
             }
             //}
         } else {
+            Log.i(TAG, "NFC is not enabled.");
             finish();
         }
     }

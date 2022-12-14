@@ -42,7 +42,7 @@ public class LoginParser implements JSONParserInterface {
     @Override
     public void parseResult(String result) {
         try {
-            if(result == null)
+            if (result == null)
                 loginReceiver.OnReceive(new LoginInfo());
             else {
                 JSONObject jsonObject = new JSONObject(result);

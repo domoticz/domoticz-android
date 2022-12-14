@@ -55,7 +55,8 @@ public class UtilitiesInfo implements Comparable, Serializable {
     private String UsageDeliv;
     private int signalLevel;
 
-    public UtilitiesInfo(){}
+    public UtilitiesInfo() {
+    }
 
     public UtilitiesInfo(JSONObject row) throws JSONException {
         this.jsonObject = row.toString();

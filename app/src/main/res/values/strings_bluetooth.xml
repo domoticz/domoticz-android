@@ -31,6 +31,11 @@
     <string name="bluetooth_saved">Saved a new bluetooth device connection. </string>
     <string name="bluetooth">Bluetooth</string>
 
+    <string name="title_notification_bluetooth">Enable Notifications for Bluetooth</string>
+    <string name="description_notification_bluetooth">Show notifications when you connect or disconnect a bluetooth device.</string>
+
+    <string name="bluetooth_event_triggered">"Bluetooth event triggered for %1$s"</string>
+
     <string name="bluetooth_disabled">Bluetooth automation disabled, please setup via settings.</string>
     <string name="noSwitchSelected_explanation_bluetooth">For a bluetooth device to automate something in Domoticz, a switch should be linked to an bluetooth</string>
 </resources>

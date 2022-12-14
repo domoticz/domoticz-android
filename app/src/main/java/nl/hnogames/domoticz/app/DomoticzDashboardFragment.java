@@ -48,6 +48,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.PlanActivity;
 import nl.hnogames.domoticz.R;
@@ -211,10 +212,10 @@ public class DomoticzDashboardFragment extends Fragment {
             gridView.setHasFixedSize(true);
             boolean showAsList = mSharedPrefs.showDashboardAsList();
             if (isTablet) {
-                mLayoutManager = new GridLayoutManager(getContext(), showAsList?2:3);
+                mLayoutManager = new GridLayoutManager(getContext(), showAsList ? 2 : 3);
                 Log.d("orientationchanged", "Event: GridLayoutManager span 3");
             } else {
-                mLayoutManager = new GridLayoutManager(getContext(), showAsList?1:2);
+                mLayoutManager = new GridLayoutManager(getContext(), showAsList ? 1 : 2);
                 Log.d("orientationchanged", "Event: GridLayoutManager span 2");
             }
             gridView.setLayoutManager(mLayoutManager);

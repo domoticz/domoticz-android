@@ -80,10 +80,8 @@ public class DeviceUtils {
                 case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
                 case DomoticzValues.Device.Type.Value.DIMMER:
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
-                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
                 case DomoticzValues.Device.Type.Value.SELECTOR:
                 case DomoticzValues.Device.Type.Value.BLINDS:
-                case DomoticzValues.Device.Type.Value.BLINDINVERTED:
                 case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
                 case DomoticzValues.Device.Type.Value.BLINDVENETIANUS:
                     return true;
@@ -136,9 +134,7 @@ public class DeviceUtils {
                 case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
                 case DomoticzValues.Device.Type.Value.DIMMER:
                 case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
-                case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
                 case DomoticzValues.Device.Type.Value.BLINDS:
-                case DomoticzValues.Device.Type.Value.BLINDINVERTED:
                 case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
                 case DomoticzValues.Device.Type.Value.BLINDVENETIANUS:
                     return true;

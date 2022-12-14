@@ -83,6 +83,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
+
 import hotchemi.android.rate.AppRate;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.app.AppController;
@@ -186,7 +187,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     .addTestDevice("1AAE9D81347967A359E372B0445549DE")
                     .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
                     .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
-                    .addTestDevice("2C114D01992840EC6BF853D44CB96754")
+                    .addTestDevice("7ABE5FC9B0E902B7CF857CE3A57831AB")
                     .build();
             ((AdView) findViewById(R.id.adView)).loadAd(adRequest);
         } else
@@ -689,8 +690,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     @Override
-
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
@@ -768,13 +769,11 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     private void setupMobileDevice() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (!PermissionsUtil.canAccessDeviceState(this))
                 permissionHelper.request(PermissionsUtil.INITIAL_DEVICE_PERMS);
             else
                 GetFirebaseToken();
-        } else {
-            GetFirebaseToken();
         }
     }
 

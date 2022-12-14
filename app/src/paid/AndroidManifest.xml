@@ -49,6 +49,8 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
     <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <supports-screens
         android:anyDensity="true"
@@ -106,12 +108,21 @@
         android:requestLegacyExternalStorage="true"
         tools:replace="android:icon, android:label, android:theme, android:name, android:allowBackup">
 
-        <activity android:exported="true" android:name="nl.hnogames.domoticz.service.NFCServiceActivity">
+        <activity android:exported="true"
+            android:name="nl.hnogames.domoticz.NFCSettingsActivity"
+            android:label="@string/category_nfc"
+            android:parentActivityName="nl.hnogames.domoticz.SettingsActivity"
+            android:resizeableActivity="true">
+        </activity>
+
+        <activity android:exported="true"
+            android:launchMode="singleTask"
+            android:name="nl.hnogames.domoticz.service.NFCServiceActivity">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <action android:name="android.nfc.action.TAG"/>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <action android:name="android.nfc.action.TECH"/>
+                <category android:name="android.intent.category.DEFAULT"/>
                 <data
                     android:host="domoticz"
                     android:scheme="app" />
@@ -315,7 +326,6 @@
         <activity
             android:exported="true"
             android:name="nl.hnogames.domoticz.ServerSettingsActivity"
-
             android:label="@string/title_activity_server_settings"
             android:parentActivityName="nl.hnogames.domoticz.SettingsActivity"
             android:resizeableActivity="true">
@@ -327,7 +337,6 @@
         <activity
             android:exported="true"
             android:name="nl.hnogames.domoticz.GeoSettingsActivity"
-
             android:label="@string/title_activity_server_settings"
             android:parentActivityName="nl.hnogames.domoticz.SettingsActivity"
             android:resizeableActivity="true">
@@ -336,22 +345,9 @@
                 android:value="nl.hnogames.domoticz.GeoSettingsActivity" />
         </activity>
 
-        <activity android:exported="true"
-            android:name="nl.hnogames.domoticz.NFCSettingsActivity"
-
-            android:label="@string/category_nfc"
-            android:parentActivityName="nl.hnogames.domoticz.SettingsActivity"
-            android:resizeableActivity="true">
-            <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
         <activity
             android:exported="true"
             android:name="nl.hnogames.domoticz.BluetoothSettingsActivity"
-
             android:label="@string/category_bluetooth"
             android:parentActivityName="nl.hnogames.domoticz.SettingsActivity">
             <meta-data

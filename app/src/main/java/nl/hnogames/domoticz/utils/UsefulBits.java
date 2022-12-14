@@ -57,6 +57,7 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
+
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.AppController;

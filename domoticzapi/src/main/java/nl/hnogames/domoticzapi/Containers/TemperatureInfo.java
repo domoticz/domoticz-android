@@ -51,7 +51,8 @@ public class TemperatureInfo implements Comparable, Serializable {
     private double Temp;
     private int signalLevel;
 
-    public TemperatureInfo(){}
+    public TemperatureInfo() {
+    }
 
     public TemperatureInfo(JSONObject row) throws JSONException {
         this.jsonObject = row.toString();

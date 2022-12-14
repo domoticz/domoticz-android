@@ -31,6 +31,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import androidx.appcompat.widget.Toolbar;
+
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;
 import nl.hnogames.domoticz.fragments.Camera;
 
