@@ -61,7 +61,7 @@
         </activity>
 
         <activity android:exported="true"
-            android:name="android.support.wearable.activity.ConfirmationActivity">
+            android:name="androidx.wear.activity.ConfirmationActivity">
         </activity>
 
         <meta-data
