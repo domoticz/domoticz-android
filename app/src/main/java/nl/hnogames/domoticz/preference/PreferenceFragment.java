@@ -217,6 +217,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
         PreferenceCategory language_category = findPreference("language_category");
         PreferenceCategory theme_category = findPreference("theme_category");
         PreferenceCategory wear_category = findPreference("wear_category");
+        PreferenceCategory Auto_category = findPreference("auto_category");
         PreferenceCategory advanced_category = findPreference("advanced_category");
         PreferenceCategory other_category = findPreference("other_category");
         PreferenceCategory about_category = findPreference("about_category");
@@ -257,6 +258,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
         // NFC settings
         SwitchPreference EnableNFCPreference = findPreference("enableNFC");
         SwitchPreference AutoPreference = findPreference("enableAutoItems");
+        AutoMultiSelectListPreference AutoItems = findPreference("autolistItems");
         Preference NFCPreference = findPreference("nfc_settings");
 
         // Speech settings
@@ -426,6 +428,11 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
         WearPreference.setVisible(UsefulBits.isEmpty(filter) || WearPreference.getTitle().toString().toLowerCase().contains(filter) || (WearPreference.getSummary() != null && WearPreference.getSummary().toString().toLowerCase().contains(filter)));
         WearItems.setVisible(UsefulBits.isEmpty(filter) || WearItems.getTitle().toString().toLowerCase().contains(filter) || (WearItems.getSummary() != null && WearItems.getSummary().toString().toLowerCase().contains(filter)));
         wear_category.setVisible(WearPreference.isVisible() || WearItems.isVisible());
+
+        // Android Auto settings
+        AutoPreference.setVisible(UsefulBits.isEmpty(filter) || AutoPreference.getTitle().toString().toLowerCase().contains(filter) || (AutoPreference.getSummary() != null && AutoPreference.getSummary().toString().toLowerCase().contains(filter)));
+        AutoItems.setVisible(UsefulBits.isEmpty(filter) || AutoItems.getTitle().toString().toLowerCase().contains(filter) || (AutoItems.getSummary() != null && AutoItems.getSummary().toString().toLowerCase().contains(filter)));
+        Auto_category.setVisible(AutoPreference.isVisible() || AutoItems.isVisible());
 
         // Advanced settings
         exportButton.setVisible(UsefulBits.isEmpty(filter) || exportButton.getTitle().toString().toLowerCase().contains(filter) || (exportButton.getSummary() != null && exportButton.getSummary().toString().toLowerCase().contains(filter)));
