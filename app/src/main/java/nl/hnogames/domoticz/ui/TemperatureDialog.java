@@ -31,6 +31,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.triggertrap.seekarc.SeekArc;
 
 import androidx.annotation.NonNull;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;

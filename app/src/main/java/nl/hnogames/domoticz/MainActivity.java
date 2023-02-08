@@ -83,6 +83,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
+
 import hotchemi.android.rate.AppRate;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.app.AppController;
@@ -689,8 +690,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     @Override
-
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
@@ -768,13 +769,11 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     private void setupMobileDevice() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (!PermissionsUtil.canAccessDeviceState(this))
                 permissionHelper.request(PermissionsUtil.INITIAL_DEVICE_PERMS);
             else
                 GetFirebaseToken();
-        } else {
-            GetFirebaseToken();
         }
     }
 

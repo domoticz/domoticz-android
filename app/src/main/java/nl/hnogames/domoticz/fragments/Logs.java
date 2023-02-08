@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.LogAdapter;
 import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;

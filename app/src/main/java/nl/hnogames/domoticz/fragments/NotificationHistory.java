@@ -43,6 +43,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.helpers.CustomIncomingMessageViewHolder;

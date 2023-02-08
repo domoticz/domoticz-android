@@ -41,6 +41,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.MenuItemCompat;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.adapters.WidgetsAdapter;
@@ -370,12 +371,10 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                         break;
 
                     case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
-                    case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
                         withButton = BUTTON_ONOFF;
                         break;
 
                     case DomoticzValues.Device.Type.Value.BLINDS:
-                    case DomoticzValues.Device.Type.Value.BLINDINVERTED:
                         if (DomoticzValues.canHandleStopButton(s))
                             withButton = BUTTON_BLINDS;
                         else

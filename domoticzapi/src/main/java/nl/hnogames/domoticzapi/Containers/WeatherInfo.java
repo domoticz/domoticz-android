@@ -55,7 +55,8 @@ public class WeatherInfo implements Comparable, Serializable {
     private String TypeImg;
     private int signalLevel;
 
-    public WeatherInfo(){}
+    public WeatherInfo() {
+    }
 
     public WeatherInfo(JSONObject row) throws JSONException {
         this.jsonObject = row.toString();

@@ -24,6 +24,7 @@ package nl.hnogames.domoticzapi.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
 import java.util.Map;
 
 public class SessionUtil {

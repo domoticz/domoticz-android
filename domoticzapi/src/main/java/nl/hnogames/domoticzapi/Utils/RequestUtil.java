@@ -43,12 +43,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.Nullable;
+
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.VolleyErrorListener;
 
 public class RequestUtil {
     private static final String TAG = RequestUtil.class.getSimpleName();
+
     public static void makeJsonGetRequest(@Nullable final VolleyErrorListener listener,
                                           final String url,
                                           final SessionUtil sessionUtil,
@@ -63,7 +65,7 @@ public class RequestUtil {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        if(useBasicAuth)
+                        if (useBasicAuth)
                             Domoticz.BasicAuthDetected = useBasicAuth;
                         if (listener != null)
                             listener.onDone(response);
@@ -127,7 +129,7 @@ public class RequestUtil {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        if(useBasicAuth)
+                        if (useBasicAuth)
                             Domoticz.BasicAuthDetected = useBasicAuth;
                         if (listener != null)
                             listener.onDone(response);
@@ -192,7 +194,7 @@ public class RequestUtil {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String jsonObject) {
-                                if(useBasicAuth)
+                                if (useBasicAuth)
                                     Domoticz.BasicAuthDetected = useBasicAuth;
                                 String jsonString;
 
@@ -272,7 +274,7 @@ public class RequestUtil {
         if (headerMap == null)
             headerMap = new HashMap<>();
 
-        if(!UsefulBits.isEmpty(username)) {
+        if (!UsefulBits.isEmpty(username)) {
             String credentials = username + ":" + password;
             String base64EncodedCredentials =
                     Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);

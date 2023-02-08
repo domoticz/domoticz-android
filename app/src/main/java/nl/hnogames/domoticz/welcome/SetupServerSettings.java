@@ -55,6 +55,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ServerSettingsActivity;
 import nl.hnogames.domoticz.helpers.StaticHelper;

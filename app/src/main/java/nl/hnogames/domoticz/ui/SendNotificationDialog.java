@@ -34,6 +34,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatEditText;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.utils.DeviceUtils;

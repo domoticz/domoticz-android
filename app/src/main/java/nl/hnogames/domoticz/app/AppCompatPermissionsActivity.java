@@ -32,6 +32,7 @@ import java.util.Arrays;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 

@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Set;
 
 import androidx.preference.MultiSelectListPreference;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;

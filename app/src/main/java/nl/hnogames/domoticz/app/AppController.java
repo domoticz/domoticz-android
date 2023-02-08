@@ -75,6 +75,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
+
 import de.duenndns.ssl.MemorizingTrustManager;
 import nl.hnogames.domoticz.BuildConfig;
 import nl.hnogames.domoticz.MainActivity;

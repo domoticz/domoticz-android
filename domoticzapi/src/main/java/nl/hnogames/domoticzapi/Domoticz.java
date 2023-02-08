@@ -48,6 +48,7 @@ import java.util.Map;
 import java.util.Set;
 
 import androidx.annotation.Nullable;
+
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.LoginInfo;
@@ -255,9 +256,6 @@ public class Domoticz {
             case DomoticzValues.Device.Type.Value.X10SIREN:
             case DomoticzValues.Device.Type.Value.DOORCONTACT:
             case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
-            case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP:
-            case DomoticzValues.Device.Type.Value.BLINDINVERTED:
-            case DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED:
             case DomoticzValues.Device.Type.Value.BLINDVENETIAN:
             case DomoticzValues.Device.Type.Value.BLINDVENETIANUS:
             case DomoticzValues.Device.Type.Value.BLINDS:
@@ -282,12 +280,9 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Value.ON_OFF);
         switchesSupported.add(DomoticzValues.Device.Type.Value.DIMMER);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDPERCENTAGE);
-        switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDPERCENTAGESTOP);
-        switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDPERCENTAGEINVERTEDSTOP);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDVENETIAN);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDVENETIANUS);
-        switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDS);
         switchesSupported.add(DomoticzValues.Device.Type.Value.MOTION);
         switchesSupported.add(DomoticzValues.Device.Type.Value.CONTACT);
@@ -312,11 +307,8 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Name.DIMMER);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDVENETIAN);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDVENETIANUS);
-        switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDPERCENTAGE);
-        switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDPERCENTAGEINVERTED);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDPERCENTAGESTOP);
-        switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDPERCENTAGEINVERTEDSTOP);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDS);
         switchesSupported.add(DomoticzValues.Device.Type.Name.PUSH_ON_BUTTON);
         switchesSupported.add(DomoticzValues.Device.Type.Name.PUSH_OFF_BUTTON);
@@ -523,7 +515,7 @@ public class Domoticz {
         mSessionUtil.clearSessionCookie();
         String baseUsername = getUserCredentials(Authentication.USERNAME);
         String basePassword = getUserCredentials(Authentication.PASSWORD);
-        if(UsefulBits.isEmpty(baseUsername)||UsefulBits.isEmpty(basePassword))
+        if (UsefulBits.isEmpty(baseUsername) || UsefulBits.isEmpty(basePassword))
             loginReceiver.OnReceive(new LoginInfo());
 
         String username = UsefulBits.encodeBase64(getUserCredentials(Authentication.USERNAME));
@@ -1023,13 +1015,13 @@ public class Domoticz {
     }
 
     private void LoginPostRequest(@Nullable final JSONParserInterface parser,
-                              final String url,
-                              final Map<String, String> params) {
+                                  final String url,
+                                  final Map<String, String> params) {
         final VolleyErrorListener defaultListener = new VolleyErrorListener() {
             @Override
             public void onDone(JSONObject response) {
                 if (parser != null)
-                    parser.parseResult(response!= null ? response.toString() : null);
+                    parser.parseResult(response != null ? response.toString() : null);
             }
 
             @Override
@@ -1050,12 +1042,12 @@ public class Domoticz {
     private void PostRequest(@Nullable final JSONParserInterface parser,
                              final String url,
                              final Map<String, String> params,
-    boolean retry) {
+                             boolean retry) {
         final VolleyErrorListener defaultListener = new VolleyErrorListener() {
             @Override
             public void onDone(JSONObject response) {
                 if (parser != null)
-                    parser.parseResult(response!= null ? response.toString() : null);
+                    parser.parseResult(response != null ? response.toString() : null);
             }
 
             @Override
@@ -1069,7 +1061,7 @@ public class Domoticz {
             @Override
             public void onDone(JSONObject response) {
                 if (parser != null)
-                    parser.parseResult(response!= null ? response.toString() : null);
+                    parser.parseResult(response != null ? response.toString() : null);
             }
 
             @Override

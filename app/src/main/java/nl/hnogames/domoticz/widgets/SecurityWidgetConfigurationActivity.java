@@ -39,6 +39,7 @@ import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
 import nl.hnogames.domoticz.app.AppController;

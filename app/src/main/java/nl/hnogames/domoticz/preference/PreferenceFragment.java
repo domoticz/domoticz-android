@@ -67,6 +67,7 @@ import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
+
 import nl.hnogames.domoticz.BeaconSettingsActivity;
 import nl.hnogames.domoticz.BluetoothSettingsActivity;
 import nl.hnogames.domoticz.BuildConfig;

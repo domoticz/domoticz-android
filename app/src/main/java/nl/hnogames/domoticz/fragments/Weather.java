@@ -36,6 +36,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
+
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;

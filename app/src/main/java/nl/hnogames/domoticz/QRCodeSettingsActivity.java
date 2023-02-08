@@ -45,6 +45,7 @@ import java.util.Arrays;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import nl.hnogames.domoticz.adapters.QRCodeAdapter;
 import nl.hnogames.domoticz.app.AppCompatPermissionsActivity;
 import nl.hnogames.domoticz.containers.QRCodeInfo;

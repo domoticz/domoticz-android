@@ -189,8 +189,8 @@ allprojects {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation 'androidx.core:core:1.8.0'
-    implementation "androidx.work:work-runtime:2.8.0-alpha02"
+    implementation 'androidx.core:core:1.9.0'
+    implementation "androidx.work:work-runtime:2.8.0-rc01"
     implementation 'androidx.preference:preference:1.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
@@ -204,7 +204,7 @@ dependencies {
     implementation "androidx.car.app:app:1.3.0-beta01"
     implementation 'org.reactivestreams:reactive-streams:1.0.3'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
-    implementation 'com.revenuecat.purchases:purchases:5.0.0-rc3'
+    implementation 'com.revenuecat.purchases:purchases:5.6.3'
 
     implementation 'com.google.firebase:firebase-core:19.0.1'
     implementation 'com.google.firebase:firebase-iid:21.1.0'
