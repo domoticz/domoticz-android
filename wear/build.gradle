@@ -28,9 +28,10 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 9020
-        versionName "1.8.0"
+        versionCode 9030
+        versionName "1.9.0"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -59,11 +60,14 @@ android {
             dimension "tier"
         }
     }
+
     lint {
         abortOnError false
         checkReleaseBuilds false
         disable 'MissingTranslation'
     }
+
+    namespace 'nl.hnogames.domoticz'
 }
 
 dependencies {

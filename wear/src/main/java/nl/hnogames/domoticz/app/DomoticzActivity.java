@@ -62,6 +62,7 @@ public class DomoticzActivity extends Activity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "onDestroy");
 
         Wearable.MessageApi.removeListener(mApiClient, this);
         mApiClient.disconnect();
@@ -70,6 +71,7 @@ public class DomoticzActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate");
 
         setContentView(R.layout.view_main);
         receiveOnce = false;
@@ -78,6 +80,7 @@ public class DomoticzActivity extends Activity implements
 
     @Override
     public void onMessageReceived(final MessageEvent messageEvent) {
+        Log.d(TAG, "onMessageReceived " + messageEvent);
         receiveOnce = true;
     }
 
@@ -91,19 +94,16 @@ public class DomoticzActivity extends Activity implements
 
     public void sendMessage(final String path, final String text) {
         Log.d(TAG, "Send: " + text);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(mApiClient).await();
-                for (Node node : nodes.getNodes()) {
-                    MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
-                            mApiClient, node.getId(), path, text.getBytes()).await();
-                    if (result.getStatus().isSuccess()) {
-                        Log.v(TAG, "Message: {" + "my object" + "} sent to: " + node.getDisplayName());
-                    } else {
-                        Log.v(TAG, "ERROR: failed to send Message");
-                        Toast.makeText(getApplicationContext(), "Connection to phone failed", Toast.LENGTH_LONG).show();
-                    }
+        new Thread(() -> {
+            NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(mApiClient).await();
+            for (Node node : nodes.getNodes()) {
+                MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
+                        mApiClient, node.getId(), path, text.getBytes()).await();
+                if (result.getStatus().isSuccess()) {
+                    Log.v(TAG, "Message: {" + "my object" + "} sent to: " + node.getDisplayName() + ". " + result.getRequestId());
+                } else {
+                    Log.v(TAG, "ERROR: failed to send Message");
+                    Toast.makeText(getApplicationContext(), "Connection to phone failed", Toast.LENGTH_LONG).show();
                 }
             }
         }).start();
@@ -111,5 +111,6 @@ public class DomoticzActivity extends Activity implements
 
     @Override
     public void onConnectionSuspended(int i) {
+        Log.d(TAG, "onConnectionSuspended");
     }
 }

@@ -79,30 +79,6 @@ android {
 
     flavorDimensions "tier"
     productFlavors {
-        dev {
-            applicationId 'nl.hnogames.domoticz.premium'
-
-            resValue "string", "APK_VALIDATE_DEBUG", "$System.env.APK_VALIDATE_DEBUG"
-            resValue "string", "APK_VALIDATE_PROD", "$System.env.APK_VALIDATE_PROD"
-            resValue "string", "APK_LICENSE_PREMIUM", "$System.env.APK_LICENSE_PREMIUM"
-
-            resValue "string", "ADMOB_COMP_KEY", "$System.env.ADMOB_COMP_KEY"
-            resValue "string", "ADMOB_APP_KEY", "$System.env.ADMOBAPPKEY"
-            resValue "string", "ADMOB_ADS_KEY", "$System.env.ADMOBADSKEY"
-
-            resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
-            resValue "string", "google_maps_key", "$System.env.GOOGLEAPIKEY"
-            resValue "string", "revenuecat_apikey", "$System.env.REVENUECATKEY"
-            resValue "string", "app_name_domoticz", 'Domoticz'
-            buildConfigField "boolean", "LITE_VERSION", "false"
-            buildConfigField "boolean", "PAID_OOTT", "false"
-            dimension "tier"
-
-            minSdkVersion 23
-            versionNameSuffix "-dev"
-            resConfigs 'en', 'xxhdpi'
-        }
-
         free {
             applicationId 'nl.hnogames.domoticz'
             resValue "string", "APK_VALIDATE_DEBUG", "$System.env.APK_VALIDATE_DEBUG"
@@ -167,6 +143,8 @@ android {
             it.name.startsWith('dex')
         }
     }
+
+    namespace 'nl.hnogames.domoticz'
 }
 
 repositories {
@@ -188,6 +166,7 @@ allprojects {
 //noinspection GroovyAssignabilityCheck
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    wearApp project(':wear')
 
     implementation 'androidx.core:core:1.9.0'
     implementation "androidx.work:work-runtime:2.8.0"
@@ -214,11 +193,11 @@ dependencies {
     implementation "com.google.firebase:firebase-ads:19.8.0"
 
     implementation 'com.google.android.ads.consent:consent-library:1.0.8'
-    implementation "com.google.android.gms:play-services-analytics:17.0.1"
-    implementation "com.google.android.gms:play-services-wearable:17.1.0"
-    implementation "com.google.android.gms:play-services-maps:18.0.2"
+    implementation "com.google.android.gms:play-services-analytics:18.0.2"
+    implementation "com.google.android.gms:play-services-wearable:18.0.0"
+    implementation "com.google.android.gms:play-services-maps:18.1.0"
     implementation "com.google.android.gms:play-services-gcm:17.0.0"
-    implementation "com.google.android.gms:play-services-location:18.0.0"
+    implementation "com.google.android.gms:play-services-location:21.0.1"
     implementation "com.google.android.gms:play-services-places:17.0.0"
     implementation "com.google.android.gms:play-services-ads:19.8.0"
     implementation 'com.google.android.ads.consent:consent-library:1.0.8'
