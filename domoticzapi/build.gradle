@@ -67,6 +67,7 @@ android {
             }
         }
     }
+    namespace 'nl.hnogames.domoticzapi'
 }
 
 dependencies {

@@ -39,7 +39,9 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.material.chip.Chip;
 import com.like.LikeButton;
@@ -181,18 +183,20 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
             if (!adLoaded)
                 holder.adview.setVisibility(View.GONE);
 
-            MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
+            List<String> testDevices = new ArrayList<>();
+            testDevices.add(AdRequest.DEVICE_ID_EMULATOR);
+            testDevices.add("0095CAF9DD12F33E5417335E1EC5FCAD");
+            RequestConfiguration requestConfiguration
+                    = new RequestConfiguration.Builder()
+                    .setTestDeviceIds(testDevices)
+                    .build();
+
+            MobileAds.initialize(context);
             AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4")
-                    .addTestDevice("1AAE9D81347967A359E372B0445549DE")
-                    .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
-                    .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
-                    .addTestDevice("6C2390A9FF8F555BD01BA560068CD366")
-                    .addTestDevice("7ABE5FC9B0E902B7CF857CE3A57831AB")
                     .build();
 
             AdLoader adLoader = new AdLoader.Builder(context, context.getString(R.string.ad_unit_id))
-                    .forUnifiedNativeAd(unifiedNativeAd -> {
+                    .forNativeAd(unifiedNativeAd -> {
                         NativeTemplateStyle styles = new NativeTemplateStyle.Builder().build();
                         if (holder.adview != null) {
                             holder.adview.setStyles(styles);
@@ -203,7 +207,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                     })
                     .withAdListener(new AdListener() {
                         @Override
-                        public void onAdFailedToLoad(int errorCode) {
+                        public void onAdFailedToLoad(LoadAdError errorCode) {
                             if (holder.adview != null)
                                 holder.adview.setVisibility(View.GONE);
                         }

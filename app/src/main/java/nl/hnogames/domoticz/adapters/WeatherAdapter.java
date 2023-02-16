@@ -38,7 +38,9 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.material.chip.Chip;
 import com.like.LikeButton;
@@ -193,13 +195,20 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
             if (!adLoaded)
                 holder.adview.setVisibility(View.GONE);
 
-            MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
+            List<String> testDevices = new ArrayList<>();
+            testDevices.add(AdRequest.DEVICE_ID_EMULATOR);
+            testDevices.add("0095CAF9DD12F33E5417335E1EC5FCAD");
+            RequestConfiguration requestConfiguration
+                    = new RequestConfiguration.Builder()
+                    .setTestDeviceIds(testDevices)
+                    .build();
+
+            MobileAds.initialize(context);
             AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice("0095CAF9DD12F33E5417335E1EC5FCAD")
                     .build();
 
             AdLoader adLoader = new AdLoader.Builder(context, context.getString(R.string.ad_unit_id))
-                    .forUnifiedNativeAd(unifiedNativeAd -> {
+                    .forNativeAd(unifiedNativeAd -> {
                         NativeTemplateStyle styles = new NativeTemplateStyle.Builder().build();
                         if (holder.adview != null) {
                             holder.adview.setStyles(styles);
@@ -210,7 +219,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                     })
                     .withAdListener(new AdListener() {
                         @Override
-                        public void onAdFailedToLoad(int errorCode) {
+                        public void onAdFailedToLoad(LoadAdError errorCode) {
                             if (holder.adview != null)
                                 holder.adview.setVisibility(View.GONE);
                         }

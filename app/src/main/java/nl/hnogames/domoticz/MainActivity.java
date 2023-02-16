@@ -46,6 +46,7 @@ import com.github.zagum.speechrecognitionview.adapters.RecognitionListenerAdapte
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -181,13 +182,16 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
         if (Build.VERSION.SDK_INT < 21 && (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated())) {
             setContentView(R.layout.activity_newmain_free);
-            MobileAds.initialize(this, this.getString(R.string.ADMOB_APP_KEY));
+            List<String> testDevices = new ArrayList<>();
+            testDevices.add(AdRequest.DEVICE_ID_EMULATOR);
+            testDevices.add("0095CAF9DD12F33E5417335E1EC5FCAD");
+            RequestConfiguration requestConfiguration
+                    = new RequestConfiguration.Builder()
+                    .setTestDeviceIds(testDevices)
+                    .build();
+
+            MobileAds.initialize(this);
             AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice("A18F9718FC3511DC6BCB1DC5AF076AE4")
-                    .addTestDevice("1AAE9D81347967A359E372B0445549DE")
-                    .addTestDevice("440E239997F3D1DD8BC59D0ADC9B5DB5")
-                    .addTestDevice("D6A4EE627F1D3912332E0BFCA8EA2AD2")
-                    .addTestDevice("7ABE5FC9B0E902B7CF857CE3A57831AB")
                     .build();
             ((AdView) findViewById(R.id.adView)).loadAd(adRequest);
         } else

@@ -20,9 +20,9 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="nl.hnogames.domoticz">
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="nl.hnogames.domoticz.premium.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -47,9 +47,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
     <uses-permission android:name="com.android.vending.BILLING" />
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <supports-screens
@@ -156,12 +154,12 @@
             </intent-filter>
         </receiver>
 
-        <service android:exported="true" android:name="nl.hnogames.domoticz.service.WearMessageListenerService">
+        <service
+            android:enabled="true"
+            android:exported="true"
+            android:name="nl.hnogames.domoticz.service.WearMessageListenerService">
             <intent-filter>
-                <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
                 <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
-                <action android:name="com.google.android.gms.wearable.CAPABILITY_CHANGED" />
-                <action android:name="com.google.android.gms.wearable.CHANNEL_EVENT" />
 
                 <data
                     android:host="*"

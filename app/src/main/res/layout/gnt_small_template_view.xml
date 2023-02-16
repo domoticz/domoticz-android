@@ -2,7 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.gms.ads.formats.UnifiedNativeAdView
+    <com.google.android.gms.ads.nativead.NativeAdView
         android:id="@+id/native_ad_view"
         android:layout_width="match_parent"
         android:maxHeight="80dp"
@@ -178,6 +178,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.google.android.gms.ads.formats.UnifiedNativeAdView>
-
+    </com.google.android.gms.ads.nativead.NativeAdView>
 </merge>

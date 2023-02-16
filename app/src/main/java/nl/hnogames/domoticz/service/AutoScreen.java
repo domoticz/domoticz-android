@@ -265,14 +265,13 @@ class AutoScreen extends Screen implements DefaultLifecycleObserver {
             public void onReceiveResult(String result) {
                 if (result.contains("WRONG CODE")) {
                     CarToast.makeText(getCarContext(), "WRONG CODE", CarToast.LENGTH_LONG).show();
-
                 } else {
                     //if not push button
                     if (toggledDevice.getSwitchTypeVal() != 9) {
                         final Handler handler = new Handler(Looper.getMainLooper());
                         handler.postDelayed(() -> getSwitch(), 2000);
                     }
-                    CarToast.makeText(getCarContext(), toggledDevice.getName(), CarToast.LENGTH_SHORT).show();
+                    //CarToast.makeText(getCarContext(), toggledDevice.getName(), CarToast.LENGTH_SHORT).show();
                 }
             }
 
@@ -308,7 +307,7 @@ class AutoScreen extends Screen implements DefaultLifecycleObserver {
                         final Handler handler = new Handler(Looper.getMainLooper());
                         handler.postDelayed(() -> getSwitch(), 2000);
                     }
-                    CarToast.makeText(getCarContext(), toggledDevice.getName(), CarToast.LENGTH_SHORT).show();
+                    //CarToast.makeText(getCarContext(), toggledDevice.getName(), CarToast.LENGTH_SHORT).show();
                 }
             }
 
