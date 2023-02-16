@@ -28,8 +28,8 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 9030
-        versionName "1.9.0"
+        versionCode 9031
+        versionName "1.9.1"
     }
 
     buildTypes {
@@ -79,6 +79,6 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-wearable:18.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.squareup.picasso:picasso:2.71828'
 }
