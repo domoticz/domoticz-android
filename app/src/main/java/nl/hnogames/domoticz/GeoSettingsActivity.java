@@ -31,6 +31,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.adevinta.leku.LocationPickerActivity;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionHelper;
@@ -44,11 +49,6 @@ import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationA
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import nl.hnogames.domoticz.adapters.LocationAdapter;
 import nl.hnogames.domoticz.app.AppCompatAssistActivity;

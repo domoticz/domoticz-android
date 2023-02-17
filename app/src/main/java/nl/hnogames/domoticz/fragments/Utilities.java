@@ -31,12 +31,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-
-import androidx.recyclerview.widget.ItemTouchHelper;
 
 import nl.hnogames.domoticz.GraphActivity;
 import nl.hnogames.domoticz.MainActivity;

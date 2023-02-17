@@ -29,14 +29,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
+import androidx.core.app.ActivityCompat;
+
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.List;
-
-import androidx.core.app.ActivityCompat;
 
 import nl.hnogames.domoticz.service.GeofenceBroadcastReceiver;
 

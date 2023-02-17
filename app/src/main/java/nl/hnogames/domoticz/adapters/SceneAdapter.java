@@ -33,6 +33,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
@@ -48,8 +50,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.MainActivity;
@@ -175,8 +175,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
             } else if (DomoticzValues.Scene.Type.SCENE.equalsIgnoreCase(mSceneInfo.getType())) {
                 holder.isProtected = mSceneInfo.isProtected();
                 setButtons(holder, Buttons.SCENE);
-                if (holder.buttonTimer != null)
-                    holder.buttonTimer.setVisibility(View.GONE);
+
                 if (holder.buttonNotifications != null)
                     holder.buttonNotifications.setVisibility(View.GONE);
 
@@ -205,6 +204,12 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                     }
                 }
 
+                holder.buttonTimer.setId(mSceneInfo.getIdx());
+                holder.buttonTimer.setOnClickListener(v -> handleTimerButtonClick(v.getId()));
+                if (mSceneInfo.hasTimers()) {
+                    holder.buttonTimer.setVisibility(View.VISIBLE);
+                }
+
                 if (holder.likeButton != null) {
                     holder.likeButton.setId(mSceneInfo.getIdx());
                     holder.likeButton.setLiked(mSceneInfo.getFavoriteBoolean());
@@ -229,8 +234,6 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
 
                 setButtons(holder, Buttons.GROUP);
 
-                if (holder.buttonTimer != null)
-                    holder.buttonTimer.setVisibility(View.GONE);
                 if (holder.buttonNotifications != null)
                     holder.buttonNotifications.setVisibility(View.GONE);
 
@@ -251,6 +254,12 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 if (holder.buttonOff != null) {
                     holder.buttonOff.setId(mSceneInfo.getIdx());
                     holder.buttonOff.setOnClickListener(v -> handleClick(v.getId(), false));
+                }
+
+                holder.buttonTimer.setId(mSceneInfo.getIdx());
+                holder.buttonTimer.setOnClickListener(v -> handleTimerButtonClick(v.getId()));
+                if (mSceneInfo.hasTimers()) {
+                    holder.buttonTimer.setVisibility(View.VISIBLE);
                 }
 
                 Picasso.get().load(DomoticzIcons.getDrawableIcon(
@@ -407,6 +416,10 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
 
     public void handleClick(int idx, boolean action) {
         listener.onSceneClick(idx, action);
+    }
+
+    private void handleTimerButtonClick(int idx) {
+        listener.onTimerButtonClick(idx);
     }
 
     @Override

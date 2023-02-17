@@ -25,12 +25,12 @@ package nl.hnogames.domoticz.welcome;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.github.paolorotolo.appintro.AppIntro2;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import com.github.paolorotolo.appintro.model.SliderPage;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;

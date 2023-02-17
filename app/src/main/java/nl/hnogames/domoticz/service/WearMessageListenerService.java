@@ -86,8 +86,8 @@ public class WearMessageListenerService extends WearableListenerService implemen
         }
     }
 
-    public void SetupGetData(){
-        if(mSharedPrefs == null)
+    public void SetupGetData() {
+        if (mSharedPrefs == null)
             mSharedPrefs = new SharedPrefUtil(this);
         if (mApiClient == null || mApiClient.equals(null)) {
             Log.v(TAG, "Init Google Wear API");
@@ -98,7 +98,7 @@ public class WearMessageListenerService extends WearableListenerService implemen
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-        Log.v(TAG, "onMessageReceived called: " +messageEvent);
+        Log.v(TAG, "onMessageReceived called: " + messageEvent);
         if (messageEvent.getPath().equalsIgnoreCase(RECEIVE_DATA)) {
             Log.v(TAG, "Get data from Domoticz");
 

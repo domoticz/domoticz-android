@@ -31,12 +31,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fastaccess.permission.base.PermissionFragmentHelper;
-import com.fastaccess.permission.base.callback.OnPermissionCallback;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -45,6 +39,12 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.fastaccess.permission.base.PermissionFragmentHelper;
+import com.fastaccess.permission.base.callback.OnPermissionCallback;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;

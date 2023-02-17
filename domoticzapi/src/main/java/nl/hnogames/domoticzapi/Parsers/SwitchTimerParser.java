@@ -66,6 +66,6 @@ public class SwitchTimerParser implements JSONParserInterface {
     @Override
     public void onError(Exception error) {
         //no timers found
-        switchLogsReceiver.onReceiveSwitchTimers(new ArrayList<SwitchTimerInfo>());
+        switchLogsReceiver.onReceiveSwitchTimers(new ArrayList<>());
     }
 }

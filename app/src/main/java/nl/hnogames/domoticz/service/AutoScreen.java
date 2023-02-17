@@ -11,12 +11,16 @@ import android.text.SpannableString;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.car.app.CarContext;
 import androidx.car.app.CarToast;
+import androidx.car.app.Screen;
 import androidx.car.app.model.Action;
 import androidx.car.app.model.CarColor;
 import androidx.car.app.model.ForegroundCarColorSpan;
 import androidx.car.app.model.ItemList;
 import androidx.car.app.model.ListTemplate;
+import androidx.car.app.model.Row;
+import androidx.car.app.model.Template;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
@@ -34,11 +38,6 @@ import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
-
-import androidx.car.app.CarContext;
-import androidx.car.app.Screen;
-import androidx.car.app.model.Row;
-import androidx.car.app.model.Template;
 
 class AutoScreen extends Screen implements DefaultLifecycleObserver {
     ArrayList<DevicesInfo> supportedSwitches = new ArrayList<>();

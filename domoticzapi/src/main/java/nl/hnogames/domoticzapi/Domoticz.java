@@ -594,12 +594,11 @@ public class Domoticz {
     }
 
 
-    public void getSwitchTimers(int idx, SwitchTimerReceiver switchesReceiver) {
+    public void getSwitchTimers(int idx, SwitchTimerReceiver switchesReceiver, boolean isScene) {
         SwitchTimerParser parser = new SwitchTimerParser(switchesReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SWITCHTIMER) + idx;
+        String url = mDomoticzUrls.constructGetUrl(isScene? DomoticzValues.Json.Url.Request.SCENETIMER : DomoticzValues.Json.Url.Request.SWITCHTIMER) + idx;
 
-        GetResultRequest(parser,
-                url, true);
+        GetResultRequest(parser, url, true);
     }
 
     public void getNotifications(int idx, NotificationReceiver notificationReceiver) {

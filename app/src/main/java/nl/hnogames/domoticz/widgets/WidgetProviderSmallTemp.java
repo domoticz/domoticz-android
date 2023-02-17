@@ -21,6 +21,9 @@
 
 package nl.hnogames.domoticz.widgets;
 
+import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
+import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
+
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -32,9 +35,9 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import java.util.ArrayList;
-
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
@@ -44,9 +47,6 @@ import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
-
-import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
-import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 public class WidgetProviderSmallTemp extends AppWidgetProvider {
     private static String packageName;

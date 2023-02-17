@@ -21,6 +21,9 @@
 
 package nl.hnogames.domoticz.widgets;
 
+import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
+import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
+
 import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
@@ -33,9 +36,9 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import java.util.ArrayList;
-
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
@@ -48,9 +51,6 @@ import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
-
-import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
-import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 public class WidgetProviderSmall extends AppWidgetProvider {
     private static final int iVoiceAction = -55;

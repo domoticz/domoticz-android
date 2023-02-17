@@ -28,9 +28,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.adapters.LogAdapter;

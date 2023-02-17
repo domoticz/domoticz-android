@@ -5,16 +5,16 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
+
 import com.isupatches.wisefy.WiseFy;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.work.Worker;
-import androidx.work.WorkerParameters;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.NotificationInfo;

@@ -29,9 +29,9 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
 
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;

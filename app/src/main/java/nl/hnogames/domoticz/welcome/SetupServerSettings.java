@@ -39,6 +39,12 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
@@ -49,12 +55,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ServerSettingsActivity;

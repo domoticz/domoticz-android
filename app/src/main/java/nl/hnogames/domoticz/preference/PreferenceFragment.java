@@ -21,6 +21,8 @@
 
 package nl.hnogames.domoticz.preference;
 
+import static android.content.Context.KEYGUARD_SERVICE;
+
 import android.Manifest;
 import android.app.ActivityManager;
 import android.app.KeyguardManager;
@@ -45,12 +47,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.fastaccess.permission.base.PermissionHelper;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.HashSet;
-
 import androidx.appcompat.widget.SearchView;
 import androidx.biometric.BiometricManager;
 import androidx.core.content.ContextCompat;
@@ -67,6 +63,12 @@ import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.fastaccess.permission.base.PermissionHelper;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.HashSet;
 
 import nl.hnogames.domoticz.BeaconSettingsActivity;
 import nl.hnogames.domoticz.BluetoothSettingsActivity;
@@ -97,8 +99,6 @@ import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
-
-import static android.content.Context.KEYGUARD_SERVICE;
 
 public class PreferenceFragment extends PreferenceFragmentCompat implements SubscriptionsListener {
     @SuppressWarnings({"unused", "FieldCanBeLocal"})

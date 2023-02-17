@@ -300,6 +300,7 @@ public class DomoticzValues {
                 int SEND_NOTIFICATION = 50;
                 int NOTIFICATIONTYPES = 51;
                 int TEMPGRAPHS = 52;
+                int SCENETIMER = 53;
             }
 
             @SuppressWarnings("SpellCheckingInspection")
@@ -418,6 +419,7 @@ public class DomoticzValues {
             String TEXTLOG = "/json.htm?type=textlog&idx=";
             String SCENELOG = "/json.htm?type=scenelog&idx=";
             String SWITCHTIMER = "/json.htm?type=timers&idx=";
+            String SCENETIMER = "/json.htm?type=scenetimers&idx=";
         }
 
         @SuppressWarnings({"SpellCheckingInspection", "unused"})

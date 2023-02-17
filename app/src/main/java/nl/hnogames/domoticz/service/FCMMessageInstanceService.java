@@ -1,5 +1,7 @@
 package nl.hnogames.domoticz.service;
 
+import static android.text.TextUtils.isDigitsOnly;
+
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -14,8 +16,6 @@ import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.utils.GCMUtils;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-
-import static android.text.TextUtils.isDigitsOnly;
 
 public class FCMMessageInstanceService extends FirebaseMessagingService {
 

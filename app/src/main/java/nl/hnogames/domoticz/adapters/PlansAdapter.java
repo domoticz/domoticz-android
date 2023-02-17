@@ -30,6 +30,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
@@ -41,8 +43,6 @@ import com.google.android.gms.ads.formats.NativeAdOptions;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.MainActivity;
