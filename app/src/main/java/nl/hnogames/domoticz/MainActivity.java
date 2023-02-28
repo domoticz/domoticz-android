@@ -24,6 +24,8 @@ package nl.hnogames.domoticz;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -35,6 +37,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -1116,6 +1121,9 @@ public class MainActivity extends AppCompatPermissionsActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         try {
             switch (item.getItemId()) {
+                case R.id.action_refresh:
+                    refreshFragment();
+                    return true;
                 case R.id.action_speech:
                     if (speechRecognizer == null)
                         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
