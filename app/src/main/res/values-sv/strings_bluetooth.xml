@@ -30,6 +30,9 @@
     <string name="bluetooth_turned_off">Bluetooth måste aktiveras i din enhets inställningar. </string>
     <string name="bluetooth_saved">Sparade anslutningen till en ny Bluetooth-enhet. </string>
     <string name="bluetooth">Bluetooth</string>
+    <string name="title_notification_bluetooth">Enable Notifications for Bluetooth</string>
+    <string name="description_notification_bluetooth">Show notifications when you connect or disconnect a bluetooth device.</string>
+    <string name="bluetooth_event_triggered">"Bluetooth event triggered for %1$s"</string>
     <string name="bluetooth_disabled">Bluetooth-automation inaktiverad, vänligen ställ in via inställningar.</string>
     <string name="noSwitchSelected_explanation_bluetooth">För att få en bluetooth-enhet att automatisera något i Domoticz måste en switch kopplas till en bluetooth</string>
 </resources>

@@ -30,6 +30,9 @@
     <string name="bluetooth_turned_off">Należy włączyć Bluetooth w ustawieniach twojego smartfonu.</string>
     <string name="bluetooth_saved">Zapisano nowe połączenie z urządzeniem Bluetooth. </string>
     <string name="bluetooth">Urządzenie Bluetooth</string>
+    <string name="title_notification_bluetooth">Włącz powiadomienia dla Bluetooth</string>
+    <string name="description_notification_bluetooth">Pokaż powiadomienia, gdy podłączysz lub rozłączysz urządzenie Bluetooth.</string>
+    <string name="bluetooth_event_triggered">"Wydarzenie Bluetooth wyzwalane dla %1$s"</string>
     <string name="bluetooth_disabled">Automatyzacja Bluetooth wyłączona, proszę skonfigurować poprzez ustawienia.</string>
     <string name="noSwitchSelected_explanation_bluetooth">Aby urządzenie bluetooth zautomatyzować coś w Domoticz, przełącznik powinien być podłączony do Bluetooth</string>
 </resources>

@@ -26,10 +26,10 @@
     <string name="security_arm_home">Naoružaj</string>
     <string name="security_arm_away">Naoružaj odlazak</string>
     <string name="security_wrong_code">Unesen je pogrešan kod!</string>
-    <string name="security_no_rights">You do not have the rights for this action!</string>
+    <string name="security_no_rights">Nemate ovlasti za ovu akciju!</string>
     <string name="security_generic_error">Nije moguće promijeniti sigurnosni status</string>
     <string name="security_wrong_password_fingerprint">Unesena je pogrešna lozinka, lozinka računa Domoticz je failover za vaš otisak prsta...!</string>
     <string name="show_password">Prikaži lozinku</string>
-    <string name="fingerprint_make_sure">We need to make sure its you</string>
-    <string name="fingerprint_dialog_description">Touch your finger on the fingerprint sensor to authorise your account.</string>
+    <string name="fingerprint_make_sure">Moramo biti sigurni da ste to vi</string>
+    <string name="fingerprint_dialog_description">Dodirnite senzor otiska prsta da biste autorizirali svoj račun.</string>
 </resources>

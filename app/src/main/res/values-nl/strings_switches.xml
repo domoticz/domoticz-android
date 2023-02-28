@@ -21,7 +21,7 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- only temporarily to suppress the missing translations errors for now!! -->
-    <string name="title_switches">Schakelaars</string>
+    <string name="title_switches">Schakelaar weergave</string>
     <string name="txt_notAvailable">Niet beschikbaar</string>
     <string name="idx">IDX</string>
     <string name="placeholder_value">255</string>

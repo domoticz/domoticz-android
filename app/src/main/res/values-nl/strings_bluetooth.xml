@@ -30,6 +30,9 @@
     <string name="bluetooth_turned_off">Bluetooth moet worden ingeschakeld in uw telefoon instellingen. </string>
     <string name="bluetooth_saved">Een nieuw bluetooth apparaat opgeslagen. </string>
     <string name="bluetooth">Bluetooth</string>
+    <string name="title_notification_bluetooth">Meldingen voor Bluetooth inschakelen</string>
+    <string name="description_notification_bluetooth">Toon meldingen wanneer je een bluetooth apparaat verbindt of verbreekt.</string>
+    <string name="bluetooth_event_triggered">"Bluetooth event ontvangen voor %1$s"</string>
     <string name="bluetooth_disabled">Bluetooth automatisering uitgeschakeld, controleer uw instellingen.</string>
     <string name="noSwitchSelected_explanation_bluetooth">Er moet eerst een schakelaar worden gekoppeld aan dit bluetooth apparaat</string>
 </resources>

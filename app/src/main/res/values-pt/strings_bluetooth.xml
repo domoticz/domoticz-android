@@ -30,6 +30,9 @@
     <string name="bluetooth_turned_off">O Bluetooth precisa ser ativado nas configurações do seu dispositivo. </string>
     <string name="bluetooth_saved">Uma nova conexão de dispositivo bluetooth foi salva. </string>
     <string name="bluetooth">Bluetooth</string>
+    <string name="title_notification_bluetooth">Enable Notifications for Bluetooth</string>
+    <string name="description_notification_bluetooth">Show notifications when you connect or disconnect a bluetooth device.</string>
+    <string name="bluetooth_event_triggered">"Bluetooth event triggered for %1$s"</string>
     <string name="bluetooth_disabled">Automação Bluetooth desativada, por favor configure através das configurações.</string>
     <string name="noSwitchSelected_explanation_bluetooth">Para um dispositivo bluetooth automatizar algo no Domoticz, um interruptor deve ser conectada ao bluetooth</string>
 </resources>
