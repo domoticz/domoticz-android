@@ -126,13 +126,13 @@ class AutoScreen extends Screen implements DefaultLifecycleObserver {
             itemlist = new ItemList.Builder();
             if (mSharedPrefs == null)
                 mSharedPrefs = new SharedPrefUtil(getCarContext());
-            if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
+            /*if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                 itemlist.addItem(new Row.Builder().setTitle("Android Auto " + getCarContext().getString(R.string.premium_feature)).build());
                 templateBuilder.setLoading(false);
                 templateBuilder.setSingleList(itemlist.build());
                 isFinishedLoading = true;
                 return;
-            }
+            }*/
             StaticHelper.getDomoticz(getCarContext()).getDevices(new DevicesReceiver() {
                 @Override
                 public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
