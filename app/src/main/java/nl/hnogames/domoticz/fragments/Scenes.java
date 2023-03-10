@@ -33,12 +33,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
@@ -53,14 +53,17 @@ import nl.hnogames.domoticz.interfaces.ScenesClickListener;
 import nl.hnogames.domoticz.ui.PasswordDialog;
 import nl.hnogames.domoticz.ui.SceneInfoDialog;
 import nl.hnogames.domoticz.ui.SwitchLogInfoDialog;
+import nl.hnogames.domoticz.ui.SwitchTimerInfoDialog;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.WidgetUtils;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Containers.SwitchLogInfo;
+import nl.hnogames.domoticzapi.Containers.SwitchTimerInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SwitchLogReceiver;
+import nl.hnogames.domoticzapi.Interfaces.SwitchTimerReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
@@ -411,6 +414,37 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     public boolean onItemLongClicked(int idx) {
         showInfoDialog(getScene(idx));
         return true;
+    }
+
+    @Override
+    public void onTimerButtonClick(int idx) {
+        StaticHelper.getDomoticz(mContext).getSwitchTimers(idx, new SwitchTimerReceiver() {
+            @Override
+
+            public void onReceiveSwitchTimers(ArrayList<SwitchTimerInfo> switchTimers) {
+                if (switchTimers != null)
+                    showTimerDialog(switchTimers);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                UsefulBits.showSnackbar(mContext, frameLayout, R.string.error_timer, Snackbar.LENGTH_SHORT);
+                if (getActivity() instanceof MainActivity)
+                    ((MainActivity) getActivity()).Talk(R.string.error_timer);
+            }
+        }, true);
+    }
+
+    private void showTimerDialog(ArrayList<SwitchTimerInfo> switchLogs) {
+        if (switchLogs.size() <= 0) {
+            Toast.makeText(mContext, "No timer found.", Toast.LENGTH_LONG).show();
+        } else {
+            SwitchTimerInfoDialog infoDialog = new SwitchTimerInfoDialog(
+                    mContext,
+                    switchLogs,
+                    R.layout.dialog_switch_logs);
+            infoDialog.show();
+        }
     }
 
     private void showLogDialog(ArrayList<SwitchLogInfo> switchLogs) {

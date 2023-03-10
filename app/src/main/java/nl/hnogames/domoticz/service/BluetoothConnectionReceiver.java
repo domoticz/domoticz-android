@@ -7,11 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
+import androidx.core.app.ActivityCompat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import androidx.core.app.ActivityCompat;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.containers.BluetoothInfo;

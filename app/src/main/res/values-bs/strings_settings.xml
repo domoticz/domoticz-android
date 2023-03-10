@@ -22,7 +22,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="settingsActivity_name">Postavke</string>
-    <string name="cameraActivity_name">Kamere</string>
+    <string name="cameraActivity_name">Kamera</string>
     <!--        Categories             -->
     <string name="category_generic">Opće</string>
     <string name="category_wear">Android Wear</string>
@@ -37,25 +37,25 @@
     <string name="category_debug">Otklanjanje grešaka</string>
     <string name="category_export">Postavke izvoza/uvoza</string>
     <string name="category_theme">Tema</string>
-    <string name="category_clock">Clock</string>
+    <string name="category_clock">Sat</string>
     <string name="category_nfc">NFC povezivanja</string>
     <string name="category_startup_security">Sigurnost</string>
     <string name="category_account">Računi</string>
     <string name="category_QRCode">QR kod</string>
     <string name="category_bluetooth">Bluetooth</string>
-    <string name="category_wifi">Wifi</string>
+    <string name="category_wifi">WiFi</string>
     <string name="category_Speech">Govor</string>
     <string name="category_Reset">Resetuj</string>
-    <string name="category_help">Contribute</string>
+    <string name="category_help">Doprinesite</string>
     <!--        Generic settings       -->
     <string name="startup_screen">Početni zaslon</string>
     <string name="enable_items">Omogućite/onemogućite stavke</string>
     <!--        Generic sorting settings       -->
-    <string name="sort_server_title">Sorting</string>
-    <string name="sort_server_on">Sort devices like sorted on the server</string>
-    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
-    <string name="sort_lock_server_title">Lock</string>
-    <string name="sort_lock_custom_on">Lock the current custom sorting (disable drag/drop)</string>
+    <string name="sort_server_title">Sortiranje</string>
+    <string name="sort_server_on">Sortiraj uređaje kao na serveru</string>
+    <string name="sort_custom_on">Prilagođeno sortiranje, povucite i ispustite uređaje da ih sortirate</string>
+    <string name="sort_lock_server_title">Zaključaj</string>
+    <string name="sort_lock_custom_on">Zaključaj trenutno prilagođeno sortiranje (onemogući povlačenje/ispuštanje)</string>
     <string name="sort_dashboardLikeServer_off">Sortiraj ploče abecedno</string>
     <string name="extra_data_title">Dodatni podaci na ploči</string>
     <string name="show_extra_data_on">Pokaži dodatne podatke na ploči</string>
@@ -64,20 +64,20 @@
     <string name="always_on_on">Zaključavanje zaslona na uvijek Uključeno</string>
     <string name="always_on_off">Nemoj zaključati zaslon na uvijek uključeno</string>
     <string name="always_auto_refresh">Automatsko osvježavanje</string>
-    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
-    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_on">Osvježi stanje uređaja svakih nekoliko sekundi</string>
+    <string name="always_auto_refresh_off">Ne osvježavaj stanje uređaja svakih nekoliko sekundi</string>
     <string name="switch_buttons_title">Prekidači</string>
     <string name="switch_buttons_on">Prikaži prekidače sa uključi/isključi prekidačima</string>
     <string name="switch_buttons_off">Prikaži prekidače sa uključi/isključi dugmadima</string>
     <string name="dashboard_list_title">Mreža ploča</string>
     <string name="show_dashboard_list_on">Prikaži ploče u listi</string>
     <string name="show_dashboard_list_off">Prikaži ploče u mreži</string>
-    <string name="dashboard_clock">Clock</string>
-    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
-    <string name="dashboard_plans">Plans</string>
-    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
-    <string name="dashboard_camera">Camera</string>
-    <string name="show_dashboard_camera">Load the camera for connected switches</string>
+    <string name="dashboard_clock">Sat</string>
+    <string name="show_dashboard_clock">Prikažite sat na kontrolnoj ploči</string>
+    <string name="dashboard_plans">Planovi</string>
+    <string name="show_dashboard_plans">Prikažite planove na kontrolnoj ploči</string>
+    <string name="dashboard_camera">Kamera</string>
+    <string name="show_dashboard_camera">Učitajte kameru za spojene prekidače</string>
     <!--        Wear settings       -->
     <string name="enable_wear_select">Android Wear prilagođene stavke</string>
     <string name="custom_wear_select">Odaberite Wear prekidače</string>
@@ -94,8 +94,8 @@
     <string name="set_dark_theme">Prebaci na temu Dark</string>
     <string name="set_light_theme">Prebaci na temu Light</string>
     <!--        Talk Back Settings   -->
-    <string name="set_talk_back_on">Let Domoticz talk back to you</string>
-    <string name="set_talk_back_off">Turn talk back off</string>
+    <string name="set_talk_back_on">Neka Domoticz ragovara s vama</string>
+    <string name="set_talk_back_off">Onemogući razgovor</string>
     <!--        Import/Export settings  -->
     <string name="settings_imported">Postavke su učitane, restartujte Domoticz</string>
     <string name="settings_import_failed">Greška kod uvoza postavki</string>
@@ -103,7 +103,7 @@
     <string name="settings_export_failed">Greška kod izvoza postavki</string>
     <!--        Preference screens      -->
     <string name="server_settings">Postavke povezivanja servera</string>
-    <string name="server_force_fetch_config">Fetch server configuration</string>
+    <string name="server_force_fetch_config">Dohvati konfiguraciju poslužitelja</string>
     <string name="nfc_settings">Postavke NFC povezivanja</string>
     <string name="speech_settings">Postavke govorne komande</string>
     <string name="title_activity_server_settings">Postavke servera</string>
@@ -120,19 +120,19 @@
     <string name="qrcode_settings">Postavke QR koda</string>
     <string name="enable_qrcode">Omogući QR kodove</string>
     <string name="qrcode_enable_settings">Omogući funkcionalnost QR kodova</string>
-    <string name="bluetooth_settings">Setup Bluetooth devices</string>
-    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
-    <string name="beacon_settings">Setup Beacons</string>
-    <string name="enable_beacon">Enable Beacon functionality</string>
-    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
-    <string name="translate_title">Translations</string>
+    <string name="bluetooth_settings">Postavke Bluetooth uređaja</string>
+    <string name="enable_bluetooth">Omogući Bluetooth funkcionalnosti</string>
+    <string name="beacon_settings">Postavke Beaconsa</string>
+    <string name="enable_beacon">Omogući Beacons funkcionalnosti</string>
+    <string name="translate_description">Možete pomoći da naši prijevodi budu bolji, pa čak i dodati nove jezike ovoj aplikaciji putem našeg projekta Crowdin</string>
+    <string name="translate_title">Prijevod</string>
     <string name="security_settings">Postavke sigurnosti</string>
     <string name="enable_security">Omogući zaštitu otiskom prsta na početku</string>
     <string name="disable_security">Onemogućiti zaštitu otiskom prsta na početak</string>
     <string name="setup_fingerprints">Postavi otisak prsta kroz Androidove postavke ekrana</string>
     <string name="fingerprint_not_supported">Sigurnost otiskom prsta nije podržana na ovom uređaju</string>
     <string name="fingerprint_not_setup_in_android">Prvo konfigurišite/povežite otisak prsta sa ovim uređajem</string>
-    <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
+    <string name="fingerprint_sure">Jesi li siguran? Failover lozinka je lozinka vašeg Domoticz računa.</string>
     <!--        Widgets     -->
     <string name="category_widgets">Dodaci (BETA)</string>
     <string name="widget_description">Omogući ili onemogući dodatak na ovom uređaju</string>
@@ -140,20 +140,20 @@
     <string name="widget_warning">Koristite dodatke na vlastitu odgovornost!! Dodaci su trenutno u Beta verziji ii vjerojatno sadrže neke greške. Mogu uzrokovati i veliko korištenje podataka / trošenje baterija...</string>
     <!--        GCM settings      -->
     <string name="notification_settings_id">Google Cloud ID poruke</string>
-    <string name="notification_settings_push">Push your registration id to Domoticz</string>
+    <string name="notification_settings_push">Pošaljite svoj registracijski ID u Domoticz</string>
     <string name="notification_settings_pushed">Vaš ID registracije je sada spremljen na Domoticz</string>
     <string name="notification_settings_push_failed">Vaš ID registracije se nije mogao pohraniti na Domoticz, Pokušajte ponovo kasnije.</string>
     <string name="notification_show_title">Posljednje obavijesti</string>
     <string name="notification_show_nothing">Obavijesti nisu pronađene</string>
     <string name="notification_show">Pokaži par posljednjih obavijesti</string>
     <!--        Notification settings      -->
-    <string name="overwrite_notifications_title">Overwrite Notifications</string>
-    <string name="overwrite_notifications">Overwrite previous notifications on this device</string>
+    <string name="overwrite_notifications_title">Prepiši obavijesti</string>
+    <string name="overwrite_notifications">Prebriši prethodne obavijesti na ovom uređaju</string>
     <string name="enable_notifications_title">Omogući obavijesti</string>
     <string name="enable_notifications">Omogući obavijesti na ovom uređaju</string>
     <string name="notification_screen_title">Postavke obavijesti</string>
-    <string name="notification_history">Notification history</string>
-    <string name="notification_inbox">Inbox</string>
+    <string name="notification_history">Historija obavještenja</string>
+    <string name="notification_inbox">Pristigla pošta</string>
     <string name="notification_vibrate_title">Vibriraj</string>
     <string name="notification_vibrate_on">Vibriraj kada primiš obavijest</string>
     <string name="notification_vibrate_off">Ne vibriraj</string>
@@ -170,13 +170,13 @@
     <string name="alarmtimer_title">Alarmni tajmer</string>
     <string name="alarmtimer">Broj sekundi do vremena alarma</string>
     <!-- Theme properties -->
-    <string name="theme_default">Default</string>
-    <string name="theme_daynight">Day/Night</string>
-    <string name="theme_orange">Orange</string>
-    <string name="theme_pink">Pink</string>
-    <string name="theme_blue">Blue</string>
-    <string name="theme_green">Green</string>
-    <string name="theme_dark_blue">Dark blue</string>
+    <string name="theme_default">Zadano</string>
+    <string name="theme_daynight">Dan/noć</string>
+    <string name="theme_orange">Narandžasta</string>
+    <string name="theme_pink">Roza</string>
+    <string name="theme_blue">Plava</string>
+    <string name="theme_green">Zelena</string>
+    <string name="theme_dark_blue">Tamno plava</string>
     <!-- Other -->
     <string name="default_values">Zadane vrijednosti</string>
     <string name="default_values_min_error">Max vrijednost treba biti veća od minimalne vrijednosti</string>
@@ -186,27 +186,27 @@
     <string name="info_domoticz_version">Domoticz verzija</string>
     <string name="info_about">O Domoticz-u</string>
     <string name="info_credits">Zahvale</string>
-    <string name="info_credits_text">Domoticz for Android is made possible with several open source libraries</string>
+    <string name="info_credits_text">Domoticz za Android omogućen je s nekoliko biblioteka otvorenog koda</string>
     <!--        Debug category       -->
     <string name="debug_switch_title">Otklanjanje grešaka</string>
     <string name="debug_switch_summary_on">Omogući otklanjanje grešaka</string>
     <string name="debug_switch_summary_off">Onemogući otklanjanje grešaka</string>
     <!--        Geo settings activity       -->
-    <string name="error_atLeastOneItemInDrawer">You need at least one item in the drawer</string>
+    <string name="error_atLeastOneItemInDrawer">Potreban vam je barem jedan predmet u ladici</string>
     <!--        Server update category       -->
     <string name="title_activity_update">Ažuriranje servera</string>
-    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
-    <string name="error_couldNotCheckForUpdates">"Could not check for updates: %1$s"</string>
+    <string name="error_couldNotCheckForVersion">"Nije moguće provjeriti verziju: %1$s"</string>
+    <string name="error_couldNotCheckForUpdates">"Nije moguće provjeriti ažuriranje: %1$s"</string>
     <string name="error_couldNotCheckForConfig">"Ne mogu dobiti konfiguraciju Domoticz servera: %1$s"</string>
     <string name="update_available_enhanced">Dostupno je ažuriranje servera: %1$s na verziju: %2$s</string>
     <string name="check_for_update_title">Provjeri ima li ažuriranja</string>
-    <string name="check_for_update">Would you like us to check for Domoticz system updates?</string>
+    <string name="check_for_update">Želite li da provjerimo postoje li ažuriranja sustava Domoticz?</string>
     <string name="update_server_warning">Dok se vaš server ažurira ova aplikacija neće raditi ispravno.</string>
     <string name="update_server_downloadNotReady1">Ažuriranje nije još (potpuno) preuzeto.</string>
     <string name="update_server_downloadNotReady2">Pokušajte ponovo kasnije.</string>
     <string name="server_update_available">Ažuriranje servera je dostupno</string>
     <string name="update_server">Ažuriraj server</string>
-    <string name="server_update_revision">Server update revision</string>
+    <string name="server_update_revision">Revizija ažuriranja servera</string>
     <string name="server_version">Verzija servera</string>
     <string name="server_update">Ažuriranje servera</string>
     <string name="please_wait_while_we_check">Pričekajte dok ne provjerimo jeli vaš server spreman za ažuriranje</string>
@@ -220,7 +220,7 @@
     <string name="debug_test_text">Test ispravljanja grešaka</string>
     <string name="restart_required_title">Potrebno ponovno pokretanje</string>
     <string name="restart_now">Sada ponovno pokreni?</string>
-    <string name="check_settings">Check your settings</string>
-    <string name="report_error">Report an error</string>
-    <string name="support">Support</string>
+    <string name="check_settings">Provjerite vaše postavke</string>
+    <string name="report_error">Prijavi grešku</string>
+    <string name="support">Podrška</string>
 </resources>

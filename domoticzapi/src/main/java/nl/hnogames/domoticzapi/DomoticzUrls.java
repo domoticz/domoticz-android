@@ -397,6 +397,10 @@ public class DomoticzUrls {
                 url = DomoticzValues.Url.Category.SWITCHTIMER;
                 break;
 
+            case DomoticzValues.Json.Url.Request.SCENETIMER:
+                url = DomoticzValues.Url.Category.SCENETIMER;
+                break;
+
             case DomoticzValues.Json.Url.Request.SETSECURITY:
                 url = DomoticzValues.Url.System.SETSECURITY;
                 break;

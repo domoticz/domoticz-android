@@ -33,10 +33,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.material.chip.Chip;
 import com.like.LikeButton;
@@ -46,8 +50,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.MainActivity;
@@ -173,8 +175,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
             } else if (DomoticzValues.Scene.Type.SCENE.equalsIgnoreCase(mSceneInfo.getType())) {
                 holder.isProtected = mSceneInfo.isProtected();
                 setButtons(holder, Buttons.SCENE);
-                if (holder.buttonTimer != null)
-                    holder.buttonTimer.setVisibility(View.GONE);
+
                 if (holder.buttonNotifications != null)
                     holder.buttonNotifications.setVisibility(View.GONE);
 
@@ -203,6 +204,12 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                     }
                 }
 
+                holder.buttonTimer.setId(mSceneInfo.getIdx());
+                holder.buttonTimer.setOnClickListener(v -> handleTimerButtonClick(v.getId()));
+                if (mSceneInfo.hasTimers()) {
+                    holder.buttonTimer.setVisibility(View.VISIBLE);
+                }
+
                 if (holder.likeButton != null) {
                     holder.likeButton.setId(mSceneInfo.getIdx());
                     holder.likeButton.setLiked(mSceneInfo.getFavoriteBoolean());
@@ -227,8 +234,6 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
 
                 setButtons(holder, Buttons.GROUP);
 
-                if (holder.buttonTimer != null)
-                    holder.buttonTimer.setVisibility(View.GONE);
                 if (holder.buttonNotifications != null)
                     holder.buttonNotifications.setVisibility(View.GONE);
 
@@ -249,6 +254,12 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                 if (holder.buttonOff != null) {
                     holder.buttonOff.setId(mSceneInfo.getIdx());
                     holder.buttonOff.setOnClickListener(v -> handleClick(v.getId(), false));
+                }
+
+                holder.buttonTimer.setId(mSceneInfo.getIdx());
+                holder.buttonTimer.setOnClickListener(v -> handleTimerButtonClick(v.getId()));
+                if (mSceneInfo.hasTimers()) {
+                    holder.buttonTimer.setVisibility(View.VISIBLE);
                 }
 
                 Picasso.get().load(DomoticzIcons.getDrawableIcon(
@@ -301,13 +312,20 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
             if (!adLoaded)
                 holder.adview.setVisibility(View.GONE);
 
-            MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
+            List<String> testDevices = new ArrayList<>();
+            testDevices.add(AdRequest.DEVICE_ID_EMULATOR);
+            testDevices.add("0095CAF9DD12F33E5417335E1EC5FCAD");
+            RequestConfiguration requestConfiguration
+                    = new RequestConfiguration.Builder()
+                    .setTestDeviceIds(testDevices)
+                    .build();
+
+            MobileAds.initialize(context);
             AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice("0095CAF9DD12F33E5417335E1EC5FCAD")
                     .build();
 
             AdLoader adLoader = new AdLoader.Builder(context, context.getString(R.string.ad_unit_id))
-                    .forUnifiedNativeAd(unifiedNativeAd -> {
+                    .forNativeAd(unifiedNativeAd -> {
                         NativeTemplateStyle styles = new NativeTemplateStyle.Builder().build();
                         if (holder.adview != null) {
                             holder.adview.setStyles(styles);
@@ -318,7 +336,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                     })
                     .withAdListener(new AdListener() {
                         @Override
-                        public void onAdFailedToLoad(int errorCode) {
+                        public void onAdFailedToLoad(LoadAdError errorCode) {
                             if (holder.adview != null)
                                 holder.adview.setVisibility(View.GONE);
                         }
@@ -398,6 +416,10 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
 
     public void handleClick(int idx, boolean action) {
         listener.onSceneClick(idx, action);
+    }
+
+    private void handleTimerButtonClick(int idx) {
+        listener.onTimerButtonClick(idx);
     }
 
     @Override

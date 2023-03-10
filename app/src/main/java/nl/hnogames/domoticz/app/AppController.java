@@ -31,6 +31,11 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -70,11 +75,6 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-import androidx.multidex.MultiDex;
-import androidx.multidex.MultiDexApplication;
 
 import de.duenndns.ssl.MemorizingTrustManager;
 import nl.hnogames.domoticz.BuildConfig;
@@ -305,7 +305,8 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
                 HttpsURLConnection.setDefaultHostnameVerifier(
                         mtm.wrapHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier()));
             } catch (KeyManagementException | NoSuchAlgorithmException |
-                    GooglePlayServicesNotAvailableException | GooglePlayServicesRepairableException e) {
+                     GooglePlayServicesNotAvailableException |
+                     GooglePlayServicesRepairableException e) {
                 e.printStackTrace();
             }
             mRequestQueue = Volley.newRequestQueue(context);

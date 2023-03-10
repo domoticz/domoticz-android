@@ -30,6 +30,9 @@
     <string name="bluetooth_turned_off">Bluetooth musí být zapnuto v nastavení vašeho zařízení. </string>
     <string name="bluetooth_saved">Uloženo nové připojení zařízení bluetooth. </string>
     <string name="bluetooth">Bluetooth</string>
+    <string name="title_notification_bluetooth">Enable Notifications for Bluetooth</string>
+    <string name="description_notification_bluetooth">Show notifications when you connect or disconnect a bluetooth device.</string>
+    <string name="bluetooth_event_triggered">"Bluetooth event triggered for %1$s"</string>
     <string name="bluetooth_disabled">Bluetooth automatizace zakázána, prosím nastavte ji pomocí nastavení.</string>
     <string name="noSwitchSelected_explanation_bluetooth">Pro automatizaci něčeho v Domoticz pomocí bluetooth zařízení by měl být přepínač propojen s bluetooth</string>
 </resources>

@@ -17,15 +17,15 @@ import android.service.controls.templates.ToggleRangeTemplate;
 import android.service.controls.templates.ToggleTemplate;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+
 import org.reactivestreams.FlowAdapters;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Flow;
 import java.util.function.Consumer;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import io.reactivex.processors.ReplayProcessor;
 import nl.hnogames.domoticz.MainActivity;

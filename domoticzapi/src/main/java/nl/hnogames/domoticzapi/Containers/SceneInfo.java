@@ -160,9 +160,10 @@ public class SceneInfo implements Comparable, Serializable {
         return status;
     }
 
-    public Boolean isTimers() {
+    public boolean hasTimers() {
         return timers;
     }
+
 
     public String getType() {
         return type;

@@ -27,12 +27,12 @@
     <string name="verylow">Vrlo nisko</string>
     <string name="allsystems">Svi sistemi</string>
     <string name="systems">Sistemi</string>
-    <string name="send_notification">Send notification</string>
-    <string name="notification_subject">Subject</string>
-    <string name="notification_message">Message</string>
-    <string name="notification_error_system">Please choose a system to send the notification to</string>
-    <string name="notification_error_message">Please fill in a message</string>
-    <string name="notification_error_subject">Please fill in a subject</string>
-    <string name="notification_error_send">Could not send the notification to Domoticz</string>
-    <string name="notification_send">Notification send to Domoticz</string>
+    <string name="send_notification">Pošalji obavijest</string>
+    <string name="notification_subject">Tema</string>
+    <string name="notification_message">Poruka</string>
+    <string name="notification_error_system">Odaberite sustav na koji ćete poslati obavijest</string>
+    <string name="notification_error_message">Unesite poruku</string>
+    <string name="notification_error_subject">Unesite temu poruke</string>
+    <string name="notification_error_send">Nije moguće poslati obavijest Domoticzu</string>
+    <string name="notification_send">Obavijest poslati Domoticzu</string>
 </resources>

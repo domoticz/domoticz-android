@@ -21,12 +21,12 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- only temporarily to suppress the missing translations errors for now!! -->
-    <string name="premium_category">Koupit prémiovou verzi</string>
+    <string name="premium_category">Koupit premium</string>
     <string name="premium_title">Získejte verzi premium!</string>
-    <string name="restore_title">Restore subscriptions</string>
+    <string name="restore_title">Obnovit předplatné</string>
     <string name="premium_feature">Toto je prémiová funkce, kupte si placenou verzi aplikace a podpořte tak vývojáře!</string>
-    <string name="old_version">Get the latest version!</string>
-    <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
+    <string name="old_version">Získat nejnovější verzi</string>
+    <string name="old_version_description">Migrujeme pouze na jednu aplikaci Domoticz Android.\n\nTato verze může být stále používána se všemi prémiovými funkcemi, ale v budoucnu již neobdrží žádné aktualizace.\n\nVaše nastavení můžete exportovat a importovat v menu nastavení.</string>
     <string name="drawer_open">Otevřít navigační panel</string>
     <string name="drawer_close">Zavřít navigační panel</string>
     <string name="msg_please_wait">Čekejte prosím&#8230;</string>

@@ -25,11 +25,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;

@@ -32,6 +32,13 @@
         app:showAsAction="always|collapseActionView" />
 
     <item
+        android:id="@+id/action_refresh"
+        android:icon="@drawable/baseline_sync_white_24"
+        android:orderInCategory="100"
+        android:title="@string/refresh"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/action_speech"
         android:icon="@drawable/baseline_mic_white_24"
         android:orderInCategory="99"

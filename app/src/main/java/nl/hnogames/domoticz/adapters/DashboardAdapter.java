@@ -41,10 +41,17 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.slider.Slider;
@@ -57,11 +64,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
@@ -846,13 +848,21 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if (!adLoaded)
                 holder.adview.setVisibility(View.GONE);
 
-            MobileAds.initialize(context, context.getString(R.string.ADMOB_APP_KEY));
+            List<String> testDevices = new ArrayList<>();
+            testDevices.add(AdRequest.DEVICE_ID_EMULATOR);
+            testDevices.add("0095CAF9DD12F33E5417335E1EC5FCAD");
+            RequestConfiguration requestConfiguration
+                    = new RequestConfiguration.Builder()
+                    .setTestDeviceIds(testDevices)
+                    .build();
+
+            MobileAds.initialize(context);
+            MobileAds.setRequestConfiguration(requestConfiguration);
             AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice("0095CAF9DD12F33E5417335E1EC5FCAD")
                     .build();
 
             AdLoader adLoader = new AdLoader.Builder(context, context.getString(R.string.ad_unit_id))
-                    .forUnifiedNativeAd(unifiedNativeAd -> {
+                    .forNativeAd(unifiedNativeAd -> {
                         NativeTemplateStyle styles = new NativeTemplateStyle.Builder().build();
                         if (holder.adview != null) {
                             holder.adview.setStyles(styles);
@@ -863,7 +873,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     })
                     .withAdListener(new AdListener() {
                         @Override
-                        public void onAdFailedToLoad(int errorCode) {
+                        public void onAdFailedToLoad(LoadAdError errorCode) {
                             if (holder.adview != null)
                                 holder.adview.setVisibility(View.GONE);
                         }

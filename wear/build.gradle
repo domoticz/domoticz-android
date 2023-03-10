@@ -22,23 +22,16 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        debug {
-            storeFile file('C:\\Users\\heini\\Dropbox\\Android\\key\\.altkeystore')
-            storePassword 'waterpolo'
-            keyAlias 'heinisblog'
-            keyPassword 'heinisblog'
-        }
-    }
-    compileSdkVersion 31
+    compileSdkVersion 33
     publishNonDefault true
 
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 31
-        versionCode 9010
-        versionName "1.4.0"
+        targetSdkVersion 33
+        versionCode 9032
+        versionName "1.9.2"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -48,18 +41,9 @@ android {
 
     flavorDimensions "tier"
     productFlavors {
-        dev {
-            applicationId 'nl.hnogames.domoticz.premium'
-            resValue "string", "app_name_domoticz", 'Domoticz'
-            buildConfigField "boolean", "LITE_VERSION", "false"
-            dimension "tier"
-            minSdkVersion 21
-            versionNameSuffix "-dev"
-            resConfigs 'en', 'xxhdpi'
-        }
         free {
             applicationId 'nl.hnogames.domoticz'
-            resValue "string", "app_name_domoticz", 'Domoticz Lite'
+            resValue "string", "app_name_domoticz", 'Domoticz'
             buildConfigField "boolean", "LITE_VERSION", "true"
             dimension "tier"
         }
@@ -76,11 +60,14 @@ android {
             dimension "tier"
         }
     }
+
     lint {
         abortOnError false
         checkReleaseBuilds false
         disable 'MissingTranslation'
     }
+
+    namespace 'nl.hnogames.domoticz'
 }
 
 dependencies {
@@ -90,8 +77,8 @@ dependencies {
     implementation 'com.google.android.support:wearable:2.9.0'
     compileOnly 'com.google.android.wearable:wearable:2.9.0'
 
-    implementation 'com.google.android.gms:play-services-wearable:17.1.0'
+    implementation 'com.google.android.gms:play-services-wearable:18.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.squareup.picasso:picasso:2.71828'
 }

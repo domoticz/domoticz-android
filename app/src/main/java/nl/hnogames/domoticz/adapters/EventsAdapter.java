@@ -29,13 +29,13 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.interfaces.EventsClickListener;

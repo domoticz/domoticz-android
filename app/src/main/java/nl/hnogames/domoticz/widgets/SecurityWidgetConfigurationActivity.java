@@ -21,6 +21,9 @@
 
 package nl.hnogames.domoticz.widgets;
 
+import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
+import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
+
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -31,14 +34,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.ftinc.scoop.Scoop;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
@@ -52,9 +55,6 @@ import nl.hnogames.domoticzapi.Containers.SettingsInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SettingsReceiver;
-
-import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
-import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 public class SecurityWidgetConfigurationActivity extends AppCompatActivity {
 

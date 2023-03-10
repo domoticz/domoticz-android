@@ -34,6 +34,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import androidx.fragment.app.Fragment;
+
 import com.alexvasilkov.gestures.Settings;
 import com.alexvasilkov.gestures.views.GestureImageView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -44,8 +46,6 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
-import androidx.fragment.app.Fragment;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;

@@ -1,14 +1,14 @@
 package nl.hnogames.domoticz.helpers;
 
+import static androidx.recyclerview.widget.ItemTouchHelper.Callback;
+
 import android.graphics.Canvas;
 import android.util.Log;
-
-import org.jetbrains.annotations.NotNull;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static androidx.recyclerview.widget.ItemTouchHelper.Callback;
+import org.jetbrains.annotations.NotNull;
 
 public class SimpleItemTouchHelperCallback extends Callback {
     private final ItemMoveAdapter mAdapter;

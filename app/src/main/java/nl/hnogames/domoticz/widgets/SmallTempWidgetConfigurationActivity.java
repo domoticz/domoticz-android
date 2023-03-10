@@ -21,6 +21,9 @@
 
 package nl.hnogames.domoticz.widgets;
 
+import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
+import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
+
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,17 +33,17 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.ftinc.scoop.Scoop;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.MenuItemCompat;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.ftinc.scoop.Scoop;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.SettingsActivity;
@@ -53,9 +56,6 @@ import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
 import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 import nl.hnogames.domoticzapi.Interfaces.TemperatureReceiver;
-
-import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
-import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
 

@@ -21,6 +21,8 @@
 
 package nl.hnogames.domoticz.utils;
 
+import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
+
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -30,8 +32,6 @@ import android.os.Build;
 import nl.hnogames.domoticz.widgets.SecurityWidgetProvider;
 import nl.hnogames.domoticz.widgets.WidgetProviderLarge;
 import nl.hnogames.domoticz.widgets.WidgetProviderSmall;
-
-import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 
 public class WidgetUtils {
     public static void RefreshWidgets(Context context) {

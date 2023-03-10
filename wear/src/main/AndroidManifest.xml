@@ -20,10 +20,10 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="nl.hnogames.domoticz">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature android:name="android.hardware.type.watch" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
 
     <application
         android:label="@string/app_name_domoticz"
@@ -61,7 +61,7 @@
         </activity>
 
         <activity android:exported="true"
-            android:name="android.support.wearable.activity.ConfirmationActivity">
+            android:name="androidx.wear.activity.ConfirmationActivity">
         </activity>
 
         <meta-data

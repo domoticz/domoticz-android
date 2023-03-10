@@ -35,4 +35,6 @@ public interface ScenesClickListener {
     void onItemClicked(View v, int position);
 
     boolean onItemLongClicked(int position);
+
+    void onTimerButtonClick(int idx);
 }

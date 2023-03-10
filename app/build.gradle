@@ -79,30 +79,6 @@ android {
 
     flavorDimensions "tier"
     productFlavors {
-        dev {
-            applicationId 'nl.hnogames.domoticz.premium'
-
-            resValue "string", "APK_VALIDATE_DEBUG", "$System.env.APK_VALIDATE_DEBUG"
-            resValue "string", "APK_VALIDATE_PROD", "$System.env.APK_VALIDATE_PROD"
-            resValue "string", "APK_LICENSE_PREMIUM", "$System.env.APK_LICENSE_PREMIUM"
-
-            resValue "string", "ADMOB_COMP_KEY", "$System.env.ADMOB_COMP_KEY"
-            resValue "string", "ADMOB_APP_KEY", "$System.env.ADMOBAPPKEY"
-            resValue "string", "ADMOB_ADS_KEY", "$System.env.ADMOBADSKEY"
-
-            resValue "string", "analiticsapikey", "$System.env.GOOGLE_ANALITICS_ID"
-            resValue "string", "google_maps_key", "$System.env.GOOGLEAPIKEY"
-            resValue "string", "revenuecat_apikey", "$System.env.REVENUECATKEY"
-            resValue "string", "app_name_domoticz", 'Domoticz'
-            buildConfigField "boolean", "LITE_VERSION", "false"
-            buildConfigField "boolean", "PAID_OOTT", "false"
-            dimension "tier"
-
-            minSdkVersion 23
-            versionNameSuffix "-dev"
-            resConfigs 'en', 'xxhdpi'
-        }
-
         free {
             applicationId 'nl.hnogames.domoticz'
             resValue "string", "APK_VALIDATE_DEBUG", "$System.env.APK_VALIDATE_DEBUG"
@@ -167,6 +143,8 @@ android {
             it.name.startsWith('dex')
         }
     }
+
+    namespace 'nl.hnogames.domoticz'
 }
 
 repositories {
@@ -188,25 +166,26 @@ allprojects {
 //noinspection GroovyAssignabilityCheck
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    wearApp project(':wear')
 
     implementation 'androidx.core:core:1.9.0'
-    implementation "androidx.work:work-runtime:2.8.0-rc01"
+    implementation "androidx.work:work-runtime:2.8.0"
     implementation 'androidx.preference:preference:1.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.biometric:biometric:1.1.0'
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.annotation:annotation:1.3.0'
-    implementation 'com.google.android.libraries.car:car-app:1.0.0-beta.1'
+    implementation 'androidx.annotation:annotation:1.5.0'
+    implementation "androidx.car.app:app:1.3.0-rc01"
     implementation 'org.reactivestreams:reactive-streams:1.0.3'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
     implementation 'com.revenuecat.purchases:purchases:5.6.3'
 
-    implementation 'com.google.firebase:firebase-core:19.0.1'
+    implementation 'com.google.firebase:firebase-core:21.1.1'
     implementation 'com.google.firebase:firebase-iid:21.1.0'
     implementation 'com.google.firebase:firebase-analytics:19.0.1'
     implementation 'com.google.firebase:firebase-crashlytics:18.2.1'
@@ -214,13 +193,13 @@ dependencies {
     implementation "com.google.firebase:firebase-ads:19.8.0"
 
     implementation 'com.google.android.ads.consent:consent-library:1.0.8'
-    implementation "com.google.android.gms:play-services-analytics:17.0.1"
-    implementation "com.google.android.gms:play-services-wearable:17.1.0"
-    implementation "com.google.android.gms:play-services-maps:18.0.2"
+    implementation "com.google.android.gms:play-services-analytics:18.0.2"
+    implementation "com.google.android.gms:play-services-wearable:18.0.0"
+    implementation "com.google.android.gms:play-services-maps:18.1.0"
     implementation "com.google.android.gms:play-services-gcm:17.0.0"
-    implementation "com.google.android.gms:play-services-location:18.0.0"
+    implementation "com.google.android.gms:play-services-location:21.0.1"
     implementation "com.google.android.gms:play-services-places:17.0.0"
-    implementation "com.google.android.gms:play-services-ads:19.8.0"
+    implementation "com.google.android.gms:play-services-ads:21.5.0"
     implementation 'com.google.android.ads.consent:consent-library:1.0.8'
     implementation "com.github.nisrulz:recyclerviewhelper:27.1.1"
     implementation "org.altbeacon:android-beacon-library:2.19"
@@ -231,6 +210,7 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
 
+    implementation 'com.google.guava:guava:29.0-android'
     implementation 'com.github.alxrm:animated-clock-icon:1.0.2'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.google.code.gson:gson:2.8.6'

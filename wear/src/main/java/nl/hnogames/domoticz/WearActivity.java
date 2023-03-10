@@ -21,7 +21,6 @@
 
 package nl.hnogames.domoticz;
 
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -49,8 +48,8 @@ import nl.hnogames.domoticz.app.DomoticzActivity;
 import nl.hnogames.domoticz.containers.DevicesInfo;
 import nl.hnogames.domoticz.utils.WearUsefulBits;
 
-public class WearActivity extends DomoticzActivity implements MessageClient.OnMessageReceivedListener,
-        GoogleApiClient.ConnectionCallbacks {
+public class WearActivity extends DomoticzActivity
+        implements MessageClient.OnMessageReceivedListener {
 
     private ArrayList<DevicesInfo> switches = null;
     private WearableRecyclerView listView;
@@ -73,11 +72,6 @@ public class WearActivity extends DomoticzActivity implements MessageClient.OnMe
         if (!WearUsefulBits.isEmpty(switchesRawData)) {
             createListView(new Gson().fromJson(switchesRawData, String[].class));
         }
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        Log.d(TAG, "onConnected " + bundle);
     }
 
     private void createListView(String[] switchesRawData) {

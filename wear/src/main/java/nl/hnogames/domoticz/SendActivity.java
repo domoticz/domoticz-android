@@ -23,9 +23,9 @@ package nl.hnogames.domoticz;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.wearable.activity.ConfirmationActivity;
 import android.view.View;
 
+import androidx.wear.activity.ConfirmationActivity;
 import androidx.wear.widget.CircularProgressLayout;
 
 import nl.hnogames.domoticz.app.DomoticzActivity;

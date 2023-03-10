@@ -36,6 +36,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.ItemTouchHelper;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
@@ -46,10 +50,6 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.ItemTouchHelper;
 
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
@@ -634,7 +634,6 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     }
 
     @Override
-
     public void onTimerButtonClick(int idx) {
         StaticHelper.getDomoticz(mContext).getSwitchTimers(idx, new SwitchTimerReceiver() {
             @Override
@@ -651,7 +650,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 if (getActivity() instanceof MainActivity)
                     ((MainActivity) getActivity()).Talk(R.string.error_timer);
             }
-        });
+        }, false);
     }
 
     @Override
