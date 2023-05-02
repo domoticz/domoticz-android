@@ -1038,7 +1038,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         });
 
         if (holder.dimmer.getVisibility() == View.VISIBLE) {
-            holder.dimmer.setTag(mDeviceInfo.getIdx());
+            holder.dimmer.setTag(mDeviceInfo);
             holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel() <= 0 ? 100 : mDeviceInfo.getMaxDimLevel());
             holder.dimmer.setValue(mDeviceInfo.getLevel() > holder.dimmer.getValueTo() ? holder.dimmer.getValueTo() : mDeviceInfo.getLevel());
             holder.dimmer.setLabelFormatter(value -> (Math.round(value)) + "%");
@@ -1102,7 +1102,6 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
         if (mDeviceInfo.isLevelOffHidden())
             levelNames.remove(0);
 
-        holder.spSelector.setTag(mDeviceInfo.getIdx());
         if (levelNames != null && levelNames.size() > loadLevel) {
             ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context,
                     android.R.layout.simple_spinner_item, levelNames);
@@ -1110,14 +1109,16 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             holder.spSelector.setAdapter(dataAdapter);
             holder.spSelector.setSelection(loadLevel);
         }
-        holder.spSelector.setVisibility(View.VISIBLE);
 
+        holder.spSelector.setTag(mDeviceInfo);
+        holder.spSelector.setId(mDeviceInfo.getIdx());
+        holder.spSelector.setVisibility(View.VISIBLE);
         holder.spSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int arg2, long arg3) {
-                if (((int) holder.spSelector.getTag()) == mDeviceInfo.getIdx()) {
-                    holder.spSelector.setTag(mDeviceInfo.getIdx() * 3);
+                if ((holder.spSelector.getId()) == mDeviceInfo.getIdx()) {
+                    holder.spSelector.setId(mDeviceInfo.getIdx() * 3);
                 } else {
                     String selValue = holder.spSelector.getItemAtPosition(arg2).toString();
                     handleSelectorChange(mDeviceInfo, selValue, levelNames);
@@ -1453,9 +1454,11 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     }
 
     private void handleSelectorChange(DevicesInfo device, String levelName, ArrayList<String> levelNames) {
-        for (int i = 0; i < levelNames.size(); i++) {
-            if (levelNames.get(i).equals(levelName)) {
-                listener.onSelectorChange(device, device.isLevelOffHidden() ? (i * 10) : (i * 10) - 10);
+        if(device != null) {
+            for (int i = 0; i < levelNames.size(); i++) {
+                if (levelNames.get(i).equals(levelName)) {
+                    listener.onSelectorChange(device, device.isLevelOffHidden() ? (i * 10) : (i * 10) - 10);
+                }
             }
         }
     }
