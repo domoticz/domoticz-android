@@ -110,7 +110,6 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
     }
 
     @Override
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

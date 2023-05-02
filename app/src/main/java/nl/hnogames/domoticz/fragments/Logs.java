@@ -28,8 +28,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.R;
@@ -69,6 +67,12 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
         mContext = context;
         SetTitle(getString(R.string.title_logs));
         setSortFab(true);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -130,13 +134,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
                 itemDecorationAdded = true;
             }
             mSwipeRefreshLayout.setRefreshing(false);
-            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-
-                public void onRefresh() {
-                    processLogs();
-                }
-            });
+            mSwipeRefreshLayout.setOnRefreshListener(() -> processLogs());
         }
         super.showSpinner(false);
         this.Filter(filter);
@@ -152,7 +150,6 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
 
     public void errorHandling(Exception error) {
         if (error != null) {
-            // Let's check if were still attached to an activity
             if (isAdded()) {
                 if (mSwipeRefreshLayout != null)
                     mSwipeRefreshLayout.setRefreshing(false);
