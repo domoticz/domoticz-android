@@ -25,7 +25,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -1454,7 +1453,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
     }
 
     private void handleSelectorChange(DevicesInfo device, String levelName, ArrayList<String> levelNames) {
-        if(device != null) {
+        if (device != null) {
             for (int i = 0; i < levelNames.size(); i++) {
                 if (levelNames.get(i).equals(levelName)) {
                     listener.onSelectorChange(device, device.isLevelOffHidden() ? (i * 10) : (i * 10) - 10);
