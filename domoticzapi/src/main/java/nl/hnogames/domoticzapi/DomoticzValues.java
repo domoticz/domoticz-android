@@ -104,6 +104,7 @@ public class DomoticzValues {
                 String SETPOINT = "SetPoint";
                 String YOULESS = "YouLess";
                 String SMARTWARES = "Smartwares";
+                String THERMOSTAT_MODE = "Thermostat Mode";
             }
         }
 
