@@ -338,6 +338,38 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
+    public void OnModeChanged(UtilitiesInfo utility, int id, String mode) {
+        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
+        if (user != null && user.getRights() <= 0) {
+            UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
+            return;
+        }
+
+        addDebugText("OnModeChanged");
+        addDebugText("Set idx " + utility.getIdx() + " to " + mode);
+        StaticHelper.getDomoticz(mContext).setAction(utility.getIdx(),
+                DomoticzValues.Json.Url.Set.THERMOSTAT,
+                DomoticzValues.Device.Thermostat.Action.TMODE,
+                id,
+                null,
+                new setCommandReceiver() {
+                    @Override
+                    public void onReceiveResult(String result) {
+                        successHandling(result, false);
+                    }
+
+                    @Override
+
+                    public void onError(Exception error) {
+                        errorHandling(error);
+                    }
+                });
+    }
+
+    @Override
 
     public void onLogClick(final UtilitiesInfo utility, final String range) {
         int steps = 2;
@@ -373,7 +405,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
-
     public void onThermostatClick(final int idx) {
         UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
         if (user != null && user.getRights() <= 0) {

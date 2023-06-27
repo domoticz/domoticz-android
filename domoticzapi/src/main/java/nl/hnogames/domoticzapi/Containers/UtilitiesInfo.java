@@ -21,14 +21,20 @@
 
 package nl.hnogames.domoticzapi.Containers;
 
+import android.text.Html;
+
 import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
+
+import nl.hnogames.domoticzapi.Utils.UsefulBits;
 
 public class UtilitiesInfo implements Comparable, Serializable {
 
@@ -54,6 +60,8 @@ public class UtilitiesInfo implements Comparable, Serializable {
     private String Usage;
     private String UsageDeliv;
     private int signalLevel;
+    private String Modes;
+    private int Mode;
 
     public UtilitiesInfo() {
     }
@@ -77,6 +85,11 @@ public class UtilitiesInfo implements Comparable, Serializable {
             } catch (Exception ignored) {
                 setPoint = 0;
             }
+        }
+        if (row.has("Modes")) {
+            Modes = row.getString("Modes");
+            if (UsefulBits.isBase64Encoded(Modes))
+                Modes = UsefulBits.decodeBase64(Modes);
         }
         if (row.has("Name"))
             Name = row.getString("Name");
@@ -107,6 +120,12 @@ public class UtilitiesInfo implements Comparable, Serializable {
             } catch (Exception ex) {
                 signalLevel = 0;
             }
+        } if (row.has("Mode")) {
+            try {
+                Mode = row.getInt("Mode");
+            } catch (Exception ex) {
+                Mode = 0;
+            }
         }
     }
 
@@ -135,6 +154,31 @@ public class UtilitiesInfo implements Comparable, Serializable {
 
     public void setSignalLevel(int signalLevel) {
         this.signalLevel = signalLevel;
+    }
+
+    public int getModeId() {
+        return Mode;
+    }
+
+    public void SetModeId(int mode) {
+        this.Mode = mode;
+    }
+
+    public ArrayList<String> getModes() {
+        if (UsefulBits.isEmpty(Modes))
+            return null;
+        String[] names = Pattern.compile(";", Pattern.LITERAL).split(Modes);
+
+        ArrayList<String> newNames = new ArrayList<String>();
+        for (String value : names) {
+            try {
+                Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                newNames.add(Html.fromHtml(value).toString());
+            }
+        }
+
+        return newNames;
     }
 
     public String getName() {

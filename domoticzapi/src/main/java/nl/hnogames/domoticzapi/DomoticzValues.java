@@ -90,6 +90,7 @@ public class DomoticzValues {
             interface Type {
                 String HEATING = "Heating";
                 String THERMOSTAT = "Thermostat";
+                String GENERAL = "General";
             }
 
             interface SubType {
@@ -141,6 +142,7 @@ public class DomoticzValues {
             interface Action {
                 int MIN = 50;
                 int PLUS = 51;
+                int TMODE = 52;
             }
         }
 
@@ -320,6 +322,7 @@ public class DomoticzValues {
                 int WWCOLOR = 112;
                 int KELVIN = 113;
                 int LOG = 114;
+                int THERMOSTAT = 115;
             }
         }
 
@@ -421,6 +424,12 @@ public class DomoticzValues {
             String SCENELOG = "/json.htm?type=scenelog&idx=";
             String SWITCHTIMER = "/json.htm?type=timers&idx=";
             String SCENETIMER = "/json.htm?type=scenetimers&idx=";
+        }
+
+        @SuppressWarnings("SpellCheckingInspection")
+        interface Thermostat {
+            String SETUSED = "/json.htm?type=setused&idx=";
+            String TMODE = "&tmode=";
         }
 
         @SuppressWarnings({"SpellCheckingInspection", "unused"})
