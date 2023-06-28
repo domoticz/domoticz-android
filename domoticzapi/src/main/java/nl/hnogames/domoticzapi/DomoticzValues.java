@@ -428,7 +428,7 @@ public class DomoticzValues {
 
         @SuppressWarnings("SpellCheckingInspection")
         interface Thermostat {
-            String SETUSED = "/json.htm?type=setused&idx=";
+            String SETUSED = "/json.htm?type=setused&used=true&idx=";
             String TMODE = "&tmode=";
         }
 
