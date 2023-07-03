@@ -129,12 +129,10 @@ import nl.hnogames.domoticzapi.Utils.UsefulBits;
 import nl.hnogames.domoticzapi.Utils.VolleyUtil;
 
 public class Domoticz {
-
     public static final int batteryLevelMax = 100;
     public static final int signalLevelMax = 12;
     public static final int DOMOTICZ_FAKE_ID = 99999;
     public static final String HIDDEN_CHARACTER = "$";
-
     private static final String TAG = "DomoticzAPI";
     private final SessionUtil mSessionUtil;
     private final DomoticzUrls mDomoticzUrls;
@@ -521,23 +519,22 @@ public class Domoticz {
         String username = UsefulBits.encodeBase64(getUserCredentials(Authentication.USERNAME));
         String password = UsefulBits.getMd5String(getUserCredentials(Authentication.PASSWORD));
         LoginParser parser = new LoginParser(loginReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NEWCHECKLOGIN);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CHECKLOGIN);
         Log.v(TAG, "Url: " + url);
 
+        Map<String, String> params = new HashMap<>();
         try {
-            Map<String, String> params = new HashMap<>();
             params.put("username", URLEncoder.encode(username, "UTF-8"));
             params.put("password", URLEncoder.encode(password, "UTF-8"));
             LoginPostRequest(parser, url, params);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            try {
+                url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NEWCHECKLOGIN);
+                LoginPostRequest(parser, url, params);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
-    }
-
-    public void getSwitches(SwitchesReceiver switchesReceiver) {
-        SwitchesParser parser = new SwitchesParser(switchesReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SWITCHES);
-        GetResultRequest(parser, url, true);
     }
 
     public void getSwitchLogs(int idx, SwitchLogReceiver switchesReceiver) {
@@ -562,7 +559,6 @@ public class Domoticz {
         GetResultRequest(parser,
                 url, true);
     }
-
 
     public void getScenes(ScenesReceiver receiver) {
         ScenesParser parser = new ScenesParser(receiver);
@@ -592,7 +588,6 @@ public class Domoticz {
         GetResultRequest(parser,
                 url, true);
     }
-
 
     public void getSwitchTimers(int idx, SwitchTimerReceiver switchesReceiver, boolean isScene) {
         SwitchTimerParser parser = new SwitchTimerParser(switchesReceiver);

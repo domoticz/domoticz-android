@@ -488,10 +488,6 @@ public class DomoticzUrls {
                 url = DomoticzValues.Url.Security.CHECKLOGIN;
                 break;
 
-            case DomoticzValues.Json.Url.Request.NEWCHECKLOGIN:
-                url = DomoticzValues.Url.Security.NEWCHECKLOGIN;
-                break;
-
             default:
                 throw new NullPointerException("getJsonGetUrl: No known JSON URL specified");
         }
