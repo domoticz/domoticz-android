@@ -23,6 +23,8 @@ package nl.hnogames.domoticzapi.Containers;
 
 import android.text.Html;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -31,8 +33,6 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
-
-import androidx.annotation.NonNull;
 
 import nl.hnogames.domoticzapi.Utils.UsefulBits;
 
@@ -120,7 +120,8 @@ public class UtilitiesInfo implements Comparable, Serializable {
             } catch (Exception ex) {
                 signalLevel = 0;
             }
-        } if (row.has("Mode")) {
+        }
+        if (row.has("Mode")) {
             try {
                 Mode = row.getInt("Mode");
             } catch (Exception ex) {

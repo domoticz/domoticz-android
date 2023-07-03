@@ -21,14 +21,11 @@
 
 package nl.hnogames.domoticzapi;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Build;
-import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -36,18 +33,12 @@ import com.android.volley.VolleyError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import androidx.annotation.Nullable;
 
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
@@ -76,7 +67,6 @@ import nl.hnogames.domoticzapi.Interfaces.StatusReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SunRiseReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SwitchTimerReceiver;
-import nl.hnogames.domoticzapi.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.TemperatureReceiver;
 import nl.hnogames.domoticzapi.Interfaces.UpdateDomoticzServerReceiver;
 import nl.hnogames.domoticzapi.Interfaces.UpdateDownloadReadyReceiver;
@@ -110,7 +100,6 @@ import nl.hnogames.domoticzapi.Parsers.StatusInfoParser;
 import nl.hnogames.domoticzapi.Parsers.SunRiseParser;
 import nl.hnogames.domoticzapi.Parsers.SwitchLogParser;
 import nl.hnogames.domoticzapi.Parsers.SwitchTimerParser;
-import nl.hnogames.domoticzapi.Parsers.SwitchesParser;
 import nl.hnogames.domoticzapi.Parsers.TemperaturesParser;
 import nl.hnogames.domoticzapi.Parsers.UpdateDomoticzServerParser;
 import nl.hnogames.domoticzapi.Parsers.UpdateDownloadReadyParser;
@@ -591,7 +580,7 @@ public class Domoticz {
 
     public void getSwitchTimers(int idx, SwitchTimerReceiver switchesReceiver, boolean isScene) {
         SwitchTimerParser parser = new SwitchTimerParser(switchesReceiver);
-        String url = mDomoticzUrls.constructGetUrl(isScene? DomoticzValues.Json.Url.Request.SCENETIMER : DomoticzValues.Json.Url.Request.SWITCHTIMER) + idx;
+        String url = mDomoticzUrls.constructGetUrl(isScene ? DomoticzValues.Json.Url.Request.SCENETIMER : DomoticzValues.Json.Url.Request.SWITCHTIMER) + idx;
 
         GetResultRequest(parser, url, true);
     }

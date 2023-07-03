@@ -23,6 +23,8 @@ package nl.hnogames.domoticzapi.Containers;
 
 import android.text.Html;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -33,8 +35,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
-
-import androidx.annotation.NonNull;
 
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.UsefulBits;

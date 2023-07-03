@@ -21,12 +21,12 @@
 
 package nl.hnogames.domoticzapi.Containers;
 
+import androidx.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-
-import androidx.annotation.NonNull;
 
 public class EventInfo implements Comparable, Serializable {
     @SuppressWarnings({"SpellCheckingInspection", "FieldCanBeLocal"})

@@ -24,6 +24,8 @@ package nl.hnogames.domoticzapi.Utils;
 import android.util.Base64;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
@@ -41,8 +43,6 @@ import org.json.JSONObject;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.annotation.Nullable;
 
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -62,26 +62,26 @@ public class RequestUtil {
         JsonObjectRequest jsonObjReq =
                 new JsonObjectRequest(Request.Method.GET,
                         url, null, response -> {
-                            if (useBasicAuth)
-                                Domoticz.BasicAuthDetected = useBasicAuth;
-                            if (listener != null)
-                                listener.onDone(response);
-                        }, volleyError -> {
-                            if (useBasicAuth) {
-                                errorHandling(volleyError);
-                                if (listener != null)
-                                    listener.onError(volleyError);
-                            } else {
-                                //try again with basic auth
-                                makeJsonGetRequest(listener,
-                                        url,
-                                        sessionUtil,
-                                        username,
-                                        password,
-                                        true,
-                                        queue);
-                            }
-                        }) {
+                    if (useBasicAuth)
+                        Domoticz.BasicAuthDetected = useBasicAuth;
+                    if (listener != null)
+                        listener.onDone(response);
+                }, volleyError -> {
+                    if (useBasicAuth) {
+                        errorHandling(volleyError);
+                        if (listener != null)
+                            listener.onError(volleyError);
+                    } else {
+                        //try again with basic auth
+                        makeJsonGetRequest(listener,
+                                url,
+                                sessionUtil,
+                                username,
+                                password,
+                                true,
+                                queue);
+                    }
+                }) {
 
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
@@ -119,26 +119,26 @@ public class RequestUtil {
         JsonObjectRequest jsonObjReq =
                 new JsonObjectRequest(Request.Method.GET,
                         url, null, response -> {
-                            if (useBasicAuth)
-                                Domoticz.BasicAuthDetected = useBasicAuth;
-                            if (listener != null)
-                                listener.onDone(response);
-                        }, volleyError -> {
-                            if (useBasicAuth) {
-                                errorHandling(volleyError);
-                                if (listener != null)
-                                    listener.onError(volleyError);
-                            } else {
-                                //try again with basic auth
-                                makeJsonGetResultRequest(listener,
-                                        url,
-                                        sessionUtil,
-                                        username,
-                                        password,
-                                        true,
-                                        queue);
-                            }
-                        }) {
+                    if (useBasicAuth)
+                        Domoticz.BasicAuthDetected = useBasicAuth;
+                    if (listener != null)
+                        listener.onDone(response);
+                }, volleyError -> {
+                    if (useBasicAuth) {
+                        errorHandling(volleyError);
+                        if (listener != null)
+                            listener.onError(volleyError);
+                    } else {
+                        //try again with basic auth
+                        makeJsonGetResultRequest(listener,
+                                url,
+                                sessionUtil,
+                                username,
+                                password,
+                                true,
+                                queue);
+                    }
+                }) {
 
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
@@ -195,22 +195,22 @@ public class RequestUtil {
                             if (listener != null)
                                 listener.onDone(null);
                         }, volleyError -> {
-                            if (useBasicAuth) {
-                                errorHandling(volleyError);
-                                if (listener != null)
-                                    listener.onError(volleyError);
-                            } else {
-                                //try again with basic auth
-                                makeJsonPostRequest(listener,
-                                        url,
-                                        params,
-                                        sessionUtil,
-                                        username,
-                                        password,
-                                        true,
-                                        queue);
-                            }
-                        }) {
+                    if (useBasicAuth) {
+                        errorHandling(volleyError);
+                        if (listener != null)
+                            listener.onError(volleyError);
+                    } else {
+                        //try again with basic auth
+                        makeJsonPostRequest(listener,
+                                url,
+                                params,
+                                sessionUtil,
+                                username,
+                                password,
+                                true,
+                                queue);
+                    }
+                }) {
                     @Override
                     protected Map<String, String> getParams() {
                         return params;
