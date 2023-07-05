@@ -638,6 +638,19 @@ public class Domoticz {
     }
 
     @SuppressWarnings("SpellCheckingInspection")
+    public void setAction(int idx,
+                          int jsonUrl,
+                          int jsonAction,
+                          double value,
+                          setCommandReceiver receiver) {
+        setCommandParser parser = new setCommandParser(receiver);
+        String url = mDomoticzUrls.constructSetUrl(jsonUrl, idx, jsonAction, value);
+
+        Log.v(TAG, "Action: " + url);
+        GetRequest(parser, url, true);
+    }
+
+    @SuppressWarnings("SpellCheckingInspection")
     public void setRGBColorAction(int idx,
                                   int jsonUrl,
                                   long hue,

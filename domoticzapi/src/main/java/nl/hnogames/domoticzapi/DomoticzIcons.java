@@ -175,11 +175,10 @@ public class DomoticzIcons {
             case "alert":
                 return R.drawable.loudspeakers;
             case "gauge":
+            case "mode":
                 return R.drawable.thermostat;
             case "clock":
                 return R.drawable.clock_b;
-            case "mode":
-                return R.drawable.defaultimage;
             case "utility":
             case "scale":
                 return R.drawable.solar_panel;

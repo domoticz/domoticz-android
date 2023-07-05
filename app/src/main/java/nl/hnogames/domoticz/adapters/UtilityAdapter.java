@@ -236,8 +236,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     }
 
     private void CreateTextRow(DataObjectHolder holder, UtilitiesInfo mUtilitiesInfo) {
-        holder.isProtected = mUtilitiesInfo.isProtected();
-
         holder.name.setText(mUtilitiesInfo.getName());
         holder.data.setText(context.getString(R.string.data) + ": " + mUtilitiesInfo.getData());
         holder.hardware.setText(context.getString(R.string.hardware) + ": " + mUtilitiesInfo.getHardwareName());
@@ -300,8 +298,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     }
 
     private void CreateDefaultRow(DataObjectHolder holder, UtilitiesInfo mUtilitiesInfo) {
-        holder.isProtected = mUtilitiesInfo.isProtected();
-
         holder.name.setText(mUtilitiesInfo.getName());
         holder.data.setText(context.getString(R.string.data) + ": " + mUtilitiesInfo.getData());
         holder.hardware.setText(context.getString(R.string.hardware) + ": " + mUtilitiesInfo.getHardwareName());
@@ -389,33 +385,13 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
 
     private void CreateThermostatRow(DataObjectHolder holder, UtilitiesInfo mUtilitiesInfo, final double setPoint) {
         int layoutResourceId;
-        holder.isProtected = mUtilitiesInfo.isProtected();
-        if (holder.isProtected)
-            holder.on_button.setEnabled(false);
-
         holder.on_button.setText(context.getString(R.string.set_temperature));
         holder.on_button.setId(mUtilitiesInfo.getIdx());
         holder.on_button.setOnClickListener(v -> handleThermostatClick(v.getId()));
 
-        int loadMode = mUtilitiesInfo.getModeId();
-        final ArrayList<String> modes = mUtilitiesInfo.getModes();
-        if (modes != null && modes.size() > 0) {
-            holder.spSelector.setId(mUtilitiesInfo.getIdx());
-            holder.spSelector.setVisibility(View.VISIBLE);
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, modes);
-            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            holder.spSelector.setAdapter(dataAdapter);
-            holder.spSelector.setSelection(loadMode);
-            holder.spSelector.setTag(mUtilitiesInfo);
-        }
-        else{
-            holder.spSelector.setVisibility(View.GONE);
-        }
-
         holder.spSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                       int arg2, long arg3) {
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 if ((holder.spSelector.getId()) == mUtilitiesInfo.getIdx()) {
                     holder.spSelector.setId(mUtilitiesInfo.getIdx() * 3);
                 } else {
@@ -472,8 +448,26 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
 
         holder.name.setText(mUtilitiesInfo.getName());
         holder.hardware.setText(mUtilitiesInfo.getLastUpdate());
-        holder.data.setText(context.getString(R.string.set_point) + ": " + setPoint);
         Picasso.get().load(DomoticzIcons.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
+
+        int loadMode = mUtilitiesInfo.getModeId();
+        final ArrayList<String> modes = mUtilitiesInfo.getModes();
+        if (modes != null && modes.size() > 0) {
+            holder.spSelector.setId(mUtilitiesInfo.getIdx());
+            holder.spSelector.setVisibility(View.VISIBLE);
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, modes);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            holder.spSelector.setAdapter(dataAdapter);
+            holder.spSelector.setSelection(loadMode);
+            holder.spSelector.setTag(mUtilitiesInfo);
+
+            holder.on_button.setVisibility(View.GONE);
+            holder.data.setText(context.getString(R.string.set_mode) + ": " + modes.get(loadMode));
+        }
+        else{
+            holder.spSelector.setVisibility(View.GONE);
+            holder.data.setText(context.getString(R.string.set_point) + ": " + setPoint);
+        }
     }
 
     private void handleSelectorChange(UtilitiesInfo device, int id, String mode) {
@@ -556,7 +550,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             case Buttons.THERMOSTAT_MODE:
                 if (holder.contentWrapper != null)
                     holder.contentWrapper.setVisibility(View.VISIBLE);
-                holder.on_button.setVisibility(View.VISIBLE);
                 holder.dayButton.setVisibility(View.VISIBLE);
                 holder.monthButton.setVisibility(View.VISIBLE);
                 holder.weekButton.setVisibility(View.VISIBLE);
@@ -627,8 +620,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         TextView data;
         TextView hardware;
         ImageView iconRow;
-        Boolean isProtected;
-
         Chip dayButton;
         Chip monthButton;
         Chip yearButton;

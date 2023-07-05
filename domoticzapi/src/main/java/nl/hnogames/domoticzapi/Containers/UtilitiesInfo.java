@@ -160,6 +160,9 @@ public class UtilitiesInfo implements Comparable, Serializable {
     public int getModeId() {
         return Mode;
     }
+    public void setModeId(int mode) {
+        Mode = mode;
+    }
 
     public void SetModeId(int mode) {
         this.Mode = mode;
