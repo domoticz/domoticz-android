@@ -37,6 +37,8 @@ public class DomoticzIcons {
 
         if (useCustomImage && CustomImage != null && CustomImage.length() > 0) {
             switch (CustomImage) {
+                case "Irrigation":
+                    return R.drawable.drop;
                 case "Alarm":
                     return R.drawable.alarm;
                 case "Freezing":
@@ -102,6 +104,8 @@ public class DomoticzIcons {
                 return R.drawable.weather;
             case "doorbell":
                 return R.drawable.doorbell;
+            case "irrigation":
+                return R.drawable.drop;
             case "door":
                 return R.drawable.door_handle;
             case "lightbulb":
