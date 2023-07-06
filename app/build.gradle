@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+    namespace 'nl.hnogames.domoticz'
     compileSdkVersion 33
 
     def versionPropsFile = file('version.properties')
@@ -144,7 +145,7 @@ android {
         }
     }
 
-    namespace 'nl.hnogames.domoticz'
+
 }
 
 repositories {
