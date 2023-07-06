@@ -21,14 +21,11 @@
 
 package nl.hnogames.domoticzapi;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Build;
-import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -36,18 +33,12 @@ import com.android.volley.VolleyError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import androidx.annotation.Nullable;
 
 import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
@@ -76,7 +67,6 @@ import nl.hnogames.domoticzapi.Interfaces.StatusReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SunRiseReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SwitchTimerReceiver;
-import nl.hnogames.domoticzapi.Interfaces.SwitchesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.TemperatureReceiver;
 import nl.hnogames.domoticzapi.Interfaces.UpdateDomoticzServerReceiver;
 import nl.hnogames.domoticzapi.Interfaces.UpdateDownloadReadyReceiver;
@@ -110,7 +100,6 @@ import nl.hnogames.domoticzapi.Parsers.StatusInfoParser;
 import nl.hnogames.domoticzapi.Parsers.SunRiseParser;
 import nl.hnogames.domoticzapi.Parsers.SwitchLogParser;
 import nl.hnogames.domoticzapi.Parsers.SwitchTimerParser;
-import nl.hnogames.domoticzapi.Parsers.SwitchesParser;
 import nl.hnogames.domoticzapi.Parsers.TemperaturesParser;
 import nl.hnogames.domoticzapi.Parsers.UpdateDomoticzServerParser;
 import nl.hnogames.domoticzapi.Parsers.UpdateDownloadReadyParser;
@@ -129,12 +118,10 @@ import nl.hnogames.domoticzapi.Utils.UsefulBits;
 import nl.hnogames.domoticzapi.Utils.VolleyUtil;
 
 public class Domoticz {
-
     public static final int batteryLevelMax = 100;
     public static final int signalLevelMax = 12;
     public static final int DOMOTICZ_FAKE_ID = 99999;
     public static final String HIDDEN_CHARACTER = "$";
-
     private static final String TAG = "DomoticzAPI";
     private final SessionUtil mSessionUtil;
     private final DomoticzUrls mDomoticzUrls;
@@ -521,23 +508,22 @@ public class Domoticz {
         String username = UsefulBits.encodeBase64(getUserCredentials(Authentication.USERNAME));
         String password = UsefulBits.getMd5String(getUserCredentials(Authentication.PASSWORD));
         LoginParser parser = new LoginParser(loginReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NEWCHECKLOGIN);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CHECKLOGIN);
         Log.v(TAG, "Url: " + url);
 
+        Map<String, String> params = new HashMap<>();
         try {
-            Map<String, String> params = new HashMap<>();
             params.put("username", URLEncoder.encode(username, "UTF-8"));
             params.put("password", URLEncoder.encode(password, "UTF-8"));
             LoginPostRequest(parser, url, params);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            try {
+                url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NEWCHECKLOGIN);
+                LoginPostRequest(parser, url, params);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
-    }
-
-    public void getSwitches(SwitchesReceiver switchesReceiver) {
-        SwitchesParser parser = new SwitchesParser(switchesReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SWITCHES);
-        GetResultRequest(parser, url, true);
     }
 
     public void getSwitchLogs(int idx, SwitchLogReceiver switchesReceiver) {
@@ -562,7 +548,6 @@ public class Domoticz {
         GetResultRequest(parser,
                 url, true);
     }
-
 
     public void getScenes(ScenesReceiver receiver) {
         ScenesParser parser = new ScenesParser(receiver);
@@ -593,10 +578,9 @@ public class Domoticz {
                 url, true);
     }
 
-
     public void getSwitchTimers(int idx, SwitchTimerReceiver switchesReceiver, boolean isScene) {
         SwitchTimerParser parser = new SwitchTimerParser(switchesReceiver);
-        String url = mDomoticzUrls.constructGetUrl(isScene? DomoticzValues.Json.Url.Request.SCENETIMER : DomoticzValues.Json.Url.Request.SWITCHTIMER) + idx;
+        String url = mDomoticzUrls.constructGetUrl(isScene ? DomoticzValues.Json.Url.Request.SCENETIMER : DomoticzValues.Json.Url.Request.SWITCHTIMER) + idx;
 
         GetResultRequest(parser, url, true);
     }
@@ -648,6 +632,19 @@ public class Domoticz {
         setCommandParser parser = new setCommandParser(receiver);
         String url = mDomoticzUrls.constructSetUrl(jsonUrl, idx, jsonAction, value);
         url += UsefulBits.isEmpty(password) ? "&passcode=" : "&passcode=" + password;
+
+        Log.v(TAG, "Action: " + url);
+        GetRequest(parser, url, true);
+    }
+
+    @SuppressWarnings("SpellCheckingInspection")
+    public void setAction(int idx,
+                          int jsonUrl,
+                          int jsonAction,
+                          double value,
+                          setCommandReceiver receiver) {
+        setCommandParser parser = new setCommandParser(receiver);
+        String url = mDomoticzUrls.constructSetUrl(jsonUrl, idx, jsonAction, value);
 
         Log.v(TAG, "Action: " + url);
         GetRequest(parser, url, true);

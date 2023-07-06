@@ -80,6 +80,7 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -248,10 +249,15 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if (mDeviceInfo.getType() != null && mDeviceInfo.getType().equals("advertisement")) {
                 setButtons(holder, Buttons.ADS);
                 setAdsLayout(holder);
-            } else if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
+            } else if ((mDeviceInfo.getType() != null && DomoticzValues.Device.Utility.Type.THERMOSTAT.equalsIgnoreCase(mDeviceInfo.getType())) ||
+                    (mDeviceInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mDeviceInfo.getSubType()))) {
                 setButtons(holder, Buttons.BUTTON_ON);
                 setThermostatRowData(mDeviceInfo, holder);
-            } else {
+            }else if ((mDeviceInfo.getType() != null && DomoticzValues.Device.Utility.Type.GENERAL.equalsIgnoreCase(mDeviceInfo.getType())) &&
+                (mDeviceInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.THERMOSTAT_MODE.equalsIgnoreCase(mDeviceInfo.getSubType()))) {
+                setButtons(holder, Buttons.SELECTOR);
+                setThermostatRowData(mDeviceInfo, holder);
+            }  else {
                 switch (mDeviceInfo.getType()) {
                     case DomoticzValues.Scene.Type.GROUP:
                         setButtons(holder, Buttons.BUTTONS);
@@ -780,6 +786,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         final double setPoint = mDeviceInfo.getSetPoint();
         if (holder.isProtected)
             holder.buttonOn.setEnabled(false);
+
         holder.buttonOn.setText(context.getString(R.string.set_temperature));
         holder.buttonOn.setOnClickListener(v -> handleThermostatClick((DevicesInfo) v.getTag()));
         holder.buttonOn.setTag(mDeviceInfo);
@@ -794,10 +801,45 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.signal_level.setText(text);
         }
 
-        if (holder.switch_battery_level != null) {
-            String setPointText =
-                    context.getString(R.string.set_point) + ": " + setPoint;
-            holder.switch_battery_level.setText(setPointText);
+        int loadMode = mDeviceInfo.getModeId();
+        final ArrayList<String> modes = mDeviceInfo.getModes();
+        if (modes != null && modes.size() > 0) {
+            holder.spSelector.setId(mDeviceInfo.getIdx());
+            holder.spSelector.setVisibility(View.VISIBLE);
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, modes);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            holder.spSelector.setAdapter(dataAdapter);
+            holder.spSelector.setSelection(loadMode);
+            holder.spSelector.setTag(mDeviceInfo);
+
+            if (holder.switch_battery_level != null) {
+                String modeText =
+                        context.getString(R.string.set_mode) + ": " + modes.get(loadMode);
+                holder.switch_battery_level.setText(modeText);
+            }
+
+            holder.spSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                    if ((holder.spSelector.getId()) == mDeviceInfo.getIdx()) {
+                        holder.spSelector.setId(mDeviceInfo.getIdx() * 3);
+                    } else {
+                        String selValue = holder.spSelector.getItemAtPosition(arg2).toString();
+                        handleModeSelectorChange(mDeviceInfo, arg2, selValue);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) {}
+            });
+        }
+        else{
+            holder.spSelector.setVisibility(View.GONE);
+            if (holder.switch_battery_level != null) {
+                String setPointText =
+                        context.getString(R.string.set_point) + ": " + setPoint;
+                holder.switch_battery_level.setText(setPointText);
+            }
         }
 
         Picasso.get().load(DomoticzIcons.getDrawableIcon(
@@ -855,6 +897,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     .build();
             adLoader.loadAd(adRequest);
         } catch (Exception ignored) {
+        }
+    }
+
+    private void handleModeSelectorChange(DevicesInfo device, int id, String mode) {
+        if (device != null) {
+            listener.OnModeChanged(device, id, mode);
         }
     }
 
@@ -1825,7 +1873,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.GONE);
-                break;
             case Buttons.SELECTOR:
                 if (holder.contentWrapper != null)
                     holder.contentWrapper.setVisibility(View.VISIBLE);

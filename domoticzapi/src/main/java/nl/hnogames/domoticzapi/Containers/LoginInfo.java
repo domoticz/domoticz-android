@@ -32,6 +32,7 @@ import nl.hnogames.domoticzapi.R;
 
 public class LoginInfo implements Serializable {
     // private JSONObject jsonObject;
+    private boolean require2fa;
     private int Rights;
     private String Status;
     private String Title;
@@ -55,6 +56,8 @@ public class LoginInfo implements Serializable {
             User = row.getString("user");
         if (row.has("version"))
             Version = row.getString("version");
+        if (row.has("require2fa"))
+            require2fa = row.getBoolean("require2fa");
     }
 
     @Override
@@ -65,6 +68,14 @@ public class LoginInfo implements Serializable {
                 ", Title='" + Title +
                 ", User=" + User +
                 "'}";
+    }
+
+    public boolean getRequire2FA() {
+        return require2fa;
+    }
+
+    public void setRequire2FA(boolean input) {
+        require2fa = input;
     }
 
     public int getRights() {
