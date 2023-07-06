@@ -641,7 +641,34 @@ public class Domoticz {
     public void setAction(int idx,
                           int jsonUrl,
                           int jsonAction,
+                          int value,
+                          String password,
+                          setCommandReceiver receiver) {
+        setCommandParser parser = new setCommandParser(receiver);
+        String url = mDomoticzUrls.constructSetUrl(jsonUrl, idx, jsonAction, value);
+        url += UsefulBits.isEmpty(password) ? "&passcode=" : "&passcode=" + password;
+
+        Log.v(TAG, "Action: " + url);
+        GetRequest(parser, url, true);
+    }
+
+    @SuppressWarnings("SpellCheckingInspection")
+    public void setAction(int idx,
+                          int jsonUrl,
+                          int jsonAction,
                           double value,
+                          setCommandReceiver receiver) {
+        setCommandParser parser = new setCommandParser(receiver);
+        String url = mDomoticzUrls.constructSetUrl(jsonUrl, idx, jsonAction, value);
+
+        Log.v(TAG, "Action: " + url);
+        GetRequest(parser, url, true);
+    }
+
+    public void setAction(int idx,
+                          int jsonUrl,
+                          int jsonAction,
+                          int value,
                           setCommandReceiver receiver) {
         setCommandParser parser = new setCommandParser(receiver);
         String url = mDomoticzUrls.constructSetUrl(jsonUrl, idx, jsonAction, value);

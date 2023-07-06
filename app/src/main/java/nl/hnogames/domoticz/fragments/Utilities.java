@@ -412,7 +412,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
-
     public void onLogClick(final UtilitiesInfo utility, final String range) {
         int steps = 2;
         String graphType = utility.getSubType()

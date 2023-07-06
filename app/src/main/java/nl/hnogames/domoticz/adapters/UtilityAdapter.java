@@ -389,21 +389,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         holder.on_button.setId(mUtilitiesInfo.getIdx());
         holder.on_button.setOnClickListener(v -> handleThermostatClick(v.getId()));
 
-        holder.spSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                if ((holder.spSelector.getId()) == mUtilitiesInfo.getIdx()) {
-                    holder.spSelector.setId(mUtilitiesInfo.getIdx() * 3);
-                } else {
-                    String selValue = holder.spSelector.getItemAtPosition(arg2).toString();
-                    handleSelectorChange(mUtilitiesInfo, arg2, selValue);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {}
-        });
-
         holder.dayButton.setId(mUtilitiesInfo.getIdx());
         holder.dayButton.setOnClickListener(v -> {
             for (UtilitiesInfo t : filteredData) {
@@ -463,6 +448,21 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
 
             holder.on_button.setVisibility(View.GONE);
             holder.data.setText(context.getString(R.string.set_mode) + ": " + modes.get(loadMode));
+
+            holder.spSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                    if ((holder.spSelector.getId()) == mUtilitiesInfo.getIdx()) {
+                        holder.spSelector.setId(mUtilitiesInfo.getIdx() * 3);
+                    } else {
+                        String selValue = holder.spSelector.getItemAtPosition(arg2).toString();
+                        handleSelectorChange(mUtilitiesInfo, arg2, selValue);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) {}
+            });
         }
         else{
             holder.spSelector.setVisibility(View.GONE);

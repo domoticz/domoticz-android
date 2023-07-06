@@ -1076,7 +1076,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
                     ((SettingsActivity) getActivity()).exportSettings();
                 }
                 else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                         if (!PermissionsUtil.canAccessStorage(mContext)) {
                             permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                         } else
@@ -1093,7 +1093,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
                     ((SettingsActivity) getActivity()).importSettings();
                 }
                 else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                         if (!PermissionsUtil.canAccessStorage(mContext)) {
                             permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                         } else
