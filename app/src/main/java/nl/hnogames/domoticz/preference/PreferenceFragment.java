@@ -1069,26 +1069,38 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
     private void handleImportExportButtons() {
         androidx.preference.Preference exportButton = findPreference("export_settings");
         androidx.preference.Preference importButton = findPreference("import_settings");
+
         if (exportButton != null)
             exportButton.setOnPreferenceClickListener(preference -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!PermissionsUtil.canAccessStorage(mContext)) {
-                        permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    ((SettingsActivity) getActivity()).exportSettings();
+                }
+                else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (!PermissionsUtil.canAccessStorage(mContext)) {
+                            permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                        } else
+                            ((SettingsActivity) getActivity()).exportSettings();
                     } else
                         ((SettingsActivity) getActivity()).exportSettings();
-                } else
-                    ((SettingsActivity) getActivity()).exportSettings();
+                }
                 return false;
             });
+
         if (importButton != null)
             importButton.setOnPreferenceClickListener(preference -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!PermissionsUtil.canAccessStorage(mContext)) {
-                        permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    ((SettingsActivity) getActivity()).importSettings();
+                }
+                else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (!PermissionsUtil.canAccessStorage(mContext)) {
+                            permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                        } else
+                            ((SettingsActivity) getActivity()).importSettings();
                     } else
                         ((SettingsActivity) getActivity()).importSettings();
-                } else
-                    ((SettingsActivity) getActivity()).importSettings();
+                }
                 return false;
             });
     }

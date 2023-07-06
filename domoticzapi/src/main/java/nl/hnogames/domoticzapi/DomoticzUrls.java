@@ -120,6 +120,10 @@ public class DomoticzUrls {
                 actionUrl = DomoticzValues.Url.Switch.DIM_LEVEL + String.valueOf(value);
                 break;
 
+            case DomoticzValues.Device.Thermostat.Action.TMODE:
+                actionUrl = DomoticzValues.Url.Thermostat.TMODE + String.valueOf(value);
+                break;
+
             case DomoticzValues.Device.Dimmer.Action.COLOR:
                 actionUrl = DomoticzValues.Url.Switch.COLOR;
                 break;
@@ -175,6 +179,13 @@ public class DomoticzUrls {
                 jsonUrl = url
                         + String.valueOf(idx)
                         + DomoticzValues.Url.Switch.CMD + actionUrl;
+                break;
+
+            case DomoticzValues.Json.Url.Set.THERMOSTAT:
+                url = DomoticzValues.Url.Thermostat.SETUSED;
+                jsonUrl = url
+                        + String.valueOf(idx)
+                        + actionUrl;
                 break;
 
             case DomoticzValues.Json.Url.Set.SWITCHES:
@@ -475,10 +486,6 @@ public class DomoticzUrls {
 
             case DomoticzValues.Json.Url.Request.CHECKLOGIN:
                 url = DomoticzValues.Url.Security.CHECKLOGIN;
-                break;
-
-            case DomoticzValues.Json.Url.Request.NEWCHECKLOGIN:
-                url = DomoticzValues.Url.Security.NEWCHECKLOGIN;
                 break;
 
             default:

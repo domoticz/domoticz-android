@@ -136,7 +136,27 @@
                     android:textSize="10dp" />
 
             </LinearLayout>
+        </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/linearLayout4ttt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/listviewRowBackground"
+            android:layout_below="@+id/textwrapper"
+            android:layout_gravity="right"
+            android:foregroundGravity="right"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/spSelector"
+            android:layout_width="129dp"
+            android:padding="16px"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:foregroundGravity="right"
+            android:minWidth="150dp" />
         </LinearLayout>
 
         <include layout="@layout/log_all_buttons" />

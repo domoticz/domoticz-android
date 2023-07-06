@@ -80,6 +80,7 @@ import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.NotificationInfo;
 import nl.hnogames.domoticzapi.Containers.SwitchLogInfo;
 import nl.hnogames.domoticzapi.Containers.SwitchTimerInfo;
+import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
@@ -773,6 +774,62 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     @Override
     public void onCameraFullScreenClick(DevicesInfo device, String name) {
         CameraUtil.ProcessImage(mContext, device.getCameraIdx(), name);
+    }
+
+    @Override
+    public void OnModeChanged(DevicesInfo utility, int mode, String modeName) {
+        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
+        if (user != null && user.getRights() <= 0) {
+            UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
+            return;
+        }
+
+        addDebugText("OnModeChanged");
+        addDebugText("Set idx " + utility.getIdx() + " to " + modeName);
+        if (utility.isProtected()) {
+            PasswordDialog passwordDialog = new PasswordDialog(
+                    mContext, StaticHelper.getDomoticz(mContext));
+            passwordDialog.show();
+            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                @Override
+                public void onDismiss(String password) {
+                    SetThermostatMode(utility, mode, password);
+                }
+
+                @Override
+                public void onCancel() {}
+            });
+        } else {
+            SetThermostatMode(utility, mode, null);
+        }
+    }
+
+    private void SetThermostatMode(DevicesInfo utility, int mode, String password) {
+        StaticHelper.getDomoticz(mContext).setAction(utility.getIdx(),
+                DomoticzValues.Json.Url.Set.THERMOSTAT,
+                DomoticzValues.Device.Thermostat.Action.TMODE,
+                mode,
+                password,
+                new setCommandReceiver() {
+                    @Override
+                    public void onReceiveResult(String result) {
+                        if (result.contains("WRONG CODE")) {
+                            UsefulBits.showSnackbar(mContext, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                            if (getActivity() instanceof MainActivity)
+                                ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                        } else {
+                            successHandling(result, false);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        errorHandling(error);
+                    }
+                });
     }
 
     private void setState(final DevicesInfo device, int state, final String password) {
