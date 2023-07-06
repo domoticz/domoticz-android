@@ -152,6 +152,7 @@
         <Spinner
             android:id="@+id/spSelector"
             android:layout_width="129dp"
+            android:padding="16px"
             android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"
             android:foregroundGravity="right"

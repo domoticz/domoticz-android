@@ -76,6 +76,7 @@
     <string name="status">Status</string>
     <string name="switch_rgb_wwcolor">RGB color or warm white</string>
 
+    <string name="set_mode">Mode</string>
     <string name="set_point">Set point</string>
     <string name="set_point_min">Set point min value</string>
     <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>

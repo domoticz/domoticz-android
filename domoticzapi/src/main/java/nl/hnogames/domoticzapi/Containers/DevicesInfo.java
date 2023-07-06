@@ -23,6 +23,8 @@ package nl.hnogames.domoticzapi.Containers;
 
 import android.text.Html;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -33,8 +35,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
-
-import androidx.annotation.NonNull;
 
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Utils.UsefulBits;
@@ -61,6 +61,8 @@ public class DevicesInfo implements Comparable, Serializable {
     private String HardwareName;
     private String TypeImg;
     private String PlanID;
+    private String Modes;
+    private int Mode;
     private int batteryLevel;
     private int maxDimLevel;
     private int signalLevel;
@@ -112,7 +114,6 @@ public class DevicesInfo implements Comparable, Serializable {
         } catch (Exception e) {
             level = 0;
         }
-
         if (row.has("Rain"))
             Rain = row.getString("Rain");
         if (row.has("RainRate"))
@@ -129,7 +130,18 @@ public class DevicesInfo implements Comparable, Serializable {
             Chill = row.getString("Chill");
         if (row.has("Speed"))
             Speed = row.getString("Speed");
-
+        if (row.has("Modes")) {
+            Modes = row.getString("Modes");
+            if (UsefulBits.isBase64Encoded(Modes))
+                Modes = UsefulBits.decodeBase64(Modes);
+        }
+        if (row.has("Mode")) {
+            try {
+                Mode = row.getInt("Mode");
+            } catch (Exception ex) {
+                Mode = 0;
+            }
+        }
         if (row.has("DewPoint")) {
             try {
                 DewPoint = row.getLong("DewPoint");
@@ -540,6 +552,34 @@ public class DevicesInfo implements Comparable, Serializable {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public int getModeId() {
+        return Mode;
+    }
+    public void setModeId(int mode) {
+        Mode = mode;
+    }
+
+    public void SetModeId(int mode) {
+        this.Mode = mode;
+    }
+
+    public ArrayList<String> getModes() {
+        if (UsefulBits.isEmpty(Modes))
+            return null;
+        String[] names = Pattern.compile(";", Pattern.LITERAL).split(Modes);
+
+        ArrayList<String> newNames = new ArrayList<String>();
+        for (String value : names) {
+            try {
+                Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                newNames.add(Html.fromHtml(value).toString());
+            }
+        }
+
+        return newNames;
     }
 
     public String getJsonObject() {

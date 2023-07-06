@@ -23,9 +23,9 @@ package nl.hnogames.domoticzapi.Utils;
 
 import android.graphics.Bitmap;
 
-import com.android.volley.toolbox.ImageLoader;
-
 import androidx.collection.LruCache;
+
+import com.android.volley.toolbox.ImageLoader;
 
 public class BitmapLruCache
         extends LruCache<String, Bitmap>

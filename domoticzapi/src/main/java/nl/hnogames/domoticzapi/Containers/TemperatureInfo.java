@@ -21,14 +21,14 @@
 
 package nl.hnogames.domoticzapi.Containers;
 
+import androidx.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import androidx.annotation.NonNull;
 
 public class TemperatureInfo implements Comparable, Serializable {
 

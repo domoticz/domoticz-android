@@ -62,4 +62,5 @@ public interface switchesClickListener {
     boolean onItemLongClicked(DevicesInfo device);
 
     void onCameraFullScreenClick(DevicesInfo device, String name);
+    void OnModeChanged(DevicesInfo utility, int id, String mode);
 }
