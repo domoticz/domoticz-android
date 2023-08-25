@@ -23,7 +23,6 @@ package nl.hnogames.domoticzapi.Parsers;
 
 import android.util.Log;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import nl.hnogames.domoticzapi.Containers.LoginInfo;

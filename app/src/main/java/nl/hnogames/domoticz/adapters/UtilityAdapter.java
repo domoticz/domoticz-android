@@ -26,11 +26,14 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,6 +62,7 @@ import nl.hnogames.domoticz.ads.TemplateView;
 import nl.hnogames.domoticz.helpers.ItemMoveAdapter;
 import nl.hnogames.domoticz.interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
@@ -108,14 +112,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
 
     private ArrayList<UtilitiesInfo> SortData(ArrayList<UtilitiesInfo> dat) {
         ArrayList<UtilitiesInfo> data = new ArrayList<>();
-        if (Build.VERSION.SDK_INT >= 21) {
-            data = dat;
-        } else {
-            for (UtilitiesInfo d : dat) {
-                if (d.getIdx() != MainActivity.ADS_IDX)
-                    data.add(d);
-            }
-        }
+        data = dat;
         ArrayList<UtilitiesInfo> customdata = new ArrayList<>();
         if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
             UtilitiesInfo adView = null;
@@ -149,13 +146,8 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        if (Build.VERSION.SDK_INT >= 21) {
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.utilities_row_default, parent, false);
-        } else {
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.utilities_row_default_noads, parent, false);
-        }
+        view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.utilities_row_default, parent, false);
         return new DataObjectHolder(view);
     }
 
@@ -172,6 +164,10 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                 if ((mUtilitiesInfo.getType() != null && DomoticzValues.Device.Utility.Type.THERMOSTAT.equalsIgnoreCase(mUtilitiesInfo.getType())) ||
                         (mUtilitiesInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mUtilitiesInfo.getSubType()))) {
                     setButtons(holder, Buttons.THERMOSTAT);
+                    CreateThermostatRow(holder, mUtilitiesInfo, setPoint);
+                } else if ((mUtilitiesInfo.getType() != null && DomoticzValues.Device.Utility.Type.GENERAL.equalsIgnoreCase(mUtilitiesInfo.getType())) &&
+                        (mUtilitiesInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.THERMOSTAT_MODE.equalsIgnoreCase(mUtilitiesInfo.getSubType()))) {
+                    setButtons(holder, Buttons.THERMOSTAT_MODE);
                     CreateThermostatRow(holder, mUtilitiesInfo, setPoint);
                 } else {
                     if (DomoticzValues.Device.Utility.SubType.TEXT.equalsIgnoreCase(mUtilitiesInfo.getSubType()) || DomoticzValues.Device.Utility.SubType.ALERT.equalsIgnoreCase(mUtilitiesInfo.getSubType())) {
@@ -240,8 +236,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     }
 
     private void CreateTextRow(DataObjectHolder holder, UtilitiesInfo mUtilitiesInfo) {
-        holder.isProtected = mUtilitiesInfo.isProtected();
-
         holder.name.setText(mUtilitiesInfo.getName());
         holder.data.setText(context.getString(R.string.data) + ": " + mUtilitiesInfo.getData());
         holder.hardware.setText(context.getString(R.string.hardware) + ": " + mUtilitiesInfo.getHardwareName());
@@ -304,8 +298,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
     }
 
     private void CreateDefaultRow(DataObjectHolder holder, UtilitiesInfo mUtilitiesInfo) {
-        holder.isProtected = mUtilitiesInfo.isProtected();
-
         holder.name.setText(mUtilitiesInfo.getName());
         holder.data.setText(context.getString(R.string.data) + ": " + mUtilitiesInfo.getData());
         holder.hardware.setText(context.getString(R.string.hardware) + ": " + mUtilitiesInfo.getHardwareName());
@@ -393,10 +385,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
 
     private void CreateThermostatRow(DataObjectHolder holder, UtilitiesInfo mUtilitiesInfo, final double setPoint) {
         int layoutResourceId;
-        holder.isProtected = mUtilitiesInfo.isProtected();
-        if (holder.isProtected)
-            holder.on_button.setEnabled(false);
-
         holder.on_button.setText(context.getString(R.string.set_temperature));
         holder.on_button.setId(mUtilitiesInfo.getIdx());
         holder.on_button.setOnClickListener(v -> handleThermostatClick(v.getId()));
@@ -442,10 +430,50 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                     listener.onLogClick(t, DomoticzValues.Graph.Range.YEAR);
             }
         });
+
         holder.name.setText(mUtilitiesInfo.getName());
         holder.hardware.setText(mUtilitiesInfo.getLastUpdate());
-        holder.data.setText(context.getString(R.string.set_point) + ": " + setPoint);
         Picasso.get().load(DomoticzIcons.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
+
+        int loadMode = mUtilitiesInfo.getModeId();
+        final ArrayList<String> modes = mUtilitiesInfo.getModes();
+        if (modes != null && modes.size() > 0) {
+            holder.spSelector.setId(mUtilitiesInfo.getIdx());
+            holder.spSelector.setVisibility(View.VISIBLE);
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, modes);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            holder.spSelector.setAdapter(dataAdapter);
+            holder.spSelector.setSelection(loadMode);
+            holder.spSelector.setTag(mUtilitiesInfo);
+
+            holder.on_button.setVisibility(View.GONE);
+            holder.data.setText(context.getString(R.string.set_mode) + ": " + modes.get(loadMode));
+
+            holder.spSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                    if ((holder.spSelector.getId()) == mUtilitiesInfo.getIdx()) {
+                        holder.spSelector.setId(mUtilitiesInfo.getIdx() * 3);
+                    } else {
+                        String selValue = holder.spSelector.getItemAtPosition(arg2).toString();
+                        handleSelectorChange(mUtilitiesInfo, arg2, selValue);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) {}
+            });
+        }
+        else{
+            holder.spSelector.setVisibility(View.GONE);
+            holder.data.setText(context.getString(R.string.set_point) + ": " + setPoint);
+        }
+    }
+
+    private void handleSelectorChange(UtilitiesInfo device, int id, String mode) {
+        if (device != null) {
+            listener.OnModeChanged(device, id, mode);
+        }
     }
 
     public void handleThermostatClick(int idx) {
@@ -481,7 +509,9 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         if (holder.on_button != null) {
             holder.on_button.setVisibility(View.GONE);
         }
-
+        if (holder.spSelector != null) {
+            holder.spSelector.setVisibility(View.GONE);
+        }
         switch (button) {
             case Buttons.ADS:
                 if (holder.adview != null)
@@ -514,6 +544,17 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                 holder.monthButton.setVisibility(View.VISIBLE);
                 holder.weekButton.setVisibility(View.VISIBLE);
                 holder.yearButton.setVisibility(View.VISIBLE);
+                if (holder.adview != null)
+                    holder.adview.setVisibility(View.GONE);
+                break;
+            case Buttons.THERMOSTAT_MODE:
+                if (holder.contentWrapper != null)
+                    holder.contentWrapper.setVisibility(View.VISIBLE);
+                holder.dayButton.setVisibility(View.VISIBLE);
+                holder.monthButton.setVisibility(View.VISIBLE);
+                holder.weekButton.setVisibility(View.VISIBLE);
+                holder.yearButton.setVisibility(View.VISIBLE);
+                holder.spSelector.setVisibility(View.VISIBLE);
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.GONE);
                 break;
@@ -571,6 +612,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         int TEXT = 1;
         int THERMOSTAT = 2;
         int ADS = 3;
+        int THERMOSTAT_MODE = 4;
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder implements RVHViewHolder {
@@ -578,8 +620,6 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         TextView data;
         TextView hardware;
         ImageView iconRow;
-        Boolean isProtected;
-
         Chip dayButton;
         Chip monthButton;
         Chip yearButton;
@@ -591,6 +631,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         LinearLayout extraPanel;
         TemplateView adview;
         RelativeLayout contentWrapper;
+        Spinner spSelector;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -610,6 +651,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             buttonLog = itemView.findViewById(R.id.log_button);
             data = itemView.findViewById(R.id.utilities_data);
             hardware = itemView.findViewById(R.id.utilities_hardware);
+            spSelector = itemView.findViewById(R.id.spSelector);
 
             extraPanel = itemView.findViewById(R.id.extra_panel);
             if (extraPanel != null)

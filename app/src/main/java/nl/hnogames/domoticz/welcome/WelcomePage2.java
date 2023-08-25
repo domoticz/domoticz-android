@@ -61,13 +61,18 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
         MaterialButton importButton = v.findViewById(R.id.import_settings);
         MaterialButton demoSetup = v.findViewById(R.id.demo_settings);
         importButton.setOnClickListener(v12 -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (!PermissionsUtil.canAccessStorage(getActivity()))
-                    permissionFragmentHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
-                else
-                    importSettings();
-            } else
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 importSettings();
+            }
+            else{
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    if (!PermissionsUtil.canAccessStorage(getActivity()))
+                        permissionFragmentHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
+                    else
+                        importSettings();
+                } else
+                    importSettings();
+            }
         });
 
         demoSetup.setOnClickListener(v1 -> ((WelcomeViewActivity) getActivity()).setDemoAccount());

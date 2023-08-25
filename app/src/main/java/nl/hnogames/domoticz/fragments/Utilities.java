@@ -36,6 +36,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import com.afollestad.materialdialogs.DialogAction;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.GraphActivity;
@@ -191,6 +193,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 adapter.setData(AddAdsDevice(mUtilitiesInfos));
                 adapter.notifyDataSetChanged();
             }
+
             if (mItemTouchHelper == null) {
                 mItemTouchHelper = new ItemTouchHelper(new SimpleItemTouchHelperCallback(adapter, isTablet));
             }
@@ -294,6 +297,18 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
 
         notifyDataSetChanged();
     }
+    private void updateThermostatModeValue(int idx, int newMode) {
+        addDebugText("updateThermostatModeValue");
+
+        for (UtilitiesInfo info : mUtilitiesInfos) {
+            if (info.getIdx() == idx) {
+                info.setModeId(newMode);
+                break;
+            }
+        }
+
+        notifyDataSetChanged();
+    }
 
     /**
      * Notifies the list view adapter the data has changed and refreshes the list view
@@ -338,7 +353,65 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
+    public void OnModeChanged(UtilitiesInfo utility, int mode, String modeName) {
+        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
+        if (user != null && user.getRights() <= 0) {
+            UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
+            if (getActivity() instanceof MainActivity)
+                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+            refreshFragment();
+            return;
+        }
 
+        addDebugText("OnModeChanged");
+        addDebugText("Set idx " + utility.getIdx() + " to " + modeName);
+
+        if (utility.isProtected()) {
+            PasswordDialog passwordDialog = new PasswordDialog(
+                    mContext, StaticHelper.getDomoticz(mContext));
+            passwordDialog.show();
+            passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
+                @Override
+                public void onDismiss(String password) {
+                    SetThermostatMode(utility, mode, password);
+                }
+
+                @Override
+                public void onCancel() {}
+            });
+        } else {
+            SetThermostatMode(utility, mode, null);
+        }
+    }
+
+    private void SetThermostatMode(UtilitiesInfo utility, int mode, String password) {
+        StaticHelper.getDomoticz(mContext).setAction(utility.getIdx(),
+                DomoticzValues.Json.Url.Set.THERMOSTAT,
+                DomoticzValues.Device.Thermostat.Action.TMODE,
+                mode,
+                password,
+                new setCommandReceiver() {
+                    @Override
+                    public void onReceiveResult(String result) {
+                        if (result.contains("WRONG CODE")) {
+                            UsefulBits.showSnackbar(mContext, frameLayout, R.string.security_wrong_code, Snackbar.LENGTH_SHORT);
+                            if (getActivity() instanceof MainActivity)
+                                ((MainActivity) getActivity()).Talk(R.string.security_wrong_code);
+                        } else {
+                            updateThermostatModeValue(utility.getIdx(), mode);
+                            successHandling(result, false);
+                        }
+                    }
+
+                    @Override
+
+                    public void onError(Exception error) {
+                        errorHandling(error);
+                    }
+                });
+    }
+
+    @Override
     public void onLogClick(final UtilitiesInfo utility, final String range) {
         int steps = 2;
         String graphType = utility.getSubType()
@@ -373,7 +446,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     @Override
-
     public void onThermostatClick(final int idx) {
         UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
         if (user != null && user.getRights() <= 0) {

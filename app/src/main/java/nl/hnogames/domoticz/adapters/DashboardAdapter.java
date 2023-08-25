@@ -25,7 +25,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -81,6 +80,7 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -89,7 +89,6 @@ import nl.hnogames.domoticzapi.Utils.ServerUtil;
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DataObjectHolder> implements ItemMoveAdapter {
     public static final int ID_SCENE_SWITCH = 3000;
     public static List<String> mCustomSorting;
-    private final int ID_SWITCH = 0;
     private final int[] EVOHOME_STATE_IDS = {
             DomoticzValues.Device.ModalSwitch.Action.AUTO,
             DomoticzValues.Device.ModalSwitch.Action.ECONOMY,
@@ -157,16 +156,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         SaveSorting();
     }
 
-    private ArrayList<DevicesInfo> SortData(ArrayList<DevicesInfo> dat) {
-        ArrayList<DevicesInfo> data = new ArrayList<>();
-        if (Build.VERSION.SDK_INT >= 21) {
-            data = dat;
-        } else {
-            for (DevicesInfo d : dat) {
-                if (d.getIdx() != MainActivity.ADS_IDX)
-                    data.add(d);
-            }
-        }
+    private ArrayList<DevicesInfo> SortData(ArrayList<DevicesInfo> data) {
         ArrayList<DevicesInfo> customdata = new ArrayList<>();
         if (mSharedPrefs.enableCustomSorting() && mCustomSorting != null) {
             DevicesInfo adView = null;
@@ -182,7 +172,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 if (!customdata.contains(d) && d.getIdx() != MainActivity.ADS_IDX)
                     customdata.add(d);
             }
-            if (adView != null && customdata != null && customdata.size() > 0)
+            if (adView != null && customdata.size() > 0)
                 customdata.add(1, adView);
         } else
             customdata = data;
@@ -240,8 +230,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.pieView.setTextColor(temperatureValue.data);
 
             setSwitchRowData(extendedStatusInfo, holder);
-            holder.infoIcon.setTag(extendedStatusInfo.getIdx());
-            holder.infoIcon.setOnClickListener(v -> listener.onItemLongClicked((int) v.getTag()));
+            holder.infoIcon.setTag(extendedStatusInfo);
+            holder.infoIcon.setOnClickListener(v -> listener.onItemLongClicked((DevicesInfo) v.getTag()));
         }
     }
 
@@ -259,10 +249,15 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if (mDeviceInfo.getType() != null && mDeviceInfo.getType().equals("advertisement")) {
                 setButtons(holder, Buttons.ADS);
                 setAdsLayout(holder);
-            } else if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
+            } else if ((mDeviceInfo.getType() != null && DomoticzValues.Device.Utility.Type.THERMOSTAT.equalsIgnoreCase(mDeviceInfo.getType())) ||
+                    (mDeviceInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mDeviceInfo.getSubType()))) {
                 setButtons(holder, Buttons.BUTTON_ON);
                 setThermostatRowData(mDeviceInfo, holder);
-            } else {
+            }else if ((mDeviceInfo.getType() != null && DomoticzValues.Device.Utility.Type.GENERAL.equalsIgnoreCase(mDeviceInfo.getType())) &&
+                (mDeviceInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.THERMOSTAT_MODE.equalsIgnoreCase(mDeviceInfo.getSubType()))) {
+                setButtons(holder, Buttons.SELECTOR);
+                setThermostatRowData(mDeviceInfo, holder);
+            }  else {
                 switch (mDeviceInfo.getType()) {
                     case DomoticzValues.Scene.Type.GROUP:
                         setButtons(holder, Buttons.BUTTONS);
@@ -493,7 +488,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     double temp = mDeviceInfo.getTemperature();
                     if (tempSign != null && !tempSign.equals("C"))
                         temp = temp / 2;
-                    holder.pieView.setPercentage(Float.valueOf(temp + ""));
+                    holder.pieView.setPercentage(Float.parseFloat(temp + ""));
                     holder.pieView.setInnerText(mDeviceInfo.getTemperature() + " " + tempSign);
                     if ((!UsefulBits.isEmpty(tempSign) && tempSign.equals("C") && mDeviceInfo.getTemperature() < 0) ||
                             (!UsefulBits.isEmpty(tempSign) && tempSign.equals("F") && mDeviceInfo.getTemperature() < 30))
@@ -527,7 +522,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                             mDeviceInfo.getType(),
                             null,
-                            mConfigInfo != null && mDeviceInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature(),
+                            mDeviceInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature(),
                             true,
                             "Freezing")).into(holder.iconRow);
                 } else {
@@ -580,7 +575,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.switch_battery_level.setText(text);
 
         if (holder.buttonOn != null) {
-            holder.buttonOn.setId(mDeviceInfo.getIdx());
+            holder.buttonOn.setTag(mDeviceInfo);
             if (mDeviceInfo.getData().startsWith("Arm"))
                 holder.buttonOn.setText(context.getString(R.string.button_disarm));
             else
@@ -588,7 +583,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
             holder.buttonOn.setOnClickListener(v -> {
                 //open security panel
-                handleSecurityPanel(v.getId());
+                handleSecurityPanel((DevicesInfo) v.getTag());
             });
         }
 
@@ -640,19 +635,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 mDeviceInfo.getImage())).into(holder.iconRow);
 
         if (holder.buttonOn != null) {
-            if (mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.GROUP) || mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
-                holder.buttonOn.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
-            else
-                holder.buttonOn.setId(mDeviceInfo.getIdx());
-
-            holder.buttonOn.setOnClickListener(v -> handleOnOffSwitchClick(v.getId(), true));
+            holder.buttonOn.setTag(mDeviceInfo);
+            holder.buttonOn.setOnClickListener(v -> handleOnOffSwitchClick((DevicesInfo) v.getTag(), true));
         }
         if (holder.buttonOff != null) {
-            if (mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.GROUP) || mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
-                holder.buttonOff.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
-            else
-                holder.buttonOff.setId(mDeviceInfo.getIdx());
-            holder.buttonOff.setOnClickListener(v -> handleOnOffSwitchClick(v.getId(), false));
+            holder.buttonOff.setTag(mDeviceInfo);
+            holder.buttonOff.setOnClickListener(v -> handleOnOffSwitchClick((DevicesInfo) v.getTag(), false));
         }
 
         if (!mDeviceInfo.getStatusBoolean())
@@ -661,22 +649,19 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.iconRow.setAlpha(1f);
 
         if (holder.buttonLog != null) {
-            if (mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.GROUP) || mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
-                holder.buttonLog.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
-            else
-                holder.buttonLog.setId(mDeviceInfo.getIdx());
+            holder.buttonLog.setTag(mDeviceInfo);
 
-            holder.buttonLog.setOnClickListener(v -> handleLogButtonClick(v.getId()));
+            holder.buttonLog.setOnClickListener(v -> handleLogButtonClick((DevicesInfo) v.getTag()));
         }
     }
 
     private void SetCameraBackGround(DevicesInfo mDeviceInfo, final DataObjectHolder holder) {
         if (mSharedPrefs.addCameraToDashboard() && mDeviceInfo.getUsedByCamera() && mDeviceInfo.getCameraIdx() >= 0) {
             holder.full_screen_icon.setVisibility(View.VISIBLE);
-            holder.full_screen_icon.setTag(mDeviceInfo.getCameraIdx());
+            holder.full_screen_icon.setTag(mDeviceInfo);
             holder.full_screen_icon.setOnClickListener(v -> {
                 if (v.getTag() != null)
-                    listener.onCameraFullScreenClick((int) v.getTag(), "Snapshot");
+                    listener.onCameraFullScreenClick((DevicesInfo) v.getTag(), "Snapshot");
             });
 
             final String imageUrl = domoticz.getSnapshotUrl(mDeviceInfo.getCameraIdx());
@@ -766,15 +751,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.iconRow.setAlpha(1f);
 
         if (holder.onOffSwitch != null) {
-            if (mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.GROUP) || mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
-                holder.onOffSwitch.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
-            else
-                holder.onOffSwitch.setId(mDeviceInfo.getIdx());
+            holder.onOffSwitch.setTag(mDeviceInfo);
 
             holder.onOffSwitch.setOnCheckedChangeListener(null);
             holder.onOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
             holder.onOffSwitch.setOnCheckedChangeListener((compoundButton, checked) -> {
-                handleOnOffSwitchClick(compoundButton.getId(), checked);
+                handleOnOffSwitchClick((DevicesInfo) compoundButton.getTag(), checked);
                 mDeviceInfo.setStatusBoolean(checked);
                 if (!checked)
                     holder.iconRow.setAlpha(0.5f);
@@ -784,12 +766,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
 
         if (holder.buttonLog != null) {
-            if (mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.GROUP) || mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
-                holder.buttonLog.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
-            else
-                holder.buttonLog.setId(mDeviceInfo.getIdx());
+            holder.buttonLog.setTag(mDeviceInfo);
 
-            holder.buttonLog.setOnClickListener(v -> handleLogButtonClick(v.getId()));
+            holder.buttonLog.setOnClickListener(v -> handleLogButtonClick((DevicesInfo) v.getTag()));
         }
     }
 
@@ -807,9 +786,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         final double setPoint = mDeviceInfo.getSetPoint();
         if (holder.isProtected)
             holder.buttonOn.setEnabled(false);
+
         holder.buttonOn.setText(context.getString(R.string.set_temperature));
-        holder.buttonOn.setOnClickListener(v -> handleThermostatClick(v.getId()));
-        holder.buttonOn.setId(mDeviceInfo.getIdx());
+        holder.buttonOn.setOnClickListener(v -> handleThermostatClick((DevicesInfo) v.getTag()));
+        holder.buttonOn.setTag(mDeviceInfo);
 
         holder.switch_name.setText(mDeviceInfo.getName());
 
@@ -821,10 +801,45 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.signal_level.setText(text);
         }
 
-        if (holder.switch_battery_level != null) {
-            String setPointText =
-                    context.getString(R.string.set_point) + ": " + setPoint;
-            holder.switch_battery_level.setText(setPointText);
+        int loadMode = mDeviceInfo.getModeId();
+        final ArrayList<String> modes = mDeviceInfo.getModes();
+        if (modes != null && modes.size() > 0) {
+            holder.spSelector.setId(mDeviceInfo.getIdx());
+            holder.spSelector.setVisibility(View.VISIBLE);
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, modes);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            holder.spSelector.setAdapter(dataAdapter);
+            holder.spSelector.setSelection(loadMode);
+            holder.spSelector.setTag(mDeviceInfo);
+
+            if (holder.switch_battery_level != null) {
+                String modeText =
+                        context.getString(R.string.set_mode) + ": " + modes.get(loadMode);
+                holder.switch_battery_level.setText(modeText);
+            }
+
+            holder.spSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                    if ((holder.spSelector.getId()) == mDeviceInfo.getIdx()) {
+                        holder.spSelector.setId(mDeviceInfo.getIdx() * 3);
+                    } else {
+                        String selValue = holder.spSelector.getItemAtPosition(arg2).toString();
+                        handleModeSelectorChange(mDeviceInfo, arg2, selValue);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) {}
+            });
+        }
+        else{
+            holder.spSelector.setVisibility(View.GONE);
+            if (holder.switch_battery_level != null) {
+                String setPointText =
+                        context.getString(R.string.set_point) + ": " + setPoint;
+                holder.switch_battery_level.setText(setPointText);
+            }
         }
 
         Picasso.get().load(DomoticzIcons.getDrawableIcon(
@@ -885,6 +900,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
     }
 
+    private void handleModeSelectorChange(DevicesInfo device, int id, String mode) {
+        if (device != null) {
+            listener.OnModeChanged(device, id, mode);
+        }
+    }
+
     /**
      * Set the data for temperature devices
      *
@@ -934,8 +955,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
         if ("evohome".equals(mDeviceInfo.getHardwareName())) {
             holder.buttonSet.setText(context.getString(R.string.set_temperature));
-            holder.buttonSet.setOnClickListener(v -> handleSetTemperatureClick(v.getId()));
-            holder.buttonSet.setId(mDeviceInfo.getIdx());
+            holder.buttonSet.setOnClickListener(v -> handleSetTemperatureClick((DevicesInfo) v.getTag()));
+            holder.buttonSet.setTag(mDeviceInfo);
             holder.buttonSet.setVisibility(View.VISIBLE);
 
             modeIconRes = getEvohomeStateIconResource(mDeviceInfo.getStatus());
@@ -1029,7 +1050,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             if (!noButtonShown) {
                 holder.buttonOn.setVisibility(View.GONE);
             } else {
-                holder.buttonOn.setId(mDevicesInfo.getIdx());
+                holder.buttonOn.setTag(mDevicesInfo);
                 String status = mDevicesInfo.getData().toLowerCase();
                 if (statusOpen.contains(status)) {
                     holder.buttonOn.setText(context.getString(R.string.button_state_open));
@@ -1041,7 +1062,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 }
                 holder.buttonOn.setOnClickListener(v -> {
                     String text1 = (String) ((Button) v).getText();
-                    handleOnButtonClick(v.getId(), text1.equals(context.getString(R.string.button_state_on)));
+                    handleOnButtonClick((DevicesInfo) v.getTag(), text1.equals(context.getString(R.string.button_state_on)));
                 });
             }
         }
@@ -1092,10 +1113,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         else
             holder.iconRow.setAlpha(1f);
 
-        if (mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.GROUP) || mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
-            holder.buttonOn.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
-        else
-            holder.buttonOn.setId(mDeviceInfo.getIdx());
+        holder.buttonOn.setTag(mDeviceInfo);
 
         if (action) {
             holder.buttonOn.setText(context.getString(R.string.button_state_on));
@@ -1106,16 +1124,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         holder.buttonOn.setOnClickListener(v -> {
             try {
                 String text1 = (String) ((Button) v).getText();
-                handleOnButtonClick(v.getId(), text1.equals(context.getString(R.string.button_state_on)));
+                handleOnButtonClick((DevicesInfo) v.getTag(), text1.equals(context.getString(R.string.button_state_on)));
             } catch (Exception ignore) {
             }
         });
         if (holder.buttonLog != null) {
-            if (mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.GROUP) || mDeviceInfo.getType().equals(DomoticzValues.Scene.Type.SCENE))
-                holder.buttonLog.setId(mDeviceInfo.getIdx() + ID_SCENE_SWITCH);
-            else
-                holder.buttonLog.setId(mDeviceInfo.getIdx());
-            holder.buttonLog.setOnClickListener(v -> handleLogButtonClick(v.getId()));
+            holder.buttonLog.setTag(mDeviceInfo);
+            holder.buttonLog.setOnClickListener(v -> handleLogButtonClick((DevicesInfo) v.getTag()));
         }
     }
 
@@ -1146,35 +1161,23 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.switch_battery_level.setText(text);
         }
 
-        holder.buttonUp.setId(mDeviceInfo.getIdx());
+        holder.buttonUp.setTag(mDeviceInfo);
         holder.buttonUp.setOnClickListener(view -> {
-            for (DevicesInfo e : data) {
-                if (e.getIdx() == view.getId()) {
-                    handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.OPEN);
-                }
-            }
+            handleBlindsClick((DevicesInfo) view.getTag(), DomoticzValues.Device.Blind.Action.OPEN);
         });
 
-        holder.buttonStop.setId(mDeviceInfo.getIdx());
+        holder.buttonStop.setTag(mDeviceInfo);
         holder.buttonStop.setOnClickListener(view -> {
-            for (DevicesInfo e : data) {
-                if (e.getIdx() == view.getId()) {
-                    handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.STOP);
-                }
-            }
+            handleBlindsClick((DevicesInfo) view.getTag(), DomoticzValues.Device.Blind.Action.STOP);
         });
 
-        holder.buttonDown.setId(mDeviceInfo.getIdx());
+        holder.buttonDown.setTag(mDeviceInfo);
         holder.buttonDown.setOnClickListener(view -> {
-            for (DevicesInfo e : data) {
-                if (e.getIdx() == view.getId()) {
-                    handleBlindsClick(e.getIdx(), DomoticzValues.Device.Blind.Action.CLOSE);
-                }
-            }
+            handleBlindsClick((DevicesInfo) view.getTag(), DomoticzValues.Device.Blind.Action.CLOSE);
         });
 
         if (holder.dimmer.getVisibility() == View.VISIBLE) {
-            holder.dimmer.setTag(mDeviceInfo.getIdx());
+            holder.dimmer.setTag(mDeviceInfo);
             holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel() <= 0 ? 100 : mDeviceInfo.getMaxDimLevel());
             holder.dimmer.setValue(mDeviceInfo.getLevel() > holder.dimmer.getValueTo() ? holder.dimmer.getValueTo() : mDeviceInfo.getLevel());
             holder.dimmer.setLabelFormatter(value -> (Math.round(value)) + "%");
@@ -1187,7 +1190,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 @Override
                 public void onStopTrackingTouch(@NonNull Slider slider) {
                     int progress = (Math.round(slider.getValue()));
-                    handleDimmerChange((int) slider.getTag(), progress, false);
+                    handleDimmerChange((DevicesInfo) slider.getTag(), progress, false);
                     mDeviceInfo.setLevel(progress);
                 }
             });
@@ -1237,22 +1240,23 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (mDeviceInfo.isLevelOffHidden())
             levelNames.remove(0);
 
-        holder.spSelector.setTag(mDeviceInfo.getIdx());
         if (levelNames != null && levelNames.size() > loadLevel) {
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
-                    android.R.layout.simple_spinner_item, levelNames);
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, levelNames);
             dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             holder.spSelector.setAdapter(dataAdapter);
             holder.spSelector.setSelection(loadLevel);
         }
+
+        holder.spSelector.setTag(mDeviceInfo);
+        holder.spSelector.setId(mDeviceInfo.getIdx());
         holder.spSelector.setVisibility(View.VISIBLE);
 
         holder.spSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int arg2, long arg3) {
-                if (((int) holder.spSelector.getTag()) == mDeviceInfo.getIdx()) {
-                    holder.spSelector.setTag(mDeviceInfo.getIdx() * 3);
+                if ((holder.spSelector.getId()) == mDeviceInfo.getIdx()) {
+                    holder.spSelector.setId(mDeviceInfo.getIdx() * 3);
                 } else {
                     String selValue = holder.spSelector.getItemAtPosition(arg2).toString();
                     handleSelectorChange(mDeviceInfo, selValue, levelNames);
@@ -1318,11 +1322,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         else
             holder.iconRow.setAlpha(1f);
 
-        holder.dimmerOnOffSwitch.setId(mDeviceInfo.getIdx() + ID_SWITCH);
+        holder.dimmerOnOffSwitch.setTag(mDeviceInfo);
         holder.dimmerOnOffSwitch.setOnCheckedChangeListener(null);
         holder.dimmerOnOffSwitch.setChecked(mDeviceInfo.getStatusBoolean());
         holder.dimmerOnOffSwitch.setOnCheckedChangeListener((compoundButton, checked) -> {
-            handleOnOffSwitchClick(compoundButton.getId(), checked);
+            handleOnOffSwitchClick((DevicesInfo) compoundButton.getTag(), checked);
             mDeviceInfo.setStatusBoolean(checked);
             if (checked) {
                 holder.dimmer.setVisibility(View.VISIBLE);
@@ -1343,7 +1347,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 holder.iconRow.setAlpha(1f);
         });
 
-        holder.dimmer.setTag(mDeviceInfo.getIdx());
+        holder.dimmer.setTag(mDeviceInfo);
         holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel() <= 0 ? 100 : mDeviceInfo.getMaxDimLevel());
         holder.dimmer.setValue(mDeviceInfo.getLevel() > holder.dimmer.getValueTo() ? holder.dimmer.getValueTo() : mDeviceInfo.getLevel());
         holder.dimmer.setLabelFormatter(value -> (Math.round(value)) + "%");
@@ -1359,7 +1363,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 SwitchMaterial dimmerOnOffSwitch = null;
                 try {
                     dimmerOnOffSwitch = slider.getRootView()
-                            .findViewById(mDeviceInfo.getIdx() + ID_SWITCH);
+                            .findViewById(mDeviceInfo.getIdx());
                     if (progress == 0 && dimmerOnOffSwitch.isChecked()) {
                         dimmerOnOffSwitch.setChecked(false);
                         slider.setValue(previousDimmerValue);
@@ -1368,7 +1372,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     }
                 } catch (Exception ex) {/*else we don't use a switch, but buttons */}
 
-                handleDimmerChange((int) slider.getTag(), progress, false);
+                handleDimmerChange((DevicesInfo) slider.getTag(), progress, false);
                 mDeviceInfo.setLevel(progress);
             }
         });
@@ -1384,13 +1388,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
 
         if (holder.buttonLog != null) {
-            holder.buttonLog.setId(mDeviceInfo.getIdx());
-            holder.buttonLog.setOnClickListener(v -> handleLogButtonClick(v.getId()));
+            holder.buttonLog.setTag(mDeviceInfo);
+            holder.buttonLog.setOnClickListener(v -> handleLogButtonClick((DevicesInfo) v.getTag()));
         }
 
         if (isRGB && holder.buttonColor != null) {
-            holder.buttonColor.setId(mDeviceInfo.getIdx());
-            holder.buttonColor.setOnClickListener(v -> handleColorButtonClick(v.getId()));
+            holder.buttonColor.setTag(mDeviceInfo);
+            holder.buttonColor.setOnClickListener(v -> handleColorButtonClick((DevicesInfo) v.getTag()));
         }
     }
 
@@ -1435,9 +1439,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             holder.iconRow.setAlpha(1f);
 
         if (holder.buttonOn != null) {
-            holder.buttonOn.setId(mDeviceInfo.getIdx());
+            holder.buttonOn.setTag(mDeviceInfo);
             holder.buttonOn.setOnClickListener(v -> {
-                handleOnOffSwitchClick(v.getId(), true);
+                handleOnOffSwitchClick((DevicesInfo) v.getTag(), true);
                 holder.iconRow.setAlpha(1f);
                 holder.dimmer.setVisibility(View.VISIBLE);
                 if (holder.dimmer.getValue() <= 10) {
@@ -1450,9 +1454,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             });
         }
         if (holder.buttonOff != null) {
-            holder.buttonOff.setId(mDeviceInfo.getIdx());
+            holder.buttonOff.setTag(mDeviceInfo);
             holder.buttonOff.setOnClickListener(v -> {
-                handleOnOffSwitchClick(v.getId(), false);
+                handleOnOffSwitchClick((DevicesInfo) v.getTag(), false);
                 holder.iconRow.setAlpha(0.5f);
                 holder.dimmer.setVisibility(View.GONE);
                 if (isRGB)
@@ -1460,7 +1464,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             });
         }
 
-        holder.dimmer.setTag(mDeviceInfo.getIdx());
+        holder.dimmer.setTag(mDeviceInfo);
         holder.dimmer.setValueTo(mDeviceInfo.getMaxDimLevel() <= 0 ? 100 : mDeviceInfo.getMaxDimLevel());
         holder.dimmer.setValue(mDeviceInfo.getLevel() > holder.dimmer.getValueTo() ? holder.dimmer.getValueTo() : mDeviceInfo.getLevel());
         holder.dimmer.setLabelFormatter(value -> (Math.round(value)) + "%");
@@ -1473,7 +1477,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 int progress = (Math.round(slider.getValue()));
-                handleDimmerChange((int) slider.getTag(), progress, false);
+                handleDimmerChange((DevicesInfo) slider.getTag(), progress, false);
                 mDeviceInfo.setLevel(progress);
             }
         });
@@ -1489,13 +1493,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         }
 
         if (holder.buttonLog != null) {
-            holder.buttonLog.setId(mDeviceInfo.getIdx());
-            holder.buttonLog.setOnClickListener(v -> handleLogButtonClick(v.getId()));
+            holder.buttonLog.setTag(mDeviceInfo);
+            holder.buttonLog.setOnClickListener(v -> handleLogButtonClick((DevicesInfo) v.getTag()));
         }
 
         if (isRGB && holder.buttonColor != null) {
-            holder.buttonColor.setId(mDeviceInfo.getIdx());
-            holder.buttonColor.setOnClickListener(v -> handleColorButtonClick(v.getId()));
+            holder.buttonColor.setTag(mDeviceInfo);
+            holder.buttonColor.setOnClickListener(v -> handleColorButtonClick((DevicesInfo) v.getTag()));
         }
     }
 
@@ -1522,10 +1526,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         holder.switch_battery_level.setText(text);
 
         if (holder.buttonSetStatus != null) {
-            holder.buttonSetStatus.setId(mDeviceInfo.getIdx());
+            holder.buttonSetStatus.setTag(mDeviceInfo);
             holder.buttonSetStatus.setOnClickListener(v -> {
                 //open state dialog
-                handleStateButtonClick(v.getId(), stateNamesArrayRes, stateIds);
+                handleStateButtonClick((DevicesInfo) v.getTag(), stateNamesArrayRes, stateIds);
             });
         }
 
@@ -1558,133 +1562,61 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         return text;
     }
 
-
-    /**
-     * Handles the color button
-     *
-     * @param idx IDX of the device to change
-     */
-    private void handleColorButtonClick(int idx) {
-        listener.onColorButtonClick(idx);
+    private void handleColorButtonClick(DevicesInfo device) {
+        listener.onColorButtonClick(device);
     }
 
-    /**
-     * Interface which handles the clicks of the thermostat set button
-     *
-     * @param idx IDX of the device to change
-     */
-    public void handleThermostatClick(int idx) {
-        listener.onThermostatClick(idx);
+    public void handleThermostatClick(DevicesInfo device) {
+        listener.onThermostatClick(device);
     }
 
-    /**
-     * Handles the temperature click
-     *
-     * @param idx IDX of the device to change
-     */
-    public void handleSetTemperatureClick(int idx) {
-        listener.onSetTemperatureClick(idx);
+    public void handleSetTemperatureClick(DevicesInfo device) {
+        listener.onSetTemperatureClick(device);
     }
 
-    /**
-     * Handles the on/off switch click
-     *
-     * @param idx    IDX of the device to change
-     * @param action Action to take
-     */
-    private void handleOnOffSwitchClick(int idx, boolean action) {
-        listener.onSwitchClick(idx, action);
+    private void handleOnOffSwitchClick(DevicesInfo device, boolean action) {
+        listener.onSwitchClick(device, action);
     }
 
-    /**
-     * Handles the security panel
-     *
-     * @param idx IDX of the device to change
-     */
-    private void handleSecurityPanel(int idx) {
-        listener.onSecurityPanelButtonClick(idx);
+    private void handleSecurityPanel(DevicesInfo device) {
+        listener.onSecurityPanelButtonClick(device);
     }
 
-    /**
-     * Handles the on button click
-     *
-     * @param idx    IDX of the device to change
-     * @param action Action to take
-     */
-    private void handleOnButtonClick(int idx, boolean action) {
-        listener.onButtonClick(idx, action);
+    private void handleOnButtonClick(DevicesInfo device, boolean action) {
+        listener.onButtonClick(device, action);
     }
 
-    /**
-     * Handles the blind click
-     *
-     * @param idx    IDX of the device to change
-     * @param action Action to take
-     */
-    private void handleBlindsClick(int idx, int action) {
-        listener.onBlindClick(idx, action);
+    private void handleBlindsClick(DevicesInfo device, int action) {
+        listener.onBlindClick(device, action);
     }
 
-    /**
-     * Handles the dimmer change
-     *
-     * @param idx      IDX of the device to change
-     * @param value    Value to change the device to
-     * @param selector True if it's a selector device
-     */
-    private void handleDimmerChange(final int idx, final int value, boolean selector) {
-        listener.onDimmerChange(idx, value > 100 ? 100 : value, selector);
+    private void handleDimmerChange(final DevicesInfo device, final int value, boolean selector) {
+        listener.onDimmerChange(device, value > 100 ? 100 : value, selector);
     }
 
-    /**
-     * Handles the state button click
-     *
-     * @param idx      IDX of the device to change
-     * @param itemsRes Resource ID of the items
-     * @param itemIds  State ID's
-     */
-    private void handleStateButtonClick(final int idx, int itemsRes, int[] itemIds) {
-        listener.onStateButtonClick(idx, itemsRes, itemIds);
+    private void handleStateButtonClick(DevicesInfo device, int itemsRes, int[] itemIds) {
+        listener.onStateButtonClick(device, itemsRes, itemIds);
     }
 
-    /**
-     * Handles the selector dimmer click
-     */
     private void handleSelectorChange(DevicesInfo device, String levelName, ArrayList<String> levelNames) {
-        for (int i = 0; i < levelNames.size(); i++) {
-            if (levelNames.get(i).equals(levelName)) {
-                listener.onSelectorChange(device.getIdx(), device.isLevelOffHidden() ? (i * 10) : (i * 10) - 10);
+        if (device != null) {
+            for (int i = 0; i < levelNames.size(); i++) {
+                if (levelNames.get(i).equals(levelName)) {
+                    listener.onSelectorChange(device, device.isLevelOffHidden() ? (i * 10) : (i * 10) - 10);
+                }
             }
         }
     }
 
-    /**
-     * Handles the log button click
-     *
-     * @param idx IDX of the device to change
-     */
-    private void handleLogButtonClick(int idx) {
-        listener.onLogButtonClick(idx);
+    private void handleLogButtonClick(DevicesInfo device) {
+        listener.onLogButtonClick(device);
     }
 
-    /**
-     * Calculates the dim percentage
-     *
-     * @param maxDimLevel Max dim level
-     * @param level       Current level
-     * @return Calculated percentage
-     */
     private String calculateDimPercentage(float maxDimLevel, float level) {
         float percentage = (level / maxDimLevel) * 100;
         return String.format("%.0f", percentage) + "%";
     }
 
-    /**
-     * Get's the icon of the Evo home state
-     *
-     * @param stateName The current state to return the icon for
-     * @return Returns resource ID for the icon
-     */
     private int getEvohomeStateIconResource(String stateName) {
         if (stateName == null) return 0;
         TypedArray icons = context.getResources().obtainTypedArray(R.array.evohome_zone_state_icons);
@@ -1941,7 +1873,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     holder.contentWrapper.setVisibility(View.VISIBLE);
                 if (holder.adview != null)
                     holder.adview.setVisibility(View.GONE);
-                break;
             case Buttons.SELECTOR:
                 if (holder.contentWrapper != null)
                     holder.contentWrapper.setVisibility(View.VISIBLE);

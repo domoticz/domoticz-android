@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
+    namespace 'com.triggertrap.seekarc'
     compileSdkVersion 31
     buildToolsVersion "31.0.0"
 
@@ -11,6 +12,7 @@ android {
         versionName "1.1.7"
         vectorDrawables.useSupportLibrary = true
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -29,6 +31,11 @@ android {
             assets.srcDirs = ['assets']
         }
         androidTest.setRoot('tests')
+    }
+
+    buildFeatures {
+        renderScript true
+        aidl true
     }
 }
 

@@ -23,41 +23,44 @@ package nl.hnogames.domoticz.interfaces;
 
 import android.view.View;
 
+import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+
 public interface switchesClickListener {
 
-    void onSwitchClick(int idx, boolean action);
+    void onSwitchClick(DevicesInfo device, boolean action);
 
-    void onBlindClick(int idx, int action);
+    void onBlindClick(DevicesInfo device, int action);
 
-    void onDimmerChange(int idx, int value, boolean selector);
+    void onDimmerChange(DevicesInfo device, int value, boolean selector);
 
-    void onButtonClick(int idx, boolean action);
+    void onButtonClick(DevicesInfo device, boolean action);
 
-    void onLogButtonClick(int idx);
+    void onLogButtonClick(DevicesInfo device);
 
-    void onLikeButtonClick(int idx, boolean checked);
+    void onLikeButtonClick(DevicesInfo device, boolean checked);
 
-    void onColorButtonClick(int idx);
+    void onColorButtonClick(DevicesInfo device);
 
-    void onTimerButtonClick(int idx);
+    void onTimerButtonClick(DevicesInfo device);
 
-    void onNotificationButtonClick(int idx);
+    void onNotificationButtonClick(DevicesInfo device);
 
-    void onThermostatClick(int idx);
+    void onThermostatClick(DevicesInfo device);
 
-    void onSetTemperatureClick(int idx);
+    void onSetTemperatureClick(DevicesInfo device);
 
-    void onSecurityPanelButtonClick(int idx);
+    void onSecurityPanelButtonClick(DevicesInfo device);
 
-    void onStateButtonClick(int idx, int itemsRes, int[] itemIds);
+    void onStateButtonClick(DevicesInfo device, int itemsRes, int[] itemIds);
 
-    void onSelectorDimmerClick(int idx, String[] levelNames);
+    void onSelectorDimmerClick(DevicesInfo device, String[] levelNames);
 
-    void onSelectorChange(int idx, int l);
+    void onSelectorChange(DevicesInfo device, int l);
 
     void onItemClicked(View v, int position);
 
-    boolean onItemLongClicked(int idx);
+    boolean onItemLongClicked(DevicesInfo device);
 
-    void onCameraFullScreenClick(int idx, String name);
+    void onCameraFullScreenClick(DevicesInfo device, String name);
+    void OnModeChanged(DevicesInfo utility, int id, String mode);
 }
