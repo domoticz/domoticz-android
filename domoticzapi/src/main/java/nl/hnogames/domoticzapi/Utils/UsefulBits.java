@@ -29,6 +29,9 @@ import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -222,5 +225,26 @@ public class UsefulBits {
      */
     public static int differenceInDays(long day1, long day2) {
         return (int) (day1 - day2) / (24 * 60 * 60 * 1000);
+    }
+
+    public static byte[] toByteArray(Object obj) throws IOException {
+        byte[] bytes = null;
+        ByteArrayOutputStream bos = null;
+        ObjectOutputStream oos = null;
+        try {
+            bos = new ByteArrayOutputStream();
+            oos = new ObjectOutputStream(bos);
+            oos.writeObject(obj);
+            oos.flush();
+            bytes = bos.toByteArray();
+        } finally {
+            if (oos != null) {
+                oos.close();
+            }
+            if (bos != null) {
+                bos.close();
+            }
+        }
+        return bytes;
     }
 }

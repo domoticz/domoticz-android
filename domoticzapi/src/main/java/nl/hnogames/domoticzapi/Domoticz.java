@@ -130,6 +130,7 @@ public class Domoticz {
     private PhoneConnectionUtil mPhoneConnectionUtil;
     private Context mContext;
     public static boolean BasicAuthDetected = false;
+    public static boolean V2ApiDetected = false;
 
     public Domoticz(Context mContext, RequestQueue queue) {
         this.mContext = mContext;
@@ -137,13 +138,10 @@ public class Domoticz {
         this.mSessionUtil = new SessionUtil(mContext);
         this.mServerUtil = new ServerUtil(mContext);
         this.mDomoticzUrls = new DomoticzUrls(this);
+        V2ApiDetected = getServerUtil().getActiveServer().getIsV2ApiDetected();
 
         if (!getServerUtil().getActiveServer().getUseOnlyLocal()) {
-            mPhoneConnectionUtil = new PhoneConnectionUtil(mContext, new WifiSSIDListener() {
-                @Override
-                public void ReceiveSSIDs(CharSequence[] entries) {
-                }
-            });
+            mPhoneConnectionUtil = new PhoneConnectionUtil(mContext, entries -> {});
         }
     }
 
@@ -353,7 +351,7 @@ public class Domoticz {
      */
     public void getUserAuthenticationRights(LoginReceiver receiver) {
         LoginParser parser = new LoginParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.AUTH);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.AUTH, V2ApiDetected);
         GetRequest(parser, url, true);
     }
 
@@ -372,20 +370,20 @@ public class Domoticz {
 
     public void AddLog(String message, setCommandReceiver receiver) {
         setCommandParser parser = new setCommandParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Set.LOG);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Set.LOG, V2ApiDetected);
         url = url + message;
         GetRequest(parser, url, true);
     }
 
     public void GetNotificationSystems(NotificationTypesReceiver receiver) {
         NotificationTypesParser parser = new NotificationTypesParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NOTIFICATIONTYPES);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NOTIFICATIONTYPES, V2ApiDetected);
         GetRequest(parser, url, true);
     }
 
     public void SendNotification(String Subject, String Body, String SubSystem, SendNotificationReceiver receiver) {
         SendNotificationParser parser = new SendNotificationParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SEND_NOTIFICATION);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SEND_NOTIFICATION, V2ApiDetected);
         url += "&subject=" + Subject;
         url += "&body=" + Body;
         url += "&subsystem=" + SubSystem;
@@ -401,7 +399,7 @@ public class Domoticz {
      */
     public void AddMobileDevice(String DeviceId, String SenderId, MobileDeviceReceiver receiver) {
         MobileDeviceParser parser = new MobileDeviceParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.ADD_MOBILE_DEVICE);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.ADD_MOBILE_DEVICE, V2ApiDetected);
         url += "&uuid=" + DeviceId;
         url += "&senderid=" + SenderId;
         url += "&name=" + Build.MODEL.replace(" ", "");
@@ -417,7 +415,7 @@ public class Domoticz {
      */
     public void CleanMobileDevice(String DeviceId, MobileDeviceReceiver receiver) {
         MobileDeviceParser parser = new MobileDeviceParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CLEAN_MOBILE_DEVICE);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CLEAN_MOBILE_DEVICE, V2ApiDetected);
         url += "&uuid=" + DeviceId;
 
         GetRequest(parser, url, true);
@@ -430,7 +428,7 @@ public class Domoticz {
      */
     public void getSunRise(SunRiseReceiver receiver) {
         SunRiseParser parser = new SunRiseParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SUNRISE);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SUNRISE, V2ApiDetected);
         GetRequest(parser, url, true);
     }
 
@@ -441,7 +439,7 @@ public class Domoticz {
      */
     public void getServerVersion(VersionReceiver receiver) {
         VersionParser parser = new VersionParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.VERSION);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.VERSION, V2ApiDetected);
         GetRequest(parser, url, true);
     }
 
@@ -450,7 +448,7 @@ public class Domoticz {
     }
 
     public String getSnapshotUrl(int idx) {
-        return mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CAMERA) + idx;
+        return mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CAMERA, V2ApiDetected) + idx;
     }
 
     /**
@@ -460,7 +458,7 @@ public class Domoticz {
      */
     public void getUpdate(UpdateVersionReceiver receiver) {
         UpdateVersionParser parser = new UpdateVersionParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE, V2ApiDetected);
         GetRequest(parser, url, true);
     }
 
@@ -471,7 +469,7 @@ public class Domoticz {
      */
     public void getDownloadUpdate(DownloadUpdateServerReceiver receiver) {
         DownloadUpdateParser parser = new DownloadUpdateParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE_DOWNLOAD_UPDATE);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE_DOWNLOAD_UPDATE, V2ApiDetected);
         GetRequest(parser, url, true);
     }
 
@@ -482,7 +480,7 @@ public class Domoticz {
      */
     public void getUpdateDownloadReady(UpdateDownloadReadyReceiver receiver) {
         UpdateDownloadReadyParser parser = new UpdateDownloadReadyParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE_DOWNLOAD_READY);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE_DOWNLOAD_READY, V2ApiDetected);
         GetRequest(parser, url, true);
     }
 
@@ -493,7 +491,7 @@ public class Domoticz {
      */
     public void updateDomoticzServer(@Nullable UpdateDomoticzServerReceiver receiver) {
         UpdateDomoticzServerParser parser = new UpdateDomoticzServerParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE_DOMOTICZ_SERVER);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATE_DOMOTICZ_SERVER, V2ApiDetected);
         GetRequest(parser,
                 url, true);
     }
@@ -508,17 +506,32 @@ public class Domoticz {
         String username = UsefulBits.encodeBase64(getUserCredentials(Authentication.USERNAME));
         String password = UsefulBits.getMd5String(getUserCredentials(Authentication.PASSWORD));
         LoginParser parser = new LoginParser(loginReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CHECKLOGIN);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CHECKLOGIN, V2ApiDetected);
         Log.v(TAG, "Url: " + url);
 
         Map<String, String> params = new HashMap<>();
-        try {
-            params.put("username", URLEncoder.encode(username, "UTF-8"));
-            params.put("password", URLEncoder.encode(password, "UTF-8"));
-            LoginPostRequest(parser, url, params);
-        } catch (Exception e) {
+        if(!V2ApiDetected) {
             try {
-                url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NEWCHECKLOGIN);
+                params.put("username", URLEncoder.encode(username, "UTF-8"));
+                params.put("password", URLEncoder.encode(password, "UTF-8"));
+                LoginPostRequest(parser, url, params);
+
+                V2ApiDetected = true;
+                getServerUtil().getActiveServer().setIsV2ApiDetected(V2ApiDetected);
+                getServerUtil().saveDomoticzServers(true);
+            } catch (Exception e) {
+                try {
+                    url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NEWCHECKLOGIN, V2ApiDetected);
+                    LoginPostRequest(parser, url, params);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        else{
+            try {
+                params.put("username", URLEncoder.encode(username, "UTF-8"));
+                params.put("password", URLEncoder.encode(password, "UTF-8"));
                 LoginPostRequest(parser, url, params);
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -528,7 +541,7 @@ public class Domoticz {
 
     public void getSwitchLogs(int idx, SwitchLogReceiver switchesReceiver) {
         SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SWITCHLOG) + idx;
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SWITCHLOG, V2ApiDetected) + idx;
 
         GetResultRequest(parser,
                 url, true);
@@ -536,7 +549,7 @@ public class Domoticz {
 
     public void getTextLogs(int idx, SwitchLogReceiver switchesReceiver) {
         SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.TEXTLOG) + idx;
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.TEXTLOG, V2ApiDetected) + idx;
 
         GetResultRequest(parser,
                 url, true);
@@ -544,35 +557,35 @@ public class Domoticz {
 
     public void getSceneLogs(int idx, SwitchLogReceiver switchesReceiver) {
         SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SCENELOG) + idx;
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SCENELOG, V2ApiDetected) + idx;
         GetResultRequest(parser,
                 url, true);
     }
 
     public void getScenes(ScenesReceiver receiver) {
         ScenesParser parser = new ScenesParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SCENES);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SCENES, V2ApiDetected);
         GetResultRequest(parser,
                 url, true);
     }
 
     public void getScene(ScenesReceiver receiver, int idx) {
         ScenesParser parser = new ScenesParser(receiver, idx);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SCENES);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SCENES, V2ApiDetected);
         GetResultRequest(parser,
                 url, true);
     }
 
     public void getPlans(PlansReceiver receiver) {
         PlanParser parser = new PlanParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.PLANS);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.PLANS, V2ApiDetected);
         GetResultRequest(parser,
                 url, true);
     }
 
     public void getCameras(CameraReceiver receiver) {
         CameraParser parser = new CameraParser(receiver, this);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CAMERAS);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CAMERAS, V2ApiDetected);
 
         GetResultRequest(parser,
                 url, true);
@@ -580,14 +593,14 @@ public class Domoticz {
 
     public void getSwitchTimers(int idx, SwitchTimerReceiver switchesReceiver, boolean isScene) {
         SwitchTimerParser parser = new SwitchTimerParser(switchesReceiver);
-        String url = mDomoticzUrls.constructGetUrl(isScene ? DomoticzValues.Json.Url.Request.SCENETIMER : DomoticzValues.Json.Url.Request.SWITCHTIMER) + idx;
+        String url = mDomoticzUrls.constructGetUrl(isScene ? DomoticzValues.Json.Url.Request.SCENETIMER : DomoticzValues.Json.Url.Request.SWITCHTIMER, V2ApiDetected) + idx;
 
         GetResultRequest(parser, url, true);
     }
 
     public void getNotifications(int idx, NotificationReceiver notificationReceiver) {
         NotificationsParser parser = new NotificationsParser(notificationReceiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NOTIFICATIONS) + idx;
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NOTIFICATIONS, V2ApiDetected) + idx;
 
         GetResultRequest(parser,
                 url, true);
@@ -599,7 +612,7 @@ public class Domoticz {
                                        setCommandReceiver receiver) {
 
         setCommandParser parser = new setCommandParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SETSECURITY);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SETSECURITY, V2ApiDetected);
         url += "&secstatus=" + secStatus;
         url += "&seccode=" + seccode;
 
@@ -612,7 +625,7 @@ public class Domoticz {
                                      UserVariableInfo var,
                                      setCommandReceiver receiver) {
         setCommandParser parser = new setCommandParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATEVAR);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UPDATEVAR, V2ApiDetected);
         url += "&idx=" + var.getIdx();
         url += "&vname=" + var.getName();
         url += "&vtype=" + var.getType();
@@ -747,7 +760,7 @@ public class Domoticz {
                               String extraParams,
                               setCommandReceiver receiver) {
         setCommandParser parser = new setCommandParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SET_DEVICE_USED);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SET_DEVICE_USED, V2ApiDetected);
         url += id;
         url += "&name=" + name;
         url += "&description=" + description;
@@ -763,7 +776,7 @@ public class Domoticz {
 
     public void getStatus(int idx, StatusReceiver receiver) {
         StatusInfoParser parser = new StatusInfoParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Get.STATUS) + String.valueOf(idx);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Get.STATUS, V2ApiDetected) + String.valueOf(idx);
         Log.v(TAG, url);
         GetResultRequest(parser,
                 url, true);
@@ -771,7 +784,7 @@ public class Domoticz {
 
     public void getUtilities(UtilitiesReceiver receiver) {
         UtilitiesParser parser = new UtilitiesParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UTILITIES);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.UTILITIES, V2ApiDetected);
         Log.v(TAG, url);
         GetResultRequest(parser,
                 url, true);
@@ -779,7 +792,7 @@ public class Domoticz {
 
     public void getSettings(SettingsReceiver receiver) {
         SettingsParser parser = new SettingsParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SETTINGS);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SETTINGS, V2ApiDetected);
         Log.v(TAG, url);
         GetRequest(parser,
                 url, true);
@@ -787,14 +800,14 @@ public class Domoticz {
 
     public void getConfig(ConfigReceiver receiver) {
         ConfigParser parser = new ConfigParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CONFIG);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CONFIG, V2ApiDetected);
         Log.v(TAG, url);
         GetRequest(parser, url, true);
     }
 
     public void getLanguageStringsFromServer(String language, LanguageReceiver receiver) {
         LanguageParser parser = new LanguageParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LANGUAGE);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LANGUAGE, V2ApiDetected);
         Log.v(TAG, url);
         url += language + ".json";
         GetRequest(parser,
@@ -803,7 +816,7 @@ public class Domoticz {
 
     public void getTemperatures(TemperatureReceiver receiver) {
         TemperaturesParser parser = new TemperaturesParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.TEMPERATURE);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.TEMPERATURE, V2ApiDetected);
         Log.v(TAG, url);
         GetResultRequest(parser,
                 url, true);
@@ -811,7 +824,7 @@ public class Domoticz {
 
     public void getWeathers(WeatherReceiver receiver) {
         WeatherParser parser = new WeatherParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.WEATHER);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.WEATHER, V2ApiDetected);
         Log.v(TAG, url);
         GetResultRequest(parser,
                 url, true);
@@ -819,7 +832,7 @@ public class Domoticz {
 
     public void getFavorites(DevicesReceiver receiver, int plan, String filter) {
         DevicesParser parser = new DevicesParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.FAVORITES);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.FAVORITES, V2ApiDetected);
 
         if (filter != null && filter.length() > 0)
             url = url.replace("filter=all", "filter=" + filter);
@@ -832,7 +845,7 @@ public class Domoticz {
 
     public void getDevices(DevicesReceiver receiver, int plan, String filter) {
         DevicesParser parser = new DevicesParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.DEVICES);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.DEVICES, V2ApiDetected);
 
         if (filter != null && filter.length() > 0)
             url = url.replace("filter=all", "filter=" + filter);
@@ -846,7 +859,7 @@ public class Domoticz {
 
     public void getDevice(DevicesReceiver receiver, int idx, boolean scene_or_group) {
         DevicesParser parser = new DevicesParser(receiver, idx, scene_or_group);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.DEVICES);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.DEVICES, V2ApiDetected);
 
         Log.i("DEVICE", "url: " + url);
         GetResultRequest(parser,
@@ -855,7 +868,7 @@ public class Domoticz {
 
     public void getLogs(LogsReceiver receiver, int logLevel) {
         LogsParser parser = new LogsParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LOG) + logLevel;
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LOG, V2ApiDetected) + logLevel;
         Log.i("Logs", "url: " + url);
         GetResultRequest(parser,
                 url, true);
@@ -863,7 +876,7 @@ public class Domoticz {
 
     public void getUserVariables(UserVariablesReceiver receiver) {
         UserVariablesParser parser = new UserVariablesParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.USERVARIABLES);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.USERVARIABLES, V2ApiDetected);
         Log.i("USERVARIABLES", "url: " + url);
         GetResultRequest(parser,
                 url, true);
@@ -871,14 +884,14 @@ public class Domoticz {
 
     public void getUsers(UsersReceiver receiver) {
         UsersParser parser = new UsersParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.USERS);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.USERS, V2ApiDetected);
         Log.i("USERS", "url: " + url);
         GetResultRequest(parser,
                 url, true);
     }
 
     public void LogOff() {
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LOGOFF);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LOGOFF, V2ApiDetected);
         mSessionUtil.clearSessionCookie();
         Log.i("LOGOFF", "url: " + url);
         GetRequest(new LogOffParser(), url, false);
@@ -886,14 +899,14 @@ public class Domoticz {
 
     public void getEvents(EventReceiver receiver) {
         EventsParser parser = new EventsParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.EVENTS);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.EVENTS, V2ApiDetected);
         Log.i("EVENTS", "url: " + url);
         GetResultRequest(parser, url, true);
     }
 
     public void getGraphData(int idx, String range, String type, GraphDataReceiver receiver) {
         GraphDataParser parser = new GraphDataParser(receiver);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.GRAPH) + idx;
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.GRAPH, V2ApiDetected) + idx;
         url += DomoticzValues.Url.Log.GRAPH_RANGE + range;
         url += DomoticzValues.Url.Log.GRAPH_TYPE + type;
         Log.i("GRAPH", "url: " + url);
@@ -905,7 +918,7 @@ public class Domoticz {
                                  GraphDataReceiver receiver) {
         GraphDataParser parser = new GraphDataParser(receiver);
 
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.TEMPGRAPHS) + idx;
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.TEMPGRAPHS, V2ApiDetected) + idx;
         url += "&range=" + range; //2020-07-29T2020-08-05
         url += "&graphtype=" + graphType; //1
         url += "&graphTemp=" + graphTemp; //true
