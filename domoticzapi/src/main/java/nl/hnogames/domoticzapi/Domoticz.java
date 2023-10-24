@@ -22,6 +22,7 @@
 package nl.hnogames.domoticzapi;
 
 import android.content.Context;
+import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.util.Log;
 
@@ -34,7 +35,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +49,7 @@ import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Containers.ServerInfo;
 import nl.hnogames.domoticzapi.Containers.UserVariableInfo;
+import nl.hnogames.domoticzapi.Containers.VersionInfo;
 import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
 import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
@@ -77,7 +81,6 @@ import nl.hnogames.domoticzapi.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
 import nl.hnogames.domoticzapi.Interfaces.VolleyErrorListener;
 import nl.hnogames.domoticzapi.Interfaces.WeatherReceiver;
-import nl.hnogames.domoticzapi.Interfaces.WifiSSIDListener;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 import nl.hnogames.domoticzapi.Parsers.CameraParser;
 import nl.hnogames.domoticzapi.Parsers.ConfigParser;
@@ -510,41 +513,50 @@ public class Domoticz {
         Log.v(TAG, "Url: " + url);
 
         Map<String, String> params = new HashMap<>();
-        if(!V2ApiDetected) {
+        try {
+            params.put("username", URLEncoder.encode(username, "UTF-8"));
+            params.put("password", URLEncoder.encode(password, "UTF-8"));
+            LoginPostRequest(parser, url, params);
+        } catch (Exception e) {
             try {
-                params.put("username", URLEncoder.encode(username, "UTF-8"));
-                params.put("password", URLEncoder.encode(password, "UTF-8"));
-                LoginPostRequest(parser, url, params);
-
-                V2ApiDetected = true;
-                getServerUtil().getActiveServer().setIsV2ApiDetected(V2ApiDetected);
-                getServerUtil().saveDomoticzServers(true);
-            } catch (Exception e) {
-                try {
-                    url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NEWCHECKLOGIN, V2ApiDetected);
-                    LoginPostRequest(parser, url, params);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-        else{
-            try {
-                params.put("username", URLEncoder.encode(username, "UTF-8"));
-                params.put("password", URLEncoder.encode(password, "UTF-8"));
+                url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.NEWCHECKLOGIN, V2ApiDetected);
                 LoginPostRequest(parser, url, params);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
+
+        getServerVersion(new VersionReceiver() {
+            @Override
+            public void onReceiveVersion(VersionInfo version) {
+                if(version == null || version.getBuildDate() == null)
+                    return;
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                try {
+                    String referenceDateString = "2023-07-21 17:23:44";
+                    Date referenceDate = dateFormat.parse(referenceDateString);
+                    if (version.getBuildDate().before(referenceDate)) {
+                        V2ApiDetected = false;
+                    } else {
+                        V2ApiDetected = true;
+                        getServerUtil().getActiveServer().setIsV2ApiDetected(V2ApiDetected);
+                        getServerUtil().saveDomoticzServers(true);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onError(Exception error) {}
+        });
     }
 
     public void getSwitchLogs(int idx, SwitchLogReceiver switchesReceiver) {
         SwitchLogParser parser = new SwitchLogParser(switchesReceiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.SWITCHLOG, V2ApiDetected) + idx;
-
-        GetResultRequest(parser,
-                url, true);
+        GetResultRequest(parser, url, true);
     }
 
     public void getTextLogs(int idx, SwitchLogReceiver switchesReceiver) {

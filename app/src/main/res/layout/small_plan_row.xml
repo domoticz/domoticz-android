@@ -1,7 +1,6 @@
 <com.google.android.material.chip.Chip android:id="@+id/plan"
     android:layout_width="wrap_content"
     android:layout_margin="4dp"
-    android:background="?attr/listviewRowBackground"
     android:layout_height="wrap_content"
     android:elevation="4dp"
     app:chipBackgroundColor="?attr/listviewRowBackground"
