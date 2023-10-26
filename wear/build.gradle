@@ -28,8 +28,8 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 9032
-        versionName "1.9.2"
+        versionCode 9033
+        versionName "1.9.3"
     }
 
     buildTypes {
