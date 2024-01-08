@@ -62,6 +62,8 @@ public class UtilitiesInfo implements Comparable, Serializable {
     private int signalLevel;
     private String Modes;
     private int Mode;
+    private boolean useCustomImage;
+    private String Image;
 
     public UtilitiesInfo() {
     }
@@ -86,6 +88,16 @@ public class UtilitiesInfo implements Comparable, Serializable {
                 setPoint = 0;
             }
         }
+        try {
+            if (row.has("CustomImage"))
+                useCustomImage = row.getInt("CustomImage") > 0;
+            else
+                useCustomImage = false;
+        } catch (Exception ignored) {
+            useCustomImage = false;
+        }
+        if (row.has("Image"))
+            Image = row.getString("Image");
         if (row.has("Modes")) {
             Modes = row.getString("Modes");
             if (UsefulBits.isBase64Encoded(Modes))
@@ -203,6 +215,14 @@ public class UtilitiesInfo implements Comparable, Serializable {
 
     public String getUsageDeliv() {
         return UsageDeliv;
+    }
+
+    public boolean getUseCustomImage() {
+        return useCustomImage;
+    }
+
+    public String getImage() {
+        return Image;
     }
 
     public String getCounter() {

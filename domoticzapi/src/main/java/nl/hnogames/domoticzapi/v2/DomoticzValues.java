@@ -457,7 +457,7 @@ public class DomoticzValues {
         interface Temp {
             String GET = "/json.htm?type=command&param=udevice&idx=";
             String VALUE = "&nvalue=0&svalue=";
-            String GRAPH = "/json.htm?type=command&param=getgraph&sensor=temp&idx=";
+            String GRAPH = "/json.htm?type=command&param=graph&sensor=temp&idx=";
         }
 
         @SuppressWarnings("SpellCheckingInspection")
@@ -491,7 +491,7 @@ public class DomoticzValues {
 
         @SuppressWarnings({"unused", "SpellCheckingInspection"})
         interface Log {
-            String GRAPH = "/json.htm?type=command&param=getgraph&idx=";
+            String GRAPH = "/json.htm?type=command&param=graph&idx=";
             String GRAPH_RANGE = "&range=";
             String GRAPH_TYPE = "&sensor=";
 
@@ -520,7 +520,7 @@ public class DomoticzValues {
             String SUNRISE = "/json.htm?type=command&param=getSunRiseSet";
             String UPDATE = "/json.htm?type=command&param=checkforupdate&forced=true";
             String USERVARIABLES = "/json.htm?type=command&param=getuservariables";
-            String EVENTS = "/json.htm?type=command&param=getevents&evparam=list";
+            String EVENTS = "/json.htm?evparam=list&param=events&type=command";
             String EVENTS_UPDATE_STATUS = "/json.htm?type=command&param=getevents&evparam=updatestatus&eventid=";
             String RGBCOLOR = "/json.htm?type=command&param=setcolbrightnessvalue&idx=";
             String KELVIN = "/json.htm?type=command&param=setkelvinlevel&idx=";

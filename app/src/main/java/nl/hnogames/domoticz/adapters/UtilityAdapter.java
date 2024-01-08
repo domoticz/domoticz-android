@@ -162,6 +162,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                 setAdsLayout(holder);
             } else {
                 if ((mUtilitiesInfo.getType() != null && DomoticzValues.Device.Utility.Type.THERMOSTAT.equalsIgnoreCase(mUtilitiesInfo.getType())) ||
+                        (mUtilitiesInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SETPOINT.equalsIgnoreCase(mUtilitiesInfo.getSubType())) ||
                         (mUtilitiesInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mUtilitiesInfo.getSubType()))) {
                     setButtons(holder, Buttons.THERMOSTAT);
                     CreateThermostatRow(holder, mUtilitiesInfo, setPoint);
@@ -290,7 +291,12 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
         holder.buttonLog.setId(mUtilitiesInfo.getIdx());
         holder.buttonLog.setOnClickListener(v -> handleLogButtonClick(v.getId()));
 
-        Picasso.get().load(DomoticzIcons.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mUtilitiesInfo.getTypeImg(),
+                mUtilitiesInfo.getType(),
+                mUtilitiesInfo.getSubType(),
+                false,
+                mUtilitiesInfo.getUseCustomImage(),
+                mUtilitiesInfo.getImage())).into(holder.iconRow);
     }
 
     private void handleLogButtonClick(int idx) {
@@ -380,7 +386,12 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
             });
         }
 
-        Picasso.get().load(DomoticzIcons.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mUtilitiesInfo.getTypeImg(),
+                mUtilitiesInfo.getType(),
+                mUtilitiesInfo.getSubType(),
+                false,
+                mUtilitiesInfo.getUseCustomImage(),
+                mUtilitiesInfo.getImage())).into(holder.iconRow);
     }
 
     private void CreateThermostatRow(DataObjectHolder holder, UtilitiesInfo mUtilitiesInfo, final double setPoint) {
@@ -433,7 +444,13 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
 
         holder.name.setText(mUtilitiesInfo.getName());
         holder.hardware.setText(mUtilitiesInfo.getLastUpdate());
-        Picasso.get().load(DomoticzIcons.getDrawableIcon(mUtilitiesInfo.getTypeImg(), mUtilitiesInfo.getType(), mUtilitiesInfo.getSubType(), false, false, null)).into(holder.iconRow);
+
+        Picasso.get().load(DomoticzIcons.getDrawableIcon(mUtilitiesInfo.getTypeImg(),
+                mUtilitiesInfo.getType(),
+                mUtilitiesInfo.getSubType(),
+                false,
+                mUtilitiesInfo.getUseCustomImage(),
+                mUtilitiesInfo.getImage())).into(holder.iconRow);
 
         int loadMode = mUtilitiesInfo.getModeId();
         final ArrayList<String> modes = mUtilitiesInfo.getModes();

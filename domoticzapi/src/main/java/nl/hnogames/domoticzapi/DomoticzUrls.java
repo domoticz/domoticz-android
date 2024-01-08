@@ -272,11 +272,11 @@ public class DomoticzUrls {
         return fullString;
     }
 
-    public String constructGetUrl(int jsonGetUrl) {
-        return constructGetUrl(jsonGetUrl, false, null, null);
+    public String constructGetUrl(int jsonGetUrl, boolean useV2) {
+        return constructGetUrl(jsonGetUrl, false, null, null, useV2);
     }
 
-    public String constructGetUrl(int jsonGetUrl, boolean withPass, String username, String password) {
+    public String constructGetUrl(int jsonGetUrl, boolean withPass, String username, String password, boolean useV2) {
         if (domoticz == null)
             return null;
 
@@ -300,7 +300,7 @@ public class DomoticzUrls {
             port = mServerUtil.getActiveServer().getRemoteServerPort();
             directory = mServerUtil.getActiveServer().getRemoteServerDirectory();
         }
-        jsonUrl = getJsonGetUrl(jsonGetUrl);
+        jsonUrl = getJsonGetUrl(jsonGetUrl, useV2);
 
         if (!withPass) {
             return buildUrl.append(protocol)
@@ -318,178 +318,353 @@ public class DomoticzUrls {
         }
     }
 
-    public String getJsonGetUrl(int jsonGetUrl) {
+    public String getJsonGetUrl(int jsonGetUrl, boolean useV2) {
         String url;
-        switch (jsonGetUrl) {
-            case DomoticzValues.Json.Url.Request.NOTIFICATIONTYPES:
-                url = DomoticzValues.Url.System.NOTIFICATIONTYPES;
-                break;
-            case DomoticzValues.Json.Url.Request.SEND_NOTIFICATION:
-                url = DomoticzValues.Url.System.SEND_NOTIFICATION;
-                break;
-            case DomoticzValues.Json.Url.Request.LANGUAGE:
-                url = DomoticzValues.Url.System.LANGUAGE_TRANSLATIONS;
-                break;
-            case DomoticzValues.Json.Url.Request.UPDATE_DOWNLOAD_UPDATE:
-                url = DomoticzValues.Url.System.UPDATE_DOWNLOAD_UPDATE;
-                break;
-            case DomoticzValues.Json.Url.Request.UPDATE_DOMOTICZ_SERVER:
-                url = DomoticzValues.Url.System.UPDATE_DOMOTICZ_SERVER;
-                break;
-            case DomoticzValues.Json.Url.Request.UPDATE_DOWNLOAD_READY:
-                url = DomoticzValues.Url.System.UPDATE_DOWNLOAD_READY;
-                break;
-            case DomoticzValues.Json.Url.Request.VERSION:
-                url = DomoticzValues.Url.Category.VERSION;
-                break;
-            case DomoticzValues.Json.Url.Request.LOG:
-                url = DomoticzValues.Url.Log.GET_LOG;
-                break;
-            case DomoticzValues.Json.Url.Set.LOG:
-                url = DomoticzValues.Url.System.LOG;
-                break;
-            case DomoticzValues.Json.Url.Request.DASHBOARD:
-                url = DomoticzValues.Url.Category.DASHBOARD;
-                break;
+        if(!useV2) {
+            switch (jsonGetUrl) {
+                case DomoticzValues.Json.Url.Request.NOTIFICATIONTYPES:
+                    url = DomoticzValues.Url.System.NOTIFICATIONTYPES;
+                    break;
+                case DomoticzValues.Json.Url.Request.SEND_NOTIFICATION:
+                    url = DomoticzValues.Url.System.SEND_NOTIFICATION;
+                    break;
+                case DomoticzValues.Json.Url.Request.LANGUAGE:
+                    url = DomoticzValues.Url.System.LANGUAGE_TRANSLATIONS;
+                    break;
+                case DomoticzValues.Json.Url.Request.UPDATE_DOWNLOAD_UPDATE:
+                    url = DomoticzValues.Url.System.UPDATE_DOWNLOAD_UPDATE;
+                    break;
+                case DomoticzValues.Json.Url.Request.UPDATE_DOMOTICZ_SERVER:
+                    url = DomoticzValues.Url.System.UPDATE_DOMOTICZ_SERVER;
+                    break;
+                case DomoticzValues.Json.Url.Request.UPDATE_DOWNLOAD_READY:
+                    url = DomoticzValues.Url.System.UPDATE_DOWNLOAD_READY;
+                    break;
+                case DomoticzValues.Json.Url.Request.VERSION:
+                    url = DomoticzValues.Url.Category.VERSION;
+                    break;
+                case DomoticzValues.Json.Url.Request.LOG:
+                    url = DomoticzValues.Url.Log.GET_LOG;
+                    break;
+                case DomoticzValues.Json.Url.Set.LOG:
+                    url = DomoticzValues.Url.System.LOG;
+                    break;
+                case DomoticzValues.Json.Url.Request.DASHBOARD:
+                    url = DomoticzValues.Url.Category.DASHBOARD;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.SCENES:
-                url = DomoticzValues.Url.Category.SCENES;
-                break;
+                case DomoticzValues.Json.Url.Request.SCENES:
+                    url = DomoticzValues.Url.Category.SCENES;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.SWITCHES:
-                url = DomoticzValues.Url.Category.SWITCHES;
-                break;
+                case DomoticzValues.Json.Url.Request.SWITCHES:
+                    url = DomoticzValues.Url.Category.SWITCHES;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.UTILITIES:
-                url = DomoticzValues.Url.Category.UTILITIES;
-                break;
+                case DomoticzValues.Json.Url.Request.UTILITIES:
+                    url = DomoticzValues.Url.Category.UTILITIES;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.TEMPERATURE:
-                url = DomoticzValues.Url.Category.TEMPERATURE;
-                break;
+                case DomoticzValues.Json.Url.Request.TEMPERATURE:
+                    url = DomoticzValues.Url.Category.TEMPERATURE;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.WEATHER:
-                url = DomoticzValues.Url.Category.WEATHER;
-                break;
+                case DomoticzValues.Json.Url.Request.WEATHER:
+                    url = DomoticzValues.Url.Category.WEATHER;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.CAMERAS:
-                url = DomoticzValues.Url.Category.CAMERAS;
-                break;
+                case DomoticzValues.Json.Url.Request.CAMERAS:
+                    url = DomoticzValues.Url.Category.CAMERAS;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.CAMERA:
-                url = DomoticzValues.Url.Category.CAMERA;
-                break;
+                case DomoticzValues.Json.Url.Request.CAMERA:
+                    url = DomoticzValues.Url.Category.CAMERA;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.DEVICES:
-                url = DomoticzValues.Url.Category.DEVICES;
-                break;
+                case DomoticzValues.Json.Url.Request.DEVICES:
+                    url = DomoticzValues.Url.Category.DEVICES;
+                    break;
 
-            case DomoticzValues.Json.Get.STATUS:
-                url = DomoticzValues.Url.Device.STATUS;
-                break;
+                case DomoticzValues.Json.Get.STATUS:
+                    url = DomoticzValues.Url.Device.STATUS;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.PLANS:
-                url = DomoticzValues.Url.Category.PLANS;
-                break;
+                case DomoticzValues.Json.Url.Request.PLANS:
+                    url = DomoticzValues.Url.Category.PLANS;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.SWITCHLOG:
-                url = DomoticzValues.Url.Category.SWITCHLOG;
-                break;
+                case DomoticzValues.Json.Url.Request.SWITCHLOG:
+                    url = DomoticzValues.Url.Category.SWITCHLOG;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.TEXTLOG:
-                url = DomoticzValues.Url.Category.TEXTLOG;
-                break;
+                case DomoticzValues.Json.Url.Request.TEXTLOG:
+                    url = DomoticzValues.Url.Category.TEXTLOG;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.SCENELOG:
-                url = DomoticzValues.Url.Category.SCENELOG;
-                break;
+                case DomoticzValues.Json.Url.Request.SCENELOG:
+                    url = DomoticzValues.Url.Category.SCENELOG;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.SWITCHTIMER:
-                url = DomoticzValues.Url.Category.SWITCHTIMER;
-                break;
+                case DomoticzValues.Json.Url.Request.SWITCHTIMER:
+                    url = DomoticzValues.Url.Category.SWITCHTIMER;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.SCENETIMER:
-                url = DomoticzValues.Url.Category.SCENETIMER;
-                break;
+                case DomoticzValues.Json.Url.Request.SCENETIMER:
+                    url = DomoticzValues.Url.Category.SCENETIMER;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.SETSECURITY:
-                url = DomoticzValues.Url.System.SETSECURITY;
-                break;
+                case DomoticzValues.Json.Url.Request.SETSECURITY:
+                    url = DomoticzValues.Url.System.SETSECURITY;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.SUNRISE:
-                url = DomoticzValues.Url.System.SUNRISE;
-                break;
+                case DomoticzValues.Json.Url.Request.SUNRISE:
+                    url = DomoticzValues.Url.System.SUNRISE;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.UPDATE:
-                url = DomoticzValues.Url.System.UPDATE;
-                break;
+                case DomoticzValues.Json.Url.Request.UPDATE:
+                    url = DomoticzValues.Url.System.UPDATE;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.USERVARIABLES:
-                url = DomoticzValues.Url.System.USERVARIABLES;
-                break;
+                case DomoticzValues.Json.Url.Request.USERVARIABLES:
+                    url = DomoticzValues.Url.System.USERVARIABLES;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.EVENTS:
-                url = DomoticzValues.Url.System.EVENTS;
-                break;
+                case DomoticzValues.Json.Url.Request.EVENTS:
+                    url = DomoticzValues.Url.System.EVENTS;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.USERS:
-                url = DomoticzValues.Url.System.USERS;
-                break;
+                case DomoticzValues.Json.Url.Request.USERS:
+                    url = DomoticzValues.Url.System.USERS;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.AUTH:
-                url = DomoticzValues.Url.System.AUTH;
-                break;
+                case DomoticzValues.Json.Url.Request.AUTH:
+                    url = DomoticzValues.Url.System.AUTH;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.LOGOFF:
-                url = DomoticzValues.Url.System.LOGOFF;
-                break;
+                case DomoticzValues.Json.Url.Request.LOGOFF:
+                    url = DomoticzValues.Url.System.LOGOFF;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.SETTINGS:
-                url = DomoticzValues.Url.System.SETTINGS;
-                break;
+                case DomoticzValues.Json.Url.Request.SETTINGS:
+                    url = DomoticzValues.Url.System.SETTINGS;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.CONFIG:
-                url = DomoticzValues.Url.System.CONFIG;
-                break;
+                case DomoticzValues.Json.Url.Request.CONFIG:
+                    url = DomoticzValues.Url.System.CONFIG;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.GRAPH:
-                url = DomoticzValues.Url.Log.GRAPH;
-                break;
+                case DomoticzValues.Json.Url.Request.GRAPH:
+                    url = DomoticzValues.Url.Log.GRAPH;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.TEMPGRAPHS:
-                url = DomoticzValues.Url.Temp.GRAPH;
-                break;
+                case DomoticzValues.Json.Url.Request.TEMPGRAPHS:
+                    url = DomoticzValues.Url.Temp.GRAPH;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.ADD_MOBILE_DEVICE:
-                url = DomoticzValues.Url.System.ADD_MOBILE_DEVICE;
-                break;
+                case DomoticzValues.Json.Url.Request.ADD_MOBILE_DEVICE:
+                    url = DomoticzValues.Url.System.ADD_MOBILE_DEVICE;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.CLEAN_MOBILE_DEVICE:
-                url = DomoticzValues.Url.System.CLEAN_MOBILE_DEVICE;
-                break;
+                case DomoticzValues.Json.Url.Request.CLEAN_MOBILE_DEVICE:
+                    url = DomoticzValues.Url.System.CLEAN_MOBILE_DEVICE;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.SET_DEVICE_USED:
-                url = DomoticzValues.Url.Device.SET_USED;
-                break;
+                case DomoticzValues.Json.Url.Request.SET_DEVICE_USED:
+                    url = DomoticzValues.Url.Device.SET_USED;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.NOTIFICATIONS:
-                url = DomoticzValues.Url.Notification.NOTIFICATION;
-                break;
+                case DomoticzValues.Json.Url.Request.NOTIFICATIONS:
+                    url = DomoticzValues.Url.Notification.NOTIFICATION;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.FAVORITES:
-                url = DomoticzValues.Url.Category.FAVORITES;
-                break;
+                case DomoticzValues.Json.Url.Request.FAVORITES:
+                    url = DomoticzValues.Url.Category.FAVORITES;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.UPDATEVAR:
-                url = DomoticzValues.Url.UserVariable.UPDATE;
-                break;
+                case DomoticzValues.Json.Url.Request.UPDATEVAR:
+                    url = DomoticzValues.Url.UserVariable.UPDATE;
+                    break;
 
-            case DomoticzValues.Json.Url.Request.CHECKLOGIN:
-                url = DomoticzValues.Url.Security.CHECKLOGIN;
-                break;
+                case DomoticzValues.Json.Url.Request.CHECKLOGIN:
+                    url = DomoticzValues.Url.Security.CHECKLOGIN;
+                    break;
 
-            default:
-                throw new NullPointerException("getJsonGetUrl: No known JSON URL specified");
+                default:
+                    throw new NullPointerException("getJsonGetUrl: No known JSON URL specified");
+            }
+        }
+        else{
+            switch (jsonGetUrl) {
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.NOTIFICATIONTYPES:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.NOTIFICATIONTYPES;
+                    break;
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.SEND_NOTIFICATION:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.SEND_NOTIFICATION;
+                    break;
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.LANGUAGE:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.LANGUAGE_TRANSLATIONS;
+                    break;
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.UPDATE_DOWNLOAD_UPDATE:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.UPDATE_DOWNLOAD_UPDATE;
+                    break;
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.UPDATE_DOMOTICZ_SERVER:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.UPDATE_DOMOTICZ_SERVER;
+                    break;
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.UPDATE_DOWNLOAD_READY:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.UPDATE_DOWNLOAD_READY;
+                    break;
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.VERSION:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Category.VERSION;
+                    break;
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.LOG:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Log.GET_LOG;
+                    break;
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Set.LOG:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.LOG;
+                    break;
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.DASHBOARD:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Category.DASHBOARD;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.SCENES:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Category.SCENES;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.SWITCHES:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Category.SWITCHES;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.UTILITIES:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Category.UTILITIES;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.TEMPERATURE:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Category.TEMPERATURE;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.WEATHER:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Category.WEATHER;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.CAMERAS:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Category.CAMERAS;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.CAMERA:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Category.CAMERA;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.DEVICES:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Category.DEVICES;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Get.STATUS:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Device.STATUS;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.PLANS:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Category.PLANS;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.SWITCHLOG:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Category.SWITCHLOG;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.TEXTLOG:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Category.TEXTLOG;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.SCENELOG:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Category.SCENELOG;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.SWITCHTIMER:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Category.SWITCHTIMER;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.SCENETIMER:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Category.SCENETIMER;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.SETSECURITY:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.SETSECURITY;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.SUNRISE:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.SUNRISE;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.UPDATE:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.UPDATE;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.USERVARIABLES:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.USERVARIABLES;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.EVENTS:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.EVENTS;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.USERS:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.USERS;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.AUTH:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.AUTH;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.LOGOFF:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.LOGOFF;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.SETTINGS:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.SETTINGS;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.CONFIG:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.CONFIG;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.GRAPH:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Log.GRAPH;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.TEMPGRAPHS:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Temp.GRAPH;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.ADD_MOBILE_DEVICE:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.ADD_MOBILE_DEVICE;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.CLEAN_MOBILE_DEVICE:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.System.CLEAN_MOBILE_DEVICE;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.SET_DEVICE_USED:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Device.SET_USED;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.NOTIFICATIONS:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Notification.NOTIFICATION;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.FAVORITES:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Category.FAVORITES;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.UPDATEVAR:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.UserVariable.UPDATE;
+                    break;
+
+                case nl.hnogames.domoticzapi.v2.DomoticzValues.Json.Url.Request.CHECKLOGIN:
+                    url = nl.hnogames.domoticzapi.v2.DomoticzValues.Url.Security.CHECKLOGIN;
+                    break;
+
+                default:
+                    throw new NullPointerException("getJsonGetUrl: No known JSON URL specified");
+            }
         }
         return url;
     }

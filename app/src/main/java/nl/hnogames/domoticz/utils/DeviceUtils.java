@@ -40,12 +40,12 @@ public class DeviceUtils {
             return false;
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
                 (mDeviceInfo.getSwitchType() == null)) {
-            if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
+            if ((mDeviceInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SETPOINT.equalsIgnoreCase(mDeviceInfo.getSubType())) ||
+                (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES))) {
                 return true;
             } else {
                 switch (mDeviceInfo.getType()) {
                     case DomoticzValues.Scene.Type.GROUP:
-                        return true;
                     case DomoticzValues.Scene.Type.SCENE:
                         return true;
                     case DomoticzValues.Device.Utility.Type.THERMOSTAT:
@@ -96,7 +96,8 @@ public class DeviceUtils {
             return false;
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
                 (mDeviceInfo.getSwitchType() == null)) {
-            if (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES)) {
+            if ((mDeviceInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SETPOINT.equalsIgnoreCase(mDeviceInfo.getSubType())) ||
+                    (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES))) {
                 return true;
             } else {
                 switch (mDeviceInfo.getType()) {

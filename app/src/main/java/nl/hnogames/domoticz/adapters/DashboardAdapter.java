@@ -250,6 +250,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 setButtons(holder, Buttons.ADS);
                 setAdsLayout(holder);
             } else if ((mDeviceInfo.getType() != null && DomoticzValues.Device.Utility.Type.THERMOSTAT.equalsIgnoreCase(mDeviceInfo.getType())) ||
+                    (mDeviceInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SETPOINT.equalsIgnoreCase(mDeviceInfo.getSubType())) ||
                     (mDeviceInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mDeviceInfo.getSubType()))) {
                 setButtons(holder, Buttons.BUTTON_ON);
                 setThermostatRowData(mDeviceInfo, holder);

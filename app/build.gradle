@@ -184,14 +184,14 @@ dependencies {
     implementation "androidx.car.app:app:1.4.0-alpha01"
     implementation 'org.reactivestreams:reactive-streams:1.0.3'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
-    implementation 'com.revenuecat.purchases:purchases:5.6.3'
+    implementation 'com.revenuecat.purchases:purchases:7.0.1'
 
     implementation 'com.google.firebase:firebase-core:21.1.1'
     implementation 'com.google.firebase:firebase-iid:21.1.0'
     implementation 'com.google.firebase:firebase-analytics:21.3.0'
-    implementation 'com.google.firebase:firebase-crashlytics:18.3.7'
-    implementation "com.google.firebase:firebase-messaging:23.1.2"
-    implementation "com.google.firebase:firebase-ads:22.1.0"
+    implementation 'com.google.firebase:firebase-crashlytics:18.4.3'
+    implementation "com.google.firebase:firebase-messaging:23.2.1"
+    implementation "com.google.firebase:firebase-ads:22.4.0"
 
     implementation 'com.google.android.ads.consent:consent-library:1.0.8'
     implementation "com.google.android.gms:play-services-analytics:18.0.3"
@@ -237,7 +237,7 @@ dependencies {
     }
 
     implementation 'com.github.stfalcon:chatkit:0.3.3'
-    implementation 'com.github.matthiasrobbers:shortbread:1.1.0'
+    implementation 'com.github.matthiasrobbers:shortbread:1.4.0'
 
     annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.1.0'
     implementation ('com.adevinta.android:leku:9.1.4') {

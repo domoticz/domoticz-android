@@ -21,15 +21,22 @@
 
 package nl.hnogames.domoticzapi.Containers;
 
+import android.icu.text.SimpleDateFormat;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.util.Date;
+
+import nl.hnogames.domoticzapi.Utils.UsefulBits;
 
 public class VersionInfo implements Serializable {
     private boolean HaveUpdate = true;
     private boolean UseUpdate = true;
     private String build_time;
+    private Date buildTimeDateTime;
     private String dzvents_version;
     private String hash;
     private String python_version;
@@ -50,6 +57,13 @@ public class VersionInfo implements Serializable {
             version = row.getString("version");
         if (row.has("version"))
             version = row.getString("version");
+        if(!UsefulBits.isEmpty(build_time)) {
+            try {
+                buildTimeDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(build_time);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public boolean isHaveUpdate() {
@@ -70,6 +84,10 @@ public class VersionInfo implements Serializable {
 
     public String getBuild_time() {
         return build_time;
+    }
+
+    public Date getBuildDate() {
+        return buildTimeDateTime;
     }
 
     public void setBuild_time(String build_time) {
