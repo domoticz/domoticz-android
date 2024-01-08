@@ -162,6 +162,7 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                 setAdsLayout(holder);
             } else {
                 if ((mUtilitiesInfo.getType() != null && DomoticzValues.Device.Utility.Type.THERMOSTAT.equalsIgnoreCase(mUtilitiesInfo.getType())) ||
+                        (mUtilitiesInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SETPOINT.equalsIgnoreCase(mUtilitiesInfo.getSubType())) ||
                         (mUtilitiesInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mUtilitiesInfo.getSubType()))) {
                     setButtons(holder, Buttons.THERMOSTAT);
                     CreateThermostatRow(holder, mUtilitiesInfo, setPoint);
