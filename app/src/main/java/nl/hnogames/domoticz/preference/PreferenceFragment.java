@@ -1074,8 +1074,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
             exportButton.setOnPreferenceClickListener(preference -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     ((SettingsActivity) getActivity()).exportSettings();
-                }
-                else {
+                } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                         if (!PermissionsUtil.canAccessStorage(mContext)) {
                             permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
@@ -1091,8 +1090,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
             importButton.setOnPreferenceClickListener(preference -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     ((SettingsActivity) getActivity()).importSettings();
-                }
-                else {
+                } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                         if (!PermissionsUtil.canAccessStorage(mContext)) {
                             permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);

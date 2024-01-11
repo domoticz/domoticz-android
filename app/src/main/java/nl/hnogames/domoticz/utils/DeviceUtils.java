@@ -41,7 +41,7 @@ public class DeviceUtils {
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
                 (mDeviceInfo.getSwitchType() == null)) {
             if ((mDeviceInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SETPOINT.equalsIgnoreCase(mDeviceInfo.getSubType())) ||
-                (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES))) {
+                    (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES))) {
                 return true;
             } else {
                 switch (mDeviceInfo.getType()) {

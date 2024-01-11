@@ -47,8 +47,6 @@ import com.rubengees.easyheaderfooteradapter.EasyHeaderFooterAdapter;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -81,7 +79,6 @@ import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.PlanInfo;
 import nl.hnogames.domoticzapi.Containers.SunRiseInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
-import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
@@ -825,10 +822,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         addDebugText("onThermostatClick");
         final DevicesInfo tempUtil = device;
         if (tempUtil != null) {
-            TemperatureDialog tempDialog = new TemperatureDialog(
-                    mContext,
-                    tempUtil.getSetPoint());
-
+            TemperatureDialog tempDialog = new TemperatureDialog(mContext, tempUtil.getSetPoint(), tempUtil.hasStep(), tempUtil.getStep(),
+                    tempUtil.hasMax(), tempUtil.getMax(), tempUtil.hasMin(), tempUtil.getMin());
             tempDialog.onDismissListener((newSetPoint, dialogAction) -> {
                 addDebugText("Set idx " + device.getIdx() + " to " + newSetPoint);
                 if (dialogAction == DialogAction.POSITIVE) {
@@ -911,31 +906,28 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         if (tempUtil != null) {
             final setCommandReceiver commandReceiver = new setCommandReceiver() {
                 @Override
-
                 public void onReceiveResult(String result) {
                     successHandling(result, false);
                     processDashboard();
                 }
 
                 @Override
-
                 public void onError(Exception error) {
                     errorHandling(error);
                 }
             };
 
             final boolean evohomeZone = "evohome".equals(tempUtil.getHardwareName());
-
             TemperatureDialog tempDialog;
             if (evohomeZone) {
                 tempDialog = new ScheduledTemperatureDialog(
                         mContext,
-                        tempUtil.getSetPoint(),
+                        tempUtil.getSetPoint(), tempUtil.hasStep(),
+                        tempUtil.getStep(), tempUtil.hasMax(), tempUtil.getMax(), tempUtil.hasMin(), tempUtil.getMin(),
                         !AUTO.equalsIgnoreCase(tempUtil.getStatus()));
             } else {
-                tempDialog = new TemperatureDialog(
-                        mContext,
-                        tempUtil.getSetPoint());
+                tempDialog = new TemperatureDialog(mContext, tempUtil.getSetPoint(), tempUtil.hasStep(), tempUtil.getStep(),
+                        tempUtil.hasMax(), tempUtil.getMax(), tempUtil.hasMin(), tempUtil.getMin());
             }
 
             tempDialog.onDismissListener((newSetPoint, dialogAction) -> {
@@ -1068,7 +1060,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 }
 
                 @Override
-                public void onCancel() {}
+                public void onCancel() {
+                }
             });
         } else {
             SetThermostatMode(utility, mode, null);

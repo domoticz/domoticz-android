@@ -36,8 +36,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import com.afollestad.materialdialogs.DialogAction;
 import com.google.android.material.snackbar.Snackbar;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 import nl.hnogames.domoticz.GraphActivity;
@@ -297,6 +295,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
 
         notifyDataSetChanged();
     }
+
     private void updateThermostatModeValue(int idx, int newMode) {
         addDebugText("updateThermostatModeValue");
 
@@ -377,7 +376,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 }
 
                 @Override
-                public void onCancel() {}
+                public void onCancel() {
+                }
             });
         } else {
             SetThermostatMode(utility, mode, null);
@@ -459,10 +459,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         addDebugText("onThermostatClick");
         final UtilitiesInfo tempUtil = getUtility(idx);
 
-        TemperatureDialog tempDialog = new TemperatureDialog(
-                mContext,
-                tempUtil.getSetPoint());
-
+        TemperatureDialog tempDialog = new TemperatureDialog(mContext, tempUtil.getSetPoint(), tempUtil.hasStep(),
+                tempUtil.getStep(), tempUtil.hasMax(), tempUtil.getMax(), tempUtil.hasMin(), tempUtil.getMin());
         tempDialog.onDismissListener((newSetPoint, dialogAction) -> {
             if (dialogAction == DialogAction.POSITIVE) {
                 addDebugText("Set idx " + idx + " to " + newSetPoint);

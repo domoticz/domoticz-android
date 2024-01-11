@@ -106,6 +106,13 @@ public class DevicesInfo implements Comparable, Serializable {
     private boolean ReverseState;
     private boolean ReversePosition;
 
+    private double Step;
+    private boolean hasStep;
+    private double Max;
+    private boolean hasMax;
+    private double Min;
+    private boolean hasMin;
+
     public DevicesInfo(JSONObject row) throws JSONException {
         this.jsonObject = row.toString();
         try {
@@ -334,6 +341,42 @@ public class DevicesInfo implements Comparable, Serializable {
         } catch (Exception ex) {
             setPoint = Double.NaN;
         }
+
+        if (row.has("step")) {
+            hasStep = true;
+            try {
+                Step = Double.parseDouble(row.getString("step"));
+            } catch (Exception ignored) {
+                Step = 0;
+            }
+        }
+        else{
+            hasStep = false;
+        }
+
+        if (row.has("Max")) {
+            hasMax = true;
+            try {
+                Max = Double.parseDouble(row.getString("Max"));
+            } catch (Exception ignored) {
+                Max = 0;
+            }
+        }
+        else{
+            hasMax = false;
+        }
+
+        if (row.has("Min")) {
+            hasMin = true;
+            try {
+                Min = Double.parseDouble(row.getString("Min"));
+            } catch (Exception ignored) {
+                Min = 0;
+            }
+        }
+        else{
+            hasMin = false;
+        }
     }
 
     public DevicesInfo() {
@@ -400,6 +443,41 @@ public class DevicesInfo implements Comparable, Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public double getStep() {
+        return Step;
+    }
+
+    public void setStep(double step) {
+        this.Step = step;
+    }
+
+    public boolean hasStep() {
+        return hasStep;
+    }
+
+    public double getMax() {
+        return Max;
+    }
+
+    public void setMax(double Max) {
+        this.Max = Max;
+    }
+
+    public boolean hasMax() {
+        return hasMax;
+    }
+    public double getMin() {
+        return Min;
+    }
+
+    public void setMin(double Min) {
+        this.Min = Min;
+    }
+
+    public boolean hasMin() {
+        return hasMin;
     }
 
     public ArrayList<String> getLevelNames() {

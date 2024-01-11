@@ -800,7 +800,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 }
 
                 @Override
-                public void onCancel() {}
+                public void onCancel() {
+                }
             });
         } else {
             SetThermostatMode(utility, mode, null);

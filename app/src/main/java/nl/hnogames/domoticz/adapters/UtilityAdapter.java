@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.adapters;
 
 import android.content.Context;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +61,6 @@ import nl.hnogames.domoticz.ads.TemplateView;
 import nl.hnogames.domoticz.helpers.ItemMoveAdapter;
 import nl.hnogames.domoticz.interfaces.UtilityClickListener;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
@@ -478,10 +476,10 @@ public class UtilityAdapter extends RecyclerView.Adapter<UtilityAdapter.DataObje
                 }
 
                 @Override
-                public void onNothingSelected(AdapterView<?> arg0) {}
+                public void onNothingSelected(AdapterView<?> arg0) {
+                }
             });
-        }
-        else{
+        } else {
             holder.spSelector.setVisibility(View.GONE);
             holder.data.setText(context.getString(R.string.set_point) + ": " + setPoint);
         }

@@ -42,18 +42,19 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
     private final MaterialDialog.Builder mdb;
-    private final int maxTemp;
-    private final int minTemp;
+    private final double maxTemp;
+    private final double minTemp;
     private final Context mContext;
     private DialogActionListener dialogActionListener;
     private double currentTemperature = 20;
+    private double step = 0.5;
     private SeekArc temperatureControl;
     private TextView temperatureText;
     private String tempSign = UsefulBits.getDegreeSymbol() + "C";
     private boolean isFahrenheit = false;
     private SharedPrefUtil mSharedPrefUtil;
 
-    public TemperatureDialog(Context mContext, double temp) {
+    public TemperatureDialog(Context mContext, double temp, boolean hasStep, double step, boolean hasMax, double max, boolean hasMin, double min) {
         this.mContext = mContext;
         if (mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(mContext);
@@ -72,9 +73,10 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
             }
         }
 
-        minTemp = mSharedPrefUtil.getTemperatureSetMin(configInfo != null ? configInfo.getTempSign() : "C");
-        maxTemp = mSharedPrefUtil.getTemperatureSetMax(configInfo != null ? configInfo.getTempSign() : "C");
+        minTemp = hasMin ? min : mSharedPrefUtil.getTemperatureSetMin(configInfo != null ? configInfo.getTempSign() : "C");
+        maxTemp = hasMax ? max : mSharedPrefUtil.getTemperatureSetMax(configInfo != null ? configInfo.getTempSign() : "C");
         currentTemperature = temp;
+        this.step = hasStep ? step : 0.5;
     }
 
     public void show() {
@@ -92,7 +94,7 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
         final String text = String.valueOf(currentTemperature);
         temperatureText.setText(text);
-        temperatureControl.setMax((maxTemp - minTemp) * 2);
+        temperatureControl.setMax((int) ((maxTemp - minTemp) * (1 / step)));
 
         int arcProgress = tempToProgress(currentTemperature);
         temperatureControl.setProgress(arcProgress);
@@ -121,24 +123,18 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
             }
         });
 
-        bntPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int progress = temperatureControl.getProgress();
-                if (progressToTemp(progress) < maxTemp) {
-                    progress += 1;
-                    temperatureControl.setProgress(progress);
-                }
+        bntPlus.setOnClickListener(v -> {
+            int progress = temperatureControl.getProgress();
+            if (progressToTemp(progress) < maxTemp) {
+                progress += 1;
+                temperatureControl.setProgress(progress);
             }
         });
-        btnMin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int progress = temperatureControl.getProgress();
-                if (progressToTemp(progress) > minTemp) {
-                    progress -= 1;
-                    temperatureControl.setProgress(progress);
-                }
+        btnMin.setOnClickListener(v -> {
+            int progress = temperatureControl.getProgress();
+            if (progressToTemp(progress) > minTemp) {
+                progress -= 1;
+                temperatureControl.setProgress(progress);
             }
         });
         md.show();
@@ -151,11 +147,11 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
     }
 
     private double progressToTemp(int progress) {
-        return ((double) progress / 2) + minTemp;
+        return ((double) progress / (1 / step)) + minTemp;
     }
 
     private int tempToProgress(double temp) {
-        return (int) (temp - minTemp) * 2;
+        return (int) ((temp - minTemp) * (1 / step));
     }
 
     public void onDismissListener(DialogActionListener dialogActionListener) {

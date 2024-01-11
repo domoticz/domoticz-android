@@ -80,7 +80,6 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -254,11 +253,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     (mDeviceInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mDeviceInfo.getSubType()))) {
                 setButtons(holder, Buttons.BUTTON_ON);
                 setThermostatRowData(mDeviceInfo, holder);
-            }else if ((mDeviceInfo.getType() != null && DomoticzValues.Device.Utility.Type.GENERAL.equalsIgnoreCase(mDeviceInfo.getType())) &&
-                (mDeviceInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.THERMOSTAT_MODE.equalsIgnoreCase(mDeviceInfo.getSubType()))) {
+            } else if ((mDeviceInfo.getType() != null && DomoticzValues.Device.Utility.Type.GENERAL.equalsIgnoreCase(mDeviceInfo.getType())) &&
+                    (mDeviceInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.THERMOSTAT_MODE.equalsIgnoreCase(mDeviceInfo.getSubType()))) {
                 setButtons(holder, Buttons.SELECTOR);
                 setThermostatRowData(mDeviceInfo, holder);
-            }  else {
+            } else {
                 switch (mDeviceInfo.getType()) {
                     case DomoticzValues.Scene.Type.GROUP:
                         setButtons(holder, Buttons.BUTTONS);
@@ -831,10 +830,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 }
 
                 @Override
-                public void onNothingSelected(AdapterView<?> arg0) {}
+                public void onNothingSelected(AdapterView<?> arg0) {
+                }
             });
-        }
-        else{
+        } else {
             holder.spSelector.setVisibility(View.GONE);
             if (holder.switch_battery_level != null) {
                 String setPointText =

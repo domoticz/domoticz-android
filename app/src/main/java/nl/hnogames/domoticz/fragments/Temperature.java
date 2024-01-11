@@ -31,7 +31,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.google.android.material.snackbar.Snackbar;
@@ -209,13 +208,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                 itemDecorationAdded = true;
             }
             mSwipeRefreshLayout.setRefreshing(false);
-            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-
-                public void onRefresh() {
-                    processTemperature();
-                }
-            });
+            mSwipeRefreshLayout.setOnRefreshListener(() -> processTemperature());
             this.Filter(filter);
         }
         super.showSpinner(false);
@@ -230,13 +223,9 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         infoDialog.setLastUpdate(mTemperatureInfo.getLastUpdate());
         infoDialog.setIsFavorite(mTemperatureInfo.getFavoriteBoolean());
         infoDialog.show();
-        infoDialog.onDismissListener(new TemperatureInfoDialog.DismissListener() {
-            @Override
-
-            public void onDismiss(boolean isChanged, boolean isFavorite) {
-                if (isChanged)
-                    changeFavorite(mTemperatureInfo, isFavorite);
-            }
+        infoDialog.onDismissListener((isChanged, isFavorite) -> {
+            if (isChanged)
+                changeFavorite(mTemperatureInfo, isFavorite);
         });
     }
 
@@ -327,38 +316,33 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         };
 
         final boolean evohomeZone = "evohome".equals(t.getHardwareName());
-
         TemperatureDialog tempDialog;
         if (evohomeZone) {
             tempDialog = new ScheduledTemperatureDialog(
                     mContext,
-                    t.getSetPoint(),
-                    !"auto".equalsIgnoreCase(t.getStatus()));
+                    t.getSetPoint(), t.hasStep(),
+                    t.getStep(), t.hasMax(), t.getMax(), t.hasMin(), t.getMin(),
+                    !AUTO.equalsIgnoreCase(t.getStatus()));
         } else {
-            tempDialog = new TemperatureDialog(
-                    mContext,
-                    t.getSetPoint());
+            tempDialog = new TemperatureDialog(mContext, t.getSetPoint(), t.hasStep(),
+                    t.getStep(), t.hasMax(), t.getMax(), t.hasMin(), t.getMin());
         }
 
-        tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
-            @Override
-
-            public void onDialogAction(double newSetPoint, DialogAction dialogAction) {
-                if (dialogAction == DialogAction.POSITIVE) {
-                    addDebugText("Set idx " + idx + " to " + newSetPoint);
-                    String params = "&setpoint=" + newSetPoint +
-                            "&mode=" + PERMANENT_OVERRIDE;
-                    // add query parameters
-                    StaticHelper.getDomoticz(mContext).setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
-                } else if (dialogAction == DialogAction.NEUTRAL && evohomeZone) {
-                    addDebugText("Set idx " + idx + " to Auto");
-                    String params = "&setpoint=" + newSetPoint +
-                            "&mode=" + AUTO;
-                    // add query parameters
-                    StaticHelper.getDomoticz(mContext).setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
-                } else {
-                    addDebugText("Not updating idx " + idx);
-                }
+        tempDialog.onDismissListener((newSetPoint, dialogAction) -> {
+            if (dialogAction == DialogAction.POSITIVE) {
+                addDebugText("Set idx " + idx + " to " + newSetPoint);
+                String params = "&setpoint=" + newSetPoint +
+                        "&mode=" + PERMANENT_OVERRIDE;
+                // add query parameters
+                StaticHelper.getDomoticz(mContext).setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
+            } else if (dialogAction == DialogAction.NEUTRAL && evohomeZone) {
+                addDebugText("Set idx " + idx + " to Auto");
+                String params = "&setpoint=" + newSetPoint +
+                        "&mode=" + AUTO;
+                // add query parameters
+                StaticHelper.getDomoticz(mContext).setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
+            } else {
+                addDebugText("Not updating idx " + idx);
             }
         });
 

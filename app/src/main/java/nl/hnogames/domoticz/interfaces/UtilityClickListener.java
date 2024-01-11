@@ -27,6 +27,7 @@ import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
 
 public interface UtilityClickListener {
     void onClick(UtilitiesInfo utility);
+
     void OnModeChanged(UtilitiesInfo utility, int id, String mode);
 
     void onLogClick(UtilitiesInfo utility, String range);
