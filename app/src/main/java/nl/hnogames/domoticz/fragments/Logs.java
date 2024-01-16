@@ -40,7 +40,6 @@ import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticzapi.Containers.LogInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.LogsReceiver;
-import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
     private LogAdapter adapter;
@@ -163,14 +162,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
         private int LogLevel;
 
         protected Boolean doInBackground(Boolean... geto) {
-            if (mPhoneConnectionUtil == null)
-                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
-            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
-                try {
-                    cacheLogs = (ArrayList<LogInfo>) SerializableManager.readSerializedObject(mContext, "Logs");
-                } catch (Exception ignored) {
-                }
-            }
+            cacheLogs = (ArrayList<LogInfo>) SerializableManager.readSerializedObject(mContext, "Logs");
             return true;
         }
 

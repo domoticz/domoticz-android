@@ -875,49 +875,46 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_sort:
-                String[] items = new String[lineLabels.size()];
-                lineLabels.toArray(items);
+        if (item.getItemId() == R.id.action_sort) {
+            String[] items = new String[lineLabels.size()];
+            lineLabels.toArray(items);
 
-                new MaterialDialog.Builder(context)
-                        .title(context.getString(R.string.filter))
-                        .items(items)
-                        .itemsCallbackMultiChoice(selectedFilters, new MaterialDialog.ListCallbackMultiChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-                                selectedFilters = which;
-                                enableFilters = true;
+            new MaterialDialog.Builder(context)
+                    .title(context.getString(R.string.filter))
+                    .items(items)
+                    .itemsCallbackMultiChoice(selectedFilters, new MaterialDialog.ListCallbackMultiChoice() {
+                        @Override
+                        public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                            selectedFilters = which;
+                            enableFilters = true;
 
-                                if (text != null && text.length > 0) {
-                                    filterLabels = new ArrayList<>();
+                            if (text != null && text.length > 0) {
+                                filterLabels = new ArrayList<>();
 
-                                    //set filters
-                                    for (CharSequence c : text)
-                                        filterLabels.add((String) c);
+                                //set filters
+                                for (CharSequence c : text)
+                                    filterLabels.add((String) c);
 
-                                    LineData columnData = generateData(root);
-                                    if (columnData != null) {
-                                        chart.setData(columnData);
-                                        chart.invalidate(); // refresh
-                                        chart.setVisibility(View.VISIBLE);
-                                        chart.animateX(1000);
-                                        if (getActivity() != null)
-                                            getActivity().invalidateOptionsMenu();
-                                    }
-                                } else {
-                                    enableFilters = false;
-                                    Toast.makeText(context, context.getString(R.string.filter_graph_empty), Toast.LENGTH_SHORT).show();
+                                LineData columnData = generateData(root);
+                                if (columnData != null) {
+                                    chart.setData(columnData);
+                                    chart.invalidate(); // refresh
+                                    chart.setVisibility(View.VISIBLE);
+                                    chart.animateX(1000);
+                                    if (getActivity() != null)
+                                        getActivity().invalidateOptionsMenu();
                                 }
-                                return true;
+                            } else {
+                                enableFilters = false;
+                                Toast.makeText(context, context.getString(R.string.filter_graph_empty), Toast.LENGTH_SHORT).show();
                             }
-                        })
-                        .positiveText(R.string.ok)
-                        .negativeText(R.string.cancel)
-                        .show();
-                return true;
-            default:
-                break;
+                            return true;
+                        }
+                    })
+                    .positiveText(R.string.ok)
+                    .negativeText(R.string.cancel)
+                    .show();
+            return true;
         }
 
         return false;

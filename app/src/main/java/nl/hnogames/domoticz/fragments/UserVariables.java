@@ -48,7 +48,6 @@ import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.Containers.UserVariableInfo;
 import nl.hnogames.domoticzapi.Interfaces.UserVariablesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class UserVariables extends DomoticzRecyclerFragment implements DomoticzFragmentListener, UserVariablesClickListener {
     private ArrayList<UserVariableInfo> mUserVariableInfos;
@@ -221,15 +220,8 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
         protected Boolean doInBackground(Boolean... geto) {
             if (mContext == null)
                 return false;
-            if (mPhoneConnectionUtil == null)
-                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
-            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
-                try {
-                    cacheUserVariables = (ArrayList<UserVariableInfo>) SerializableManager.readSerializedObject(mContext, "UserVariables");
-                    UserVariables.this.mUserVariableInfos = cacheUserVariables;
-                } catch (Exception ex) {
-                }
-            }
+            cacheUserVariables = (ArrayList<UserVariableInfo>) SerializableManager.readSerializedObject(mContext, "UserVariables");
+            UserVariables.this.mUserVariableInfos = cacheUserVariables;
             return true;
         }
 

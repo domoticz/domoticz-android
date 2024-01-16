@@ -235,10 +235,8 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
         String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_STORAGE_PERMS);
         StringBuilder builder = new StringBuilder(neededPermission.length);
-        if (neededPermission.length > 0) {
-            for (String permission : neededPermission) {
-                builder.append(permission).append("\n");
-            }
+        for (String permission : neededPermission) {
+            builder.append(permission).append("\n");
         }
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
                 getActivity().getString(R.string.permission_desc_storage), neededPermission);

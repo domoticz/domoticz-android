@@ -88,7 +88,6 @@ import nl.hnogames.domoticzapi.Interfaces.NotificationReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SwitchTimerReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Switches extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
         switchesClickListener, OnPermissionCallback {
@@ -1234,10 +1233,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
         String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_STORAGE_PERMS);
         StringBuilder builder = new StringBuilder(neededPermission.length);
-        if (neededPermission.length > 0) {
-            for (String permission : neededPermission) {
-                builder.append(permission).append("\n");
-            }
+        for (String permission : neededPermission) {
+            builder.append(permission).append("\n");
         }
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
                 getActivity().getString(R.string.permission_desc_storage), neededPermission);
@@ -1287,15 +1284,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         protected Boolean doInBackground(Boolean... geto) {
             if (mContext == null)
                 return false;
-            if (mPhoneConnectionUtil == null)
-                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
-            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
-                try {
-                    cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Switches");
-                    extendedStatusSwitches = cacheSwitches;
-                } catch (Exception ex) {
-                }
-            }
+            cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Switches");
+            extendedStatusSwitches = cacheSwitches;
             return true;
         }
 

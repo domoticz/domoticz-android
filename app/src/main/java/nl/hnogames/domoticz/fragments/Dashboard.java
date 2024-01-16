@@ -85,7 +85,6 @@ import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.PlansReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SunRiseReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Dashboard extends DomoticzDashboardFragment implements DomoticzFragmentListener,
         switchesClickListener, OnPermissionCallback {
@@ -184,7 +183,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
         if (getView() != null) {
             if (planName != null && planName.length() > 0)
-                setActionbar(planName + "");
+                setActionbar(planName);
             processDashboard();
         }
     }
@@ -1328,10 +1327,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
         String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_STORAGE_PERMS);
         StringBuilder builder = new StringBuilder(neededPermission.length);
-        if (neededPermission.length > 0) {
-            for (String permission : neededPermission) {
-                builder.append(permission).append("\n");
-            }
+        for (String permission : neededPermission) {
+            builder.append(permission).append("\n");
         }
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
                 getActivity().getString(R.string.permission_desc_storage), neededPermission);
@@ -1410,14 +1407,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         protected Boolean doInBackground(Boolean... geto) {
             if (mContext == null)
                 return false;
-            if (mPhoneConnectionUtil == null)
-                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
-            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
-                try {
-                    cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Dashboard");
-                } catch (Exception ignored) {
-                }
-            }
+            cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Dashboard");
             return true;
         }
 
