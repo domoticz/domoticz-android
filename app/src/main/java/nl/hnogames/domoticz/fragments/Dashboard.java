@@ -822,7 +822,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         final DevicesInfo tempUtil = device;
         if (tempUtil != null) {
             TemperatureDialog tempDialog = new TemperatureDialog(mContext, tempUtil.getSetPoint(), tempUtil.hasStep(), tempUtil.getStep(),
-                    tempUtil.hasMax(), tempUtil.getMax(), tempUtil.hasMin(), tempUtil.getMin());
+                    tempUtil.hasMax(), tempUtil.getMax(), tempUtil.hasMin(), tempUtil.getMin(), tempUtil.getVUnit());
             tempDialog.onDismissListener((newSetPoint, dialogAction) -> {
                 addDebugText("Set idx " + device.getIdx() + " to " + newSetPoint);
                 if (dialogAction == DialogAction.POSITIVE) {
@@ -923,10 +923,10 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         mContext,
                         tempUtil.getSetPoint(), tempUtil.hasStep(),
                         tempUtil.getStep(), tempUtil.hasMax(), tempUtil.getMax(), tempUtil.hasMin(), tempUtil.getMin(),
-                        !AUTO.equalsIgnoreCase(tempUtil.getStatus()));
+                        !AUTO.equalsIgnoreCase(tempUtil.getStatus()), tempUtil.getVUnit());
             } else {
                 tempDialog = new TemperatureDialog(mContext, tempUtil.getSetPoint(), tempUtil.hasStep(), tempUtil.getStep(),
-                        tempUtil.hasMax(), tempUtil.getMax(), tempUtil.hasMin(), tempUtil.getMin());
+                        tempUtil.hasMax(), tempUtil.getMax(), tempUtil.hasMin(), tempUtil.getMin(), tempUtil.getVUnit());
             }
 
             tempDialog.onDismissListener((newSetPoint, dialogAction) -> {

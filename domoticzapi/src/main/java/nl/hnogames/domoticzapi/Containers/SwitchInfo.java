@@ -32,7 +32,7 @@ public class SwitchInfo {
 
     private static final String UNKNOWN = "Unknown";
     private final String TAG = SwitchInfo.class.getSimpleName();
-    private JSONObject jsonObject;
+    private final JSONObject jsonObject;
     private String IsDimmer;
     private String Name;
     private String SubType;
@@ -120,7 +120,7 @@ public class SwitchInfo {
     }
 
     public boolean getIsDimmerBoolean() {
-        return IsDimmer.equalsIgnoreCase("true") ? true : false;
+        return IsDimmer.equalsIgnoreCase("true");
     }
 
     public void setIsDimmer(String isDimmer) {

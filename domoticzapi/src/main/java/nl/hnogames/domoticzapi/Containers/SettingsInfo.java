@@ -27,7 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SettingsInfo {
-    private JSONObject jsonObject;
+    private final JSONObject jsonObject;
     private String secPassword;
     private int secOnDelay;
 

@@ -33,8 +33,8 @@ public class EventInfo implements Comparable, Serializable {
     private final String EVENT_STATUS = "eventstatus";
     @SuppressWarnings("FieldCanBeLocal")
     private final String NAME = "name";
-    private String jsonObject;
-    private int id;
+    private final String jsonObject;
+    private final int id;
     private String Name;
     private String Status;
 

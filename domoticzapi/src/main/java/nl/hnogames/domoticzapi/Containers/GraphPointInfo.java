@@ -32,7 +32,7 @@ public class GraphPointInfo {
 
     boolean hasTemperatureRange = false;
     boolean hasPercentageRange = false;
-    private JSONObject jsonObject;
+    private final JSONObject jsonObject;
     private String dateTime;
     private String hu;
     private String ba;

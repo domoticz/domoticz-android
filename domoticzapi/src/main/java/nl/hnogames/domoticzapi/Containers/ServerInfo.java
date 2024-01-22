@@ -174,9 +174,11 @@ public class ServerInfo {
     public boolean getIsV2ApiDetected() {
         return DETECTV2URLS;
     }
+
     public void setIsV2ApiDetected(boolean detected) {
         DETECTV2URLS = detected;
     }
+
     public String getRemoteServerAuthenticationMethod() {
         String method;
         if (REMOTE_SERVER_AUTHENTICATION_METHOD)

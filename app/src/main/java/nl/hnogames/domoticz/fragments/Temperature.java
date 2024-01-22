@@ -321,10 +321,10 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                     mContext,
                     t.getSetPoint(), t.hasStep(),
                     t.getStep(), t.hasMax(), t.getMax(), t.hasMin(), t.getMin(),
-                    !AUTO.equalsIgnoreCase(t.getStatus()));
+                    !AUTO.equalsIgnoreCase(t.getStatus()), t.getVUnit());
         } else {
             tempDialog = new TemperatureDialog(mContext, t.getSetPoint(), t.hasStep(),
-                    t.getStep(), t.hasMax(), t.getMax(), t.hasMin(), t.getMin());
+                    t.getStep(), t.hasMax(), t.getMax(), t.hasMin(), t.getMin(), t.getVUnit());
         }
 
         tempDialog.onDismissListener((newSetPoint, dialogAction) -> {

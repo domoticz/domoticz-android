@@ -28,7 +28,7 @@ import java.io.Serializable;
 
 public class LogInfo implements Serializable {
 
-    private String jsonObject;
+    private final String jsonObject;
     private int level;
     private String message;
 

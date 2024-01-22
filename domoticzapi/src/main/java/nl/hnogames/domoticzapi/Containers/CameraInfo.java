@@ -48,11 +48,8 @@ public class CameraInfo implements Comparable, Serializable {
         this.jsonObject = row.toString();
         if (row.has("Name"))
             Name = row.getString("Name");
-        if (row.has("Enabled") &&
-                row.getString("Enabled").equals("true"))
-            Enabled = true;
-        else
-            Enabled = false;
+        Enabled = row.has("Enabled") &&
+                row.getString("Enabled").equals("true");
         if (row.has("Address"))
             Address = row.getString("Address");
         if (row.has("Password"))
@@ -82,6 +79,10 @@ public class CameraInfo implements Comparable, Serializable {
 
     public String getName() {
         return Name;
+    }
+
+    public void setName(String n) {
+        Name = n;
     }
 
     public boolean getEnabled() {
@@ -126,10 +127,6 @@ public class CameraInfo implements Comparable, Serializable {
 
     public void setIdx(int n) {
         idx = n;
-    }
-
-    public void setName(String n) {
-        Name = n;
     }
 
     public int getDevices() {

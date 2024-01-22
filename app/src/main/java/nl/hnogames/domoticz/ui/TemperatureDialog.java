@@ -51,10 +51,9 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
     private SeekArc temperatureControl;
     private TextView temperatureText;
     private String tempSign = UsefulBits.getDegreeSymbol() + "C";
-    private boolean isFahrenheit = false;
     private SharedPrefUtil mSharedPrefUtil;
 
-    public TemperatureDialog(Context mContext, double temp, boolean hasStep, double step, boolean hasMax, double max, boolean hasMin, double min) {
+    public TemperatureDialog(Context mContext, double temp, boolean hasStep, double step, boolean hasMax, double max, boolean hasMin, double min, String vunit) {
         this.mContext = mContext;
         if (mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(mContext);
@@ -66,11 +65,12 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
                 .onAny(this);
 
         ConfigInfo configInfo = StaticHelper.getServerUtil(mContext).getActiveServer().getConfigInfo(mContext);
-        if (configInfo != null) {
-            tempSign = UsefulBits.getDegreeSymbol() + configInfo.getTempSign();
-            if (!UsefulBits.isEmpty(configInfo.getTempSign()) && !configInfo.getTempSign().equals(DomoticzValues.Temperature.Sign.CELSIUS)) {
-                isFahrenheit = true;
+        if(UsefulBits.isEmpty(vunit)) {
+            if (configInfo != null) {
+                tempSign = UsefulBits.getDegreeSymbol() + configInfo.getTempSign();
             }
+        }else{
+            tempSign = vunit;
         }
 
         minTemp = hasMin ? min : mSharedPrefUtil.getTemperatureSetMin(configInfo != null ? configInfo.getTempSign() : "C");

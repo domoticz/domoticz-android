@@ -111,6 +111,7 @@ public class DevicesInfo implements Comparable, Serializable {
     private double Max;
     private boolean hasMax;
     private double Min;
+    private String vunit;
     private boolean hasMin;
 
     public DevicesInfo(JSONObject row) throws JSONException {
@@ -345,52 +346,54 @@ public class DevicesInfo implements Comparable, Serializable {
         if (row.has("step")) {
             hasStep = true;
             try {
-                Step = Double.parseDouble(row.getString("step"));
+                Step = row.getDouble("step");
             } catch (Exception ignored) {
                 Step = 0;
             }
-        }
-        else{
+        } else {
             hasStep = false;
         }
 
-        if (row.has("Max")) {
+        if (row.has("max")) {
             hasMax = true;
             try {
-                Max = Double.parseDouble(row.getString("Max"));
+                Max = row.getDouble("max");
             } catch (Exception ignored) {
                 Max = 0;
             }
-        }
-        else{
+        } else {
             hasMax = false;
         }
 
-        if (row.has("Min")) {
+        if (row.has("min")) {
             hasMin = true;
             try {
-                Min = Double.parseDouble(row.getString("Min"));
+                Min = row.getDouble("Min");
             } catch (Exception ignored) {
                 Min = 0;
             }
-        }
-        else{
+        } else {
             hasMin = false;
         }
+        if (row.has("vunit"))
+            vunit = row.getString("vunit");
     }
 
     public DevicesInfo() {
     }
 
     public boolean getFavoriteBoolean() {
-        boolean favorite = false;
-        if (this.Favorite == 1) favorite = true;
+        boolean favorite = this.Favorite == 1;
         return favorite;
     }
 
     public void setFavoriteBoolean(boolean favorite) {
         if (favorite) this.Favorite = 1;
         else this.Favorite = 0;
+    }
+
+    public String getVUnit() {
+        return vunit;
     }
 
     public String getCounterDeliv() {
@@ -468,6 +471,7 @@ public class DevicesInfo implements Comparable, Serializable {
     public boolean hasMax() {
         return hasMax;
     }
+
     public double getMin() {
         return Min;
     }
@@ -607,10 +611,7 @@ public class DevicesInfo implements Comparable, Serializable {
     }
 
     public boolean isSceneOrGroup() {
-        if (getType().equals(DomoticzValues.Scene.Type.GROUP) || getType().equals(DomoticzValues.Scene.Type.SCENE))
-            return true;
-        else
-            return false;
+        return getType().equals(DomoticzValues.Scene.Type.GROUP) || getType().equals(DomoticzValues.Scene.Type.SCENE);
     }
 
     public String getLastUpdate() {
@@ -635,6 +636,7 @@ public class DevicesInfo implements Comparable, Serializable {
     public int getModeId() {
         return Mode;
     }
+
     public void setModeId(int mode) {
         Mode = mode;
     }

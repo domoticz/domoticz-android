@@ -33,7 +33,7 @@ public class ExtendedStatusInfo {
     private final String UNKNOWN = "Unknown";
     private final String TAG = ExtendedStatusInfo.class.getSimpleName();
     private boolean useCustomImage;
-    private JSONObject jsonObject;
+    private final JSONObject jsonObject;
     private String name;
     private String hardwareName;
     private boolean isProtected;
@@ -98,10 +98,7 @@ public class ExtendedStatusInfo {
         }
         try {
             if (row.has("CustomImage")) {
-                if (row.getInt("CustomImage") > 0)
-                    useCustomImage = true;
-                else
-                    useCustomImage = false;
+                useCustomImage = row.getInt("CustomImage") > 0;
             } else
                 useCustomImage = false;
         } catch (Exception e) {
@@ -278,8 +275,7 @@ public class ExtendedStatusInfo {
     }
 
     public boolean getFavoriteBoolean() {
-        boolean favorite = false;
-        if (this.favorite == 1) favorite = true;
+        boolean favorite = this.favorite == 1;
         return favorite;
     }
 

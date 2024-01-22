@@ -57,7 +57,7 @@ public class VersionInfo implements Serializable {
             version = row.getString("version");
         if (row.has("version"))
             version = row.getString("version");
-        if(!UsefulBits.isEmpty(build_time)) {
+        if (!UsefulBits.isEmpty(build_time)) {
             try {
                 buildTimeDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(build_time);
             } catch (ParseException e) {
@@ -86,12 +86,12 @@ public class VersionInfo implements Serializable {
         return build_time;
     }
 
-    public Date getBuildDate() {
-        return buildTimeDateTime;
-    }
-
     public void setBuild_time(String build_time) {
         this.build_time = build_time;
+    }
+
+    public Date getBuildDate() {
+        return buildTimeDateTime;
     }
 
     public String getDzvents_version() {

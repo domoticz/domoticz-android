@@ -229,8 +229,7 @@ public class WeatherInfo implements Comparable, Serializable {
     }
 
     public boolean getFavoriteBoolean() {
-        boolean favorite = false;
-        if (this.Favorite == 1) favorite = true;
+        boolean favorite = this.Favorite == 1;
         return favorite;
     }
 

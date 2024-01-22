@@ -111,8 +111,7 @@ public class SceneInfo implements Comparable, Serializable {
     }
 
     public boolean getFavoriteBoolean() {
-        boolean favorite = false;
-        if (this.favorite == 1) favorite = true;
+        boolean favorite = this.favorite == 1;
         return favorite;
     }
 
@@ -144,6 +143,10 @@ public class SceneInfo implements Comparable, Serializable {
         return name;
     }
 
+    public void setName(String n) {
+        name = n;
+    }
+
     public String getOffAction() {
         return offAction;
     }
@@ -164,9 +167,12 @@ public class SceneInfo implements Comparable, Serializable {
         return timers;
     }
 
-
     public String getType() {
         return type;
+    }
+
+    public void setType(String n) {
+        type = n;
     }
 
     public int getIdx() {
@@ -175,14 +181,6 @@ public class SceneInfo implements Comparable, Serializable {
 
     public void setIdx(int n) {
         idx = n;
-    }
-
-    public void setName(String n) {
-        name = n;
-    }
-
-    public void setType(String n) {
-        type = n;
     }
 
     public String getJsonObject() {

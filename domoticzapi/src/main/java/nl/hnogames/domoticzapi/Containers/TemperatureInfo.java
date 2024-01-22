@@ -56,6 +56,7 @@ public class TemperatureInfo implements Comparable, Serializable {
     private boolean hasMax;
     private double Min;
     private boolean hasMin;
+    private String vunit;
 
     public TemperatureInfo() {
     }
@@ -63,6 +64,8 @@ public class TemperatureInfo implements Comparable, Serializable {
     public TemperatureInfo(JSONObject row) throws JSONException {
         this.jsonObject = row.toString();
 
+        if (row.has("vunit"))
+            vunit = row.getString("vunit");
         if (row.has("Favorite"))
             Favorite = row.getInt("Favorite");
         isProtected = row.getBoolean("Protected");
@@ -116,39 +119,37 @@ public class TemperatureInfo implements Comparable, Serializable {
                 signalLevel = 0;
             }
         }
+
         if (row.has("step")) {
             hasStep = true;
             try {
-                Step = Double.parseDouble(row.getString("step"));
+                Step = row.getDouble("step");
             } catch (Exception ignored) {
                 Step = 0;
             }
-        }
-        else{
+        } else {
             hasStep = false;
         }
 
-        if (row.has("Max")) {
+        if (row.has("max")) {
             hasMax = true;
             try {
-                Max = Double.parseDouble(row.getString("Max"));
+                Max = row.getDouble("max");
             } catch (Exception ignored) {
                 Max = 0;
             }
-        }
-        else{
+        } else {
             hasMax = false;
         }
 
-        if (row.has("Min")) {
+        if (row.has("min")) {
             hasMin = true;
             try {
-                Min = Double.parseDouble(row.getString("Min"));
+                Min = row.getDouble("min");
             } catch (Exception ignored) {
                 Min = 0;
             }
-        }
-        else{
+        } else {
             hasMin = false;
         }
     }
@@ -167,6 +168,10 @@ public class TemperatureInfo implements Comparable, Serializable {
                 ", HardwareID=" + HardwareID +
                 ", signalLevel=" + signalLevel +
                 '}';
+    }
+
+    public String getVUnit() {
+        return vunit;
     }
 
     public int getIdx() {
@@ -222,8 +227,7 @@ public class TemperatureInfo implements Comparable, Serializable {
     }
 
     public boolean getFavoriteBoolean() {
-        boolean favorite = false;
-        if (this.Favorite == 1) favorite = true;
+        boolean favorite = this.Favorite == 1;
         return favorite;
     }
 
@@ -279,6 +283,7 @@ public class TemperatureInfo implements Comparable, Serializable {
     public boolean hasMax() {
         return hasMax;
     }
+
     public double getMin() {
         return Min;
     }

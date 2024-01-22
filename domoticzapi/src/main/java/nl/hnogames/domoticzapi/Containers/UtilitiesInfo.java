@@ -40,6 +40,7 @@ public class UtilitiesInfo implements Comparable, Serializable {
 
     private boolean isProtected = false;
     private String jsonObject;
+    private String vunit;
 
     private int idx;
     private String Name;
@@ -88,40 +89,39 @@ public class UtilitiesInfo implements Comparable, Serializable {
             HardwareName = row.getString("HardwareName");
         if (row.has("LastUpdate"))
             LastUpdate = row.getString("LastUpdate");
+        if (row.has("vunit"))
+            vunit = row.getString("vunit");
 
         if (row.has("step")) {
             hasStep = true;
             try {
-                Step = Double.parseDouble(row.getString("step"));
+                Step = row.getDouble("step");
             } catch (Exception ignored) {
                 Step = 0;
             }
-        }
-        else{
+        } else {
             hasStep = false;
         }
 
-        if (row.has("Max")) {
+        if (row.has("max")) {
             hasMax = true;
             try {
-                Max = Double.parseDouble(row.getString("Max"));
+                Max = row.getDouble("max");
             } catch (Exception ignored) {
                 Max = 0;
             }
-        }
-        else{
+        } else {
             hasMax = false;
         }
 
-        if (row.has("Min")) {
+        if (row.has("min")) {
             hasMin = true;
             try {
-                Min = Double.parseDouble(row.getString("Min"));
+                Min = row.getDouble("min");
             } catch (Exception ignored) {
                 Min = 0;
             }
-        }
-        else{
+        } else {
             hasMin = false;
         }
         if (row.has("SetPoint")) {
@@ -192,6 +192,10 @@ public class UtilitiesInfo implements Comparable, Serializable {
                 '}';
     }
 
+    public String getVUnit() {
+        return vunit;
+    }
+
     public int getIdx() {
         return idx;
     }
@@ -215,6 +219,7 @@ public class UtilitiesInfo implements Comparable, Serializable {
     public int getModeId() {
         return Mode;
     }
+
     public void setModeId(int mode) {
         Mode = mode;
     }
@@ -327,6 +332,7 @@ public class UtilitiesInfo implements Comparable, Serializable {
     public boolean hasMax() {
         return hasMax;
     }
+
     public double getMin() {
         return Min;
     }
@@ -348,8 +354,7 @@ public class UtilitiesInfo implements Comparable, Serializable {
     }
 
     public boolean getFavoriteBoolean() {
-        boolean favorite = false;
-        if (this.Favorite == 1) favorite = true;
+        boolean favorite = this.Favorite == 1;
         return favorite;
     }
 

@@ -459,7 +459,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         final UtilitiesInfo tempUtil = getUtility(idx);
 
         TemperatureDialog tempDialog = new TemperatureDialog(mContext, tempUtil.getSetPoint(), tempUtil.hasStep(),
-                tempUtil.getStep(), tempUtil.hasMax(), tempUtil.getMax(), tempUtil.hasMin(), tempUtil.getMin());
+                tempUtil.getStep(), tempUtil.hasMax(), tempUtil.getMax(), tempUtil.hasMin(), tempUtil.getMin(), tempUtil.getVUnit());
         tempDialog.onDismissListener((newSetPoint, dialogAction) -> {
             if (dialogAction == DialogAction.POSITIVE) {
                 addDebugText("Set idx " + idx + " to " + newSetPoint);
