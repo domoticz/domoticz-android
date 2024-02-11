@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -108,7 +107,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
 
     @Override
     public void onConnectionFailed() {
-        new GetCachedDataTask().execute();
+        GetSwitches();
     }
 
     @Override
@@ -197,7 +196,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
             if (mSwipeRefreshLayout != null)
                 mSwipeRefreshLayout.setRefreshing(true);
             WidgetUtils.RefreshWidgets(mContext);
-            new GetCachedDataTask().execute();
+            GetSwitches();
         } catch (Exception ex) {
         }
     }
@@ -1278,44 +1277,27 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
     }
 
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<DevicesInfo> cacheSwitches = null;
+    public void GetSwitches() {
+        StaticHelper.getDomoticz(mContext).getDevices(new DevicesReceiver() {
+            @Override
 
-        protected Boolean doInBackground(Boolean... geto) {
-            if (mContext == null)
-                return false;
-            cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Switches");
-            extendedStatusSwitches = cacheSwitches;
-            return true;
-        }
+            public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
+                extendedStatusSwitches = switches;
+                SerializableManager.saveSerializable(mContext, switches, "Switches");
+                successHandling(switches.toString(), false);
+                createListView(switches);
+            }
 
-        protected void onPostExecute(Boolean result) {
-            if (mContext == null)
-                return;
-            if (cacheSwitches != null)
-                createListView(cacheSwitches);
+            @Override
 
-            StaticHelper.getDomoticz(mContext).getDevices(new DevicesReceiver() {
-                @Override
+            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+            }
 
-                public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
-                    extendedStatusSwitches = switches;
-                    SerializableManager.saveSerializable(mContext, switches, "Switches");
-                    successHandling(switches.toString(), false);
-                    createListView(switches);
-                }
+            @Override
 
-                @Override
-
-                public void onReceiveDevice(DevicesInfo mDevicesInfo) {
-                }
-
-                @Override
-
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            }, 0, "light");
-        }
+            public void onError(Exception error) {
+                errorHandling(error);
+            }
+        }, 0, "light");
     }
 }

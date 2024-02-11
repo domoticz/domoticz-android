@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,7 +62,6 @@ import nl.hnogames.domoticzapi.Containers.CameraInfo;
 import nl.hnogames.domoticzapi.Containers.LoginInfo;
 import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
 import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
-import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Cameras extends DomoticzCardFragment implements DomoticzFragmentListener, OnPermissionCallback {
 
@@ -136,7 +134,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
         permissionFragmentHelper = PermissionFragmentHelper.getInstance(this);
-        new GetCachedDataTask().execute();
+        GetCameras();
     }
 
     @Override
@@ -280,51 +278,30 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
         Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
     }
 
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<CameraInfo> cacheCameras = null;
+    public void GetCameras() {
+        StaticHelper.getDomoticz(context).checkLogin(new LoginReceiver() {
+            @Override
+            public void OnReceive(LoginInfo mLoginInfo) {
+                StaticHelper.getDomoticz(context).getCameras(new CameraReceiver() {
+                    @Override
+                    public void OnReceiveCameras(ArrayList<CameraInfo> c) {
+                        successHandling(c.toString(), false);
+                        SerializableManager.saveSerializable(context, c, "Cameras");
+                        Cameras = c;
+                        createListView();
+                    }
 
-        protected Boolean doInBackground(Boolean... geto) {
-            if (context == null) return false;
-            if (mPhoneConnectionUtil == null)
-                mPhoneConnectionUtil = new PhoneConnectionUtil(context);
-            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
-                try {
-                    cacheCameras = (ArrayList<CameraInfo>) SerializableManager.readSerializedObject(context, "Cameras");
-                } catch (Exception ex) {
-                }
+                    @Override
+                    public void onError(Exception error) {
+                        errorHandling(error, frameLayout);
+                    }
+                });
             }
-            return true;
-        }
 
-        protected void onPostExecute(Boolean result) {
-            if (cacheCameras != null) {
-                Cameras = cacheCameras;
-                createListView();
+            @Override
+            public void onError(Exception error) {
+                errorHandling(error, frameLayout);
             }
-            StaticHelper.getDomoticz(context).checkLogin(new LoginReceiver() {
-                @Override
-                public void OnReceive(LoginInfo mLoginInfo) {
-                    StaticHelper.getDomoticz(context).getCameras(new CameraReceiver() {
-                        @Override
-                        public void OnReceiveCameras(ArrayList<CameraInfo> c) {
-                            successHandling(c.toString(), false);
-                            SerializableManager.saveSerializable(context, c, "Cameras");
-                            Cameras = c;
-                            createListView();
-                        }
-
-                        @Override
-                        public void onError(Exception error) {
-                            errorHandling(error, frameLayout);
-                        }
-                    });
-                }
-
-                @Override
-                public void onError(Exception error) {
-                    errorHandling(error, frameLayout);
-                }
-            });
-        }
+        });
     }
 }

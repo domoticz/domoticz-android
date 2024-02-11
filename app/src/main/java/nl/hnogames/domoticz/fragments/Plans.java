@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,7 +98,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     public void processPlans() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-        new GetCachedDataTask().execute();
+        GetPlans();
     }
 
     @Override
@@ -225,33 +224,20 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         return supportedSwitches;
     }
 
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<PlanInfo> cachePlans = null;
-
-        protected Boolean doInBackground(Boolean... geto) {
-            cachePlans = (ArrayList<PlanInfo>) SerializableManager.readSerializedObject(mContext, "Plans");
-            Plans.this.mPlans = cachePlans;
-            return true;
-        }
-
-        protected void onPostExecute(Boolean result) {
-            if (cachePlans != null)
+    public void GetPlans() {
+        StaticHelper.getDomoticz(mContext).getPlans(new PlansReceiver() {
+            @Override
+            public void OnReceivePlans(ArrayList<PlanInfo> plans) {
+                successHandling(plans.toString(), false);
+                SerializableManager.saveSerializable(mContext, plans, "Plans");
+                Plans.this.mPlans = plans;
                 createListView();
+            }
 
-            StaticHelper.getDomoticz(mContext).getPlans(new PlansReceiver() {
-                @Override
-                public void OnReceivePlans(ArrayList<PlanInfo> plans) {
-                    successHandling(plans.toString(), false);
-                    SerializableManager.saveSerializable(mContext, plans, "Plans");
-                    Plans.this.mPlans = plans;
-                    createListView();
-                }
-
-                @Override
-                public void onError(Exception error) {
-                    errorHandling(error, frameLayout);
-                }
-            });
-        }
+            @Override
+            public void onError(Exception error) {
+                errorHandling(error, frameLayout);
+            }
+        });
     }
 }

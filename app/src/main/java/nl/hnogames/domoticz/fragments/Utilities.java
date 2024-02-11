@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -176,7 +175,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             if (mSwipeRefreshLayout != null)
                 mSwipeRefreshLayout.setRefreshing(true);
 
-            new GetCachedDataTask().execute();
+            GetUtilities();
         } catch (Exception ex) {
         }
     }
@@ -609,40 +608,23 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         }
     }
 
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<UtilitiesInfo> cacheUtilities = null;
+    public void GetUtilities() {
+        StaticHelper.getDomoticz(mContext).getUtilities(new UtilitiesReceiver() {
+            @Override
 
-        protected Boolean doInBackground(Boolean... geto) {
-            if (mContext == null)
-                return false;
-            cacheUtilities = (ArrayList<UtilitiesInfo>) SerializableManager.readSerializedObject(mContext, "Utilities");
-            Utilities.this.mUtilitiesInfos = cacheUtilities;
-            return true;
-        }
+            public void onReceiveUtilities(ArrayList<UtilitiesInfo> mUtilitiesInfos) {
+                successHandling(mUtilitiesInfos.toString(), false);
+                SerializableManager.saveSerializable(mContext, mUtilitiesInfos, "Utilities");
+                Utilities.this.mUtilitiesInfos = mUtilitiesInfos;
 
-        protected void onPostExecute(Boolean result) {
-            if (mContext == null)
-                return;
-            if (cacheUtilities != null)
                 createListView();
+            }
 
-            StaticHelper.getDomoticz(mContext).getUtilities(new UtilitiesReceiver() {
-                @Override
+            @Override
 
-                public void onReceiveUtilities(ArrayList<UtilitiesInfo> mUtilitiesInfos) {
-                    successHandling(mUtilitiesInfos.toString(), false);
-                    SerializableManager.saveSerializable(mContext, mUtilitiesInfos, "Utilities");
-                    Utilities.this.mUtilitiesInfos = mUtilitiesInfos;
-
-                    createListView();
-                }
-
-                @Override
-
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            });
-        }
+            public void onError(Exception error) {
+                errorHandling(error);
+            }
+        });
     }
 }

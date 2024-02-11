@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -61,7 +60,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
 
     @Override
     public void onConnectionFailed() {
-        new GetCachedDataTask().execute();
+        GetEvents();
     }
 
     @Override
@@ -104,7 +103,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
         try {
             if (mSwipeRefreshLayout != null)
                 mSwipeRefreshLayout.setRefreshing(true);
-            new GetCachedDataTask().execute();
+            GetEvents();
         } catch (Exception ex) {
         }
     }
@@ -166,34 +165,21 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
         }
     }
 
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<EventInfo> cacheEventInfos = null;
+    public void GetEvents() {
+        StaticHelper.getDomoticz(mContext).getEvents(new EventReceiver() {
+            @Override
 
-        protected Boolean doInBackground(Boolean... geto) {
-            if (mContext == null) return false;
-            cacheEventInfos = (ArrayList<EventInfo>) SerializableManager.readSerializedObject(mContext, "Events");
-            return true;
-        }
+            public void onReceiveEvents(final ArrayList<EventInfo> mEventInfos) {
+                successHandling(mEventInfos.toString(), false);
+                SerializableManager.saveSerializable(mContext, mEventInfos, "Events");
+                createListView(mEventInfos);
+            }
 
-        protected void onPostExecute(Boolean result) {
-            if (cacheEventInfos != null)
-                createListView(cacheEventInfos);
+            @Override
 
-            StaticHelper.getDomoticz(mContext).getEvents(new EventReceiver() {
-                @Override
-
-                public void onReceiveEvents(final ArrayList<EventInfo> mEventInfos) {
-                    successHandling(mEventInfos.toString(), false);
-                    SerializableManager.saveSerializable(mContext, mEventInfos, "Events");
-                    createListView(mEventInfos);
-                }
-
-                @Override
-
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            });
-        }
+            public void onError(Exception error) {
+                errorHandling(error);
+            }
+        });
     }
 }

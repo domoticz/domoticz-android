@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
@@ -83,7 +82,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
 
     @Override
     public void onConnectionFailed() {
-        new GetCachedDataTask().execute();
+        GetScenes();
     }
 
     @Override
@@ -196,8 +195,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
 
             state = gridView.getLayoutManager().onSaveInstanceState();
             WidgetUtils.RefreshWidgets(mContext);
-
-            new GetCachedDataTask().execute();
+            GetScenes();
         } catch (Exception ignored) {
         }
     }
@@ -504,7 +502,6 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         super.onPause();
     }
 
-
     @Override
 
     public void errorHandling(Exception error) {
@@ -519,41 +516,26 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
         }
     }
 
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<SceneInfo> cacheSwitches = null;
+    public void GetScenes() {
+        StaticHelper.getDomoticz(mContext).getScenes(new ScenesReceiver() {
+            @Override
 
-        protected Boolean doInBackground(Boolean... geto) {
-            if (mContext == null) return false;
-            cacheSwitches = (ArrayList<SceneInfo>) SerializableManager.readSerializedObject(mContext, "Scenes");
-            return true;
-        }
+            public void onReceiveScenes(ArrayList<SceneInfo> scenes) {
+                SerializableManager.saveSerializable(mContext, scenes, "Scenes");
+                successHandling(scenes.toString(), false);
+                createListView(scenes);
+            }
 
-        protected void onPostExecute(Boolean result) {
-            if (mContext == null)
-                return;
-            if (cacheSwitches != null)
-                createListView(cacheSwitches);
+            @Override
 
-            StaticHelper.getDomoticz(mContext).getScenes(new ScenesReceiver() {
-                @Override
+            public void onError(Exception error) {
+                errorHandling(error);
+            }
 
-                public void onReceiveScenes(ArrayList<SceneInfo> scenes) {
-                    SerializableManager.saveSerializable(mContext, scenes, "Scenes");
-                    successHandling(scenes.toString(), false);
-                    createListView(scenes);
-                }
+            @Override
 
-                @Override
-
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-
-                @Override
-
-                public void onReceiveScene(SceneInfo scene) {
-                }
-            });
-        }
+            public void onReceiveScene(SceneInfo scene) {
+            }
+        });
     }
 }

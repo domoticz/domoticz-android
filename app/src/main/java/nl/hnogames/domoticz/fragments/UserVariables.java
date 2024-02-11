@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 
@@ -58,7 +57,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
 
     @Override
     public void onConnectionFailed() {
-        new GetCachedDataTask().execute();
+        GetVars();
     }
 
     @Override
@@ -108,7 +107,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     private void processUserVariables() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-        new GetCachedDataTask().execute();
+        GetVars();
     }
 
     private void createListView() {
@@ -214,39 +213,22 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
         return true;
     }
 
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<UserVariableInfo> cacheUserVariables = null;
+    public void GetVars() {
+        StaticHelper.getDomoticz(mContext).getUserVariables(new UserVariablesReceiver() {
+            @Override
 
-        protected Boolean doInBackground(Boolean... geto) {
-            if (mContext == null)
-                return false;
-            cacheUserVariables = (ArrayList<UserVariableInfo>) SerializableManager.readSerializedObject(mContext, "UserVariables");
-            UserVariables.this.mUserVariableInfos = cacheUserVariables;
-            return true;
-        }
-
-        protected void onPostExecute(Boolean result) {
-            if (mContext == null)
-                return;
-            if (cacheUserVariables != null)
+            public void onReceiveUserVariables(ArrayList<UserVariableInfo> mVarInfos) {
+                UserVariables.this.mUserVariableInfos = mVarInfos;
+                SerializableManager.saveSerializable(mContext, mVarInfos, "UserVariables");
+                successHandling(mUserVariableInfos.toString(), false);
                 createListView();
+            }
 
-            StaticHelper.getDomoticz(mContext).getUserVariables(new UserVariablesReceiver() {
-                @Override
+            @Override
 
-                public void onReceiveUserVariables(ArrayList<UserVariableInfo> mVarInfos) {
-                    UserVariables.this.mUserVariableInfos = mVarInfos;
-                    SerializableManager.saveSerializable(mContext, mVarInfos, "UserVariables");
-                    successHandling(mUserVariableInfos.toString(), false);
-                    createListView();
-                }
-
-                @Override
-
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            });
-        }
+            public void onError(Exception error) {
+                errorHandling(error);
+            }
+        });
     }
 }

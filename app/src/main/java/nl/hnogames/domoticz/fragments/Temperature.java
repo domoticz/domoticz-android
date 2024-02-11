@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -77,7 +76,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
 
     @Override
     public void onConnectionFailed() {
-        new GetCachedDataTask().execute();
+        GetTemperatures();
     }
 
     @Override
@@ -177,7 +176,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
             if (mSwipeRefreshLayout != null)
                 mSwipeRefreshLayout.setRefreshing(true);
 
-            new GetCachedDataTask().execute();
+            GetTemperatures();
         } catch (Exception ex) {
         }
     }
@@ -395,42 +394,22 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         return clickedTemp;
     }
 
+    public void GetTemperatures() {
+        StaticHelper.getDomoticz(mContext).getTemperatures(new TemperatureReceiver() {
+            @Override
 
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<TemperatureInfo> cacheTemperatures = null;
-
-        protected Boolean doInBackground(Boolean... geto) {
-            if (mContext == null)
-                return false;
-            try {
-                cacheTemperatures = (ArrayList<TemperatureInfo>) SerializableManager.readSerializedObject(mContext, "Temperatures");
-            } catch (Exception ignored) {
+            public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
+                mTempInfos = mTemperatureInfos;
+                successHandling(mTemperatureInfos.toString(), false);
+                SerializableManager.saveSerializable(mContext, mTemperatureInfos, "Temperatures");
+                createListView(mTemperatureInfos);
             }
-            return true;
-        }
 
-        protected void onPostExecute(Boolean result) {
-            if (mContext == null)
-                return;
-            if (cacheTemperatures != null)
-                createListView(cacheTemperatures);
+            @Override
 
-            StaticHelper.getDomoticz(mContext).getTemperatures(new TemperatureReceiver() {
-                @Override
-
-                public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
-                    mTempInfos = mTemperatureInfos;
-                    successHandling(mTemperatureInfos.toString(), false);
-                    SerializableManager.saveSerializable(mContext, mTemperatureInfos, "Temperatures");
-                    createListView(mTemperatureInfos);
-                }
-
-                @Override
-
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            });
-        }
+            public void onError(Exception error) {
+                errorHandling(error);
+            }
+        });
     }
 }

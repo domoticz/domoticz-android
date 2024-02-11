@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -75,7 +74,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
 
     @Override
     public void onConnectionFailed() {
-        new GetCachedDataTask().execute();
+        GetWeather();
     }
 
 
@@ -173,7 +172,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
             if (mSwipeRefreshLayout != null)
                 mSwipeRefreshLayout.setRefreshing(true);
 
-            new GetCachedDataTask().execute();
+            GetWeather();
         } catch (Exception ex) {
         }
     }
@@ -373,41 +372,24 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         return clickedWeather;
     }
 
+    public void GetWeather() {
+        StaticHelper.getDomoticz(mContext).getWeathers(new WeatherReceiver() {
+            @Override
 
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<WeatherInfo> cacheWeathers = null;
-
-        protected Boolean doInBackground(Boolean... geto) {
-            if (mContext == null)
-                return false;
-            cacheWeathers = (ArrayList<WeatherInfo>) SerializableManager.readSerializedObject(mContext, "Weathers");
-            return true;
-        }
-
-        protected void onPostExecute(Boolean result) {
-            if (mContext == null)
-                return;
-            if (cacheWeathers != null)
-                createListView(cacheWeathers);
-
-            StaticHelper.getDomoticz(mContext).getWeathers(new WeatherReceiver() {
-                @Override
-
-                public void onReceiveWeather(ArrayList<WeatherInfo> mWeatherInfos) {
-                    mWeatherInfoList = mWeatherInfos;
-                    if (getView() != null) {
-                        successHandling(mWeatherInfos.toString(), false);
-                        SerializableManager.saveSerializable(mContext, mWeatherInfos, "Weathers");
-                        createListView(mWeatherInfos);
-                    }
+            public void onReceiveWeather(ArrayList<WeatherInfo> mWeatherInfos) {
+                mWeatherInfoList = mWeatherInfos;
+                if (getView() != null) {
+                    successHandling(mWeatherInfos.toString(), false);
+                    SerializableManager.saveSerializable(mContext, mWeatherInfos, "Weathers");
+                    createListView(mWeatherInfos);
                 }
+            }
 
-                @Override
+            @Override
 
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            });
-        }
+            public void onError(Exception error) {
+                errorHandling(error);
+            }
+        });
     }
 }

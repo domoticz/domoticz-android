@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -73,7 +72,6 @@ import nl.hnogames.domoticz.ui.TemperatureDialog;
 import nl.hnogames.domoticz.ui.WWColorPickerDialog;
 import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
-import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.PlanInfo;
@@ -201,7 +199,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             }
             if (mSwipeRefreshLayout != null)
                 mSwipeRefreshLayout.setRefreshing(true);
-            new GetCachedDataTask().execute();
+
+            GetDevice();
         } catch (Exception ex) {
         }
     }
@@ -1401,51 +1400,34 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         }
     }
 
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<DevicesInfo> cacheSwitches = null;
+    public void GetDevice() {
+        StaticHelper.getDomoticz(mContext).getDevices(new DevicesReceiver() {
+            @Override
+            public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
+                processDevices(switches);
+            }
 
-        protected Boolean doInBackground(Boolean... geto) {
-            if (mContext == null)
-                return false;
-            cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Dashboard");
-            return true;
-        }
+            @Override
+            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+            }
 
-        protected void onPostExecute(Boolean result) {
-            if (mContext == null)
-                return;
-            if (cacheSwitches != null)
-                processDevices(cacheSwitches);
+            @Override
+            public void onError(Exception error) {
+                errorHandling(error);
+            }
+        }, planID, null);
 
-            StaticHelper.getDomoticz(mContext).getDevices(new DevicesReceiver() {
+        if (mSharedPrefs.addPlansToDashboard() && planID <= 0) {
+            StaticHelper.getDomoticz(mContext).getPlans(new PlansReceiver() {
                 @Override
-                public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
-                    SerializableManager.saveSerializable(mContext, switches, "Dashboard");
-                    processDevices(switches);
-                }
-
-                @Override
-                public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+                public void OnReceivePlans(ArrayList<PlanInfo> plans) {
+                    processPlans(plans);
                 }
 
                 @Override
                 public void onError(Exception error) {
-                    errorHandling(error);
                 }
-            }, planID, null);
-
-            if (mSharedPrefs.addPlansToDashboard() && planID <= 0) {
-                StaticHelper.getDomoticz(mContext).getPlans(new PlansReceiver() {
-                    @Override
-                    public void OnReceivePlans(ArrayList<PlanInfo> plans) {
-                        processPlans(plans);
-                    }
-
-                    @Override
-                    public void onError(Exception error) {
-                    }
-                });
-            }
+            });
         }
     }
 }
