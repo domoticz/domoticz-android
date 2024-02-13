@@ -974,7 +974,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
             holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
             if ((sign.equals("C") && temperature < 0) || (sign.equals("F") && temperature < 30)) {
-                holder.pieView.setPercentageBackgroundColor(R.color.md_red_600);
+                holder.pieView.setPercentageBackgroundColor(com.mikepenz.materialize.R.color.md_red_600);
             }
 
             if (!mSharedPrefs.getAutoRefresh()) {

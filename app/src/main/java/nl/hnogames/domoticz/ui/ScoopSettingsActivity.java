@@ -117,7 +117,7 @@ public class ScoopSettingsActivity extends AppCompatActivity implements FlavorRe
         }
 
         if (TextUtils.isEmpty(mTitle)) {
-            getSupportActionBar().setTitle(R.string.activity_settings);
+            getSupportActionBar().setTitle(com.ftinc.scoop.R.string.activity_settings);
         } else {
             getSupportActionBar().setTitle(mTitle);
         }
