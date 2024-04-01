@@ -22,7 +22,7 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 33
+    compileSdk 34
 
     def versionPropsFile = file('version.properties')
 
@@ -54,7 +54,7 @@ android {
             versionCode version_Code
             versionName "${versionMajor}.${versionMinor}.${versionPatch}"
             minSdkVersion 23
-            targetSdkVersion 33
+            targetSdkVersion 34
         }
     }
 
