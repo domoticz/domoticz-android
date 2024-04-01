@@ -22,7 +22,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 33
+    compileSdk 34
     publishNonDefault true
 
     defaultConfig {

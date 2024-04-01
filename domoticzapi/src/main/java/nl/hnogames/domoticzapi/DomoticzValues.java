@@ -297,7 +297,6 @@ public class DomoticzValues {
                 int UPDATEVAR = 40;
                 int IMAGE = 41;
                 int CHECKLOGIN = 42;
-                int NEWCHECKLOGIN = 45;
                 int UPDATE_DOWNLOAD_UPDATE = 43;
                 int SUNRISE = 44;
                 int SEND_NOTIFICATION = 50;
@@ -406,24 +405,24 @@ public class DomoticzValues {
 
         @SuppressWarnings("SpellCheckingInspection")
         interface Category {
-            String ALLDEVICES = "/json.htm?type=devices";
-            String DEVICES = "/json.htm?type=devices&filter=all&used=true";
-            String FAVORITES = "/json.htm?type=devices&filter=all&used=true&favorite=1";
+            String ALLDEVICES = "/json.htm?type=command&param=getdevices";
+            String DEVICES = "/json.htm?type=command&param=getdevices&filter=all&used=true";
+            String FAVORITES = "/json.htm?typecommand&param=get=devices&filter=all&used=true&favorite=1";
             String VERSION = "/json.htm?type=command&param=getversion";
             String DASHBOARD = ALLDEVICES + "&filter=all";
-            String SCENES = "/json.htm?type=scenes";
+            String SCENES = "/json.htm?type=command&param=getscenes";
             String SWITCHES = "/json.htm?type=command&param=getlightswitches";
             String WEATHER = ALLDEVICES + "&filter=weather&used=true";
-            String CAMERAS = "/json.htm?type=cameras";
+            String CAMERAS = "/json.htm?type=command&param=getcameras";
             String CAMERA = "/camsnapshot.jpg?idx=";
             String UTILITIES = ALLDEVICES + "&filter=utility&used=true";
-            String PLANS = "/json.htm?type=plans";
+            String PLANS = "/json.htm?type=command&param=getplans";
             String TEMPERATURE = ALLDEVICES + "&filter=temp&used=true";
-            String SWITCHLOG = "/json.htm?type=lightlog&idx=";
-            String TEXTLOG = "/json.htm?type=textlog&idx=";
-            String SCENELOG = "/json.htm?type=scenelog&idx=";
-            String SWITCHTIMER = "/json.htm?type=timers&idx=";
-            String SCENETIMER = "/json.htm?type=scenetimers&idx=";
+            String SWITCHLOG = "/json.htm?type=command&param=getlightlog&idx=";
+            String TEXTLOG = "/json.htm?type=command&param=gettextlog&idx=";
+            String SCENELOG = "/json.htm?type=command&param=getscenelog&idx=";
+            String SWITCHTIMER = "/json.htm?type=command&param=gettimers&idx=";
+            String SCENETIMER = "/json.htm?type=command&param=getscenetimers&idx=";
         }
 
         @SuppressWarnings("SpellCheckingInspection")
@@ -458,7 +457,7 @@ public class DomoticzValues {
         interface Temp {
             String GET = "/json.htm?type=command&param=udevice&idx=";
             String VALUE = "&nvalue=0&svalue=";
-            String GRAPH = "/json.htm?type=graph&sensor=temp&idx=";
+            String GRAPH = "/json.htm?type=command&param=graph&sensor=temp&idx=";
         }
 
         @SuppressWarnings("SpellCheckingInspection")
@@ -475,8 +474,8 @@ public class DomoticzValues {
 
         @SuppressWarnings("SpellCheckingInspection")
         interface Device {
-            String STATUS = "/json.htm?type=devices&rid=";
-            String SET_USED = "/json.htm?type=setused&idx=";
+            String STATUS = "/json.htm?type=command&param=getdevices&rid=";
+            String SET_USED = "/json.htm?type=command&param=getsetused&idx=";
         }
 
         @SuppressWarnings("unused")
@@ -486,13 +485,13 @@ public class DomoticzValues {
 
         @SuppressWarnings({"unused", "SpellCheckingInspection"})
         interface Plan {
-            String GET = "/json.htm?type=plans";
+            String GET = "/json.htm?type=command&param=getplans";
             String DEVICES = "/json.htm?type=command&param=getplandevices&idx=";
         }
 
         @SuppressWarnings({"unused", "SpellCheckingInspection"})
         interface Log {
-            String GRAPH = "/json.htm?type=graph&idx=";
+            String GRAPH = "/json.htm?type=command&param=graph&idx=";
             String GRAPH_RANGE = "&range=";
             String GRAPH_TYPE = "&sensor=";
 
@@ -502,14 +501,13 @@ public class DomoticzValues {
 
         @SuppressWarnings({"unused", "SpellCheckingInspection"})
         interface Notification {
-            String NOTIFICATION = "/json.htm?type=notifications&idx=";
+            String NOTIFICATION = "/json.htm?type=command&param=getnotifications&idx=";
         }
 
         @SuppressWarnings({"unused", "SpellCheckingInspection"})
         interface Security {
             String GET = "/json.htm?type=command&param=getsecstatus";
             String CHECKLOGIN = "/json.htm?type=command&param=logincheck";
-            String NEWCHECKLOGIN = "/logincheck";
         }
 
         @SuppressWarnings({"unused", "SpellCheckingInspection"})
@@ -522,13 +520,13 @@ public class DomoticzValues {
             String SUNRISE = "/json.htm?type=command&param=getSunRiseSet";
             String UPDATE = "/json.htm?type=command&param=checkforupdate&forced=true";
             String USERVARIABLES = "/json.htm?type=command&param=getuservariables";
-            String EVENTS = "/json.htm?type=events&param=list";
-            String EVENTS_UPDATE_STATUS = "/json.htm?type=events&param=updatestatus&eventid=";
+            String EVENTS = "/json.htm?evparam=list&param=events&type=command";
+            String EVENTS_UPDATE_STATUS = "/json.htm?type=command&param=getevents&evparam=updatestatus&eventid=";
             String RGBCOLOR = "/json.htm?type=command&param=setcolbrightnessvalue&idx=";
             String KELVIN = "/json.htm?type=command&param=setkelvinlevel&idx=";
             String FULLLIGHT = "/json.htm?param=fulllight&type=command&idx=";
             String NIGHTLIGHT = "/json.htm?param=nightlight&type=command&idx=";
-            String SETTINGS = "/json.htm?type=settings";
+            String SETTINGS = "/json.htm?type=command&param=getsettings";
             String CONFIG = "/json.htm?type=command&param=getconfig";
             String SETSECURITY = "/json.htm?type=command&param=setsecstatus";
             String UPDATE_DOWNLOAD_UPDATE = "/json.htm?type=command&param=downloadupdate";
@@ -538,8 +536,8 @@ public class DomoticzValues {
             String CLEAN_MOBILE_DEVICE = "/json.htm?type=command&param=deletemobiledevice";
             String LANGUAGE_TRANSLATIONS = "/i18n/domoticz-";
             String SEND_NOTIFICATION = "/json.htm?type=command&param=sendnotification";
-            String NOTIFICATIONTYPES = "/json.htm?type=notifications";
-            String USERS = "/json.htm?type=users";
+            String NOTIFICATIONTYPES = "/json.htm?type=command&param=getnotifications";
+            String USERS = "/json.htm?type=command&param=getusers";
             String AUTH = "/json.htm?type=command&param=getauth";
             String LOGOFF = "/json.htm?type=command&param=dologout";
             String LOG = "/json.htm?type=command&param=addlogmessage&message=";

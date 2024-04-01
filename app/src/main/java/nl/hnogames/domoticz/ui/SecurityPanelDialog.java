@@ -162,7 +162,7 @@ public class SecurityPanelDialog implements DialogInterface.OnDismissListener {
                     }
                 });
             } else {
-                countDownTimer = new CountDownTimer((mSettings.getSecOnDelay() * 1000), 1000) {
+                countDownTimer = new CountDownTimer((mSettings.getSecOnDelay() * 1000L), 1000) {
                     public void onTick(long millisUntilFinished) {
                         txtCountDown.setText(String.valueOf((millisUntilFinished / 1000)));
                     }

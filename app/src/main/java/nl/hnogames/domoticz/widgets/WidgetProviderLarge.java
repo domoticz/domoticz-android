@@ -139,7 +139,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
             if (idx == iVoiceAction) {
                 views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.Speech_desc));
                 views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_speech));
-                views.setImageViewResource(R.id.rowIcon, R.drawable.mic);
+                views.setImageViewResource(R.id.rowIcon, nl.hnogames.domoticzapi.R.drawable.mic);
                 views.setTextViewText(R.id.on_button, "GO");
                 views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
                         UpdateWidgetService.this,
@@ -152,7 +152,7 @@ public class WidgetProviderLarge extends AppWidgetProvider {
             } else if (idx == iQRCodeAction) {
                 views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.qrcode_desc));
                 views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_qrcode_scan));
-                views.setImageViewResource(R.id.rowIcon, R.drawable.qrcode);
+                views.setImageViewResource(R.id.rowIcon, nl.hnogames.domoticzapi.R.drawable.qrcode);
                 views.setTextViewText(R.id.on_button, "GO");
                 views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
                         UpdateWidgetService.this,

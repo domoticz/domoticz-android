@@ -109,11 +109,11 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.DataObjectHolder
             holder.message.setText(message);
 
             if (mLogInfo.getLevel() == 4)
-                Picasso.get().load(R.drawable.power).into(holder.iconRow);
+                Picasso.get().load(nl.hnogames.domoticzapi.R.drawable.power).into(holder.iconRow);
             else if (mLogInfo.getLevel() == 2)
-                Picasso.get().load(R.drawable.power).into(holder.iconRow);
+                Picasso.get().load(nl.hnogames.domoticzapi.R.drawable.power).into(holder.iconRow);
             else
-                Picasso.get().load(R.drawable.power).into(holder.iconRow);
+                Picasso.get().load(nl.hnogames.domoticzapi.R.drawable.power).into(holder.iconRow);
         }
     }
 

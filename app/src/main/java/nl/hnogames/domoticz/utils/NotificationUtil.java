@@ -207,7 +207,7 @@ public class NotificationUtil {
                 context.startService(ringtoneServiceStartIntent);
 
                 if (prefUtil.getAlarmTimer() > 0) {
-                    Thread.sleep(prefUtil.getAlarmTimer() * 1000);
+                    Thread.sleep(prefUtil.getAlarmTimer() * 1000L);
                     Intent stopIntent = new Intent(context, RingtonePlayingService.class);
                     context.stopService(stopIntent);
                 }

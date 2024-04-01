@@ -348,8 +348,10 @@ public class NFCSettingsActivity extends AppCompatAssistActivity implements NFCC
             final String tagID = UsefulBits.ByteArrayToHexString(tag.getId());
             if (nfcList != null && nfcList.size() > 0) {
                 for (NFCInfo n : nfcList) {
-                    if (n.getId().equals(tagID))
+                    if (n.getId().equals(tagID)) {
                         newTagFound = false;
+                        break;
+                    }
                 }
             }
 

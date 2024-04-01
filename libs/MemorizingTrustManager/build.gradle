@@ -19,11 +19,11 @@ dependencies {
 
 android {
 	namespace 'de.duenndns.ssl'
-	compileSdkVersion 31
+	compileSdk 34
     //noinspection GroovyAssignabilityCheck
 	defaultConfig {
         minSdkVersion 23
-		targetSdkVersion 31
+		targetSdkVersion 34
 	}
 
 	//noinspection GroovyAssignabilityCheck

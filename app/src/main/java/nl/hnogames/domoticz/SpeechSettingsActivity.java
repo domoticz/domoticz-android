@@ -448,8 +448,10 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
         boolean newTagFound = true;
         if (SpeechList != null && SpeechList.size() > 0) {
             for (SpeechInfo n : SpeechList) {
-                if (n.getId().equals(speechText))
+                if (n.getId().equals(speechText)) {
                     newTagFound = false;
+                    break;
+                }
             }
         }
 

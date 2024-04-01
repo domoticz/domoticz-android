@@ -32,8 +32,8 @@ public class ExtendedStatusInfo {
 
     private final String UNKNOWN = "Unknown";
     private final String TAG = ExtendedStatusInfo.class.getSimpleName();
-    private boolean useCustomImage;
     private final JSONObject jsonObject;
+    private boolean useCustomImage;
     private String name;
     private String hardwareName;
     private boolean isProtected;

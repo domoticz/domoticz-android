@@ -51,7 +51,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
-import com.google.android.gms.ads.formats.NativeAdOptions;
+import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -105,11 +105,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     @ColorInt
     private final int listviewRowBackground;
     private final Picasso picasso;
+    private final boolean showAsList;
     public ArrayList<DevicesInfo> data = null;
     public ArrayList<DevicesInfo> filteredData = null;
     private int previousDimmerValue;
     private boolean adLoaded = false;
-    private final boolean showAsList;
 
     public DashboardAdapter(Context context,
                             ServerUtil serverUtil,
@@ -974,7 +974,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
             holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
             if ((sign.equals("C") && temperature < 0) || (sign.equals("F") && temperature < 30)) {
-                holder.pieView.setPercentageBackgroundColor(R.color.md_red_600);
+                holder.pieView.setPercentageBackgroundColor(com.mikepenz.materialize.R.color.md_red_600);
             }
 
             if (!mSharedPrefs.getAutoRefresh()) {

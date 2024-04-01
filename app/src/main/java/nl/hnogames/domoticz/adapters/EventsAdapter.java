@@ -120,7 +120,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
                 }
             }
 
-            Picasso.get().load(R.drawable.power).into(holder.iconRow);
+            Picasso.get().load(nl.hnogames.domoticzapi.R.drawable.power).into(holder.iconRow);
         }
     }
 

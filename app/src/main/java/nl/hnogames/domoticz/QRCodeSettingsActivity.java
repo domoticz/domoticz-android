@@ -369,8 +369,10 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
             boolean newTagFound = true;
             if (qrcodeList != null && qrcodeList.size() > 0) {
                 for (QRCodeInfo n : qrcodeList) {
-                    if (n.getId().equals(QR_Code_ID))
+                    if (n.getId().equals(QR_Code_ID)) {
                         newTagFound = false;
+                        break;
+                    }
                 }
             }
 

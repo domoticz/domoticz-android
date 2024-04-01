@@ -65,7 +65,7 @@ public class PlanActivity extends AppCompatAssistActivity {
                         }
                     });
                 }
-            }, 0, (mSharedPrefs.getAutoRefreshTimer() * 1000));
+            }, 0, (mSharedPrefs.getAutoRefreshTimer() * 1000L));
         }
     }
 

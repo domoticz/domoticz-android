@@ -761,7 +761,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 public void run() {
                     runOnUiThread(() -> refreshFragment());
                 }
-            }, 0, (mSharedPrefs.getAutoRefreshTimer() * 1000));
+            }, 0, (mSharedPrefs.getAutoRefreshTimer() * 1000L));
         }
     }
 
@@ -896,7 +896,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 if (!allUsers.contains(user.getUsername())) {
                     ProfileDrawerItem profile = new ProfileDrawerItem().withName(user.getRightsValue(this)
                             ).withEmail(user.getUsername())
-                            .withIcon(R.drawable.users)
+                            .withIcon(nl.hnogames.domoticzapi.R.drawable.users)
                             .withEnabled(user.isEnabled());
                     allUsers.add(user.getUsername());
                     headerResult.addProfiles(profile);
@@ -1475,10 +1475,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
     public void onPermissionGranted(@NonNull String[] permissionName) {
         Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
         StringBuilder builder = new StringBuilder(permissionName.length);
-        if (permissionName.length > 0) {
-            for (String permission : permissionName) {
-                builder.append(permission).append("\n");
-            }
+        for (String permission : permissionName) {
+            builder.append(permission).append("\n");
         }
         if (builder.toString().contains("android.permission.READ_PHONE_STATE")) {
             if (PermissionsUtil.canAccessDeviceState(this)) {
@@ -1499,25 +1497,25 @@ public class MainActivity extends AppCompatPermissionsActivity {
         super.onPermissionGranted(permissionName);
     }
 
-    @Shortcut(id = "open_dashboard", icon = R.drawable.generic, shortLabelRes = R.string.title_dashboard, rank = 5, activity = MainActivity.class)
+    @Shortcut(id = "open_dashboard", icon = nl.hnogames.domoticzapi.R.drawable.generic, shortLabelRes = R.string.title_dashboard, rank = 5, activity = MainActivity.class)
     public void OpenDashBoard() {
         fromShortcut = true;
         changeFragment("nl.hnogames.domoticz.fragments.Dashboard", false);
     }
 
-    @Shortcut(id = "open_switches", icon = R.drawable.bulb, shortLabelRes = R.string.title_switches, rank = 4, activity = MainActivity.class)
+    @Shortcut(id = "open_switches", icon = nl.hnogames.domoticzapi.R.drawable.bulb, shortLabelRes = R.string.title_switches, rank = 4, activity = MainActivity.class)
     public void OpenSwitch() {
         fromShortcut = true;
         changeFragment("nl.hnogames.domoticz.fragments.Switches", false);
     }
 
-    @Shortcut(id = "open_utilities", icon = R.drawable.solar_panel, shortLabelRes = R.string.title_utilities, rank = 3, activity = MainActivity.class)
+    @Shortcut(id = "open_utilities", icon = nl.hnogames.domoticzapi.R.drawable.solar_panel, shortLabelRes = R.string.title_utilities, rank = 3, activity = MainActivity.class)
     public void OpenUtilities() {
         fromShortcut = true;
         changeFragment("nl.hnogames.domoticz.fragments.Utilities", false);
     }
 
-    @Shortcut(id = "open_temperature", icon = R.drawable.temperature, shortLabelRes = R.string.title_temperature, rank = 2, activity = MainActivity.class)
+    @Shortcut(id = "open_temperature", icon = nl.hnogames.domoticzapi.R.drawable.temperature, shortLabelRes = R.string.title_temperature, rank = 2, activity = MainActivity.class)
     public void OpenTemperature() {
         fromShortcut = true;
         changeFragment("nl.hnogames.domoticz.fragments.Temperature", false);
