@@ -37,7 +37,6 @@ import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
-import nl.hnogames.domoticzapi.DomoticzValues;
 
 public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
 
@@ -65,11 +64,11 @@ public class TemperatureDialog implements MaterialDialog.SingleButtonCallback {
                 .onAny(this);
 
         ConfigInfo configInfo = StaticHelper.getServerUtil(mContext).getActiveServer().getConfigInfo(mContext);
-        if(UsefulBits.isEmpty(vunit)) {
+        if (UsefulBits.isEmpty(vunit)) {
             if (configInfo != null) {
                 tempSign = UsefulBits.getDegreeSymbol() + configInfo.getTempSign();
             }
-        }else{
+        } else {
             tempSign = vunit;
         }
 

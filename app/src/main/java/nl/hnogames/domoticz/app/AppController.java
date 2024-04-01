@@ -257,8 +257,8 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
 
             beaconManager.setEnableScheduledScanJobs(false);
             beaconManager.setForegroundScanPeriod(30000L);
-            beaconManager.setForegroundBetweenScanPeriod(10000l);
-            beaconManager.setBackgroundBetweenScanPeriod(10000l);
+            beaconManager.setForegroundBetweenScanPeriod(10000L);
+            beaconManager.setBackgroundBetweenScanPeriod(10000L);
             beaconManager.setBackgroundScanPeriod(30000L);
             beaconManager.updateScanPeriods();
             backgroundPowerSaver = new BackgroundPowerSaver(this);

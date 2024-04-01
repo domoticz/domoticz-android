@@ -12,9 +12,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class SimpleItemTouchHelperCallback extends Callback {
     private final ItemMoveAdapter mAdapter;
+    private final boolean isGrid;
     private int dragFrom = -1;
     private int dragTo = -1;
-    private final boolean isGrid;
     private boolean mOrderChanged = false;
     private int prevState = -1;
 

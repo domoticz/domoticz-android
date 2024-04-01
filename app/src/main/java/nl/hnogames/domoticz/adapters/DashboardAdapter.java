@@ -105,11 +105,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     @ColorInt
     private final int listviewRowBackground;
     private final Picasso picasso;
+    private final boolean showAsList;
     public ArrayList<DevicesInfo> data = null;
     public ArrayList<DevicesInfo> filteredData = null;
     private int previousDimmerValue;
     private boolean adLoaded = false;
-    private final boolean showAsList;
 
     public DashboardAdapter(Context context,
                             ServerUtil serverUtil,

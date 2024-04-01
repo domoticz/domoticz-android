@@ -761,7 +761,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 public void run() {
                     runOnUiThread(() -> refreshFragment());
                 }
-            }, 0, (mSharedPrefs.getAutoRefreshTimer() * 1000));
+            }, 0, (mSharedPrefs.getAutoRefreshTimer() * 1000L));
         }
     }
 
@@ -1475,10 +1475,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
     public void onPermissionGranted(@NonNull String[] permissionName) {
         Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
         StringBuilder builder = new StringBuilder(permissionName.length);
-        if (permissionName.length > 0) {
-            for (String permission : permissionName) {
-                builder.append(permission).append("\n");
-            }
+        for (String permission : permissionName) {
+            builder.append(permission).append("\n");
         }
         if (builder.toString().contains("android.permission.READ_PHONE_STATE")) {
             if (PermissionsUtil.canAccessDeviceState(this)) {
