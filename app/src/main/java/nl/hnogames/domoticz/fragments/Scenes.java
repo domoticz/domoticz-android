@@ -55,7 +55,6 @@ import nl.hnogames.domoticz.ui.SwitchLogInfoDialog;
 import nl.hnogames.domoticz.ui.SwitchTimerInfoDialog;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.utils.WidgetUtils;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Containers.SwitchLogInfo;
 import nl.hnogames.domoticzapi.Containers.SwitchTimerInfo;
@@ -194,7 +193,6 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
                 mSwipeRefreshLayout.setRefreshing(true);
 
             state = gridView.getLayoutManager().onSaveInstanceState();
-            WidgetUtils.RefreshWidgets(mContext);
             GetScenes();
         } catch (Exception ignored) {
         }

@@ -487,7 +487,10 @@
         </activity>
 
         <service
-            android:exported="true" android:name="nl.hnogames.domoticz.widgets.WidgetProviderLarge$UpdateWidgetService" />
+            android:name=".widgets.WidgetProviderLarge$UpdateWidgetService"
+            android:exported="true"
+            android:foregroundServiceType="dataSync|connectedDevice">
+        </service>
 
         <receiver android:exported="true" android:name="nl.hnogames.domoticz.widgets.WidgetProviderSmall">
             <intent-filter>
@@ -516,11 +519,13 @@
         </activity>
 
         <service
-            android:exported="true" android:name="nl.hnogames.domoticz.widgets.WidgetProviderSmall$UpdateWidgetService" />
+            android:name=".widgets.WidgetProviderSmall$UpdateWidgetService"
+            android:exported="true"
+            android:foregroundServiceType="dataSync|connectedDevice">
+        </service>
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.widgets.SecurityWidgetConfigurationActivity"
-
             android:label="Domoticz Security Panel Widget Config"
             android:resizeableActivity="true">
             <intent-filter>
@@ -538,7 +543,9 @@
         </receiver>
 
         <service
-            android:exported="true" android:name="nl.hnogames.domoticz.widgets.SecurityWidgetIntentService">
+            android:name=".widgets.SecurityWidgetIntentService"
+            android:exported="true"
+            android:foregroundServiceType="dataSync|connectedDevice">
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/securitywidgetprovider" />
@@ -555,7 +562,6 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.widgets.SmallTempWidgetConfigurationActivity"
-
             android:label="Domoticz Widget Config"
             android:resizeableActivity="true">
             <intent-filter>
@@ -571,10 +577,16 @@
         </activity>
 
         <service
-            android:exported="true" android:name="nl.hnogames.domoticz.widgets.WidgetProviderSmallTemp$UpdateWidgetService" />
+            android:name=".widgets.WidgetProviderSmallTemp$UpdateWidgetService"
+            android:exported="true"
+            android:foregroundServiceType="dataSync|connectedDevice">
+        </service>
 
         <service
-            android:exported="true" android:name="nl.hnogames.domoticz.widgets.SecurityWidgetProvider$UpdateSecurityWidgetService" />
+            android:name=".widgets.SecurityWidgetProvider$UpdateSecurityWidgetService"
+            android:exported="true"
+            android:foregroundServiceType="dataSync|connectedDevice">
+        </service>
 
         <uses-library
             android:name="org.apache.http.legacy"

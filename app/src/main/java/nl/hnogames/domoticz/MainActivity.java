@@ -109,7 +109,6 @@ import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.TalkBackUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.utils.WidgetUtils;
 import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
@@ -411,7 +410,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
                     setupMobileDevice();
                     setScheduledTasks();
-                    WidgetUtils.RefreshWidgets(MainActivity.this);
                 }
             }
 

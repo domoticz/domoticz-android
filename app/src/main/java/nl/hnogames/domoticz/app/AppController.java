@@ -87,7 +87,6 @@ import nl.hnogames.domoticz.interfaces.SubscriptionsListener;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.utils.WidgetUtils;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
@@ -457,7 +456,6 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
                 StaticHelper.getDomoticz(context).setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
                     @Override
                     public void onReceiveResult(String result) {
-                        WidgetUtils.RefreshWidgets(context);
                     }
 
                     @Override
