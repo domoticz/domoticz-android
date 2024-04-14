@@ -19,7 +19,6 @@ Features:
 - [Bluetooth](#bluetooth)
 - [Beacons](#beacons)
 - [Speech](#speech)
-- [Widgets](#widgets)
 - [Android Wear](#android-wear)
 - [Biometric](#biometric)
 - [Floorplan](#floorplan)
@@ -112,14 +111,6 @@ We have theme support for multi themes, including day/night cycles. You can also
 |  |  |  |
 | ------------- | ------------- |  ------------- | 
 |  ![dark_theme_1](https://user-images.githubusercontent.com/14561640/80980237-aec1e480-8e28-11ea-80ad-26d7a1f16dca.jpg)  |   ![dark_theme_2](https://user-images.githubusercontent.com/14561640/80980242-b08ba800-8e28-11ea-86ed-05b8dbe4834c.jpg)  |![dark_theme_3](https://user-images.githubusercontent.com/14561640/80980247-b1bcd500-8e28-11ea-9822-38424adf246a.jpg)  |
-
-
-
-# Widgets
------
-See more information and toggle switches right from your home screen!  
-![widget](https://user-images.githubusercontent.com/14561640/51105992-d7b10700-17ea-11e9-9c6f-c361ca3aec7f.png)
-
 
 
 # Android Wear
