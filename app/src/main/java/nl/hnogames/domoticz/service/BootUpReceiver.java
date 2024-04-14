@@ -28,14 +28,12 @@ import android.util.Log;
 
 import nl.hnogames.domoticz.utils.GeoUtils;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticz.utils.WidgetUtils;
 
 public class BootUpReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (context == null)
             return;
-        WidgetUtils.RefreshWidgets(context);
         startGeofenceService(context);
     }
 
