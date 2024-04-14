@@ -213,7 +213,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
         PreferenceCategory bluetooth_category = findPreference("bluetooth_category");
         PreferenceCategory beacon_category = findPreference("beacon_category");
         PreferenceCategory security_category = findPreference("security_category");
-        PreferenceCategory widgets_category = findPreference("widgets_category");
         PreferenceCategory language_category = findPreference("language_category");
         PreferenceCategory theme_category = findPreference("theme_category");
         PreferenceCategory wear_category = findPreference("wear_category");
@@ -286,8 +285,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
         Preference FingerPrintSettingsPreference = findPreference("SecuritySettings");
         SwitchPreference FingerPrintPreference = findPreference("enableSecurity");
 
-        // Widgets settings
-        SwitchPreference WidgetsEnablePreference = findPreference("enableWidgets");
 
         // Language settings
         ListPreference displayLanguage = findPreference("displayLanguage");
@@ -409,10 +406,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
         FingerPrintSettingsPreference.setVisible(UsefulBits.isEmpty(filter) || FingerPrintSettingsPreference.getTitle().toString().toLowerCase().contains(filter) || (FingerPrintSettingsPreference.getSummary() != null && FingerPrintSettingsPreference.getSummary().toString().toLowerCase().contains(filter)));
         FingerPrintPreference.setVisible(UsefulBits.isEmpty(filter) || FingerPrintPreference.getTitle().toString().toLowerCase().contains(filter) || (FingerPrintPreference.getSummary() != null && FingerPrintPreference.getSummary().toString().toLowerCase().contains(filter)));
         security_category.setVisible(FingerPrintSettingsPreference.isVisible() || FingerPrintPreference.isVisible());
-
-        // Widgets settings
-        WidgetsEnablePreference.setVisible(UsefulBits.isEmpty(filter) || WidgetsEnablePreference.getTitle().toString().toLowerCase().contains(filter) || (WidgetsEnablePreference.getSummary() != null && WidgetsEnablePreference.getSummary().toString().toLowerCase().contains(filter)));
-        widgets_category.setVisible(WidgetsEnablePreference.isVisible());
 
         // Language settings
         displayLanguage.setVisible(UsefulBits.isEmpty(filter) || displayLanguage.getTitle().toString().toLowerCase().contains(filter) || (displayLanguage.getSummary() != null && displayLanguage.getSummary().toString().toLowerCase().contains(filter)));
@@ -782,31 +775,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
                     Intent intent = new Intent(mContext, SpeechSettingsActivity.class);
                     startActivity(intent);
                     return true;
-                }
-            });
-
-        if (WidgetsEnablePreference != null)
-            WidgetsEnablePreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
-                    showPremiumSnackbar(getString(R.string.category_widgets));
-                    return false;
-                } else {
-                    if ((boolean) newValue) {
-                        new MaterialDialog.Builder(mContext)
-                                .title(R.string.wizard_widgets)
-                                .content(R.string.widget_warning)
-                                .positiveText(R.string.ok)
-                                .negativeText(R.string.cancel)
-                                .onPositive((dialog, which) -> {
-                                    mSharedPrefs.SetWidgetsEnabled(true);
-                                    ((SettingsActivity) getActivity()).reloadSettings();
-                                })
-                                .onNegative((dialog, which) -> mSharedPrefs.SetWidgetsEnabled(false))
-                                .show();
-                        return false;
-                    } else {
-                        return true;
-                    }
                 }
             });
 
