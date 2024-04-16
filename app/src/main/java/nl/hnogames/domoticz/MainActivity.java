@@ -1504,29 +1504,4 @@ public class MainActivity extends AppCompatPermissionsActivity {
         }
         super.onPermissionGranted(permissionName);
     }
-
-    /*
-    @Shortcut(id = "open_dashboard", icon = nl.hnogames.domoticzapi.R.drawable.generic, shortLabelRes = R.string.title_dashboard, rank = 5, activity = MainActivity.class)
-    public void OpenDashBoard() {
-        fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.fragments.Dashboard", false);
-    }
-
-    @Shortcut(id = "open_switches", icon = nl.hnogames.domoticzapi.R.drawable.bulb, shortLabelRes = R.string.title_switches, rank = 4, activity = MainActivity.class)
-    public void OpenSwitch() {
-        fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.fragments.Switches", false);
-    }
-
-    @Shortcut(id = "open_utilities", icon = nl.hnogames.domoticzapi.R.drawable.solar_panel, shortLabelRes = R.string.title_utilities, rank = 3, activity = MainActivity.class)
-    public void OpenUtilities() {
-        fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.fragments.Utilities", false);
-    }
-
-    @Shortcut(id = "open_temperature", icon = nl.hnogames.domoticzapi.R.drawable.temperature, shortLabelRes = R.string.title_temperature, rank = 2, activity = MainActivity.class)
-    public void OpenTemperature() {
-        fromShortcut = true;
-        changeFragment("nl.hnogames.domoticz.fragments.Temperature", false);
-    }*/
 }
