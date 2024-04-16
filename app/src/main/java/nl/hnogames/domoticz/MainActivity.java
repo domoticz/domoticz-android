@@ -121,7 +121,6 @@ import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.LoginReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
-import shortbread.Shortcut;
 
 public class MainActivity extends AppCompatPermissionsActivity {
     public static final int ADS_IDX = -9998;

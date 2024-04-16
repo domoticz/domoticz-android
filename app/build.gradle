@@ -218,7 +218,7 @@ dependencies {
     implementation 'com.github.alxrm:animated-clock-icon:1.0.2'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'com.android.volley:volley:1.1.0'
+    implementation 'com.android.volley:volley:1.2.1'
     implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
 
     implementation 'com.github.zurche:plain-pie:v0.2.9'

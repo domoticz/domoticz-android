@@ -91,7 +91,6 @@ import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
-import shortbread.Shortbread;
 
 public class AppController extends MultiDexApplication implements BootstrapNotifier, BeaconConsumer {
     public static final String TAG = AppController.class.getSimpleName();
@@ -151,7 +150,6 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
         super.onCreate();
         mInstance = this;
         mSharedPrefs = new SharedPrefUtil(this);
-        Shortbread.create(this);
         Scoop.waffleCone()
                 .addFlavor(getString(R.string.theme_default), R.style.AppThemeDefault, true)
                 .addDayNightFlavor(getString(R.string.theme_daynight), R.style.AppThemeMain)
