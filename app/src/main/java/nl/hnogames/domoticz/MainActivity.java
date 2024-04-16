@@ -396,30 +396,40 @@ public class MainActivity extends AppCompatPermissionsActivity {
         });
     }
 
+    private void FinishedGettingConfig(){
+        drawNavigationMenu(mConfigInfo);
+        if (!fromShortcut)
+            addFragment(false);
+        setupMobileDevice();
+        setScheduledTasks();
+    }
     private void GetServerConfig(LoginInfo mLoginInfo) {
-        UsefulBits.getServerConfigForActiveServer(MainActivity.this, mLoginInfo, new ConfigReceiver() {
-            @Override
-            public void onReceiveConfig(ConfigInfo settings) {
-                if (MainActivity.this.mConfigInfo == null || settings == null || !MainActivity.this.mConfigInfo.toString().equals(settings.toString())) {
+        SerializableManager.readSerializedObject(MainActivity.this, "ConfigInfo", ConfigInfo.class, settings -> {
+            if (settings != null) {
+                if (MainActivity.this.mConfigInfo == null || !MainActivity.this.mConfigInfo.toString().equals(settings.toString())) {
                     MainActivity.this.mConfigInfo = settings;
-                    SerializableManager.saveSerializable(MainActivity.this, settings, "ConfigInfo");
-
-                    drawNavigationMenu(mConfigInfo);
-                    if (!fromShortcut)
-                        addFragment(false);
-
-                    setupMobileDevice();
-                    setScheduledTasks();
+                    FinishedGettingConfig();
                 }
-            }
+            } else {
+                UsefulBits.getServerConfigForActiveServer(MainActivity.this, mLoginInfo, new ConfigReceiver() {
+                    @Override
+                    public void onReceiveConfig(ConfigInfo settings) {
+                        if (MainActivity.this.mConfigInfo == null || settings == null || !MainActivity.this.mConfigInfo.toString().equals(settings.toString())) {
+                            MainActivity.this.mConfigInfo = settings;
+                            SerializableManager.saveSerializable(MainActivity.this, settings, "ConfigInfo");
+                            FinishedGettingConfig();
+                        }
+                    }
 
-            @Override
-            public void onError(Exception error) {
-                configException = error;
-                if (!fromShortcut)
-                    addFragment(true);
+                    @Override
+                    public void onError(Exception error) {
+                        configException = error;
+                        if (!fromShortcut)
+                            addFragment(true);
+                    }
+                }, mConfigInfo);
             }
-        }, mConfigInfo);
+        });
     }
 
     public void ShowLoading() {
@@ -1495,6 +1505,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         super.onPermissionGranted(permissionName);
     }
 
+    /*
     @Shortcut(id = "open_dashboard", icon = nl.hnogames.domoticzapi.R.drawable.generic, shortLabelRes = R.string.title_dashboard, rank = 5, activity = MainActivity.class)
     public void OpenDashBoard() {
         fromShortcut = true;
@@ -1517,5 +1528,5 @@ public class MainActivity extends AppCompatPermissionsActivity {
     public void OpenTemperature() {
         fromShortcut = true;
         changeFragment("nl.hnogames.domoticz.fragments.Temperature", false);
-    }
+    }*/
 }

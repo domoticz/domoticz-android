@@ -45,6 +45,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.reflect.TypeToken;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
@@ -1276,26 +1277,32 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
     }
 
     public void GetSwitches() {
-        StaticHelper.getDomoticz(mContext).getDevices(new DevicesReceiver() {
-            @Override
-
-            public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
-                extendedStatusSwitches = switches;
-                SerializableManager.saveSerializable(mContext, switches, "Switches");
-                successHandling(switches.toString(), false);
+        SerializableManager.readSerializedObject(mContext, "Switches", new TypeToken<ArrayList<DevicesInfo>>() {
+        }.getType(), (SerializableManager.JsonCacheCallback<ArrayList<DevicesInfo>>) switches -> {
+            if (switches != null)
                 createListView(switches);
-            }
 
-            @Override
+            StaticHelper.getDomoticz(mContext).getDevices(new DevicesReceiver() {
+                @Override
 
-            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
-            }
+                public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
+                    extendedStatusSwitches = switches;
+                    SerializableManager.saveSerializable(mContext, switches, "Switches");
+                    successHandling(switches.toString(), false);
+                    createListView(switches);
+                }
 
-            @Override
+                @Override
 
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
-        }, 0, "light");
+                public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+                }
+
+                @Override
+
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            }, 0, "light");
+        });
     }
 }

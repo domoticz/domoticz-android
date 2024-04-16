@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.reflect.TypeToken;
 
 import java.util.ArrayList;
 
@@ -515,25 +516,33 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     }
 
     public void GetScenes() {
-        StaticHelper.getDomoticz(mContext).getScenes(new ScenesReceiver() {
-            @Override
-
-            public void onReceiveScenes(ArrayList<SceneInfo> scenes) {
-                SerializableManager.saveSerializable(mContext, scenes, "Scenes");
-                successHandling(scenes.toString(), false);
+        SerializableManager.readSerializedObject(mContext, "Scenes", new TypeToken<ArrayList<SceneInfo>>() {
+        }.getType(), (SerializableManager.JsonCacheCallback<ArrayList<SceneInfo>>) scenes -> {
+            if (scenes != null)
                 createListView(scenes);
-            }
 
-            @Override
 
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
+            StaticHelper.getDomoticz(mContext).getScenes(new ScenesReceiver() {
+                @Override
 
-            @Override
+                public void onReceiveScenes(ArrayList<SceneInfo> scenes) {
+                    SerializableManager.saveSerializable(mContext, scenes, "Scenes");
+                    successHandling(scenes.toString(), false);
+                    createListView(scenes);
+                }
 
-            public void onReceiveScene(SceneInfo scene) {
-            }
+                @Override
+
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+
+                @Override
+
+                public void onReceiveScene(SceneInfo scene) {
+                }
+            });
         });
+
     }
 }

@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.reflect.TypeToken;
 
 import java.util.ArrayList;
 
@@ -609,22 +610,30 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
     }
 
     public void GetUtilities() {
-        StaticHelper.getDomoticz(mContext).getUtilities(new UtilitiesReceiver() {
-            @Override
-
-            public void onReceiveUtilities(ArrayList<UtilitiesInfo> mUtilitiesInfos) {
-                successHandling(mUtilitiesInfos.toString(), false);
-                SerializableManager.saveSerializable(mContext, mUtilitiesInfos, "Utilities");
+        SerializableManager.readSerializedObject(mContext, "Utilities", new TypeToken<ArrayList<UtilitiesInfo>>() {
+        }.getType(), (SerializableManager.JsonCacheCallback<ArrayList<UtilitiesInfo>>) mUtilitiesInfos -> {
+            if (mUtilitiesInfos != null) {
                 Utilities.this.mUtilitiesInfos = mUtilitiesInfos;
-
                 createListView();
             }
 
-            @Override
+            StaticHelper.getDomoticz(mContext).getUtilities(new UtilitiesReceiver() {
+                @Override
 
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
+                public void onReceiveUtilities(ArrayList<UtilitiesInfo> mUtilitiesInfos) {
+                    successHandling(mUtilitiesInfos.toString(), false);
+                    SerializableManager.saveSerializable(mContext, mUtilitiesInfos, "Utilities");
+                    Utilities.this.mUtilitiesInfos = mUtilitiesInfos;
+
+                    createListView();
+                }
+
+                @Override
+
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            });
         });
     }
 }

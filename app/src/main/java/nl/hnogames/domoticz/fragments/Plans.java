@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -225,19 +226,27 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     }
 
     public void GetPlans() {
-        StaticHelper.getDomoticz(mContext).getPlans(new PlansReceiver() {
-            @Override
-            public void OnReceivePlans(ArrayList<PlanInfo> plans) {
-                successHandling(plans.toString(), false);
-                SerializableManager.saveSerializable(mContext, plans, "Plans");
+        SerializableManager.readSerializedObject(mContext, "Plans", new TypeToken<ArrayList<PlanInfo>>() {
+        }.getType(), (SerializableManager.JsonCacheCallback<ArrayList<PlanInfo>>) plans -> {
+            if (plans != null) {
                 Plans.this.mPlans = plans;
                 createListView();
             }
+            StaticHelper.getDomoticz(mContext).getPlans(new PlansReceiver() {
+                @Override
+                public void OnReceivePlans(ArrayList<PlanInfo> plans) {
+                    successHandling(plans.toString(), false);
+                    SerializableManager.saveSerializable(mContext, plans, "Plans");
+                    Plans.this.mPlans = plans;
+                    createListView();
+                }
 
-            @Override
-            public void onError(Exception error) {
-                errorHandling(error, frameLayout);
-            }
+                @Override
+                public void onError(Exception error) {
+                    errorHandling(error, frameLayout);
+                }
+            });
         });
+
     }
 }

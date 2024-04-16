@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.reflect.TypeToken;
 
 import org.json.JSONObject;
 
@@ -373,23 +374,30 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
     }
 
     public void GetWeather() {
-        StaticHelper.getDomoticz(mContext).getWeathers(new WeatherReceiver() {
-            @Override
+        SerializableManager.readSerializedObject(mContext, "Weathers", new TypeToken<ArrayList<WeatherInfo>>() {
+        }.getType(), (SerializableManager.JsonCacheCallback<ArrayList<WeatherInfo>>) mWeatherInfos -> {
+            if (mWeatherInfos != null) {
+                createListView(mWeatherInfos);
+            }
 
-            public void onReceiveWeather(ArrayList<WeatherInfo> mWeatherInfos) {
-                mWeatherInfoList = mWeatherInfos;
-                if (getView() != null) {
-                    successHandling(mWeatherInfos.toString(), false);
-                    SerializableManager.saveSerializable(mContext, mWeatherInfos, "Weathers");
-                    createListView(mWeatherInfos);
+            StaticHelper.getDomoticz(mContext).getWeathers(new WeatherReceiver() {
+                @Override
+
+                public void onReceiveWeather(ArrayList<WeatherInfo> mWeatherInfos) {
+                    mWeatherInfoList = mWeatherInfos;
+                    if (getView() != null) {
+                        successHandling(mWeatherInfos.toString(), false);
+                        SerializableManager.saveSerializable(mContext, mWeatherInfos, "Weathers");
+                        createListView(mWeatherInfos);
+                    }
                 }
-            }
 
-            @Override
+                @Override
 
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            });
         });
     }
 }

@@ -42,6 +42,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.reflect.TypeToken;
 import com.rubengees.easyheaderfooteradapter.EasyHeaderFooterAdapter;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
@@ -1392,32 +1393,52 @@ public class Plan extends DomoticzPlansFragment implements DomoticzFragmentListe
     }
 
     public void GetDevices() {
-        StaticHelper.getDomoticz(mContext).getDevices(new DevicesReceiver() {
-            @Override
-            public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
-                SerializableManager.saveSerializable(mContext, switches, "Plan" + planID);
-                processDevices(switches);
-            }
+        SerializableManager.readSerializedObject(mContext, "Plan" + planID, new TypeToken<ArrayList<DevicesInfo>>() {
+        }.getType(), (SerializableManager.JsonCacheCallback<ArrayList<DevicesInfo>>) devices -> {
+            if (devices != null)
+                processDevices(devices);
+            try {
+                StaticHelper.getDomoticz(mContext).getDevices(new DevicesReceiver() {
+                    @Override
+                    public void onReceiveDevices(ArrayList<DevicesInfo> devices1) {
+                        SerializableManager.saveSerializable(mContext, devices1, "Plan" + planID);
+                        processDevices(devices1);
+                    }
 
-            @Override
-            public void onReceiveDevice(DevicesInfo mDevicesInfo) {
-            }
+                    @Override
+                    public void onReceiveDevice(DevicesInfo mDevicesInfo) {
+                    }
 
-            @Override
-            public void onError(Exception error) {
-                errorHandling(error);
+                    @Override
+                    public void onError(Exception error) {
+                        errorHandling(error);
+                    }
+                }, planID, null);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }, planID, null);
+        });
 
         if (mSharedPrefs.addPlansToDashboard() && planID <= 0) {
-            StaticHelper.getDomoticz(mContext).getPlans(new PlansReceiver() {
-                @Override
-                public void OnReceivePlans(ArrayList<PlanInfo> plans) {
+            SerializableManager.readSerializedObject(mContext, "Plans", new TypeToken<ArrayList<PlanInfo>>() {
+            }.getType(), (SerializableManager.JsonCacheCallback<ArrayList<PlanInfo>>) plans -> {
+                if (plans != null)
                     processPlans(plans);
-                }
 
-                @Override
-                public void onError(Exception error) {
+                try {
+                    StaticHelper.getDomoticz(mContext).getPlans(new PlansReceiver() {
+                        @Override
+                        public void OnReceivePlans(ArrayList<PlanInfo> plans) {
+                            SerializableManager.saveSerializable(mContext, plans, "Plans");
+                            processPlans(plans);
+                        }
+
+                        @Override
+                        public void onError(Exception error) {
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
         }

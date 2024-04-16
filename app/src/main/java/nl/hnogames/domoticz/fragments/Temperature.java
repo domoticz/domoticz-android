@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.reflect.TypeToken;
 
 import java.util.ArrayList;
 
@@ -395,21 +396,26 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
     }
 
     public void GetTemperatures() {
-        StaticHelper.getDomoticz(mContext).getTemperatures(new TemperatureReceiver() {
-            @Override
-
-            public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
-                mTempInfos = mTemperatureInfos;
-                successHandling(mTemperatureInfos.toString(), false);
-                SerializableManager.saveSerializable(mContext, mTemperatureInfos, "Temperatures");
+        SerializableManager.readSerializedObject(mContext, "Temperatures", new TypeToken<ArrayList<TemperatureInfo>>() {
+        }.getType(), (SerializableManager.JsonCacheCallback<ArrayList<TemperatureInfo>>) mTemperatureInfos -> {
+            if (mTemperatureInfos != null) {
                 createListView(mTemperatureInfos);
             }
 
-            @Override
+            StaticHelper.getDomoticz(mContext).getTemperatures(new TemperatureReceiver() {
+                @Override
+                public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
+                    mTempInfos = mTemperatureInfos;
+                    successHandling(mTemperatureInfos.toString(), false);
+                    SerializableManager.saveSerializable(mContext, mTemperatureInfos, "Temperatures");
+                    createListView(mTemperatureInfos);
+                }
 
-            public void onError(Exception error) {
-                errorHandling(error);
-            }
+                @Override
+                public void onError(Exception error) {
+                    errorHandling(error);
+                }
+            });
         });
     }
 }

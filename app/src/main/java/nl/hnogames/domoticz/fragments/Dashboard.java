@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -43,11 +42,11 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.reflect.TypeToken;
 import com.rubengees.easyheaderfooteradapter.EasyHeaderFooterAdapter;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -74,6 +73,7 @@ import nl.hnogames.domoticz.ui.TemperatureDialog;
 import nl.hnogames.domoticz.ui.WWColorPickerDialog;
 import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
+import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.PlanInfo;
@@ -92,13 +92,12 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     public static final String PERMANENT_OVERRIDE = "PermanentOverride";
     public static final String AUTO = "Auto";
     private static final String TAG = Dashboard.class.getSimpleName();
-
+    private final int planID = 0;
+    private final String planName = "";
     private Context mContext;
     private DashboardAdapter adapter;
     private SmallPlansAdapter planAdapter;
     private ArrayList<DevicesInfo> extendedStatusSwitches;
-    private final int planID = 0;
-    private final String planName = "";
     private Parcelable state = null;
     private boolean busy = false;
     private String filter = "";
@@ -197,7 +196,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             if (mSwipeRefreshLayout != null)
                 mSwipeRefreshLayout.setRefreshing(true);
 
-            GetDevice();
+            GetDevices();
         } catch (Exception ex) {
         }
     }
@@ -1252,6 +1251,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             String text = String.format(mContext.getString(R.string.set_level_switch),
                     clickedSwitch.getName(),
                     !selector ? (value) : ((value) / 10) + 1);
+
             UsefulBits.showSnackbar(mContext, frameLayout, text, Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(text);
@@ -1388,24 +1388,17 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         }
     }
 
-    private static class GetDeviceTask extends AsyncTask<Void, Void, Void> {
-        private final WeakReference<Dashboard> activityReference;
-
-        // only retain a weak reference to the activity
-        GetDeviceTask(Dashboard context) {
-            activityReference = new WeakReference<>(context);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            Dashboard activity = activityReference.get();
-            if (activity == null) return null;
-
+    public void GetDevices() {
+        SerializableManager.readSerializedObject(mContext, "Devices", new TypeToken<ArrayList<DevicesInfo>>() {
+        }.getType(), (SerializableManager.JsonCacheCallback<ArrayList<DevicesInfo>>) devices -> {
+            if (devices != null)
+                processDevices(devices);
             try {
-                StaticHelper.getDomoticz(activity.mContext).getDevices(new DevicesReceiver() {
+                StaticHelper.getDomoticz(mContext).getDevices(new DevicesReceiver() {
                     @Override
-                    public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
-                        activity.processDevices(switches);
+                    public void onReceiveDevices(ArrayList<DevicesInfo> devices1) {
+                        SerializableManager.saveSerializable(mContext, devices1, "Devices");
+                        processDevices(devices1);
                     }
 
                     @Override
@@ -1414,34 +1407,36 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
                     @Override
                     public void onError(Exception error) {
-                        activity.errorHandling(error);
+                        errorHandling(error);
                     }
-                }, activity.planID, null);
+                }, planID, null);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        });
 
-            try {
-                if (activity.mSharedPrefs.addPlansToDashboard() && activity.planID <= 0) {
-                    StaticHelper.getDomoticz(activity.mContext).getPlans(new PlansReceiver() {
+        if (mSharedPrefs.addPlansToDashboard() && planID <= 0) {
+            SerializableManager.readSerializedObject(mContext, "Plans", new TypeToken<ArrayList<PlanInfo>>() {
+            }.getType(), (SerializableManager.JsonCacheCallback<ArrayList<PlanInfo>>) plans -> {
+                if (plans != null)
+                    processPlans(plans);
+
+                try {
+                    StaticHelper.getDomoticz(mContext).getPlans(new PlansReceiver() {
                         @Override
                         public void OnReceivePlans(ArrayList<PlanInfo> plans) {
-                            activity.processPlans(plans);
+                            SerializableManager.saveSerializable(mContext, plans, "Plans");
+                            processPlans(plans);
                         }
 
                         @Override
                         public void onError(Exception error) {
                         }
                     });
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
+            });
         }
-    }
-
-    public void GetDevice() {
-        new GetDeviceTask(this).execute();
     }
 }
