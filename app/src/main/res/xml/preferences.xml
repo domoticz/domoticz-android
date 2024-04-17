@@ -210,7 +210,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:icon="@drawable/baseline_camera_black_24"
+        android:icon="@drawable/baseline_qr_code_scanner_white_24"
         android:key="qrcode_category"
         android:title="@string/category_QRCode">
         <SwitchPreference

@@ -649,7 +649,6 @@ public class PreferenceFragment extends PreferenceFragmentCompat implements Subs
 
                 WorkManager.getInstance(mContext).cancelAllWorkByTag(WifiReceiver.workTag);
                 WorkManager.getInstance(mContext).cancelAllWorkByTag(WifiReceiverManager.workTag);
-
                 if (((boolean) newValue)) {
                     WorkManager.getInstance(mContext).enqueue(new OneTimeWorkRequest
                             .Builder(WifiReceiverManager.class)
