@@ -4,12 +4,17 @@ import android.nfc.NfcAdapter;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.AppController;
+import nl.hnogames.domoticz.service.WifiReceiver;
+import nl.hnogames.domoticz.service.WifiReceiverManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 
-public class GeofenceTileService extends TileService {
+public class NFCTileService extends TileService {
     private SharedPrefUtil mSharedPrefUtil;
 
     @Override
@@ -19,15 +24,20 @@ public class GeofenceTileService extends TileService {
         if(mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(this);
 
-        boolean isEnabled = !mSharedPrefUtil.isGeofenceEnabled();
+        boolean isEnabled = !mSharedPrefUtil.isNFCEnabled();
         if(isEnabled) {
             if (!AppController.IsPremiumEnabled || !mSharedPrefUtil.isAPKValidated()) {
-                UsefulBits.showPremiumToast(this, getString(R.string.geofence));
+                UsefulBits.showPremiumToast(this, getString(R.string.category_nfc));
+                return;
+            }
+
+            if (NfcAdapter.getDefaultAdapter(this) == null) {
+                UsefulBits.showPremiumToast(this, getString(R.string.nfc_not_supported));
                 return;
             }
         }
 
-        mSharedPrefUtil.setGeofenceEnabled(isEnabled);
+        mSharedPrefUtil.setNFCEnabled(isEnabled);
         updateTile(isEnabled);
     }
 
@@ -38,7 +48,7 @@ public class GeofenceTileService extends TileService {
         if(mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(this);
 
-        boolean isEnabled = mSharedPrefUtil.isGeofenceEnabled();
+        boolean isEnabled = mSharedPrefUtil.isNFCEnabled();
         updateTile(isEnabled);
     }
 

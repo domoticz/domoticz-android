@@ -476,8 +476,8 @@
 
         <service
             android:name="nl.hnogames.domoticz.service.tiles.SpeechRecognitionTileService"
-            android:icon="@drawable/baseline_mic_none_white_24"
-            android:label="@string/app_name_domoticz"
+            android:icon="@drawable/tileset_mic"
+            android:label="@string/category_Speech"
             android:exported="true"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
@@ -487,8 +487,8 @@
 
         <service
             android:name="nl.hnogames.domoticz.service.tiles.BluetoothTileService"
-            android:icon="@drawable/baseline_bluetooth_black_24"
-            android:label="@string/app_name_domoticz"
+            android:icon="@drawable/tileset_bluetooth"
+            android:label="@string/bluetooth"
             android:exported="true"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
@@ -498,8 +498,8 @@
 
         <service
             android:name="nl.hnogames.domoticz.service.tiles.WifiTileService"
-            android:icon="@drawable/baseline_network_wifi_black_24"
-            android:label="@string/app_name_domoticz"
+            android:icon="@drawable/tileset_network_wifi"
+            android:label="@string/category_wifi"
             android:exported="true"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
@@ -509,8 +509,8 @@
 
         <service
             android:name="nl.hnogames.domoticz.service.tiles.BeaconTileService"
-            android:icon="@drawable/baseline_wifi_tethering_black_24"
-            android:label="@string/app_name_domoticz"
+            android:icon="@drawable/tileset_wifi_tethering"
+            android:label="@string/beacon"
             android:exported="true"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
@@ -520,8 +520,8 @@
 
         <service
             android:name="nl.hnogames.domoticz.service.tiles.QRCodeTileService"
-            android:icon="@drawable/baseline_qr_code_scanner_white_24"
-            android:label="@string/app_name_domoticz"
+            android:icon="@drawable/tileset_qr_code_scanner"
+            android:label="@string/qrcode"
             android:exported="true"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
@@ -531,8 +531,19 @@
 
         <service
             android:name="nl.hnogames.domoticz.service.tiles.GeofenceTileService"
-            android:icon="@drawable/baseline_my_location_white_24"
-            android:label="@string/app_name_domoticz"
+            android:icon="@drawable/tileset_geofence"
+            android:label="@string/geofence"
+            android:exported="true"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="nl.hnogames.domoticz.service.tiles.NFCTileService"
+            android:icon="@drawable/tileset_nfc"
+            android:label="@string/nfc"
             android:exported="true"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>

@@ -4,8 +4,10 @@ import android.os.RemoteException;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 
+import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
+import nl.hnogames.domoticz.utils.UsefulBits;
 
 public class QRCodeTileService extends TileService {
     private SharedPrefUtil mSharedPrefUtil;
@@ -18,6 +20,13 @@ public class QRCodeTileService extends TileService {
             mSharedPrefUtil = new SharedPrefUtil(this);
 
         boolean isEnabled = !mSharedPrefUtil.isQRCodeEnabled();
+        if(isEnabled) {
+            if (!AppController.IsPremiumEnabled || !mSharedPrefUtil.isAPKValidated()) {
+                UsefulBits.showPremiumToast(this, getString(R.string.qrcode));
+                return;
+            }
+        }
+
         mSharedPrefUtil.setQRCodeEnabled(isEnabled);
 
         updateTile(isEnabled);

@@ -7,10 +7,12 @@ import android.service.quicksettings.TileService;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.service.WifiReceiver;
 import nl.hnogames.domoticz.service.WifiReceiverManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
+import nl.hnogames.domoticz.utils.UsefulBits;
 
 public class BeaconTileService extends TileService {
     private SharedPrefUtil mSharedPrefUtil;
@@ -23,8 +25,14 @@ public class BeaconTileService extends TileService {
             mSharedPrefUtil = new SharedPrefUtil(this);
 
         boolean isEnabled = !mSharedPrefUtil.isBeaconEnabled();
-        mSharedPrefUtil.setBeaconEnabled(isEnabled);
+        if(isEnabled) {
+            if (!AppController.IsPremiumEnabled || !mSharedPrefUtil.isAPKValidated()) {
+                UsefulBits.showPremiumToast(this, getString(R.string.beacon));
+                return;
+            }
+        }
 
+        mSharedPrefUtil.setBeaconEnabled(isEnabled);
         if (!isEnabled)
             AppController.getInstance().StopBeaconScanning();
         else {

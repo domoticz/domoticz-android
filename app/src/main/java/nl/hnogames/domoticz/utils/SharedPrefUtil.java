@@ -945,6 +945,9 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_ENABLE_NFC, false);
     }
 
+    public void setNFCEnabled(boolean enabled) {
+        editor.putBoolean(PREF_ENABLE_NFC, enabled).apply();
+    }
     public boolean isBluetoothEnabled() {
         return prefs.getBoolean(PREF_ENABLE_Bluetooth, false);
     }

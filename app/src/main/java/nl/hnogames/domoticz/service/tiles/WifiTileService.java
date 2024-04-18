@@ -6,9 +6,12 @@ import android.service.quicksettings.TileService;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import nl.hnogames.domoticz.R;
+import nl.hnogames.domoticz.app.AppController;
 import nl.hnogames.domoticz.service.WifiReceiver;
 import nl.hnogames.domoticz.service.WifiReceiverManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
+import nl.hnogames.domoticz.utils.UsefulBits;
 
 public class WifiTileService extends TileService {
     private SharedPrefUtil mSharedPrefUtil;
@@ -21,8 +24,14 @@ public class WifiTileService extends TileService {
             mSharedPrefUtil = new SharedPrefUtil(this);
 
         boolean isEnabled = !mSharedPrefUtil.isWifiEnabled();
-        mSharedPrefUtil.setWifiEnabled(isEnabled);
+        if(isEnabled) {
+            if (!AppController.IsPremiumEnabled || !mSharedPrefUtil.isAPKValidated()) {
+                UsefulBits.showPremiumToast(this, getString(R.string.beacon));
+                return;
+            }
+        }
 
+        mSharedPrefUtil.setWifiEnabled(isEnabled);
         WorkManager.getInstance(this).cancelAllWorkByTag(WifiReceiver.workTag);
         WorkManager.getInstance(this).cancelAllWorkByTag(WifiReceiverManager.workTag);
         if (isEnabled) {
