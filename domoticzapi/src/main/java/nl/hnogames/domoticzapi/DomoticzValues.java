@@ -521,7 +521,7 @@ public class DomoticzValues {
             String UPDATE = "/json.htm?type=command&param=checkforupdate&forced=true";
             String USERVARIABLES = "/json.htm?type=command&param=getuservariables";
             String EVENTS = "/json.htm?evparam=list&param=events&type=command";
-            String EVENTS_UPDATE_STATUS = "/json.htm?type=command&param=getevents&evparam=updatestatus&eventid=";
+            String EVENTS_UPDATE_STATUS = "/json.htm?type=command&param=events&evparam=updatestatus&eventid=";
             String RGBCOLOR = "/json.htm?type=command&param=setcolbrightnessvalue&idx=";
             String KELVIN = "/json.htm?type=command&param=setkelvinlevel&idx=";
             String FULLLIGHT = "/json.htm?param=fulllight&type=command&idx=";
