@@ -21,17 +21,20 @@
 
 package nl.hnogames.domoticz.app;
 
+import android.app.Activity;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
@@ -148,6 +151,9 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
     @Override
     public void onCreate() {
         super.onCreate();
+
+        registerActivityLifecycleCallbacks(new AppLifecycleTracker());
+
         mInstance = this;
         mSharedPrefs = new SharedPrefUtil(this);
         Scoop.waffleCone()
@@ -486,5 +492,56 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
             jsonValue = counter;
         }
         return jsonValue;
+    }
+
+    public class AppLifecycleTracker implements Application.ActivityLifecycleCallbacks {
+        private int numStarted = 0;
+        private boolean isInBackground = true;
+
+        @Override
+        public void onActivityStarted(@NonNull Activity activity) {
+            if (numStarted == 0) {
+                if (isInBackground) {
+                    if (activity instanceof MainActivity && !MainActivity.fromSettings) {
+                        ((MainActivity) activity).authenticateUser();
+                    }
+                }
+                isInBackground = false;
+            }
+            numStarted++;
+        }
+
+        @Override
+        public void onActivityStopped(@NonNull Activity activity) {
+            numStarted--;
+            if (numStarted == 0) {
+                isInBackground = true;
+            }
+        }
+
+        @Override
+        public void onActivityResumed(@NonNull Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityPaused(@NonNull Activity activity) {
+
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle bundle) {
+
+        }
+
+        @Override
+        public void onActivityDestroyed(@NonNull Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
+
+        }
     }
 }
