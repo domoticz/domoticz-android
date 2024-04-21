@@ -164,20 +164,18 @@ public class MainActivity extends AppCompatPermissionsActivity {
         Scoop.getInstance().apply(this);
 
         configException = null;
-        if (Build.VERSION.SDK_INT >= 24) {
-            try {
-                Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
-                m.invoke(null);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+            m.invoke(null);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         InitBiometric();
         mSharedPrefs = new SharedPrefUtil(this);
         permissionHelper = PermissionHelper.getInstance(this);
 
-        if (Build.VERSION.SDK_INT < 21 && (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated())) {
+        if (false && (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated())) {
             setContentView(R.layout.activity_newmain_free);
             List<String> testDevices = new ArrayList<>();
             testDevices.add(AdRequest.DEVICE_ID_EMULATOR);
@@ -232,7 +230,40 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 mSharedPrefs.OldVersionDialogShown();
             }
         }
+
+        handleShortcutAction(getIntent());
         fromSettings=false;//reset
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleShortcutAction(intent);
+    }
+
+    private void handleShortcutAction(Intent intent) {
+        String shortcutId = intent.getAction();
+        if (shortcutId != null) {
+            switch (shortcutId) {
+                case "open_dashboard":
+                    fromShortcut = true;
+                    changeFragment("nl.hnogames.domoticz.fragments.Dashboard", false);
+                    break;
+                case "open_switches":
+                    fromShortcut = true;
+                    changeFragment("nl.hnogames.domoticz.fragments.Switches", false);
+                    break;
+                case "open_utilities":
+                    fromShortcut = true;
+                    changeFragment("nl.hnogames.domoticz.fragments.Utilities", false);
+                    break;
+                case "open_temperature":
+                    fromShortcut = true;
+                    changeFragment("nl.hnogames.domoticz.fragments.Temperature", false);
+                    break;
+                // Handle other shortcuts here
+            }
+        }
     }
 
     public void resetWorkerThreads() {
