@@ -4,13 +4,8 @@ import android.nfc.NfcAdapter;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.app.AppController;
-import nl.hnogames.domoticz.service.WifiReceiver;
-import nl.hnogames.domoticz.service.WifiReceiverManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 
@@ -21,11 +16,11 @@ public class NFCTileService extends TileService {
     public void onClick() {
         super.onClick();
 
-        if(mSharedPrefUtil == null)
+        if (mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(this);
 
         boolean isEnabled = !mSharedPrefUtil.isNFCEnabled();
-        if(isEnabled) {
+        if (isEnabled) {
             if (!AppController.IsPremiumEnabled || !mSharedPrefUtil.isAPKValidated()) {
                 UsefulBits.showPremiumToast(this, getString(R.string.category_nfc));
                 return;
@@ -45,7 +40,7 @@ public class NFCTileService extends TileService {
     public void onStartListening() {
         super.onStartListening();
 
-        if(mSharedPrefUtil == null)
+        if (mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(this);
 
         boolean isEnabled = mSharedPrefUtil.isNFCEnabled();

@@ -948,6 +948,7 @@ public class SharedPrefUtil {
     public void setNFCEnabled(boolean enabled) {
         editor.putBoolean(PREF_ENABLE_NFC, enabled).apply();
     }
+
     public boolean isBluetoothEnabled() {
         return prefs.getBoolean(PREF_ENABLE_Bluetooth, false);
     }
@@ -963,6 +964,7 @@ public class SharedPrefUtil {
     public void setWifiEnabled(boolean enabled) {
         editor.putBoolean(PREF_ENABLE_WIFI, enabled).apply();
     }
+
     public boolean isBeaconEnabled() {
         return prefs.getBoolean(PREF_ENABLE_BEACON, false);
     }
@@ -1057,8 +1059,7 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_SPEECH_ENABLED, false);
     }
 
-    public void setSpeechEnabled(boolean speechEnabled)
-    {
+    public void setSpeechEnabled(boolean speechEnabled) {
         editor.putBoolean(PREF_SPEECH_ENABLED, speechEnabled).apply();
     }
 

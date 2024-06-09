@@ -20,11 +20,11 @@ public class WifiTileService extends TileService {
     public void onClick() {
         super.onClick();
 
-        if(mSharedPrefUtil == null)
+        if (mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(this);
 
         boolean isEnabled = !mSharedPrefUtil.isWifiEnabled();
-        if(isEnabled) {
+        if (isEnabled) {
             if (!AppController.IsPremiumEnabled || !mSharedPrefUtil.isAPKValidated()) {
                 UsefulBits.showPremiumToast(this, getString(R.string.beacon));
                 return;
@@ -48,7 +48,7 @@ public class WifiTileService extends TileService {
     public void onStartListening() {
         super.onStartListening();
 
-        if(mSharedPrefUtil == null)
+        if (mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(this);
 
         boolean isEnabled = mSharedPrefUtil.isWifiEnabled();

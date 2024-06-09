@@ -21,9 +21,6 @@
 
 package nl.hnogames.domoticz.widgets;
 
-import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
-import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
-
 import android.appwidget.AppWidgetManager;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -55,6 +52,8 @@ import nl.hnogames.domoticz.ui.PasswordDialog;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
+import nl.hnogames.domoticz.widgets.database.WidgetContract;
+import nl.hnogames.domoticz.widgets.database.WidgetDbHelper;
 import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 import nl.hnogames.domoticzapi.Interfaces.TemperatureReceiver;
 
@@ -68,6 +67,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
     private TemperatureWidgetAdapter adapter;
     private SearchView searchViewAction;
     private Toolbar toolbar;
+    private WidgetDbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,7 +211,6 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
                 .show();
     }
 
-    private WidgetDbHelper mDbHelper;
     private void saveWidgetConfiguration(TemperatureInfo mDeviceInfo, String password, int layoutId) {
         int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
         Intent intent = getIntent();

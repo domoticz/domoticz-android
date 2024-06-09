@@ -1,4 +1,4 @@
-package nl.hnogames.domoticz.widgets;
+package nl.hnogames.domoticz.widgets.database;
 
 import android.provider.BaseColumns;
 
@@ -15,6 +15,7 @@ public final class WidgetContract {
         public static final String COLUMN_WIDGET_IS_SCENE = "widget_is_scene";
         public static final String COLUMN_WIDGET_PASSWORD = "widget_password";
         public static final String COLUMN_WIDGET_LAYOUT_ID = "widget_layout_id";
+        public static final String COLUMN_WIDGET_VALUE = "widget_value";
 
         public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " + TABLE_WIDGET + " (" +
@@ -24,6 +25,7 @@ public final class WidgetContract {
                         COLUMN_WIDGET_IDX + " INTEGER," +
                         COLUMN_WIDGET_IS_SCENE + " INTEGER," +
                         COLUMN_WIDGET_PASSWORD + " TEXT," +
+                        COLUMN_WIDGET_VALUE + " TEXT," +
                         COLUMN_WIDGET_LAYOUT_ID + " INTEGER)";
 
         public static final String SQL_DELETE_TABLE =

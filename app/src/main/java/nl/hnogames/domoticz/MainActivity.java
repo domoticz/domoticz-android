@@ -109,6 +109,7 @@ import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.TalkBackUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticz.utils.WidgetUtils;
 import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
@@ -124,6 +125,7 @@ import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 public class MainActivity extends AppCompatPermissionsActivity {
     public static final int ADS_IDX = -9998;
+    public static boolean fromSettings = false;
     private static TalkBackUtil oTalkBackUtil;
     private final int iQRResultCode = 775;
     private final int iWelcomeResultCode = 885;
@@ -150,7 +152,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
     private ConfigInfo mConfigInfo;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
-    public static boolean fromSettings = false;
 
     public ConfigInfo getConfig() {
         return mConfigInfo;
@@ -232,7 +233,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         }
 
         handleShortcutAction(getIntent());
-        fromSettings=false;//reset
+        fromSettings = false;
     }
 
     @Override
@@ -421,6 +422,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
             addFragment(false);
         setupMobileDevice();
         setScheduledTasks();
+        WidgetUtils.RefreshWidgets(MainActivity.this);
     }
 
     private void GetServerConfig(LoginInfo mLoginInfo) {

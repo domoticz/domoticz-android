@@ -1,6 +1,5 @@
 package nl.hnogames.domoticz.service.tiles;
 
-import android.nfc.NfcAdapter;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 
@@ -16,11 +15,11 @@ public class GeofenceTileService extends TileService {
     public void onClick() {
         super.onClick();
 
-        if(mSharedPrefUtil == null)
+        if (mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(this);
 
         boolean isEnabled = !mSharedPrefUtil.isGeofenceEnabled();
-        if(isEnabled) {
+        if (isEnabled) {
             if (!AppController.IsPremiumEnabled || !mSharedPrefUtil.isAPKValidated()) {
                 UsefulBits.showPremiumToast(this, getString(R.string.geofence));
                 return;
@@ -35,7 +34,7 @@ public class GeofenceTileService extends TileService {
     public void onStartListening() {
         super.onStartListening();
 
-        if(mSharedPrefUtil == null)
+        if (mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(this);
 
         boolean isEnabled = mSharedPrefUtil.isGeofenceEnabled();

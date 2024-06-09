@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.NotificationUtil;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
+import nl.hnogames.domoticz.widgets.database.WidgetContract;
+import nl.hnogames.domoticz.widgets.database.WidgetDbHelper;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
@@ -32,9 +33,9 @@ public class WidgetProviderSmallTemp extends AppWidgetProvider {
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
-        SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
+        WidgetDbHelper dbHelper = new WidgetDbHelper(context);
         for (int widgetId : appWidgetIds) {
-            mSharedPrefs.deleteSmallTempWidget(widgetId);
+            dbHelper.deleteWidgetConfiguration(widgetId);
         }
     }
 
@@ -43,11 +44,11 @@ public class WidgetProviderSmallTemp extends AppWidgetProvider {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
         packageName = context.getPackageName();
+        WidgetDbHelper dbHelper = new WidgetDbHelper(context);
         for (int widgetId : appWidgetIds) {
             // Retrieve widget configuration from the database
-            WidgetDbHelper dbHelper = new WidgetDbHelper(context);
             ContentValues values = dbHelper.getWidgetConfiguration(widgetId);
-            try{
+            try {
                 int idx = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_IDX);
                 int layoutId = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID);
 
@@ -67,7 +68,7 @@ public class WidgetProviderSmallTemp extends AppWidgetProvider {
                 } catch (Exception ex) {
                     Log.e("WidgetProviderSmallTemp", "Error starting service: " + ex.getMessage(), ex);
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 Log.e("WidgetProviderSmallTemp", "Widget configuration not found for ID: " + widgetId);
             }
         }
@@ -122,7 +123,7 @@ public class WidgetProviderSmallTemp extends AppWidgetProvider {
                         Log.e("UpdateWidgetService", "Error fetching device info: " + error.getMessage(), error);
                     }
                 }, idx, false);
-            } catch (Exception e){
+            } catch (Exception e) {
                 Log.e("WidgetProviderSmallTemp", "Widget configuration not found for ID: " + appWidgetId);
             }
         }
