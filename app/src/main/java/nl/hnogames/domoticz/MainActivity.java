@@ -26,6 +26,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -422,7 +423,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
             addFragment(false);
         setupMobileDevice();
         setScheduledTasks();
-        WidgetUtils.RefreshWidgets(MainActivity.this);
+
+        new Handler().postDelayed(() -> WidgetUtils.RefreshWidgets(MainActivity.this), 1000);  // Delay of 1 second
     }
 
     private void GetServerConfig(LoginInfo mLoginInfo) {
