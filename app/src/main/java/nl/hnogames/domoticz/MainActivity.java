@@ -423,8 +423,6 @@ public class MainActivity extends AppCompatPermissionsActivity {
             addFragment(false);
         setupMobileDevice();
         setScheduledTasks();
-
-        new Handler().postDelayed(() -> WidgetUtils.RefreshWidgets(MainActivity.this), 1000);  // Delay of 1 second
     }
 
     private void GetServerConfig(LoginInfo mLoginInfo) {

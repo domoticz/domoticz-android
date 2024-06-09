@@ -18,59 +18,35 @@ public class WidgetUtils {
         if (context == null)
             return;
         try {
+            Log.d("WidgetUtils", "Refreshing widgets...");
             AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
 
-            try {
-                ComponentName widgetComponentSmall = new ComponentName(context, WidgetProviderSmall.class);
-                int[] appWidgetSmallIds = widgetManager.getAppWidgetIds(widgetComponentSmall);
-                for (int appWidgetId : appWidgetSmallIds) {
-                    Intent updateIntent = new Intent(context, WidgetProviderSmall.UpdateWidgetService.class);
-                    updateIntent.putExtra(EXTRA_APPWIDGET_ID, appWidgetId);
-                    updateIntent.setAction("FROM WIDGET PROVIDER");
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                        context.startForegroundService(updateIntent);
-                    else
-                        context.startService(updateIntent);
-                }
-            } catch (Exception ex) {
-                Log.e("WidgetUtils", "Error refreshing widgets", ex);
-            }
-
-            try {
-                ComponentName widgetComponentLarge = new ComponentName(context, WidgetProviderLarge.class);
-                int[] appWidgetLargeIds = widgetManager.getAppWidgetIds(widgetComponentLarge);
-                for (int appWidgetId : appWidgetLargeIds) {
-                    Intent updateIntent = new Intent(context, WidgetProviderLarge.UpdateWidgetService.class);
-                    updateIntent.putExtra(EXTRA_APPWIDGET_ID, appWidgetId);
-                    updateIntent.setAction("FROM WIDGET PROVIDER");
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                        context.startForegroundService(updateIntent);
-                    else
-                        context.startService(updateIntent);
-                }
-
-            } catch (Exception ex) {
-                Log.e("WidgetUtils", "Error refreshing widgets", ex);
-            }
-
-            try {
-                ComponentName widgetComponent = new ComponentName(context, WidgetProviderSmallTemp.class);
-                int[] appWidgetIds = widgetManager.getAppWidgetIds(widgetComponent);
-                for (int appWidgetId : appWidgetIds) {
-                    Intent updateIntent = new Intent(context, WidgetProviderSmallTemp.UpdateWidgetService.class);
-                    updateIntent.putExtra(EXTRA_APPWIDGET_ID, appWidgetId);
-                    updateIntent.setAction("FROM WIDGET PROVIDER");
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                        context.startForegroundService(updateIntent);
-                    else
-                        context.startService(updateIntent);
-                }
-            } catch (Exception ex) {
-                Log.e("WidgetUtils", "Error refreshing widgets", ex);
-            }
+            // Add logging for each widget type
+            refreshWidgetType(context, widgetManager, WidgetProviderSmall.class, "WidgetProviderSmall");
+            refreshWidgetType(context, widgetManager, WidgetProviderLarge.class, "WidgetProviderLarge");
+            refreshWidgetType(context, widgetManager, WidgetProviderSmallTemp.class, "WidgetProviderSmallTemp");
 
         } catch (Exception ex) {
             Log.e("WidgetUtils", "Error refreshing widgets", ex);
+        }
+    }
+
+    private static void refreshWidgetType(Context context, AppWidgetManager widgetManager, Class<?> widgetClass, String widgetName) {
+        try {
+            ComponentName widgetComponent = new ComponentName(context, widgetClass);
+            int[] appWidgetIds = widgetManager.getAppWidgetIds(widgetComponent);
+            Log.d("WidgetUtils", "Refreshing " + widgetName + " with " + appWidgetIds.length + " instances.");
+            for (int appWidgetId : appWidgetIds) {
+                Intent updateIntent = new Intent(context, widgetClass);
+                updateIntent.putExtra(EXTRA_APPWIDGET_ID, appWidgetId);
+                updateIntent.setAction("FROM WIDGET PROVIDER");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    context.startForegroundService(updateIntent);
+                else
+                    context.startService(updateIntent);
+            }
+        } catch (Exception ex) {
+            Log.e("WidgetUtils", "Error refreshing " + widgetName, ex);
         }
     }
 }
