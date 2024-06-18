@@ -20,9 +20,9 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -37,8 +37,8 @@
             android:layout_gravity="center_vertical"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            app:tint="?attr/colorAccent"
-            android:src="@drawable/lock_a"  />
+            android:src="@drawable/lock_a"
+            app:tint="?attr/colorAccent" />
 
         <TextView
             android:id="@+id/title"

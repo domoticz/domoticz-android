@@ -19,8 +19,8 @@
             android:layout_height="40dp"
             android:layout_centerHorizontal="true"
             android:padding="8dp"
-            app:tint="?attr/colorAccent"
-            android:src="@drawable/temperature"  />
+            android:src="@drawable/temperature"
+            app:tint="?attr/colorAccent" />
 
         <TextView
             android:id="@+id/title"
@@ -33,13 +33,13 @@
 
         <TextView
             android:id="@+id/desc"
-            android:textSize="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/title"
             android:layout_centerHorizontal="true"
             android:clickable="false"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="12dp" />
 
     </RelativeLayout>
 </LinearLayout>

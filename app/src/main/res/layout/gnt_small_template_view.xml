@@ -5,16 +5,16 @@
     <com.google.android.gms.ads.nativead.NativeAdView
         android:id="@+id/native_ad_view"
         android:layout_width="match_parent"
-        android:maxHeight="80dp"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:maxHeight="80dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:maxHeight="80dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/gnt_outline_shape">
+            android:background="@drawable/gnt_outline_shape"
+            android:maxHeight="80dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/background"
@@ -22,9 +22,9 @@
                 android:layout_height="@dimen/gnt_no_size"
                 android:layout_marginStart="@dimen/gnt_default_margin"
                 android:layout_marginTop="@dimen/gnt_default_margin"
-                android:maxHeight="80dp"
                 android:layout_marginEnd="@dimen/gnt_default_margin"
                 android:layout_marginBottom="@dimen/gnt_default_margin"
+                android:maxHeight="80dp"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="H,4:1"
@@ -131,9 +131,9 @@
                             android:background="?attr/md_background_color"
                             android:lines="1"
                             android:numStars="0"
-                            android:visibility="gone"
                             android:textColor="?attr/incomingTextColor"
                             android:textSize="@dimen/gnt_text_size_small"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/ad_notification_view"
