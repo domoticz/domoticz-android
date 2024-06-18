@@ -35,12 +35,8 @@ import java.util.concurrent.Executors;
 import nl.hnogames.domoticz.cache.JsonCacheManager;
 
 public class SerializableManager {
-    private static JsonCacheManager jsonCacheManager;
     private static final Executor executor = Executors.newSingleThreadExecutor();
-
-    public interface InitializationCallback {
-        void onInitialized();
-    }
+    private static JsonCacheManager jsonCacheManager;
 
     public static void initialize(Context context, InitializationCallback callback) {
         executor.execute(() -> {
@@ -131,6 +127,10 @@ public class SerializableManager {
                 executor.execute(() -> jsonCacheManager.removeCache(filename));
             }
         });
+    }
+
+    public interface InitializationCallback {
+        void onInitialized();
     }
 
     public interface JsonCacheCallback<T> {

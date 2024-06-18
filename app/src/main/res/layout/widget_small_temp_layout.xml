@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/row_global_wrapper"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -19,8 +18,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerHorizontal="true"
-            android:padding="8dp"
             android:background="@color/primary_dark"
+            android:padding="8dp"
             android:src="@drawable/temperature" />
 
         <TextView
@@ -33,12 +32,12 @@
 
         <TextView
             android:id="@+id/desc"
-            android:textSize="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/title"
             android:layout_centerHorizontal="true"
-            android:clickable="false"/>
+            android:clickable="false"
+            android:textSize="12dp" />
 
     </RelativeLayout>
 </LinearLayout>

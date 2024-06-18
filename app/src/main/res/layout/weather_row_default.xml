@@ -25,11 +25,11 @@
     android:id="@+id/card_global_wrapper"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="8dp"
     android:layout_marginStart="8dp"
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="8dp"
     android:orientation="vertical"
-    android:layout_margin="8dp"
     app:cardCornerRadius="30dp"
     app:cardElevation="1dp">
 
@@ -45,116 +45,116 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/row_global_wrapper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/recyclerBackground"
-        android:descendantFocusability="blocksDescendants"
-        android:orientation="vertical">
-
         <LinearLayout
-            android:id="@+id/row_wrapper"
+            android:id="@+id/row_global_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/listviewRowBackground"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:background="?attr/recyclerBackground"
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/widget_info_icon"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/row_wrapper"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|start"
-                android:src="@drawable/outline_info_black_18"
-                app:tint="@color/md_grey_300" />
+                android:background="?attr/listviewRowBackground"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
-            <ImageView
-                android:id="@+id/rowIcon"
-                android:layout_width="35dp"
-                app:tint="?attr/colorAccent"
-                android:layout_height="35dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="-15dp"
-                android:contentDescription="@string/error_image_description"
-                android:paddingRight="5dp"
-                android:src="@drawable/clock48" />
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical">
-
-                <RelativeLayout
+                <ImageView
+                    android:id="@+id/widget_info_icon"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|start"
+                    android:src="@drawable/outline_info_black_18"
+                    app:tint="@color/md_grey_300" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toStartOf="@+id/linearLayout4"
-                        android:layout_toLeftOf="@+id/linearLayout4"
-                        android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/rowIcon"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="-15dp"
+                    android:contentDescription="@string/error_image_description"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/clock48"
+                    app:tint="?attr/colorAccent" />
 
-                        <TextView
-                            android:id="@+id/weather_name"
-                            style="@style/row_name"
-                            android:layout_marginTop="-10dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="Utility name" />
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/weather_data"
-                            style="@style/row_body1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="-8dp"
-                            android:layout_below="@id/weather_name"
-                            android:layout_marginBottom="5dp"
-                            android:textStyle="italic"
-                            tools:text="189.00 S, Speed: 3.1m/s, Temp: 10 C, Chill: 10,5 C" />
-
-                        <TextView
-                            android:id="@+id/weather_hardware"
-                            style="@style/row_body1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/weather_data"
-                            android:textSize="8sp"
-                            tools:text="Hardware" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout4"
+                    <RelativeLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_height="wrap_content">
 
-                        <az.plainpie.PieView
-                            android:id="@+id/pieView"
-                            android:layout_width="72dp"
-                            android:layout_height="73dp"
-                            android:visibility="gone"
-                            plainpie:inner_pie_padding="10"
-                            plainpie:inner_text_visibility="true"
-                            plainpie:percentage="75"
-                            plainpie:percentage_size="15" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@+id/linearLayout4"
+                            android:layout_toLeftOf="@+id/linearLayout4"
+                            android:orientation="vertical">
 
-                    </LinearLayout>
-                </RelativeLayout>
+                            <TextView
+                                android:id="@+id/weather_name"
+                                style="@style/row_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-10dp"
+                                tools:text="Utility name" />
+
+                            <TextView
+                                android:id="@+id/weather_data"
+                                style="@style/row_body1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/weather_name"
+                                android:layout_marginTop="-8dp"
+                                android:layout_marginBottom="5dp"
+                                android:textStyle="italic"
+                                tools:text="189.00 S, Speed: 3.1m/s, Temp: 10 C, Chill: 10,5 C" />
+
+                            <TextView
+                                android:id="@+id/weather_hardware"
+                                style="@style/row_body1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/weather_data"
+                                android:textSize="8sp"
+                                tools:text="Hardware" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <az.plainpie.PieView
+                                android:id="@+id/pieView"
+                                android:layout_width="72dp"
+                                android:layout_height="73dp"
+                                android:visibility="gone"
+                                plainpie:inner_pie_padding="10"
+                                plainpie:inner_text_visibility="true"
+                                plainpie:percentage="75"
+                                plainpie:percentage_size="15" />
+
+                        </LinearLayout>
+                    </RelativeLayout>
+                </LinearLayout>
             </LinearLayout>
+
+            <include layout="@layout/log_graph_buttons_row_default" />
+
         </LinearLayout>
-
-        <include layout="@layout/log_graph_buttons_row_default" />
-
-    </LinearLayout>
 
     </RelativeLayout>
 

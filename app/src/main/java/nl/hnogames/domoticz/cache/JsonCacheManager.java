@@ -1,6 +1,7 @@
 package nl.hnogames.domoticz.cache;
 
 import android.content.Context;
+
 import androidx.room.Room;
 
 public class JsonCacheManager {

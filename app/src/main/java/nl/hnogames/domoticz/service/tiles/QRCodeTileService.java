@@ -1,6 +1,5 @@
 package nl.hnogames.domoticz.service.tiles;
 
-import android.os.RemoteException;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 
@@ -16,11 +15,11 @@ public class QRCodeTileService extends TileService {
     public void onClick() {
         super.onClick();
 
-        if(mSharedPrefUtil == null)
+        if (mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(this);
 
         boolean isEnabled = !mSharedPrefUtil.isQRCodeEnabled();
-        if(isEnabled) {
+        if (isEnabled) {
             if (!AppController.IsPremiumEnabled || !mSharedPrefUtil.isAPKValidated()) {
                 UsefulBits.showPremiumToast(this, getString(R.string.qrcode));
                 return;
@@ -36,7 +35,7 @@ public class QRCodeTileService extends TileService {
     public void onStartListening() {
         super.onStartListening();
 
-        if(mSharedPrefUtil == null)
+        if (mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(this);
 
         boolean isEnabled = mSharedPrefUtil.isQRCodeEnabled();

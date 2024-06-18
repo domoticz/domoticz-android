@@ -24,11 +24,11 @@
     android:id="@+id/card_global_wrapper"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="8dp"
     android:layout_marginStart="8dp"
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="8dp"
     android:orientation="vertical"
-    android:layout_margin="8dp"
     app:cardCornerRadius="30dp"
     app:cardElevation="1dp">
 
@@ -44,124 +44,124 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/row_global_wrapper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/recyclerBackground"
-        android:descendantFocusability="blocksDescendants"
-        android:orientation="vertical">
-
         <LinearLayout
-            android:id="@+id/row_wrapper"
+            android:id="@+id/row_global_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/listviewRowBackground"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <ImageView
-                android:id="@+id/widget_info_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:tint="@color/md_grey_300"
-                android:layout_gravity="bottom|start"
-                android:src="@drawable/outline_info_black_18" />
-
-            <ImageView
-                android:id="@+id/rowIcon"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                app:tint="?attr/colorAccent"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="-15dp"
-                android:contentDescription="@string/error_image_description"
-                android:paddingRight="5dp"
-                android:src="@drawable/clock48" />
+            android:background="?attr/recyclerBackground"
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/row_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:background="?attr/listviewRowBackground"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
-                <TextView
-                    android:id="@+id/utilities_name"
-                    style="@style/row_name"
-                    android:layout_width="wrap_content"
-                    android:layout_marginTop="-10dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    tools:text="Utility name" />
-
-                <TextView
-                    android:id="@+id/utilities_data"
-                    style="@style/row_body1"
-                    android:layout_marginTop="-8dp"
+                <ImageView
+                    android:id="@+id/widget_info_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/utilities_name"
-                    android:layout_marginBottom="5dp"
-                    android:text="@string/data"
-                    android:textStyle="italic" />
+                    android:layout_gravity="bottom|start"
+                    android:src="@drawable/outline_info_black_18"
+                    app:tint="@color/md_grey_300" />
 
-                <TextView
-                    android:id="@+id/utilities_hardware"
-                    style="@style/row_body1"
+                <ImageView
+                    android:id="@+id/rowIcon"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="-15dp"
+                    android:contentDescription="@string/error_image_description"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/clock48"
+                    app:tint="?attr/colorAccent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/utilities_name"
+                        style="@style/row_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="-10dp"
+                        tools:text="Utility name" />
+
+                    <TextView
+                        android:id="@+id/utilities_data"
+                        style="@style/row_body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/utilities_name"
+                        android:layout_marginTop="-8dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/data"
+                        android:textStyle="italic" />
+
+                    <TextView
+                        android:id="@+id/utilities_hardware"
+                        style="@style/row_body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/utilities_data"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/hardware"
+                        android:textSize="8sp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/utilities_data"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
-                    android:text="@string/hardware"
-                    android:textSize="8sp" />
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/on_button"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/button_status"
+                        android:text="@string/button_state_on"
+                        android:textColor="?attr/buttonTextColor"
+                        android:textSize="10dp" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/linearLayout4ttt"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_below="@+id/textwrapper"
+                android:layout_gravity="right"
+                android:background="?attr/listviewRowBackground"
+                android:foregroundGravity="right"
+                android:gravity="right"
                 android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/on_button"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="60dp"
+                <Spinner
+                    android:id="@+id/spSelector"
+                    android:layout_width="129dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/button_status"
-                    android:text="@string/button_state_on"
-                    android:textColor="?attr/buttonTextColor"
-                    android:textSize="10dp" />
-
+                    android:layout_gravity="right|bottom"
+                    android:foregroundGravity="right"
+                    android:minWidth="150dp"
+                    android:padding="16px" />
             </LinearLayout>
+
+            <include layout="@layout/log_all_buttons" />
+
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout4ttt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/listviewRowBackground"
-            android:layout_below="@+id/textwrapper"
-            android:layout_gravity="right"
-            android:foregroundGravity="right"
-            android:gravity="right"
-            android:orientation="horizontal">
-
-        <Spinner
-            android:id="@+id/spSelector"
-            android:layout_width="129dp"
-            android:padding="16px"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            android:foregroundGravity="right"
-            android:minWidth="150dp" />
-        </LinearLayout>
-
-        <include layout="@layout/log_all_buttons" />
-
-    </LinearLayout>
     </RelativeLayout>
 
 </com.google.android.material.card.MaterialCardView>

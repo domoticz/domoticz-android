@@ -27,7 +27,6 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
@@ -107,7 +106,7 @@ public class PermissionsUtil {
     }
 
     public static boolean canAccessStorage(Context context) {
-     return true;
+        return true;
     }
 
     public static boolean canAccessFingerprint(Context context) {

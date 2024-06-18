@@ -15,11 +15,11 @@ public class BluetoothTileService extends TileService {
     public void onClick() {
         super.onClick();
 
-        if(mSharedPrefUtil == null)
+        if (mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(this);
 
         boolean isEnabled = !mSharedPrefUtil.isBluetoothEnabled();
-        if(isEnabled) {
+        if (isEnabled) {
             if (!AppController.IsPremiumEnabled || !mSharedPrefUtil.isAPKValidated()) {
                 UsefulBits.showPremiumToast(this, getString(R.string.category_bluetooth));
                 return;
@@ -34,7 +34,7 @@ public class BluetoothTileService extends TileService {
     public void onStartListening() {
         super.onStartListening();
 
-        if(mSharedPrefUtil == null)
+        if (mSharedPrefUtil == null)
             mSharedPrefUtil = new SharedPrefUtil(this);
 
         boolean isEnabled = mSharedPrefUtil.isBluetoothEnabled();
@@ -42,12 +42,12 @@ public class BluetoothTileService extends TileService {
     }
 
     private void updateTile(boolean isEnabled) {
-            Tile tile = getQsTile();
-            if (isEnabled) {
-                tile.setState(Tile.STATE_ACTIVE);
-            } else {
-                tile.setState(Tile.STATE_INACTIVE);
-            }
-            tile.updateTile();
+        Tile tile = getQsTile();
+        if (isEnabled) {
+            tile.setState(Tile.STATE_ACTIVE);
+        } else {
+            tile.setState(Tile.STATE_INACTIVE);
+        }
+        tile.updateTile();
     }
 }

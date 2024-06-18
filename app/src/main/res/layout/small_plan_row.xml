@@ -1,8 +1,8 @@
-<com.google.android.material.chip.Chip android:id="@+id/plan"
+<com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/plan"
     android:layout_width="wrap_content"
-    android:layout_margin="4dp"
     android:layout_height="wrap_content"
+    android:layout_margin="4dp"
     android:elevation="4dp"
-    app:chipBackgroundColor="?attr/listviewRowBackground"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" />
+    app:chipBackgroundColor="?attr/listviewRowBackground" />
