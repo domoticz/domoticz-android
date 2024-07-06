@@ -21,10 +21,8 @@
 
 package nl.hnogames.domoticz.widgets;
 
-import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
-import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
-
 import android.appwidget.AppWidgetManager;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -54,6 +52,8 @@ import nl.hnogames.domoticz.ui.PasswordDialog;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
+import nl.hnogames.domoticz.widgets.database.WidgetContract;
+import nl.hnogames.domoticz.widgets.database.WidgetDbHelper;
 import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 import nl.hnogames.domoticzapi.Interfaces.TemperatureReceiver;
 
@@ -67,6 +67,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
     private TemperatureWidgetAdapter adapter;
     private SearchView searchViewAction;
     private Toolbar toolbar;
+    private WidgetDbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.widget_configuration);
         setResult(RESULT_CANCELED);
+        mDbHelper = new WidgetDbHelper(this);
 
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
@@ -151,7 +153,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
                             passwordDialog.onDismissListener(new PasswordDialog.DismissListener() {
                                 @Override
                                 public void onDismiss(String password) {
-                                    getBackground(mDeviceInfo, password, null);
+                                    showThemeSelectionDialog(mDeviceInfo, password);
                                 }
 
                                 @Override
@@ -159,7 +161,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
                                 }
                             });
                         } else {
-                            getBackground(mDeviceInfo, null, null);
+                            showThemeSelectionDialog(mDeviceInfo, null);
                         }
                     });
                     listView.setAdapter(adapter);
@@ -193,46 +195,49 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
         return layout;
     }
 
-    private void getBackground(final TemperatureInfo mSelectedTemperatureInfo, final String password, final String value) {
+    private void showThemeSelectionDialog(final TemperatureInfo mDeviceInfo, final String password) {
         new MaterialDialog.Builder(this)
                 .title(this.getString(R.string.widget_background))
-                .items(new String[]{this.getString(R.string.widget_dark), this.getString(R.string.widget_light), this.getString(R.string.widget_transparent_dark), this.getString(R.string.widget_transparent_light)})
+                .items(new String[]{
+                        this.getString(R.string.widget_dark),
+                        this.getString(R.string.widget_light),
+                        this.getString(R.string.widget_transparent_dark),
+                        this.getString(R.string.widget_transparent_light)})
                 .itemsCallbackSingleChoice(-1, (dialog, view, which, text) -> {
-                    showAppWidget(mSelectedTemperatureInfo, password, value, getWidgetLayout(String.valueOf(text)));
+                    saveWidgetConfiguration(mDeviceInfo, password, getWidgetLayout(String.valueOf(text)));
                     return true;
                 })
                 .positiveText(R.string.ok)
                 .show();
     }
 
-    private void showAppWidget(TemperatureInfo mSelectedSwitch, String password, String value, int layoutId) {
-        mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private void saveWidgetConfiguration(TemperatureInfo mDeviceInfo, String password, int layoutId) {
+        int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        int idx = mSelectedSwitch.getIdx();
+        int idx = mDeviceInfo.getIdx();
         if (extras != null) {
-            mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
-                    INVALID_APPWIDGET_ID);
+            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 
-            if (UsefulBits.isEmpty(mSelectedSwitch.getType())) {
-                Log.i(TAG, "Widget without a type saved");
-                mSharedPrefs.setSmallTempWidgetIDX(mAppWidgetId, idx, false, password, value, layoutId);
-            } else {
-                Log.i(TAG, "Widget saved " + mSelectedSwitch.getType());
-                mSharedPrefs.setSmallTempWidgetIDX(mAppWidgetId, idx, false, password, value, layoutId);
-            }
+            ContentValues values = new ContentValues();
+            values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_IDX, idx);
+            values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_IS_SCENE, false);
+            values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_PASSWORD, password);
+            values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID, layoutId);
 
-            Intent startService = new Intent(SmallTempWidgetConfigurationActivity.this,
-                    WidgetProviderSmallTemp.UpdateWidgetService.class);
-            startService.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
+            mDbHelper.saveWidgetConfiguration(mAppWidgetId, values);
+
+            Intent startService = new Intent(SmallTempWidgetConfigurationActivity.this, WidgetProviderSmallTemp.UpdateWidgetService.class);
+            startService.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
             startService.setAction("FROM CONFIGURATION ACTIVITY");
             startService(startService);
+
             setResult(RESULT_OK, startService);
             finish();
         }
 
-        if (mAppWidgetId == INVALID_APPWIDGET_ID) {
-            Log.i(TAG, "I am invalid");
+        if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+            Log.i(TAG, "Invalid AppWidget ID");
             finish();
         }
     }

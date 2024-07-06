@@ -1,27 +1,9 @@
-/*
- * Copyright (C) 2015 Domoticz - Mark Heinis
- *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- */
-
 package nl.hnogames.domoticz.widgets;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -37,9 +19,10 @@ import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.NotificationUtil;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.WidgetUtils;
+import nl.hnogames.domoticz.widgets.database.WidgetContract;
+import nl.hnogames.domoticz.widgets.database.WidgetDbHelper;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Domoticz;
@@ -50,6 +33,7 @@ import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
 
 public class WidgetIntentService extends Service {
 
+    private static final String CHANNEL_ID = "WidgetIntentServiceChannel";
     private final int iVoiceAction = -55;
     private final int iQRCodeAction = -66;
     private int widgetID = 0;
@@ -57,9 +41,9 @@ public class WidgetIntentService extends Service {
     private boolean toggle = true;
     private String password = null;
     private String value = null;
-    private SharedPrefUtil mSharedPrefs;
     private int blind_action = -1;
     private boolean smallWidget = false;
+    private WidgetDbHelper dbHelper;
 
     @Nullable
     @Override
@@ -68,12 +52,32 @@ public class WidgetIntentService extends Service {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        createNotificationChannel();
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel serviceChannel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "Widgets Service Channel",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            if (manager != null) {
+                manager.createNotificationChannel(serviceChannel);
+            }
+        }
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this, "Widget"));
         }
 
-        mSharedPrefs = new SharedPrefUtil(this);
+        dbHelper = new WidgetDbHelper(this);
         widgetID = intent.getIntExtra("WIDGETID", 999999);
         int idx = intent.getIntExtra("IDX", 999999);
         if (idx == iVoiceAction)//voice
@@ -119,10 +123,7 @@ public class WidgetIntentService extends Service {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
                 (mExtendedStatusInfo.getSwitchType() == null ||
                         UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
-            switch (mExtendedStatusInfo.getType()) {
-                case DomoticzValues.Scene.Type.GROUP:
-                    return true;
-            }
+            return mExtendedStatusInfo.getType().equals(DomoticzValues.Scene.Type.GROUP);
         } else {
             switch (mExtendedStatusInfo.getSwitchTypeVal()) {
                 case DomoticzValues.Device.Type.Value.ON_OFF:
@@ -144,11 +145,7 @@ public class WidgetIntentService extends Service {
         if (mExtendedStatusInfo.getSwitchTypeVal() == 0 &&
                 (mExtendedStatusInfo.getSwitchType() == null ||
                         UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
-            switch (mExtendedStatusInfo.getType()) {
-                case DomoticzValues.Scene.Type.SCENE:
-                    return true;
-
-            }
+            return mExtendedStatusInfo.getType().equals(DomoticzValues.Scene.Type.SCENE);
         } else
             switch (mExtendedStatusInfo.getSwitchTypeVal()) {
                 case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
@@ -166,28 +163,20 @@ public class WidgetIntentService extends Service {
                         UsefulBits.isEmpty(mExtendedStatusInfo.getSwitchType()))) {
             return false;
         } else
-            switch (mExtendedStatusInfo.getSwitchTypeVal()) {
-                case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
-                    return true;
-            }
-        return false;
+            return mExtendedStatusInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON;
     }
 
     private void loadPasswordandValue() {
-        password = mSharedPrefs.getWidgetPassword(widgetID);
-        value = mSharedPrefs.getWidgetValue(widgetID);
-        if (UsefulBits.isEmpty(value) && UsefulBits.isEmpty(password)) {
-            password = mSharedPrefs.getSmallWidgetPassword(widgetID);
-            value = mSharedPrefs.getSmallWidgetValue(widgetID);
-        }
+        ContentValues values = dbHelper.getWidgetConfiguration(widgetID);
+        password = values.getAsString(WidgetContract.WidgetEntry.COLUMN_WIDGET_PASSWORD);
+        value = values.getAsString(WidgetContract.WidgetEntry.COLUMN_WIDGET_VALUE);
     }
 
     private void processSwitch(final Context context, int idx) {
-        boolean isScene = mSharedPrefs.getWidgetisScene(widgetID);
-        if (smallWidget)
-            isScene = mSharedPrefs.getSmallWidgetisScene(widgetID);
-        Log.i("PROCESS SWITCH", "Device: " + idx + " " + isScene);
+        ContentValues values = dbHelper.getWidgetConfiguration(widgetID);
+        boolean isScene = values.getAsBoolean(WidgetContract.WidgetEntry.COLUMN_WIDGET_IS_SCENE);
 
+        Log.i("PROCESS SWITCH", "Device: " + idx + " " + isScene);
         if (!isScene) {
             StaticHelper.getDomoticz(context).getDevice(new DevicesReceiver() {
                 @Override
@@ -447,5 +436,4 @@ public class WidgetIntentService extends Service {
             });
         }
     }
-
 }

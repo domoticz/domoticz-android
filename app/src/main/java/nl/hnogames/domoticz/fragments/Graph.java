@@ -484,16 +484,16 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 if (addTemperatureRange) {
                     dataSet = new LineDataSet(valuestMax, "Max"); // add entries to dataset
                     dataSet.setLineWidth(2);
-                    dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
+                    dataSet.setColor(ContextCompat.getColor(context, com.mikepenz.materialize.R.color.md_blue_50));
                     dataSet.setDrawCircles(false);
                     dataSet.setMode(LineDataSet.Mode.LINEAR);
                     dataSet.setDrawFilled(true);
-                    dataSet.setFillColor(R.color.md_blue_300);
+                    dataSet.setFillColor(com.mikepenz.materialize.R.color.md_blue_300);
                     entries.add(dataSet);
 
                     dataSet = new LineDataSet(valuestMin, "Min"); // add entries to dataset
                     dataSet.setLineWidth(2);
-                    dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
+                    dataSet.setColor(ContextCompat.getColor(context, com.mikepenz.materialize.R.color.md_blue_50));
                     dataSet.setDrawCircles(false);
                     dataSet.setMode(LineDataSet.Mode.LINEAR);
                     dataSet.setFillAlpha(255);
@@ -564,16 +564,16 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
                 if (addPercentageRange) {
                     dataSet = new LineDataSet(valuesvMax, "Max"); // add entries to dataset
                     dataSet.setLineWidth(2);
-                    dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
+                    dataSet.setColor(ContextCompat.getColor(context, com.mikepenz.materialize.R.color.md_blue_50));
                     dataSet.setDrawCircles(false);
                     dataSet.setMode(LineDataSet.Mode.LINEAR);
                     dataSet.setDrawFilled(true);
-                    dataSet.setFillColor(R.color.md_blue_300);
+                    dataSet.setFillColor(com.mikepenz.materialize.R.color.md_blue_300);
                     entries.add(dataSet);
 
                     dataSet = new LineDataSet(valuesvMin, "Min"); // add entries to dataset
                     dataSet.setLineWidth(2);
-                    dataSet.setColor(ContextCompat.getColor(context, R.color.md_blue_50));
+                    dataSet.setColor(ContextCompat.getColor(context, com.mikepenz.materialize.R.color.md_blue_50));
                     dataSet.setDrawCircles(false);
                     dataSet.setMode(LineDataSet.Mode.LINEAR);
                     dataSet.setFillAlpha(255);
@@ -666,7 +666,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             if ((addCO2Max && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_co2max)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesco2max, ((TextView) view.findViewById(R.id.legend_co2max)).getText().toString()); // add entries to dataset
-                dataSet.setColor(ContextCompat.getColor(context, R.color.md_red_400));
+                dataSet.setColor(ContextCompat.getColor(context, com.mikepenz.materialize.R.color.md_red_400));
                 dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
@@ -696,7 +696,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             if ((addLuxMax && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_Luxmax)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesLuxmax, ((TextView) view.findViewById(R.id.legend_Luxmax)).getText().toString()); // add entries to dataset
-                dataSet.setColor(ContextCompat.getColor(context, R.color.md_red_400));
+                dataSet.setColor(ContextCompat.getColor(context, com.mikepenz.materialize.R.color.md_red_400));
                 dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
@@ -706,7 +706,7 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
             if ((addLuxAvg && !enableFilters) ||
                     (filterLabels != null && filterLabels.contains(((TextView) view.findViewById(R.id.legend_LuxAvg)).getText().toString()))) {
                 LineDataSet dataSet = new LineDataSet(valuesLuxAvg, ((TextView) view.findViewById(R.id.legend_LuxAvg)).getText().toString()); // add entries to dataset
-                dataSet.setColor(ContextCompat.getColor(context, R.color.md_yellow_400));
+                dataSet.setColor(ContextCompat.getColor(context, com.mikepenz.materialize.R.color.md_yellow_400));
                 dataSet.setLineWidth(2);
                 dataSet.setDrawCircles(false);
                 dataSet.setMode(LineDataSet.Mode.LINEAR);
@@ -875,49 +875,46 @@ public class Graph extends Fragment implements DomoticzFragmentListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_sort:
-                String[] items = new String[lineLabels.size()];
-                lineLabels.toArray(items);
+        if (item.getItemId() == R.id.action_sort) {
+            String[] items = new String[lineLabels.size()];
+            lineLabels.toArray(items);
 
-                new MaterialDialog.Builder(context)
-                        .title(context.getString(R.string.filter))
-                        .items(items)
-                        .itemsCallbackMultiChoice(selectedFilters, new MaterialDialog.ListCallbackMultiChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-                                selectedFilters = which;
-                                enableFilters = true;
+            new MaterialDialog.Builder(context)
+                    .title(context.getString(R.string.filter))
+                    .items(items)
+                    .itemsCallbackMultiChoice(selectedFilters, new MaterialDialog.ListCallbackMultiChoice() {
+                        @Override
+                        public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                            selectedFilters = which;
+                            enableFilters = true;
 
-                                if (text != null && text.length > 0) {
-                                    filterLabels = new ArrayList<>();
+                            if (text != null && text.length > 0) {
+                                filterLabels = new ArrayList<>();
 
-                                    //set filters
-                                    for (CharSequence c : text)
-                                        filterLabels.add((String) c);
+                                //set filters
+                                for (CharSequence c : text)
+                                    filterLabels.add((String) c);
 
-                                    LineData columnData = generateData(root);
-                                    if (columnData != null) {
-                                        chart.setData(columnData);
-                                        chart.invalidate(); // refresh
-                                        chart.setVisibility(View.VISIBLE);
-                                        chart.animateX(1000);
-                                        if (getActivity() != null)
-                                            getActivity().invalidateOptionsMenu();
-                                    }
-                                } else {
-                                    enableFilters = false;
-                                    Toast.makeText(context, context.getString(R.string.filter_graph_empty), Toast.LENGTH_SHORT).show();
+                                LineData columnData = generateData(root);
+                                if (columnData != null) {
+                                    chart.setData(columnData);
+                                    chart.invalidate(); // refresh
+                                    chart.setVisibility(View.VISIBLE);
+                                    chart.animateX(1000);
+                                    if (getActivity() != null)
+                                        getActivity().invalidateOptionsMenu();
                                 }
-                                return true;
+                            } else {
+                                enableFilters = false;
+                                Toast.makeText(context, context.getString(R.string.filter_graph_empty), Toast.LENGTH_SHORT).show();
                             }
-                        })
-                        .positiveText(R.string.ok)
-                        .negativeText(R.string.cancel)
-                        .show();
-                return true;
-            default:
-                break;
+                            return true;
+                        }
+                    })
+                    .positiveText(R.string.ok)
+                    .negativeText(R.string.cancel)
+                    .show();
+            return true;
         }
 
         return false;

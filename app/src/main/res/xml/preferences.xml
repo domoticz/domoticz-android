@@ -210,7 +210,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:icon="@drawable/baseline_camera_black_24"
+        android:icon="@drawable/baseline_qr_code_scanner_white_24"
         android:key="qrcode_category"
         android:title="@string/category_QRCode">
         <SwitchPreference
@@ -286,18 +286,6 @@
             android:dependency="enableSecurity"
             android:key="SecuritySettings"
             android:title="@string/setup_fingerprints" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:icon="@drawable/outline_widgets_white_24"
-        android:key="widgets_category"
-        android:title="@string/wizard_widgets">
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="enableWidgets"
-            android:summaryOff="@string/widget_description"
-            android:summaryOn="@string/widget_description"
-            android:title="@string/category_widgets" />
     </PreferenceCategory>
 
     <PreferenceCategory

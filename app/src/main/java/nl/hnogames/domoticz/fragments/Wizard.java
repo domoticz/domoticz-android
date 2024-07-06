@@ -161,7 +161,7 @@ public class Wizard extends Fragment {
         theme.resolveAttribute(R.attr.wizardCardColor, cardValue, true);
         theme.resolveAttribute(R.attr.wizardTitleColor, titleValue, true);
 
-        int blueColor = ContextCompat.getColor(context, R.color.blue_600);
+        int blueColor = ContextCompat.getColor(context, com.ftinc.scoop.R.color.blue_600);
         int otherColor = cardValue.data;
         int titleColor = titleValue.data;
 
@@ -172,14 +172,14 @@ public class Wizard extends Fragment {
                         .setTag(WELCOME)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_welcome_card_layout)
+                        .setLayout(com.dexafree.materialList.R.layout.material_welcome_card_layout)
                         .setTitle(context.getString(R.string.wizard_welcome))
                         .setTitleColor(Color.WHITE)
                         .setDescription(context.getString(R.string.wizard_welcome_description))
                         .setDescriptionColor(Color.WHITE)
                         .setSubtitleColor(Color.WHITE)
                         .setBackgroundColor(blueColor)
-                        .addAction(R.id.ok_button, new WelcomeButtonAction(context)
+                        .addAction(com.dexafree.materialList.R.id.ok_button, new WelcomeButtonAction(context)
                                 .setText(context.getString(R.string.wizard_button_nice))
                                 .setTextColor(Color.WHITE)
                                 .setListener(new OnActionClickListener() {
@@ -195,21 +195,21 @@ public class Wizard extends Fragment {
                         .setTag(FAVORITE)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setBackgroundColor(otherColor)
                         .setTitle(context.getString(R.string.wizard_favorites))
                         .setTitleColor(titleColor)
                         .setDescription(context.getString(R.string.wizard_favorites_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_switches))
-                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.ftinc.scoop.R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Switches", true);
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_done))
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
@@ -226,21 +226,21 @@ public class Wizard extends Fragment {
                         .setTag(STARTUP)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_startup))
                         .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_startup_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.ftinc.scoop.R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_done))
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
@@ -257,21 +257,21 @@ public class Wizard extends Fragment {
                         .setTag(GEOFENCE)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_geo))
                         .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_geo_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.ftinc.scoop.R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_done))
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
@@ -288,21 +288,21 @@ public class Wizard extends Fragment {
                         .setTag(NFC)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_nfc))
                         .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_nfc_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.ftinc.scoop.R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_done))
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
@@ -319,20 +319,20 @@ public class Wizard extends Fragment {
                         .setTag(QRCODE)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_qrcode))
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_qrcode_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.ftinc.scoop.R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_done))
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
@@ -349,21 +349,21 @@ public class Wizard extends Fragment {
                         .setTag(BLUETOOTH)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.bluetooth))
                         .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_bluetooth_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.ftinc.scoop.R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_done))
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
@@ -380,20 +380,20 @@ public class Wizard extends Fragment {
                         .setTag(SPEECH)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_speech))
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_speech_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.ftinc.scoop.R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_done))
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
@@ -410,20 +410,20 @@ public class Wizard extends Fragment {
                         .setTag(BEACON)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.beacon))
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_beacon_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.ftinc.scoop.R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_done))
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
@@ -441,21 +441,21 @@ public class Wizard extends Fragment {
                         .setDismissible()
                         .withProvider(new CardProvider())
                         .setTitleColor(titleColor)
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_wear))
                         .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_wear_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.ftinc.scoop.R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_done))
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
@@ -472,21 +472,21 @@ public class Wizard extends Fragment {
                         .setTag(AUTO)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setBackgroundColor(otherColor)
                         .setTitle(context.getString(R.string.wizard_auto))
                         .setTitleColor(titleColor)
                         .setDescription(context.getString(R.string.wizard_auto_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.ftinc.scoop.R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_done))
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
@@ -503,14 +503,14 @@ public class Wizard extends Fragment {
                         .setTag(LANGUAGE)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setBackgroundColor(otherColor)
                         .setTitle(context.getString(R.string.category_help))
                         .setTitleColor(titleColor)
                         .setDescription(context.getString(R.string.translate_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.ok))
-                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.ftinc.scoop.R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
@@ -519,7 +519,7 @@ public class Wizard extends Fragment {
                                         startActivity(i);
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_done))
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
@@ -536,21 +536,21 @@ public class Wizard extends Fragment {
                         .setTag(NOTIFICATIONS)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_notifications))
                         .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_notifications_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.ftinc.scoop.R.color.blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_done))
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
@@ -567,21 +567,21 @@ public class Wizard extends Fragment {
                         .setTag(MULTISERVER)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_multiserver))
                         .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_multiserver_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_settings))
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.afollestad.materialdialogs.R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         startActivityForResult(new Intent(context, SettingsActivity.class), iSettingsResultCode);
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_done))
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
@@ -598,21 +598,21 @@ public class Wizard extends Fragment {
                         .setTag(GRAPH)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_graph))
                         .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_graph_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_utilities))
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.afollestad.materialdialogs.R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Utilities", true);
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_done))
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
@@ -629,21 +629,21 @@ public class Wizard extends Fragment {
                         .setTag(FILTER)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_filter))
                         .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_filter_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_nice))
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.afollestad.materialdialogs.R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
                                         ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Switches", true);
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_done))
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
@@ -660,14 +660,14 @@ public class Wizard extends Fragment {
                         .setTag(TASKER)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.category_tasker))
                         .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_widgets_tasker))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.ok))
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.afollestad.materialdialogs.R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
@@ -680,7 +680,7 @@ public class Wizard extends Fragment {
                                         card.dismiss();
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.cancel))
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
@@ -697,14 +697,14 @@ public class Wizard extends Fragment {
                         .setTag(WIDGETS)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_widgets))
                         .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_widgets_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText("")
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.afollestad.materialdialogs.R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
@@ -712,7 +712,7 @@ public class Wizard extends Fragment {
 
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_done))
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {
@@ -729,14 +729,14 @@ public class Wizard extends Fragment {
                         .setTag(FINISH)
                         .setDismissible()
                         .withProvider(new CardProvider())
-                        .setLayout(R.layout.material_basic_buttons_card)
+                        .setLayout(com.dexafree.materialList.R.layout.material_basic_buttons_card)
                         .setTitle(context.getString(R.string.wizard_menuitem))
                         .setTitleColor(titleColor)
                         .setBackgroundColor(otherColor)
                         .setDescription(context.getString(R.string.wizard_menuitem_description))
-                        .addAction(R.id.left_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.left_text_button, new TextViewAction(context)
                                 .setText(context.getString(R.string.wizard_button_wizard))
-                                .setTextColor(ContextCompat.getColor(context, R.color.md_material_blue_600))
+                                .setTextColor(ContextCompat.getColor(context, com.afollestad.materialdialogs.R.color.md_material_blue_600))
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
@@ -746,7 +746,7 @@ public class Wizard extends Fragment {
                                         ((MainActivity) getActivity()).changeFragment("nl.hnogames.domoticz.Fragments.Dashboard", true);
                                     }
                                 }))
-                        .addAction(R.id.right_text_button, new TextViewAction(context)
+                        .addAction(com.dexafree.materialList.R.id.right_text_button, new TextViewAction(context)
                                 .setText("")
                                 .setTextColor(ContextCompat.getColor(context, R.color.material_orange_600))
                                 .setListener(new OnActionClickListener() {

@@ -82,8 +82,6 @@ public class ServerInfo {
     private boolean LOCAL_SERVER_AUTHENTICATION_METHOD = false;
     @Expose
     private Set<String> LOCAL_SERVER_SSID;
-    @Expose
-    private boolean DETECTV2URLS = false;
 
     /* Saved in a separate file because GSON can't serialize this */
     private ServerUpdateInfo serverUpdateInfo;
@@ -171,12 +169,6 @@ public class ServerInfo {
         REMOTE_SERVER_SECURE = remoteServerSecure;
     }
 
-    public boolean getIsV2ApiDetected() {
-        return DETECTV2URLS;
-    }
-    public void setIsV2ApiDetected(boolean detected) {
-        DETECTV2URLS = detected;
-    }
     public String getRemoteServerAuthenticationMethod() {
         String method;
         if (REMOTE_SERVER_AUTHENTICATION_METHOD)

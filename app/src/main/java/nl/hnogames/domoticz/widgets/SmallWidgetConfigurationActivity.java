@@ -1,30 +1,10 @@
-/*
- * Copyright (C) 2015 Domoticz - Mark Heinis
- *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- */
-
 package nl.hnogames.domoticz.widgets;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 import android.appwidget.AppWidgetManager;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -54,6 +34,8 @@ import nl.hnogames.domoticz.ui.PasswordDialog;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
+import nl.hnogames.domoticz.widgets.database.WidgetContract;
+import nl.hnogames.domoticz.widgets.database.WidgetDbHelper;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
@@ -73,6 +55,7 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
     private WidgetsAdapter adapter;
     private SearchView searchViewAction;
     private Toolbar toolbar;
+    private WidgetDbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +68,7 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
 
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
+        mDbHelper = new WidgetDbHelper(this);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         this.setTitle(getString(R.string.pick_device_title));
@@ -109,15 +93,13 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null && resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case iWelcomeResultCode:
-                    Bundle res = data.getExtras();
-                    if (!res.getBoolean("RESULT", false))
-                        this.finish();
-                    else {
-                        initListViews();
-                    }
-                    break;
+            if (requestCode == iWelcomeResultCode) {
+                Bundle res = data.getExtras();
+                if (!res.getBoolean("RESULT", false))
+                    this.finish();
+                else {
+                    initListViews();
+                }
             }
         }
     }
@@ -128,27 +110,21 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
             StaticHelper.getDomoticz(SmallWidgetConfigurationActivity.this).getDevices(new DevicesReceiver() {
                 @Override
                 public void onReceiveDevices(final ArrayList<DevicesInfo> mDevicesInfo) {
-                    ArrayList<DevicesInfo> mNewDevicesInfo = new ArrayList<DevicesInfo>();
-                    for (DevicesInfo d : mDevicesInfo) {
-                        if (SmallWidgetSupported(d))
-                            mNewDevicesInfo.add(d);
-                    }
-
                     if (mSharedPrefs.isSpeechEnabled()) {
                         DevicesInfo oVoiceRow = new DevicesInfo();
                         oVoiceRow.setIdx(iVoiceAction);
                         oVoiceRow.setName(SmallWidgetConfigurationActivity.this.getString(R.string.action_speech));
-                        mNewDevicesInfo.add(0, oVoiceRow);
+                        mDevicesInfo.add(0, oVoiceRow);
                     }
                     if (mSharedPrefs.isQRCodeEnabled()) {
                         DevicesInfo oQRCodeRow = new DevicesInfo();
                         oQRCodeRow.setIdx(iQRCodeAction);
                         oQRCodeRow.setName(SmallWidgetConfigurationActivity.this.getString(R.string.action_qrcode_scan));
-                        mNewDevicesInfo.add(0, oQRCodeRow);
+                        mDevicesInfo.add(0, oQRCodeRow);
                     }
 
                     ListView listView = findViewById(R.id.list);
-                    adapter = new WidgetsAdapter(SmallWidgetConfigurationActivity.this, StaticHelper.getDomoticz(SmallWidgetConfigurationActivity.this), mNewDevicesInfo);
+                    adapter = new WidgetsAdapter(SmallWidgetConfigurationActivity.this, StaticHelper.getDomoticz(SmallWidgetConfigurationActivity.this), mDevicesInfo);
                     listView.setOnItemClickListener((parent, view, position, id) -> {
                         if (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated()) {
                             UsefulBits.showSnackbarWithAction(SmallWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.wizard_widgets) + " " + getString(R.string.premium_feature), Snackbar.LENGTH_LONG, null,
@@ -252,22 +228,24 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
         Bundle extras = intent.getExtras();
         int idx = mSelectedSwitch.getIdx();
         if (extras != null) {
-            mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
-                    INVALID_APPWIDGET_ID);
+            mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
 
+            ContentValues values = new ContentValues();
             if (UsefulBits.isEmpty(mSelectedSwitch.getType())) {
-                Log.i(TAG, "Widget without a type saved");
-                mSharedPrefs.setSmallWidgetIDX(mAppWidgetId, idx, false, password, value, layoutId);
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_IDX, idx);
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_IS_SCENE, false);
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_PASSWORD, password);
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID, layoutId);
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_VALUE, value);
             } else {
-                if (mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.SCENE)) {
-                    Log.i(TAG, "Widget Scene saved " + mSelectedSwitch.getType());
-                    mSharedPrefs.setSmallWidgetIDX(mAppWidgetId, idx, true, password, value, layoutId);
-                } else {
-                    Log.i(TAG, "Widget saved " + mSelectedSwitch.getType());
-                    mSharedPrefs.setSmallWidgetIDX(mAppWidgetId, idx, false, password, value, layoutId);
-                }
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_IDX, idx);
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_IS_SCENE, mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.SCENE));
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_PASSWORD, password);
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID, layoutId);
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_VALUE, value);
             }
 
+            mDbHelper.saveWidgetConfiguration(mAppWidgetId, values);
             Intent startService = new Intent(SmallWidgetConfigurationActivity.this,
                     WidgetProviderSmall.UpdateWidgetService.class);
             startService.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
@@ -311,36 +289,5 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
             }
         });
         return super.onCreateOptionsMenu(menu);
-    }
-
-    private boolean SmallWidgetSupported(DevicesInfo s) {
-        if (s != null) {
-            if (s.getSwitchTypeVal() == 0 &&
-                    (UsefulBits.isEmpty(s.getSwitchType()))) {
-                switch (s.getType()) {
-                    case DomoticzValues.Scene.Type.SCENE:
-                    case DomoticzValues.Scene.Type.GROUP:
-                        return true;
-                }
-            } else if (s.getSwitchTypeVal() == 0 &&
-                    (s.getSwitchType().equals(DomoticzValues.Device.Type.Name.SECURITY))) {
-                return false; //security panel is not supported for small widgets
-            } else {
-                switch (s.getSwitchTypeVal()) {
-                    case DomoticzValues.Device.Type.Value.ON_OFF:
-                    case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
-                    case DomoticzValues.Device.Type.Value.DOORCONTACT:
-                    case DomoticzValues.Device.Type.Value.X10SIREN:
-                    case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
-                    case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
-                    case DomoticzValues.Device.Type.Value.DOORBELL:
-                    case DomoticzValues.Device.Type.Value.PUSH_OFF_BUTTON:
-                    case DomoticzValues.Device.Type.Value.DIMMER:
-                    case DomoticzValues.Device.Type.Value.SELECTOR:
-                        return true;
-                }
-            }
-        }
-        return false;
     }
 }

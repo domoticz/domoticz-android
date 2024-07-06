@@ -108,7 +108,6 @@ public class WifiSettingsActivity extends AppCompatPermissionsActivity implement
         try {
             if (!wisefy.isWifiEnabled()) {
                 UsefulBits.showSnackbar(WifiSettingsActivity.this, coordinatorLayout, R.string.wifi_turned_off, Snackbar.LENGTH_SHORT);
-                return;
             }
         } catch (Exception ignored) {
         }
@@ -137,8 +136,10 @@ public class WifiSettingsActivity extends AppCompatPermissionsActivity implement
                             boolean newTagFound = true;
                             if (WifiList != null && WifiList.size() > 0) {
                                 for (WifiInfo n : WifiList) {
-                                    if (n.getSSID().equals(SSID))
+                                    if (n.getSSID().equals(SSID)) {
                                         newTagFound = false;
+                                        break;
+                                    }
                                 }
                             }
 

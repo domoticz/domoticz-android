@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Handler;
 import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -572,6 +573,17 @@ public class UsefulBits {
                 }
             }
         } catch (Exception ex) {
+        }
+    }
+
+    public static void showPremiumToast(Context context, final String category) {
+        try {
+            new Handler().postDelayed(() -> {
+                String message = category + " " + context.getString(R.string.premium_feature);
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            }, (300));
+        } catch (Exception ex) {
+            Log.e(TAG, "No Toast shown: " + ex.getMessage());
         }
     }
 

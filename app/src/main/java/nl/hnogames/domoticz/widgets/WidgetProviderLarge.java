@@ -1,24 +1,3 @@
-/*
- * Copyright (C) 2015 Domoticz - Mark Heinis
- *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- */
-
 package nl.hnogames.domoticz.widgets;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
@@ -28,7 +7,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -40,12 +19,14 @@ import android.widget.RemoteViews;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.NotificationUtil;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticz.widgets.database.WidgetContract;
+import nl.hnogames.domoticz.widgets.database.WidgetDbHelper;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.DomoticzIcons;
@@ -56,15 +37,14 @@ import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
 public class WidgetProviderLarge extends AppWidgetProvider {
     private static final int iVoiceAction = -55;
     private static final int iQRCodeAction = -66;
-
     private static String packageName;
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
+        WidgetDbHelper dbHelper = new WidgetDbHelper(context);
         for (int widgetId : appWidgetIds) {
-            SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
-            mSharedPrefs.deleteWidget(widgetId, mSharedPrefs.getWidgetisScene(widgetId));
+            dbHelper.deleteWidgetConfiguration(widgetId);
         }
     }
 
@@ -73,24 +53,35 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                          int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         packageName = context.getPackageName();
+        Log.d("WidgetProviderLarge", "onUpdate called with widgetIds: " + Arrays.toString(appWidgetIds));
 
-        ComponentName thisWidget = new ComponentName(context,
-                WidgetProviderLarge.class);
-        int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+        WidgetDbHelper dbHelper = new WidgetDbHelper(context);
 
         try {
-            if (allWidgetIds != null) {
-                for (int mAppWidgetId : allWidgetIds) {
-                    Intent intent = new Intent(context, UpdateWidgetService.class);
-                    intent.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
-                    intent.setAction("FROM WIDGET PROVIDER");
+            for (int widgetId : appWidgetIds) {
+                ContentValues values = dbHelper.getWidgetConfiguration(widgetId);
+                int idx = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_IDX);
+                int layoutId = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID);
+
+                // Start the update service with retrieved configuration
+                Intent intent = new Intent(context, UpdateWidgetService.class);
+                intent.putExtra(EXTRA_APPWIDGET_ID, widgetId);
+                intent.putExtra("IDX", idx); // Pass IDX to UpdateWidgetService
+                intent.putExtra("LAYOUT_ID", layoutId); // Pass layout ID to UpdateWidgetService
+                intent.setAction("FROM WIDGET PROVIDER");
+
+                try {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         context.startForegroundService(intent);
-                    } else
+                    } else {
                         context.startService(intent);
+                    }
+                } catch (Exception ex) {
+                    Log.e("WidgetProviderLarge", "Error starting service: " + ex.getMessage(), ex);
                 }
             }
         } catch (Exception ex) {
+            Log.e("WIDGET", ex.getMessage());
         }
     }
 
@@ -98,8 +89,6 @@ public class WidgetProviderLarge extends AppWidgetProvider {
         private static final int BUTTON_1 = 1;
         private static final int BUTTON_2 = 2;
         private static final int BUTTON_3 = 3;
-        private RemoteViews views;
-        private SharedPrefUtil mSharedPrefs;
 
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
@@ -107,17 +96,13 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                 this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this, "Widget"));
             }
 
-            try {
-                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this
-                        .getApplicationContext());
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+            int appWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
 
-                int incomingAppWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID,
-                        INVALID_APPWIDGET_ID);
-                if (incomingAppWidgetId != INVALID_APPWIDGET_ID) {
-                    updateAppWidget(appWidgetManager, incomingAppWidgetId);
-                }
-            } catch (Exception ex) {
-                Log.e("UpdateWidget", ex.toString());
+            if (appWidgetId != INVALID_APPWIDGET_ID) {
+                updateAppWidget(appWidgetManager, appWidgetId);
+            } else {
+                Log.e("UpdateWidgetService", "Invalid AppWidget ID");
             }
 
             stopSelf();
@@ -130,16 +115,17 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                 Log.i("WIDGET", "I am invalid");
                 return;
             }
-            if (mSharedPrefs == null)
-                mSharedPrefs = new SharedPrefUtil(this.getApplicationContext());
 
-            final int idx = mSharedPrefs.getWidgetIDX(appWidgetId);
-            views = new RemoteViews(packageName, mSharedPrefs.getWidgetLayout(appWidgetId));
+            WidgetDbHelper dbHelper = new WidgetDbHelper(getApplicationContext());
+            ContentValues values = dbHelper.getWidgetConfiguration(appWidgetId);
 
+            int idx = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_IDX);
             if (idx == iVoiceAction) {
+                int layoutId = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID);
+                RemoteViews views = new RemoteViews(packageName, layoutId);
                 views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.Speech_desc));
                 views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_speech));
-                views.setImageViewResource(R.id.rowIcon, R.drawable.mic);
+                views.setImageViewResource(R.id.rowIcon, nl.hnogames.domoticzapi.R.drawable.mic);
                 views.setTextViewText(R.id.on_button, "GO");
                 views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
                         UpdateWidgetService.this,
@@ -150,9 +136,11 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                 views.setViewVisibility(R.id.on_button, View.VISIBLE);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             } else if (idx == iQRCodeAction) {
+                int layoutId = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID);
+                RemoteViews views = new RemoteViews(packageName, layoutId);
                 views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.qrcode_desc));
                 views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_qrcode_scan));
-                views.setImageViewResource(R.id.rowIcon, R.drawable.qrcode);
+                views.setImageViewResource(R.id.rowIcon, nl.hnogames.domoticzapi.R.drawable.qrcode);
                 views.setTextViewText(R.id.on_button, "GO");
                 views.setOnClickPendingIntent(R.id.on_button, buildButtonPendingIntent(
                         UpdateWidgetService.this,
@@ -163,8 +151,10 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                 views.setViewVisibility(R.id.on_button, View.VISIBLE);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             } else {
+                int layoutId = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID);
+                RemoteViews views = new RemoteViews(packageName, layoutId);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
-                final boolean isScene = mSharedPrefs.getWidgetisScene(appWidgetId);
+                final boolean isScene = values.getAsBoolean(WidgetContract.WidgetEntry.COLUMN_WIDGET_IS_SCENE);
                 if (!isScene) {
                     StaticHelper.getDomoticz(getApplicationContext()).getDevice(new DevicesReceiver() {
                         @Override
@@ -174,7 +164,8 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         @Override
                         public void onReceiveDevice(DevicesInfo s) {
                             if (s != null) {
-                                views = new RemoteViews(packageName, mSharedPrefs.getWidgetLayout(appWidgetId));
+                                int layoutId = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID);
+                                RemoteViews views = new RemoteViews(packageName, layoutId);
 
                                 int withButtons = withButtons(s);
                                 String text = s.getData();
@@ -268,7 +259,8 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                         @Override
                         public void onReceiveScene(SceneInfo s) {
                             if (s != null) {
-                                views = new RemoteViews(packageName, mSharedPrefs.getWidgetLayout(appWidgetId));
+                                int layoutId = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID);
+                                RemoteViews views = new RemoteViews(packageName, layoutId);
 
                                 if (s.getStatusInString() != null) {
                                     if (s.getType().equals(DomoticzValues.Scene.Type.SCENE)) {

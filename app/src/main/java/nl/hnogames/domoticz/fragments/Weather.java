@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -32,6 +31,7 @@ import android.widget.LinearLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.reflect.TypeToken;
 
 import org.json.JSONObject;
 
@@ -59,7 +59,6 @@ import nl.hnogames.domoticzapi.Containers.WeatherInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.WeatherReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmentListener, WeatherClickListener {
 
@@ -76,7 +75,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
 
     @Override
     public void onConnectionFailed() {
-        new GetCachedDataTask().execute();
+        GetWeather();
     }
 
 
@@ -174,7 +173,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
             if (mSwipeRefreshLayout != null)
                 mSwipeRefreshLayout.setRefreshing(true);
 
-            new GetCachedDataTask().execute();
+            GetWeather();
         } catch (Exception ex) {
         }
     }
@@ -374,29 +373,12 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
         return clickedWeather;
     }
 
-
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<WeatherInfo> cacheWeathers = null;
-
-        protected Boolean doInBackground(Boolean... geto) {
-            if (mContext == null)
-                return false;
-            if (mPhoneConnectionUtil == null)
-                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
-            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
-                try {
-                    cacheWeathers = (ArrayList<WeatherInfo>) SerializableManager.readSerializedObject(mContext, "Weathers");
-                } catch (Exception ex) {
-                }
+    public void GetWeather() {
+        SerializableManager.readSerializedObject(mContext, "Weathers", new TypeToken<ArrayList<WeatherInfo>>() {
+        }.getType(), (SerializableManager.JsonCacheCallback<ArrayList<WeatherInfo>>) mWeatherInfos -> {
+            if (mWeatherInfos != null) {
+                createListView(mWeatherInfos);
             }
-            return true;
-        }
-
-        protected void onPostExecute(Boolean result) {
-            if (mContext == null)
-                return;
-            if (cacheWeathers != null)
-                createListView(cacheWeathers);
 
             StaticHelper.getDomoticz(mContext).getWeathers(new WeatherReceiver() {
                 @Override
@@ -416,6 +398,6 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
                     errorHandling(error);
                 }
             });
-        }
+        });
     }
 }

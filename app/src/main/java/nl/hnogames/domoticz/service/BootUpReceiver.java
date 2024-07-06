@@ -35,6 +35,7 @@ public class BootUpReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (context == null)
             return;
+
         WidgetUtils.RefreshWidgets(context);
         startGeofenceService(context);
     }

@@ -22,7 +22,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/appwidget_bg_clickable"
     android:orientation="vertical">
 
@@ -36,8 +35,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:padding="8dp"
             android:background="@color/primary_dark"
+            android:padding="8dp"
             android:src="@drawable/lock_a" />
 
         <TextView

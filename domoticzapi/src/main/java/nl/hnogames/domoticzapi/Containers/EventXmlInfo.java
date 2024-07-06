@@ -29,8 +29,8 @@ import org.json.JSONObject;
 import java.io.Serializable;
 
 public class EventXmlInfo implements Comparable, Serializable {
-    private String jsonObject;
-    private int id;
+    private final String jsonObject;
+    private final int id;
     private String Name;
     private String Status;
     private String Xmlstatement;
@@ -59,10 +59,7 @@ public class EventXmlInfo implements Comparable, Serializable {
     }
 
     public boolean getStatusBoolean() {
-        if (getStatus().equals("1"))
-            return true;
-        else
-            return false;
+        return getStatus().equals("1");
     }
 
     public int getId() {

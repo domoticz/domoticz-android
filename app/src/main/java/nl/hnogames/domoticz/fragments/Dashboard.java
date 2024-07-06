@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -43,11 +42,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.reflect.TypeToken;
 import com.rubengees.easyheaderfooteradapter.EasyHeaderFooterAdapter;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,14 +79,12 @@ import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.PlanInfo;
 import nl.hnogames.domoticzapi.Containers.SunRiseInfo;
 import nl.hnogames.domoticzapi.Containers.UserInfo;
-import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.PlansReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SunRiseReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Dashboard extends DomoticzDashboardFragment implements DomoticzFragmentListener,
         switchesClickListener, OnPermissionCallback {
@@ -96,13 +92,12 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     public static final String PERMANENT_OVERRIDE = "PermanentOverride";
     public static final String AUTO = "Auto";
     private static final String TAG = Dashboard.class.getSimpleName();
-
+    private final int planID = 0;
+    private final String planName = "";
     private Context mContext;
     private DashboardAdapter adapter;
     private SmallPlansAdapter planAdapter;
     private ArrayList<DevicesInfo> extendedStatusSwitches;
-    private int planID = 0;
-    private String planName = "";
     private Parcelable state = null;
     private boolean busy = false;
     private String filter = "";
@@ -150,11 +145,6 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         super.onDestroyView();
     }
 
-    public void selectedPlan(int plan, String name) {
-        planID = plan;
-        planName = name;
-    }
-
     @Override
     public void Filter(String text) {
         filter = text;
@@ -187,7 +177,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
         if (getView() != null) {
             if (planName != null && planName.length() > 0)
-                setActionbar(planName + "");
+                setActionbar(planName);
             processDashboard();
         }
     }
@@ -205,7 +195,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             }
             if (mSwipeRefreshLayout != null)
                 mSwipeRefreshLayout.setRefreshing(true);
-            new GetCachedDataTask().execute();
+
+            GetDevices();
         } catch (Exception ex) {
         }
     }
@@ -301,6 +292,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 return filteredList;
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return supportedSwitches;
     }
@@ -368,6 +360,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 if (mSwitch != null && !UsefulBits.isEmpty(mSwitch.getSubType()))
                     infoDialog.setColorLight(mSwitch.getSubType().startsWith(DomoticzValues.Device.SubType.Name.RGB) || mSwitch.getSubType().startsWith(DomoticzValues.Device.SubType.Name.WW));
             } catch (Exception ex) {
+                ex.printStackTrace();
             }
             infoDialog.setLastUpdate(mSwitch.getLastUpdate());
             infoDialog.setSignalLevel(String.valueOf(mSwitch.getSignalLevel()));
@@ -823,16 +816,13 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
     @Override
     public void onThermostatClick(final DevicesInfo device) {
         addDebugText("onThermostatClick");
-        final DevicesInfo tempUtil = device;
-        if (tempUtil != null) {
-            TemperatureDialog tempDialog = new TemperatureDialog(
-                    mContext,
-                    tempUtil.getSetPoint());
-
+        if (device != null) {
+            TemperatureDialog tempDialog = new TemperatureDialog(mContext, device.getSetPoint(), device.hasStep(), device.getStep(),
+                    device.hasMax(), device.getMax(), device.hasMin(), device.getMin(), device.getVUnit());
             tempDialog.onDismissListener((newSetPoint, dialogAction) -> {
                 addDebugText("Set idx " + device.getIdx() + " to " + newSetPoint);
                 if (dialogAction == DialogAction.POSITIVE) {
-                    if (tempUtil.isProtected()) {
+                    if (device.isProtected()) {
                         PasswordDialog passwordDialog = new PasswordDialog(
                                 mContext, StaticHelper.getDomoticz(mContext));
                         passwordDialog.show();
@@ -841,7 +831,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                             public void onDismiss(final String password) {
                                 int jsonUrl = DomoticzValues.Json.Url.Set.TEMP;
                                 int action = DomoticzValues.Device.Thermostat.Action.PLUS;
-                                if (newSetPoint < tempUtil.getSetPoint())
+                                if (newSetPoint < device.getSetPoint())
                                     action = DomoticzValues.Device.Thermostat.Action.MIN;
                                 StaticHelper.getDomoticz(mContext).setAction(device.getIdx(), jsonUrl, action, newSetPoint, password,
                                         new setCommandReceiver() {
@@ -873,7 +863,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                     } else {
                         int jsonUrl = DomoticzValues.Json.Url.Set.TEMP;
                         int action = DomoticzValues.Device.Thermostat.Action.PLUS;
-                        if (newSetPoint < tempUtil.getSetPoint())
+                        if (newSetPoint < device.getSetPoint())
                             action = DomoticzValues.Device.Thermostat.Action.MIN;
                         StaticHelper.getDomoticz(mContext).setAction(device.getIdx(), jsonUrl, action, newSetPoint, null,
                                 new setCommandReceiver() {
@@ -907,35 +897,31 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
 
     public void onSetTemperatureClick(final DevicesInfo device) {
         addDebugText("onSetTemperatureClick");
-        final DevicesInfo tempUtil = device;
-        if (tempUtil != null) {
+        if (device != null) {
             final setCommandReceiver commandReceiver = new setCommandReceiver() {
                 @Override
-
                 public void onReceiveResult(String result) {
                     successHandling(result, false);
                     processDashboard();
                 }
 
                 @Override
-
                 public void onError(Exception error) {
                     errorHandling(error);
                 }
             };
 
-            final boolean evohomeZone = "evohome".equals(tempUtil.getHardwareName());
-
+            final boolean evohomeZone = "evohome".equals(device.getHardwareName());
             TemperatureDialog tempDialog;
             if (evohomeZone) {
                 tempDialog = new ScheduledTemperatureDialog(
                         mContext,
-                        tempUtil.getSetPoint(),
-                        !AUTO.equalsIgnoreCase(tempUtil.getStatus()));
+                        device.getSetPoint(), device.hasStep(),
+                        device.getStep(), device.hasMax(), device.getMax(), device.hasMin(), device.getMin(),
+                        !AUTO.equalsIgnoreCase(device.getStatus()), device.getVUnit());
             } else {
-                tempDialog = new TemperatureDialog(
-                        mContext,
-                        tempUtil.getSetPoint());
+                tempDialog = new TemperatureDialog(mContext, device.getSetPoint(), device.hasStep(), device.getStep(),
+                        device.hasMax(), device.getMax(), device.hasMin(), device.getMin(), device.getVUnit());
             }
 
             tempDialog.onDismissListener((newSetPoint, dialogAction) -> {
@@ -946,7 +932,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                             "&mode=" + PERMANENT_OVERRIDE;
 
                     // add query parameters
-                    StaticHelper.getDomoticz(mContext).setDeviceUsed(device.getIdx(), tempUtil.getName(), tempUtil.getDescription(), params, commandReceiver);
+                    StaticHelper.getDomoticz(mContext).setDeviceUsed(device.getIdx(), device.getName(), device.getDescription(), params, commandReceiver);
                 } else if (dialogAction == DialogAction.NEUTRAL && evohomeZone) {
                     addDebugText("Set idx " + device.getIdx() + " to Auto");
 
@@ -954,7 +940,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                             "&mode=" + AUTO;
 
                     // add query parameters
-                    StaticHelper.getDomoticz(mContext).setDeviceUsed(device.getIdx(), tempUtil.getName(), tempUtil.getDescription(), params, commandReceiver);
+                    StaticHelper.getDomoticz(mContext).setDeviceUsed(device.getIdx(), device.getName(), device.getDescription(), params, commandReceiver);
                 } else {
                     addDebugText("Not updating idx " + device.getIdx());
                 }
@@ -1014,7 +1000,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 .items(levelNames)
                 .itemsCallback((dialog, view, which, text) -> {
                     for (int i = 0; i < levelNames.length; i++) {
-                        if (levelNames[i].equals(text)) {
+                        if (levelNames[i].contentEquals(text)) {
                             onDimmerChange(device, i * 10, true);
                         }
                     }
@@ -1068,7 +1054,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                 }
 
                 @Override
-                public void onCancel() {}
+                public void onCancel() {
+                }
             });
         } else {
             SetThermostatMode(utility, mode, null);
@@ -1130,16 +1117,6 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
                         }
                     }
                 });
-    }
-
-    private DevicesInfo getSwitch(int idx) {
-        DevicesInfo clickedSwitch = null;
-        for (DevicesInfo mDevicesInfo : extendedStatusSwitches) {
-            if (mDevicesInfo.getIdx() == idx) {
-                clickedSwitch = mDevicesInfo;
-            }
-        }
-        return clickedSwitch;
     }
 
     @Override
@@ -1237,6 +1214,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             // Notify the adapter the data has changed
             adapter.notifyDataSetChanged();
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -1273,6 +1251,7 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
             String text = String.format(mContext.getString(R.string.set_level_switch),
                     clickedSwitch.getName(),
                     !selector ? (value) : ((value) / 10) + 1);
+
             UsefulBits.showSnackbar(mContext, frameLayout, text, Snackbar.LENGTH_SHORT);
             if (getActivity() instanceof MainActivity)
                 ((MainActivity) getActivity()).Talk(text);
@@ -1335,10 +1314,8 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
         String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_STORAGE_PERMS);
         StringBuilder builder = new StringBuilder(neededPermission.length);
-        if (neededPermission.length > 0) {
-            for (String permission : neededPermission) {
-                builder.append(permission).append("\n");
-            }
+        for (String permission : neededPermission) {
+            builder.append(permission).append("\n");
         }
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
                 getActivity().getString(R.string.permission_desc_storage), neededPermission);
@@ -1411,58 +1388,55 @@ public class Dashboard extends DomoticzDashboardFragment implements DomoticzFrag
         }
     }
 
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<DevicesInfo> cacheSwitches = null;
-
-        protected Boolean doInBackground(Boolean... geto) {
-            if (mContext == null)
-                return false;
-            if (mPhoneConnectionUtil == null)
-                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
-            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
-                try {
-                    cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Dashboard");
-                } catch (Exception ignored) {
-                }
-            }
-            return true;
-        }
-
-        protected void onPostExecute(Boolean result) {
-            if (mContext == null)
-                return;
-            if (cacheSwitches != null)
-                processDevices(cacheSwitches);
-
-            StaticHelper.getDomoticz(mContext).getDevices(new DevicesReceiver() {
-                @Override
-                public void onReceiveDevices(ArrayList<DevicesInfo> switches) {
-                    SerializableManager.saveSerializable(mContext, switches, "Dashboard");
-                    processDevices(switches);
-                }
-
-                @Override
-                public void onReceiveDevice(DevicesInfo mDevicesInfo) {
-                }
-
-                @Override
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            }, planID, null);
-
-            if (mSharedPrefs.addPlansToDashboard() && planID <= 0) {
-                StaticHelper.getDomoticz(mContext).getPlans(new PlansReceiver() {
+    public void GetDevices() {
+        SerializableManager.readSerializedObject(mContext, "Devices", new TypeToken<ArrayList<DevicesInfo>>() {
+        }.getType(), (SerializableManager.JsonCacheCallback<ArrayList<DevicesInfo>>) devices -> {
+            if (devices != null)
+                processDevices(devices);
+            try {
+                StaticHelper.getDomoticz(mContext).getDevices(new DevicesReceiver() {
                     @Override
-                    public void OnReceivePlans(ArrayList<PlanInfo> plans) {
-                        processPlans(plans);
+                    public void onReceiveDevices(ArrayList<DevicesInfo> devices1) {
+                        SerializableManager.saveSerializable(mContext, devices1, "Devices");
+                        processDevices(devices1);
+                    }
+
+                    @Override
+                    public void onReceiveDevice(DevicesInfo mDevicesInfo) {
                     }
 
                     @Override
                     public void onError(Exception error) {
+                        errorHandling(error);
                     }
-                });
+                }, planID, null);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        });
+
+        if (mSharedPrefs.addPlansToDashboard() && planID <= 0) {
+            SerializableManager.readSerializedObject(mContext, "Plans", new TypeToken<ArrayList<PlanInfo>>() {
+            }.getType(), (SerializableManager.JsonCacheCallback<ArrayList<PlanInfo>>) plans -> {
+                if (plans != null)
+                    processPlans(plans);
+
+                try {
+                    StaticHelper.getDomoticz(mContext).getPlans(new PlansReceiver() {
+                        @Override
+                        public void OnReceivePlans(ArrayList<PlanInfo> plans) {
+                            SerializableManager.saveSerializable(mContext, plans, "Plans");
+                            processPlans(plans);
+                        }
+
+                        @Override
+                        public void onError(Exception error) {
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         }
     }
 }

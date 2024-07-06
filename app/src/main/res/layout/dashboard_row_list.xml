@@ -21,11 +21,11 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:plainpie="http://schemas.android.com/apk/res-auto"
-    android:backgroundTint="?attr/listviewRowBackground"
     android:id="@+id/card_global_wrapper"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
+    android:backgroundTint="?attr/listviewRowBackground"
     android:orientation="vertical"
     app:cardCornerRadius="30dp"
     app:cardElevation="1dp">
@@ -38,19 +38,19 @@
         app:gnt_template_type="@layout/gnt_small_template_view" />
 
     <RelativeLayout
-        android:background="?attr/listviewRowBackground"
         android:id="@+id/contentWrapper"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?attr/listviewRowBackground">
 
         <ImageView
             android:id="@+id/dummyImg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:visibility="gone"
             android:scaleType="centerCrop"
             android:tintMode="src_atop"
+            android:visibility="gone"
             app:tint="?attr/listviewRowTintBackground" />
 
         <LinearLayout
@@ -71,18 +71,19 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/rowIcon"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="-8dp"
-                    android:layout_gravity="center_vertical"
-                    android:contentDescription="@string/error_image_description"
-                    android:paddingRight="5dp"
-                    android:visibility="gone"
-                    android:src="@drawable/clock48"
-                    app:tint="?attr/colorAccent" />
+                    <ImageView
+                        android:id="@+id/rowIcon"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="-8dp"
+                        android:contentDescription="@string/error_image_description"
+                        android:paddingRight="5dp"
+                        android:src="@drawable/clock48"
+                        android:visibility="gone"
+                        app:tint="?attr/colorAccent" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -138,9 +139,9 @@
                                     android:layout_below="@id/switch_battery_level"
                                     android:layout_marginBottom="5dp"
                                     android:text="@string/signal_level"
-                                    android:visibility="gone"
                                     android:textSize="8sp"
-                                    android:textStyle="italic" />
+                                    android:textStyle="italic"
+                                    android:visibility="gone" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -170,8 +171,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
-                                    android:background="@drawable/button_status"
                                     android:layout_gravity="right"
+                                    android:background="@drawable/button_status"
                                     android:text="@string/set_temperature"
                                     android:textColor="?attr/buttonTextColor"
                                     android:textSize="10dp" />
@@ -261,9 +262,9 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentRight="true"
                                         android:layout_centerVertical="true"
+                                        android:background="@drawable/button_status"
                                         android:text="@string/button_state_on"
                                         android:textColor="?attr/buttonTextColor"
-                                        android:background="@drawable/button_status"
                                         android:textSize="10dp" />
 
                                     <com.google.android.material.button.MaterialButton
@@ -271,9 +272,9 @@
                                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                         android:layout_width="60dp"
                                         android:layout_height="wrap_content"
-                                        android:background="@drawable/button_status"
                                         android:layout_marginLeft="7dp"
                                         android:layout_weight="1"
+                                        android:background="@drawable/button_status"
                                         android:text="@string/button_state_off"
                                         android:textColor="?attr/buttonTextColor"
                                         android:textSize="10dp" />
@@ -329,13 +330,14 @@
             android:layout_margin="16dp"
             android:src="@drawable/baseline_fullscreen_white_24"
             app:tint="@color/md_grey_300" />
+
         <ImageView
             android:id="@+id/widget_info_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|start"
-            android:visibility="gone"
             android:src="@drawable/outline_info_black_18"
+            android:visibility="gone"
             app:tint="@color/md_grey_300" />
 
     </RelativeLayout>

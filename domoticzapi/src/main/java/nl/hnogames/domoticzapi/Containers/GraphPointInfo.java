@@ -30,9 +30,9 @@ import org.json.JSONObject;
 @SuppressWarnings("unused")
 public class GraphPointInfo {
 
+    private final JSONObject jsonObject;
     boolean hasTemperatureRange = false;
     boolean hasPercentageRange = false;
-    private JSONObject jsonObject;
     private String dateTime;
     private String hu;
     private String ba;

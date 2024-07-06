@@ -124,8 +124,10 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
                     boolean newTagFound = true;
                     if (BluetoothList != null && BluetoothList.size() > 0) {
                         for (BluetoothInfo n : BluetoothList) {
-                            if (n.getId().equals(Bluetooth_ID))
+                            if (n.getId().equals(Bluetooth_ID)) {
                                 newTagFound = false;
+                                break;
+                            }
                         }
                     }
 

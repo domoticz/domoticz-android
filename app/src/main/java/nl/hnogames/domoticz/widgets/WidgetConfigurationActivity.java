@@ -1,30 +1,10 @@
-/*
- * Copyright (C) 2015 Domoticz - Mark Heinis
- *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- */
-
 package nl.hnogames.domoticz.widgets;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 import android.appwidget.AppWidgetManager;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -54,6 +34,8 @@ import nl.hnogames.domoticz.ui.PasswordDialog;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
+import nl.hnogames.domoticz.widgets.database.WidgetContract;
+import nl.hnogames.domoticz.widgets.database.WidgetDbHelper;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
@@ -73,6 +55,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
     private WidgetsAdapter adapter;
     private SearchView searchViewAction;
     private Toolbar toolbar;
+    private WidgetDbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +67,7 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         setResult(RESULT_CANCELED);
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
+        mDbHelper = new WidgetDbHelper(this);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         this.setTitle(getString(R.string.pick_device_title));
@@ -271,26 +255,30 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         int idx = mSelectedSwitch.getIdx();
+
         if (extras != null) {
-            mAppWidgetId = extras.getInt(EXTRA_APPWIDGET_ID,
-                    INVALID_APPWIDGET_ID);
+            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            ContentValues values = new ContentValues();
             if (UsefulBits.isEmpty(mSelectedSwitch.getType())) {
-                Log.i(TAG, "Widget without a type saved");
-                mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password, value, layoutId);
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_IDX, idx);
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_IS_SCENE, false);
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_PASSWORD, password);
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID, layoutId);
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_VALUE, value);
             } else {
-                if (mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.SCENE)) {
-                    Log.i(TAG, "Widget Scene saved " + mSelectedSwitch.getType());
-                    mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, true, password, value, layoutId);
-                } else {
-                    Log.i(TAG, "Widget saved " + mSelectedSwitch.getType());
-                    mSharedPrefs.setWidgetIDX(mAppWidgetId, idx, false, password, value, layoutId);
-                }
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_IDX, idx);
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_IS_SCENE, mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.GROUP) || mSelectedSwitch.getType().equals(DomoticzValues.Scene.Type.SCENE));
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_PASSWORD, password);
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID, layoutId);
+                values.put(WidgetContract.WidgetEntry.COLUMN_WIDGET_VALUE, value);
             }
-            Intent startService = new Intent(WidgetConfigurationActivity.this,
-                    WidgetProviderLarge.UpdateWidgetService.class);
+
+            mDbHelper.saveWidgetConfiguration(mAppWidgetId, values);
+            Intent startService = new Intent(WidgetConfigurationActivity.this, WidgetProviderLarge.UpdateWidgetService.class);
             startService.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
             startService.setAction("FROM CONFIGURATION ACTIVITY");
             startService(startService);
+
             setResult(RESULT_OK, startService);
             finish();
         }

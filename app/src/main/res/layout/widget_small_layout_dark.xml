@@ -17,11 +17,11 @@
         <ImageView
             android:id="@+id/rowIcon"
             android:layout_width="40dp"
-            android:padding="8dp"
             android:layout_height="40dp"
             android:layout_centerHorizontal="true"
-            app:tint="?attr/colorAccent"
-            android:src="@drawable/bulb"  />
+            android:padding="8dp"
+            android:src="@drawable/bulb"
+            app:tint="?attr/colorAccent" />
 
         <TextView
             android:id="@+id/title"
@@ -34,13 +34,13 @@
 
         <TextView
             android:id="@+id/desc"
-            android:textSize="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/title"
             android:layout_centerHorizontal="true"
             android:clickable="false"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="12dp" />
 
     </RelativeLayout>
 </LinearLayout>

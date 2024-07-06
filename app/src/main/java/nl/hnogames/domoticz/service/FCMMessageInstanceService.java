@@ -18,18 +18,21 @@ import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 
 public class FCMMessageInstanceService extends FirebaseMessagingService {
+    private static final String TAG = "FCMMessageInstanceService";
 
-    public FCMMessageInstanceService() {
-        super();
+    @Override
+    public void onCreate() {
+        super.onCreate();
     }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        Log.d(TAG, "Received onMessageReceived()");
         if (remoteMessage == null)
             return;
 
         Map data = remoteMessage.getData();
-        Log.d("GCM", "Message Received: " + data);
+        Log.d(TAG, "Message Received: " + data);
 
         if (data.containsKey("message")) {
             String message = decode(data.containsKey("message") ? data.get("message").toString() : "");
@@ -43,8 +46,7 @@ public class FCMMessageInstanceService extends FirebaseMessagingService {
                     prio = Integer.valueOf(priority);
             }
 
-            if (!UsefulBits.isEmpty(subject) && !UsefulBits.isEmpty(body) &&
-                    !body.equals(subject)) {
+            if (!UsefulBits.isEmpty(subject) && !UsefulBits.isEmpty(body) && !body.equals(subject)) {
                 String deviceId = decode(data.containsKey("deviceid") ? data.get("deviceid").toString() : "");
                 if (!UsefulBits.isEmpty(deviceId) && isDigitsOnly(deviceId) && Integer.valueOf(deviceId) > 0)
                     NotificationUtil.sendSimpleNotification(new NotificationInfo(Integer.valueOf(deviceId), subject, body, prio, new Date()), this);
@@ -60,7 +62,7 @@ public class FCMMessageInstanceService extends FirebaseMessagingService {
             try {
                 return URLDecoder.decode(str, "UTF-8");
             } catch (Exception e) {
-                Log.i("GCM", "text not decoded: " + str);
+                Log.i(TAG, "text not decoded: " + str);
             }
         }
         return str;
@@ -69,7 +71,7 @@ public class FCMMessageInstanceService extends FirebaseMessagingService {
     @Override
     public void onNewToken(String token) {
         super.onNewToken(token);
-        Log.d("GCM", "Refreshed token: " + token);
+        Log.d(TAG, "Refreshed token: " + token);
         GCMUtils.sendRegistrationIdToBackend(this, token);
     }
 }

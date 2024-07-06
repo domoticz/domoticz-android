@@ -1,24 +1,3 @@
-/*
- * Copyright (C) 2015 Domoticz - Mark Heinis
- *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- */
-
 package nl.hnogames.domoticz.widgets;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
@@ -29,6 +8,7 @@ import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -39,12 +19,15 @@ import android.widget.RemoteViews;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticz.widgets.database.WidgetContract;
+import nl.hnogames.domoticz.widgets.database.WidgetDbHelper;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.DomoticzIcons;
@@ -60,43 +43,54 @@ public class WidgetProviderSmall extends AppWidgetProvider {
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
+        WidgetDbHelper dbHelper = new WidgetDbHelper(context);
         for (int widgetId : appWidgetIds) {
-            SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
-            mSharedPrefs.deleteSmallWidget(widgetId, mSharedPrefs.getWidgetisScene(widgetId));
+            dbHelper.deleteWidgetConfiguration(widgetId);
         }
     }
 
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-                         int[] appWidgetIds) {
-
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-
         packageName = context.getPackageName();
-        // Get all ids
-        ComponentName thisWidget = new ComponentName(context,
-                WidgetProviderSmall.class);
-        int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-        if (allWidgetIds != null) {
-            for (int mAppWidgetId : allWidgetIds) {
-                Intent intent = new Intent(context, UpdateWidgetService.class);
-                intent.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
-                intent.setAction("FROM WIDGET PROVIDER");
-                try {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        context.startForegroundService(intent);
-                    } else
-                        context.startService(intent);
-                } catch (Exception ex) {
+        Log.d("WidgetProviderSmall", "onUpdate called with widgetIds: " + Arrays.toString(appWidgetIds));
+        WidgetDbHelper dbHelper = new WidgetDbHelper(context);
+
+        try {
+            if (appWidgetIds != null) {
+                for (int widgetId : appWidgetIds) {
+                    ContentValues values = dbHelper.getWidgetConfiguration(widgetId);
+                    if (values != null) {
+                        int idx = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_IDX);
+                        int layoutId = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID);
+
+                        Intent intent = new Intent(context, UpdateWidgetService.class);
+                        intent.putExtra(EXTRA_APPWIDGET_ID, widgetId);
+                        intent.putExtra("IDX", idx); // Pass IDX to UpdateWidgetService
+                        intent.putExtra("LAYOUT_ID", layoutId); // Pass layout ID to UpdateWidgetService
+                        intent.setAction("FROM WIDGET PROVIDER");
+
+                        try {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                context.startForegroundService(intent);
+                            } else {
+                                context.startService(intent);
+                            }
+                        } catch (Exception ex) {
+                            Log.e("WidgetProviderSmall", "Error starting service: " + ex.getMessage(), ex);
+                        }
+                    } else {
+                        Log.e("WidgetProviderSmall", "No widget configuration found for widgetId: " + widgetId);
+                    }
                 }
             }
+        } catch (Exception ex) {
+            Log.e("WidgetProviderSmall", ex.getMessage(), ex);
         }
     }
 
     public static class UpdateWidgetService extends Service {
         private static final int WITHBUTTON = 1;
-        private RemoteViews views;
-        private SharedPrefUtil mSharedPrefs;
 
         @Nullable
         @Override
@@ -110,56 +104,52 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                 this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this, "Widget"));
             }
 
-            AppWidgetManager appWidgetManager = AppWidgetManager
-                    .getInstance(UpdateWidgetService.this);
+            if (intent != null) {
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+                int appWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
 
-            try {
-                int incomingAppWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID,
-                        INVALID_APPWIDGET_ID);
-                if (incomingAppWidgetId != INVALID_APPWIDGET_ID) {
-                    try {
-                        updateAppWidget(appWidgetManager, incomingAppWidgetId);
-                    } catch (NullPointerException e) {
-                        if (!UsefulBits.isEmpty(e.getMessage()))
-                            Log.e(WidgetProviderSmall.class.getSimpleName() + "@onStartCommand", e.getMessage());
-                    }
+                if (appWidgetId != INVALID_APPWIDGET_ID) {
+                    updateAppWidget(appWidgetManager, appWidgetId);
+                } else {
+                    Log.e("UpdateWidgetService", "Invalid AppWidget ID");
                 }
-
-            } catch (Exception ex) {
-                Log.e("UpdateWidget", ex.toString());
+            } else {
+                Log.e("UpdateWidgetService", "Intent is null");
             }
 
             stopSelf();
             return START_NOT_STICKY;
         }
 
-        public void updateAppWidget(final AppWidgetManager appWidgetManager,
-                                    final int appWidgetId) {
+        public void updateAppWidget(final AppWidgetManager appWidgetManager, final int appWidgetId) {
             if (appWidgetId == INVALID_APPWIDGET_ID) {
-                Log.i("WIDGET", "I am invalid");
+                Log.i("UpdateWidgetService", "Invalid AppWidget ID");
                 return;
             }
 
-            if (mSharedPrefs == null)
-                mSharedPrefs = new SharedPrefUtil(this.getApplicationContext());
+            WidgetDbHelper dbHelper = new WidgetDbHelper(getApplicationContext());
+            ContentValues values = dbHelper.getWidgetConfiguration(appWidgetId);
 
-            final int idx = mSharedPrefs.getSmallWidgetIDX(appWidgetId);
-            views = new RemoteViews(packageName, mSharedPrefs.getSmallWidgetLayout(appWidgetId));
-            if (idx == iVoiceAction) {
-                views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.Speech_desc));
-                views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_speech));
-                views.setImageViewResource(R.id.rowIcon, R.drawable.mic);
-                views.setOnClickPendingIntent(R.id.rowIcon, buildButtonPendingIntent(
-                        UpdateWidgetService.this,
-                        appWidgetId,
-                        idx,
-                        false,
-                        true));
-                appWidgetManager.updateAppWidget(appWidgetId, views);
-            } else if (idx == iQRCodeAction) {
-                views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.qrcode_desc));
-                views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_qrcode_scan));
-                views.setImageViewResource(R.id.rowIcon, R.drawable.qrcode);
+            if (values == null) {
+                Log.e("UpdateWidgetService", "No configuration found for appWidgetId: " + appWidgetId);
+                return;
+            }
+
+            int idx = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_IDX);
+            if (idx == iVoiceAction || idx == iQRCodeAction) {
+                int layoutId = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID);
+                RemoteViews views = new RemoteViews(packageName, layoutId);
+
+                if (idx == iVoiceAction) {
+                    views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.Speech_desc));
+                    views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_speech));
+                    views.setImageViewResource(R.id.rowIcon, nl.hnogames.domoticzapi.R.drawable.mic);
+                } else if (idx == iQRCodeAction) {
+                    views.setTextViewText(R.id.desc, getApplicationContext().getString(R.string.qrcode_desc));
+                    views.setTextViewText(R.id.title, getApplicationContext().getString(R.string.action_qrcode_scan));
+                    views.setImageViewResource(R.id.rowIcon, nl.hnogames.domoticzapi.R.drawable.qrcode);
+                }
+
                 views.setOnClickPendingIntent(R.id.rowIcon, buildButtonPendingIntent(
                         UpdateWidgetService.this,
                         appWidgetId,
@@ -168,8 +158,11 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                         true));
                 appWidgetManager.updateAppWidget(appWidgetId, views);
             } else {
+                int layoutId = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID);
+                RemoteViews views = new RemoteViews(packageName, layoutId);
                 appWidgetManager.updateAppWidget(appWidgetId, views);
-                final boolean isScene = mSharedPrefs.getSmallWidgetisScene(appWidgetId);
+                final boolean isScene = values.getAsBoolean(WidgetContract.WidgetEntry.COLUMN_WIDGET_IS_SCENE);
+
                 if (!isScene) {
                     StaticHelper.getDomoticz(getApplicationContext()).getDevice(new DevicesReceiver() {
                         @Override
@@ -179,7 +172,9 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                         @Override
                         public void onReceiveDevice(DevicesInfo s) {
                             if (s != null) {
-                                views = new RemoteViews(packageName, mSharedPrefs.getSmallWidgetLayout(appWidgetId));
+                                int layoutId = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID);
+                                RemoteViews views = new RemoteViews(packageName, layoutId);
+
                                 int withButtons = withButtons(s);
                                 String text = s.getData();
                                 views.setTextViewText(R.id.title, s.getName());
@@ -193,7 +188,7 @@ public class WidgetProviderSmall extends AppWidgetProvider {
 
                                 views.setTextViewText(R.id.desc, text);
                                 if (withButtons == WITHBUTTON && s.getStatus() != null) {
-                                    boolean newStatus = !s.getStatusBoolean();//toggle
+                                    boolean newStatus = !s.getStatusBoolean(); // toggle
 
                                     views.setOnClickPendingIntent(R.id.rowIcon, buildButtonPendingIntent(
                                             UpdateWidgetService.this,
@@ -210,11 +205,14 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                                     views.setInt(R.id.rowIcon, "setAlpha", 255);
 
                                 appWidgetManager.updateAppWidget(appWidgetId, views);
+                            } else {
+                                Log.e("UpdateWidgetService", "Device info is null");
                             }
                         }
 
                         @Override
                         public void onError(Exception error) {
+                            Log.e("UpdateWidgetService", "Error receiving device: " + error.getMessage(), error);
                         }
                     }, idx, false);
                 } else {
@@ -225,12 +223,15 @@ public class WidgetProviderSmall extends AppWidgetProvider {
 
                         @Override
                         public void onError(Exception error) {
+                            Log.e("UpdateWidgetService", "Error receiving scenes: " + error.getMessage(), error);
                         }
 
                         @Override
                         public void onReceiveScene(SceneInfo s) {
                             if (s != null) {
-                                views = new RemoteViews(packageName, mSharedPrefs.getSmallWidgetLayout(appWidgetId));
+                                int layoutId = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID);
+                                RemoteViews views = new RemoteViews(packageName, layoutId);
+
                                 if (s.getStatusInString() != null) {
                                     views.setTextViewText(R.id.title, s.getName());
                                     views.setTextViewText(R.id.desc, s.getStatusInString());
@@ -249,6 +250,8 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                                     views.setInt(R.id.rowIcon, "setAlpha", 255);
 
                                 appWidgetManager.updateAppWidget(appWidgetId, views);
+                            } else {
+                                Log.e("UpdateWidgetService", "Scene info is null");
                             }
                         }
                     }, idx);
@@ -265,36 +268,23 @@ public class WidgetProviderSmall extends AppWidgetProvider {
             intent.putExtra("WIDGETTOGGLE", toggle);
             intent.putExtra("WIDGETSMALL", true);
 
-            if (toggle)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    return PendingIntent.getForegroundService(context, widget_id, intent, PendingIntent.FLAG_IMMUTABLE);
-                } else {
-                    return PendingIntent.getService(context, widget_id, intent, PendingIntent.FLAG_IMMUTABLE);
-                }
-            else if (action)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    return PendingIntent.getForegroundService(context, widget_id + 8888, intent, PendingIntent.FLAG_IMMUTABLE);
-                } else {
-                    return PendingIntent.getService(context, widget_id + 8888, intent, PendingIntent.FLAG_IMMUTABLE);
-                }
-            else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    return PendingIntent.getForegroundService(context, widget_id + 9999, intent, PendingIntent.FLAG_IMMUTABLE);
-                } else {
-                    return PendingIntent.getService(context, widget_id + 9999, intent, PendingIntent.FLAG_IMMUTABLE);
-                }
+            int requestCode = widget_id;
+            if (toggle) requestCode += 9999;
+            if (action) requestCode += 8888;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                return PendingIntent.getForegroundService(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE);
+            } else {
+                return PendingIntent.getService(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE);
             }
         }
 
         private int withButtons(DevicesInfo s) {
             int withButton = 0;
             if (s != null) {
-                if (s.getSwitchTypeVal() == 0 &&
-                        (UsefulBits.isEmpty(s.getSwitchType()))) {
+                if (s.getSwitchTypeVal() == 0 && UsefulBits.isEmpty(s.getSwitchType())) {
                     switch (s.getType()) {
                         case DomoticzValues.Scene.Type.SCENE:
-                            withButton = WITHBUTTON;
-                            break;
                         case DomoticzValues.Scene.Type.GROUP:
                             withButton = WITHBUTTON;
                             break;
@@ -304,9 +294,6 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                         case DomoticzValues.Device.Type.Value.ON_OFF:
                         case DomoticzValues.Device.Type.Value.MEDIAPLAYER:
                         case DomoticzValues.Device.Type.Value.DOORCONTACT:
-                            withButton = WITHBUTTON;
-                            break;
-
                         case DomoticzValues.Device.Type.Value.X10SIREN:
                         case DomoticzValues.Device.Type.Value.PUSH_ON_BUTTON:
                         case DomoticzValues.Device.Type.Value.SMOKE_DETECTOR:
@@ -316,7 +303,6 @@ public class WidgetProviderSmall extends AppWidgetProvider {
                         case DomoticzValues.Device.Type.Value.SELECTOR:
                             withButton = WITHBUTTON;
                             break;
-
                     }
                 }
             }

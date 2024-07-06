@@ -945,16 +945,32 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_ENABLE_NFC, false);
     }
 
+    public void setNFCEnabled(boolean enabled) {
+        editor.putBoolean(PREF_ENABLE_NFC, enabled).apply();
+    }
+
     public boolean isBluetoothEnabled() {
         return prefs.getBoolean(PREF_ENABLE_Bluetooth, false);
+    }
+
+    public void setBluetoothEnabled(boolean enabled) {
+        editor.putBoolean(PREF_ENABLE_Bluetooth, enabled).apply();
     }
 
     public boolean isWifiEnabled() {
         return prefs.getBoolean(PREF_ENABLE_WIFI, false);
     }
 
+    public void setWifiEnabled(boolean enabled) {
+        editor.putBoolean(PREF_ENABLE_WIFI, enabled).apply();
+    }
+
     public boolean isBeaconEnabled() {
         return prefs.getBoolean(PREF_ENABLE_BEACON, false);
+    }
+
+    public void setBeaconEnabled(boolean enabled) {
+        editor.putBoolean(PREF_ENABLE_BEACON, enabled).apply();
     }
 
     //public boolean isServerUpdateAvailable() {
@@ -1035,8 +1051,16 @@ public class SharedPrefUtil {
         return prefs.getBoolean(PREF_QRCODE_ENABLED, false);
     }
 
+    public void setQRCodeEnabled(boolean enabled) {
+        editor.putBoolean(PREF_QRCODE_ENABLED, enabled).apply();
+    }
+
     public boolean isSpeechEnabled() {
         return prefs.getBoolean(PREF_SPEECH_ENABLED, false);
+    }
+
+    public void setSpeechEnabled(boolean speechEnabled) {
+        editor.putBoolean(PREF_SPEECH_ENABLED, speechEnabled).apply();
     }
 
     public void saveNFCList(List<NFCInfo> list) {

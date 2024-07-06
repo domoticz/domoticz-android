@@ -1,24 +1,3 @@
-/*
- * Copyright (C) 2015 Domoticz - Mark Heinis
- *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- */
-
 package nl.hnogames.domoticz.widgets;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
@@ -27,7 +6,7 @@ import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -42,8 +21,8 @@ import java.util.ArrayList;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.NotificationUtil;
-import nl.hnogames.domoticz.utils.SharedPrefUtil;
-import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticz.widgets.database.WidgetContract;
+import nl.hnogames.domoticz.widgets.database.WidgetDbHelper;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
@@ -54,43 +33,48 @@ public class WidgetProviderSmallTemp extends AppWidgetProvider {
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
+        WidgetDbHelper dbHelper = new WidgetDbHelper(context);
         for (int widgetId : appWidgetIds) {
-            SharedPrefUtil mSharedPrefs = new SharedPrefUtil(context);
-            mSharedPrefs.deleteSmallTempWidget(widgetId);
+            dbHelper.deleteWidgetConfiguration(widgetId);
         }
     }
 
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-                         int[] appWidgetIds) {
-
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
         packageName = context.getPackageName();
-        // Get all ids
-        ComponentName thisWidget = new ComponentName(context,
-                WidgetProviderSmallTemp.class);
-        int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-        if (allWidgetIds != null) {
-            for (int mAppWidgetId : allWidgetIds) {
+        WidgetDbHelper dbHelper = new WidgetDbHelper(context);
+        for (int widgetId : appWidgetIds) {
+            // Retrieve widget configuration from the database
+            ContentValues values = dbHelper.getWidgetConfiguration(widgetId);
+            try {
+                int idx = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_IDX);
+                int layoutId = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID);
+
+                // Start the update service with retrieved configuration
                 Intent intent = new Intent(context, UpdateWidgetService.class);
-                intent.putExtra(EXTRA_APPWIDGET_ID, mAppWidgetId);
+                intent.putExtra(EXTRA_APPWIDGET_ID, widgetId);
+                intent.putExtra("IDX", idx); // Pass IDX to UpdateWidgetService
+                intent.putExtra("LAYOUT_ID", layoutId); // Pass layout ID to UpdateWidgetService
                 intent.setAction("FROM WIDGET PROVIDER");
+
                 try {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         context.startForegroundService(intent);
-                    } else
+                    } else {
                         context.startService(intent);
+                    }
                 } catch (Exception ex) {
+                    Log.e("WidgetProviderSmallTemp", "Error starting service: " + ex.getMessage(), ex);
                 }
+            } catch (Exception e) {
+                Log.e("WidgetProviderSmallTemp", "Widget configuration not found for ID: " + widgetId);
             }
         }
     }
 
     public static class UpdateWidgetService extends Service {
-        private RemoteViews views;
-        private SharedPrefUtil mSharedPrefs;
-
         @Nullable
         @Override
         public IBinder onBind(Intent intent) {
@@ -103,91 +87,80 @@ public class WidgetProviderSmallTemp extends AppWidgetProvider {
                 this.startForeground(1337, NotificationUtil.getForegroundServiceNotification(this, "Widget"));
             }
 
-            AppWidgetManager appWidgetManager = AppWidgetManager
-                    .getInstance(UpdateWidgetService.this);
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+            int appWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
 
-            try {
-                int incomingAppWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID,
-                        INVALID_APPWIDGET_ID);
-                if (incomingAppWidgetId != INVALID_APPWIDGET_ID) {
-                    try {
-                        updateAppWidget(appWidgetManager, incomingAppWidgetId);
-                    } catch (NullPointerException e) {
-                        if (!UsefulBits.isEmpty(e.getMessage()))
-                            Log.e(WidgetProviderSmallTemp.class.getSimpleName() + "@onStartCommand", e.getMessage());
-                    }
-                }
-
-            } catch (Exception ex) {
-                Log.e("UpdateWidget", ex.toString());
+            if (appWidgetId != INVALID_APPWIDGET_ID) {
+                updateAppWidget(appWidgetManager, appWidgetId);
+            } else {
+                Log.e("UpdateWidgetService", "Invalid AppWidget ID");
             }
 
             stopSelf();
             return START_NOT_STICKY;
         }
 
-        public void updateAppWidget(final AppWidgetManager appWidgetManager,
-                                    final int appWidgetId) {
-            if (appWidgetId == INVALID_APPWIDGET_ID) {
-                Log.i("WIDGET", "I am invalid");
-                return;
+        private void updateAppWidget(AppWidgetManager appWidgetManager, int appWidgetId) {
+            WidgetDbHelper dbHelper = new WidgetDbHelper(getApplicationContext());
+            ContentValues values = dbHelper.getWidgetConfiguration(appWidgetId);
+            try {
+                int idx = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_IDX);
+                StaticHelper.getDomoticz(getApplicationContext()).getDevice(new DevicesReceiver() {
+                    @Override
+                    public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+                    }
+
+                    @Override
+                    public void onReceiveDevice(DevicesInfo s) {
+                        if (s != null) {
+                            int layoutId = values.getAsInteger(WidgetContract.WidgetEntry.COLUMN_WIDGET_LAYOUT_ID);
+                            updateViewsWithDeviceInfo(appWidgetManager, appWidgetId, s, layoutId);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        Log.e("UpdateWidgetService", "Error fetching device info: " + error.getMessage(), error);
+                    }
+                }, idx, false);
+            } catch (Exception e) {
+                Log.e("WidgetProviderSmallTemp", "Widget configuration not found for ID: " + appWidgetId);
+            }
+        }
+
+        private void updateViewsWithDeviceInfo(AppWidgetManager appWidgetManager, int appWidgetId, DevicesInfo s, int layoutId) {
+            double temperature = s.getTemperature();
+            String sign = "C"; // Default to Celsius
+
+            if (StaticHelper.getDomoticz(getApplicationContext()).getServerUtil() != null
+                    && StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer() != null
+                    && StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null) {
+                sign = StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getTempSign();
             }
 
-            if (mSharedPrefs == null)
-                mSharedPrefs = new SharedPrefUtil(this.getApplicationContext());
+            String text = s.getData();
+            if (!Double.isNaN(temperature)) {
+                text = temperature + " " + sign;
+            }
 
-            final int idx = mSharedPrefs.getSmallTempWidgetIDX(appWidgetId);
-            views = new RemoteViews(packageName, mSharedPrefs.getSmallTempWidgetLayout(appWidgetId));
+            packageName = getPackageName();
+            RemoteViews views = new RemoteViews(packageName, layoutId);
             appWidgetManager.updateAppWidget(appWidgetId, views);
-            StaticHelper.getDomoticz(getApplicationContext()).getDevice(new DevicesReceiver() {
-                @Override
-                public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
-                }
 
-                @Override
-                public void onReceiveDevice(DevicesInfo s) {
-                    if (s != null) {
-                        views = new RemoteViews(packageName, mSharedPrefs.getSmallTempWidgetLayout(appWidgetId));
-                        final double temperature = s.getTemperature();
-                        String sign = StaticHelper.getDomoticz(getApplicationContext()).getServerUtil() != null && StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer() != null
-                                && StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null ?
-                                StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getTempSign() : "C";
+            views.setTextViewText(R.id.title, text);
+            views.setTextViewText(R.id.desc, s.getName());
 
-                        String text = s.getData();
-                        if (!Double.isNaN(temperature)) {
-                            text = temperature
-                                    + " " + sign;
-                        }
-                        views.setTextViewText(R.id.title, text);
-                        views.setTextViewText(R.id.desc, s.getName());
+            int icon = DomoticzIcons.getDrawableIcon(
+                    s.getTypeImg(),
+                    s.getType(),
+                    null,
+                    s.getTemperature() > StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getDegreeDaysBaseTemperature(),
+                    sign.equals("C") && s.getTemperature() < 0 || sign.equals("F") && s.getTemperature() < 30,
+                    "Freezing"
+            );
 
-                        int icon;
-                        if ((!UsefulBits.isEmpty(sign) && sign.equals("C") && s.getTemperature() < 0) ||
-                                (!UsefulBits.isEmpty(sign) && sign.equals("F") && s.getTemperature() < 30)) {
-                            icon = (DomoticzIcons.getDrawableIcon(s.getTypeImg(),
-                                    s.getType(),
-                                    null,
-                                    StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null && s.getTemperature() > StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getDegreeDaysBaseTemperature(),
-                                    true,
-                                    "Freezing"));
-                        } else {
-                            icon = (DomoticzIcons.getDrawableIcon(s.getTypeImg(),
-                                    s.getType(),
-                                    null,
-                                    StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()) != null && s.getTemperature() > StaticHelper.getDomoticz(getApplicationContext()).getServerUtil().getActiveServer().getConfigInfo(getApplicationContext()).getDegreeDaysBaseTemperature(),
-                                    false,
-                                    null));
-                        }
-
-                        views.setImageViewResource(R.id.rowIcon, icon);
-                        appWidgetManager.updateAppWidget(appWidgetId, views);
-                    }
-                }
-
-                @Override
-                public void onError(Exception error) {
-                }
-            }, idx, false);
+            views.setImageViewResource(R.id.rowIcon, icon);
+            appWidgetManager.updateAppWidget(appWidgetId, views);
         }
     }
 }

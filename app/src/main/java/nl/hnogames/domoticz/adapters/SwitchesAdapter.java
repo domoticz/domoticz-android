@@ -49,7 +49,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
-import com.google.android.gms.ads.formats.NativeAdOptions;
+import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -972,10 +972,8 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         if (action) {
             holder.buttonOn.setText(context.getString(R.string.button_state_on));
-            //holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_on));
         } else {
             holder.buttonOn.setText(context.getString(R.string.button_state_off));
-            //holder.buttonOn.setBackground(ContextCompat.getDrawable(context, R.drawable.button_off));
         }
 
         holder.buttonOn.setOnClickListener(v -> {
@@ -1023,12 +1021,12 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
         holder.buttonUp.setTag(mDeviceInfo);
         holder.buttonUp.setOnClickListener(view -> {
-            handleBlindsClick((DevicesInfo) view.getTag(), DomoticzValues.Device.Blind.Action.CLOSE);
+            handleBlindsClick((DevicesInfo) view.getTag(), DomoticzValues.Device.Blind.Action.OPEN);
         });
 
         holder.buttonStop.setTag(mDeviceInfo);
         holder.buttonStop.setOnClickListener(view -> {
-            handleBlindsClick((DevicesInfo) view.getTag(), DomoticzValues.Device.Blind.Action.CLOSE);
+            handleBlindsClick((DevicesInfo) view.getTag(), DomoticzValues.Device.Blind.Action.STOP);
         });
 
         holder.buttonDown.setTag(mDeviceInfo);

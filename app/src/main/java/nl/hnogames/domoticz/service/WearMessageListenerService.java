@@ -60,13 +60,6 @@ public class WearMessageListenerService extends WearableListenerService implemen
     private ArrayList<DevicesInfo> extendedStatusSwitches;
     private int currentSwitch = 1;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.d(TAG, "onCreate called");
-        SetupGetData();
-    }
-
     public static void sendMessage(final String path, final String text) {
         Log.d(TAG, "Send: " + text);
         if (mApiClient != null) {
@@ -84,6 +77,13 @@ public class WearMessageListenerService extends WearableListenerService implemen
                 }
             }).start();
         }
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d(TAG, "onCreate called");
+        SetupGetData();
     }
 
     public void SetupGetData() {

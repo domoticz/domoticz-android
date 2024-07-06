@@ -122,7 +122,7 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                 DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
                     switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                                 if (!PermissionsUtil.canAccessLocation(GeoSettingsActivity.this)) {
                                     geoSwitch.setChecked(false);
                                     geoNotificationSwitch.setEnabled(false);
@@ -133,7 +133,7 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
                                         geoNotificationSwitch.setEnabled(false);
                                         permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                                     } else {
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !PermissionsUtil.canAccessBackgroundLocation(GeoSettingsActivity.this))
+                                        if (!PermissionsUtil.canAccessBackgroundLocation(GeoSettingsActivity.this))
                                             permissionHelper.request(PermissionsUtil.BACKGROUND_LOCATION_PERMS);
                                         else {
                                             mSharedPrefs.setGeofenceEnabled(true);
@@ -526,18 +526,19 @@ public class GeoSettingsActivity extends AppCompatAssistActivity implements OnPe
     @Override
     public void onPermissionGranted(@NonNull String[] permissionName) {
         Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
-        if (PermissionsUtil.canAccessLocation(GeoSettingsActivity.this)) {
-            if (PermissionsUtil.canAccessStorage(GeoSettingsActivity.this)) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !PermissionsUtil.canAccessBackgroundLocation(GeoSettingsActivity.this))
-                    permissionHelper.request(PermissionsUtil.BACKGROUND_LOCATION_PERMS);
-                else {
-                    mSharedPrefs.setGeofenceEnabled(true);
-                    oGeoUtils.AddGeofences();
-                    invalidateOptionsMenu();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (PermissionsUtil.canAccessLocation(GeoSettingsActivity.this)) {
+                if (PermissionsUtil.canAccessStorage(GeoSettingsActivity.this)) {
+                    if (!PermissionsUtil.canAccessBackgroundLocation(GeoSettingsActivity.this))
+                        permissionHelper.request(PermissionsUtil.BACKGROUND_LOCATION_PERMS);
+                    else {
+                        mSharedPrefs.setGeofenceEnabled(true);
+                        oGeoUtils.AddGeofences();
+                        invalidateOptionsMenu();
+                    }
+                } else {
+                    permissionHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);
                 }
-            } else {
-                permissionHelper
-                        .request(PermissionsUtil.INITIAL_STORAGE_PERMS);
             }
         }
     }

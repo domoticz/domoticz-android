@@ -24,11 +24,11 @@
     android:id="@+id/card_global_wrapper"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="8dp"
     android:layout_marginStart="4dp"
     android:layout_marginEnd="4dp"
     android:layout_marginBottom="8dp"
     android:orientation="vertical"
-    android:layout_margin="8dp"
     app:cardCornerRadius="30dp"
     app:cardElevation="1dp">
 
@@ -43,53 +43,54 @@
         android:id="@+id/contentWrapper"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/recyclerBackground"
-        android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/row_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/listviewRowBackground"
-            android:orientation="horizontal"
-            android:padding="16dp">
+            android:background="?attr/recyclerBackground"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/textwrapper"
+                android:id="@+id/row_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:background="?attr/listviewRowBackground"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
-                <ImageView
-                    android:id="@+id/rowIcon"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="center_horizontal"
-                    android:contentDescription="@string/error_image_description"
-                    android:visibility="gone"
-                    android:paddingTop="-10dp" />
-
-                <TextView
-                    android:id="@+id/name"
-                    style="@style/row_name"
+                <LinearLayout
+                    android:id="@+id/textwrapper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Name" />
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/devices"
-                    android:layout_marginTop="-8dp"
-                    style="@style/row_body1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="12 devices" />
+                    <ImageView
+                        android:id="@+id/rowIcon"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:contentDescription="@string/error_image_description"
+                        android:paddingTop="-10dp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/name"
+                        style="@style/row_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Name" />
+
+                    <TextView
+                        android:id="@+id/devices"
+                        style="@style/row_body1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-8dp"
+                        tools:text="12 devices" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

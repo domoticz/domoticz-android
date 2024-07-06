@@ -61,8 +61,16 @@ public class PlanInfo implements Serializable {
         return name;
     }
 
+    public void setName(String n) {
+        name = n;
+    }
+
     public int getIdx() {
         return idx;
+    }
+
+    public void setIdx(int n) {
+        idx = n;
     }
 
     public int getDevices() {
@@ -71,13 +79,5 @@ public class PlanInfo implements Serializable {
 
     public int getOrder() {
         return order;
-    }
-
-    public void setIdx(int n) {
-        idx = n;
-    }
-
-    public void setName(String n) {
-        name = n;
     }
 }

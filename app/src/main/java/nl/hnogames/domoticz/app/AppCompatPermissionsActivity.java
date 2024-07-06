@@ -49,10 +49,8 @@ public class AppCompatPermissionsActivity extends AppCompatAssistActivity implem
     public void onPermissionDeclined(@NonNull String[] permissionName) {
         Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
         StringBuilder builder = new StringBuilder(permissionName.length);
-        if (permissionName.length > 0) {
-            for (String permission : permissionName) {
-                builder.append(permission).append("\n");
-            }
+        for (String permission : permissionName) {
+            builder.append(permission).append("\n");
         }
 
         if (builder.toString().contains("android.permission.READ_PHONE_STATE")) {

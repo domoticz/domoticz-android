@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -46,6 +45,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.fastaccess.permission.base.PermissionFragmentHelper;
 import com.fastaccess.permission.base.callback.OnPermissionCallback;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.reflect.TypeToken;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
@@ -75,7 +75,6 @@ import nl.hnogames.domoticz.utils.CameraUtil;
 import nl.hnogames.domoticz.utils.PermissionsUtil;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.utils.WidgetUtils;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.NotificationInfo;
 import nl.hnogames.domoticzapi.Containers.SwitchLogInfo;
@@ -88,7 +87,6 @@ import nl.hnogames.domoticzapi.Interfaces.NotificationReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticzapi.Interfaces.SwitchTimerReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Switches extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
         switchesClickListener, OnPermissionCallback {
@@ -109,7 +107,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
 
     @Override
     public void onConnectionFailed() {
-        new GetCachedDataTask().execute();
+        GetSwitches();
     }
 
     @Override
@@ -197,8 +195,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
             //switch toggled, refresh listview
             if (mSwipeRefreshLayout != null)
                 mSwipeRefreshLayout.setRefreshing(true);
-            WidgetUtils.RefreshWidgets(mContext);
-            new GetCachedDataTask().execute();
+            GetSwitches();
         } catch (Exception ex) {
         }
     }
@@ -800,7 +797,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 }
 
                 @Override
-                public void onCancel() {}
+                public void onCancel() {
+                }
             });
         } else {
             SetThermostatMode(utility, mode, null);
@@ -1233,10 +1231,8 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         Log.i("onPermissionDeclined", "Permission(s) " + Arrays.toString(permissionName) + " Declined");
         String[] neededPermission = PermissionFragmentHelper.declinedPermissions(this, PermissionsUtil.INITIAL_STORAGE_PERMS);
         StringBuilder builder = new StringBuilder(neededPermission.length);
-        if (neededPermission.length > 0) {
-            for (String permission : neededPermission) {
-                builder.append(permission).append("\n");
-            }
+        for (String permission : neededPermission) {
+            builder.append(permission).append("\n");
         }
         AlertDialog alert = PermissionsUtil.getAlertDialog(getActivity(), permissionFragmentHelper, getActivity().getString(R.string.permission_title),
                 getActivity().getString(R.string.permission_desc_storage), neededPermission);
@@ -1280,29 +1276,11 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
         Log.i("onPermissionGranted", "Permission(s) " + Arrays.toString(permissionName) + " Granted");
     }
 
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<DevicesInfo> cacheSwitches = null;
-
-        protected Boolean doInBackground(Boolean... geto) {
-            if (mContext == null)
-                return false;
-            if (mPhoneConnectionUtil == null)
-                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
-            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
-                try {
-                    cacheSwitches = (ArrayList<DevicesInfo>) SerializableManager.readSerializedObject(mContext, "Switches");
-                    extendedStatusSwitches = cacheSwitches;
-                } catch (Exception ex) {
-                }
-            }
-            return true;
-        }
-
-        protected void onPostExecute(Boolean result) {
-            if (mContext == null)
-                return;
-            if (cacheSwitches != null)
-                createListView(cacheSwitches);
+    public void GetSwitches() {
+        SerializableManager.readSerializedObject(mContext, "Switches", new TypeToken<ArrayList<DevicesInfo>>() {
+        }.getType(), (SerializableManager.JsonCacheCallback<ArrayList<DevicesInfo>>) switches -> {
+            if (switches != null)
+                createListView(switches);
 
             StaticHelper.getDomoticz(mContext).getDevices(new DevicesReceiver() {
                 @Override
@@ -1325,6 +1303,6 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                     errorHandling(error);
                 }
             }, 0, "light");
-        }
+        });
     }
 }

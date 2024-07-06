@@ -106,6 +106,14 @@ public class DevicesInfo implements Comparable, Serializable {
     private boolean ReverseState;
     private boolean ReversePosition;
 
+    private double Step;
+    private boolean hasStep;
+    private double Max;
+    private boolean hasMax;
+    private double Min;
+    private String vunit;
+    private boolean hasMin;
+
     public DevicesInfo(JSONObject row) throws JSONException {
         this.jsonObject = row.toString();
         try {
@@ -334,20 +342,58 @@ public class DevicesInfo implements Comparable, Serializable {
         } catch (Exception ex) {
             setPoint = Double.NaN;
         }
+
+        if (row.has("step")) {
+            hasStep = true;
+            try {
+                Step = row.getDouble("step");
+            } catch (Exception ignored) {
+                Step = 0;
+            }
+        } else {
+            hasStep = false;
+        }
+
+        if (row.has("max")) {
+            hasMax = true;
+            try {
+                Max = row.getDouble("max");
+            } catch (Exception ignored) {
+                Max = 0;
+            }
+        } else {
+            hasMax = false;
+        }
+
+        if (row.has("min")) {
+            hasMin = true;
+            try {
+                Min = row.getDouble("Min");
+            } catch (Exception ignored) {
+                Min = 0;
+            }
+        } else {
+            hasMin = false;
+        }
+        if (row.has("vunit"))
+            vunit = row.getString("vunit");
     }
 
     public DevicesInfo() {
     }
 
     public boolean getFavoriteBoolean() {
-        boolean favorite = false;
-        if (this.Favorite == 1) favorite = true;
+        boolean favorite = this.Favorite == 1;
         return favorite;
     }
 
     public void setFavoriteBoolean(boolean favorite) {
         if (favorite) this.Favorite = 1;
         else this.Favorite = 0;
+    }
+
+    public String getVUnit() {
+        return vunit;
     }
 
     public String getCounterDeliv() {
@@ -400,6 +446,42 @@ public class DevicesInfo implements Comparable, Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public double getStep() {
+        return Step;
+    }
+
+    public void setStep(double step) {
+        this.Step = step;
+    }
+
+    public boolean hasStep() {
+        return hasStep;
+    }
+
+    public double getMax() {
+        return Max;
+    }
+
+    public void setMax(double Max) {
+        this.Max = Max;
+    }
+
+    public boolean hasMax() {
+        return hasMax;
+    }
+
+    public double getMin() {
+        return Min;
+    }
+
+    public void setMin(double Min) {
+        this.Min = Min;
+    }
+
+    public boolean hasMin() {
+        return hasMin;
     }
 
     public ArrayList<String> getLevelNames() {
@@ -529,10 +611,7 @@ public class DevicesInfo implements Comparable, Serializable {
     }
 
     public boolean isSceneOrGroup() {
-        if (getType().equals(DomoticzValues.Scene.Type.GROUP) || getType().equals(DomoticzValues.Scene.Type.SCENE))
-            return true;
-        else
-            return false;
+        return getType().equals(DomoticzValues.Scene.Type.GROUP) || getType().equals(DomoticzValues.Scene.Type.SCENE);
     }
 
     public String getLastUpdate() {
@@ -557,6 +636,7 @@ public class DevicesInfo implements Comparable, Serializable {
     public int getModeId() {
         return Mode;
     }
+
     public void setModeId(int mode) {
         Mode = mode;
     }

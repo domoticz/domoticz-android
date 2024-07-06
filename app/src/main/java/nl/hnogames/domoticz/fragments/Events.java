@@ -22,10 +22,7 @@
 package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -38,7 +35,6 @@ import nl.hnogames.domoticz.app.DomoticzRecyclerFragment;
 import nl.hnogames.domoticz.helpers.MarginItemDecoration;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.DomoticzFragmentListener;
-import nl.hnogames.domoticz.interfaces.EventsClickListener;
 import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.EventInfo;
@@ -46,7 +42,6 @@ import nl.hnogames.domoticzapi.Containers.UserInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.EventReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Events extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
 
@@ -65,7 +60,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
 
     @Override
     public void onConnectionFailed() {
-        new GetCachedDataTask().execute();
+        GetEvents();
     }
 
     @Override
@@ -108,7 +103,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
         try {
             if (mSwipeRefreshLayout != null)
                 mSwipeRefreshLayout.setRefreshing(true);
-            new GetCachedDataTask().execute();
+            GetEvents();
         } catch (Exception ex) {
         }
     }
@@ -116,33 +111,29 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     private void createListView(ArrayList<EventInfo> mEventInfos) {
         if (getView() != null) {
             if (adapter == null) {
-                adapter = new EventsAdapter(mContext, StaticHelper.getDomoticz(mContext), mEventInfos, new EventsClickListener() {
-                    @Override
+                adapter = new EventsAdapter(mContext, StaticHelper.getDomoticz(mContext), mEventInfos, (idx, action) -> {
+                    UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
+                    if (user != null && user.getRights() <= 1) {
+                        UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
+                        if (getActivity() instanceof MainActivity)
+                            ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
+                        refreshFragment();
+                        return;
+                    }
 
-                    public void onEventClick(final int idx, boolean action) {
-                        UserInfo user = getCurrentUser(mContext, StaticHelper.getDomoticz(mContext));
-                        if (user != null && user.getRights() <= 1) {
-                            UsefulBits.showSnackbar(mContext, frameLayout, mContext.getString(R.string.security_no_rights), Snackbar.LENGTH_SHORT);
-                            if (getActivity() instanceof MainActivity)
-                                ((MainActivity) getActivity()).Talk(R.string.security_no_rights);
-                            refreshFragment();
-                            return;
+                    int jsonAction = action ? DomoticzValues.Event.Action.ON : DomoticzValues.Event.Action.OFF;
+                    int jsonUrl = DomoticzValues.Json.Url.Set.EVENTS_UPDATE_STATUS;
+                    StaticHelper.getDomoticz(mContext).setAction(idx, jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
+                        @Override
+                        public void onReceiveResult(String result) {
+                            successHandling(result, false);
                         }
 
-                        int jsonAction = action ? DomoticzValues.Event.Action.ON : DomoticzValues.Event.Action.OFF;
-                        int jsonUrl = DomoticzValues.Json.Url.Set.EVENTS_UPDATE_STATUS;
-                        StaticHelper.getDomoticz(mContext).setAction(idx, jsonUrl, jsonAction, 0, null, new setCommandReceiver() {
-                            @Override
-                            public void onReceiveResult(String result) {
-                                successHandling(result, false);
-                            }
-
-                            @Override
-                            public void onError(Exception error) {
-                                errorHandling(error);
-                            }
-                        });
-                    }
+                        @Override
+                        public void onError(Exception error) {
+                            errorHandling(error);
+                        }
+                    });
                 });
                 gridView.setAdapter(adapter);
                 if (!isTablet && !itemDecorationAdded) {
@@ -154,13 +145,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
                 adapter.notifyDataSetChanged();
             }
             mSwipeRefreshLayout.setRefreshing(false);
-            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-
-                public void onRefresh() {
-                    processEvents();
-                }
-            });
+            mSwipeRefreshLayout.setOnRefreshListener(() -> processEvents());
             super.showSpinner(false);
             this.Filter(filter);
         }
@@ -180,41 +165,21 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
         }
     }
 
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<EventInfo> cacheEventInfos = null;
+    public void GetEvents() {
+        StaticHelper.getDomoticz(mContext).getEvents(new EventReceiver() {
+            @Override
 
-        protected Boolean doInBackground(Boolean... geto) {
-            if (mContext == null) return false;
-            if (mPhoneConnectionUtil == null)
-                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
-            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
-                try {
-                    cacheEventInfos = (ArrayList<EventInfo>) SerializableManager.readSerializedObject(mContext, "Events");
-                } catch (Exception ex) {
-                }
+            public void onReceiveEvents(final ArrayList<EventInfo> mEventInfos) {
+                successHandling(mEventInfos.toString(), false);
+                SerializableManager.saveSerializable(mContext, mEventInfos, "Events");
+                createListView(mEventInfos);
             }
-            return true;
-        }
 
-        protected void onPostExecute(Boolean result) {
-            if (cacheEventInfos != null)
-                createListView(cacheEventInfos);
+            @Override
 
-            StaticHelper.getDomoticz(mContext).getEvents(new EventReceiver() {
-                @Override
-
-                public void onReceiveEvents(final ArrayList<EventInfo> mEventInfos) {
-                    successHandling(mEventInfos.toString(), false);
-                    SerializableManager.saveSerializable(mContext, mEventInfos, "Events");
-                    createListView(mEventInfos);
-                }
-
-                @Override
-
-                public void onError(Exception error) {
-                    errorHandling(error);
-                }
-            });
-        }
+            public void onError(Exception error) {
+                errorHandling(error);
+            }
+        });
     }
 }

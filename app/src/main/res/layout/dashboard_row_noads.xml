@@ -40,8 +40,8 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:visibility="gone"
             android:tintMode="src_atop"
+            android:visibility="gone"
             app:tint="?attr/listviewRowTintBackground" />
 
         <LinearLayout
@@ -79,8 +79,8 @@
                             <LinearLayout
                                 android:id="@+id/textwrapper"
                                 android:layout_width="match_parent"
-                                android:layout_marginLeft="48dp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginLeft="48dp"
                                 android:foregroundGravity="center_vertical"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
@@ -152,9 +152,9 @@
                                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                     android:layout_width="60dp"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
                                     android:layout_marginLeft="8dp"
                                     android:layout_weight="1"
-                                    android:layout_gravity="right"
                                     android:foregroundGravity="right"
                                     android:text="@string/button_state_on"
                                     android:textColor="?attr/buttonTextColor"
@@ -292,8 +292,8 @@
             android:id="@+id/rowIcon"
             android:layout_width="30dp"
             android:layout_height="42dp"
-            android:contentDescription="@string/error_image_description"
             android:layout_marginLeft="16dp"
+            android:contentDescription="@string/error_image_description"
             android:paddingTop="12dp"
             android:src="@drawable/clock48"
             app:tint="?attr/colorAccent" />
@@ -315,10 +315,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:visibility="gone"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:src="@drawable/outline_info_black_18"
+            android:visibility="gone"
             app:tint="@color/md_grey_300" />
     </RelativeLayout>
 

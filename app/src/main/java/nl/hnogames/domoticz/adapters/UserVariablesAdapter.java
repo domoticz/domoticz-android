@@ -107,7 +107,7 @@ public class UserVariablesAdapter extends RecyclerView.Adapter<UserVariablesAdap
                 }
             });
 
-            Picasso.get().load(R.drawable.power).into(holder.iconRow);
+            Picasso.get().load(nl.hnogames.domoticzapi.R.drawable.power).into(holder.iconRow);
         }
     }
 

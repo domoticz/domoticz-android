@@ -22,7 +22,6 @@
 package nl.hnogames.domoticzapi.Utils;
 
 import android.content.Context;
-import android.os.Environment;
 
 import java.io.File;
 import java.io.FileInputStream;

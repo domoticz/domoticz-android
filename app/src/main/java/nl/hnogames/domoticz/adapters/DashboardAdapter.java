@@ -51,7 +51,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
-import com.google.android.gms.ads.formats.NativeAdOptions;
+import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -80,7 +80,6 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Containers.UtilitiesInfo;
 import nl.hnogames.domoticzapi.Domoticz;
 import nl.hnogames.domoticzapi.DomoticzIcons;
 import nl.hnogames.domoticzapi.DomoticzValues;
@@ -106,11 +105,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     @ColorInt
     private final int listviewRowBackground;
     private final Picasso picasso;
+    private final boolean showAsList;
     public ArrayList<DevicesInfo> data = null;
     public ArrayList<DevicesInfo> filteredData = null;
     private int previousDimmerValue;
     private boolean adLoaded = false;
-    private final boolean showAsList;
 
     public DashboardAdapter(Context context,
                             ServerUtil serverUtil,
@@ -254,11 +253,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     (mDeviceInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SMARTWARES.equalsIgnoreCase(mDeviceInfo.getSubType()))) {
                 setButtons(holder, Buttons.BUTTON_ON);
                 setThermostatRowData(mDeviceInfo, holder);
-            }else if ((mDeviceInfo.getType() != null && DomoticzValues.Device.Utility.Type.GENERAL.equalsIgnoreCase(mDeviceInfo.getType())) &&
-                (mDeviceInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.THERMOSTAT_MODE.equalsIgnoreCase(mDeviceInfo.getSubType()))) {
+            } else if ((mDeviceInfo.getType() != null && DomoticzValues.Device.Utility.Type.GENERAL.equalsIgnoreCase(mDeviceInfo.getType())) &&
+                    (mDeviceInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.THERMOSTAT_MODE.equalsIgnoreCase(mDeviceInfo.getSubType()))) {
                 setButtons(holder, Buttons.SELECTOR);
                 setThermostatRowData(mDeviceInfo, holder);
-            }  else {
+            } else {
                 switch (mDeviceInfo.getType()) {
                     case DomoticzValues.Scene.Type.GROUP:
                         setButtons(holder, Buttons.BUTTONS);
@@ -831,10 +830,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 }
 
                 @Override
-                public void onNothingSelected(AdapterView<?> arg0) {}
+                public void onNothingSelected(AdapterView<?> arg0) {
+                }
             });
-        }
-        else{
+        } else {
             holder.spSelector.setVisibility(View.GONE);
             if (holder.switch_battery_level != null) {
                 String setPointText =
@@ -975,7 +974,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
 
             holder.pieView.setPercentageBackgroundColor(ContextCompat.getColor(context, R.color.material_orange_600));
             if ((sign.equals("C") && temperature < 0) || (sign.equals("F") && temperature < 30)) {
-                holder.pieView.setPercentageBackgroundColor(R.color.md_red_600);
+                holder.pieView.setPercentageBackgroundColor(com.mikepenz.materialize.R.color.md_red_600);
             }
 
             if (!mSharedPrefs.getAutoRefresh()) {

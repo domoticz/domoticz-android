@@ -21,17 +21,20 @@
 
 package nl.hnogames.domoticz.app;
 
+import android.app.Activity;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
@@ -87,12 +90,10 @@ import nl.hnogames.domoticz.interfaces.SubscriptionsListener;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.utils.WidgetUtils;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
-import shortbread.Shortbread;
 
 public class AppController extends MultiDexApplication implements BootstrapNotifier, BeaconConsumer {
     public static final String TAG = AppController.class.getSimpleName();
@@ -150,9 +151,11 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
     @Override
     public void onCreate() {
         super.onCreate();
+
+        registerActivityLifecycleCallbacks(new AppLifecycleTracker());
+
         mInstance = this;
         mSharedPrefs = new SharedPrefUtil(this);
-        Shortbread.create(this);
         Scoop.waffleCone()
                 .addFlavor(getString(R.string.theme_default), R.style.AppThemeDefault, true)
                 .addDayNightFlavor(getString(R.string.theme_daynight), R.style.AppThemeMain)
@@ -257,8 +260,8 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
 
             beaconManager.setEnableScheduledScanJobs(false);
             beaconManager.setForegroundScanPeriod(30000L);
-            beaconManager.setForegroundBetweenScanPeriod(10000l);
-            beaconManager.setBackgroundBetweenScanPeriod(10000l);
+            beaconManager.setForegroundBetweenScanPeriod(10000L);
+            beaconManager.setBackgroundBetweenScanPeriod(10000L);
             beaconManager.setBackgroundScanPeriod(30000L);
             beaconManager.updateScanPeriods();
             backgroundPowerSaver = new BackgroundPowerSaver(this);
@@ -457,7 +460,6 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
                 StaticHelper.getDomoticz(context).setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
                     @Override
                     public void onReceiveResult(String result) {
-                        WidgetUtils.RefreshWidgets(context);
                     }
 
                     @Override
@@ -490,5 +492,56 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
             jsonValue = counter;
         }
         return jsonValue;
+    }
+
+    public class AppLifecycleTracker implements Application.ActivityLifecycleCallbacks {
+        private int numStarted = 0;
+        private boolean isInBackground = true;
+
+        @Override
+        public void onActivityStarted(@NonNull Activity activity) {
+            if (numStarted == 0) {
+                if (isInBackground) {
+                    if (activity instanceof MainActivity && !MainActivity.fromSettings) {
+                        ((MainActivity) activity).authenticateUser();
+                    }
+                }
+                isInBackground = false;
+            }
+            numStarted++;
+        }
+
+        @Override
+        public void onActivityStopped(@NonNull Activity activity) {
+            numStarted--;
+            if (numStarted == 0) {
+                isInBackground = true;
+            }
+        }
+
+        @Override
+        public void onActivityResumed(@NonNull Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityPaused(@NonNull Activity activity) {
+
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle bundle) {
+
+        }
+
+        @Override
+        public void onActivityDestroyed(@NonNull Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
+
+        }
     }
 }

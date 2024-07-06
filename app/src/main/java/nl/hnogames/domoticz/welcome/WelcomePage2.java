@@ -63,8 +63,7 @@ public class WelcomePage2 extends Fragment implements OnPermissionCallback {
         importButton.setOnClickListener(v12 -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 importSettings();
-            }
-            else{
+            } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     if (!PermissionsUtil.canAccessStorage(getActivity()))
                         permissionFragmentHelper.request(PermissionsUtil.INITIAL_STORAGE_PERMS);

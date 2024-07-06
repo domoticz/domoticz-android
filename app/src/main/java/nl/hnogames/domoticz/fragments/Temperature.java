@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -31,10 +30,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.reflect.TypeToken;
 
 import java.util.ArrayList;
 
@@ -58,7 +57,6 @@ import nl.hnogames.domoticzapi.Containers.TemperatureInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.TemperatureReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Temperature extends DomoticzRecyclerFragment implements DomoticzFragmentListener, TemperatureClickListener {
 
@@ -79,7 +77,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
 
     @Override
     public void onConnectionFailed() {
-        new GetCachedDataTask().execute();
+        GetTemperatures();
     }
 
     @Override
@@ -179,7 +177,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
             if (mSwipeRefreshLayout != null)
                 mSwipeRefreshLayout.setRefreshing(true);
 
-            new GetCachedDataTask().execute();
+            GetTemperatures();
         } catch (Exception ex) {
         }
     }
@@ -209,13 +207,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                 itemDecorationAdded = true;
             }
             mSwipeRefreshLayout.setRefreshing(false);
-            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-
-                public void onRefresh() {
-                    processTemperature();
-                }
-            });
+            mSwipeRefreshLayout.setOnRefreshListener(() -> processTemperature());
             this.Filter(filter);
         }
         super.showSpinner(false);
@@ -230,13 +222,9 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         infoDialog.setLastUpdate(mTemperatureInfo.getLastUpdate());
         infoDialog.setIsFavorite(mTemperatureInfo.getFavoriteBoolean());
         infoDialog.show();
-        infoDialog.onDismissListener(new TemperatureInfoDialog.DismissListener() {
-            @Override
-
-            public void onDismiss(boolean isChanged, boolean isFavorite) {
-                if (isChanged)
-                    changeFavorite(mTemperatureInfo, isFavorite);
-            }
+        infoDialog.onDismissListener((isChanged, isFavorite) -> {
+            if (isChanged)
+                changeFavorite(mTemperatureInfo, isFavorite);
         });
     }
 
@@ -327,38 +315,33 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         };
 
         final boolean evohomeZone = "evohome".equals(t.getHardwareName());
-
         TemperatureDialog tempDialog;
         if (evohomeZone) {
             tempDialog = new ScheduledTemperatureDialog(
                     mContext,
-                    t.getSetPoint(),
-                    !"auto".equalsIgnoreCase(t.getStatus()));
+                    t.getSetPoint(), t.hasStep(),
+                    t.getStep(), t.hasMax(), t.getMax(), t.hasMin(), t.getMin(),
+                    !AUTO.equalsIgnoreCase(t.getStatus()), t.getVUnit());
         } else {
-            tempDialog = new TemperatureDialog(
-                    mContext,
-                    t.getSetPoint());
+            tempDialog = new TemperatureDialog(mContext, t.getSetPoint(), t.hasStep(),
+                    t.getStep(), t.hasMax(), t.getMax(), t.hasMin(), t.getMin(), t.getVUnit());
         }
 
-        tempDialog.onDismissListener(new TemperatureDialog.DialogActionListener() {
-            @Override
-
-            public void onDialogAction(double newSetPoint, DialogAction dialogAction) {
-                if (dialogAction == DialogAction.POSITIVE) {
-                    addDebugText("Set idx " + idx + " to " + newSetPoint);
-                    String params = "&setpoint=" + newSetPoint +
-                            "&mode=" + PERMANENT_OVERRIDE;
-                    // add query parameters
-                    StaticHelper.getDomoticz(mContext).setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
-                } else if (dialogAction == DialogAction.NEUTRAL && evohomeZone) {
-                    addDebugText("Set idx " + idx + " to Auto");
-                    String params = "&setpoint=" + newSetPoint +
-                            "&mode=" + AUTO;
-                    // add query parameters
-                    StaticHelper.getDomoticz(mContext).setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
-                } else {
-                    addDebugText("Not updating idx " + idx);
-                }
+        tempDialog.onDismissListener((newSetPoint, dialogAction) -> {
+            if (dialogAction == DialogAction.POSITIVE) {
+                addDebugText("Set idx " + idx + " to " + newSetPoint);
+                String params = "&setpoint=" + newSetPoint +
+                        "&mode=" + PERMANENT_OVERRIDE;
+                // add query parameters
+                StaticHelper.getDomoticz(mContext).setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
+            } else if (dialogAction == DialogAction.NEUTRAL && evohomeZone) {
+                addDebugText("Set idx " + idx + " to Auto");
+                String params = "&setpoint=" + newSetPoint +
+                        "&mode=" + AUTO;
+                // add query parameters
+                StaticHelper.getDomoticz(mContext).setDeviceUsed(idx, t.getName(), t.getDescription(), params, commandReceiver);
+            } else {
+                addDebugText("Not updating idx " + idx);
             }
         });
 
@@ -412,33 +395,15 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
         return clickedTemp;
     }
 
-
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<TemperatureInfo> cacheTemperatures = null;
-
-        protected Boolean doInBackground(Boolean... geto) {
-            if (mContext == null)
-                return false;
-            if (mPhoneConnectionUtil == null)
-                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
-            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
-                try {
-                    cacheTemperatures = (ArrayList<TemperatureInfo>) SerializableManager.readSerializedObject(mContext, "Temperatures");
-                } catch (Exception ignored) {
-                }
+    public void GetTemperatures() {
+        SerializableManager.readSerializedObject(mContext, "Temperatures", new TypeToken<ArrayList<TemperatureInfo>>() {
+        }.getType(), (SerializableManager.JsonCacheCallback<ArrayList<TemperatureInfo>>) mTemperatureInfos -> {
+            if (mTemperatureInfos != null) {
+                createListView(mTemperatureInfos);
             }
-            return true;
-        }
-
-        protected void onPostExecute(Boolean result) {
-            if (mContext == null)
-                return;
-            if (cacheTemperatures != null)
-                createListView(cacheTemperatures);
 
             StaticHelper.getDomoticz(mContext).getTemperatures(new TemperatureReceiver() {
                 @Override
-
                 public void onReceiveTemperatures(ArrayList<TemperatureInfo> mTemperatureInfos) {
                     mTempInfos = mTemperatureInfos;
                     successHandling(mTemperatureInfos.toString(), false);
@@ -447,11 +412,10 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
                 }
 
                 @Override
-
                 public void onError(Exception error) {
                     errorHandling(error);
                 }
             });
-        }
+        });
     }
 }

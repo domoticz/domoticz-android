@@ -16,7 +16,7 @@ import java.io.File;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.Executors;
 
 import javax.net.ssl.HostnameVerifier;
@@ -164,7 +164,7 @@ public class PicassoUtil {
         }
 
         return new OkHttpClient.Builder()
-                .protocols(Arrays.asList(Protocol.HTTP_1_1))
+                .protocols(Collections.singletonList(Protocol.HTTP_1_1))
                 .hostnameVerifier(new TrustAllHostnameVerifier())
                 .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
                 //.addNetworkInterceptor(new DefaultHeadersInterceptor(context, cookie, username, password, Domoticz.BasicAuthDetected))

@@ -41,7 +41,7 @@ public class DeviceUtils {
         if (mDeviceInfo.getSwitchTypeVal() == 0 &&
                 (mDeviceInfo.getSwitchType() == null)) {
             if ((mDeviceInfo.getSubType() != null && DomoticzValues.Device.Utility.SubType.SETPOINT.equalsIgnoreCase(mDeviceInfo.getSubType())) ||
-                (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES))) {
+                    (mDeviceInfo.getSubType() != null && mDeviceInfo.getSubType().equals(DomoticzValues.Device.Utility.SubType.SMARTWARES))) {
                 return true;
             } else {
                 switch (mDeviceInfo.getType()) {
@@ -161,9 +161,9 @@ public class DeviceUtils {
                 final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
                 final String tmDevice, tmSerial, androidId;
-                tmDevice = "" + tm.getDeviceId();
-                tmSerial = "" + tm.getSimSerialNumber();
-                androidId = "" + Settings.Secure.getString(context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+                tmDevice = tm.getDeviceId();
+                tmSerial = tm.getSimSerialNumber();
+                androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
                 UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
                 return deviceUuid.toString();

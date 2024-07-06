@@ -22,7 +22,6 @@
 package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,17 +39,17 @@ import nl.hnogames.domoticz.utils.SerializableManager;
 import nl.hnogames.domoticzapi.Containers.LogInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.LogsReceiver;
-import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentListener {
     private LogAdapter adapter;
     private Context mContext;
     private String filter = "";
     private boolean itemDecorationAdded = false;
+    private int LogLevel;
 
     @Override
     public void onConnectionFailed() {
-        new GetCachedDataTask().execute();
+        GetLogs();
     }
 
     @Override
@@ -117,7 +116,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     private void processLogs() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-        new GetCachedDataTask().execute();
+        GetLogs();
     }
 
     private void createListView(ArrayList<LogInfo> mLogInfos) {
@@ -158,52 +157,32 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
         }
     }
 
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<LogInfo> cacheLogs = null;
-        private int LogLevel;
+    public void GetLogs() {
+        if (isAdded()) {
+            LogLevel = DomoticzValues.Log.LOGLEVEL.ALL;
+            if (getSort().equals(getString(R.string.filter_normal)))
+                LogLevel = DomoticzValues.Log.LOGLEVEL.NORMAL;
+            if (getSort().equals(getString(R.string.filter_status)))
+                LogLevel = DomoticzValues.Log.LOGLEVEL.STATUS;
+            if (getSort().equals(getString(R.string.filter_error)))
+                LogLevel = DomoticzValues.Log.LOGLEVEL.ERROR;
 
-        protected Boolean doInBackground(Boolean... geto) {
-            if (mPhoneConnectionUtil == null)
-                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
-            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
-                try {
-                    cacheLogs = (ArrayList<LogInfo>) SerializableManager.readSerializedObject(mContext, "Logs");
-                } catch (Exception ignored) {
+            StaticHelper.getDomoticz(mContext).getLogs(new LogsReceiver() {
+                @Override
+                public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {
+                    successHandling(mLogInfos.toString(), false);
+                    SerializableManager.saveSerializable(mContext, mLogInfos, "Logs");
+                    createListView(mLogInfos);
                 }
-            }
-            return true;
-        }
 
-        protected void onPostExecute(Boolean result) {
-            if (isAdded()) {
-                if (cacheLogs != null)
-                    createListView(cacheLogs);
-
-                LogLevel = DomoticzValues.Log.LOGLEVEL.ALL;
-                if (getSort().equals(getString(R.string.filter_normal)))
-                    LogLevel = DomoticzValues.Log.LOGLEVEL.NORMAL;
-                if (getSort().equals(getString(R.string.filter_status)))
-                    LogLevel = DomoticzValues.Log.LOGLEVEL.STATUS;
-                if (getSort().equals(getString(R.string.filter_error)))
-                    LogLevel = DomoticzValues.Log.LOGLEVEL.ERROR;
-
-                StaticHelper.getDomoticz(mContext).getLogs(new LogsReceiver() {
-                    @Override
-                    public void onReceiveLogs(ArrayList<LogInfo> mLogInfos) {
-                        successHandling(mLogInfos.toString(), false);
-                        SerializableManager.saveSerializable(mContext, mLogInfos, "Logs");
-                        createListView(mLogInfos);
-                    }
-
-                    @Override
-                    public void onError(Exception error) {
-                        if (LogLevel == DomoticzValues.Log.LOGLEVEL.ALL)
-                            errorHandling(error);
-                        else
-                            createListView(new ArrayList<LogInfo>());
-                    }
-                }, LogLevel);
-            }
+                @Override
+                public void onError(Exception error) {
+                    if (LogLevel == DomoticzValues.Log.LOGLEVEL.ALL)
+                        errorHandling(error);
+                    else
+                        createListView(new ArrayList<LogInfo>());
+                }
+            }, LogLevel);
         }
     }
 }

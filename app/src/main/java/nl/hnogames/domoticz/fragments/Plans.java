@@ -24,7 +24,6 @@ package nl.hnogames.domoticz.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +35,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,7 +55,6 @@ import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.ViewUtils;
 import nl.hnogames.domoticzapi.Containers.PlanInfo;
 import nl.hnogames.domoticzapi.Interfaces.PlansReceiver;
-import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Plans extends DomoticzCardFragment implements DomoticzFragmentListener {
 
@@ -100,7 +99,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
     public void processPlans() {
         if (mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setRefreshing(true);
-        new GetCachedDataTask().execute();
+        GetPlans();
     }
 
     @Override
@@ -226,27 +225,13 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
         return supportedSwitches;
     }
 
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<PlanInfo> cachePlans = null;
-
-        protected Boolean doInBackground(Boolean... geto) {
-            if (mPhoneConnectionUtil == null)
-                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
-            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
-                try {
-                    cachePlans = (ArrayList<PlanInfo>) SerializableManager.readSerializedObject(mContext, "Plans");
-                    Plans.this.mPlans = cachePlans;
-
-                } catch (Exception ex) {
-                }
-            }
-            return true;
-        }
-
-        protected void onPostExecute(Boolean result) {
-            if (cachePlans != null)
+    public void GetPlans() {
+        SerializableManager.readSerializedObject(mContext, "Plans", new TypeToken<ArrayList<PlanInfo>>() {
+        }.getType(), (SerializableManager.JsonCacheCallback<ArrayList<PlanInfo>>) plans -> {
+            if (plans != null) {
+                Plans.this.mPlans = plans;
                 createListView();
-
+            }
             StaticHelper.getDomoticz(mContext).getPlans(new PlansReceiver() {
                 @Override
                 public void OnReceivePlans(ArrayList<PlanInfo> plans) {
@@ -261,6 +246,7 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
                     errorHandling(error, frameLayout);
                 }
             });
-        }
+        });
+
     }
 }

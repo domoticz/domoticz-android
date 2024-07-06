@@ -23,7 +23,6 @@ package nl.hnogames.domoticz.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -35,8 +34,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.google.android.material.snackbar.Snackbar;
-
-import org.json.JSONObject;
+import com.google.common.reflect.TypeToken;
 
 import java.util.ArrayList;
 
@@ -64,7 +62,6 @@ import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.SwitchLogReceiver;
 import nl.hnogames.domoticzapi.Interfaces.UtilitiesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.setCommandReceiver;
-import nl.hnogames.domoticzapi.Utils.PhoneConnectionUtil;
 
 public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragmentListener,
         UtilityClickListener {
@@ -179,7 +176,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
             if (mSwipeRefreshLayout != null)
                 mSwipeRefreshLayout.setRefreshing(true);
 
-            new GetCachedDataTask().execute();
+            GetUtilities();
         } catch (Exception ex) {
         }
     }
@@ -297,6 +294,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
 
         notifyDataSetChanged();
     }
+
     private void updateThermostatModeValue(int idx, int newMode) {
         addDebugText("updateThermostatModeValue");
 
@@ -377,7 +375,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                 }
 
                 @Override
-                public void onCancel() {}
+                public void onCancel() {
+                }
             });
         } else {
             SetThermostatMode(utility, mode, null);
@@ -459,10 +458,8 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         addDebugText("onThermostatClick");
         final UtilitiesInfo tempUtil = getUtility(idx);
 
-        TemperatureDialog tempDialog = new TemperatureDialog(
-                mContext,
-                tempUtil.getSetPoint());
-
+        TemperatureDialog tempDialog = new TemperatureDialog(mContext, tempUtil.getSetPoint(), tempUtil.hasStep(),
+                tempUtil.getStep(), tempUtil.hasMax(), tempUtil.getMax(), tempUtil.hasMin(), tempUtil.getMin(), tempUtil.getVUnit());
         tempDialog.onDismissListener((newSetPoint, dialogAction) -> {
             if (dialogAction == DialogAction.POSITIVE) {
                 addDebugText("Set idx " + idx + " to " + newSetPoint);
@@ -612,29 +609,13 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
         }
     }
 
-    private class GetCachedDataTask extends AsyncTask<Boolean, Boolean, Boolean> {
-        ArrayList<UtilitiesInfo> cacheUtilities = null;
-
-        protected Boolean doInBackground(Boolean... geto) {
-            if (mContext == null)
-                return false;
-            if (mPhoneConnectionUtil == null)
-                mPhoneConnectionUtil = new PhoneConnectionUtil(mContext);
-            if (mPhoneConnectionUtil != null && !mPhoneConnectionUtil.isNetworkAvailable()) {
-                try {
-                    cacheUtilities = (ArrayList<UtilitiesInfo>) SerializableManager.readSerializedObject(mContext, "Utilities");
-                    Utilities.this.mUtilitiesInfos = cacheUtilities;
-                } catch (Exception ex) {
-                }
-            }
-            return true;
-        }
-
-        protected void onPostExecute(Boolean result) {
-            if (mContext == null)
-                return;
-            if (cacheUtilities != null)
+    public void GetUtilities() {
+        SerializableManager.readSerializedObject(mContext, "Utilities", new TypeToken<ArrayList<UtilitiesInfo>>() {
+        }.getType(), (SerializableManager.JsonCacheCallback<ArrayList<UtilitiesInfo>>) mUtilitiesInfos -> {
+            if (mUtilitiesInfos != null) {
+                Utilities.this.mUtilitiesInfos = mUtilitiesInfos;
                 createListView();
+            }
 
             StaticHelper.getDomoticz(mContext).getUtilities(new UtilitiesReceiver() {
                 @Override
@@ -653,6 +634,6 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
                     errorHandling(error);
                 }
             });
-        }
+        });
     }
 }
