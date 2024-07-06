@@ -82,6 +82,10 @@
         android:requestLegacyExternalStorage="true"
         tools:replace="android:icon, android:label, android:theme, android:name, android:allowBackup">
 
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/app_name_domoticz"/>
+
         <service android:name="nl.hnogames.domoticz.service.CustomControlService" android:permission="android.permission.BIND_CONTROLS" android:exported="true">
             <intent-filter>
                 <action android:name="android.service.controls.ControlsProviderService"/>
@@ -136,7 +140,8 @@
         </service>
 
         <service
-            android:name="nl.hnogames.domoticz.service.FCMMessageInstanceService"
+            android:name=".service.FCMMessageInstanceService"
+            android:stopWithTask="false"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

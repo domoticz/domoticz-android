@@ -1,27 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (C) 2015 Domoticz - Mark Heinis
-  ~
-  ~  Licensed to the Apache Software Foundation (ASF) under one
-  ~  or more contributor license agreements.  See the NOTICE file
-  ~  distributed with this work for additional information
-  ~  regarding copyright ownership.  The ASF licenses this file
-  ~  to you under the Apache License, Version 2.0 (the
-  ~  "License"); you may not use this file except in compliance
-  ~  with the License.  You may obtain a copy of the License at
-  ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~  Unless required by applicable law or agreed to in writing,
-  ~  software distributed under the License is distributed on an
-  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~  KIND, either express or implied.  See the License for the
-  ~  specific language governing permissions and limitations
-  ~  under the License.
-  -->
+<?xml version="1.0" encoding="utf-8"?>
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="nl.hnogames.domoticz.premium.permission.MAPS_RECEIVE" />
@@ -47,7 +27,6 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-
 
     <supports-screens
         android:anyDensity="true"
@@ -104,6 +83,10 @@
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
         tools:replace="android:icon, android:label, android:theme, android:name, android:allowBackup">
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/app_name_domoticz"/>
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.NFCSettingsActivity"
@@ -180,6 +163,7 @@
 
         <service
             android:name="nl.hnogames.domoticz.service.FCMMessageInstanceService"
+            android:stopWithTask="false"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -207,7 +191,6 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.MainActivity"
-
             android:label="@string/app_name_domoticz"
             android:launchMode="singleTop"
             android:resizeableActivity="true">
