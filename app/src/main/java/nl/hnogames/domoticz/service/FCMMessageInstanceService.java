@@ -34,26 +34,32 @@ public class FCMMessageInstanceService extends FirebaseMessagingService {
         Map data = remoteMessage.getData();
         Log.d(TAG, "Message Received: " + data);
 
-        if (data.containsKey("message")) {
-            String message = decode(data.containsKey("message") ? data.get("message").toString() : "");
+        if (data.containsKey("message") || data.containsKey("subject") || data.containsKey("body")) {
             String subject = decode(data.containsKey("subject") ? data.get("subject").toString() : "");
             String body = decode(data.containsKey("body") ? data.get("body").toString() : "");
 
-            int prio = 0; //default
+            // If subject and body are the same, set the app name as subject
+            if (!UsefulBits.isEmpty(subject) && subject.equals(body)) {
+                subject = decode(data.containsKey("Name") ? data.get("Name").toString() : this.getString(R.string.app_name_domoticz));
+            }
+
+            // Determine priority
+            int prio = 0; // default
             if (data.containsKey("priority")) {
                 String priority = decode(data.get("priority").toString());
                 if (!UsefulBits.isEmpty(priority) && isDigitsOnly(priority))
                     prio = Integer.valueOf(priority);
             }
 
-            if (!UsefulBits.isEmpty(subject) && !UsefulBits.isEmpty(body) && !body.equals(subject)) {
-                String deviceId = decode(data.containsKey("deviceid") ? data.get("deviceid").toString() : "");
-                if (!UsefulBits.isEmpty(deviceId) && isDigitsOnly(deviceId) && Integer.valueOf(deviceId) > 0)
-                    NotificationUtil.sendSimpleNotification(new NotificationInfo(Integer.valueOf(deviceId), subject, body, prio, new Date()), this);
-                else
-                    NotificationUtil.sendSimpleNotification(new NotificationInfo(-1, subject, body, prio, new Date()), this);
-            } else
-                NotificationUtil.sendSimpleNotification(new NotificationInfo(-1, this.getString(R.string.app_name_domoticz), message, prio, new Date()), this);
+            // Determine device ID
+            String deviceId = decode(data.containsKey("deviceid") ? data.get("deviceid").toString() : "");
+            int deviceIdInt = -1;
+            if (!UsefulBits.isEmpty(deviceId) && isDigitsOnly(deviceId) && Integer.valueOf(deviceId) > 0) {
+                deviceIdInt = Integer.valueOf(deviceId);
+            }
+
+            // Send notification
+            NotificationUtil.sendSimpleNotification(new NotificationInfo(deviceIdInt, subject, body, prio, new Date()), this);
         }
     }
 
