@@ -133,12 +133,6 @@ public class WidgetConfigurationActivity extends AppCompatActivity {
                             return;
                         }
 
-                        if (!mSharedPrefs.IsWidgetsEnabled()) {
-                            UsefulBits.showSnackbarWithAction(WidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.widget_disabled), Snackbar.LENGTH_LONG, null,
-                                    v -> startActivityForResult(new Intent(WidgetConfigurationActivity.this, SettingsActivity.class), 888), getString(R.string.action_settings));
-                            return;
-                        }
-
                         final DevicesInfo mDeviceInfo = (DevicesInfo) adapter.getItem(position);
                         if (mDeviceInfo.isProtected()) {
                             PasswordDialog passwordDialog = new PasswordDialog(

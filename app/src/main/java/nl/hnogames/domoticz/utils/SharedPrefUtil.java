@@ -127,7 +127,6 @@ public class SharedPrefUtil {
     private static final String PREF_ALARM_TIMER = "alarmNotificationTimer";
     private static final String PREF_TEMP_MIN = "tempMinValue";
     private static final String PREF_TEMP_MAX = "tempMaxValue";
-    private static final String PREF_WIDGET_ENABLED = "enableWidgets";
     private static final String PREF_SORT_LIST = "customSortList";
     private static final String PREF_DASHBOARD_CLOCK = "dashboardShowClock";
     private static final String PREF_DASHBOARD_PLANS = "dashboardShowPlans";
@@ -188,15 +187,6 @@ public class SharedPrefUtil {
 
     public void OldVersionDialogShown() {
         editor.putBoolean(PREF_OLD_VERIONS_DIALOG_SHOWN, false).apply();
-        editor.commit();
-    }
-
-    public boolean IsWidgetsEnabled() {
-        return prefs.getBoolean(PREF_WIDGET_ENABLED, false);
-    }
-
-    public void SetWidgetsEnabled(Boolean set) {
-        editor.putBoolean(PREF_WIDGET_ENABLED, set).apply();
         editor.commit();
     }
 
