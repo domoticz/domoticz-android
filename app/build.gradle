@@ -169,8 +169,10 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     wearApp project(':wear')
 
+    implementation "com.android.billingclient:billing:7.1.1"
+
     implementation 'androidx.core:core:1.13.1'
-    implementation "androidx.work:work-runtime:2.9.0"
+    implementation "androidx.work:work-runtime:2.9.1"
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.7.0'
@@ -180,11 +182,11 @@ dependencies {
     implementation 'androidx.biometric:biometric:1.1.0'
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.annotation:annotation:1.8.0'
+    implementation 'androidx.annotation:annotation:1.9.0'
     implementation "androidx.car.app:app:1.4.0"
     implementation 'org.reactivestreams:reactive-streams:1.0.3'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
-    implementation 'com.revenuecat.purchases:purchases:8.2.0'
+    implementation 'com.revenuecat.purchases:purchases:8.8.1'
 
     implementation 'androidx.room:room-runtime:2.6.1'
     annotationProcessor 'androidx.room:room-compiler:2.6.1'
