@@ -40,7 +40,7 @@ android {
             versionCode version_Code
             versionName "${versionMajor}.${versionMinor}.${versionPatch} (${versionBuild})"
             minSdkVersion 24
-            targetSdkVersion 34
+            targetSdkVersion 35
             multiDexEnabled true
             wearAppUnbundled true
         }
@@ -168,27 +168,27 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     wearApp project(':wear')
 
-    implementation "com.android.billingclient:billing:7.1.1"
+    implementation "com.android.billingclient:billing:8.0.0"
 
-    implementation 'androidx.core:core:1.15.0'
-    implementation "androidx.work:work-runtime:2.10.0"
+    implementation 'androidx.core:core:1.16.0'
+    implementation "androidx.work:work-runtime:2.10.2"
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.biometric:biometric:1.1.0'
     implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
     implementation 'androidx.annotation:annotation:1.9.1'
     implementation "androidx.car.app:app:1.4.0"
-    implementation 'org.reactivestreams:reactive-streams:1.0.3'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
-    implementation 'com.revenuecat.purchases:purchases:8.8.1'
+    implementation 'org.reactivestreams:reactive-streams:1.0.4'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
+    implementation 'com.revenuecat.purchases:purchases:8.20.0'
 
-    implementation 'androidx.room:room-runtime:2.6.1'
-    annotationProcessor 'androidx.room:room-compiler:2.6.1'
+    implementation 'androidx.room:room-runtime:2.7.2'
+    annotationProcessor 'androidx.room:room-compiler:2.7.2'
 
     implementation 'com.google.firebase:firebase-core:21.1.1'
     implementation 'com.google.firebase:firebase-iid:21.1.0'
@@ -207,7 +207,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-ads:23.6.0"
     implementation 'com.google.android.ads.consent:consent-library:1.0.8'
     implementation "com.github.nisrulz:recyclerviewhelper:27.1.1"
-    implementation "org.altbeacon:android-beacon-library:2.20.5"
+    implementation "org.altbeacon:android-beacon-library:2.21.1"
 
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
@@ -215,12 +215,12 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
 
-    implementation 'com.google.guava:guava:31.1-android'
+    implementation 'com.google.guava:guava:33.4.8-android'
     implementation 'com.github.alxrm:animated-clock-icon:1.0.2'
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.google.code.gson:gson:2.13.1'
     implementation 'com.android.volley:volley:1.2.1'
-    implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
+    implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'
 
     implementation 'com.github.zurche:plain-pie:v0.2.9'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
@@ -232,7 +232,7 @@ dependencies {
     implementation 'com.github.jd-alexander:LikeButton:0.2.3'
     implementation 'com.github.javiersantos:PiracyChecker:1.1'
     implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
-    implementation 'com.alexvasilkov:gesture-views:2.6.0'
+    implementation 'com.alexvasilkov:gesture-views:2.8.3'
 
     implementation 'com.github.rubengees:easy-header-footer-adapter:3.0.0@aar'
 
@@ -241,13 +241,13 @@ dependencies {
     }
 
     implementation 'com.github.stfalcon:chatkit:0.3.3'
-    implementation ('com.adevinta.android:leku:9.1.4') {
+    implementation ('com.adevinta.android:leku:12.0.0') {
         exclude group: 'com.google.android.gms'
         exclude group: 'androidx.appcompat'
     }
     implementation 'com.github.k0shk0sh:PermissionHelper:1.1.1'
     implementation 'com.github.zagum:SpeechRecognitionView:1.2.2'
-    implementation "com.github.skydoves:colorpickerview:2.0.1"
+    implementation "com.github.skydoves:colorpickerview:2.3.0"
     implementation 'com.github.paolorotolo:appintro:v5.1.0'
     implementation 'com.52inc:scoops:1.0.0'
     implementation 'com.isupatches:wisefy:4.0.0'
