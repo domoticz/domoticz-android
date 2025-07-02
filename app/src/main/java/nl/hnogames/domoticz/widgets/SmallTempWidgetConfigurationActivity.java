@@ -138,14 +138,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
                             return;
                         }
 
-                        if (!mSharedPrefs.IsWidgetsEnabled()) {
-                            UsefulBits.showSnackbarWithAction(SmallTempWidgetConfigurationActivity.this, coordinatorLayout, getString(R.string.widget_disabled), Snackbar.LENGTH_LONG, null,
-                                    v -> startActivityForResult(new Intent(SmallTempWidgetConfigurationActivity.this, SettingsActivity.class), 888), getString(R.string.action_settings));
-                            return;
-                        }
-
                         final TemperatureInfo mDeviceInfo = (TemperatureInfo) adapter.getItem(position);
-
                         if (mDeviceInfo.isProtected()) {
                             PasswordDialog passwordDialog = new PasswordDialog(
                                     SmallTempWidgetConfigurationActivity.this, StaticHelper.getDomoticz(SmallTempWidgetConfigurationActivity.this));
