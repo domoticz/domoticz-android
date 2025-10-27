@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Minimal declarations so AAPT can find Flexbox attributes used by Chatkit layouts -->
+    <attr name="justifyContent" />
+    <attr name="alignContent" />
+    <attr name="alignItems" />
+    <attr name="flexWrap" />
+
+    <!-- Layout params used on children -->
+    <attr name="layout_alignSelf" />
+    <attr name="layout_order" />
+</resources>
+

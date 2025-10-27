@@ -1,3 +1,23 @@
-include ':app', ':wear', ':SeekArc_library', ':domoticzapi', ':materialList', ':easygcm-lib'
+// Ensure plugin and dependency resolution use modern public repositories (avoid jcenter)
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+dependencyResolutionManagement {
+    // Allow existing project-level repositories as a fallback for this repository layout
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+include ':app', ':wear', ':SeekArc_library', ':domoticzapi', ':materialList'
 include ':libs:MemorizingTrustManager'
 project(':SeekArc_library').projectDir = new File('libs/SeekArc_library')

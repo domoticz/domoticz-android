@@ -51,7 +51,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
@@ -319,7 +318,7 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     }
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener, RVHViewHolder {
+            implements View.OnClickListener {
         TextView name;
         ImageView camera;
         TemplateView adview;
@@ -337,16 +336,6 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
         @Override
         public void onClick(View v) {
             onClickListener.onItemClick(getLayoutPosition(), v);
-        }
-
-        @Override
-        public void onItemSelected(int actionstate) {
-            System.out.println("Item is selected");
-        }
-
-        @Override
-        public void onItemClear() {
-            System.out.println("Item is unselected");
         }
     }
 }

@@ -57,7 +57,6 @@ import java.util.List;
 
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
-import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
@@ -462,7 +461,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
         listener.onLikeButtonClick(idx, checked);
     }
 
-    public static class DataObjectHolder extends RecyclerView.ViewHolder implements RVHViewHolder {
+    public static class DataObjectHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView data;
         TextView data2;
@@ -503,16 +502,6 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
             extraPanel = itemView.findViewById(R.id.extra_panel);
             if (extraPanel != null)
                 extraPanel.setVisibility(View.GONE);
-        }
-
-        @Override
-        public void onItemSelected(int actionstate) {
-            System.out.println("Item is selected");
-        }
-
-        @Override
-        public void onItemClear() {
-            System.out.println("Item is unselected");
         }
     }
 
