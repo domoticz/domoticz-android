@@ -38,6 +38,7 @@ public class DomoticzValues {
                 (mDeviceInfo.getSubType().contains("A-OK")) ||
                 (mDeviceInfo.getSubType().contains("Harrison")) ||
                 (mDeviceInfo.getSubType().contains("RFY")) ||
+                (mDeviceInfo.getSubType().contains("RTS")) ||
                 (mDeviceInfo.getSubType().contains("ASA")) ||
                 (mDeviceInfo.getSubType().contains("Hasta")) ||
                 (mDeviceInfo.getSubType().contains("Media Mount")) ||
@@ -178,6 +179,7 @@ public class DomoticzValues {
                 int BLINDVENETIAN = 15;
                 int BLINDVENETIANUS = 14;
                 int BLINDPERCENTAGESTOP = 21;
+                int BLINDSTOP = 22;
                 int SELECTOR = 18;
                 int DOORLOCK = 19;
                 int DOORLOCKINVERTED = 20;
@@ -205,7 +207,8 @@ public class DomoticzValues {
                 String BLINDVENETIAN = "Venetian Blinds EU";
                 String BLINDVENETIANUS = "Venetian Blinds US";
                 String BLINDPERCENTAGE = "Blinds Percentage";
-                String BLINDPERCENTAGESTOP = "Blinds + Stop";
+                String BLINDPERCENTAGESTOP = "Blinds % + Stop";
+                String BLINDSTOP = "Blinds + Stop";
                 String TEMPHUMIDITYBARO = "Temp + Humidity + Baro";
                 String WIND = "Wind";
                 String SELECTOR = "Selector";

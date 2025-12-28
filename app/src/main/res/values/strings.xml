@@ -32,6 +32,10 @@
     <string name="old_version">Get the latest version!</string>
     <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
 
+    <!-- Default Play Store description strings required by resource merge -->
+    <string name="short_description">Domoticz home automation control and monitoring</string>
+    <string name="long_description">Control and monitor devices at home (lights, switches, sensors, energy data and more) using the Domoticz home automation system. Automate devices and access them remotely from your Android device.</string>
+
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="msg_please_wait">Please wait…</string>

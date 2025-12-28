@@ -409,11 +409,14 @@ public class WidgetProviderLarge extends AppWidgetProvider {
                             break;
 
                         case DomoticzValues.Device.Type.Value.BLINDPERCENTAGE:
+                        case DomoticzValues.Device.Type.Value.BLINDPERCENTAGESTOP:
                             withButton = BUTTON_2;
                             break;
 
                         case DomoticzValues.Device.Type.Value.BLINDS:
-                            if (DomoticzValues.canHandleStopButton(s))
+                        case DomoticzValues.Device.Type.Value.BLINDSTOP:
+                            if (DomoticzValues.canHandleStopButton(s) ||
+                                    (s.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDSTOP))
                                 withButton = BUTTON_3;
                             else
                                 withButton = BUTTON_2;

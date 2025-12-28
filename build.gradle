@@ -1,31 +1,23 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
-        maven { url "https://jitpack.io" };
-        mavenCentral();
-        jcenter()
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
         google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 
     //noinspection GroovyAssignabilityCheck
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.7.3'
-        classpath 'com.google.gms:google-services:4.4.2'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.3'
+        classpath 'com.android.tools.build:gradle:8.13.0'
+        classpath 'com.google.gms:google-services:4.4.4'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.6'
     }
 }
 
 allprojects {
     repositories {
         google()
-        jcenter()
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }

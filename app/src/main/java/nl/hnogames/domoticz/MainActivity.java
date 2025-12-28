@@ -535,7 +535,9 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 if (!isSceneOrGroup) {
                     if (inputJSONAction < 0) {
                         if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDSTOP ||
+                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
+                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGESTOP) {
                             if (!mDevicesInfo.getStatusBoolean()) {
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                                 if (!UsefulBits.isEmpty(value)) {
@@ -566,7 +568,9 @@ public class MainActivity extends AppCompatPermissionsActivity {
                         }
                     } else {
                         if (mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDS ||
-                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE) {
+                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDSTOP ||
+                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGE ||
+                                mDevicesInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDPERCENTAGESTOP) {
                             if (inputJSONAction == 1) {
                                 jsonAction = DomoticzValues.Device.Switch.Action.OFF;
                                 if (!UsefulBits.isEmpty(value)) {

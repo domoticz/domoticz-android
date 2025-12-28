@@ -74,6 +74,7 @@
 
     <color name="black">#ff000000</color>
     <color name="white">#ffffffff</color>
+    <color name="white60">#a0ffffff</color>
     <color name="darker_gray">@android:color/darker_gray</color>
     <color name="light_gray">@android:color/secondary_text_dark</color>
 

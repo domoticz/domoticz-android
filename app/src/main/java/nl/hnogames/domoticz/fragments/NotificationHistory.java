@@ -38,7 +38,6 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.stfalcon.chatkit.messages.MessageHolders;
 import com.stfalcon.chatkit.messages.MessagesList;
-import com.stfalcon.chatkit.messages.MessagesListAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,11 +64,11 @@ public class NotificationHistory extends Fragment {
     private SharedPrefUtil mSharedPrefs;
     private Context context;
     private ArrayList<NotificationTypeInfo> mNotificationTypes;
-    private MessagesListAdapter<NotificationInfo> adapter;
     private CoordinatorLayout coordinatorLayout;
     private ConfigInfo mConfigInfo = null;
     private SearchView searchViewAction;
     private List<NotificationInfo> notifications;
+    private com.stfalcon.chatkit.messages.MessagesListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -111,7 +110,7 @@ public class NotificationHistory extends Fragment {
                         R.layout.item_custom_outcoming_text_message);
 
         MessagesList messagesList = root.findViewById(R.id.messagesList);
-        adapter = new MessagesListAdapter<>(DeviceUtils.getUniqueID(context), holdersConfig, null);
+        adapter = new com.stfalcon.chatkit.messages.MessagesListAdapter(DeviceUtils.getUniqueID(context), holdersConfig, null);
         if (n != null && n.size() > 0)
             adapter.addToEnd(n, true);
         messagesList.setAdapter(adapter);

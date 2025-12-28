@@ -44,7 +44,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
@@ -264,7 +263,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
         void onItemClick(int position, View v);
     }
 
-    public static class DataObjectHolder extends RecyclerView.ViewHolder implements View.OnClickListener, RVHViewHolder {
+    public static class DataObjectHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView name;
         TextView devices;
         ImageView iconRow;
@@ -279,16 +278,6 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
             devices = itemView.findViewById(R.id.devices);
             iconRow = itemView.findViewById(R.id.rowIcon);
             itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onItemSelected(int actionstate) {
-            System.out.println("Item is selected");
-        }
-
-        @Override
-        public void onItemClear() {
-            System.out.println("Item is unselected");
         }
 
         @Override

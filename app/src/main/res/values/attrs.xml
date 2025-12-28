@@ -47,6 +47,11 @@
     <attr name="incomingTextColor" format="color" />
     <attr name="outcomingDefaultBubbleColor" format="color" />
     <attr name="outcomingTextColor" format="color" />
+    <!-- Missing bubble color attrs needed by chat layouts -->
+    <attr name="incomingDefaultBubblePressedColor" format="color" />
+    <attr name="incomingDefaultBubbleSelectedColor" format="color" />
+    <attr name="outcomingDefaultBubblePressedColor" format="color" />
+    <attr name="outcomingDefaultBubbleSelectedColor" format="color" />
     <attr name="editTextBackgroundColor" format="color" />
     <attr name="editTextTextColor" format="color" />
     <attr name="floatingActionBar" format="color" />

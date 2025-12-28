@@ -66,7 +66,6 @@ import java.util.List;
 
 import az.plainpie.PieView;
 import az.plainpie.animation.PieAngleAnimation;
-import github.nisrulz.recyclerviewhelper.RVHViewHolder;
 import nl.hnogames.domoticz.MainActivity;
 import nl.hnogames.domoticz.R;
 import nl.hnogames.domoticz.ads.NativeTemplateStyle;
@@ -369,7 +368,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                     break;
 
                 case DomoticzValues.Device.Type.Value.BLINDS:
-                    if (DomoticzValues.canHandleStopButton(mDeviceInfo)) {
+                case DomoticzValues.Device.Type.Value.BLINDSTOP:
+                    if (DomoticzValues.canHandleStopButton(mDeviceInfo) ||
+                            (mDeviceInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDSTOP)) {
                         setButtons(holder, Buttons.BLINDS);
                     } else {
                         setButtons(holder, Buttons.BLINDS_NOSTOP);
@@ -1981,7 +1982,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     public interface OnClickListener {
     }
 
-    public static class DataObjectHolder extends RecyclerView.ViewHolder implements RVHViewHolder {
+    public static class DataObjectHolder extends RecyclerView.ViewHolder {
         TextView switch_name, signal_level, switch_battery_level;
         SwitchMaterial onOffSwitch, dimmerOnOffSwitch;
         ImageView buttonUp, buttonDown, buttonStop;
@@ -2040,16 +2041,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 details.setVisibility(View.VISIBLE);
 
             pieView.setVisibility(View.GONE);//default
-        }
-
-        @Override
-        public void onItemSelected(int actionstate) {
-            System.out.println("Item is selected");
-        }
-
-        @Override
-        public void onItemClear() {
-            System.out.println("Item is unselected");
         }
     }
 

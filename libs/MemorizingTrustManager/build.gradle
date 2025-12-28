@@ -1,8 +1,9 @@
 buildscript {
 	repositories {
-		jcenter()
+		google()
 		mavenCentral()
-        google()
+        // JitPack is not required here but can be added if this subproject needs GitHub hosted libs
+        // maven { url 'https://jitpack.io' }
     }
 	//noinspection GroovyAssignabilityCheck
 	dependencies {
@@ -19,11 +20,11 @@ dependencies {
 
 android {
 	namespace 'de.duenndns.ssl'
-	compileSdk 34
+	compileSdk 36
     //noinspection GroovyAssignabilityCheck
 	defaultConfig {
         minSdkVersion 23
-		targetSdkVersion 34
+		targetSdkVersion 36
 	}
 
 	//noinspection GroovyAssignabilityCheck

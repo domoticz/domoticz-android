@@ -365,7 +365,9 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                     break;
 
                 case DomoticzValues.Device.Type.Value.BLINDS:
-                    if (DomoticzValues.canHandleStopButton(mDeviceInfo)) {
+                case DomoticzValues.Device.Type.Value.BLINDSTOP:
+                    if (DomoticzValues.canHandleStopButton(mDeviceInfo) ||
+                            (mDeviceInfo.getSwitchTypeVal() == DomoticzValues.Device.Type.Value.BLINDSTOP)) {
                         setButtons(holder, Buttons.BLINDS);
                     } else {
                         setButtons(holder, Buttons.BLINDS_NOSTOP);

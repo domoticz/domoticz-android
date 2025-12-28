@@ -65,10 +65,10 @@ public class WelcomeViewActivity extends AppIntro2 {
 
     public void setDemoAccount() {
         StaticHelper.getServerUtil(this).getActiveServer().setServerName("Demo");
-        StaticHelper.getServerUtil(this).getActiveServer().setRemoteServerUsername("admin");
-        StaticHelper.getServerUtil(this).getActiveServer().setRemoteServerPassword("D@m@t1czCl0ud");
+        StaticHelper.getServerUtil(this).getActiveServer().setRemoteServerUsername("demo");
+        StaticHelper.getServerUtil(this).getActiveServer().setRemoteServerPassword("@domoticz");
         StaticHelper.getServerUtil(this).getActiveServer().setRemoteServerUrl("gandalf.domoticz.com");
-        StaticHelper.getServerUtil(this).getActiveServer().setRemoteServerPort("1883");
+        StaticHelper.getServerUtil(this).getActiveServer().setRemoteServerPort("443");
         StaticHelper.getServerUtil(this).getActiveServer().setRemoteServerDirectory("");
         StaticHelper.getServerUtil(this).getActiveServer().setRemoteServerSecure(true);
         StaticHelper.getServerUtil(this).getActiveServer().setLocalSameAddressAsRemote();

@@ -21,14 +21,20 @@
 
 package nl.hnogames.domoticz.containers;
 
-import com.stfalcon.chatkit.commons.models.IMessage;
-import com.stfalcon.chatkit.commons.models.IUser;
-
 import java.util.Date;
 
 import nl.hnogames.domoticz.utils.UsefulBits;
 
-public class NotificationInfo implements IMessage, Comparable<NotificationInfo> {
+/**
+ * Local lightweight replacement for chat message model to avoid external dependency.
+ */
+public class NotificationInfo implements Comparable<NotificationInfo> {
+    public interface IUserLocal {
+        String getId();
+        String getName();
+        String getAvatar();
+    }
+
     private int idx = -1;
     private String title;
     private String text;
@@ -91,7 +97,6 @@ public class NotificationInfo implements IMessage, Comparable<NotificationInfo> 
         this.date = date;
     }
 
-    @Override
     public String getId() {
         return String.valueOf(getText().hashCode());
     }
@@ -107,10 +112,9 @@ public class NotificationInfo implements IMessage, Comparable<NotificationInfo> 
         this.text = text;
     }
 
-    @Override
-    public IUser getUser() {
+    public IUserLocal getUser() {
         if (sendOurselves) {
-            return new IUser() {
+            return new IUserLocal() {
                 @Override
                 public String getId() {
                     return deviceID;
@@ -127,7 +131,7 @@ public class NotificationInfo implements IMessage, Comparable<NotificationInfo> 
                 }
             };
         } else {
-            return new IUser() {
+            return new IUserLocal() {
                 @Override
                 public String getId() {
                     return "654s6f84sef"; //dummy value
@@ -146,7 +150,6 @@ public class NotificationInfo implements IMessage, Comparable<NotificationInfo> 
         }
     }
 
-    @Override
     public Date getCreatedAt() {
         return date;
     }
