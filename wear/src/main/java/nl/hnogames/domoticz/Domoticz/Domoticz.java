@@ -203,6 +203,8 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Value.BLINDINVERTED);
         switchesSupported.add(Device.Type.Value.BLINDPERCENTAGE);
         switchesSupported.add(Device.Type.Value.BLINDPERCENTAGEINVERTED);
+        switchesSupported.add(Device.Type.Value.BLINDPERCENTAGESTOP);
+        switchesSupported.add(Device.Type.Value.BLINDSTOP);
         switchesSupported.add(Device.Type.Value.BLINDS);
         switchesSupported.add(Device.Type.Value.BLINDVENETIAN);
         switchesSupported.add(Device.Type.Value.BLINDVENETIANUS);
@@ -227,6 +229,8 @@ public class Domoticz {
         switchesSupported.add(Device.Type.Name.BLINDINVERTED);
         switchesSupported.add(Device.Type.Name.BLINDPERCENTAGE);
         switchesSupported.add(Device.Type.Name.BLINDPERCENTAGEINVERTED);
+        switchesSupported.add(Device.Type.Name.BLINDPERCENTAGESTOP);
+        switchesSupported.add(Device.Type.Name.BLINDSTOP);
         switchesSupported.add(Device.Type.Name.BLINDS);
         switchesSupported.add(Device.Type.Name.BLINDVENETIAN);
         switchesSupported.add(Device.Type.Name.BLINDVENETIANUS);
@@ -313,6 +317,8 @@ public class Domoticz {
                 int BLINDVENETIANUS = 14;
                 int BLINDINVERTED = 6;
                 int BLINDPERCENTAGEINVERTED = 16;
+                int BLINDPERCENTAGESTOP = 21;
+                int BLINDSTOP = 22;
                 int SELECTOR = 18;
                 int DOORLOCK = 19;
             }
@@ -339,6 +345,8 @@ public class Domoticz {
                 String BLINDVENETIANUS = "Venetian Blinds US";
                 String BLINDINVERTED = "Blinds Inverted";
                 String BLINDPERCENTAGEINVERTED = "Blinds Percentage Inverted";
+                String BLINDPERCENTAGESTOP = "Blinds % + Stop";
+                String BLINDSTOP = "Blinds + Stop";
                 String TEMPHUMIDITYBARO = "Temp + Humidity + Baro";
                 String WIND = "Wind";
                 String SELECTOR = "Selector";

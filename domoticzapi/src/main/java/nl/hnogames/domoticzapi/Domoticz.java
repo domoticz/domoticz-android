@@ -264,6 +264,7 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Value.DIMMER);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDPERCENTAGE);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDPERCENTAGESTOP);
+        switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDSTOP);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDVENETIAN);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDVENETIANUS);
         switchesSupported.add(DomoticzValues.Device.Type.Value.BLINDS);
@@ -292,6 +293,7 @@ public class Domoticz {
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDVENETIANUS);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDPERCENTAGE);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDPERCENTAGESTOP);
+        switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDSTOP);
         switchesSupported.add(DomoticzValues.Device.Type.Name.BLINDS);
         switchesSupported.add(DomoticzValues.Device.Type.Name.PUSH_ON_BUTTON);
         switchesSupported.add(DomoticzValues.Device.Type.Name.PUSH_OFF_BUTTON);
