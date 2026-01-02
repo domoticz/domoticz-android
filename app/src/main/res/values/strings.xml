@@ -172,4 +172,31 @@
     <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
     <string name="background_location_warning">This app collects location data to enable for geofencing services within this app, even when the app is closed or not in use.</string>
 
+    <!-- Firebase Configuration -->
+    <string name="firebase_settings_title">Firebase Configuration</string>
+    <string name="firebase_settings">Firebase Settings</string>
+    <string name="firebase_settings_description">Configure your own Firebase Cloud Messaging for push notifications. This is required if you\'re running your own Domoticz server.</string>
+    <string name="firebase_upload_json">Upload google-services.json</string>
+    <string name="firebase_upload_json_description">Download the google-services.json file from your Firebase Console and upload it here to automatically configure FCM.</string>
+    <string name="firebase_upload_google_services">Upload google-services.json</string>
+    <string name="firebase_manual_config">Manual Configuration</string>
+    <string name="firebase_project_id">Project ID</string>
+    <string name="firebase_app_id">App ID (mobilesdk_app_id)</string>
+    <string name="firebase_api_key">API Key</string>
+    <string name="firebase_sender_id">Sender ID (Project Number)</string>
+    <string name="firebase_config_saved">Firebase configuration saved</string>
+    <string name="firebase_config_cleared">Firebase configuration cleared</string>
+    <string name="firebase_config_incomplete">Please fill in all required fields</string>
+    <string name="firebase_config_not_configured">Firebase is not configured</string>
+    <string name="firebase_clear_config">Clear Configuration</string>
+    <string name="firebase_clear_config_confirm">Are you sure you want to clear the Firebase configuration?</string>
+    <string name="firebase_test_config">Test Configuration</string>
+    <string name="firebase_test_success">Firebase configuration is working! FCM Token: </string>
+    <string name="firebase_test_failed">Firebase configuration test failed</string>
+    <string name="firebase_restart_required">The app needs to be restarted for the changes to take effect.</string>
+    <string name="firebase_json_parsed">Successfully parsed google-services.json file</string>
+    <string name="firebase_json_parse_failed">Failed to parse google-services.json</string>
+    <string name="save_config">Save Configuration</string>
+    <string name="firebase_restart_later">Later</string>
+
 </resources>

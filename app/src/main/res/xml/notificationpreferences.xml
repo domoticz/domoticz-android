@@ -37,6 +37,11 @@
             android:title="@string/enable_notifications_title" />
 
         <androidx.preference.Preference
+            android:key="firebase_settings"
+            android:summary="@string/firebase_settings_description"
+            android:title="@string/firebase_settings" />
+
+        <androidx.preference.Preference
             android:dependency="enableNotifications"
             android:key="notification_show_logs"
             android:summary="@string/notification_show"
@@ -98,6 +103,7 @@
         </androidx.preference.PreferenceCategory>
 
         <androidx.preference.PreferenceCategory android:title="@string/category_advanced">
+
             <androidx.preference.Preference
                 android:dependency="enableNotifications"
                 android:key="notification_registration_id"

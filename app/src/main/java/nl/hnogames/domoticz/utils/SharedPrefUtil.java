@@ -133,6 +133,12 @@ public class SharedPrefUtil {
     private static final String PREF_DASHBOARD_CAMERA = "dashboardShowCamera";
     private static final String PREF_OLD_VERIONS_DIALOG_SHOWN = "oldVersion";
 
+    // Firebase Configuration
+    private static final String PREF_FCM_PROJECT_ID = "fcm_project_id";
+    private static final String PREF_FCM_APP_ID = "fcm_app_id";
+    private static final String PREF_FCM_API_KEY = "fcm_api_key";
+    private static final String PREF_FCM_SENDER_ID = "fcm_sender_id";
+
     private static final int DEFAULT_STARTUP_SCREEN = 1;
     private final String TAG = "Shared Pref util";
     @SuppressWarnings("FieldCanBeLocal")
@@ -1519,5 +1525,69 @@ public class SharedPrefUtil {
                     mGeofenceList.add(locationInfo.toGeofence());
             return mGeofenceList;
         } else return null;
+    }
+
+    // Firebase Configuration Methods
+
+    /**
+     * Save Firebase configuration
+     */
+    public void saveFirebaseConfig(String projectId, String appId, String apiKey, String senderId) {
+        editor.putString(PREF_FCM_PROJECT_ID, projectId)
+                .putString(PREF_FCM_APP_ID, appId)
+                .putString(PREF_FCM_API_KEY, apiKey)
+                .putString(PREF_FCM_SENDER_ID, senderId)
+                .apply();
+        editor.commit();
+    }
+
+    /**
+     * Clear Firebase configuration
+     */
+    public void clearFirebaseConfig() {
+        editor.remove(PREF_FCM_PROJECT_ID)
+                .remove(PREF_FCM_APP_ID)
+                .remove(PREF_FCM_API_KEY)
+                .remove(PREF_FCM_SENDER_ID)
+                .apply();
+        editor.commit();
+    }
+
+    /**
+     * Check if Firebase is configured
+     */
+    public boolean hasFirebaseConfig() {
+        return !UsefulBits.isEmpty(getFcmProjectId()) &&
+               !UsefulBits.isEmpty(getFcmAppId()) &&
+               !UsefulBits.isEmpty(getFcmApiKey()) &&
+               !UsefulBits.isEmpty(getFcmSenderId());
+    }
+
+    /**
+     * Get Firebase Project ID
+     */
+    public String getFcmProjectId() {
+        return prefs.getString(PREF_FCM_PROJECT_ID, "");
+    }
+
+    /**
+     * Get Firebase App ID
+     */
+    public String getFcmAppId() {
+        return prefs.getString(PREF_FCM_APP_ID, "");
+    }
+
+    /**
+     * Get Firebase API Key
+     */
+    public String getFcmApiKey() {
+        return prefs.getString(PREF_FCM_API_KEY, "");
+    }
+
+    /**
+     * Get Firebase Sender ID (Project Number)
+     */
+    public String getFcmSenderId() {
+        return prefs.getString(PREF_FCM_SENDER_ID, "");
     }
 }

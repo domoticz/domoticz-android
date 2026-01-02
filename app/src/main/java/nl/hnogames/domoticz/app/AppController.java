@@ -87,6 +87,7 @@ import nl.hnogames.domoticz.containers.BeaconInfo;
 import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.SubscriptionsListener;
+import nl.hnogames.domoticz.utils.FirebaseConfigHelper;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -152,10 +153,14 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
     public void onCreate() {
         super.onCreate();
 
-        registerActivityLifecycleCallbacks(new AppLifecycleTracker());
-
+        // CRITICAL: Initialize Firebase FIRST before anything else
+        // This must happen before FirebaseInstanceIdService tries to get the default instance
         mInstance = this;
         mSharedPrefs = new SharedPrefUtil(this);
+        initializeUserFirebase();
+
+        registerActivityLifecycleCallbacks(new AppLifecycleTracker());
+
         Scoop.waffleCone()
                 .addFlavor(getString(R.string.theme_default), R.style.AppThemeDefault, true)
                 .addDayNightFlavor(getString(R.string.theme_daynight), R.style.AppThemeMain)
@@ -492,6 +497,30 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
             jsonValue = counter;
         }
         return jsonValue;
+    }
+
+    /**
+     * Initialize Firebase with user configuration if available
+     * MUST be called as the first thing in onCreate() to prevent crashes
+     */
+    private void initializeUserFirebase() {
+        if (mSharedPrefs.hasFirebaseConfig()) {
+            Log.d(TAG, "Initializing Firebase with user configuration");
+            FirebaseConfigHelper.initializeFirebase(this, mSharedPrefs);
+        } else {
+            Log.w(TAG, "No Firebase configuration found - push notifications will not work");
+            Log.w(TAG, "Please configure Firebase in Settings -> Notifications -> Firebase Settings");
+        }
+    }
+
+    /**
+     * Restart the app
+     */
+    public void restartApp() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     public class AppLifecycleTracker implements Application.ActivityLifecycleCallbacks {

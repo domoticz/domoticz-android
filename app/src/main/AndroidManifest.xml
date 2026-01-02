@@ -86,6 +86,13 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/app_name_domoticz"/>
 
+        <!-- Disable automatic Firebase initialization - we initialize manually with user config -->
+        <provider
+            android:name="com.google.firebase.provider.FirebaseInitProvider"
+            android:authorities="${applicationId}.firebaseinitprovider"
+            android:exported="false"
+            tools:node="remove" />
+
         <service android:name="nl.hnogames.domoticz.service.CustomControlService" android:permission="android.permission.BIND_CONTROLS" android:exported="true">
             <intent-filter>
                 <action android:name="android.service.controls.ControlsProviderService"/>
@@ -231,6 +238,16 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.NOTIFICATION_PREFERENCES" />
             </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nl.hnogames.domoticz.SettingsActivity" />
+        </activity>
+
+        <activity android:exported="false"
+            android:name="nl.hnogames.domoticz.FirebaseSettingsActivity"
+            android:label="@string/firebase_settings_title"
+            android:parentActivityName="nl.hnogames.domoticz.SettingsActivity"
+            android:resizeableActivity="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.hnogames.domoticz.SettingsActivity" />

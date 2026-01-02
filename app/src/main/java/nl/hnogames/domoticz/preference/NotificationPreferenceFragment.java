@@ -114,8 +114,17 @@ public class NotificationPreferenceFragment extends PreferenceFragmentCompat {
         NotificationsMultiSelectListPreference notificationsMultiSelectListPreference = findPreference("suppressNotifications");
         NotificationsMultiSelectListPreference alarmMultiSelectListPreference = findPreference("alarmNotifications");
         final androidx.preference.Preference registrationId = findPreference("notification_registration_id");
+        androidx.preference.Preference firebaseSettings = findPreference("firebase_settings");
         PreferenceCategory notificationCategory = findPreference("notificationcategory");
         androidx.preference.Preference noticiationSettings = findPreference("noticiationSettings");
+
+        // Firebase Settings click handler
+        if (firebaseSettings != null) {
+            firebaseSettings.setOnPreferenceClickListener(preference -> {
+                startActivity(new Intent(mContext, nl.hnogames.domoticz.FirebaseSettingsActivity.class));
+                return true;
+            });
+        }
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             androidx.preference.PreferenceCategory notificationSound = findPreference("notificationSound");
