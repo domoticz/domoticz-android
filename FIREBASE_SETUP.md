@@ -58,8 +58,12 @@ If you prefer to enter the values manually:
 ### 4. Enable Cloud Messaging API
 
 1. In the Firebase Console, go to **Project Settings** → **Cloud Messaging**
-2. Note the **Server Key** (also called Legacy Server Key)
-3. Keep this key safe - you'll need it for your Domoticz server
+2. At the "Firebase Cloud Messaging API (V1) / Enabled" section, click on the link "Manage Service Accounts"
+3. Click on the service account email (the one has firebase-adminsdk in the name)
+4. Naviate to 'Keys'
+5. Choose Add Key / Create new key
+6. Choose 'JSON' as key type
+7. You've now downloaded json file that we need for our Domoticz server config.
 
 ### 5. Configure Your Domoticz Server
 
@@ -67,7 +71,7 @@ If you prefer to enter the values manually:
 2. Go to **Setup** → **Settings** → **Notifications**
 3. Under **Google Cloud Messaging**:
     - Enable GCM/FCM
-    - Enter the **Server Key** from step 4
+    - Upload/Choose the json file from step 4
 4. Save the settings
 
 ### 6. Test the Configuration
@@ -77,28 +81,7 @@ If you prefer to enter the values manually:
     - Tap "Test Configuration"
     - You should see a success message with your FCM token
 2. If successful, restart the app when prompted
-3. Test by sending a notification from your Domoticz server
-
-## Troubleshooting
-
-### App crashes or fails to initialize Firebase
-
-- Verify all configuration values are correct
-- Make sure the package name in Firebase matches your app version
-- Try clearing app data and reconfiguring
-
-### Notifications not received
-
-- Check that the Server Key is correctly configured in Domoticz
-- Verify your device has internet connectivity
-- Check that notifications are enabled in Android settings
-- Review Domoticz server logs for errors
-
-### "Firebase test failed" error
-
-- Verify all four configuration fields are filled in
-- Check for typos in the configuration values
-- Ensure your Google account has proper permissions for the Firebase project
+3. Go to your Domoticz server (web ui) and under settings/notifications choose 'Test' under Google Cloud Messaging
 
 ## Additional Resources
 
