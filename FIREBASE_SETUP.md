@@ -23,7 +23,6 @@ This guide explains how to configure your own Firebase Cloud Messaging (FCM) pro
 1. In your Firebase project, click the Android icon to add an Android app
 2. Enter the next package names:
    `nl.hnogames.domoticz`
-   `nl.hnogames.domoticz.premium`
 4. Click "Register app"
 
 ### 3. Get Firebase Configuration
