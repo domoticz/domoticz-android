@@ -75,6 +75,8 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
     private boolean adLoaded = false;
 
     public CamerasAdapter(ArrayList<CameraInfo> data, Context mContext, final Domoticz domoticz, boolean refreshTimer) {
+        super();
+        setHasStableIds(true);
         this.mContext = mContext;
         mSharedPrefs = new SharedPrefUtil(mContext);
         this.refreshTimer = refreshTimer;
@@ -306,7 +308,15 @@ public class CamerasAdapter extends RecyclerView.Adapter<CamerasAdapter.DataObje
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return mDataset != null ? mDataset.size() : 0;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        if (mDataset != null && position < mDataset.size()) {
+            return mDataset.get(position).getIdx();
+        }
+        return RecyclerView.NO_ID;
     }
 
     public void setRefreshTimer(boolean timer) {

@@ -96,6 +96,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
                           ArrayList<WeatherInfo> data,
                           WeatherClickListener listener) {
         super();
+        setHasStableIds(true);
         this.context = context;
         domoticz = mDomoticz;
         mSharedPrefs = new SharedPrefUtil(context);
@@ -384,7 +385,15 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.DataObje
 
     @Override
     public int getItemCount() {
-        return filteredData.size();
+        return filteredData != null ? filteredData.size() : 0;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        if (filteredData != null && position < filteredData.size()) {
+            return filteredData.get(position).getIdx();
+        }
+        return RecyclerView.NO_ID;
     }
 
     private void handleLikeButtonClick(int idx, boolean checked) {

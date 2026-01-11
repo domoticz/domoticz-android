@@ -114,6 +114,7 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
                            ArrayList<DevicesInfo> data,
                            switchesClickListener listener) {
         super();
+        setHasStableIds(true);
         this.domoticz = StaticHelper.getDomoticz(context);
 
         mSharedPrefs = new SharedPrefUtil(context);
@@ -1721,7 +1722,15 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
 
     @Override
     public int getItemCount() {
-        return filteredData.size();
+        return filteredData != null ? filteredData.size() : 0;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        if (filteredData != null && position < filteredData.size()) {
+            return filteredData.get(position).getIdx();
+        }
+        return RecyclerView.NO_ID;
     }
 
     private void handleTimerButtonClick(DevicesInfo devices) {

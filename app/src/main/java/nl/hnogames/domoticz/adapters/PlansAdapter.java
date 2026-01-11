@@ -62,6 +62,8 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
     private boolean adLoaded = false;
 
     public PlansAdapter(ArrayList<PlanInfo> data, Context mContext) {
+        super();
+        setHasStableIds(true);
         this.mContext = mContext;
         mSharedPrefs = new SharedPrefUtil(mContext);
 
@@ -256,7 +258,15 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return mDataset != null ? mDataset.size() : 0;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        if (mDataset != null && position < mDataset.size()) {
+            return mDataset.get(position).getIdx();
+        }
+        return RecyclerView.NO_ID;
     }
 
     public interface onClickListener {

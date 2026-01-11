@@ -84,6 +84,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
                         ArrayList<SceneInfo> data,
                         ScenesClickListener listener) {
         super();
+        setHasStableIds(true);
 
         this.context = context;
         mSharedPrefs = new SharedPrefUtil(context);
@@ -349,7 +350,15 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.DataObjectHo
 
     @Override
     public int getItemCount() {
-        return filteredData.size();
+        return filteredData != null ? filteredData.size() : 0;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        if (filteredData != null && position < filteredData.size()) {
+            return filteredData.get(position).getIdx();
+        }
+        return RecyclerView.NO_ID;
     }
 
     public void setButtons(DataObjectHolder holder, int button) {

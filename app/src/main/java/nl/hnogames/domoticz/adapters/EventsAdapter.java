@@ -59,6 +59,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
                          ArrayList<EventInfo> data,
                          EventsClickListener listener) {
         super();
+        setHasStableIds(true);
 
         this.context = context;
         this.domoticz = mDomoticz;
@@ -126,7 +127,15 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.DataObject
 
     @Override
     public int getItemCount() {
-        return filteredData.size();
+        return filteredData != null ? filteredData.size() : 0;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        if (filteredData != null && position < filteredData.size()) {
+            return filteredData.get(position).getId();
+        }
+        return RecyclerView.NO_ID;
     }
 
     public interface onClickListener {

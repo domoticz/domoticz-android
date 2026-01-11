@@ -115,6 +115,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                             ArrayList<DevicesInfo> data,
                             switchesClickListener listener) {
         super();
+        setHasStableIds(true);
 
         this.domoticz = StaticHelper.getDomoticz(context);
         mSharedPrefs = new SharedPrefUtil(context);
@@ -182,6 +183,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
     }
 
     /**
+     * Optimized Picasso load for smooth scrolling
+     */
+    private void loadIconOptimized(int iconResource, ImageView imageView) {
+        Picasso.get()
+                .load(iconResource)
+                .noFade()
+                .into(imageView);
+    }
+
+    /**
      * Get's the filter
      *
      * @return Returns the filter
@@ -195,6 +206,15 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
         if (filteredData == null)
             return 0;
         return filteredData.size();
+    }
+
+    @Override
+    @NonNull
+    public long getItemId(int position) {
+        if (filteredData != null && position < filteredData.size()) {
+            return filteredData.get(position).getIdx();
+        }
+        return RecyclerView.NO_ID;
     }
 
     @Override
@@ -520,27 +540,27 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Data
                 setAlphaIcon = false;
                 if ((!UsefulBits.isEmpty(tempSign) && tempSign.equals("C") && mDeviceInfo.getTemperature() < 0) ||
                         (!UsefulBits.isEmpty(tempSign) && tempSign.equals("F") && mDeviceInfo.getTemperature() < 30)) {
-                    Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                    loadIconOptimized(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                             mDeviceInfo.getType(),
                             null,
                             mDeviceInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature(),
                             true,
-                            "Freezing")).into(holder.iconRow);
+                            "Freezing"), holder.iconRow);
                 } else {
-                    Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                    loadIconOptimized(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                             mDeviceInfo.getType(),
                             null,
                             mConfigInfo != null && mDeviceInfo.getTemperature() > mConfigInfo.getDegreeDaysBaseTemperature(),
                             false,
-                            null)).into(holder.iconRow);
+                            null), holder.iconRow);
                 }
             } else {
-                Picasso.get().load(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
+                loadIconOptimized(DomoticzIcons.getDrawableIcon(mDeviceInfo.getTypeImg(),
                         mDeviceInfo.getType(),
                         mDeviceInfo.getSubType(),
                         mDeviceInfo.getStatusBoolean(),
                         mDeviceInfo.getUseCustomImage(),
-                        mDeviceInfo.getImage())).into(holder.iconRow);
+                        mDeviceInfo.getImage()), holder.iconRow);
             }
 
             holder.iconRow.setAlpha(1f);

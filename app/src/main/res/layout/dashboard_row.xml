@@ -32,7 +32,7 @@
 
     <nl.hnogames.domoticz.ads.TemplateView
         android:id="@+id/adview"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:gnt_template_type="@layout/gnt_square_template_view" />
@@ -40,8 +40,7 @@
     <RelativeLayout
         android:id="@+id/contentWrapper"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/listviewRowBackground">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/dummyImg"
@@ -82,8 +81,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:foregroundGravity="center_vertical"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical">
+                            android:gravity="center_vertical">
 
                             <LinearLayout
                                 android:id="@+id/textwrapper"

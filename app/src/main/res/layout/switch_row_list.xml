@@ -24,33 +24,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginBottom="8dp"
-    android:orientation="vertical"
     app:cardCornerRadius="30dp"
     app:cardElevation="1dp">
 
     <nl.hnogames.domoticz.ads.TemplateView
         android:id="@+id/adview"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:gnt_template_type="@layout/gnt_small_template_view" />
 
     <RelativeLayout
         android:id="@+id/contentWrapper"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/dummyImg"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_alignParentTop="true"
+            android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:tintMode="src_atop"
+            android:visibility="gone"
             app:tint="?attr/listviewRowTintBackground" />
 
         <LinearLayout
@@ -112,11 +108,10 @@
                                 <TextView
                                     android:id="@+id/switch_name"
                                     style="@style/row_name"
-                                    android:layout_width="fill_parent"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentTop="true"
                                     android:layout_marginTop="-10dp"
-                                    android:layout_marginRight="35dp"
+                                    android:layout_marginEnd="35dp"
                                     android:text="Switch" />
 
                                 <TextView

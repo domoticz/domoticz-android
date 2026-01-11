@@ -94,6 +94,7 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
                               ArrayList<TemperatureInfo> data,
                               TemperatureClickListener listener) {
         super();
+        setHasStableIds(true);
 
         this.context = context;
         this.mConfigInfo = configInfo.getActiveServer() != null ? configInfo.getActiveServer().getConfigInfo(context) : null;
@@ -454,7 +455,15 @@ public class TemperatureAdapter extends RecyclerView.Adapter<TemperatureAdapter.
 
     @Override
     public int getItemCount() {
-        return filteredData.size();
+        return filteredData != null ? filteredData.size() : 0;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        if (filteredData != null && position < filteredData.size()) {
+            return filteredData.get(position).getIdx();
+        }
+        return RecyclerView.NO_ID;
     }
 
     private void handleLikeButtonClick(int idx, boolean checked) {
