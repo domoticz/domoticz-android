@@ -31,11 +31,15 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.graphics.Insets;
 import androidx.core.view.MenuItemCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.ftinc.scoop.Scoop;
@@ -71,6 +75,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         mSharedPrefs = new SharedPrefUtil(this);
 
         Scoop.getInstance().apply(this);
@@ -78,6 +83,7 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
         setContentView(R.layout.widget_configuration);
         setResult(RESULT_CANCELED);
         mDbHelper = new WidgetDbHelper(this);
+        applyWindowInsets();
 
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
@@ -264,4 +270,15 @@ public class SmallTempWidgetConfigurationActivity extends AppCompatActivity {
         });
         return super.onCreateOptionsMenu(menu);
     }
+
+    private void applyWindowInsets() {
+        if (findViewById(android.R.id.content) != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, windowInsets) -> {
+                Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(insets.left, insets.top, insets.right, insets.bottom);
+                return WindowInsetsCompat.CONSUMED;
+            });
+        }
+    }
 }
+

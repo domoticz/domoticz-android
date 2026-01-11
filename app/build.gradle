@@ -162,6 +162,7 @@ dependencies {
     implementation "com.android.billingclient:billing:8.0.0"
 
     implementation 'androidx.core:core:1.17.0'
+    implementation 'androidx.activity:activity:1.9.3'
     implementation "androidx.work:work-runtime:2.11.0"
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

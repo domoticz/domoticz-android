@@ -45,7 +45,10 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
 import androidx.core.view.MenuItemCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.work.OneTimeWorkRequest;
@@ -177,22 +180,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         mSharedPrefs = new SharedPrefUtil(this);
         permissionHelper = PermissionHelper.getInstance(this);
 
-        if (false && (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated())) {
-            setContentView(R.layout.activity_newmain_free);
-            List<String> testDevices = new ArrayList<>();
-            testDevices.add(AdRequest.DEVICE_ID_EMULATOR);
-            testDevices.add("0095CAF9DD12F33E5417335E1EC5FCAD");
-            RequestConfiguration requestConfiguration
-                    = new RequestConfiguration.Builder()
-                    .setTestDeviceIds(testDevices)
-                    .build();
-
-            MobileAds.initialize(this);
-            AdRequest adRequest = new AdRequest.Builder()
-                    .build();
-            ((AdView) findViewById(R.id.adView)).loadAd(adRequest);
-        } else
-            setContentView(R.layout.activity_newmain_paid);
+        setContentView(R.layout.activity_newmain_paid);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -236,6 +224,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         handleShortcutAction(getIntent());
         fromSettings = false;
     }
+
 
     @Override
     protected void onNewIntent(Intent intent) {

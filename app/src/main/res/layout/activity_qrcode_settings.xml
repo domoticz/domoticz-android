@@ -20,16 +20,17 @@
   -->
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
-    android:fitsSystemWindows="true"
     android:layout_height="match_parent"
     android:background="?attr/recyclerBackground">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -38,21 +39,23 @@
             android:background="?attr/toolbarBackground"
             android:theme="@style/AppThemeToolbarStyle" />
 
-        <ListView
-            android:id="@+id/listView"
-            style="@style/background_listview"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:animationCache="false"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="@dimen/row_space"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:paddingTop="@dimen/row_space"
-            android:paddingBottom="@dimen/row_space"
-            android:scrollingCache="false"
-            android:smoothScrollbar="true" />
-    </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ListView
+        android:id="@+id/listView"
+        style="@style/background_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animationCache="false"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="@dimen/row_space"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:paddingTop="@dimen/row_space"
+        android:paddingBottom="@dimen/row_space"
+        android:scrollingCache="false"
+        android:smoothScrollbar="true"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

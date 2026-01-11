@@ -25,6 +25,7 @@ import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ftinc.scoop.Scoop;
@@ -45,6 +46,7 @@ public class NFCServiceActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         SharedPrefUtil mSharedPrefs = new SharedPrefUtil(this);
         Scoop.getInstance().apply(this);
 

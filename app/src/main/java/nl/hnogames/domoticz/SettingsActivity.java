@@ -110,7 +110,12 @@ public class SettingsActivity extends AppCompatPermissionsActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == THEME_CHANGED) {
-            recreate();
+            // Restart the app from MainActivity when theme changes
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return;
         }
         if (requestCode == EXPORT_SETTINGS) {
             switch (resultCode) {
