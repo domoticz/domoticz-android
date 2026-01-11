@@ -427,9 +427,16 @@
 
         <activity android:exported="true"
             android:name="nl.hnogames.domoticz.welcome.WelcomeViewActivity"
-
             android:label="@string/welcome_title_activity_welcome"
             android:resizeableActivity="true" />
+
+        <!-- Modern Onboarding Activity -->
+        <activity
+            android:name="nl.hnogames.domoticz.onboarding.OnboardingActivity"
+            android:exported="true"
+            android:label="@string/welcome_title_activity_welcome"
+            android:resizeableActivity="true"
+            android:screenOrientation="unspecified" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

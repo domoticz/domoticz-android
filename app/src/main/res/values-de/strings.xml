@@ -144,4 +144,70 @@
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
     <string name="background_location_warning">This app collects location data to enable for geofencing services within this app, even when the app is closed or not in use.</string>
+
+    <!-- Modern Onboarding Strings -->
+    <string name="back">Zurück</string>
+    <string name="get_started">Erste Schritte</string>
+    <string name="restore_backup">Aus Sicherung wiederherstellen</string>
+    <string name="setup_method_title">Installationsmethode wählen</string>
+    <string name="setup_method_subtitle">Wie möchten Sie Ihren Domoticz-Server einrichten?</string>
+    <string name="demo_server">Demo-Server ausprobieren</string>
+    <string name="demo_server_description">Testen Sie die App mit unserem Demo-Server</string>
+    <string name="scan_qr_code">QR-Code scannen</string>
+    <string name="scan_qr_description">Schnelle Einrichtung über Ihr Domoticz-Webinterface</string>
+    <string name="manual_setup">Manuelle Einrichtung</string>
+    <string name="manual_setup_description">Servereinstellungen manuell konfigurieren</string>
+    <string name="qr_scanner_instruction">Richten Sie Ihre Kamera auf den QR-Code Ihres Domoticz-Webinterfaces</string>
+    <string name="enter_manually">Manuell eingeben</string>
+    <string name="camera_permission_required">Kameraberechtigung erforderlich zum Scannen von QR-Codes</string>
+    <string name="camera_init_failed">Kamera-Initialisierung fehlgeschlagen</string>
+    <string name="qr_code_detected">QR-Code erkannt!</string>
+
+    <!-- Configuration Steps -->
+    <string name="step_1_of_3">Schritt 1 von 3</string>
+    <string name="step_2_of_3">Schritt 2 von 3</string>
+    <string name="step_3_of_3">Schritt 3 von 3</string>
+    <string name="server_information">Serverinformationen</string>
+    <string name="server_info_description">Geben Sie Ihre Domoticz-Serverdetails ein</string>
+    <string name="server_name_helper">Ein beschreibender Name für diesen Server</string>
+    <string name="server_address">Serveradresse</string>
+    <string name="server_address_helper">z.B. 192.168.1.100 oder mydomoticz.com</string>
+    <string name="protocol">Protokoll</string>
+    <string name="port">Port</string>
+    <string name="directory_optional">Verzeichnis (optional)</string>
+    <string name="directory_helper">Leer lassen, falls nicht benötigt</string>
+    <string name="next">Weiter</string>
+
+    <!-- Authentication -->
+    <string name="authentication">Authentifizierung</string>
+    <string name="authentication_description">Geben Sie Anmeldedaten ein, wenn Ihr Server Authentifizierung erfordert</string>
+    <string name="username_optional">Benutzername (optional)</string>
+    <string name="username_helper">Leer lassen, falls nicht erforderlich</string>
+    <string name="password_optional">Passwort (optional)</string>
+    <string name="password_helper">Leer lassen, falls nicht erforderlich</string>
+    <string name="skip_no_auth">Überspringen - Keine Authentifizierung</string>
+
+    <!-- Advanced Settings -->
+    <string name="advanced_settings">Erweiterte Einstellungen</string>
+    <string name="advanced_settings_description">Optional: Verschiedene Einstellungen für lokales Netzwerk konfigurieren</string>
+    <string name="use_different_local_settings">Andere lokale Netzwerkeinstellungen verwenden</string>
+    <string name="different_local_description">Andere Adresse bei Verbindung mit lokalem WLAN verwenden</string>
+    <string name="local_network_settings">Lokale Netzwerkeinstellungen</string>
+    <string name="advanced_settings_info">Konfigurieren Sie diese Einstellungen, wenn Ihr Server andere Anmeldedaten oder Adressen in Ihrem lokalen Netzwerk verwendet</string>
+    <string name="local_wifi_networks">Lokale WLAN-Netzwerke</string>
+    <string name="local_server_address">Lokale Serveradresse</string>
+    <string name="test_connection">Verbindung testen</string>
+    <string name="skip_advanced">Überspringen - Gleiche Einstellungen verwenden</string>
+
+    <!-- Connection Test -->
+    <string name="testing_connection">Verbindung wird getestet</string>
+    <string name="please_wait">Bitte warten Sie, während wir Ihre Einstellungen überprüfen…</string>
+    <string name="connection_successful">Verbindung erfolgreich!</string>
+    <string name="connection_failed">Verbindung fehlgeschlagen</string>
+    <string name="finish_setup">Einrichtung abschließen</string>
+    <string name="edit_settings">Einstellungen bearbeiten</string>
+
+    <!-- Import Settings -->
+    <string name="import_settings_description">Stellen Sie Ihre Einstellungen aus einer zuvor exportierten Sicherungsdatei wieder her</string>
+    <string name="select_backup_file">Sicherungsdatei auswählen</string>
 </resources>

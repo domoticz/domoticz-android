@@ -37,7 +37,7 @@ import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.ui.PasswordDialog;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
-import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
+import nl.hnogames.domoticz.onboarding.OnboardingActivity;
 import nl.hnogames.domoticz.widgets.database.WidgetContract;
 import nl.hnogames.domoticz.widgets.database.WidgetDbHelper;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
@@ -86,7 +86,7 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
         //1) Is domoticz connected?
         if (mSharedPrefs.isFirstStart()) {
             mSharedPrefs.setNavigationDefaults();
-            Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
+            Intent welcomeWizard = new Intent(this, OnboardingActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             mSharedPrefs.setFirstStart(false);
         } else {
@@ -178,7 +178,7 @@ public class SmallWidgetConfigurationActivity extends AppCompatActivity {
             }, 0, null);
 
         } else {
-            Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
+            Intent welcomeWizard = new Intent(this, OnboardingActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }

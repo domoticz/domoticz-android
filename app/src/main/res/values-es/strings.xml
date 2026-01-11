@@ -144,4 +144,70 @@
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
     <string name="background_location_warning">This app collects location data to enable for geofencing services within this app, even when the app is closed or not in use.</string>
+
+    <!-- Modern Onboarding Strings -->
+    <string name="back">Atrás</string>
+    <string name="get_started">Comenzar</string>
+    <string name="restore_backup">Restaurar desde copia de seguridad</string>
+    <string name="setup_method_title">Elegir método de configuración</string>
+    <string name="setup_method_subtitle">¿Cómo desea configurar su servidor Domoticz?</string>
+    <string name="demo_server">Probar servidor demo</string>
+    <string name="demo_server_description">Pruebe la aplicación con nuestro servidor demo</string>
+    <string name="scan_qr_code">Escanear código QR</string>
+    <string name="scan_qr_description">Configuración rápida desde su interfaz web Domoticz</string>
+    <string name="manual_setup">Configuración manual</string>
+    <string name="manual_setup_description">Configurar ajustes del servidor manualmente</string>
+    <string name="qr_scanner_instruction">Apunte su cámara al código QR de su interfaz web Domoticz</string>
+    <string name="enter_manually">Introducir manualmente</string>
+    <string name="camera_permission_required">Se requiere permiso de cámara para escanear códigos QR</string>
+    <string name="camera_init_failed">Error al inicializar la cámara</string>
+    <string name="qr_code_detected">¡Código QR detectado!</string>
+
+    <!-- Configuration Steps -->
+    <string name="step_1_of_3">Paso 1 de 3</string>
+    <string name="step_2_of_3">Paso 2 de 3</string>
+    <string name="step_3_of_3">Paso 3 de 3</string>
+    <string name="server_information">Información del servidor</string>
+    <string name="server_info_description">Introduzca los detalles de su servidor Domoticz</string>
+    <string name="server_name_helper">Un nombre descriptivo para este servidor</string>
+    <string name="server_address">Dirección del servidor</string>
+    <string name="server_address_helper">p.ej. 192.168.1.100 o mydomoticz.com</string>
+    <string name="protocol">Protocolo</string>
+    <string name="port">Puerto</string>
+    <string name="directory_optional">Directorio (opcional)</string>
+    <string name="directory_helper">Dejar vacío si no es necesario</string>
+    <string name="next">Siguiente</string>
+
+    <!-- Authentication -->
+    <string name="authentication">Autenticación</string>
+    <string name="authentication_description">Introduzca credenciales si su servidor requiere autenticación</string>
+    <string name="username_optional">Nombre de usuario (opcional)</string>
+    <string name="username_helper">Dejar vacío si no es necesario</string>
+    <string name="password_optional">Contraseña (opcional)</string>
+    <string name="password_helper">Dejar vacío si no es necesario</string>
+    <string name="skip_no_auth">Omitir - Sin autenticación</string>
+
+    <!-- Advanced Settings -->
+    <string name="advanced_settings">Configuración avanzada</string>
+    <string name="advanced_settings_description">Opcional: Configurar ajustes diferentes para red local</string>
+    <string name="use_different_local_settings">Usar configuración de red local diferente</string>
+    <string name="different_local_description">Usar dirección diferente al conectarse a WiFi local</string>
+    <string name="local_network_settings">Configuración de red local</string>
+    <string name="advanced_settings_info">Configure estos ajustes si su servidor usa credenciales o direcciones diferentes en su red local</string>
+    <string name="local_wifi_networks">Redes WiFi locales</string>
+    <string name="local_server_address">Dirección del servidor local</string>
+    <string name="test_connection">Probar conexión</string>
+    <string name="skip_advanced">Omitir - Usar misma configuración</string>
+
+    <!-- Connection Test -->
+    <string name="testing_connection">Probando conexión</string>
+    <string name="please_wait">Por favor, espere mientras verificamos su configuración…</string>
+    <string name="connection_successful">¡Conexión exitosa!</string>
+    <string name="connection_failed">Conexión fallida</string>
+    <string name="finish_setup">Finalizar configuración</string>
+    <string name="edit_settings">Editar configuración</string>
+
+    <!-- Import Settings -->
+    <string name="import_settings_description">Restaure su configuración desde un archivo de copia de seguridad exportado anteriormente</string>
+    <string name="select_backup_file">Seleccionar archivo de copia de seguridad</string>
 </resources>

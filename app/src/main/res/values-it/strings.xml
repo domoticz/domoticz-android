@@ -143,5 +143,71 @@
     <string name="tasker_title">Imposta regole di automazione con Tasker per Domoticz</string>
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Imposta regole di automazione con Tasker per Domoticz</string>
-    <string name="background_location_warning">Questa app raccoglie i dati della posizione per abilitare i servizi di geofencing all\'interno di questa app, anche quando l\'app è chiusa o non è in uso.</string>
+    <string name="background_location_warning">Questa app raccoglie i dati della posizione per abilitare i servizi di geofencing all\'interno di questa app, anche quando l\'app  chiusa o non  in uso.</string>
+
+    <!-- Modern Onboarding Strings -->
+    <string name="back">Indietro</string>
+    <string name="get_started">Inizia</string>
+    <string name="restore_backup">Ripristina da backup</string>
+    <string name="setup_method_title">Scegli metodo di configurazione</string>
+    <string name="setup_method_subtitle">Come desideri configurare il tuo server Domoticz?</string>
+    <string name="demo_server">Prova server demo</string>
+    <string name="demo_server_description">Prova l\'app con il nostro server demo</string>
+    <string name="scan_qr_code">Scansiona codice QR</string>
+    <string name="scan_qr_description">Configurazione rapida dalla tua interfaccia web Domoticz</string>
+    <string name="manual_setup">Configurazione manuale</string>
+    <string name="manual_setup_description">Configura le impostazioni del server manualmente</string>
+    <string name="qr_scanner_instruction">Punta la fotocamera sul codice QR della tua interfaccia web Domoticz</string>
+    <string name="enter_manually">Inserisci manualmente</string>
+    <string name="camera_permission_required">È richiesta l\'autorizzazione della fotocamera per scansionare i codici QR</string>
+    <string name="camera_init_failed">Inizializzazione fotocamera fallita</string>
+    <string name="qr_code_detected">Codice QR rilevato!</string>
+
+    <!-- Configuration Steps -->
+    <string name="step_1_of_3">Passo 1 di 3</string>
+    <string name="step_2_of_3">Passo 2 di 3</string>
+    <string name="step_3_of_3">Passo 3 di 3</string>
+    <string name="server_information">Informazioni server</string>
+    <string name="server_info_description">Inserisci i dettagli del tuo server Domoticz</string>
+    <string name="server_name_helper">Un nome descrittivo per questo server</string>
+    <string name="server_address">Indirizzo server</string>
+    <string name="server_address_helper">es. 192.168.1.100 o mydomoticz.com</string>
+    <string name="protocol">Protocollo</string>
+    <string name="port">Porta</string>
+    <string name="directory_optional">Directory (opzionale)</string>
+    <string name="directory_helper">Lascia vuoto se non necessario</string>
+    <string name="next">Avanti</string>
+
+    <!-- Authentication -->
+    <string name="authentication">Autenticazione</string>
+    <string name="authentication_description">Inserisci le credenziali se il tuo server richiede l\'autenticazione</string>
+    <string name="username_optional">Nome utente (opzionale)</string>
+    <string name="username_helper">Lascia vuoto se non richiesto</string>
+    <string name="password_optional">Password (opzionale)</string>
+    <string name="password_helper">Lascia vuoto se non richiesto</string>
+    <string name="skip_no_auth">Salta - Nessuna autenticazione</string>
+
+    <!-- Advanced Settings -->
+    <string name="advanced_settings">Impostazioni avanzate</string>
+    <string name="advanced_settings_description">Opzionale: Configura impostazioni diverse per la rete locale</string>
+    <string name="use_different_local_settings">Usa impostazioni di rete locale diverse</string>
+    <string name="different_local_description">Usa un indirizzo diverso quando connesso al WiFi locale</string>
+    <string name="local_network_settings">Impostazioni rete locale</string>
+    <string name="advanced_settings_info">Configura queste impostazioni se il tuo server usa credenziali o indirizzi diversi sulla tua rete locale</string>
+    <string name="local_wifi_networks">Reti WiFi locali</string>
+    <string name="local_server_address">Indirizzo server locale</string>
+    <string name="test_connection">Testa connessione</string>
+    <string name="skip_advanced">Salta - Usa stesse impostazioni</string>
+
+    <!-- Connection Test -->
+    <string name="testing_connection">Test connessione</string>
+    <string name="please_wait">Attendere mentre verifichiamo le tue impostazioni…</string>
+    <string name="connection_successful">Connessione riuscita!</string>
+    <string name="connection_failed">Connessione fallita</string>
+    <string name="finish_setup">Completa configurazione</string>
+    <string name="edit_settings">Modifica impostazioni</string>
+
+    <!-- Import Settings -->
+    <string name="import_settings_description">Ripristina le tue impostazioni da un file di backup precedentemente esportato</string>
+    <string name="select_backup_file">Seleziona file di backup</string>
 </resources>

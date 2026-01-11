@@ -144,4 +144,70 @@
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Automatiseringsregels instellen binnen Tasker voor Domoticz!</string>
     <string name="background_location_warning">Deze app verzamelt locatiegegevens zodat u geofencing kunt gebruiken om apparaten aan/uit te zetten, zelfs wanneer de app is gesloten of niet in gebruik is.</string>
+
+    <!-- Modern Onboarding Strings -->
+    <string name="back">Terug</string>
+    <string name="get_started">Aan de slag</string>
+    <string name="restore_backup">Herstel van backup</string>
+    <string name="setup_method_title">Kies installatiemethode</string>
+    <string name="setup_method_subtitle">Hoe wilt u uw Domoticz server instellen?</string>
+    <string name="demo_server">Probeer demoserver</string>
+    <string name="demo_server_description">Test de app met onze demoserver</string>
+    <string name="scan_qr_code">Scan QR-code</string>
+    <string name="scan_qr_description">Snelle setup vanuit uw Domoticz webinterface</string>
+    <string name="manual_setup">Handmatige installatie</string>
+    <string name="manual_setup_description">Configureer serverinstellingen handmatig</string>
+    <string name="qr_scanner_instruction">Richt uw camera op de QR-code van uw Domoticz webinterface</string>
+    <string name="enter_manually">Handmatig invoeren</string>
+    <string name="camera_permission_required">Cameratoegang is vereist om QR-codes te scannen</string>
+    <string name="camera_init_failed">Camera initialisatie mislukt</string>
+    <string name="qr_code_detected">QR-code gedetecteerd!</string>
+
+    <!-- Configuration Steps -->
+    <string name="step_1_of_3">Stap 1 van 3</string>
+    <string name="step_2_of_3">Stap 2 van 3</string>
+    <string name="step_3_of_3">Stap 3 van 3</string>
+    <string name="server_information">Serverinformatie</string>
+    <string name="server_info_description">Voer uw Domoticz servergegevens in</string>
+    <string name="server_name_helper">Een beschrijvende naam voor deze server</string>
+    <string name="server_address">Serveradres</string>
+    <string name="server_address_helper">bijv. 192.168.1.100 of mydomoticz.com</string>
+    <string name="protocol">Protocol</string>
+    <string name="port">Poort</string>
+    <string name="directory_optional">Map (optioneel)</string>
+    <string name="directory_helper">Laat leeg indien niet nodig</string>
+    <string name="next">Volgende</string>
+
+    <!-- Authentication -->
+    <string name="authentication">Authenticatie</string>
+    <string name="authentication_description">Voer inloggegevens in als uw server authenticatie vereist</string>
+    <string name="username_optional">Gebruikersnaam (optioneel)</string>
+    <string name="username_helper">Laat leeg indien niet vereist</string>
+    <string name="password_optional">Wachtwoord (optioneel)</string>
+    <string name="password_helper">Laat leeg indien niet vereist</string>
+    <string name="skip_no_auth">Overslaan - Geen authenticatie</string>
+
+    <!-- Advanced Settings -->
+    <string name="advanced_settings">Geavanceerde instellingen</string>
+    <string name="advanced_settings_description">Optioneel: Configureer andere instellingen voor lokaal netwerk</string>
+    <string name="use_different_local_settings">Gebruik andere lokale netwerkinstellingen</string>
+    <string name="different_local_description">Gebruik een ander adres bij verbinding met lokale WiFi</string>
+    <string name="local_network_settings">Lokale netwerkinstellingen</string>
+    <string name="advanced_settings_info">Configureer deze instellingen als uw server andere inloggegevens of adressen gebruikt op uw lokale netwerk</string>
+    <string name="local_wifi_networks">Lokale WiFi-netwerken</string>
+    <string name="local_server_address">Lokaal serveradres</string>
+    <string name="test_connection">Test verbinding</string>
+    <string name="skip_advanced">Overslaan - Gebruik zelfde instellingen</string>
+
+    <!-- Connection Test -->
+    <string name="testing_connection">Verbinding testen</string>
+    <string name="please_wait">Even geduld terwijl we uw instellingen verifiëren…</string>
+    <string name="connection_successful">Verbinding geslaagd!</string>
+    <string name="connection_failed">Verbinding mislukt</string>
+    <string name="finish_setup">Setup voltooien</string>
+    <string name="edit_settings">Instellingen bewerken</string>
+
+    <!-- Import Settings -->
+    <string name="import_settings_description">Herstel uw instellingen van een eerder geëxporteerd backupbestand</string>
+    <string name="select_backup_file">Selecteer backupbestand</string>
 </resources>

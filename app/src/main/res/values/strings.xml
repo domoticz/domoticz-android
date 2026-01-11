@@ -199,4 +199,70 @@
     <string name="save_config">Save Configuration</string>
     <string name="firebase_restart_later">Later</string>
 
+    <!-- Modern Onboarding Strings -->
+    <string name="back">Back</string>
+    <string name="get_started">Get Started</string>
+    <string name="restore_backup">Restore from Backup</string>
+    <string name="setup_method_title">Choose Setup Method</string>
+    <string name="setup_method_subtitle">How would you like to set up your Domoticz server?</string>
+    <string name="demo_server">Try Demo Server</string>
+    <string name="demo_server_description">Test the app with our demo server</string>
+    <string name="scan_qr_code">Scan QR Code</string>
+    <string name="scan_qr_description">Quick setup from your Domoticz web interface</string>
+    <string name="manual_setup">Manual Setup</string>
+    <string name="manual_setup_description">Configure server settings manually</string>
+    <string name="qr_scanner_instruction">Point your camera at the QR code from your Domoticz web interface</string>
+    <string name="enter_manually">Enter Manually</string>
+    <string name="camera_permission_required">Camera permission is required to scan QR codes</string>
+    <string name="camera_init_failed">Failed to initialize camera</string>
+    <string name="qr_code_detected">QR code detected!</string>
+
+    <!-- Configuration Steps -->
+    <string name="step_1_of_3">Step 1 of 3</string>
+    <string name="step_2_of_3">Step 2 of 3</string>
+    <string name="step_3_of_3">Step 3 of 3</string>
+    <string name="server_information">Server Information</string>
+    <string name="server_info_description">Enter your Domoticz server details</string>
+    <string name="server_name_helper">A friendly name for this server</string>
+    <string name="server_address">Server Address</string>
+    <string name="server_address_helper">e.g., 192.168.1.100 or mydomoticz.com</string>
+    <string name="protocol">Protocol</string>
+    <string name="port">Port</string>
+    <string name="directory_optional">Directory (Optional)</string>
+    <string name="directory_helper">Leave empty if not needed</string>
+    <string name="next">Next</string>
+
+    <!-- Authentication -->
+    <string name="authentication">Authentication</string>
+    <string name="authentication_description">Enter credentials if your server requires authentication</string>
+    <string name="username_optional">Username (Optional)</string>
+    <string name="username_helper">Leave empty if not required</string>
+    <string name="password_optional">Password (Optional)</string>
+    <string name="password_helper">Leave empty if not required</string>
+    <string name="skip_no_auth">Skip - No Authentication</string>
+
+    <!-- Advanced Settings -->
+    <string name="advanced_settings">Advanced Settings</string>
+    <string name="advanced_settings_description">Optional: Configure different settings for local network</string>
+    <string name="use_different_local_settings">Use different local network settings</string>
+    <string name="different_local_description">Use different address when connected to local WiFi</string>
+    <string name="local_network_settings">Local Network Settings</string>
+    <string name="advanced_settings_info">Configure these settings if your server uses different credentials or address on your local network</string>
+    <string name="local_wifi_networks">Local WiFi Networks</string>
+    <string name="local_server_address">Local Server Address</string>
+    <string name="test_connection">Test Connection</string>
+    <string name="skip_advanced">Skip - Use Same Settings</string>
+
+    <!-- Connection Test -->
+    <string name="testing_connection">Testing Connection</string>
+    <string name="please_wait">Please wait while we verify your settings…</string>
+    <string name="connection_successful">Connection Successful!</string>
+    <string name="connection_failed">Connection Failed</string>
+    <string name="finish_setup">Finish Setup</string>
+    <string name="edit_settings">Edit Settings</string>
+
+    <!-- Import Settings -->
+    <string name="import_settings_description">Restore your settings from a previously exported backup file</string>
+    <string name="select_backup_file">Select Backup File</string>
+
 </resources>
