@@ -137,12 +137,7 @@ public class ServerSettingsActivity extends AppCompatAssistActivity {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle(getString(R.string.dont_save_new_server))
                     .setMessage(R.string.are_you_sure)
-                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ServerCancel();
-                        }
-                    })
+                    .setPositiveButton(R.string.yes, (dialog, which) -> ServerCancel())
                     .setNegativeButton(R.string.cancel, null)
                     .show();
         } else

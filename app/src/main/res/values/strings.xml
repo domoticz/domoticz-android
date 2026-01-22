@@ -265,4 +265,14 @@
     <string name="import_settings_description">Restore your settings from a previously exported backup file</string>
     <string name="select_backup_file">Select Backup File</string>
 
+    <!-- Widget -->
+    <string name="widget_name">Domoticz Widget</string>
+    <string name="widget_description">Flexible widget that adapts to any size. Control your Domoticz devices directly from your home screen with a modern, beautiful design.</string>
+    <string name="widget_configure_title">Configure Widget</string>
+    <string name="widget_configure_subtitle">Select a device or scene to display in the widget</string>
+    <string name="widget_save">Save Widget</string>
+    <string name="widget_devices_header">DEVICES</string>
+    <string name="widget_scenes_header">SCENES</string>
+    <string name="selected">Selected</string>
+
 </resources>
