@@ -53,6 +53,18 @@
             android:maxLines="1"
             android:ellipsize="end" />
 
+        <TextView
+            android:id="@+id/widget_extra_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text=""
+            android:textSize="11sp"
+            android:textColor="#99FFFFFF"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:visibility="gone" />
+
     </LinearLayout>
 
     <ImageButton

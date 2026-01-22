@@ -173,6 +173,9 @@ public class DomoticzWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.widget_status, deviceStatus);
             views.setImageViewResource(R.id.widget_icon, deviceIcon);
 
+            // Populate extra info for larger widgets
+            populateExtraInfo(views, data.deviceInfo);
+
             // Dim icon when device is off (like DashboardAdapter does)
             if (!data.deviceInfo.getStatusBoolean()) {
                 views.setInt(R.id.widget_icon, "setImageAlpha", 128); // 0.5 alpha = 128/255
@@ -289,6 +292,77 @@ public class DomoticzWidget extends AppWidgetProvider {
             PendingIntent pendingIntent = PendingIntent.getActivity(context, widgetId, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             views.setOnClickPendingIntent(R.id.widget_container, pendingIntent);
+        }
+    }
+
+    /**
+     * Populate extra information fields for larger widgets
+     */
+    private static void populateExtraInfo(RemoteViews views, nl.hnogames.domoticzapi.Containers.DevicesInfo device) {
+        StringBuilder extraInfo = new StringBuilder();
+
+        // Battery level
+        if (device.getBatteryLevel() > 0 && device.getBatteryLevel() <= 100) {
+            extraInfo.append("🔋 ").append(device.getBatteryLevel()).append("%");
+        }
+
+        // Signal strength
+        int signalLevel = device.getSignalLevel();
+        if (signalLevel > 0) {
+            if (extraInfo.length() > 0) extraInfo.append(" • ");
+            extraInfo.append("📶 ").append(signalLevel);
+        }
+
+        // Temperature (if not already in status)
+        long temp = device.getTemp();
+        if (temp != 0 && !device.getType().contains("Temp")) {  // Only if not a temp sensor
+            if (extraInfo.length() > 0) extraInfo.append(" • ");
+            extraInfo.append("🌡️ ").append(temp);
+        }
+
+        // Humidity status
+        if (device.getHumidityStatus() != null && !device.getHumidityStatus().isEmpty()) {
+            if (extraInfo.length() > 0) extraInfo.append(" • ");
+            extraInfo.append("💧 ").append(device.getHumidityStatus());
+        }
+
+        // Barometer
+        if (device.getBarometer() > 0) {
+            if (extraInfo.length() > 0) extraInfo.append(" • ");
+            extraInfo.append("⏱️ ").append(device.getBarometer()).append(" hPa");
+        }
+
+        // Wind speed
+        if (device.getSpeed() != null && !device.getSpeed().isEmpty() && !device.getType().equals("Wind")) {
+            if (extraInfo.length() > 0) extraInfo.append(" • ");
+            extraInfo.append("💨 ").append(device.getSpeed());
+        }
+
+        // Show extra info if we have any
+        try {
+            if (extraInfo.length() > 0) {
+                views.setTextViewText(R.id.widget_extra_info, extraInfo.toString());
+                views.setViewVisibility(R.id.widget_extra_info, android.view.View.VISIBLE);
+            } else {
+                views.setViewVisibility(R.id.widget_extra_info, android.view.View.GONE);
+            }
+        } catch (Exception e) {
+            // widget_extra_info doesn't exist in this layout (compact widget)
+            Log.d(TAG, "widget_extra_info not available in this layout");
+        }
+
+        // Last update time (only for detailed layout)
+        try {
+            if (device.getLastUpdate() != null && !device.getLastUpdate().isEmpty()) {
+                String lastUpdate = "Updated: " + device.getLastUpdate();
+                views.setTextViewText(R.id.widget_last_update, lastUpdate);
+                views.setViewVisibility(R.id.widget_last_update, android.view.View.VISIBLE);
+            } else {
+                views.setViewVisibility(R.id.widget_last_update, android.view.View.GONE);
+            }
+        } catch (Exception e) {
+            // widget_last_update doesn't exist in this layout
+            Log.d(TAG, "widget_last_update not available in this layout");
         }
     }
 

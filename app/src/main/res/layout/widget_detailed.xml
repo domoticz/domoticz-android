@@ -61,6 +61,18 @@
         android:maxLines="3"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/widget_last_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text=""
+        android:textSize="11sp"
+        android:textColor="#80FFFFFF"
+        android:gravity="center"
+        android:maxLines="1"
+        android:visibility="gone" />
+
     <ImageButton
         android:id="@+id/widget_toggle_button"
         android:layout_width="56dp"
