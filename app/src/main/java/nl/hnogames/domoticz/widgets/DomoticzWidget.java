@@ -129,22 +129,47 @@ public class DomoticzWidget extends AppWidgetProvider {
         int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
         int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
 
-        // Choose layout based on size
+        // Choose layout based on aspect ratio and size
         int layoutId;
         String layoutName;
-        if (minWidth < 200 || minHeight < 100) {
-            layoutId = R.layout.widget_compact;
-            layoutName = "compact";
-        } else if (minWidth >= 250 && minHeight >= 250) {
+
+        // Calculate aspect ratio to determine orientation
+        float aspectRatio = minHeight > 0 ? (float) minHeight / (float) minWidth : 1.0f;
+
+        // Use compact layout ONLY for very small 1-cell widgets (1x2 or 2x1)
+        // But still respect orientation even for these
+        if ((minWidth < 150 && minHeight < 220) || (minHeight < 150 && minWidth < 220)) {
+            // Very small 1x2 or 2x1 widget
+            if (aspectRatio > 1.2f) {
+                // 1x2 vertical - use detailed/vertical for better display
+                layoutId = R.layout.widget_detailed;
+                layoutName = "detailed (1x2 vertical)";
+            } else {
+                // 2x1 horizontal - use compact
+                layoutId = R.layout.widget_compact;
+                layoutName = "compact (2x1 horizontal)";
+            }
+        } else if (minWidth < 250 && minHeight < 250 && aspectRatio >= 0.8f && aspectRatio <= 1.2f) {
+            // 2x2 widget (nearly square, medium size) - use compact vertical medium layout
+            layoutId = R.layout.widget_medium;
+            layoutName = "medium (2x2 compact vertical)";
+        } else if (aspectRatio > 1.2f) {
+            // Clearly vertical (height is at least 20% more than width) - use detailed/vertical layout
             layoutId = R.layout.widget_detailed;
-            layoutName = "detailed";
-        } else {
+            layoutName = "detailed (vertical)";
+        } else if (aspectRatio < 0.8f) {
+            // Clearly horizontal (width is at least 20% more than height) - use standard/horizontal layout
             layoutId = R.layout.widget_standard;
-            layoutName = "standard";
+            layoutName = "standard (horizontal)";
+        } else {
+            // Nearly square but larger - use detailed/vertical layout
+            layoutId = R.layout.widget_detailed;
+            layoutName = "detailed (square)";
         }
 
         Log.d(TAG, "Using " + layoutName + " layout for widget " + widgetId +
-            " (size: " + minWidth + "x" + minHeight + ")");
+            " (size: " + minWidth + "x" + minHeight + ", aspect ratio: " +
+            String.format("%.2f", aspectRatio) + ")");
 
         RemoteViews views = new RemoteViews(context.getPackageName(), layoutId);
 
@@ -157,7 +182,7 @@ public class DomoticzWidget extends AppWidgetProvider {
     private static void populateWidgetData(Context context, RemoteViews views,
                                           WidgetRepository.WidgetData data, int widgetId) {
         Log.d(TAG, "Populating widget data - Device: " + (data.deviceInfo != null) +
-            ", Scene: " + (data.sceneInfo != null) +
+            ", IsScene: " + (data.config != null && data.config.isScene) +
             ", Config: " + (data.config != null ? data.config.entityName : "null"));
 
         if (data.deviceInfo != null) {
@@ -242,35 +267,8 @@ public class DomoticzWidget extends AppWidgetProvider {
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             views.setOnClickPendingIntent(R.id.widget_container, pendingIntent);
 
-        } else if (data.sceneInfo != null) {
-            // Scene widget - same as before
-            String sceneName = data.sceneInfo.getName();
-            String sceneStatus = data.sceneInfo.getStatusInString();
-
-            Log.d(TAG, "Scene widget - Name: " + sceneName + ", Status: " + sceneStatus);
-
-            views.setTextViewText(R.id.widget_title, sceneName);
-            views.setTextViewText(R.id.widget_status, sceneStatus != null ? sceneStatus : "Scene");
-            views.setImageViewResource(R.id.widget_icon, nl.hnogames.domoticzapi.R.drawable.empty);
-
-            // Hide toggle button for scenes
-            views.setViewVisibility(R.id.widget_toggle_button, android.view.View.GONE);
-
-            // Make icon clickable for scenes
-            Intent toggleIntent = new Intent(context, DomoticzWidget.class);
-            toggleIntent.setAction(ACTION_TOGGLE);
-            toggleIntent.putExtra(EXTRA_WIDGET_ID, widgetId);
-            PendingIntent togglePendingIntent = PendingIntent.getBroadcast(context, widgetId,
-                toggleIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-            views.setOnClickPendingIntent(R.id.widget_icon, togglePendingIntent);
-
-            // Container opens app
-            Intent intent = new Intent(context, nl.hnogames.domoticz.MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, widgetId, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-            views.setOnClickPendingIntent(R.id.widget_container, pendingIntent);
         } else {
-            // No device or scene data - show config name as fallback
+            // No device data - show config name as fallback
             Log.w(TAG, "No device or scene info available! Using fallback data from config.");
 
             if (data.config != null && data.config.entityName != null) {
@@ -297,45 +295,125 @@ public class DomoticzWidget extends AppWidgetProvider {
 
     /**
      * Populate extra information fields for larger widgets
+     * Only shows ADDITIONAL data that's not already in the main status
      */
     private static void populateExtraInfo(RemoteViews views, nl.hnogames.domoticzapi.Containers.DevicesInfo device) {
         StringBuilder extraInfo = new StringBuilder();
 
-        // Battery level
+        // Get main status to check for duplicates
+        String mainStatus = getDeviceStatus(device);
+
+        // Battery level - always additional info
         if (device.getBatteryLevel() > 0 && device.getBatteryLevel() <= 100) {
-            extraInfo.append("🔋 ").append(device.getBatteryLevel()).append("%");
+            extraInfo.append("Battery ").append(device.getBatteryLevel()).append("%");
         }
 
-        // Signal strength
+        // Signal strength - always additional info
         int signalLevel = device.getSignalLevel();
         if (signalLevel > 0) {
             if (extraInfo.length() > 0) extraInfo.append(" • ");
-            extraInfo.append("📶 ").append(signalLevel);
+            extraInfo.append("Signal ").append(signalLevel);
         }
 
-        // Temperature (if not already in status)
+        // Temperature - only if NOT a temp sensor (additional context for other sensors)
         long temp = device.getTemp();
-        if (temp != 0 && !device.getType().contains("Temp")) {  // Only if not a temp sensor
-            if (extraInfo.length() > 0) extraInfo.append(" • ");
-            extraInfo.append("🌡️ ").append(temp);
+        if (temp != 0 && device.getType() != null && !device.getType().contains("Temp") &&
+            !device.getType().contains("Humidity")) {  // Not main sensor type
+            String tempStr = temp + "°C";
+            if (!mainStatus.contains(tempStr)) {
+                if (extraInfo.length() > 0) extraInfo.append(" • ");
+                extraInfo.append(tempStr);
+            }
         }
 
-        // Humidity status
-        if (device.getHumidityStatus() != null && !device.getHumidityStatus().isEmpty()) {
-            if (extraInfo.length() > 0) extraInfo.append(" • ");
-            extraInfo.append("💧 ").append(device.getHumidityStatus());
+        // Dew Point - only if NOT a temp sensor (additional data)
+        long dewPoint = device.getDewPoint();
+        if (dewPoint != 0 && device.getType() != null && !device.getType().contains("Temp")) {
+            String dewStr = "Dew " + dewPoint + "°C";
+            if (!mainStatus.contains(String.valueOf(dewPoint))) {
+                if (extraInfo.length() > 0) extraInfo.append(" • ");
+                extraInfo.append(dewStr);
+            }
         }
 
-        // Barometer
+        // Humidity status - only if NOT a humidity sensor (additional context)
+        if (device.getHumidityStatus() != null && !device.getHumidityStatus().isEmpty() &&
+            (device.getType() == null || (!device.getType().contains("Humidity") &&
+             (device.getSubType() == null || !device.getSubType().contains("Humidity"))))) {
+            if (!mainStatus.contains(device.getHumidityStatus())) {
+                if (extraInfo.length() > 0) extraInfo.append(" • ");
+                extraInfo.append(device.getHumidityStatus());
+            }
+        }
+
+        // Barometer / Pressure - always additional info
         if (device.getBarometer() > 0) {
-            if (extraInfo.length() > 0) extraInfo.append(" • ");
-            extraInfo.append("⏱️ ").append(device.getBarometer()).append(" hPa");
+            String baroStr = device.getBarometer() + " hPa";
+            if (!mainStatus.contains(baroStr)) {
+                if (extraInfo.length() > 0) extraInfo.append(" • ");
+                extraInfo.append(baroStr);
+            }
         }
 
-        // Wind speed
-        if (device.getSpeed() != null && !device.getSpeed().isEmpty() && !device.getType().equals("Wind")) {
-            if (extraInfo.length() > 0) extraInfo.append(" • ");
-            extraInfo.append("💨 ").append(device.getSpeed());
+        // Wind speed - only if NOT a wind device (additional context)
+        if (device.getSpeed() != null && !device.getSpeed().isEmpty() &&
+            (device.getType() == null || !device.getType().equals("Wind"))) {
+            if (!mainStatus.contains(device.getSpeed())) {
+                if (extraInfo.length() > 0) extraInfo.append(" • ");
+                extraInfo.append(device.getSpeed());
+            }
+        }
+
+        // Wind chill - only if NOT a wind device (additional context)
+        if (device.getChill() != null && !device.getChill().isEmpty() &&
+            (device.getType() == null || !device.getType().equals("Wind"))) {
+            if (!mainStatus.contains(device.getChill())) {
+                if (extraInfo.length() > 0) extraInfo.append(" • ");
+                extraInfo.append("Chill " + device.getChill());
+            }
+        }
+
+        // Rain - only if NOT a rain device (additional context)
+        if (device.getRain() != null && !device.getRain().isEmpty() &&
+            (device.getType() == null || !device.getType().equals("Rain"))) {
+            if (!mainStatus.contains(device.getRain())) {
+                if (extraInfo.length() > 0) extraInfo.append(" • ");
+                extraInfo.append(device.getRain());
+            }
+        }
+
+        // Power/Usage - ONLY show if NOT already in main status (not a power device)
+        if (device.getUsage() != null && !device.getUsage().isEmpty()) {
+            String usage = device.getUsage().replace(" Watt", "").trim();
+            if (!usage.contains("W") && !usage.contains("kW")) {
+                usage = usage + " W";
+            }
+
+            // Don't show if already in main status
+            if (!mainStatus.contains(usage) && !mainStatus.contains(device.getUsage())) {
+                if (extraInfo.length() > 0) extraInfo.append(" • ");
+                extraInfo.append(usage);
+            }
+        }
+
+        // Counter Today - ONLY if NOT already shown in main status
+        if (device.getCounterToday() != null && !device.getCounterToday().isEmpty()) {
+            String counter = device.getCounterToday();
+
+            // Don't show if already in main status
+            if (!mainStatus.contains(counter)) {
+                if (extraInfo.length() > 0) extraInfo.append(" • ");
+                // Ensure unit is present
+                if (!counter.contains("kWh") && !counter.contains("Wh") && !counter.contains("W") && !counter.contains("L") && !counter.contains("m")) {
+                    try {
+                        Double.parseDouble(counter.trim());
+                        counter = counter + " kWh";
+                    } catch (Exception e) {
+                        // Already has unit
+                    }
+                }
+                extraInfo.append(counter);
+            }
         }
 
         // Show extra info if we have any
@@ -375,23 +453,41 @@ public class DomoticzWidget extends AppWidgetProvider {
                 int usage = Integer.parseInt(device.getUsage().replace("Watt", "").trim());
                 if (device.getUsageDeliv() != null && device.getUsageDeliv().length() > 0) {
                     int usageDel = Integer.parseInt(device.getUsageDeliv().replace("Watt", "").trim());
-                    status = (usage - usageDel) + "W";
+                    status = (usage - usageDel) + " W";
                 } else {
-                    status = device.getUsage().replace(" Watt", "W");
+                    status = usage + " W";
                 }
             } catch (Exception ex) {
-                status = device.getUsage().replace(" Watt", "W");
+                status = device.getUsage().replace(" Watt", " W");
             }
 
             // Add today's counter if available
             if (device.getCounterToday() != null && !device.getCounterToday().isEmpty()) {
-                status += " • " + device.getCounterToday();
+                String counter = device.getCounterToday();
+                // Ensure unit is present
+                if (!counter.contains("kWh") && !counter.contains("Wh") && !counter.contains("L") && !counter.contains("m³")) {
+                    try {
+                        Double.parseDouble(counter.trim());
+                        counter = counter + " kWh";
+                    } catch (Exception e) {
+                        // Already has unit
+                    }
+                }
+                status += " • " + counter;
             }
             return status;
         }
 
         // Handle temperature devices
         if (device.getType() != null && device.getType().contains("Temp")) {
+            if (device.getData() != null && !device.getData().isEmpty()) {
+                return device.getData();
+            }
+        }
+
+        // Handle humidity devices
+        if (device.getType() != null && (device.getType().contains("Humidity") ||
+            device.getSubType() != null && device.getSubType().contains("Humidity"))) {
             if (device.getData() != null && !device.getData().isEmpty()) {
                 return device.getData();
             }
@@ -418,9 +514,20 @@ public class DomoticzWidget extends AppWidgetProvider {
             return device.getForecastStr();
         }
 
-        // Handle counter devices
+        // Handle counter devices (water, gas, etc.)
         if (device.getCounterToday() != null && !device.getCounterToday().isEmpty()) {
-            status = device.getCounterToday();
+            String counter = device.getCounterToday();
+            // Ensure unit is present if it's just a number
+            if (!counter.contains("kWh") && !counter.contains("Wh") && !counter.contains("W") &&
+                !counter.contains("L") && !counter.contains("m³") && !counter.contains("m3")) {
+                try {
+                    Double.parseDouble(counter.trim());
+                    counter = counter + " kWh";
+                } catch (Exception e) {
+                    // Already has unit
+                }
+            }
+            status = counter;
         }
 
         // Default: use Data field, then Status field
@@ -431,9 +538,9 @@ public class DomoticzWidget extends AppWidgetProvider {
             status = device.getStatus();
         }
 
-        // Clean up common patterns
+        // Clean up common patterns and ensure proper units
         if (status != null) {
-            status = status.replace(" Watt", "W");
+            status = status.replace(" Watt", " W");
         }
 
         return status != null && !status.isEmpty() ? status : "Unknown";

@@ -9,11 +9,10 @@
     android:minResizeHeight="40dp"
     android:maxResizeWidth="450dp"
     android:maxResizeHeight="450dp"
-    android:previewLayout="@layout/widget_standard"
-    android:previewImage="@mipmap/ic_launcher"
+    android:previewLayout="@layout/widget_preview"
     android:resizeMode="horizontal|vertical"
-    android:targetCellWidth="3"
-    android:targetCellHeight="1"
+    android:targetCellWidth="2"
+    android:targetCellHeight="2"
     android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen|keyguard">
 </appwidget-provider>

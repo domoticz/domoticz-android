@@ -14,9 +14,7 @@ import java.util.concurrent.Executors;
 
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Containers.SceneInfo;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
-import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
 
 /**
  * Repository for widget data management
@@ -80,23 +78,17 @@ public class WidgetRepository {
             Log.d(TAG, "Widget entity found - ID: " + widgetId + ", entityIdx: " + widget.entityIdx +
                   ", isScene: " + widget.isScene);
 
-            // Fetch device/scene data on main thread since it's a network call
+            // Fetch data on main thread since it's a network call
+            // Note: We always use getDevice API because scenes and groups are in the devices list
+            // The isScene flag is only used for UI behavior (toggle vs scene activation)
             mainHandler.post(() -> {
-                if (widget.isScene) {
-                    Log.d(TAG, "Fetching scene data for idx: " + widget.entityIdx);
-                    getScene(widget.entityIdx, scene -> {
-                        Log.d(TAG, "Scene data received: " + (scene != null ? scene.getName() : "null"));
-                        WidgetData data = new WidgetData(widget, null, scene);
-                        callback.onResult(data);
-                    });
-                } else {
-                    Log.d(TAG, "Fetching device data for idx: " + widget.entityIdx);
-                    getDevice(widget.entityIdx, device -> {
-                        Log.d(TAG, "Device data received: " + (device != null ? device.getName() : "null"));
-                        WidgetData data = new WidgetData(widget, device, null);
-                        callback.onResult(data);
-                    });
-                }
+                Log.d(TAG, "Fetching device data for idx: " + widget.entityIdx +
+                      (widget.isScene ? " (Scene/Group)" : " (Device)"));
+                getDevice(widget.entityIdx, device -> {
+                    Log.d(TAG, "Device data received: " + (device != null ? device.getName() : "null"));
+                    WidgetData data = new WidgetData(widget, device);
+                    callback.onResult(data);
+                });
             });
         });
     }
@@ -192,82 +184,6 @@ public class WidgetRepository {
         }
     }
 
-    private void getScene(int idx, SceneCallback callback) {
-        try {
-            Log.d(TAG, "Calling API to get scene with idx: " + idx);
-
-            // Validate that Domoticz is properly configured
-            nl.hnogames.domoticzapi.Domoticz domoticz = StaticHelper.getDomoticz(context);
-            if (domoticz == null) {
-                Log.e(TAG, "Domoticz instance is null!");
-                callback.onScene(null);
-                return;
-            }
-
-            nl.hnogames.domoticzapi.Containers.ServerInfo activeServer =
-                domoticz.getServerUtil().getActiveServer();
-            if (activeServer == null) {
-                Log.e(TAG, "No active server configured!");
-                callback.onScene(null);
-                return;
-            }
-
-            Log.d(TAG, "Active server: " + activeServer.getServerName() +
-                  ", URL: " + activeServer.getRemoteServerUrl());
-
-            // Track if callback was called
-            final boolean[] callbackCalled = {false};
-
-            // Set timeout - if no response in 10 seconds, assume failure
-            mainHandler.postDelayed(() -> {
-                if (!callbackCalled[0]) {
-                    Log.e(TAG, "API timeout - no response received for scene idx " + idx);
-                    callback.onScene(null);
-                    callbackCalled[0] = true;
-                }
-            }, 10000);
-
-            Log.d(TAG, "Executing getScene API call for idx: " + idx);
-            domoticz.getScene(new ScenesReceiver() {
-                @Override
-                public void onReceiveScenes(ArrayList<SceneInfo> scenes) {
-                    if (!callbackCalled[0]) {
-                        Log.d(TAG, "API returned scenes list: " + (scenes != null ? scenes.size() : "null"));
-                        if (scenes != null && !scenes.isEmpty()) {
-                            callback.onScene(scenes.get(0));
-                        } else {
-                            callback.onScene(null);
-                        }
-                        callbackCalled[0] = true;
-                    }
-                }
-
-                @Override
-                public void onReceiveScene(SceneInfo scene) {
-                    if (!callbackCalled[0]) {
-                        Log.d(TAG, "API returned scene: " + (scene != null ? scene.getName() : "null"));
-                        callback.onScene(scene);
-                        callbackCalled[0] = true;
-                    }
-                }
-
-                @Override
-                public void onError(Exception error) {
-                    if (!callbackCalled[0]) {
-                        Log.e(TAG, "Error fetching scene idx " + idx, error);
-                        callback.onScene(null);
-                        callbackCalled[0] = true;
-                    }
-                }
-            }, idx);
-
-            Log.d(TAG, "getScene API call initiated successfully");
-        } catch (Exception e) {
-            Log.e(TAG, "Exception calling getScene for idx " + idx, e);
-            callback.onScene(null);
-        }
-    }
-
     public interface WidgetDataCallback {
         void onResult(WidgetData data);
     }
@@ -276,19 +192,13 @@ public class WidgetRepository {
         void onDevice(DevicesInfo device);
     }
 
-    private interface SceneCallback {
-        void onScene(SceneInfo scene);
-    }
-
     public static class WidgetData {
         public final WidgetEntity config;
         public final DevicesInfo deviceInfo;
-        public final SceneInfo sceneInfo;
 
-        public WidgetData(WidgetEntity config, DevicesInfo deviceInfo, SceneInfo sceneInfo) {
+        public WidgetData(WidgetEntity config, DevicesInfo deviceInfo) {
             this.config = config;
             this.deviceInfo = deviceInfo;
-            this.sceneInfo = sceneInfo;
         }
     }
 }

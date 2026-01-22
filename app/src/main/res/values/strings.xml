@@ -271,8 +271,7 @@
     <string name="widget_configure_title">Configure Widget</string>
     <string name="widget_configure_subtitle">Select a device or scene to display in the widget</string>
     <string name="widget_save">Save Widget</string>
-    <string name="widget_devices_header">DEVICES</string>
-    <string name="widget_scenes_header">SCENES</string>
+    <string name="search_items">Search…</string>
     <string name="selected">Selected</string>
 
 </resources>

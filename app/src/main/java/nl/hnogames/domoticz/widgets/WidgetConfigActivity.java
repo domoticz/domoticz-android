@@ -7,11 +7,14 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -32,9 +35,8 @@ import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.widgets.data.WidgetRepository;
 import nl.hnogames.domoticz.widgets.database.WidgetDatabase;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
-import nl.hnogames.domoticzapi.Containers.SceneInfo;
+import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
-import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
 
 /**
  * Widget configuration activity
@@ -46,21 +48,18 @@ public class WidgetConfigActivity extends AppCompatActivity {
     private int widgetId = INVALID_APPWIDGET_ID;
     private WidgetRepository repository;
 
-    private ListView deviceListView;
-    private ListView sceneListView;
-    private TextView devicesHeader;
-    private TextView scenesHeader;
+    private ListView itemListView;
     private ProgressBar progressBar;
     private Button btnSave;
+    private EditText itemSearchEdit;
 
-    private List<DevicesInfo> devices = new ArrayList<>();
-    private List<SceneInfo> scenes = new ArrayList<>();
+    private List<DevicesInfo> allItems = new ArrayList<>();
+    private List<DevicesInfo> filteredItems = new ArrayList<>();
     private int selectedIdx = -1;
     private String selectedName = "";
     private boolean selectedIsScene = false;
 
-    private CheckmarkAdapter deviceAdapter;
-    private CheckmarkAdapter sceneAdapter;
+    private CheckmarkAdapter itemAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,12 +88,10 @@ public class WidgetConfigActivity extends AppCompatActivity {
         repository = new WidgetRepository(this, db.widgetDao());
 
         // Initialize views
-        deviceListView = findViewById(R.id.device_list);
-        sceneListView = findViewById(R.id.scene_list);
-        devicesHeader = findViewById(R.id.devices_header);
-        scenesHeader = findViewById(R.id.scenes_header);
+        itemListView = findViewById(R.id.item_list);
         progressBar = findViewById(R.id.progress_bar);
         btnSave = findViewById(R.id.btn_save);
+        itemSearchEdit = findViewById(R.id.item_search);
 
         btnSave.setEnabled(false);
         btnSave.setOnClickListener(v -> saveConfiguration());
@@ -106,13 +103,13 @@ public class WidgetConfigActivity extends AppCompatActivity {
     private void loadDevicesAndScenes() {
         progressBar.setVisibility(View.VISIBLE);
 
-        // Load devices
+        // Load all devices (including scenes and groups)
         StaticHelper.getDomoticz(this).getDevices(new DevicesReceiver() {
             @Override
             public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
-                devices = mDevicesInfo != null ? mDevicesInfo : new ArrayList<>();
-                Log.d(TAG, "Loaded " + devices.size() + " devices");
-                loadScenes();
+                allItems = mDevicesInfo != null ? mDevicesInfo : new ArrayList<>();
+                Log.d(TAG, "Loaded " + allItems.size() + " items (devices, scenes, and groups)");
+                displayData();
             }
 
             @Override
@@ -122,124 +119,86 @@ public class WidgetConfigActivity extends AppCompatActivity {
 
             @Override
             public void onError(Exception error) {
-                Log.e(TAG, "Error loading devices", error);
+                Log.e(TAG, "Error loading items", error);
                 Toast.makeText(WidgetConfigActivity.this,
-                    "Error loading devices: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                loadScenes();
+                    "Error loading items: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                displayData();
             }
         }, 0, null);
-    }
-
-    private void loadScenes() {
-        StaticHelper.getDomoticz(this).getScenes(new ScenesReceiver() {
-            @Override
-            public void onReceiveScenes(ArrayList<SceneInfo> mScenes) {
-                scenes = mScenes != null ? mScenes : new ArrayList<>();
-                Log.d(TAG, "Loaded " + scenes.size() + " scenes");
-                displayData();
-            }
-
-            @Override
-            public void onReceiveScene(SceneInfo scene) {
-                // Not used
-            }
-
-            @Override
-            public void onError(Exception error) {
-                Log.e(TAG, "Error loading scenes", error);
-                Toast.makeText(WidgetConfigActivity.this,
-                    "Error loading scenes: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                displayData();
-            }
-        });
     }
 
     private void displayData() {
         progressBar.setVisibility(View.GONE);
 
-        // Display devices
-        if (!devices.isEmpty()) {
-            devicesHeader.setVisibility(View.VISIBLE);
-            List<String> deviceNames = new ArrayList<>();
-            for (DevicesInfo device : devices) {
-                deviceNames.add(device.getName());
-            }
-            deviceAdapter = new CheckmarkAdapter(this, deviceNames);
-            deviceListView.setAdapter(deviceAdapter);
-            setListViewHeightBasedOnItems(deviceListView);
+        // Initialize filtered list
+        filteredItems = new ArrayList<>(allItems);
 
-            deviceListView.setOnItemClickListener((parent, view, position, id) -> {
-                DevicesInfo device = devices.get(position);
-                selectedIdx = device.getIdx();
-                selectedName = device.getName();
-                selectedIsScene = false;
-                btnSave.setEnabled(true);
+        if (!allItems.isEmpty()) {
+            itemSearchEdit.setVisibility(View.VISIBLE);
 
-                Log.d(TAG, "Device selected - Name: " + selectedName + ", idx: " + selectedIdx);
+            updateItemList();
 
-                // Update checkmark display
-                deviceAdapter.setSelectedPosition(position);
-                if (sceneAdapter != null) {
-                    sceneAdapter.setSelectedPosition(-1);
+            // Set up search functionality
+            itemSearchEdit.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    filterItems(s.toString());
                 }
 
-                Log.d(TAG, "Selected device: " + selectedName + " (idx: " + selectedIdx + ")");
+                @Override
+                public void afterTextChanged(Editable s) {}
             });
-        } else {
-            devicesHeader.setVisibility(View.GONE);
-            deviceListView.setVisibility(View.GONE);
-        }
 
-        // Display scenes
-        if (!scenes.isEmpty()) {
-            scenesHeader.setVisibility(View.VISIBLE);
-            List<String> sceneNames = new ArrayList<>();
-            for (SceneInfo scene : scenes) {
-                sceneNames.add(scene.getName());
-            }
-            sceneAdapter = new CheckmarkAdapter(this, sceneNames);
-            sceneListView.setAdapter(sceneAdapter);
-            setListViewHeightBasedOnItems(sceneListView);
+            itemListView.setOnItemClickListener((parent, view, position, id) -> {
+                DevicesInfo item = filteredItems.get(position);
+                selectedIdx = item.getIdx();
+                selectedName = item.getName();
 
-            sceneListView.setOnItemClickListener((parent, view, position, id) -> {
-                SceneInfo scene = scenes.get(position);
-                selectedIdx = scene.getIdx();
-                selectedName = scene.getName();
-                selectedIsScene = true;
+                // Check if it's a scene or group
+                String type = item.getType();
+                selectedIsScene = (type != null &&
+                    (type.equals(DomoticzValues.Scene.Type.SCENE) ||
+                     type.equals(DomoticzValues.Scene.Type.GROUP)));
+
                 btnSave.setEnabled(true);
 
                 // Update checkmark display
-                sceneAdapter.setSelectedPosition(position);
-                if (deviceAdapter != null) {
-                    deviceAdapter.setSelectedPosition(-1);
-                }
+                itemAdapter.setSelectedPosition(position);
 
-                Log.d(TAG, "Selected scene: " + selectedName + " (idx: " + selectedIdx + ")");
+                Log.d(TAG, "Selected item: " + selectedName + " (idx: " + selectedIdx +
+                    ", isScene: " + selectedIsScene + ")");
             });
         } else {
-            scenesHeader.setVisibility(View.GONE);
-            sceneListView.setVisibility(View.GONE);
+            itemSearchEdit.setVisibility(View.GONE);
+            itemListView.setVisibility(View.GONE);
         }
     }
 
-    private void setListViewHeightBasedOnItems(ListView listView) {
-        if (listView.getAdapter() == null) return;
-
-        int totalHeight = 0;
-        int itemCount = listView.getAdapter().getCount();
-
-        for (int i = 0; i < itemCount; i++) {
-            View listItem = listView.getAdapter().getView(i, null, listView);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
+    private void filterItems(String query) {
+        filteredItems.clear();
+        if (query.isEmpty()) {
+            filteredItems.addAll(allItems);
+        } else {
+            String lowerCaseQuery = query.toLowerCase();
+            for (DevicesInfo item : allItems) {
+                if (item.getName().toLowerCase().contains(lowerCaseQuery)) {
+                    filteredItems.add(item);
+                }
+            }
         }
+        updateItemList();
+    }
 
-        totalHeight += (listView.getDividerHeight() * (itemCount - 1));
-
-        android.view.ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight;
-        listView.setLayoutParams(params);
-        listView.requestLayout();
+    private void updateItemList() {
+        List<String> itemNames = new ArrayList<>();
+        for (DevicesInfo item : filteredItems) {
+            itemNames.add(item.getName());
+        }
+        itemAdapter = new CheckmarkAdapter(this, itemNames);
+        itemListView.setAdapter(itemAdapter);
     }
 
     private void saveConfiguration() {
