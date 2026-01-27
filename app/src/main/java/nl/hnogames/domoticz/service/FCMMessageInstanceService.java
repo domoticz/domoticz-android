@@ -51,12 +51,45 @@ public class FCMMessageInstanceService extends FirebaseMessagingService {
                     prio = Integer.valueOf(priority);
             }
 
-            // Determine device ID
-            String deviceId = decode(data.containsKey("deviceid") ? data.get("deviceid").toString() : "");
-            int deviceIdInt = -1;
-            if (!UsefulBits.isEmpty(deviceId) && isDigitsOnly(deviceId) && Integer.valueOf(deviceId) > 0) {
-                deviceIdInt = Integer.valueOf(deviceId);
+        // Determine device ID
+        String deviceId = decode(data.containsKey("deviceid") ? data.get("deviceid").toString() : "");
+        int deviceIdInt = -1;
+
+        // First try to get device ID from 'deviceid' field
+        if (!UsefulBits.isEmpty(deviceId) && isDigitsOnly(deviceId) && Integer.valueOf(deviceId) > 0) {
+            deviceIdInt = Integer.valueOf(deviceId);
+            Log.d(TAG, "Device ID found in 'deviceid' field: " + deviceIdInt);
+        }
+
+        // If not found, check 'extradata' field for "|Device=<idx>" format
+        if (deviceIdInt == -1 && data.containsKey("extradata")) {
+            String extraData = decode(data.get("extradata").toString());
+            if (!UsefulBits.isEmpty(extraData)) {
+                Log.d(TAG, "Checking extradata for device ID: " + extraData);
+
+                // Check for "|Device=<idx>" format
+                if (extraData.contains("|Device=")) {
+                    String[] parts = extraData.split("\\|");
+                    for (String part : parts) {
+                        if (part.startsWith("Device=")) {
+                            String deviceIdStr = part.substring(7); // Skip "Device="
+                            if (isDigitsOnly(deviceIdStr) && Integer.valueOf(deviceIdStr) > 0) {
+                                deviceIdInt = Integer.valueOf(deviceIdStr);
+                                Log.d(TAG, "Device ID found in extradata: " + deviceIdInt);
+                                break;
+                            }
+                        }
+                    }
+                }
+                // Also handle plain device ID in extradata (legacy support)
+                else if (isDigitsOnly(extraData) && Integer.valueOf(extraData) > 0) {
+                    deviceIdInt = Integer.valueOf(extraData);
+                    Log.d(TAG, "Device ID found in extradata (plain): " + deviceIdInt);
+                }
             }
+        }
+
+        Log.d(TAG, "Final device ID: " + deviceIdInt);
 
             // Send notification
             NotificationUtil.sendSimpleNotification(new NotificationInfo(deviceIdInt, subject, body, prio, new Date()), this);

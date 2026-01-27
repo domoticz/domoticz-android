@@ -233,7 +233,20 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     private void handleShortcutAction(Intent intent) {
-        String shortcutId = intent.getAction();
+        // Handle notification with device IDX - navigate to correct fragment
+        if (intent != null && intent.hasExtra("TARGETIDX")) {
+            int deviceIdx = intent.getIntExtra("TARGETIDX", -1);
+            if (deviceIdx > 0) {
+                Log.d(TAG, "Notification clicked with device IDX: " + deviceIdx);
+                navigateToDeviceFragment(deviceIdx);
+                // Remove the extra to prevent re-triggering on orientation change
+                intent.removeExtra("TARGETIDX");
+                return;
+            }
+        }
+
+        // Handle shortcuts
+        String shortcutId = intent != null ? intent.getAction() : null;
         if (shortcutId != null) {
             switch (shortcutId) {
                 case "open_dashboard":
@@ -255,6 +268,99 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 // Handle other shortcuts here
             }
         }
+    }
+
+    /**
+     * Navigate to the appropriate fragment based on device type
+     */
+    private void navigateToDeviceFragment(int deviceIdx) {
+        // Fetch device info to determine correct fragment
+        StaticHelper.getDomoticz(MainActivity.this).getDevice(new nl.hnogames.domoticzapi.Interfaces.DevicesReceiver() {
+            @Override
+            public void onReceiveDevice(nl.hnogames.domoticzapi.Containers.DevicesInfo device) {
+                if (device == null) {
+                    Log.w(TAG, "Device not found for idx: " + deviceIdx);
+                    // Default to dashboard
+                    changeFragment("nl.hnogames.domoticz.fragments.Dashboard", false);
+                    return;
+                }
+
+                Log.d(TAG, "Device found: " + device.getName() + ", type: " + device.getType() +
+                        ", subType: " + device.getSubType() + ", switchType: " + device.getSwitchTypeVal());
+
+                String fragmentName = getFragmentForDeviceType(device);
+                Log.d(TAG, "Navigating to fragment: " + fragmentName);
+
+                fromShortcut = true;
+                changeFragment(fragmentName, false);
+            }
+
+            @Override
+            public void onReceiveDevices(java.util.ArrayList<nl.hnogames.domoticzapi.Containers.DevicesInfo> devices) {
+                // Not used
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Log.e(TAG, "Error fetching device for navigation", error);
+                // Default to dashboard on error
+                changeFragment("nl.hnogames.domoticz.fragments.Dashboard", false);
+            }
+        }, deviceIdx, false);
+    }
+
+    /**
+     * Determine which fragment to show based on device type
+     */
+    private String getFragmentForDeviceType(nl.hnogames.domoticzapi.Containers.DevicesInfo device) {
+        String type = device.getType();
+        String subType = device.getSubType();
+        int switchType = device.getSwitchTypeVal();
+
+        if (type == null) {
+            return "nl.hnogames.domoticz.fragments.Dashboard";
+        }
+
+        // Scenes and Groups
+        if (type.equals(nl.hnogames.domoticzapi.DomoticzValues.Scene.Type.SCENE) ||
+            type.equals(nl.hnogames.domoticzapi.DomoticzValues.Scene.Type.GROUP)) {
+            return "nl.hnogames.domoticz.fragments.Scenes";
+        }
+
+        // Temperature/Humidity sensors
+        if (type.contains("Temp") || type.contains("Humidity") ||
+            (subType != null && (subType.contains("Temp") || subType.contains("Humidity")))) {
+            return "nl.hnogames.domoticz.fragments.Temperature";
+        }
+
+        // Weather devices
+        if (type.equals("Wind") || type.equals("Rain") || type.equals("UV") ||
+            (subType != null && (subType.contains("Weather") || subType.equals("Solar Radiation")))) {
+            return "nl.hnogames.domoticz.fragments.Weather";
+        }
+
+        // Utility devices (power, gas, water, etc.)
+        if (type.equals("P1 Smart Meter") || type.equals("YouLess Meter") ||
+            type.equals("General") && (subType != null &&
+                (subType.contains("kWh") || subType.contains("Gas") ||
+                 subType.contains("Water") || subType.contains("Counter") ||
+                 subType.contains("Energy") || subType.contains("Percentage") ||
+                 subType.equals("Custom Sensor") || subType.equals("Managed Counter")))) {
+            return "nl.hnogames.domoticz.fragments.Utilities";
+        }
+
+        // Switches, lights, and other toggleable devices
+        if (switchType > 0 || type.equals("Lighting 1") || type.equals("Lighting 2") ||
+            type.equals("Lighting 3") || type.equals("Lighting 4") ||
+            type.equals("Lighting 5") || type.equals("Lighting 6") ||
+            type.equals("Light/Switch") || type.equals("Color Switch") ||
+            type.equals("Thermostat") || type.equals("Radiator") ||
+            type.contains("RFY") || type.contains("ASA")) {
+            return "nl.hnogames.domoticz.fragments.Switches";
+        }
+
+        // Default to dashboard for unknown types
+        return "nl.hnogames.domoticz.fragments.Dashboard";
     }
 
     public void resetWorkerThreads() {

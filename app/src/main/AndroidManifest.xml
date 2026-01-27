@@ -169,6 +169,16 @@
             android:name="nl.hnogames.domoticz.service.GeofenceBroadcastReceiver"
             android:enabled="true" />
 
+        <receiver
+            android:name="nl.hnogames.domoticz.service.NotificationActionReceiver"
+            android:exported="false"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="nl.hnogames.domoticz.NOTIFICATION_TOGGLE_DEVICE" />
+                <action android:name="nl.hnogames.domoticz.NOTIFICATION_BLIND_STOP" />
+            </intent-filter>
+        </receiver>
+
         <service
             android:name="nl.hnogames.domoticz.service.GeofenceTransitionsIntentService"
             android:exported="true"
