@@ -64,6 +64,12 @@ public class SharedPrefUtil {
     private static final String PREF_ENABLE_BEACON = "enableBeacon";
     private static final String PREF_CUSTOM_WEAR_ITEMS = "wearItems";
     private static final String PREF_CUSTOM_AUTO_ITEMS = "autolistItems";
+    private static final String PREF_AUTO_DASHBOARD_ITEMS = "autoDashboardItems";
+    private static final String PREF_AUTO_SWITCHES_ITEMS = "autoSwitchesItems";
+    private static final String PREF_AUTO_TEMPERATURE_ITEMS = "autoTemperatureItems";
+    private static final String PREF_AUTO_WEATHER_ITEMS = "autoWeatherItems";
+    private static final String PREF_AUTO_UTILITIES_ITEMS = "autoUtilitiesItems";
+    private static final String PREF_AUTO_SCENES_ITEMS = "autoScenesItems";
     private static final String PREF_ALWAYS_ON = "alwayson";
     private static final String PREF_AUTO_REFRESH = "autorefresh";
     private static final String PREF_AUTO_REFRESH_TIMER = "autorefreshTimer";
@@ -770,6 +776,90 @@ public class SharedPrefUtil {
         if (selections != null) {
             String[] selectionValues = new String[selections.size()];
 
+            int i = 0;
+            for (String s : selections) {
+                selectionValues[i] = s;
+                i++;
+            }
+            return selectionValues;
+        } else return null;
+    }
+
+    public String[] getAutoDashboardDevices() {
+        if (!prefs.contains(PREF_AUTO_DASHBOARD_ITEMS)) return null;
+        Set<String> selections = prefs.getStringSet(PREF_AUTO_DASHBOARD_ITEMS, null);
+        if (selections != null) {
+            String[] selectionValues = new String[selections.size()];
+            int i = 0;
+            for (String s : selections) {
+                selectionValues[i] = s;
+                i++;
+            }
+            return selectionValues;
+        } else return null;
+    }
+
+    public String[] getAutoSwitchesDevices() {
+        if (!prefs.contains(PREF_AUTO_SWITCHES_ITEMS)) return null;
+        Set<String> selections = prefs.getStringSet(PREF_AUTO_SWITCHES_ITEMS, null);
+        if (selections != null) {
+            String[] selectionValues = new String[selections.size()];
+            int i = 0;
+            for (String s : selections) {
+                selectionValues[i] = s;
+                i++;
+            }
+            return selectionValues;
+        } else return null;
+    }
+
+    public String[] getAutoScenesDevices() {
+        if (!prefs.contains(PREF_AUTO_SCENES_ITEMS)) return null;
+        Set<String> selections = prefs.getStringSet(PREF_AUTO_SCENES_ITEMS, null);
+        if (selections != null) {
+            String[] selectionValues = new String[selections.size()];
+            int i = 0;
+            for (String s : selections) {
+                selectionValues[i] = s;
+                i++;
+            }
+            return selectionValues;
+        } else return null;
+    }
+
+    public String[] getAutoTemperatureDevices() {
+        if (!prefs.contains(PREF_AUTO_TEMPERATURE_ITEMS)) return null;
+        Set<String> selections = prefs.getStringSet(PREF_AUTO_TEMPERATURE_ITEMS, null);
+        if (selections != null) {
+            String[] selectionValues = new String[selections.size()];
+            int i = 0;
+            for (String s : selections) {
+                selectionValues[i] = s;
+                i++;
+            }
+            return selectionValues;
+        } else return null;
+    }
+
+    public String[] getAutoWeatherDevices() {
+        if (!prefs.contains(PREF_AUTO_WEATHER_ITEMS)) return null;
+        Set<String> selections = prefs.getStringSet(PREF_AUTO_WEATHER_ITEMS, null);
+        if (selections != null) {
+            String[] selectionValues = new String[selections.size()];
+            int i = 0;
+            for (String s : selections) {
+                selectionValues[i] = s;
+                i++;
+            }
+            return selectionValues;
+        } else return null;
+    }
+
+    public String[] getAutoUtilitiesDevices() {
+        if (!prefs.contains(PREF_AUTO_UTILITIES_ITEMS)) return null;
+        Set<String> selections = prefs.getStringSet(PREF_AUTO_UTILITIES_ITEMS, null);
+        if (selections != null) {
+            String[] selectionValues = new String[selections.size()];
             int i = 0;
             for (String s : selections) {
                 selectionValues[i] = s;

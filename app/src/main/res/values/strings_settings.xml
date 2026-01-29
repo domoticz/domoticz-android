@@ -77,13 +77,8 @@
     <string name="wear_custom_off">Disable Android Wear custom items</string>
 
     <!--        Auto settings       -->
-    <string name="auto_custom_on">Enable Android Auto Notifications</string>
-    <string name="auto_custom_off">Disable Android Auto Notifications</string>
-    <string name="enable_autolist_select">Android Auto custom items</string>
-    <string name="custom_autolist_select">Select Android Auto switches</string>
-    <string name="custom_autolist_select_desc">Select which switches you like to see on your Android Auto device</string>
-    <string name="autolist_custom_on">Enable Android Auto custom items</string>
-    <string name="autolist_custom_off">Disable Android Auto custom items</string>
+    <string name="auto_favorites_title">Android Auto Categories</string>
+    <string name="auto_favorites_info">Android Auto displays your favorite devices organized by category:\n\n• Dashboard - All favorite devices\n• Switches - Favorite switches only\n• Temperature - Favorite temperature sensors\n• Weather - Favorite weather sensors\n• Utilities - Favorite utility meters\n• Scenes - Scenes and groups\n\nMark devices as favorites in the main app to show them in Android Auto.</string>
 
     <!--        Geofencing settings -->
     <string name="geofencing_configure">Configure Geofencing</string>

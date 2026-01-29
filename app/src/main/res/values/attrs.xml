@@ -44,6 +44,7 @@
         <attr name="selectAllValuesByDefault" />
         <attr name="dynamicEntriesProvider" />
         <attr name="dynamicEntryValuesProvider" />
+        <attr name="deviceFilter" format="string" />
     </declare-styleable>
 
     <declare-styleable name="BackdropContainer">
