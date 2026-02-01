@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="premium_category">Acquista la versione premium!</string>
@@ -10,7 +9,7 @@
     <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
     <string name="drawer_open">Apri il pannello di navigazione</string>
     <string name="drawer_close">Chiudi pannello di navigazione</string>
-    <string name="msg_please_wait">Attendere prego&#8230;</string>
+    <string name="msg_please_wait">Attendere prego…</string>
     <string name="changelog">Changelog</string>
     <string name="button_state_on">On</string>
     <string name="button_state_off">Off</string>
@@ -125,7 +124,6 @@
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Imposta regole di automazione con Tasker per Domoticz</string>
     <string name="background_location_warning">Questa app raccoglie i dati della posizione per abilitare i servizi di geofencing all\'interno di questa app, anche quando l\'app  chiusa o non  in uso.</string>
-
     <!-- Modern Onboarding Strings -->
     <string name="back">Indietro</string>
     <string name="get_started">Inizia</string>
@@ -143,7 +141,6 @@
     <string name="camera_permission_required">È richiesta l\'autorizzazione della fotocamera per scansionare i codici QR</string>
     <string name="camera_init_failed">Inizializzazione fotocamera fallita</string>
     <string name="qr_code_detected">Codice QR rilevato!</string>
-
     <!-- Configuration Steps -->
     <string name="step_1_of_3">Passo 1 di 3</string>
     <string name="step_2_of_3">Passo 2 di 3</string>
@@ -158,7 +155,6 @@
     <string name="directory_optional">Directory (opzionale)</string>
     <string name="directory_helper">Lascia vuoto se non necessario</string>
     <string name="next">Avanti</string>
-
     <!-- Authentication -->
     <string name="authentication">Autenticazione</string>
     <string name="authentication_description">Inserisci le credenziali se il tuo server richiede l\'autenticazione</string>
@@ -167,7 +163,6 @@
     <string name="password_optional">Password (opzionale)</string>
     <string name="password_helper">Lascia vuoto se non richiesto</string>
     <string name="skip_no_auth">Salta - Nessuna autenticazione</string>
-
     <!-- Advanced Settings -->
     <string name="advanced_settings">Impostazioni avanzate</string>
     <string name="advanced_settings_description">Opzionale: Configura impostazioni diverse per la rete locale</string>
@@ -179,7 +174,6 @@
     <string name="local_server_address">Indirizzo server locale</string>
     <string name="test_connection">Testa connessione</string>
     <string name="skip_advanced">Salta - Usa stesse impostazioni</string>
-
     <!-- Connection Test -->
     <string name="testing_connection">Test connessione</string>
     <string name="please_wait">Attendere mentre verifichiamo le tue impostazioni…</string>
@@ -187,8 +181,637 @@
     <string name="connection_failed">Connessione fallita</string>
     <string name="finish_setup">Completa configurazione</string>
     <string name="edit_settings">Modifica impostazioni</string>
-
     <!-- Import Settings -->
     <string name="import_settings_description">Ripristina le tue impostazioni da un file di backup precedentemente esportato</string>
     <string name="select_backup_file">Seleziona file di backup</string>
+    <!-- Actions -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="action_switch_server">Server switch</string>
+    <string name="action_settings">Settaggi</string>
+    <string name="action_filter">Filtro</string>
+    <string name="action_camera_play">Play</string>
+    <string name="action_camera_pause">Pausa</string>
+    <string name="action_qrcode_scan">Scansione QR Code</string>
+    <string name="action_bluetooth_show">Mostra dispositivi accoppiati</string>
+    <string name="action_speech">Riconoscimento vocale</string>
+    <string name="send">Invia</string>
+    <!-- Beacon -->
+    <string name="beacon_not_supported">I beacon non sono supportati su questo dispositivo</string>
+    <string name="beacon_register">Collega un beacon</string>
+    <string name="beacon_found">Trovato nuovo faro (beacon)</string>
+    <string name="beacon_edit">Modifica faro (beacon)</string>
+    <string name="beacon_name">Dare a questo faro(beacon) un nome appropriato</string>
+    <string name="beacon_desc">Controllare l\'elenco dei dispositivi beacon accoppiati. </string>
+    <string name="beacon_exists">Faro (beacon) già configurato su Domoticz. </string>
+    <string name="beacon_turned_off">Il Bluetooth deve essere attivato delle impostazioni del dispositivo. </string>
+    <string name="beacon_saved">Nuovo collegamento faro (beacon) salvato.</string>
+    <string name="action_beacon_show">Aggiungi nuovo faro (beacon)</string>
+    <string name="beacon">Faro (beacon)</string>
+    <string name="beacon_disabled">Automazione Faro  (beacon) disabilitata, si prega di configurarla tramite i settaggi</string>
+    <string name="noSwitchSelected_explanation_beacon">Per automatizzare qualcosa via Faro (beacon) in Domoticz, e\' necessario che l\'interruttore sia legato ad un dispositivo faro (beacon)</string>
+    <string name="beacon_UUID">UUID</string>
+    <string name="beacon_major">Maggiore (facoltativo)</string>
+    <string name="beacon_minor">Minore (facoltativo)</string>
+    <string name="beacon_scan">Faro (beacon)</string>
+    <string name="beacon_scan_desc">Scansione dei Fari (beacon)</string>
+    <string name="beacon_notifications">Abilita le notifiche per entrare e abbandonare una regione faro.</string>
+    <string name="beacon_entering">"Inserisci %1$s"</string>
+    <string name="beacon_leaving">Lasciare %1$s</string>
+    <string name="beacon_entering_text">Entrata in uno dei fari</string>
+    <string name="beacon_leaving_text">Uscita da uno dei fari</string>
+    <!-- Bluetooth -->
+    <string name="bluetooth_not_supported">Bluetooth non e\' supportato da questo apparecchio</string>
+    <string name="bluetooth_register">Connetti un dispositivo Bluetooth</string>
+    <string name="bluetooth_found">Nuovo Dispositivo Bluetooth trovato</string>
+    <string name="bluetooth_edit">Edita dispositivo Bluetooth</string>
+    <string name="bluetooth_name">Assegna a questo dispositivo Bluetooth un nome adatto</string>
+    <string name="bluetooth_desc">Controlla la lista di dispositivi Bluetooth accoppiati</string>
+    <string name="bluetooth_exists">Bluetooth gia\' configurato su Domoticz</string>
+    <string name="bluetooth_turned_off">E\' necessario accendere il Bluetooth del proprio dispositivo</string>
+    <string name="bluetooth_saved">Nuova connessione Bluetooth registrata.</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="title_notification_bluetooth">Enable Notifications for Bluetooth</string>
+    <string name="description_notification_bluetooth">Show notifications when you connect or disconnect a bluetooth device.</string>
+    <string name="bluetooth_event_triggered">"Bluetooth event triggered for %1$s"</string>
+    <string name="bluetooth_disabled">Automazione Bluetooth disabilitata, si prega di configurarla tramite i settaggi</string>
+    <string name="noSwitchSelected_explanation_bluetooth">Per automatizzare via Bluetooth qualcosa in Domoticz, e\' necessario che sia legato ad un dispositivo Bluetooth</string>
+    <!-- Cameras -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_cameras">Camere</string>
+    <!-- Dashboard -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_dashboard">Pannello principale</string>
+    <string name="delivery">Consegna</string>
+    <string name="usage">Utilizzo</string>
+    <string name="today">Oggi</string>
+    <string name="total">Totale</string>
+    <string name="favorite_added">aggiunto al pannello principale.</string>
+    <string name="favorite_removed">rimosso dal pannello principale.</string>
+    <!-- Errors -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="error_authentication">Credenziali non valide</string>
+    <string name="error_timeout">Timeout o nessuna connessione</string>
+    <string name="error_server">Errore server</string>
+    <string name="error_network">Errore di rete, codice %1$d</string>
+    <string name="error_parse">Errore di analisi</string>
+    <string name="error_notConnected">Errore: nessun collegamento alla rete</string>
+    <!-- Events -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_events">Eventi</string>
+    <string name="action_not_supported_yet">Questa azione non è ancora supportata!</string>
+    <!-- Locations -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_add_location">Aggiungi posizione</string>
+    <string name="title_edit_location">Modifica posizione</string>
+    <string name="longitude">Longitudine</string>
+    <string name="latitude">Latitudine</string>
+    <string name="radius">Raggio (metri)</string>
+    <string name="connectedSwitch">Interruttore collegato</string>
+    <string name="unable_to_get_switches">Non riesco ad ottenere tutti gli interruttori, si prega di riprovare</string>
+    <string name="delete_short">CANC</string>
+    <string name="delete">Cancella</string>
+    <string name="Location_name">Nome Posizione</string>
+    <string name="currentLocation">Posizione attuale</string>
+    <string name="manual">Manuale</string>
+    <string name="getLocation">OTTIENI</string>
+    <string name="locationAddress">Indirizzo</string>
+    <string name="unknown">Sconosciuto</string>
+    <string name="not_available">N/D</string>
+    <string name="no_valid_latLong">Latitudine o longitudine non valida</string>
+    <string name="starting_geofence_service">Avvio servizio di Localizzazione</string>
+    <string name="could_not_find_location">Impossibile trovare la posizione, si prega di riprovare.</string>
+    <string name="google_play_services_unavailable">Servizi di Google Play non disponibili.</string>
+    <string name="location_not_found">Nessuna posizione trovata.</string>
+    <string name="geofence">Localizzazione</string>
+    <string name="title_geofence">Abilita Localizzazione</string>
+    <string name="description_geofence">Abilita e configura Localizzazione</string>
+    <string name="title_geofence_notifications">Attiva le notifiche</string>
+    <string name="description_geofence_notifications">Attiva le notifiche per gli eventi</string>
+    <string name="geofence_place">Luogo: %s</string>
+    <string name="geofence_location_entering">"Entrato %1$s"</string>
+    <string name="geofence_location_leaving">Uscito %1$s</string>
+    <string name="geofence_location_entering_text">Entrato in una delle posizioni</string>
+    <string name="geofence_location_leaving_text">Uscito da una delle posizioni</string>
+    <string name="geofence_error_recreateLocations">A causa di modifiche nella Localizzazione, si prega di reimpostare la località</string>
+    <string name="noSwitchSelected_title">Nessuno interruttore selezionato</string>
+    <string name="noSwitchSelected_explanation">Perché che la Localizzazione funzioni, un interruttore deve essergli abbinato</string>
+    <string name="noSwitchSelected_connectOneNow">Collegarne uno ora?</string>
+    <string name="geofencing_disabled_no_enabled_fences">Localizzazione disabilitata poiché nessuna località è abilitata</string>
+    <string name="geofence_not_available">Il servizio di localizzazione non è disponibile</string>
+    <string name="geofence_too_many_geofences">L\'app ha registrato troppe localizzazioni</string>
+    <string name="geofence_too_many_pending_intents">Troppi PendingIntents forniti</string>
+    <string name="unknown_geofence_error">Errore sconosciuto</string>
+    <!-- Logs -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_logs">Registri</string>
+    <!-- Nfc -->
+    <string name="nfc_not_supported">NFC non supportato in questo dispositivo</string>
+    <string name="nfc_register">Registrare un Tag NFC</string>
+    <string name="nfc_tag_found">Trovato nuovo Tag NFC</string>
+    <string name="nfc_tag_edit">Modificare Tag NFC</string>
+    <string name="nfc_tag_name">Dare un nome a questo NFC. </string>
+    <string name="nfc_exists">Tag NFC già registrato. </string>
+    <string name="nfc_saved">Nuovo tag NFC salvato. </string>
+    <string name="nfc">NFC</string>
+    <string name="noSwitchSelected_explanation_nfc">Perché che l\'NFC funzioni un interruttore dovrebbe essere collegato ad esso</string>
+    <!-- Notifications -->
+    <string name="priority">Priorità</string>
+    <string name="emergency">Emergenza</string>
+    <string name="high">Alto</string>
+    <string name="low">Basso</string>
+    <string name="verylow">Molto Basso</string>
+    <string name="allsystems">Tutti i sistemi</string>
+    <string name="systems">Sistemi</string>
+    <string name="send_notification">Invia notifica</string>
+    <string name="notification_subject">Oggetto</string>
+    <string name="notification_message">Messaggio</string>
+    <string name="notification_error_system">Scegli un sistema per inviare la notifica a</string>
+    <string name="notification_error_message">Compila un messaggio</string>
+    <string name="notification_error_subject">Si prega di compilare un oggetto</string>
+    <string name="notification_error_send">Impossibile inviare la notifica a Domoticz</string>
+    <string name="notification_send">Notifica inviata a Domoticz</string>
+    <!-- Permissions -->
+    <string name="permission_title">Autorizzazione negata</string>
+    <string name="permission_prefs_title">Autorizzazioni</string>
+    <string name="permission_config">Configurare le autorizzazioni per questa applicazione</string>
+    <string name="permission_desc_storage">Queste autorizzazioni di archiviazione sono necessarie per il salvataggio dei file di cache, impostazioni e snapshots dalla fotocamera.</string>
+    <string name="permission_desc_location">Queste autorizzazioni di posizione sono necessarie per la Geolocalizzazione e per ottenere gli SSID Wifi intorno a te!</string>
+    <string name="permission_desc_phone">Queste autorizzazioni sono necessarie per l\'attivazione delle notifiche!</string>
+    <string name="permission_desc_camera">Queste autorizzazioni della fotocamera sono necessarie per la scansione di codici QR!</string>
+    <string name="permission_desc_audio">Queste autorizzazioni audio sono necessarie per il riconoscimento vocale!</string>
+    <string name="permission_desc_finger">Queste autorizzazioni per l\'impronta digitale sono necessarie per abilitare la sicurezza tramite Impronte digitali!</string>
+    <!-- Plans -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_plans">Piani</string>
+    <plurals name="devices">
+        <item quantity="one">%1d dispositivo</item>
+        <item quantity="other">%1d dispositivi</item>
+    </plurals>
+    <!-- Qrcode -->
+    <string name="qrcode_not_supported">Il QR Code non è supportato in questo dispositivo</string>
+    <string name="qrcode_register">Registrare un QR Code </string>
+    <string name="qrcode_found">Nuovo codice QR Code trovato</string>
+    <string name="qrcode_edit">Modificare QR Code</string>
+    <string name="qrcode_name">Dare questo QR Code un nome appropriato. </string>
+    <string name="qrcode_desc">Scansione QR Code. </string>
+    <string name="qrcode_exists">QR Code già registrato. </string>
+    <string name="qrcode_saved">Salvato un nuovo QR Code. </string>
+    <string name="qrcode">QR Code</string>
+    <string name="qrcode_new_found">Nuovo QR Code trovato, si prega settarlo tramite le impostazioni.</string>
+    <string name="qr_code_disabled">QR Code disabilitato, si prega di settarlo tramite le impostazioni.</string>
+    <string name="noSwitchSelected_explanation_qrcode">Perchè che lo scan di QR Code abbia effetto, un interruttore dovrebbe essere collegato a un codice QR</string>
+    <string name="permission_camera_rationale">L\'accesso alla fotocamera è necessario per il rilevamento</string>
+    <string name="low_storage_error">Le dipendenze del QR Code non possono essere scaricare a causa del poco spazio d\'archiviazione</string>
+    <string name="no_camera_permission">Questa applicazione non funzionerà, non ha il permesso di utilizzare la fotocamera. L\'applicazione verrà chiusa.</string>
+    <!-- Scenes -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_scenes">Scene</string>
+    <!-- Security -->
+    <string name="title_security_panel">Pannello di sicurezza</string>
+    <string name="security_pin">Codice Pin</string>
+    <string name="security_disarm">Disarma</string>
+    <string name="security_arm_home">Arma in casa</string>
+    <string name="security_arm_away">Arma fuori casa</string>
+    <string name="security_wrong_code">Codice errato inserito!</string>
+    <string name="security_no_rights">Non hai i diritti per questa azione!</string>
+    <string name="security_generic_error">Non posso cambiare la modalità di sicurezza</string>
+    <string name="security_wrong_password_fingerprint">La password inserita non è corretta, la password dell\'account domoticz è l\'alternativa alle impronte digitali nel caso ci siano problemi...!</string>
+    <string name="show_password">Mostra Password</string>
+    <string name="fingerprint_make_sure">Abbiamo bisogno di assicurarsi che sia tu</string>
+    <string name="fingerprint_dialog_description">Metti il dito sul sensore di impronte digitali per autorizzare il tuo account.</string>
+    <!-- Server -->
+    <string name="choose_server">Seleziona Server</string>
+    <string name="dont_save_new_server">Non vuoi salvare il nuovo server?</string>
+    <string name="server_must_be_unique">Il nome del server deve essere univoco</string>
+    <string name="switch_to_server">"Passaggio al server %1$s"</string>
+    <string name="cant_disable_default_server">Non è possibile disattivare il server predefinito</string>
+    <!-- Settings -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="settingsActivity_name">Settaggi</string>
+    <string name="cameraActivity_name">Camera</string>
+    <!--        Categories             -->
+    <string name="category_generic">Generica</string>
+    <string name="category_wear">Android Wear</string>
+    <string name="category_auto">Android Auto</string>
+    <string name="category_server">Server</string>
+    <string name="category_geofencing">Localizzazione</string>
+    <string name="category_info">Informazioni</string>
+    <string name="category_advanced">Preferenze avanzate</string>
+    <string name="category_language">Lingua</string>
+    <string name="category_talk_back">Talk Back</string>
+    <string name="category_notification">Notifiche</string>
+    <string name="category_debug">Debugging</string>
+    <string name="category_export">Importa/Esporta impostazioni</string>
+    <string name="category_theme">Tema</string>
+    <string name="category_clock">Orologio</string>
+    <string name="category_nfc">Connessioni NFC</string>
+    <string name="category_startup_security">Sicurezza</string>
+    <string name="category_account">Accounts</string>
+    <string name="category_QRCode">QR Code</string>
+    <string name="category_bluetooth">Bluetooth</string>
+    <string name="category_wifi">Wifi</string>
+    <string name="category_Speech">Comando vocale</string>
+    <string name="category_Reset">Reset</string>
+    <string name="category_help">Contribuisci</string>
+    <!--        Generic settings       -->
+    <string name="startup_screen">Schermata iniziale</string>
+    <string name="enable_items">Abilita/Disabilita i componenti</string>
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Ordinamento</string>
+    <string name="sort_server_on">Ordina dispositivi come ordinati sul server</string>
+    <string name="sort_custom_on">Ordinamento personalizzato, trascina e rilascia per personalizzare l\'ordinamento</string>
+    <string name="sort_lock_server_title">Blocca</string>
+    <string name="sort_lock_custom_on">Blocca l\'ordinamento personalizzato corrente (disattiva trascinamento/rilascio)</string>
+    <string name="sort_dashboardLikeServer_off">Ordinamento alfabetico pagina principale</string>
+    <string name="extra_data_title">Dati addizionali nel pannello principale</string>
+    <string name="show_extra_data_on">Visualizza dati extra nel pannello principale</string>
+    <string name="show_extra_data_off">Nascondi dati extra nel pannello principale</string>
+    <string name="always_on_title">Wake Lock</string>
+    <string name="always_on_on">Blocca lo schemo sempre attivo</string>
+    <string name="always_on_off">Non bloccare lo schemo sempre attivo</string>
+    <string name="always_auto_refresh">Auto Aggiorna</string>
+    <string name="always_auto_refresh_on">Aggiorna lo stato del dispositivo ogni due secondi</string>
+    <string name="always_auto_refresh_off">Non aggiornare lo stato del dispositivo ogni due secondi</string>
+    <string name="switch_buttons_title">Interruttori</string>
+    <string name="switch_buttons_on">Visualizza interruttori on/off</string>
+    <string name="switch_buttons_off">Visualizza pulsanti on/off</string>
+    <string name="dashboard_list_title">Griglia pagina principale</string>
+    <string name="show_dashboard_list_on">Visualizza la pagina principale cole lista</string>
+    <string name="show_dashboard_list_off">Visualizza la pagina principale come griglia</string>
+    <string name="dashboard_clock">Orologio</string>
+    <string name="show_dashboard_clock">Mostra un orologio sulla dashboard</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
+    <string name="dashboard_camera">Camera</string>
+    <string name="show_dashboard_camera">Carica la fotocamera per gli interruttori collegati</string>
+    <!--        Wear settings       -->
+    <string name="enable_wear_select">Dispositivi personalizzati Android Wear</string>
+    <string name="custom_wear_select">Seleziona gli interruttori Wear</string>
+    <string name="custom_wear_select_desc">Seleziona quali interruttori vuoi visualizzare nel tuo Android Wear</string>
+    <string name="wear_custom_on">Abilita dispositivi personalizzati Android Wear</string>
+    <string name="wear_custom_off">Disabilita dispositivi personalizzati Android Wear</string>
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Attivare le notifiche di Android Auto</string>
+    <string name="auto_custom_off">Disattivare le notifiche di Android Auto</string>
+    <!--        Geofencing settings -->
+    <string name="geofencing_configure">Configura Localizzazione</string>
+    <!--        Theming settings -->
+    <string name="config_theme">Imposta Tema</string>
+    <string name="set_dark_theme">Passa al tema Scuro</string>
+    <string name="set_light_theme">Passa al tema Chiaro</string>
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">Lascia che Domoticz ti parli</string>
+    <string name="set_talk_back_off">Disattivare talk back</string>
+    <!--        Import/Export settings  -->
+    <string name="settings_imported">Impostazioni importate, si prega di riavviare Domoticz</string>
+    <string name="settings_import_failed">Impossibile importare le impostazioni</string>
+    <string name="settings_exported">Impostazioni esportate, si prega di riavviare Domoticz</string>
+    <string name="settings_export_failed">Impossibile esportare le impostazioni</string>
+    <!--        Preference screens      -->
+    <string name="server_settings">Impostazioni di connessione del server</string>
+    <string name="server_force_fetch_config">Recuperare la configurazione del server</string>
+    <string name="nfc_settings">Impostazioni connessioni NFC</string>
+    <string name="speech_settings">Configurazione comandi vocali</string>
+    <string name="title_activity_server_settings">Impostazioni del server</string>
+    <string name="multi_server">Server Multipli</string>
+    <string name="enable_nfc">Attivare NFC</string>
+    <string name="enable_speech">Abilitare il riconoscimento vocale</string>
+    <string name="export_settings">Esporta impostazioni</string>
+    <string name="reset_settings">Reset di tutte le impostazioni app (WARNING!!)</string>
+    <string name="import_settings">Importa impostazioni</string>
+    <string name="multi_server_settings">Attivare il supporto di server multipli</string>
+    <string name="nfc_enable_settings">Attivare le connessioni NFC</string>
+    <string name="speech_enable_settings">Abilitare il riconoscimento vocale</string>
+    <string name="server">Server</string>
+    <string name="qrcode_settings">Impostazioni QR Code</string>
+    <string name="enable_qrcode">Abilita QR Code</string>
+    <string name="qrcode_enable_settings">Abilita le funzionalità QR Code</string>
+    <string name="bluetooth_settings">Imposta dispositivi Bluetooth</string>
+    <string name="enable_bluetooth">Abilita funzionalità Bluetooth</string>
+    <string name="beacon_settings">Imposta Beacons</string>
+    <string name="enable_beacon">Abilita funzionalità Beacon</string>
+    <string name="translate_description">Puoi aiutare a migliorare le nostre traduzioni e persino aggiungere nuove lingue a questa app tramite il nostro progetto Crowdin</string>
+    <string name="translate_title">Traduzioni</string>
+    <string name="security_settings">Impostazioni di sicurezza</string>
+    <string name="enable_security">Attivare la protezione delle impronte digitali all\'avvio</string>
+    <string name="disable_security">Disattivare la protezione delle impronte digitali all\'avvio</string>
+    <string name="setup_fingerprints">Impostazioni impronte digitali tramite le schermate di Android</string>
+    <string name="fingerprint_not_supported">Impronta digitale non supportata in questo dispositivo</string>
+    <string name="fingerprint_not_setup_in_android">Per prima cosa configurare/collegare un\'impronta digitale a questo dispositivo</string>
+    <string name="fingerprint_sure">Sei sicuro? La password di failover è la password del tuo account Domoticz.</string>
+    <!--        Widgets     -->
+    <string name="category_widgets">Widgets (BETA)</string>
+    <string name="widget_description">Abilita o Disabilita Widget in questo dispositivo</string>
+    <string name="widget_disabled">I widget non sono abilitati in questo dispositivo, per favore controlla le impostazioni di Domoticz</string>
+    <string name="widget_warning">Usa i widget a tuo rischio!! I widget sono attualmente in fase Beta e possono contenere alcuni bug. possono causare un uso eccessivo di dati e batteria...</string>
+    <!--        GCM settings      -->
+    <string name="notification_settings_id">ID di messaggistica Google Cloud</string>
+    <string name="notification_settings_push">Invia il tuo ID di registrazione a Domoticz</string>
+    <string name="notification_settings_pushed">Il tuo ID di registrazione è ora salvato in Domoticz</string>
+    <string name="notification_settings_push_failed">Il tuo id potrebbe non essere salvato in Domoticz, riprova più tardi.</string>
+    <string name="notification_show_title">Ultime notifiche</string>
+    <string name="notification_show_nothing">Nessuna notifica trovata</string>
+    <string name="notification_show">Visualizza ultimo paio di notifiche</string>
+    <!--        Notification settings      -->
+    <string name="overwrite_notifications_title">Sovrascrivere le Notifiche</string>
+    <string name="overwrite_notifications">Sovrascrivere le notifiche precedenti su questo dispositivo</string>
+    <string name="enable_notifications_title">Attivare le Notifiche</string>
+    <string name="enable_notifications">Attivare le notifiche di questo dispositivo</string>
+    <string name="notification_screen_title">Impostazioni notifiche</string>
+    <string name="notification_history">Cronologia notifiche</string>
+    <string name="notification_inbox">Posta</string>
+    <string name="notification_vibrate_title">Vibrazione</string>
+    <string name="notification_vibrate_on">Vibra quando si riceve una notifica</string>
+    <string name="notification_vibrate_off">Non vibrare</string>
+    <string name="notification_sound_title">Suono</string>
+    <string name="notification_sound_summary">Usa il suono di notifica all\'arrivo di una notifica</string>
+    <string name="suppress_notifications_select">Seleziona le Notifiche da cancellare</string>
+    <string name="suppress_notifications">Cancella una Notifica specifica del dispositivo</string>
+    <string name="suppress_notifications_title">Cancella le Notifiche</string>
+    <string name="alarm_notifications_select">Selezionare notifiche di allarme</string>
+    <string name="alarm_notifications">Allarme sonoro per notifiche specifiche</string>
+    <string name="clear_notifications">Cancellare il log delle notifiche</string>
+    <string name="alarm_notifications_title">Notifiche di Allarme</string>
+    <string name="alarm">Allarme</string>
+    <string name="alarmtimer_title">Tempo di Allarme</string>
+    <string name="alarmtimer">Durata dell\'allarme in secondi</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Predefinito</string>
+    <string name="theme_daynight">Giorno/Notte</string>
+    <string name="theme_orange">Arancia</string>
+    <string name="theme_pink">Rosa</string>
+    <string name="theme_blue">Blu</string>
+    <string name="theme_green">Verde</string>
+    <string name="theme_dark_blue">Blu scuro</string>
+    <!-- Other -->
+    <string name="default_values">Valori predefiniti</string>
+    <string name="default_values_min_error">Il valore max dovrebbe essere superiore al valore min</string>
+    <string name="default_values_max_error">Il valore max dovrebbe essere superiore al valore min</string>
+    <!--        Information category       -->
+    <string name="info_version">Versione</string>
+    <string name="info_domoticz_version">Versione Domoticz</string>
+    <string name="info_about">Info Domoticz</string>
+    <string name="info_credits">Crediti</string>
+    <string name="info_credits_text">Domoticz per Android è stato realizzato con librerie open source</string>
+    <!--        Debug category       -->
+    <string name="debug_switch_title">Debugging</string>
+    <string name="debug_switch_summary_on">Debugging abilitato</string>
+    <string name="debug_switch_summary_off">Debugging disabilitato</string>
+    <!--        Geo settings activity       -->
+    <string name="error_atLeastOneItemInDrawer">Hai bisogno di almeno un dispositivo</string>
+    <!--        Server update category       -->
+    <string name="title_activity_update">Aggiornamento server</string>
+    <string name="error_couldNotCheckForVersion">"Impossibile controllare la versione: %1$s"</string>
+    <string name="error_couldNotCheckForUpdates">"Impossibile controllare gli aggiornamenti: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"Impossibile ottenere la configurazione del server Domoticz: %1$s"</string>
+    <string name="update_available_enhanced">Aggiornamento di server disponibile: %1$s versione: %2$s</string>
+    <string name="check_for_update_title">Controlla Aggiornamenti</string>
+    <string name="check_for_update">Vuoi controllare gli aggiornamenti di Domoticz?</string>
+    <string name="update_server_warning">Durante l\'aggiornamento del server questa app potrebbe non funzionare correttamente.</string>
+    <string name="update_server_downloadNotReady1">L\'update non è stato (completamente) scaricato.</string>
+    <string name="update_server_downloadNotReady2">Si prega di riprovare più tardi.</string>
+    <string name="server_update_available">Aggiornamento server disponibile</string>
+    <string name="update_server">Aggiornamento server</string>
+    <string name="server_update_revision">Revisione aggiornamento server</string>
+    <string name="server_version">Versione server</string>
+    <string name="server_update">Aggiornamento server</string>
+    <string name="please_wait_while_we_check">Si prega di attendere, verifichiamo se il server è pronto</string>
+    <string name="server_update_not_ready">Aggiornamento server non scaricato</string>
+    <string name="please_wait_while_server_updated">Si prega di attendere, il server è in fase di aggiornamento.</string>
+    <string name="server_update_done">Aggiornamento server eseguito</string>
+    <string name="update_not_started">Aggiornamento non avviato</string>
+    <string name="update_not_started_unknown_error">Aggiornamento non avviato a causa di un errore sconosciuto</string>
+    <string name="server_update_not_available">Aggiornamento server non disponibile</string>
+    <string name="click_to_update_server">Clicca qui per aggiornare il server</string>
+    <string name="debug_test_text">Test di debug</string>
+    <string name="restart_required_title">È necessario riavviare</string>
+    <string name="restart_now">Riavviare ora?</string>
+    <string name="check_settings">Controlla le tue impostazioni</string>
+    <string name="report_error">Segnala un errore</string>
+    <string name="support">Supporto</string>
+    <!-- Speech -->
+    <string name="Speech_not_supported">Riconoscimento vocale non supportato in questo dispositivo</string>
+    <string name="Speech_register">Registrare un comando vocale</string>
+    <string name="Speech_found">Nuovo comando vocale trovato</string>
+    <string name="Speech_edit">Modificare il comando vocale</string>
+    <string name="Speech_name">Dare questo comando vocale un nome appropriato. </string>
+    <string name="Speech_exists">Comando vocale già registrato. </string>
+    <string name="Speech_saved">Salvato un nuovo comando vocale. </string>
+    <string name="Speech_desc">Esegui un nuovo comando vocale. </string>
+    <string name="Speech">Comando vocale</string>
+    <string name="Speech_disabled">Comando vocale disabilitato, per favore verificare le impostazioni.</string>
+    <string name="noSwitchSelected_explanation_Speech">Il comando vocale per funzionare deve essere collegato ad un interruttore</string>
+    <!-- Switches -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_switches">Interruttori</string>
+    <string name="txt_notAvailable">N/D</string>
+    <string name="idx">IDX</string>
+    <string name="placeholder_value">255</string>
+    <string name="color_set">Colori per</string>
+    <string name="state_set">Stati per</string>
+    <string name="error_favorite">Impossibile da aggiungere ai favoriti</string>
+    <string name="error_logs">Log da visualizzare non trovato</string>
+    <string name="error_color">Impossibile cambiare colore</string>
+    <string name="error_state">Impossibile cambiare lo stato</string>
+    <string name="error_timer">Impossibile visualizzare i tempi</string>
+    <string name="error_notifications">Non posso visualizzare le notifiche</string>
+    <string name="set_level_switch">"Impostazione livello per interruttore: %1$s a %2$d"</string>
+    <!-- Temperature -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_temperature">Temperatura</string>
+    <string name="cancel_override">Annullare l\'esclusione</string>
+    <string name="wind">Vento</string>
+    <string name="error_log">Impossibile ottenere log per</string>
+    <string name="follow_schedule">Segui la programmazione</string>
+    <!-- Timer -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="command">Comando</string>
+    <string name="type">Tipo</string>
+    <string name="notapplicable">N/D</string>
+    <string name="timer_before_sunset">Prima del tramonto</string>
+    <string name="timer_after_sunset">Dopo il tramonto</string>
+    <string name="timer_ontime">All\'ora</string>
+    <string name="timer_before_sunrise">Prima dell\'alba</string>
+    <string name="timer_after_sunrise">Dopo l\'alba</string>
+    <string name="timer_fixed">Data fissa</string>
+    <string name="odd_day_numbers">Giorni dispari</string>
+    <string name="even_day_numbers">Giorni pari</string>
+    <string name="odd_week_numbers">Settimane dispari</string>
+    <string name="even_week_numbers">Settimane pari</string>
+    <string name="monthly">Mensile</string>
+    <string name="monthly_weekday">Mensile (nei giorni feriali)</string>
+    <string name="yearly">Annuale</string>
+    <string name="yearly_weekday">Annuale (nei giorni feriali)</string>
+    <string name="before_sun_at_south">Prima del Sole a Sud</string>
+    <string name="after_sun_at_south">Dopo il Sole a Sud</string>
+    <string name="before_civil_twilight_start">Prima Di Avvio Del Crepuscolo Civile</string>
+    <string name="after_civil_twilight_start">Dopo L\'Inizio Del Crepuscolo Civile</string>
+    <string name="before_civil_twilight_end">Prima Della Fine Del Crepuscolo Civile</string>
+    <string name="after_civil_twilight_end">Dopo La Fine Del Crepuscolo Civile</string>
+    <string name="before_nautical_twilight_start">Prima Dell\'Inizio Del Crepuscolo Nautico</string>
+    <string name="after_nautical_twilight_start">Dopo Avvio Nautico Del Crepuscolo</string>
+    <string name="before_nautical_twilight_end">Prima Della Fine Nautica Del Crepuscolo</string>
+    <string name="after_nautical_twilight_end">Dopo Fine Crepuscolo Nautico</string>
+    <string name="before_austronomical_twilight_start">Prima Dell\'Inizio Del Crepuscolo Austronomico</string>
+    <string name="after_austronomical_twilight_start">Dopo L\'Inizio Del Crepuscolo Austronomico</string>
+    <string name="before_austronomical_twilight_end">Prima Della Fine Del Crepuscolo Austronomico</string>
+    <string name="after_austronomical_twilight_end">Dopo La Fine Del Crepuscolo Austronomico</string>
+    <string name="timer_every_days">Tutti i giorni</string>
+    <string name="timer_working_days">Giorni lavorativi</string>
+    <string name="timer_weekend">Fine settimana</string>
+    <string name="timer_other">Altri</string>
+    <string name="timers">Tempi</string>
+    <string name="first">Primo</string>
+    <string name="second">Secondo</string>
+    <string name="third">Terzo</string>
+    <string name="fourth">Quarto</string>
+    <string name="last">Ultimo</string>
+    <!-- Utilities -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_utilities">Strumenti</string>
+    <string name="set_temperature">Set</string>
+    <!-- Vars -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_vars">Variabili utente</string>
+    <string name="var_input">Valore di input non valido</string>
+    <string name="var_input_error">Impossibile aggiornare la variabile utente</string>
+    <!-- Weather -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_weather">Meteo</string>
+    <string name="dewPoint">Punto di rugiada</string>
+    <string name="temp">Temp</string>
+    <string name="pressure">Pressione</string>
+    <string name="chill">Freddo</string>
+    <string name="direction">Direzione</string>
+    <string name="humidity">Umi</string>
+    <string name="speed">Velocità</string>
+    <string name="forecast">Previsioni</string>
+    <string name="rain">Pioggia</string>
+    <string name="rainrate">Tasso di pioggia</string>
+    <string name="co2">CO2</string>
+    <string name="co2min">CO2 Min</string>
+    <string name="co2max">CO2 Max</string>
+    <!-- Welcome -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="welcome_title_activity_welcome">Benvenuto</string>
+    <string name="welcome_info_domoticz">Domoticz è un sistema domotico che consente di monitorare e configurare vari dispositivi come: luci, interruttori, vari sensori/metri come la temperatura, pioggia, vento, UV, Electra, Gas, acqua e molto altro ancora. Le notifiche/avvisi possono essere inviati a qualsiasi dispositivo mobile.</string>
+    <string name="welcome_info_swipe">Scorri a destra o utilizzare i pulsanti di nella parte inferiore per continuare</string>
+    <string name="welcome_info_settings1">La pagina successiva è per le impostazioni di Domoticz.</string>
+    <string name="welcome_info_settings2">        È possibile specificare le impostazioni di un server locale o remoto.
+        Le impostazioni locali sono per quando si è connessi alla rete wifi di casa.
+        Impostazioni remote vengono utilizzate quando non si è connessi alla rete wifi di casa o quando si è collegati alla rete cellulare (2G, 3G, 4G ecc).</string>
+    <string name="welcome_info_checkingConnection">Verifica delle impostazioni di connessione</string>
+    <string name="welcome_msg_connectionDataIncomplete">Dati di collegamento incompleti o mancanti</string>
+    <string name="welcome_msg_connectionDataInvalid">URL non deve iniziare con http</string>
+    <string name="welcome_msg_correctOnPreviousPage">Si prega di correggere i dati della pagina precedente</string>
+    <string name="welcome_msg_serverVersion">Versione Domoticz</string>
+    <string name="welcome_msg_numberOfDevices">%1$d dispositivi trovati</string>
+    <string name="welcome_msg_no_ssid_found">Nessun wifi SSID trovato</string>
+    <string name="welcome_ssid_spinner_prompt">Selezionare l\' SSID di casa</string>
+    <string name="welcome_ssid_button_prompt">Aggiungi l\'SSID di casa</string>
+    <string name="welcome_server_settings_title">Impostazioni server</string>
+    <string name="welcome_server_startScreen">Schermata Iniziale</string>
+    <string name="welcome_button_next">succ</string>
+    <string name="welcome_button_previous">prec</string>
+    <string name="welcome_button_finish">finito</string>
+    <string name="welcome_remote_server_address">Indirizzo server</string>
+    <string name="welcome_remote_server_protocol">Protocollo</string>
+    <string name="welcome_remote_server_port">Porta</string>
+    <string name="welcome_remote_server_username">Nome Utente</string>
+    <string name="welcome_remote_server_password">Password</string>
+    <string name="welcome_remote_server_directory">Directory</string>
+    <string name="remote">Remoto</string>
+    <string name="local">Locale</string>
+    <string name="servername">Nome Server</string>
+    <string name="welcome_local_server_used_switch_title">Indirizzo server diverso</string>
+    <string name="welcome_local_server_used_switch_summary">Usa un indirizzo diverso per la connessione locale</string>
+    <string name="welcome_advancedSettings">Impostazioni avanzate server</string>
+    <string name="welcome_advancedSettings_summary">Utilizzato solo per i server Domoticz non standard</string>
+    <string name="welcome_local_server_ssid">SSID wifi locali</string>
+    <string name="welcome_local_server_address">Indirizzo del server locale</string>
+    <string name="welcome_local_server_protocol">Protocollo locale</string>
+    <string name="welcome_local_server_port">Porta locale</string>
+    <string name="welcome_local_server_directory">Directory locale (lascia vuoto se non utilizzato)</string>
+    <string name="welcome_local_server_username">Nome utente locale (lascia vuoto se non utilizzato)</string>
+    <string name="welcome_local_server_password">Password locale (lascia vuoto se non utilizzato)</string>
+    <string-array name="remote_server_protocols">
+        <item>HTTP</item>
+        <item>HTTPS</item>
+    </string-array>
+    <!-- Widgets -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="pick_device_title">Preleva un dispositivo</string>
+    <string name="choose_switch">Scegli un dispositivo</string>
+    <string name="failed_to_get_securitypanel">Nessun pannello di sicurezza trovato negli interruttori</string>
+    <string name="failed_to_get_switches">Impossibile ottenere dispositivi</string>
+    <string name="failed_toggle_switch">Impossibile attivare il dispositivo</string>
+    <string name="switch_toggled">"Commuta il dispositivo"</string>
+    <string name="text_loading">Caricamento...</string>
+    <string name="text_go">VAI</string>
+    <string name="widget_background">Sfondo</string>
+    <string name="widget_dark">Scuro</string>
+    <string name="widget_light">Chiaro</string>
+    <string name="widget_transparent_dark">Scuro trasparente</string>
+    <string name="widget_transparent_light">Chiaro trasparente</string>
+    <!-- Wifi -->
+    <string name="wifi_not_supported">Wifi non supportato in questo dispositivo</string>
+    <string name="wifi_register">Accedere a rete wifi</string>
+    <string name="wifi_found">Trovata nuova rete wifi</string>
+    <string name="wifi_edit">Modifica proprietà punto di accesso wifi</string>
+    <string name="wifi_name">Assegna un nome a questa punto di accesso wifi</string>
+    <string name="wifi_desc">Controlla elenco punti di accesso wifi già accoppiati</string>
+    <string name="wifi_exists">Questo punto di accesso wifi è già configurato in Domoticz</string>
+    <string name="wifi_turned_off">È necessario accendere il wifi del proprio dispositivo</string>
+    <string name="wifi_saved">Nuovo punto di accesso wifi salvato</string>
+    <string name="wifi_settings">Impostazioni punti di accesso wifi</string>
+    <string name="enable_wifi">Abilita funzionalità wifi</string>
+    <string name="wifi_disabled">Automazione wifi disabilitata, si prega di configurarla tramite i settaggi</string>
+    <string name="noSwitchSelected_explanation_wifi">Perché un punto di accesso wifi possa automatizzare qualcosa in Domoticz, un interruttore deve essere collegato ad esso</string>
+    <string name="title_notification_wifi">Attivare le Notifiche</string>
+    <string name="description_notification_wifi">Mostra le notifiche quando ci si connette o disconnette con punto di accesso wifi.</string>
+    <string name="wifi_connected_to">"Connesso a %1$s"</string>
+    <string name="wifi_disconnected_to">Disconnected to  %1$s</string>
+    <string name="wifi_connected_to_text">Connesso a uno dei punti di accesso registrati</string>
+    <string name="wifi_disconnected_to_text">Disconnesso da uno dei punti di accesso registrati</string>
+    <!-- Wizard -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_wizard">Installazione guidata</string>
+    <string name="wizard_welcome">Benvenuto</string>
+    <string name="wizard_welcome_description">Domoticz è un sistema di automazione domestica molto leggero che consente di monitorare e configurare vari dispositivi.</string>
+    <string name="wizard_favorites">Preferiti</string>
+    <string name="wizard_favorites_description">È possibile aggiungere dispositivi al pannello principale salvandoli come preferiti. Tieni premuto sul dispositivo per salvarlo come Preferito!</string>
+    <string name="wizard_startup">Schermata iniziale</string>
+    <string name="wizard_startup_description">È possibile impostare la schermata iniziale nelle impostazioni!</string>
+    <string name="wizard_notifications">Impostazioni Notifiche</string>
+    <string name="wizard_notifications_description">Ora è possibile ricevere le notifiche sul tuo dispositivo Android! Cambia il comportamento delle notifiche nelle impostazioni</string>
+    <string name="wizard_multiserver">Utilizzo di server multipli</string>
+    <string name="wizard_multiserver_description">È possibile configurare più server di Domoticz nelle impostazioni.</string>
+    <string name="wizard_geo">Localizzazione</string>
+    <string name="wizard_geo_description">È possibile impostare la schermata iniziale nelle impostazioni!</string>
+    <string name="wizard_wear">Android Wear</string>
+    <string name="wizard_wear_description">È possibile specificare quali dispositivi controllare dal tuo Android Wear!</string>
+    <string name="wizard_auto">Android Auto</string>
+    <string name="wizard_auto_description">Ricevere le notifiche di Domoticz direttamente sul tuo dispositivo Android Auto!</string>
+    <string name="wizard_graph">Grafico</string>
+    <string name="wizard_graph_description">Puoi visualizzare il grafico storico di Previsioni o Temperature!</string>
+    <string name="wizard_filter">Filtri</string>
+    <string name="wizard_filter_description">È possibile filtrare i dispositivi per stato (acceso/spento). Controlla l\'icona in alto a destra per il filtro!</string>
+    <string name="wizard_widgets">Widgets!!</string>
+    <string name="wizard_widgets_description">Puoi aggiungere alcuni widgets alla schermata principale!</string>
+    <string name="wizard_menuitem">Disattiva procedura guidata</string>
+    <string name="wizard_menuitem_description">È possibile rimuovere la procedura guidata dal menu di navigazione!</string>
+    <string name="wizard_nfc">NFC</string>
+    <string name="wizard_nfc_description">È possibile utilizzare gli interruttori via NFC!</string>
+    <string name="wizard_bluetooth_description">Sei in grado di attivare o disattivare gli interruttori tramite connessioni Bluetooth!</string>
+    <string name="wizard_qrcode">QR Code</string>
+    <string name="wizard_qrcode_description">Aziona gli interruttori tramite QR Code (o codice a barre)!</string>
+    <string name="wizard_speech">Comandi vocali</string>
+    <string name="wizard_speech_description">Comanda gli interruttori con la tua voce! Configura i comandi vocali tramite le impostazioni e collegali agli interruttori.</string>
+    <string name="wizard_button_nice">Bello</string>
+    <string name="wizard_button_switches">Interruttori</string>
+    <string name="wizard_button_settings">Settaggi</string>
+    <string name="wizard_button_wizard">Rimuovere</string>
+    <string name="wizard_button_utilities">Strumenti</string>
+    <string name="wizard_button_done">Pronto</string>
+    <string name="wizard_beacon_description">Attiva/disattiva gli interruttori scansionando i beacon!</string>
 </resources>

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="premium_category">Aɣ premium</string>
@@ -10,7 +9,7 @@
     <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
     <string name="drawer_open">Ldi leqjeṛ n iminig</string>
     <string name="drawer_close">Mdel leqjeṛ n iminig</string>
-    <string name="msg_please_wait">Tixilek rǧu&#8230;</string>
+    <string name="msg_please_wait">Tixilek rǧu…</string>
     <string name="changelog">Amaynut</string>
     <string name="button_state_on">Irmed</string>
     <string name="button_state_off">Insa</string>
@@ -125,4 +124,632 @@
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
     <string name="background_location_warning">This app collects location data to enable for geofencing services within this app, even when the app is closed or not in use.</string>
+    <!-- Actions -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="action_switch_server"> Asenfal n uqeddac</string>
+    <string name="action_settings">Iɣewwaṛen</string>
+    <string name="action_filter">sti</string>
+    <string name="action_camera_play">ddu</string>
+    <string name="action_camera_pause">Tarist</string>
+    <string name="action_qrcode_scan">Semḍen tangalt QR.</string>
+    <string name="action_bluetooth_show">Show paired devices</string>
+    <string name="action_speech">Tukza n wawal</string>
+    <string name="send">Send</string>
+    <!-- Beacon -->
+    <string name="beacon_not_supported">Beacons are not supported on this device</string>
+    <string name="beacon_register">Connect a beacon</string>
+    <string name="beacon_found">New beacon found</string>
+    <string name="beacon_edit">Edit beacon</string>
+    <string name="beacon_name">Give this beacon a proper name. </string>
+    <string name="beacon_desc">Check the list of paired beacon devices. </string>
+    <string name="beacon_exists">Beacon already configured on Domoticz. </string>
+    <string name="beacon_turned_off">Bluetooth needs to be turned on in your device settings. </string>
+    <string name="beacon_saved">Saved a new beacon connection. </string>
+    <string name="action_beacon_show">Add new beacon</string>
+    <string name="beacon">Beacon</string>
+    <string name="beacon_disabled">Beacon automation disabled, please setup via settings. </string>
+    <string name="noSwitchSelected_explanation_beacon">For a Beacon device to automate something in Domoticz, a switch should be linked to an beacon. </string>
+    <string name="beacon_UUID">UUID</string>
+    <string name="beacon_major">Major (optional)</string>
+    <string name="beacon_minor">Minor (optional)</string>
+    <string name="beacon_scan">Beacon</string>
+    <string name="beacon_scan_desc">Scanning for beacons</string>
+    <string name="beacon_notifications">Enable notifications for entering and leaving a beacon region.</string>
+    <string name="beacon_entering">"Entering %1$s"</string>
+    <string name="beacon_leaving">Leaving  %1$s</string>
+    <string name="beacon_entering_text">Entering one of the beacons</string>
+    <string name="beacon_leaving_text">Leaving one of the beacons</string>
+    <!-- Bluetooth -->
+    <string name="bluetooth_not_supported">Bluetooth is not supported on this device</string>
+    <string name="bluetooth_register">Connect a bluetooth device</string>
+    <string name="bluetooth_found">New bluetooth device found</string>
+    <string name="bluetooth_edit">Edit bluetooth device</string>
+    <string name="bluetooth_name">Give this bluetooth device a proper name. </string>
+    <string name="bluetooth_desc">Check the list of paired bluetooth devices. </string>
+    <string name="bluetooth_exists">Bluetooth already configured on Domoticz. </string>
+    <string name="bluetooth_turned_off">Bluetooth needs to be turned on in your device settings. </string>
+    <string name="bluetooth_saved">Saved a new bluetooth device connection. </string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="title_notification_bluetooth">Enable Notifications for Bluetooth</string>
+    <string name="description_notification_bluetooth">Show notifications when you connect or disconnect a bluetooth device.</string>
+    <string name="bluetooth_event_triggered">"Bluetooth event triggered for %1$s"</string>
+    <string name="bluetooth_disabled">Bluetooth automation disabled, please setup via settings.</string>
+    <string name="noSwitchSelected_explanation_bluetooth">For a bluetooth device to automate something in Domoticz, a switch should be linked to an bluetooth</string>
+    <!-- Cameras -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_cameras">Takamiṛat</string>
+    <!-- Dashboard -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_dashboard">Tafelwit n usenqed</string>
+    <string name="delivery">Delivery</string>
+    <string name="usage">Aseqdec</string>
+    <string name="today">Assagi</string>
+    <string name="total">Umid</string>
+    <string name="favorite_added">Ernut ɣer tafelwit n wenzaḍ</string>
+    <string name="favorite_removed">Ekkes-it seg tafelwit n wenzaḍ.</string>
+    <!-- Errors -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="error_authentication">Inekcam mačči d imeɣta</string>
+    <string name="error_timeout">Ulac tuqqna neɣ akud yezri</string>
+    <string name="error_server">Tuccḍa n uqeddac</string>
+    <string name="error_network">Tuccḍa n uqeddac, tanglat n waddad %1$d</string>
+    <string name="error_parse">Sleḍ tuccḍa</string>
+    <string name="error_notConnected">Tuccḍa: Ur iqqin ara ar uẓeṭṭa</string>
+    <!-- Events -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_events">Tidyanin</string>
+    <string name="action_not_supported_yet">Igi yagi mazal ur yettusefrak ara!</string>
+    <!-- Locations -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_add_location">Ernu asun</string>
+    <string name="title_edit_location">Sufeɣ-ed asun</string>
+    <string name="longitude">Tazegrart</string>
+    <string name="latitude">Tarrut</string>
+    <string name="radius">Agir (mitra)</string>
+    <string name="connectedSwitch">Asenfal yeqqen</string>
+    <string name="unable_to_get_switches">Dawezɣi ad ttwaḥellin isenfalen meṛṛa,aɛreḍ tikkelt nniḍen</string>
+    <string name="delete_short">DEL</string>
+    <string name="delete">Sfeḍ</string>
+    <string name="Location_name">Isem n usideg</string>
+    <string name="currentLocation">Asideg amiran</string>
+    <string name="manual">Afussan</string>
+    <string name="getLocation">Aḥelli</string>
+    <string name="locationAddress">Tansa</string>
+    <string name="unknown">Ur nessin</string>
+    <string name="not_available">N/A</string>
+    <string name="no_valid_latLong">Wer tarrut naɣ tazegrart</string>
+    <string name="starting_geofence_service">Tanfa n tazwart n asideg-arakal</string>
+    <string name="could_not_find_location">Dawezɣi tifin n asun,aɛreḍ tikkelt nniḍen.</string>
+    <string name="google_play_services_unavailable">Tinfawin n Google Urar ur stufant ara.</string>
+    <string name="location_not_found">Ur nufi asun</string>
+    <string name="geofence">Asideg-arakal</string>
+    <string name="title_geofence">Rmed Asideg-arakal</string>
+    <string name="description_geofence">Rmed u swel asideg-arakal</string>
+    <string name="title_geofence_notifications">Rmed tullɣiwin</string>
+    <string name="description_geofence_notifications">Rmed tullɣiwin iw ndaḥ n tidyanin</string>
+    <string name="geofence_place">Tama</string>
+    <string name="geofence_location_entering">"Anekcum %1$s"</string>
+    <string name="geofence_location_leaving">S tufɣa  %1$s</string>
+    <string name="geofence_location_entering_text">Kcem anda tebɣiḍ</string>
+    <string name="geofence_location_leaving_text">Ffeɣ melmi tebɣiḍ</string>
+    <string name="geofence_error_recreateLocations">Γef idra n ubeddel yellan deg asideg-arakal,err asnulfu-k deg isunen</string>
+    <string name="noSwitchSelected_title">Ur yelli asenfal ufrin</string>
+    <string name="noSwitchSelected_explanation">Iw akken asideg-arakal ad yelhu,yesefk ad yilli asenfal yeqqen ɣer yiwen n asideg-arakal</string>
+    <string name="noSwitchSelected_connectOneNow">Qqen tura?</string>
+    <string name="geofencing_disabled_no_enabled_fences">Ssens asideg-arakal acku ulac asideg-arakal i remden</string>
+    <string name="geofence_not_available">Tanfa asideg-arakal ur yestufa ara tura</string>
+    <string name="geofence_too_many_geofences">Asnas yesekles aṭas n asideg-arakal</string>
+    <string name="geofence_too_many_pending_intents">Aṭas n tunṭicin ig llan</string>
+    <string name="unknown_geofence_error">Anezri ur nessin</string>
+    <!-- Logs -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_logs">Inekcam</string>
+    <!-- Nfc -->
+    <string name="nfc_not_supported">NFC ur yettusefrak ara deg wallal agi</string>
+    <string name="nfc_register">Sekles tabzimt NFC</string>
+    <string name="nfc_tag_found">Tabzimt tamaynut tettwaf</string>
+    <string name="nfc_tag_edit">Bedel NFC tag</string>
+    <string name="nfc_tag_name">Fekk-ed isem amazlay i NFC.</string>
+    <string name="nfc_exists">NFC yettwasekles</string>
+    <string name="nfc_saved">Sekles tabzimt tamaynut NFC.</string>
+    <string name="nfc">NFC</string>
+    <string name="noSwitchSelected_explanation_nfc">Iw akken NFC ad yesɛu asemdu,yesefk iw senfal ad i seɣwen ɣer tabzimt</string>
+    <!-- Notifications -->
+    <string name="priority">Tazwart</string>
+    <string name="emergency">Amerwas</string>
+    <string name="high">Tabadut</string>
+    <string name="low">Anamum</string>
+    <string name="verylow">Anamum aṭas</string>
+    <string name="allsystems">Meṛṛa inagrawen</string>
+    <string name="systems">Inagrawen</string>
+    <string name="send_notification">Send notification</string>
+    <string name="notification_subject">Subject</string>
+    <string name="notification_message">Message</string>
+    <string name="notification_error_system">Please choose a system to send the notification to</string>
+    <string name="notification_error_message">Please fill in a message</string>
+    <string name="notification_error_subject">Please fill in a subject</string>
+    <string name="notification_error_send">Could not send the notification to Domoticz</string>
+    <string name="notification_send">Notification send to Domoticz</string>
+    <!-- Permissions -->
+    <string name="permission_title">Tugin n turagin</string>
+    <string name="permission_prefs_title">Turagin</string>
+    <string name="permission_config">Swel turagin iw snas agi</string>
+    <string name="permission_desc_storage">Turagin agi n waḥraz sefkken iw sekles n ufaylu usentel,sekles tiremt n kameṛa deg ɣewwaren.</string>
+    <string name="permission_desc_location">Turagin agi n usideg sefkken i asideg-arakal iw ḥelli n SSID n Wifi waygarawen!</string>
+    <string name="permission_desc_phone">Turagin agi n usideg n addad n telefun sefkken i-y ulɣuten!</string>
+    <string name="permission_desc_camera">Turagin agi n kameṛa sefkken iw semḍen n tangalt QR!</string>
+    <string name="permission_desc_audio">Turagin agi asli sefkken iw asemmezdey n taɣect!</string>
+    <string name="permission_desc_finger">Turagin agi n tarkit talfaft sefkken i taɣllist tirkitin n tilfafin!</string>
+    <!-- Plans -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_plans">Iɣawasen</string>
+    <plurals name="devices">
+        <item quantity="one">%1d allal</item>
+        <item quantity="other">%1d allal</item>
+    </plurals>
+    <!-- Qrcode -->
+    <string name="qrcode_not_supported">Tangalt QR ur tettusefrak ara deg allal agi</string>
+    <string name="qrcode_register">Sekles tangalt QR</string>
+    <string name="qrcode_found">Tangalt tamaynut QR yettufan</string>
+    <string name="qrcode_edit">Beddel tangalt QR</string>
+    <string name="qrcode_name">Mmud i tangalt agi QR isem amazlay.</string>
+    <string name="qrcode_desc">Semḍen tangalt QR.</string>
+    <string name="qrcode_exists">Tangalt QR tettwasekles yakkan.</string>
+    <string name="qrcode_saved">Sekleset tangalt tamaynut QR </string>
+    <string name="qrcode">Tangalt QR</string>
+    <string name="qrcode_new_found">Tangalt tamaynut tettwaf-ed,ttxil-ek swel seg iɣewwaren.</string>
+    <string name="qr_code_disabled">Tangalt QR tettwaf-ed,ttxil-ek swel seg iɣewwaren.</string>
+    <string name="noSwitchSelected_explanation_qrcode">Iw akken aḍummu n tangalt QR ad iẓwer,yesefk asenfal ad yilli yeseɣwen ɣer tangalt QR</string>
+    <string name="permission_camera_rationale">Anekcum ɣer kameṛa yesefk-as i tifin</string>
+    <string name="low_storage_error">Tiglin n tangalt QR ur zmirent ara ad ttwazedment fell ǧǧal  unamum n waḥraz n wallal</string>
+    <string name="no_camera_permission">Asnas agi ur yezmir ara ad yeselkem acku ur yesɛa ara turagt n kameṛa.asnas tura ad yeǧǧ.</string>
+    <!-- Scenes -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_scenes">Inraren</string>
+    <!-- Security -->
+    <string name="title_security_panel">Agalis n taɣellist</string>
+    <string name="security_pin">Tangalt Pin</string>
+    <string name="security_disarm">Senqer</string>
+    <string name="security_arm_home">Taɣellist n waxxam</string>
+    <string name="security_arm_away">Senqed</string>
+    <string name="security_wrong_code">Tangalt unekcum d asaflaw</string>
+    <string name="security_no_rights">You do not have the rights for this action!</string>
+    <string name="security_generic_error">Dawezɣi ad i-ttwabeddel addad n taɣellist</string>
+    <string name="security_wrong_password_fingerprint">Awal uffir yettwadmen d irit,awal ufir n umiḍan Domoticz ed usaqluqal n tarkit talfaft...!</string>
+    <string name="show_password">Sken awal uffir</string>
+    <string name="fingerprint_make_sure">We need to make sure its you</string>
+    <string name="fingerprint_dialog_description">Touch your finger on the fingerprint sensor to authorise your account.</string>
+    <!-- Server -->
+    <string name="choose_server">Fren aqeddac</string>
+    <string name="dont_save_new_server">Ur seklas ara aqeddac amaynut?</string>
+    <string name="server_must_be_unique">Issefk isem n useqdac ad yili d asuf</string>
+    <string name="switch_to_server">"Ddu ar uqeddac %1$s"</string>
+    <string name="cant_disable_default_server">Ur izmir ara ad isens aqeddac amezwer</string>
+    <!-- Settings -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="settingsActivity_name">Iɣewwaṛen</string>
+    <string name="cameraActivity_name">Takamiṛat</string>
+    <!--        Categories             -->
+    <string name="category_generic">Imcettel</string>
+    <string name="category_wear">Android asiweḍ</string>
+    <string name="category_auto">Android Awurman </string>
+    <string name="category_server">Aqeddac</string>
+    <string name="category_geofencing">Asideg-arakal</string>
+    <string name="category_info">Talɣut</string>
+    <string name="category_advanced">Talqayt</string>
+    <string name="category_language">Tutlayt</string>
+    <string name="category_talk_back">Tiririt</string>
+    <string name="category_notification">Ilɣa</string>
+    <string name="category_debug">Tamseɣtayt</string>
+    <string name="category_export">Sifeḍ/Kter iɣewwaṛen</string>
+    <string name="category_theme">Asentel</string>
+    <string name="category_clock">Clock</string>
+    <string name="category_nfc">Tuqqniwin NFC</string>
+    <string name="category_startup_security">Taɣellist</string>
+    <string name="category_account">Imiḍanen</string>
+    <string name="category_QRCode">Tangalt QR</string>
+    <string name="category_bluetooth">Bluetooth</string>
+    <string name="category_wifi">Wifi</string>
+    <string name="category_Speech">Ameslay</string>
+    <string name="category_Reset">Ales awennez</string>
+    <string name="category_help">Contribute</string>
+    <!--        Generic settings       -->
+    <string name="startup_screen">Agdil n waskar</string>
+    <string name="enable_items">Sermed/Ssens iferdisen</string>
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Sorting</string>
+    <string name="sort_server_on">Sort devices like sorted on the server</string>
+    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
+    <string name="sort_lock_server_title">Lock</string>
+    <string name="sort_lock_custom_on">Lock the current custom sorting (disable drag/drop)</string>
+    <string name="sort_dashboardLikeServer_off">Fren tafelwit n wenzaḍ s tasunḍa ugmiy</string>
+    <string name="extra_data_title">Isefka imsitiyen n tafelwit n wenẓad</string>
+    <string name="show_extra_data_on">Beqqeḍ isefka imsitiyen deg tafelwit n wenẓad</string>
+    <string name="show_extra_data_off">Ffer isefka imsitiyen deg tafelwit n wenẓad</string>
+    <string name="always_on_title">Asekkweṛ asaki</string>
+    <string name="always_on_on">Asekkweṛ yal-ass agdil deg</string>
+    <string name="always_on_off">Ur sekkweṛ ara agdil yal-ass seg</string>
+    <string name="always_auto_refresh">Auto Refresh</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
+    <string name="switch_buttons_title">Isenfalen</string>
+    <string name="switch_buttons_on">Beqqeḍ isenfalen s usnegzi askar/aḥbas </string>
+    <string name="switch_buttons_off">Beqqeḍ isnegziyen s taqefalt askar/aḥbas </string>
+    <string name="dashboard_list_title">Iẓiki n tafelwit wenẓad</string>
+    <string name="show_dashboard_list_on">Beqqeḍ tafelwit n wenẓad d tabdart</string>
+    <string name="show_dashboard_list_off">Beqqeḍ tafelwit n wenẓad d iẓiki</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
+    <string name="dashboard_camera">Camera</string>
+    <string name="show_dashboard_camera">Load the camera for connected switches</string>
+    <!--        Wear settings       -->
+    <string name="enable_wear_select">Amagrad yettwaggan Android n usiweḍ</string>
+    <string name="custom_wear_select">Fren isnegziyen usiweḍ</string>
+    <string name="custom_wear_select_desc">Fren ayen tebɣiḍ attwaliḍ deg allal innek Android usiweḍ</string>
+    <string name="wear_custom_on">Rmed imagraden yettwaggan n Android usiweḍ</string>
+    <string name="wear_custom_off">Ssens imagraden yettwaggan n Android usiweḍ</string>
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Ssens alɣuten iwurmanen n Android</string>
+    <string name="auto_custom_off">Ssens alɣuten iwurmanen n Android</string>
+    <!--        Geofencing settings -->
+    <string name="geofencing_configure">Swel Asideg-Arakal</string>
+    <!--        Theming settings -->
+    <string name="config_theme">Tagrumma umezgun  </string>
+    <string name="set_dark_theme">Beddel amezgun n wasnas deg Dark</string>
+    <string name="set_light_theme">Beddel amezgun n wasnas deg Tafat </string>
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">Anef Domoticz ak-id imeslay</string>
+    <string name="set_talk_back_off">Uɣal s ameslay</string>
+    <!--        Import/Export settings  -->
+    <string name="settings_imported">Iɣewwaren yettwakteren,skar Domoticz</string>
+    <string name="settings_import_failed">Tella-d tucḍa deg taktert n iɣewwaren</string>
+    <string name="settings_exported">Iɣewwaren yesifḍen,skar Domoticz</string>
+    <string name="settings_export_failed">Tella-d tucḍa deg asifeḍ n iɣewwaren</string>
+    <!--        Preference screens      -->
+    <string name="server_settings">Iɣewwaren n tuqqna n uqeddac</string>
+    <string name="server_force_fetch_config">Ḥeli-d tawila n uqeddac</string>
+    <string name="nfc_settings">Tawila n tuqqniwin NFC </string>
+    <string name="speech_settings">Tawila n inezḍayen n tuɣac</string>
+    <string name="title_activity_server_settings">Iɣewwaren n uqeddac</string>
+    <string name="multi_server">Agetqeddac</string>
+    <string name="enable_nfc">Sermed NFC</string>
+    <string name="enable_speech">Sermed asemmezdey n taɣect</string>
+    <string name="export_settings">Iɣewwaren n usifeḍ</string>
+    <string name="reset_settings">Wennez meṛṛa iɣewwaren n wasnas (TISUSLA!)</string>
+    <string name="import_settings">Iɣewwaren n taktert </string>
+    <string name="multi_server_settings">Rmed tannalt n iqeddacen</string>
+    <string name="nfc_enable_settings">Rmed tuqqniwin n NFC</string>
+    <string name="speech_enable_settings">Rmed asemmezdey n taɣect</string>
+    <string name="server">Aqeddac</string>
+    <string name="qrcode_settings">Tawila n tangalin QR</string>
+    <string name="enable_qrcode">Rmed tangalin n QR</string>
+    <string name="qrcode_enable_settings">Rmed tangalin n tamseɣnat  n QR</string>
+    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+    <string name="beacon_settings">Setup Beacons</string>
+    <string name="enable_beacon">Enable Beacon functionality</string>
+    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
+    <string name="translate_title">Translations</string>
+    <string name="security_settings">Taɣlist n userkeb</string>
+    <string name="enable_security">Rmed amesten n tarkit n talfaft deg wasekkar</string>
+    <string name="disable_security">Ssens amesten n tarkit n talfaft mara tesekkar-eḍ</string>
+    <string name="setup_fingerprints">Swel amesten n tarkit n talfaft seg wagdil n tawila n Android</string>
+    <string name="fingerprint_not_supported">Ameɣri n udsil umdin ur ittusefrak ara ɣef yibenk-agi</string>
+    <string name="fingerprint_not_setup_in_android">Swel di tazwara adsil umdin i yibenk-agi</string>
+    <string name="fingerprint_sure">Awal uffir d win n umiḍan-ik n Domoticz.</string>
+    <!--        Widgets     -->
+    <string name="category_widgets">Isfayluraren (BETA)</string>
+    <string name="widget_description">Rmed neɣ Sens asfaylurar ɣef yibenl-agi</string>
+    <string name="widget_disabled">Isfaylurarn ur rmiden ara ɣef yibenk-agi, senqed ma ulac aɣilif iɣewwaren n Domoticz</string>
+    <string name="widget_warning">Ma ulac aɣilif, aseqdec n isfayluraren d tamasit-ik!! Akka tura Isfayluraren llan deg uswir Beta, ihi zemren ad gebren kra n ibugen. Zemren ad d-glun s useqdec n sefka/aẓru s waṭas...</string>
+    <!--        GCM settings      -->
+    <string name="notification_settings_id">ID n tirawt n Google Cloud</string>
+    <string name="notification_settings_push">Ssers amsulay n usekles ɣer domoticz</string>
+    <string name="notification_settings_pushed">Amsulay innek n usekles dayen tura tettwasekles deg domoticz</string>
+    <string name="notification_settings_push_failed">Dawezɣi ad yettwasekles amsulay n tiggezt innek deg domoticz,aɛṛeḍ tikkelt nniḍen.</string>
+    <string name="notification_show_title">Ilɣa ineggura</string>
+    <string name="notification_show_nothing">Ulac alɣu</string>
+    <string name="notification_show">Beqqeḍ alɣuten ineggura</string>
+    <!--        Notification settings      -->
+    <string name="overwrite_notifications_title">Sfeɛǰ ilɣa</string>
+    <string name="overwrite_notifications">Ekkes alɣuten imezwura seg wallal agi</string>
+    <string name="enable_notifications_title">Rmed tullɣiwin</string>
+    <string name="enable_notifications">Rmed tulɣiwin seg wallal agi</string>
+    <string name="notification_screen_title">Iɣewwaren n walɣu</string>
+    <string name="notification_history">Notification history</string>
+    <string name="notification_inbox">Inbox</string>
+    <string name="notification_vibrate_title">Senhez</string>
+    <string name="notification_vibrate_on">Rgigi mara d-yettwaṭef walɣu</string>
+    <string name="notification_vibrate_off">Ur senhaz ara</string>
+    <string name="notification_sound_title">Imesli</string>
+    <string name="notification_sound_summary">Seqdec imesli n walɣu mara d yaweḍ wulɣu</string>
+    <string name="suppress_notifications_select">Ffren ulɣuten ara yettwakkesen</string>
+    <string name="suppress_notifications">Ekkes ulɣuten ulmisen seg wallal agi</string>
+    <string name="suppress_notifications_title">Tukkessa n ulɣuten</string>
+    <string name="alarm_notifications_select">Ffren ulɣuten i tangedwit</string>
+    <string name="alarm_notifications">Asṭenṭen n tangedwit iw ulɣuten ulmisen</string>
+    <string name="clear_notifications">Ileznan n ulɣuten zeddigen</string>
+    <string name="alarm_notifications_title">Ulɣuten n tangedwit</string>
+    <string name="alarm">Tangedwit</string>
+    <string name="alarmtimer_title">Tangedwit n tamsdat</string>
+    <string name="alarmtimer">Amḍan n tasinin ɣer asrag n tangedwit</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Default</string>
+    <string name="theme_daynight">Day/Night</string>
+    <string name="theme_orange">Orange</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_blue">Blue</string>
+    <string name="theme_green">Green</string>
+    <string name="theme_dark_blue">Dark blue</string>
+    <!-- Other -->
+    <string name="default_values">Azalen s lexṣas</string>
+    <string name="default_values_min_error">Azal n afellay yesefkk ad yilli nnig n wazal n wadday</string>
+    <string name="default_values_max_error">Azal n afellay yesefkk ad yilli nnig n wazal n wadday</string>
+    <!--        Information category       -->
+    <string name="info_version">Lqem</string>
+    <string name="info_domoticz_version">Lqem domoticz</string>
+    <string name="info_about">Awal ɣef domoticz</string>
+    <string name="info_credits">Amerwas</string>
+    <string name="info_credits_text">Domoticz iw Android yezmer ad iddu akked ugar n timkarḍiyin open source</string>
+    <!--        Debug category       -->
+    <string name="debug_switch_title">Aseɣti</string>
+    <string name="debug_switch_summary_on">Aseɣti yermed</string>
+    <string name="debug_switch_summary_off">Aseɣti ur yermed</string>
+    <!--        Geo settings activity       -->
+    <string name="error_atLeastOneItemInDrawer">Teḥwaǧǧ-eḍ uma yiwen uferdis deg leqjeṛ</string>
+    <!--        Server update category       -->
+    <string name="title_activity_update">Update server</string>
+    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
+    <string name="error_couldNotCheckForUpdates">"Dawezɣi aselken n umucceḍ: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"Dawezɣi tawaṭefa n tawila n uqeddac Domoticz: %1$s"</string>
+    <string name="update_available_enhanced">Amucceḍ n uqeddac yella: %1$s ɣer lqem: %2$s</string>
+    <string name="check_for_update_title">Selken amucceḍ</string>
+    <string name="check_for_update">Tebɣam a neselken amucceḍ n unagraw Domoticz?</string>
+    <string name="update_server_warning">Mara yemucceḍ uqeddac innek asnas agi ur iteddu yara akken iwata.</string>
+    <string name="update_server_downloadNotReady1">Amucceḍ werɛad ig zdem (ummiḍ)</string>
+    <string name="update_server_downloadNotReady2">Ttxilek aɛreḍ tikkelt nniḍen.</string>
+    <string name="server_update_available">Amucceḍ n uqeddac yestufa</string>
+    <string name="update_server">Aqeddac n umucceḍ</string>
+    <string name="server_update_revision">Asemsawi n umucceḍ uqeddac</string>
+    <string name="server_version">Lqem uqeddac</string>
+    <string name="server_update">Amucceḍ uqeddac</string>
+    <string name="please_wait_while_we_check">Ttxilek arǧǧu s imal anselken ma yella aqeddac innek yettwahegga iw mucceḍ </string>
+    <string name="server_update_not_ready">Aleqqem n uqeddac ur d-yettwasider ara</string>
+    <string name="please_wait_while_server_updated">Ttxilek sbaṛ s imal amucceḍ i teddu.</string>
+    <string name="server_update_done">Aleqqem n uqeddac immed</string>
+    <string name="update_not_started">Aleqqem ur yekkir ara</string>
+    <string name="update_not_started_unknown_error">Werɛad ig teddu umucceḍ ɣef idra n anezri ur nessin</string>
+    <string name="server_update_not_available">Ulac amucceḍ n uqeddac</string>
+    <string name="click_to_update_server">Sit dagi iw mucceḍ n uqeddac innek</string>
+    <string name="debug_test_text">Tamseɣtayt</string>
+    <string name="restart_required_title">Tulsa n tnekra tlaq</string>
+    <string name="restart_now">Ales tanekra tura?</string>
+    <string name="check_settings">Check your settings</string>
+    <string name="report_error">Report an error</string>
+    <string name="support">Support</string>
+    <!-- Speech -->
+    <string name="Speech_not_supported">Awal ur i-teddu yara ɣef wallal agi</string>
+    <string name="Speech_register">Sekles awal s unezḍay</string>
+    <string name="Speech_found">Awal amaynut yettwufan s anezḍay </string>
+    <string name="Speech_edit">Bedel anezḍay n wawal </string>
+    <string name="Speech_name">Mmud iw anezḍay umeslay isem amazlay.</string>
+    <string name="Speech_exists">Tanila n wawal tettwasekles</string>
+    <string name="Speech_saved">Asekles n anezḍay amaynut n taɣect</string>
+    <string name="Speech_desc">Eg anezḍay amaynut n taɣect </string>
+    <string name="Speech">Ameslay</string>
+    <string name="Speech_disabled"> Anezḍay n wawal yettwassens,twila t-ed iɣewwaren</string>
+    <string name="noSwitchSelected_explanation_Speech">Iw akken anezḍay n wawal ad yesɛu asemdu,yesefk iw senfal ad yerrez</string>
+    <!-- Switches -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_switches">Isenfalen</string>
+    <string name="txt_notAvailable">N/A</string>
+    <string name="idx">IDX</string>
+    <string name="placeholder_value">255</string>
+    <string name="color_set">Tagrumma n initen iw</string>
+    <string name="state_set">Addad yettwasbeden iw </string>
+    <string name="error_favorite">Dawezɣi ad ttwasbeden inarafen</string>
+    <string name="error_logs">Dawezɣi tifin n iɣmisen ayettwabeqqḍen</string>
+    <string name="error_color">Dawezɣi abedel n ini</string>
+    <string name="error_state">Dawezɣi abedel n waddad</string>
+    <string name="error_timer">Dawezɣi asnaɛti n tamsedat</string>
+    <string name="error_notifications">Dawezɣi asnaɛti n wamnnad</string>
+    <string name="set_level_switch">"Aswir n aslugen iw seḥbes"</string>
+    <!-- Temperature -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_temperature">Tazɣelt</string>
+    <string name="cancel_override">Sefsex afsex</string>
+    <string name="wind">Aḍu</string>
+    <string name="error_log">Dawezɣi ad ḥeliḍ isefka n waɣmis i</string>
+    <string name="follow_schedule">Eddu d timirant</string>
+    <!-- Timer -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="command">Taladna</string>
+    <string name="type">Anaw</string>
+    <string name="notapplicable">N/A</string>
+    <string name="timer_before_sunset">Send ad d-yali yiṭij</string>
+    <string name="timer_after_sunset">Seld yerɣli yiṭij</string>
+    <string name="timer_ontime">Deg akud</string>
+    <string name="timer_before_sunrise">Send ad d-yali yiṭij</string>
+    <string name="timer_after_sunrise">Seld yerɣli yiṭij</string>
+    <string name="timer_fixed">Azemz/Akud iseggem</string>
+    <string name="odd_day_numbers">Uṭun uzuzzer n wass</string>
+    <string name="even_day_numbers">Uṭṭunen n wass n tedyant</string>
+    <string name="odd_week_numbers">Uṭun uzuzzer n dduṛt</string>
+    <string name="even_week_numbers">Uṭṭunen n dduṛt n tedyant</string>
+    <string name="monthly">Yal aggur</string>
+    <string name="monthly_weekday">Yal aggur (ass n uxeddim)</string>
+    <string name="yearly">Yal aseggas</string>
+    <string name="yearly_weekday">Yal aseggas (ass n uxeddim)</string>
+    <string name="before_sun_at_south">Before Sun at South</string>
+    <string name="after_sun_at_south">After Sun at South</string>
+    <string name="before_civil_twilight_start">Before Civil Twilight Start</string>
+    <string name="after_civil_twilight_start">After Civil Twilight Start</string>
+    <string name="before_civil_twilight_end">Before Civil Twilight End</string>
+    <string name="after_civil_twilight_end">After Civil Twilight End</string>
+    <string name="before_nautical_twilight_start">Before Nautical Twilight Start</string>
+    <string name="after_nautical_twilight_start">After Nautical Twilight Start</string>
+    <string name="before_nautical_twilight_end">Before Nautical Twilight End</string>
+    <string name="after_nautical_twilight_end">After Nautical Twilight End</string>
+    <string name="before_austronomical_twilight_start">Before Austronomical Twilight Start</string>
+    <string name="after_austronomical_twilight_start">After Austronomical Twilight Start</string>
+    <string name="before_austronomical_twilight_end">Before Austronomical Twilight End</string>
+    <string name="after_austronomical_twilight_end">After Austronomical Twilight End</string>
+    <string name="timer_every_days">Yal ass</string>
+    <string name="timer_working_days">Ussan n uxeddim</string>
+    <string name="timer_weekend">Tagara n dduṛt</string>
+    <string name="timer_other">Wayeḍ</string>
+    <string name="timers">Tamsedat</string>
+    <string name="first">First</string>
+    <string name="second">Second</string>
+    <string name="third">Third</string>
+    <string name="fourth">Fourth</string>
+    <string name="last">Last</string>
+    <!-- Utilities -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_utilities">Tiwaletin n uzayez</string>
+    <string name="set_temperature">Sumata</string>
+    <!-- Vars -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_vars">Asqedac imutiyen</string>
+    <string name="var_input">Azal n unekcum ur iɣbel</string>
+    <string name="var_input_error">Dawezɣi amucceḍ n umuti aseqdac</string>
+    <!-- Weather -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_weather">Tagnawit</string>
+    <string name="dewPoint">Ired n ugefur</string>
+    <string name="temp">Temp</string>
+    <string name="pressure">Aswar</string>
+    <string name="chill">Tasemmuḍi</string>
+    <string name="direction">Tama</string>
+    <string name="humidity">Inziz</string>
+    <string name="speed">Arured</string>
+    <string name="forecast">Ḥezzeb</string>
+    <string name="rain">Agefur</string>
+    <string name="rainrate">Isig n ugefur</string>
+    <string name="co2">CO2</string>
+    <string name="co2min">CO2 adday</string>
+    <string name="co2max">CO2 afellay</string>
+    <!-- Welcome -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="welcome_title_activity_welcome">Anṣuf</string>
+    <string name="welcome_info_domoticz">Domoticz d anagraw n tiswwurment n waxxam ara kwen yeǧǧen a tesefqed-em</string>
+    <string name="welcome_info_swipe">Cicceḍ ɣer yefus naɣ seqdec taqefalt n iminig yellan swadda iw akken attkkemel-eḍ</string>
+    <string name="welcome_info_settings1">Asebtar id i-teddun yemezg ɣer s iɣewwaren Domoticz.</string>
+    <string name="welcome_info_settings2">        Tzemer-eḍ attsefru-ḍ aɣewwar n uqeddac adigan u amestam</string>
+    <string name="welcome_info_checkingConnection">Aselken n iɣewwaren innek n tuqqna </string>
+    <string name="welcome_msg_connectionDataIncomplete">Isefka n tuqqna ur semden ara naɣ d ilmawen</string>
+    <string name="welcome_msg_connectionDataInvalid">URL ur yessefk ara ad yebdu s HTML</string>
+    <string name="welcome_msg_correctOnPreviousPage">Ttxil-ek seɣti isefka deg sebtar amezwaru</string>
+    <string name="welcome_msg_serverVersion">Alqem n Domoticz </string>
+    <string name="welcome_msg_numberOfDevices">%1$d ibenkan i yellan</string>
+    <string name="welcome_msg_no_ssid_found">Ulac wifi SSID</string>
+    <string name="welcome_ssid_spinner_prompt">Ffren SSID deg waxxam</string>
+    <string name="welcome_ssid_button_prompt">Arnu SSID s axxam</string>
+    <string name="welcome_server_settings_title">Iɣewwaren uqeddac</string>
+    <string name="welcome_server_startScreen">Agdil n waskar</string>
+    <string name="welcome_button_next">ar sdat</string>
+    <string name="welcome_button_previous">prev</string>
+    <string name="welcome_button_finish">fak</string>
+    <string name="welcome_remote_server_address">Tansa uqeddac</string>
+    <string name="welcome_remote_server_protocol">Aneggaf</string>
+    <string name="welcome_remote_server_port">Asiweḍ</string>
+    <string name="welcome_remote_server_username">isem n usedqec</string>
+    <string name="welcome_remote_server_password">awal uffir</string>
+    <string name="welcome_remote_server_directory">akaram</string>
+    <string name="remote">Ameccaq</string>
+    <string name="local">adigan</string>
+    <string name="servername">Isem n uqeddac</string>
+    <string name="welcome_local_server_used_switch_title">Tansa tameẓlit n uqeddac</string>
+    <string name="welcome_local_server_used_switch_summary">Sqedcet tansa nniḍen i tuqqna adigan</string>
+    <string name="welcome_advancedSettings">Iɣewwaren n uqeddac yuẓẓan</string>
+    <string name="welcome_advancedSettings_summary">Yettwaseqdec ḥaca iy qeddacen Domotcz alugen</string>
+    <string name="welcome_local_server_ssid">Wifi SSID adigan</string>
+    <string name="welcome_local_server_address">Tansa uqeddac adigan</string>
+    <string name="welcome_local_server_protocol">Aneggaf adigan </string>
+    <string name="welcome_local_server_port">Asiweḍ adigan</string>
+    <string name="welcome_local_server_directory">Akaram adigan (anefet-as akken d ilem ma ur yettwaseqdec ara)</string>
+    <string name="welcome_local_server_username">Isem useqdac adigan (anefet-as akken d ilem ma ur yettwaseqdec ara)</string>
+    <string name="welcome_local_server_password">Awal uffir adigan (anefet-as akken d ilem ma ur yettwaseqdec ara)</string>
+    <string-array name="remote_server_protocols">
+        <item>HTTP</item>
+        <item>HTTPS</item>
+    </string-array>
+    <!-- Widgets -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="pick_device_title">Fren allal</string>
+    <string name="choose_switch">Afran n wallal</string>
+    <string name="failed_to_get_securitypanel">Ur yelli tiffin n ugalis sddaw isenfalen innek</string>
+    <string name="failed_to_get_switches">Dawezɣi ad ḥelliḍ ibenkan </string>
+    <string name="failed_toggle_switch">Dawezɣi att seqluqel-eḍ allal</string>
+    <string name="switch_toggled">"Switch device"</string>
+    <string name="text_loading">Tacaṛin</string>
+    <string name="text_go">Eddu</string>
+    <string name="widget_background">Tawennaṭ</string>
+    <string name="widget_dark">Aqesḥan</string>
+    <string name="widget_light">Tafat</string>
+    <string name="widget_transparent_dark">Aqesḥan tissuseɣt</string>
+    <string name="widget_transparent_light">Tafat tissuseɣt</string>
+    <!-- Wifi -->
+    <string name="wifi_not_supported">Wifi is not supported on this device</string>
+    <string name="wifi_register">Connect a wifi ssid</string>
+    <string name="wifi_found">New wifi access point found</string>
+    <string name="wifi_edit">Edit wifi access point</string>
+    <string name="wifi_name">Give this access point a proper name. </string>
+    <string name="wifi_desc">Check the list of paired access point. </string>
+    <string name="wifi_exists">This access point already configured on Domoticz. </string>
+    <string name="wifi_turned_off">Wifi needs to be turned on in your device settings. </string>
+    <string name="wifi_saved">Saved a new access point connection. </string>
+    <string name="wifi_settings">Setup access points</string>
+    <string name="enable_wifi">Enable Wifi functionality</string>
+    <string name="wifi_disabled">Wifi automation disabled, please setup via settings.</string>
+    <string name="noSwitchSelected_explanation_wifi">For an access point to automate something in Domoticz, a switch should be linked to an access point.</string>
+    <string name="title_notification_wifi">Enable Notifications</string>
+    <string name="description_notification_wifi">Show notifications when you connect or disconnect a wifi access point.</string>
+    <string name="wifi_connected_to">"Connected to %1$s"</string>
+    <string name="wifi_disconnected_to">Disconnected to  %1$s</string>
+    <string name="wifi_connected_to_text">Connected to one of the registed access points.</string>
+    <string name="wifi_disconnected_to_text">Disconnected to one of the registed access points.</string>
+    <!-- Wizard -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_wizard">Anṣuf ɣer Wizard</string>
+    <string name="wizard_welcome">Anṣuf</string>
+    <string name="wizard_welcome_description">Domoticz d anagraw domotik i sehlen,akkwen yeǧǧ att sfeqdem a tawila-m aṭas n wallalen</string>
+    <string name="wizard_favorites">Ismenyifen</string>
+    <string name="wizard_favorites_description">Tzemer-eḍ a ternuḍ ibenkan ɣer tafelwit ugensu s usekles n sen deg menyif.ssit mliḥ ɣef uferdis iw sekles n sen deg menyif!</string>
+    <string name="wizard_startup">Agdil n asekkar</string>
+    <string name="wizard_startup_description">Tzemer-eḍ att swel-eḍ agdil innek n asekkar deg iɣewwaren!</string>
+    <string name="wizard_notifications">Amnnad n userkeb</string>
+    <string name="wizard_notifications_description">Tura tzemer-eḍ ad ṭefeḍ imnnaden deg wallal innek Android!bedel tiddin n imnnaden deg iɣewwaren</string>
+    <string name="wizard_multiserver">Aseqdec n ugar n iqeddacen</string>
+    <string name="wizard_multiserver_description">Tzemer-eḍ att swel-eḍ ugar n iseqddacen Domoticz deg iɣewwaren.</string>
+    <string name="wizard_geo">Geofencing</string>
+    <string name="wizard_geo_description">Tzemer-eḍ att swel-eḍ agdil innek n asekkar deg iɣewwaren!</string>
+    <string name="wizard_wear">Android Wear</string>
+    <string name="wizard_wear_description">Tzemer-eḍ att ssefru-ḍ isenfalen i tebɣiḍ att senqed-eḍ seg wallal innek n wanḥar Android!</string>
+    <string name="wizard_auto">Android Auto</string>
+    <string name="wizard_auto_description">Rmes imnnaden Domoticz srid ɣer wallal innek Android Auto!</string>
+    <string name="wizard_graph">udlifen</string>
+    <string name="wizard_graph_description">Tzemer-eḍ att waliḍ udlif umezruy n uwulem,n wakud naɣ tazɣelt!</string>
+    <string name="wizard_filter">Tastayt</string>
+    <string name="wizard_filter_description">Tzemer-eḍ att tastay-eḍ ibenkan s waddad (tilḥin/aḥbas).sefqed tignit n umuɣ amnig srid iw astastay!</string>
+    <string name="wizard_widgets">Widgets</string>
+    <string name="wizard_widgets_description">Tzemer-eḍ att sers-eḍ widgets deg agdil n umager</string>
+    <string name="wizard_menuitem">Disable Wizard</string>
+    <string name="wizard_menuitem_description">Tzemer-eḍ tura att sefeḍ-eḍ adhel agi seg umuɣ n iminig!</string>
+    <string name="wizard_nfc">NFC</string>
+    <string name="wizard_nfc_description">Tzemer-eḍ att sqluqel-eḍ isenfalen seg NFC!</string>
+    <string name="wizard_bluetooth_description">You are able to toggle switches via Bluetooth connections!</string>
+    <string name="wizard_qrcode">QR Tangalt </string>
+    <string name="wizard_qrcode_description">Sqluqel isenfalen s taɣuri n tangalt QR (naɣ tangalt n tifeggagin)!</string>
+    <string name="wizard_speech">Inezḍayen n wawal</string>
+    <string name="wizard_speech_description">Senfel isnegziyen s taɣct innek!swel inezḍayen n taɣect seg wagdil n tawila ed isenfalen n tuqqna.</string>
+    <string name="wizard_button_nice">Yelha</string>
+    <string name="wizard_button_switches">Isenfalen</string>
+    <string name="wizard_button_settings">Iɣewwaren</string>
+    <string name="wizard_button_wizard">Ekkes</string>
+    <string name="wizard_button_utilities">Imeẓla i wagdud</string>
+    <string name="wizard_button_done">Ikkfa</string>
+    <string name="wizard_beacon_description">Toggle switches by scanning for beacons!</string>
 </resources>
