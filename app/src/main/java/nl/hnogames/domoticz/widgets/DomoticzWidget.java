@@ -530,6 +530,20 @@ public class DomoticzWidget extends AppWidgetProvider {
             status = counter;
         }
 
+        // Handle selector switches - use custom level name instead of raw status
+        if (device.getSwitchTypeVal() == nl.hnogames.domoticzapi.DomoticzValues.Device.Type.Value.SELECTOR) {
+            java.util.ArrayList<String> levelNames = device.getLevelNames();
+            if (levelNames != null && !levelNames.isEmpty()) {
+                int loadLevel = !device.isLevelOffHidden() ? device.getLevel() / 10 : (device.getLevel() - 1) / 10;
+                if (device.isLevelOffHidden() && !levelNames.isEmpty()) {
+                    levelNames.remove(0);
+                }
+                if (loadLevel >= 0 && loadLevel < levelNames.size()) {
+                    return levelNames.get(loadLevel);
+                }
+            }
+        }
+
         // Default: use Data field, then Status field
         if (status.isEmpty()) {
             status = device.getData();

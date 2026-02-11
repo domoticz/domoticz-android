@@ -1071,16 +1071,20 @@ public class SwitchesAdapter extends RecyclerView.Adapter<SwitchesAdapter.DataOb
             holder.signal_level.setText(text);
         }
 
-        if (holder.switch_battery_level != null) {
-            text = context.getString(R.string.status) + ": " +
-                    mDeviceInfo.getStatus();
-            holder.switch_battery_level.setText(text);
-        }
-
         int loadLevel = !mDeviceInfo.isLevelOffHidden() ? mDeviceInfo.getLevel() / 10 : (mDeviceInfo.getLevel() - 1) / 10;
         final ArrayList<String> levelNames = mDeviceInfo.getLevelNames();
-        if (mDeviceInfo.isLevelOffHidden())
+        if (mDeviceInfo.isLevelOffHidden() && levelNames != null)
             levelNames.remove(0);
+
+        if (holder.switch_battery_level != null) {
+            // Display the custom level name instead of raw status
+            String statusText = mDeviceInfo.getStatus();
+            if (levelNames != null && levelNames.size() > loadLevel && loadLevel >= 0) {
+                statusText = levelNames.get(loadLevel);
+            }
+            text = context.getString(R.string.status) + ": " + statusText;
+            holder.switch_battery_level.setText(text);
+        }
 
         if (levelNames != null && levelNames.size() > loadLevel) {
             ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context,
