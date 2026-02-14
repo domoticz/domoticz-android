@@ -468,6 +468,10 @@ public class DomoticzUrls {
                 url = DomoticzValues.Url.Security.CHECKLOGIN;
                 break;
 
+            case DomoticzValues.Json.Url.Request.ENERGY_DASHBOARD:
+                url = DomoticzValues.Url.System.ENERGY_DASHBOARD;
+                break;
+
             default:
                 throw new NullPointerException("getJsonGetUrl: No known JSON URL specified");
         }

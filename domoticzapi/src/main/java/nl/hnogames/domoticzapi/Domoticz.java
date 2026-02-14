@@ -30,6 +30,7 @@ import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
 import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.DownloadUpdateServerReceiver;
+import nl.hnogames.domoticzapi.Interfaces.EnergyDashboardReceiver;
 import nl.hnogames.domoticzapi.Interfaces.EventReceiver;
 import nl.hnogames.domoticzapi.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticzapi.Interfaces.JSONParserInterface;
@@ -62,6 +63,7 @@ import nl.hnogames.domoticzapi.Parsers.CameraParser;
 import nl.hnogames.domoticzapi.Parsers.ConfigParser;
 import nl.hnogames.domoticzapi.Parsers.DevicesParser;
 import nl.hnogames.domoticzapi.Parsers.DownloadUpdateParser;
+import nl.hnogames.domoticzapi.Parsers.EnergyDashboardParser;
 import nl.hnogames.domoticzapi.Parsers.EventsParser;
 import nl.hnogames.domoticzapi.Parsers.GraphDataParser;
 import nl.hnogames.domoticzapi.Parsers.LanguageParser;
@@ -759,6 +761,13 @@ public class Domoticz {
     public void getConfig(ConfigReceiver receiver) {
         ConfigParser parser = new ConfigParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.CONFIG);
+        Log.v(TAG, url);
+        GetRequest(parser, url, true);
+    }
+
+    public void getEnergyDashboard(EnergyDashboardReceiver receiver) {
+        EnergyDashboardParser parser = new EnergyDashboardParser(receiver);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.ENERGY_DASHBOARD);
         Log.v(TAG, url);
         GetRequest(parser, url, true);
     }

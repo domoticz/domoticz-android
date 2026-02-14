@@ -286,6 +286,7 @@ public class DomoticzValues {
                 int NOTIFICATIONTYPES = 51;
                 int TEMPGRAPHS = 52;
                 int SCENETIMER = 53;
+                int ENERGY_DASHBOARD = 54;
             }
 
             @SuppressWarnings("SpellCheckingInspection")
@@ -524,6 +525,7 @@ public class DomoticzValues {
             String AUTH = "/json.htm?type=command&param=getauth";
             String LOGOFF = "/json.htm?type=command&param=dologout";
             String LOG = "/json.htm?type=command&param=addlogmessage&message=";
+            String ENERGY_DASHBOARD = "/json.htm?type=command&param=getenergydashboarddevices";
         }
 
         interface Event {
