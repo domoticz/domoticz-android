@@ -1,24 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (C) 2015 Domoticz - Mark Heinis
-  ~
-  ~  Licensed to the Apache Software Foundation (ASF) under one
-  ~  or more contributor license agreements.  See the NOTICE file
-  ~  distributed with this work for additional information
-  ~  regarding copyright ownership.  The ASF licenses this file
-  ~  to you under the Apache License, Version 2.0 (the
-  ~  "License"); you may not use this file except in compliance
-  ~  with the License.  You may obtain a copy of the License at
-  ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~  Unless required by applicable law or agreed to in writing,
-  ~  software distributed under the License is distributed on an
-  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~  KIND, either express or implied.  See the License for the
-  ~  specific language governing permissions and limitations
-  ~  under the License.
-  -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="premium_category">Køb premium!</string>
@@ -29,7 +9,7 @@
     <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
     <string name="drawer_open">Åbn navigationsliste</string>
     <string name="drawer_close">Luk navigationsliste</string>
-    <string name="msg_please_wait">Vent venligst&#8230;</string>
+    <string name="msg_please_wait">Vent venligst…</string>
     <string name="changelog">Changelog</string>
     <string name="button_state_on">Tændt</string>
     <string name="button_state_off">Slukket</string>
@@ -144,4 +124,634 @@
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
     <string name="background_location_warning">This app collects location data to enable for geofencing services within this app, even when the app is closed or not in use.</string>
+    <!-- Actions -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="action_switch_server">Skift server</string>
+    <string name="action_settings">Indstillinger</string>
+    <string name="action_filter">Filter</string>
+    <string name="action_camera_play">Afspil</string>
+    <string name="action_camera_pause">Pause</string>
+    <string name="action_qrcode_scan">Scan QR Code</string>
+    <string name="action_bluetooth_show">Show paired devices</string>
+    <string name="action_speech">Speech Recognition</string>
+    <string name="send">Send</string>
+    <!-- Beacon -->
+    <string name="beacon_not_supported">Beacons are not supported on this device</string>
+    <string name="beacon_register">Connect a beacon</string>
+    <string name="beacon_found">New beacon found</string>
+    <string name="beacon_edit">Edit beacon</string>
+    <string name="beacon_name">Give this beacon a proper name. </string>
+    <string name="beacon_desc">Check the list of paired beacon devices. </string>
+    <string name="beacon_exists">Beacon already configured on Domoticz. </string>
+    <string name="beacon_turned_off">Bluetooth needs to be turned on in your device settings. </string>
+    <string name="beacon_saved">Saved a new beacon connection. </string>
+    <string name="action_beacon_show">Add new beacon</string>
+    <string name="beacon">Beacon</string>
+    <string name="beacon_disabled">Beacon automation disabled, please setup via settings. </string>
+    <string name="noSwitchSelected_explanation_beacon">For a Beacon device to automate something in Domoticz, a switch should be linked to an beacon. </string>
+    <string name="beacon_UUID">UUID</string>
+    <string name="beacon_major">Major (optional)</string>
+    <string name="beacon_minor">Minor (optional)</string>
+    <string name="beacon_scan">Beacon</string>
+    <string name="beacon_scan_desc">Scanning for beacons</string>
+    <string name="beacon_notifications">Enable notifications for entering and leaving a beacon region.</string>
+    <string name="beacon_entering">"Entering %1$s"</string>
+    <string name="beacon_leaving">Leaving  %1$s</string>
+    <string name="beacon_entering_text">Entering one of the beacons</string>
+    <string name="beacon_leaving_text">Leaving one of the beacons</string>
+    <!-- Bluetooth -->
+    <string name="bluetooth_not_supported">Bluetooth is not supported on this device</string>
+    <string name="bluetooth_register">Connect a bluetooth device</string>
+    <string name="bluetooth_found">New bluetooth device found</string>
+    <string name="bluetooth_edit">Edit bluetooth device</string>
+    <string name="bluetooth_name">Give this bluetooth device a proper name. </string>
+    <string name="bluetooth_desc">Check the list of paired bluetooth devices. </string>
+    <string name="bluetooth_exists">Bluetooth already configured on Domoticz. </string>
+    <string name="bluetooth_turned_off">Bluetooth needs to be turned on in your device settings. </string>
+    <string name="bluetooth_saved">Saved a new bluetooth device connection. </string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="title_notification_bluetooth">Enable Notifications for Bluetooth</string>
+    <string name="description_notification_bluetooth">Show notifications when you connect or disconnect a bluetooth device.</string>
+    <string name="bluetooth_event_triggered">"Bluetooth event triggered for %1$s"</string>
+    <string name="bluetooth_disabled">Bluetooth automation disabled, please setup via settings.</string>
+    <string name="noSwitchSelected_explanation_bluetooth">For a bluetooth device to automate something in Domoticz, a switch should be linked to an bluetooth</string>
+    <!-- Cameras -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_cameras">Kameraer</string>
+    <!-- Dashboard -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_dashboard">Betjeningspanel</string>
+    <string name="delivery">Delivery</string>
+    <string name="usage">Anvendelse</string>
+    <string name="today">I dag</string>
+    <string name="total">Total</string>
+    <string name="favorite_added">tilføjet til betjeningspanel.</string>
+    <string name="favorite_removed">fjernet fra betjeningspanel.</string>
+    <!-- Errors -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="error_authentication">Ugyldige legitimationsoplysninger</string>
+    <string name="error_timeout">Timeout eller ingen forbindelse</string>
+    <string name="error_server">Serverfejl</string>
+    <string name="error_network">Netværksfejl, status kode %1$d</string>
+    <string name="error_parse">Parsefejl</string>
+    <string name="error_notConnected">Fejl: ikke forbindelse til nogen netværk</string>
+    <!-- Events -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_events">Begivenheder</string>
+    <string name="action_not_supported_yet">Denne handling understøttes ikke endnu!</string>
+    <!-- Locations -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_add_location">Tilføj placering</string>
+    <string name="title_edit_location">Rediger placering</string>
+    <string name="longitude">Længdegrad</string>
+    <string name="latitude">Breddegrad</string>
+    <string name="radius">Radius (meter)</string>
+    <string name="connectedSwitch">Tilsluttet switch</string>
+    <string name="unable_to_get_switches">Kunne ikke få alle switches, prøv igen</string>
+    <string name="delete_short">DEL</string>
+    <string name="delete">Slet</string>
+    <string name="Location_name">Placerings navn</string>
+    <string name="currentLocation">Nuværrende placering</string>
+    <string name="manual">Manuelt</string>
+    <string name="getLocation">GET</string>
+    <string name="locationAddress">Adresse</string>
+    <string name="unknown">Ukendt</string>
+    <string name="not_available">Ikke tilgængelig</string>
+    <string name="no_valid_latLong">Ikke en gyldig breddegrad eller længdegrad</string>
+    <string name="starting_geofence_service">Start Geofence servicen</string>
+    <string name="could_not_find_location">Kunne ikke finde placeringen, prøv igen.</string>
+    <string name="google_play_services_unavailable">Google Play services utilgængelig.</string>
+    <string name="location_not_found">Ingen placering fundet.</string>
+    <string name="geofence">GeoFencing</string>
+    <string name="title_geofence">Aktivere Geofencing</string>
+    <string name="description_geofence">Aktiver og konfigurer geofences</string>
+    <string name="title_geofence_notifications">Aktivere notifikationer</string>
+    <string name="description_geofence_notifications">Aktiver notifikationer for udløsende begivenheder</string>
+    <string name="geofence_place">Sted: %s</string>
+    <string name="geofence_location_entering">"Ind i %1$s"</string>
+    <string name="geofence_location_leaving">Forlader %1$s</string>
+    <string name="geofence_location_entering_text">Går ind i en af placeringerne</string>
+    <string name="geofence_location_leaving_text">Forlader en af placeringerne</string>
+    <string name="geofence_error_recreateLocations">På grund af ændringer på Geofencing, skal du genskabe dine placeringer</string>
+    <string name="noSwitchSelected_title">Ingen switch valgt</string>
+    <string name="noSwitchSelected_explanation">For at GeoFencing skal fungere, skal en switch tilsluttes en GeoFence</string>
+    <string name="noSwitchSelected_connectOneNow">Tilslut en nu?</string>
+    <string name="geofencing_disabled_no_enabled_fences">GeoFencing deaktiveret da ingen geofences er aktiveret</string>
+    <string name="geofence_not_available">Geofence service is not available now</string>
+    <string name="geofence_too_many_geofences">App registered too many geofences</string>
+    <string name="geofence_too_many_pending_intents">Too many PendingIntents provided</string>
+    <string name="unknown_geofence_error">Unknown error</string>
+    <!-- Logs -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_logs">Logfiler</string>
+    <!-- Nfc -->
+    <string name="nfc_not_supported">NFC understøttes ikke på denne enhed</string>
+    <string name="nfc_register">Registrere et NFC-Tag</string>
+    <string name="nfc_tag_found">Fundet ny NFC Tag</string>
+    <string name="nfc_tag_edit">Edit NFC Tag</string>
+    <string name="nfc_tag_name">Give denne NFC et brugbart navn. </string>
+    <string name="nfc_exists">NFC Tag allerede registreret. </string>
+    <string name="nfc_saved">Gem et nyt NFC Tag. </string>
+    <string name="nfc">NFC</string>
+    <string name="noSwitchSelected_explanation_nfc">For at NFC kan fungere, bør en switch være knyttet til en NFC-Tag</string>
+    <!-- Notifications -->
+    <string name="priority">Prioritet</string>
+    <string name="emergency">Nødsituation</string>
+    <string name="high">Høj</string>
+    <string name="low">Lav</string>
+    <string name="verylow">Meget lav</string>
+    <string name="allsystems">Alle systemer</string>
+    <string name="systems">Systemer</string>
+    <string name="send_notification">Send notification</string>
+    <string name="notification_subject">Subject</string>
+    <string name="notification_message">Message</string>
+    <string name="notification_error_system">Please choose a system to send the notification to</string>
+    <string name="notification_error_message">Please fill in a message</string>
+    <string name="notification_error_subject">Please fill in a subject</string>
+    <string name="notification_error_send">Could not send the notification to Domoticz</string>
+    <string name="notification_send">Notification send to Domoticz</string>
+    <!-- Permissions -->
+    <string name="permission_title">Permissions Denied</string>
+    <string name="permission_prefs_title">Permissions</string>
+    <string name="permission_config">Configure the Permissions for this app</string>
+    <string name="permission_desc_storage">These storage permissions are needed for saving cache file, settings and save snapshots from the camera.</string>
+    <string name="permission_desc_location">These location permissions are needed for Geofencing and to get the Wifi SSID\'s around you!</string>
+    <string name="permission_desc_phone">These phone state permissions are needed for enabling notifications!</string>
+    <string name="permission_desc_camera">These camera permissions are needed for scanning QR Codes!</string>
+    <string name="permission_desc_audio">These audio permissions are needed for Voice Recognition!</string>
+    <string name="permission_desc_finger">These fingerprint permissions are needed for enabling Fingerprint Security!</string>
+    <!-- Plans -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_plans">Planer</string>
+    <plurals name="devices">
+        <item quantity="one">%1d enhed</item>
+        <item quantity="other">%1d enheder</item>
+    </plurals>
+    <!-- Qrcode -->
+    <string name="qrcode_not_supported">QR kode understøttes ikke på denne enhed</string>
+    <string name="qrcode_register">Registrer en QR-kode </string>
+    <string name="qrcode_found">Nye QR kode fundet</string>
+    <string name="qrcode_edit">Edit QR Code</string>
+    <string name="qrcode_name">Give denne QR kode et brugbart navn. </string>
+    <string name="qrcode_desc">Scan a QR Code. </string>
+    <string name="qrcode_exists">QR koden er allerede registreret. </string>
+    <string name="qrcode_saved">Gemte en ny QR kode. </string>
+    <string name="qrcode">QR kode</string>
+    <string name="qrcode_new_found">Ny QR kode fundet, venligst tilpas via indstillinger.</string>
+    <string name="qr_code_disabled">QR kode deaktiveret, venligst tilpas via indstillinger.</string>
+    <string name="noSwitchSelected_explanation_qrcode">For QR kode scanneren kan fungere, bør en switch være knyttet til en QR kode</string>
+    <string name="permission_camera_rationale">Adgang til kameraet er nødvendig for registrering</string>
+    <string name="low_storage_error">QR kode afhængigheder kan ikke hentes på grund af lav enheds plads</string>
+    <string name="no_camera_permission">Dette program kan ikke køre, fordi det ikke har tilladelser til kameraet.  Programmet vil nu afslutte.</string>
+    <!-- Scenes -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_scenes">Scener</string>
+    <!-- Security -->
+    <string name="title_security_panel">Sikkerheds Panel</string>
+    <string name="security_pin">Pin-kode</string>
+    <string name="security_disarm">Disarmere</string>
+    <string name="security_arm_home">Armere hjem</string>
+    <string name="security_arm_away">Armere væk</string>
+    <string name="security_wrong_code">Forkert kode indtastet!</string>
+    <string name="security_no_rights">You do not have the rights for this action!</string>
+    <string name="security_generic_error">Kunne ikke ændre sikkerhedsstatus</string>
+    <string name="security_wrong_password_fingerprint">Wrong password entered, your domoticz account password is the failover for your fingerprint...!</string>
+    <string name="show_password">Vis adgangskode</string>
+    <string name="fingerprint_make_sure">We need to make sure its you</string>
+    <string name="fingerprint_dialog_description">Touch your finger on the fingerprint sensor to authorise your account.</string>
+    <!-- Server -->
+    <string name="choose_server">Vælg server</string>
+    <string name="dont_save_new_server">Gem ikke ny server?</string>
+    <string name="server_must_be_unique">Servernavn skal være unikt</string>
+    <string name="switch_to_server">"Skifter server til %1$s"</string>
+    <string name="cant_disable_default_server">Kan ikke deaktivere standard serveren</string>
+    <!-- Settings -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="settingsActivity_name">Indstillinger</string>
+    <string name="cameraActivity_name">Kamera</string>
+    <!--        Categories             -->
+    <string name="category_generic">Generisk</string>
+    <string name="category_wear">Android wear</string>
+    <string name="category_auto">Android Auto</string>
+    <string name="category_server">Server</string>
+    <string name="category_geofencing">GeoFencing</string>
+    <string name="category_info">Information</string>
+    <string name="category_advanced">Advanced</string>
+    <string name="category_language">Sprog</string>
+    <string name="category_talk_back">Talk Back</string>
+    <string name="category_notification">Notifikationer</string>
+    <string name="category_debug">Fejlfinding</string>
+    <string name="category_export">Eksporter/Importer indstillinger</string>
+    <string name="category_theme">Tema</string>
+    <string name="category_clock">Clock</string>
+    <string name="category_nfc">NFC forbindelser</string>
+    <string name="category_startup_security">Security</string>
+    <string name="category_account">Accounts</string>
+    <string name="category_QRCode">QR kode</string>
+    <string name="category_bluetooth">Bluetooth</string>
+    <string name="category_wifi">Wifi</string>
+    <string name="category_Speech">Speech</string>
+    <string name="category_Reset">Reset</string>
+    <string name="category_help">Contribute</string>
+    <!--        Generic settings       -->
+    <string name="startup_screen">Opstarts Skærm</string>
+    <string name="enable_items">Aktiver/Deaktiver enheder</string>
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Sorting</string>
+    <string name="sort_server_on">Sort devices like sorted on the server</string>
+    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
+    <string name="sort_lock_server_title">Lock</string>
+    <string name="sort_lock_custom_on">Lock the current custom sorting (disable drag/drop)</string>
+    <string name="sort_dashboardLikeServer_off">Sorter betjeningspanel alfabetisk</string>
+    <string name="extra_data_title">Ekstra data på betjeningspanel</string>
+    <string name="show_extra_data_on">Vis ekstra data på betjeningspanel</string>
+    <string name="show_extra_data_off">Skjul ekstra data på betjeningspanel</string>
+    <string name="always_on_title">Hold enheden tændt</string>
+    <string name="always_on_on">Hold skærmen tændt</string>
+    <string name="always_on_off">Hold ikke skærmen tændt</string>
+    <string name="always_auto_refresh">Auto Refresh</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
+    <string name="switch_buttons_title">Switche</string>
+    <string name="switch_buttons_on">Vis switche med tænd/sluk-knap</string>
+    <string name="switch_buttons_off">Vis switche med tænd/sluk-knapper</string>
+    <string name="dashboard_list_title">Betjeningspanels gitter</string>
+    <string name="show_dashboard_list_on">Vis betjeningspanel som liste</string>
+    <string name="show_dashboard_list_off">Vis betjeningspanel som gitter</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
+    <string name="dashboard_camera">Camera</string>
+    <string name="show_dashboard_camera">Load the camera for connected switches</string>
+    <!--        Wear settings       -->
+    <string name="enable_wear_select">Android wear brugerdefinerede elementer</string>
+    <string name="custom_wear_select">Vælg wear switche</string>
+    <string name="custom_wear_select_desc">Vælg hvilke switche du gerne se på enheden Android wear enheden</string>
+    <string name="wear_custom_on">Aktivere Android wear brugerdefinerede elementer</string>
+    <string name="wear_custom_off">Deaktivere Android wear brugerdefinerede elementer</string>
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Enable Android Auto Notifications</string>
+    <string name="auto_custom_off">Disable Android Auto Notifications</string>
+    <!--        Geofencing settings -->
+    <string name="geofencing_configure">Konfigurere Geofencing</string>
+    <!--        Theming settings -->
+    <string name="config_theme">Vælg tema</string>
+    <string name="set_dark_theme">Skift til mørkt tema</string>
+    <string name="set_light_theme">Skift til lyst tema</string>
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">Let Domoticz talk back to you</string>
+    <string name="set_talk_back_off">Turn talk back off</string>
+    <!--        Import/Export settings  -->
+    <string name="settings_imported">Indstillinger importeret, genstart venligst Domoticz</string>
+    <string name="settings_import_failed">Det lykkedes ikke at importere indstillinger</string>
+    <string name="settings_exported">Indstillinger eksporteret, genstart venligst Domoticz</string>
+    <string name="settings_export_failed">Eksport af indstillinger fejlede</string>
+    <!--        Preference screens      -->
+    <string name="server_settings">Server forbindelsesindstillinger</string>
+    <string name="server_force_fetch_config">Hent server konfiguration</string>
+    <string name="nfc_settings">Opsætning af NFC forbindelser</string>
+    <string name="speech_settings">Setup Speech Commands</string>
+    <string name="title_activity_server_settings">Serverindstillinger</string>
+    <string name="multi_server">Multi Server</string>
+    <string name="enable_nfc">Aktivere NFC</string>
+    <string name="enable_speech">Enable Speech Recognition</string>
+    <string name="export_settings">Eksporter indstillinger</string>
+    <string name="reset_settings">Reset all app settings (WARNING!!)</string>
+    <string name="import_settings">Importer indstillinger</string>
+    <string name="multi_server_settings">Aktivere understøttelse af flere servere</string>
+    <string name="nfc_enable_settings">Aktivere NFC forbindelser</string>
+    <string name="speech_enable_settings">Enable Speech Recognition</string>
+    <string name="server">Server</string>
+    <string name="qrcode_settings">Opsætning af QR-koder</string>
+    <string name="enable_qrcode">Aktivere QR-koder</string>
+    <string name="qrcode_enable_settings">Aktivere QR koders funktionalitet</string>
+    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+    <string name="beacon_settings">Setup Beacons</string>
+    <string name="enable_beacon">Enable Beacon functionality</string>
+    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
+    <string name="translate_title">Translations</string>
+    <string name="security_settings">Setup Security</string>
+    <string name="enable_security">Enable fingerprint protection on startup</string>
+    <string name="disable_security">Disable fingerprint protection on startup</string>
+    <string name="setup_fingerprints">Setup fingerprints via Android Settings screens</string>
+    <string name="fingerprint_not_supported">Fingerprint Security is not supported on this device</string>
+    <string name="fingerprint_not_setup_in_android">First configure/connect a Fingerprint to this device</string>
+    <string name="fingerprint_sure">Are you sure? The failover password is the password of your Domoticz account.</string>
+    <!--        Widgets     -->
+    <string name="category_widgets">Widgets (BETA)</string>
+    <string name="widget_description">Enable or Disable Widget on this device</string>
+    <string name="widget_disabled">Widgets are not enabled on this device, please check your settings of Domoticz</string>
+    <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
+    <!--        GCM settings      -->
+    <string name="notification_settings_id">Google Cloud meddelelses-ID</string>
+    <string name="notification_settings_push">Tilføj dit registrations id til Domoticz</string>
+    <string name="notification_settings_pushed">Dit registrerings-id er nu gemt i Domoticz</string>
+    <string name="notification_settings_push_failed">Kunne ikke gemme dit registrerings-id i Domoticz, prøv igen senere.</string>
+    <string name="notification_show_title">Last Notifications</string>
+    <string name="notification_show_nothing">No notifications found</string>
+    <string name="notification_show">Show last couple of Notifications</string>
+    <!--        Notification settings      -->
+    <string name="overwrite_notifications_title">Overskriv notifikationer</string>
+    <string name="overwrite_notifications">Overskriv tidligere notifikationer på denne enhed</string>
+    <string name="enable_notifications_title">Aktivere notifikationer</string>
+    <string name="enable_notifications">Aktivere notifikationer på denne enhed</string>
+    <string name="notification_screen_title">Notifikationsindstillinger</string>
+    <string name="notification_history">Notification history</string>
+    <string name="notification_inbox">Inbox</string>
+    <string name="notification_vibrate_title">Vibrer</string>
+    <string name="notification_vibrate_on">Vibrer når en meddelelse er modtaget</string>
+    <string name="notification_vibrate_off">Vibrer ikke</string>
+    <string name="notification_sound_title">Lyd</string>
+    <string name="notification_sound_summary">Bruge notifikations lyd, når notifikationen kommer</string>
+    <string name="suppress_notifications_select">Vælg hvilke notifikationer der skal undertrykkes</string>
+    <string name="suppress_notifications">Undertryk bestemte notifikationer på denne enhed</string>
+    <string name="suppress_notifications_title">Undertryk notifikationer</string>
+    <string name="alarm_notifications_select">Select Notifications to Alarm</string>
+    <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
+    <string name="clear_notifications">Clean notification logs</string>
+    <string name="alarm_notifications_title">Alarm Notifications</string>
+    <string name="alarm">Alarm</string>
+    <string name="alarmtimer_title">Alarm Timer</string>
+    <string name="alarmtimer">Number of seconds to time the alarm</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Default</string>
+    <string name="theme_daynight">Day/Night</string>
+    <string name="theme_orange">Orange</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_blue">Blue</string>
+    <string name="theme_green">Green</string>
+    <string name="theme_dark_blue">Dark blue</string>
+    <!-- Other -->
+    <string name="default_values">Default values</string>
+    <string name="default_values_min_error">Max value should be higher than Min value</string>
+    <string name="default_values_max_error">Max value should be higher than Min value</string>
+    <!--        Information category       -->
+    <string name="info_version">Version</string>
+    <string name="info_domoticz_version">Domoticz version</string>
+    <string name="info_about">Om Domoticz</string>
+    <string name="info_credits">Tak til</string>
+    <string name="info_credits_text">Domoticz til Android er gjort mulig med flere open source-biblioteker</string>
+    <!--        Debug category       -->
+    <string name="debug_switch_title">Fejlfinding</string>
+    <string name="debug_switch_summary_on">Fejlfinding aktiveret</string>
+    <string name="debug_switch_summary_off">Fejlfinding deaktiveret</string>
+    <!--        Geo settings activity       -->
+    <string name="error_atLeastOneItemInDrawer">Der skal være mindst en enhed i listen</string>
+    <!--        Server update category       -->
+    <string name="title_activity_update">Opdater serveren</string>
+    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
+    <string name="error_couldNotCheckForUpdates">"Kunne ikke tjekke for opdateringer: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"Kunne ikke få Domoticz serverkonfiguration: %1$s"</string>
+    <string name="update_available_enhanced">Server opdatering tilgængelig: %1$s version: %2$s</string>
+    <string name="check_for_update_title">Søg efter Opdateringer</string>
+    <string name="check_for_update">Ønsker du vi undersøger for Domoticz systemopdateringer?</string>
+    <string name="update_server_warning">Mens din server opdaterer vil denne app ikke fungere korrekt.</string>
+    <string name="update_server_downloadNotReady1">Opdateringen er ikke (helt) hentet endnu.</string>
+    <string name="update_server_downloadNotReady2">Prøv venligst igen senere.</string>
+    <string name="server_update_available">Server opdatering tilgængelig</string>
+    <string name="update_server">Opdater serveren</string>
+    <string name="server_update_revision">Server update gennemgang</string>
+    <string name="server_version">Serverversion</string>
+    <string name="server_update">Server opdatering</string>
+    <string name="please_wait_while_we_check">Vent venligst mens vi kontrollere, om din server er klar til at opdatere</string>
+    <string name="server_update_not_ready">Server opdatering er ikke downloadet</string>
+    <string name="please_wait_while_server_updated">Vent venligst mens serveren opdateres.</string>
+    <string name="server_update_done">Server opdatering færdig</string>
+    <string name="update_not_started">Opdatering ikke startet</string>
+    <string name="update_not_started_unknown_error">Opdatering ikke startet på grund af en ukendt fejl</string>
+    <string name="server_update_not_available">Server opdatering er ikke tilgængelig</string>
+    <string name="click_to_update_server">Klik her for at opdatere din server</string>
+    <string name="debug_test_text">Fejlfindings test</string>
+    <string name="restart_required_title">Genstart påkrævet</string>
+    <string name="restart_now">Genstart nu?</string>
+    <string name="check_settings">Check your settings</string>
+    <string name="report_error">Report an error</string>
+    <string name="support">Support</string>
+    <!-- Speech -->
+    <string name="Speech_not_supported">Speech is not supported on this device</string>
+    <string name="Speech_register">Register a Speech Command</string>
+    <string name="Speech_found">New Speech Command found</string>
+    <string name="Speech_edit">Edit Speech Command</string>
+    <string name="Speech_name">Give this Speech Command a proper name. </string>
+    <string name="Speech_exists">Speech Command already registered. </string>
+    <string name="Speech_saved">Saved a New Speech Command. </string>
+    <string name="Speech_desc">Do a new voice command. </string>
+    <string name="Speech">Speech</string>
+    <string name="Speech_disabled">Speech Command disabled, please setup via settings.</string>
+    <string name="noSwitchSelected_explanation_Speech">For Speech Command to have effect, a switch should be linked</string>
+    <!-- Switches -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_switches">Switche</string>
+    <string name="txt_notAvailable">Ikke tilgængelig</string>
+    <string name="idx">IDX</string>
+    <string name="placeholder_value">255</string>
+    <string name="color_set">Sæt farve til</string>
+    <string name="state_set">Sæt status for</string>
+    <string name="error_favorite">Kunne ikke indstille foretrukne</string>
+    <string name="error_logs">Kunne ikke finde nogen logfiler til at vise</string>
+    <string name="error_color">Kunne ikke ændre farven</string>
+    <string name="error_state">Kunne ikke ændre tilstanden</string>
+    <string name="error_timer">Kunne ikke vise timerne</string>
+    <string name="error_notifications">Could not show the notifications</string>
+    <string name="set_level_switch">"Indstil niveauet for switch: %1$s til %2$d"</string>
+    <!-- Temperature -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_temperature">Temperatur</string>
+    <string name="cancel_override">Annuller tilsidesættelse</string>
+    <string name="wind">Vind</string>
+    <string name="error_log">Kunne ikke få logdata for</string>
+    <string name="follow_schedule">Følg tidsplan</string>
+    <!-- Timer -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="command">Kommando</string>
+    <string name="type">Type</string>
+    <string name="notapplicable">Ikke tilgængelig</string>
+    <string name="timer_before_sunset">Før solnedgang</string>
+    <string name="timer_after_sunset">Efter solnedgang</string>
+    <string name="timer_ontime">På tid</string>
+    <string name="timer_before_sunrise">Før solopgang</string>
+    <string name="timer_after_sunrise">Efter solopgang</string>
+    <string name="timer_fixed">Fast dato/klokkeslæt</string>
+    <string name="odd_day_numbers">Ulige dag numre</string>
+    <string name="even_day_numbers">Lige dages numre</string>
+    <string name="odd_week_numbers">Ulige ugenumre</string>
+    <string name="even_week_numbers">Lige ugenumre</string>
+    <string name="monthly">Månedlig</string>
+    <string name="monthly_weekday">Månedlig (hverdage)</string>
+    <string name="yearly">Årligt</string>
+    <string name="yearly_weekday">Årligt (hverdage)</string>
+    <string name="before_sun_at_south">Before Sun at South</string>
+    <string name="after_sun_at_south">After Sun at South</string>
+    <string name="before_civil_twilight_start">Before Civil Twilight Start</string>
+    <string name="after_civil_twilight_start">After Civil Twilight Start</string>
+    <string name="before_civil_twilight_end">Before Civil Twilight End</string>
+    <string name="after_civil_twilight_end">After Civil Twilight End</string>
+    <string name="before_nautical_twilight_start">Before Nautical Twilight Start</string>
+    <string name="after_nautical_twilight_start">After Nautical Twilight Start</string>
+    <string name="before_nautical_twilight_end">Before Nautical Twilight End</string>
+    <string name="after_nautical_twilight_end">After Nautical Twilight End</string>
+    <string name="before_austronomical_twilight_start">Before Austronomical Twilight Start</string>
+    <string name="after_austronomical_twilight_start">After Austronomical Twilight Start</string>
+    <string name="before_austronomical_twilight_end">Before Austronomical Twilight End</string>
+    <string name="after_austronomical_twilight_end">After Austronomical Twilight End</string>
+    <string name="timer_every_days">Hver dag</string>
+    <string name="timer_working_days">Arbejdsdage</string>
+    <string name="timer_weekend">Weekend</string>
+    <string name="timer_other">Andre</string>
+    <string name="timers">Timere</string>
+    <string name="first">First</string>
+    <string name="second">Second</string>
+    <string name="third">Third</string>
+    <string name="fourth">Fourth</string>
+    <string name="last">Last</string>
+    <!-- Utilities -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_utilities">Værktøjer</string>
+    <string name="set_temperature">Definer</string>
+    <!-- Vars -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_vars">Bruger variabler</string>
+    <string name="var_input">Input value is not valid</string>
+    <string name="var_input_error">Failed to update user variable</string>
+    <!-- Weather -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_weather">Vejr</string>
+    <string name="dewPoint">Dugpunkt</string>
+    <string name="temp">Temp</string>
+    <string name="pressure">Lufttryk</string>
+    <string name="chill">Chill</string>
+    <string name="direction">Retning</string>
+    <string name="humidity">Fugt</string>
+    <string name="speed">Hastighed</string>
+    <string name="forecast">Vejrudsigt</string>
+    <string name="rain">Regn</string>
+    <string name="rainrate">Regn sats</string>
+    <string name="co2">CO2</string>
+    <string name="co2min">CO2 Min</string>
+    <string name="co2max">CO2 Max</string>
+    <!-- Welcome -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="welcome_title_activity_welcome">Velkommen</string>
+    <string name="welcome_info_domoticz">Domoticz er et Home Automation System, der lader dig overvåge og konfigurere forskellige enheder som: lys, switche, forskellige sensorer/målere som temperatur, regn, vind, UV, Electra, Gas, vand og meget mere. Meddelelser/beskeder kan sendes til alle mobile enheder.</string>
+    <string name="welcome_info_swipe">Swipe til højre eller Brug navigationsknapperne nederst til at fortsætte</string>
+    <string name="welcome_info_settings1">Næste side er for dine indstillinger for Domoticz.</string>
+    <string name="welcome_info_settings2">        Du kan angive en lokal og en ekstern server indstilling.
+        De lokale indstillinger er til når du har forbindelse til dit hjemme wifi-netværk.
+        Remote indstillinger bruges, når der ikke er forbindelse til dit hjemme wifi netværk, eller når tilsluttet mobilt data (2G, 3G, 4G osv).</string>
+    <string name="welcome_info_checkingConnection">Kontrollere dine forbindelsesindstillinger</string>
+    <string name="welcome_msg_connectionDataIncomplete">Forbindelsesdata ufuldstændige eller tomme</string>
+    <string name="welcome_msg_connectionDataInvalid">URL-adressen skal ikke begynde med http</string>
+    <string name="welcome_msg_correctOnPreviousPage">Ret venligst data på den foregående side</string>
+    <string name="welcome_msg_serverVersion">Domoticz version</string>
+    <string name="welcome_msg_numberOfDevices">%1$d enheder fundet</string>
+    <string name="welcome_msg_no_ssid_found">Ingen wifi SSID er fundet</string>
+    <string name="welcome_ssid_spinner_prompt">Vælg hjem SSID</string>
+    <string name="welcome_ssid_button_prompt">Add home SSID\'s</string>
+    <string name="welcome_server_settings_title">Serverindstillinger</string>
+    <string name="welcome_server_startScreen">Startskærmen</string>
+    <string name="welcome_button_next">næste</string>
+    <string name="welcome_button_previous">forrige</string>
+    <string name="welcome_button_finish">færdig</string>
+    <string name="welcome_remote_server_address">Serveradresse</string>
+    <string name="welcome_remote_server_protocol">Protokol</string>
+    <string name="welcome_remote_server_port">Port</string>
+    <string name="welcome_remote_server_username">Brugernavn</string>
+    <string name="welcome_remote_server_password">Kodeord</string>
+    <string name="welcome_remote_server_directory">Mappe</string>
+    <string name="remote">Fjern adgang</string>
+    <string name="local">Lokal</string>
+    <string name="servername">Server Navn</string>
+    <string name="welcome_local_server_used_switch_title">Forskellige serveradresser</string>
+    <string name="welcome_local_server_used_switch_summary">Brug forskellig adresse for lokale forbindelser</string>
+    <string name="welcome_advancedSettings">Avancerede serverindstillinger</string>
+    <string name="welcome_advancedSettings_summary">Aanvendes kun til ikke-standard Domoticz servere</string>
+    <string name="welcome_local_server_ssid">Lokalt wifi SSID</string>
+    <string name="welcome_local_server_address">Lokal serveradresse</string>
+    <string name="welcome_local_server_protocol">Lokal protokol</string>
+    <string name="welcome_local_server_port">Lokal port</string>
+    <string name="welcome_local_server_directory">Lokalt bibliotek (Efterlad Tom hvis ikke bruges)</string>
+    <string name="welcome_local_server_username">Lokalt username (Efterlad Tom hvis ikke bruges)</string>
+    <string name="welcome_local_server_password">Lokalt adgangskode (Efterlad Tom hvis ikke bruges)</string>
+    <string-array name="remote_server_protocols">
+        <item>HTTP</item>
+        <item>HTTPS</item>
+    </string-array>
+    <!-- Widgets -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="pick_device_title">Pick a device</string>
+    <string name="choose_switch">Choose device</string>
+    <string name="failed_to_get_securitypanel">No security panel found under your switches</string>
+    <string name="failed_to_get_switches">Failed to get devices</string>
+    <string name="failed_toggle_switch">Failed to toggle device</string>
+    <string name="switch_toggled">"Switch device"</string>
+    <string name="text_loading">Loading...</string>
+    <string name="text_go">GO</string>
+    <string name="widget_background">Background</string>
+    <string name="widget_dark">Dark</string>
+    <string name="widget_light">Light</string>
+    <string name="widget_transparent_dark">Dark Transparent</string>
+    <string name="widget_transparent_light">Light Transparent</string>
+    <!-- Wifi -->
+    <string name="wifi_not_supported">Wifi is not supported on this device</string>
+    <string name="wifi_register">Connect a wifi ssid</string>
+    <string name="wifi_found">New wifi access point found</string>
+    <string name="wifi_edit">Edit wifi access point</string>
+    <string name="wifi_name">Give this access point a proper name. </string>
+    <string name="wifi_desc">Check the list of paired access point. </string>
+    <string name="wifi_exists">This access point already configured on Domoticz. </string>
+    <string name="wifi_turned_off">Wifi needs to be turned on in your device settings. </string>
+    <string name="wifi_saved">Saved a new access point connection. </string>
+    <string name="wifi_settings">Setup access points</string>
+    <string name="enable_wifi">Enable Wifi functionality</string>
+    <string name="wifi_disabled">Wifi automation disabled, please setup via settings.</string>
+    <string name="noSwitchSelected_explanation_wifi">For an access point to automate something in Domoticz, a switch should be linked to an access point.</string>
+    <string name="title_notification_wifi">Enable Notifications</string>
+    <string name="description_notification_wifi">Show notifications when you connect or disconnect a wifi access point.</string>
+    <string name="wifi_connected_to">"Connected to %1$s"</string>
+    <string name="wifi_disconnected_to">Disconnected to  %1$s</string>
+    <string name="wifi_connected_to_text">Connected to one of the registed access points.</string>
+    <string name="wifi_disconnected_to_text">Disconnected to one of the registed access points.</string>
+    <!-- Wizard -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_wizard">Velkomst guiden</string>
+    <string name="wizard_welcome">Velkommen</string>
+    <string name="wizard_welcome_description">Domoticz er et meget letvægts hjemmeautomatiseringssystem, der lader dig overvåge og konfigurere forskellige enheder.</string>
+    <string name="wizard_favorites">Favoritter</string>
+    <string name="wizard_favorites_description">Du kan tilføje enheder til betjeningspanela ved at gemme dem som favoritter. Langt Klik på et element for at gemme dem som favorit!</string>
+    <string name="wizard_startup">Opstarts Skærm</string>
+    <string name="wizard_startup_description">Du kan vælge din startskærm i indstillingerne!</string>
+    <string name="wizard_notifications">Opsætning af notifikationer</string>
+    <string name="wizard_notifications_description">Du kan nu modtage notifikationer på din Android enhed! Ændre den måde, hvorpå notifikationerne opfører sig i indstillingerne</string>
+    <string name="wizard_multiserver">Benytter flere servere</string>
+    <string name="wizard_multiserver_description">Du kan konfigurere flere Domoticz servere i indstillingerne.</string>
+    <string name="wizard_geo">GeoFencing</string>
+    <string name="wizard_geo_description">Du kan vælge din startskærm i indstillingerne!</string>
+    <string name="wizard_wear">Android Wear</string>
+    <string name="wizard_wear_description">Du kan angive, hvilke parametre du vil styre fra din Android Wear enhed!</string>
+    <string name="wizard_auto">Android Auto</string>
+    <string name="wizard_auto_description">Receive the Domoticz notifications right on your Android Auto device!</string>
+    <string name="wizard_graph">Grafer</string>
+    <string name="wizard_graph_description">Du kan se den historiske graf for en forsyning, vejr eller temperatur!</string>
+    <string name="wizard_filter">Filtre</string>
+    <string name="wizard_filter_description">Du kan filtrere enheder pr. status (tænd/sluk). Vælg det øverste højre menuikon for filtrering!</string>
+    <string name="wizard_widgets">Widgets!!</string>
+    <string name="wizard_widgets_description">Du kan sætte nogle widgets på hjemmeskærmen!</string>
+    <string name="wizard_menuitem">Deaktivere guiden</string>
+    <string name="wizard_menuitem_description">Du kan nu fjerne denne guide fra navigationsmenuen!</string>
+    <string name="wizard_nfc">NFC</string>
+    <string name="wizard_nfc_description">Du er i stand til skifte switche via NFC!</string>
+    <string name="wizard_bluetooth_description">You are able to toggle switches via Bluetooth connections!</string>
+    <string name="wizard_qrcode">QR kode</string>
+    <string name="wizard_qrcode_description">Skift switches ved at scanne en QR kode (eller stregkode)!</string>
+    <string name="wizard_speech">Speech Commands</string>
+    <string name="wizard_speech_description">Toggle switches with your voice! Configure speech commands via the settings screens and connect switches.</string>
+    <string name="wizard_button_nice">Rart</string>
+    <string name="wizard_button_switches">Switches</string>
+    <string name="wizard_button_settings">Indstillinger</string>
+    <string name="wizard_button_wizard">Fjern</string>
+    <string name="wizard_button_utilities">Værktøjer</string>
+    <string name="wizard_button_done">Færdig</string>
+    <string name="wizard_beacon_description">Toggle switches by scanning for beacons!</string>
 </resources>

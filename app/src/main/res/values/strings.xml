@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2015 Domoticz - Mark Heinis
   ~
   ~  Licensed to the Apache Software Foundation (ASF) under one
@@ -18,29 +19,23 @@
   ~  specific language governing permissions and limitations
   ~  under the License.
   -->
-
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation"><!-- only temporarily to suppress the missing translations errors for now!! -->
-
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="domoticz_url" translatable="false">http://www.domoticz.com/</string>
     <string name="ad_unit_id" translatable="false">ca-app-pub-2210179934394995/9519963928</string>
-
     <string name="premium_category">Buy premium!</string>
     <string name="premium_title">Get the premium version!</string>
     <string name="restore_title">Restore subscriptions</string>
     <string name="premium_feature">is a premium feature, please buy the paid version to support the developers!</string>
-
     <string name="old_version">Get the latest version!</string>
     <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
-
     <!-- Default Play Store description strings required by resource merge -->
     <string name="short_description">Domoticz home automation control and monitoring</string>
     <string name="long_description">Control and monitor devices at home (lights, switches, sensors, energy data and more) using the Domoticz home automation system. Automate devices and access them remotely from your Android device.</string>
-
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="msg_please_wait">Please wait…</string>
     <string name="changelog">Changelog</string>
-
     <string name="button_state_on">On</string>
     <string name="button_state_off">Off</string>
     <string name="button_state_closed">Closed</string>
@@ -59,18 +54,15 @@
     <string name="button_disarm">Disarm</string>
     <string name="button_state_full_light">Full light</string>
     <string name="button_state_night">Night light</string>
-
     <string name="sunrise">Sunrise</string>
     <string name="sunset">Sunset</string>
     <string name="now">Now</string>
-
     <string name="astrTwilightStart">Astronomical twilight start</string>
     <string name="astrTwilightEnd">Astronomical twilight end</string>
     <string name="civTwilightStart">Civil twilight start</string>
     <string name="civTwilightEnd">Civil twilight end</string>
     <string name="nautTwilightStart">Nautical twilight start</string>
     <string name="nautTwilightEnd">Nautical twilight end</string>
-
     <string name="last_update">Last seen</string>
     <string name="signal_level">Signal level</string>
     <string name="battery_level">Battery level</string>
@@ -79,18 +71,15 @@
     <string name="temperature">Temperature</string>
     <string name="status">Status</string>
     <string name="switch_rgb_wwcolor">RGB color or warm white</string>
-
     <string name="set_mode">Mode</string>
     <string name="set_point">Set point</string>
     <string name="set_point_min">Set point min value</string>
     <string name="set_point_min_description">Min temperature that you can set for your thermostat</string>
     <string name="set_point_max">Set point max value</string>
     <string name="set_point_max_description">Max temperature that you can set for your thermostat</string>
-
     <string name="action_success">Action successful</string>
     <string name="action_failed">Action failed</string>
     <string name="action_unknown">Action result unknown</string>
-
     <string name="choose_status">Choose state</string>
     <string name="normal">Normal</string>
     <string name="economy">Economy</string>
@@ -99,9 +88,7 @@
     <string name="custom">Custom</string>
     <string name="heating_off">Heating off</string>
     <string name="selector_value">Selector values</string>
-
     <string name="debug_textview_title">Debugging info</string>
-
     <string name="msg_copiedToClipboard">Text copied to clipboard</string>
     <string name="favorite">Favorite</string>
     <string name="yes">Yes</string>
@@ -121,17 +108,14 @@
     <string name="undo">Undo</string>
     <string name="something_deleted">%1$s deleted</string>
     <string name="remove_last_server">You can\'t remove the last server in the list.</string>
-
     <string name="switch_on">Turning switch on</string>
     <string name="switch_off">Turning switch off</string>
     <string name="switch_night">Turning switch to night light</string>
     <string name="switch_full">Turning switch to full light</string>
     <string name="switch_connection_removed">Switch connection removed.</string>
-
     <string name="blind_up">Turning blind up</string>
     <string name="blind_down">Turning blind down</string>
     <string name="blind_stop">Stop blind</string>
-
     <string name="filter_on">Filter on</string>
     <string name="filterOn_on">Status on</string>
     <string name="filterOn_off">Status off</string>
@@ -141,15 +125,11 @@
     <string name="filter_devices">Filter devices</string>
     <string name="filter_range">Set range</string>
     <string name="filter_graph_empty">Please specify a filter</string>
-
     <string name="choose_color">Choose color</string>
-
     <string name="no_data_on_domoticz">No data on Domoticz server</string>
-
     <string name="row_icon_description">row icon</string>
     <string name="error_image_description">Error image</string>
     <string name="device_image_description">Device image</string>
-
     <string name="white">White</string>
     <string name="refresh">Refresh</string>
     <string name="domoticz_logo">Domoticz logo</string>
@@ -164,16 +144,13 @@
     <string name="use_demo_setup">Use demo setup</string>
     <string name="auto_refresh_time">Refresh timer</string>
     <string name="set_auto_refresh_time">Set a specific timer for the auto refresh in seconds.</string>
-
     <string name="error_authentication_basicauth">IMPORTANT: Please check if your Domoticz system uses Login Page as the authentication method. Basic Auth is going to be removed from Domoticz from next update!</string>
     <string name="category_other">Other</string>
     <string name="tasker_title">Setup automation rules with Tasker for Domoticz</string>
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
     <string name="background_location_warning">This app collects location data to enable for geofencing services within this app, even when the app is closed or not in use.</string>
-<<<<<<< Updated upstream
 
-=======
     <!-- Firebase Configuration -->
     <string name="firebase_settings_title">Firebase Configuration</string>
     <string name="firebase_settings">Firebase Settings</string>
@@ -945,5 +922,4 @@
     <string name="wizard_button_utilities">Utilities</string>
     <string name="wizard_button_done">Done</string>
     <string name="wizard_beacon_description">Toggle switches by scanning for beacons!</string>
->>>>>>> Stashed changes
 </resources>

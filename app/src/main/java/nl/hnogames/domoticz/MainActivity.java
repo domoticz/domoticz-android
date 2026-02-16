@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2015 Domoticz - Mark Heinis
- *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- */
 
 package nl.hnogames.domoticz;
 
@@ -45,7 +25,10 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
 import androidx.core.view.MenuItemCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.work.OneTimeWorkRequest;
@@ -111,7 +94,7 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.TalkBackUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.WidgetUtils;
-import nl.hnogames.domoticz.welcome.WelcomeViewActivity;
+import nl.hnogames.domoticz.onboarding.OnboardingActivity;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.Containers.LoginInfo;
@@ -177,22 +160,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         mSharedPrefs = new SharedPrefUtil(this);
         permissionHelper = PermissionHelper.getInstance(this);
 
-        if (false && (!AppController.IsPremiumEnabled || !mSharedPrefs.isAPKValidated())) {
-            setContentView(R.layout.activity_newmain_free);
-            List<String> testDevices = new ArrayList<>();
-            testDevices.add(AdRequest.DEVICE_ID_EMULATOR);
-            testDevices.add("0095CAF9DD12F33E5417335E1EC5FCAD");
-            RequestConfiguration requestConfiguration
-                    = new RequestConfiguration.Builder()
-                    .setTestDeviceIds(testDevices)
-                    .build();
-
-            MobileAds.initialize(this);
-            AdRequest adRequest = new AdRequest.Builder()
-                    .build();
-            ((AdView) findViewById(R.id.adView)).loadAd(adRequest);
-        } else
-            setContentView(R.layout.activity_newmain_paid);
+        setContentView(R.layout.activity_newmain_paid);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -219,7 +187,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
         if (mSharedPrefs.isFirstStart()) {
             mSharedPrefs.setNavigationDefaults();
-            Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
+            Intent welcomeWizard = new Intent(this, OnboardingActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             mSharedPrefs.setFirstStart(false);
         } else {
@@ -237,6 +205,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
         fromSettings = false;
     }
 
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -244,7 +213,20 @@ public class MainActivity extends AppCompatPermissionsActivity {
     }
 
     private void handleShortcutAction(Intent intent) {
-        String shortcutId = intent.getAction();
+        // Handle notification with device IDX - navigate to correct fragment
+        if (intent != null && intent.hasExtra("TARGETIDX")) {
+            int deviceIdx = intent.getIntExtra("TARGETIDX", -1);
+            if (deviceIdx > 0) {
+                Log.d(TAG, "Notification clicked with device IDX: " + deviceIdx);
+                navigateToDeviceFragment(deviceIdx);
+                // Remove the extra to prevent re-triggering on orientation change
+                intent.removeExtra("TARGETIDX");
+                return;
+            }
+        }
+
+        // Handle shortcuts
+        String shortcutId = intent != null ? intent.getAction() : null;
         if (shortcutId != null) {
             switch (shortcutId) {
                 case "open_dashboard":
@@ -266,6 +248,99 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 // Handle other shortcuts here
             }
         }
+    }
+
+    /**
+     * Navigate to the appropriate fragment based on device type
+     */
+    private void navigateToDeviceFragment(int deviceIdx) {
+        // Fetch device info to determine correct fragment
+        StaticHelper.getDomoticz(MainActivity.this).getDevice(new nl.hnogames.domoticzapi.Interfaces.DevicesReceiver() {
+            @Override
+            public void onReceiveDevice(nl.hnogames.domoticzapi.Containers.DevicesInfo device) {
+                if (device == null) {
+                    Log.w(TAG, "Device not found for idx: " + deviceIdx);
+                    // Default to dashboard
+                    changeFragment("nl.hnogames.domoticz.fragments.Dashboard", false);
+                    return;
+                }
+
+                Log.d(TAG, "Device found: " + device.getName() + ", type: " + device.getType() +
+                        ", subType: " + device.getSubType() + ", switchType: " + device.getSwitchTypeVal());
+
+                String fragmentName = getFragmentForDeviceType(device);
+                Log.d(TAG, "Navigating to fragment: " + fragmentName);
+
+                fromShortcut = true;
+                changeFragment(fragmentName, false);
+            }
+
+            @Override
+            public void onReceiveDevices(java.util.ArrayList<nl.hnogames.domoticzapi.Containers.DevicesInfo> devices) {
+                // Not used
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Log.e(TAG, "Error fetching device for navigation", error);
+                // Default to dashboard on error
+                changeFragment("nl.hnogames.domoticz.fragments.Dashboard", false);
+            }
+        }, deviceIdx, false);
+    }
+
+    /**
+     * Determine which fragment to show based on device type
+     */
+    private String getFragmentForDeviceType(nl.hnogames.domoticzapi.Containers.DevicesInfo device) {
+        String type = device.getType();
+        String subType = device.getSubType();
+        int switchType = device.getSwitchTypeVal();
+
+        if (type == null) {
+            return "nl.hnogames.domoticz.fragments.Dashboard";
+        }
+
+        // Scenes and Groups
+        if (type.equals(nl.hnogames.domoticzapi.DomoticzValues.Scene.Type.SCENE) ||
+            type.equals(nl.hnogames.domoticzapi.DomoticzValues.Scene.Type.GROUP)) {
+            return "nl.hnogames.domoticz.fragments.Scenes";
+        }
+
+        // Temperature/Humidity sensors
+        if (type.contains("Temp") || type.contains("Humidity") ||
+            (subType != null && (subType.contains("Temp") || subType.contains("Humidity")))) {
+            return "nl.hnogames.domoticz.fragments.Temperature";
+        }
+
+        // Weather devices
+        if (type.equals("Wind") || type.equals("Rain") || type.equals("UV") ||
+            (subType != null && (subType.contains("Weather") || subType.equals("Solar Radiation")))) {
+            return "nl.hnogames.domoticz.fragments.Weather";
+        }
+
+        // Utility devices (power, gas, water, etc.)
+        if (type.equals("P1 Smart Meter") || type.equals("YouLess Meter") ||
+            type.equals("General") && (subType != null &&
+                (subType.contains("kWh") || subType.contains("Gas") ||
+                 subType.contains("Water") || subType.contains("Counter") ||
+                 subType.contains("Energy") || subType.contains("Percentage") ||
+                 subType.equals("Custom Sensor") || subType.equals("Managed Counter")))) {
+            return "nl.hnogames.domoticz.fragments.Utilities";
+        }
+
+        // Switches, lights, and other toggleable devices
+        if (switchType > 0 || type.equals("Lighting 1") || type.equals("Lighting 2") ||
+            type.equals("Lighting 3") || type.equals("Lighting 4") ||
+            type.equals("Lighting 5") || type.equals("Lighting 6") ||
+            type.equals("Light/Switch") || type.equals("Color Switch") ||
+            type.equals("Thermostat") || type.equals("Radiator") ||
+            type.contains("RFY") || type.contains("ASA")) {
+            return "nl.hnogames.domoticz.fragments.Switches";
+        }
+
+        // Default to dashboard for unknown types
+        return "nl.hnogames.domoticz.fragments.Dashboard";
     }
 
     public void resetWorkerThreads() {
@@ -384,7 +459,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
             }
             drawNavigationMenu(null);
         } else {
-            Intent welcomeWizard = new Intent(this, WelcomeViewActivity.class);
+            Intent welcomeWizard = new Intent(this, OnboardingActivity.class);
             startActivityForResult(welcomeWizard, iWelcomeResultCode);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }

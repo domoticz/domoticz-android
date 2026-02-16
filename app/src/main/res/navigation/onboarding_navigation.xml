@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/onboarding_navigation"
+    app:startDestination="@id/welcomeFragment">
+
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="nl.hnogames.domoticz.onboarding.fragments.WelcomeFragment"
+        android:label="Welcome">
+        <action
+            android:id="@+id/action_welcome_to_setup_method"
+            app:destination="@id/setupMethodFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_welcome_to_import"
+            app:destination="@id/importSettingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/setupMethodFragment"
+        android:name="nl.hnogames.domoticz.onboarding.fragments.SetupMethodFragment"
+        android:label="Setup Method">
+        <action
+            android:id="@+id/action_setup_method_to_qr_scanner"
+            app:destination="@id/qrScannerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_setup_method_to_basic_config"
+            app:destination="@id/basicConfigFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_setup_method_to_connection_test"
+            app:destination="@id/connectionTestFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/qrScannerFragment"
+        android:name="nl.hnogames.domoticz.onboarding.fragments.QrScannerFragment"
+        android:label="Scan QR Code">
+        <action
+            android:id="@+id/action_qr_scanner_to_basic_config"
+            app:destination="@id/basicConfigFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_qr_scanner_to_connection_test"
+            app:destination="@id/connectionTestFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/basicConfigFragment"
+        android:name="nl.hnogames.domoticz.onboarding.fragments.BasicConfigFragment"
+        android:label="Server Configuration">
+        <action
+            android:id="@+id/action_basic_config_to_auth_config"
+            app:destination="@id/authConfigFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/authConfigFragment"
+        android:name="nl.hnogames.domoticz.onboarding.fragments.AuthConfigFragment"
+        android:label="Authentication">
+        <action
+            android:id="@+id/action_auth_config_to_advanced_config"
+            app:destination="@id/advancedConfigFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/advancedConfigFragment"
+        android:name="nl.hnogames.domoticz.onboarding.fragments.AdvancedConfigFragment"
+        android:label="Advanced Settings">
+        <action
+            android:id="@+id/action_advanced_config_to_connection_test"
+            app:destination="@id/connectionTestFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/connectionTestFragment"
+        android:name="nl.hnogames.domoticz.onboarding.fragments.ConnectionTestFragment"
+        android:label="Testing Connection" />
+
+    <fragment
+        android:id="@+id/importSettingsFragment"
+        android:name="nl.hnogames.domoticz.onboarding.fragments.ImportSettingsFragment"
+        android:label="Import Settings" />
+
+</navigation>
+

@@ -1,24 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (C) 2015 Domoticz - Mark Heinis
-  ~
-  ~  Licensed to the Apache Software Foundation (ASF) under one
-  ~  or more contributor license agreements.  See the NOTICE file
-  ~  distributed with this work for additional information
-  ~  regarding copyright ownership.  The ASF licenses this file
-  ~  to you under the Apache License, Version 2.0 (the
-  ~  "License"); you may not use this file except in compliance
-  ~  with the License.  You may obtain a copy of the License at
-  ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~  Unless required by applicable law or agreed to in writing,
-  ~  software distributed under the License is distributed on an
-  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~  KIND, either express or implied.  See the License for the
-  ~  specific language governing permissions and limitations
-  ~  under the License.
-  -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="premium_category">Osta Premium!</string>
@@ -29,7 +9,7 @@
     <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
     <string name="drawer_open">Avaa navigointivalikko</string>
     <string name="drawer_close">Sulje navigointivalikko</string>
-    <string name="msg_please_wait">Odota&#8230;</string>
+    <string name="msg_please_wait">Odota…</string>
     <string name="changelog">Muutoshistoria</string>
     <string name="button_state_on">Päälle</string>
     <string name="button_state_off">Pois</string>
@@ -144,4 +124,659 @@
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
     <string name="background_location_warning">This app collects location data to enable for geofencing services within this app, even when the app is closed or not in use.</string>
+    <!-- Actions -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="action_switch_server">Vaihda palvelinta</string>
+    <string name="action_settings">Asetukset</string>
+    <string name="action_filter">Suodatus</string>
+    <string name="action_camera_play">Toista</string>
+    <string name="action_camera_pause">Tauko</string>
+    <string name="action_qrcode_scan">Lue QR-koodi</string>
+    <string name="action_bluetooth_show">Show paired devices</string>
+    <string name="action_speech">Puheentunnistus</string>
+    <string name="send">Send</string>
+    <!-- Beacon -->
+    <string name="beacon_not_supported">Beacons are not supported on this device</string>
+    <string name="beacon_register">Connect a beacon</string>
+    <string name="beacon_found">New beacon found</string>
+    <string name="beacon_edit">Edit beacon</string>
+    <string name="beacon_name">Give this beacon a proper name. </string>
+    <string name="beacon_desc">Check the list of paired beacon devices. </string>
+    <string name="beacon_exists">Beacon already configured on Domoticz. </string>
+    <string name="beacon_turned_off">Bluetooth needs to be turned on in your device settings. </string>
+    <string name="beacon_saved">Saved a new beacon connection. </string>
+    <string name="action_beacon_show">Add new beacon</string>
+    <string name="beacon">Beacon</string>
+    <string name="beacon_disabled">Beacon automation disabled, please setup via settings. </string>
+    <string name="noSwitchSelected_explanation_beacon">For a Beacon device to automate something in Domoticz, a switch should be linked to an beacon. </string>
+    <string name="beacon_UUID">UUID</string>
+    <string name="beacon_major">Major (optional)</string>
+    <string name="beacon_minor">Minor (optional)</string>
+    <string name="beacon_scan">Beacon</string>
+    <string name="beacon_scan_desc">Scanning for beacons</string>
+    <string name="beacon_notifications">Enable notifications for entering and leaving a beacon region.</string>
+    <string name="beacon_entering">"Entering %1$s"</string>
+    <string name="beacon_leaving">Leaving  %1$s</string>
+    <string name="beacon_entering_text">Entering one of the beacons</string>
+    <string name="beacon_leaving_text">Leaving one of the beacons</string>
+    <!-- Bluetooth -->
+    <string name="bluetooth_not_supported">Bluetooth is not supported on this device</string>
+    <string name="bluetooth_register">Connect a bluetooth device</string>
+    <string name="bluetooth_found">New bluetooth device found</string>
+    <string name="bluetooth_edit">Edit bluetooth device</string>
+    <string name="bluetooth_name">Give this bluetooth device a proper name. </string>
+    <string name="bluetooth_desc">Check the list of paired bluetooth devices. </string>
+    <string name="bluetooth_exists">Bluetooth already configured on Domoticz. </string>
+    <string name="bluetooth_turned_off">Bluetooth needs to be turned on in your device settings. </string>
+    <string name="bluetooth_saved">Saved a new bluetooth device connection. </string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="title_notification_bluetooth">Enable Notifications for Bluetooth</string>
+    <string name="description_notification_bluetooth">Show notifications when you connect or disconnect a bluetooth device.</string>
+    <string name="bluetooth_event_triggered">"Bluetooth event triggered for %1$s"</string>
+    <string name="bluetooth_disabled">Bluetooth automation disabled, please setup via settings.</string>
+    <string name="noSwitchSelected_explanation_bluetooth">For a bluetooth device to automate something in Domoticz, a switch should be linked to an bluetooth</string>
+    <!-- Cameras -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_cameras">Kamerat</string>
+    <!-- Dashboard -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_dashboard">Työpöytä</string>
+    <string name="delivery">Delivery</string>
+    <string name="usage">Käyttö</string>
+    <string name="today">Tänään</string>
+    <string name="total">Yhteensä</string>
+    <string name="favorite_added">lisätty työpöydälle.</string>
+    <string name="favorite_removed">poistettu työpöydältä.</string>
+    <!-- Errors -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="error_authentication">Virheelliset kirjautumistiedot</string>
+    <string name="error_timeout">Aikakatkaisu tai ei yhteyttä</string>
+    <string name="error_server">Palvelinvirhe</string>
+    <string name="error_network">Verkkovirhe, koodi %1$d</string>
+    <string name="error_parse">Jäsennysvirhe</string>
+    <string name="error_notConnected">Virhe: Ei yhteyttä mihinkään verkkoon</string>
+    <!-- Events -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_events">Tapahtumat</string>
+    <string name="action_not_supported_yet">Tätä toimintoa ei tueta vielä!</string>
+    <!-- Into -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="short_description">Kotiautomaatiosovellus, joka johdattaa sinut kohti älykkäämpää elämää</string>
+    <string name="long_description">Ohjaa ja tarkkaile kotona olevia laitteitasi, kuten valaistusta, kytkimiä, puhaltimia, erilaisia antureita (esim. lämpötila, sade, tuuli, UV-säteily, sähkönkulutus/-tuotanto, kaasunkulutus, vedenkulutus) ja paljon muuta sormenpäilläsi käyttämällä suosituinta Domoticz-kotiautomaatiojärjestelmää. Sovelluksen avulla voit automatisoida jokaisen laitteen kotonasi ja voit ohjata niitä mistä tahansa mobiililaitteesi avulla. Sytytä tai sammuta makuuhuoneen valot istumalla olohuoneen olohuoneessa. \"Domoticz - Home Automation\" -sovellus tukee NFC: tä ja mahdollistaa esimerkiksi ilmastoinnin päällekytkemisen kun olet saapumaisillasi kotiin. Geoaitojen avulla sovellus tunnistaa sijaintisi ja voi ohjata laitteita haluamallasi tavalla.
+Sovelluksessa on mahtava käyttöliittymä, jonka toiminnot on helppo oppia. Sovellus tukee myös widgettejä, joten voit lisätä mobiililaitteesi kotinäytölle painikkeita joilla voit ohjata laitteita helposti. Sovelluksen avulla voit säästää sähkölaskussa sammuttamalla turhia laitteita. Ota ohjat sormenpäihisi. Sovellus tukee sormenjälkitunnistinta, joten turvallisuus on taattu.
+Tarkkaile kaasun ja sähkön kulutusta mobiililaitteellasi ja sovita kulutus tarpeisiisi ja budjettiisi. Sovellus on hyvä apu suunnittellessasi kuukausittaista kulutustasi. Sovellus myös tukee ilmoituksia, joita voit käyttää esimerkiksi hälyttämään kun sähkönkulutus ylittää määrittelemäsi rajan.
+
+
+**************************
+TÄRKEIMMÄT PREMIUM OMINAISUUDET
+**************************
+- NFC-tuki. ohjaa kytkimiä NFC-tagien avulla
+- Geoaidat (useita), kytke valot päälle kun olet saapumaisillasi kotiin
+- Android Wear, ohjaa kotiasi ranteesta käsin
+- Widgetit, laita widgettejä kotinäytöllesi
+- Usean palvelimen tuki, kytkeydy useaan Domoticz-pavelimeen yhdellä sovelluksella
+- Sormenjälkitunnistus
+- Muokattavat näkymät
+- Puhetoiminnot
+- Ilmoitukset
+- Hälytystoiminto
+\"Domoticz -Home Automation\" -sovellus on yhteensopiva kaikkien Android-älypuhelinten ja -tablettien kanssa sekä kaikkien Android Wear-laitteiden kanssa. Ole älykäs! Määritä useita palvelimia jotta käyttö olisi mahdollisimman helppoa ja tehokasta. Lataa älykäs \"Domoticz\"-kotiautomaatiosovellus ja elä älykkäämmin!
+
+**************************
+KERRO TERVEISIÄ
+**************************
+Työskentelemme jatkuvasti tehdäksemme \"Domoticz - Home Automation\" -sovelluksesta paremman ja käytännöllisemmän. Ota vapaasti yhteyttä tehdäksesi pyyntöjä tai ehdotuksia tai jos haluat vain kertoa terveisesi meille. Jos olet pitänyt sovelluksen ominaisuuksista, anna meille arvostelu Play Storessa ja jaa sovellus kavereillesi.</string>
+    <!-- Locations -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_add_location">Lisää sijainti</string>
+    <string name="title_edit_location">Muokkaa sijaintia</string>
+    <string name="longitude">Pituuspiiri</string>
+    <string name="latitude">Leveyspiiri</string>
+    <string name="radius">Säde (m)</string>
+    <string name="connectedSwitch">Yhdistetty kytkin</string>
+    <string name="unable_to_get_switches">Kaikkien kytkimien hakeminen epäonnistui, yritä uudelleen</string>
+    <string name="delete_short">POIS</string>
+    <string name="delete">Poista</string>
+    <string name="Location_name">Sijainnin nimi</string>
+    <string name="currentLocation">Nykyinen sijainti</string>
+    <string name="manual">Manuaali</string>
+    <string name="getLocation">HAE</string>
+    <string name="locationAddress">Osoite</string>
+    <string name="unknown">Tuntematon</string>
+    <string name="not_available">Ei saatavilla</string>
+    <string name="no_valid_latLong">Pituus- tai leveyspiiri ei ole kelvollinen</string>
+    <string name="starting_geofence_service">Käynnistetään Geo-aitapalvelu</string>
+    <string name="could_not_find_location">Sijaintia ei löydetty, yritä uudelleen.</string>
+    <string name="google_play_services_unavailable">Google Play-Palvelut ei käytettävissä.</string>
+    <string name="location_not_found">Sijaintia ei löytynyt.</string>
+    <string name="geofence">Geo-aidat</string>
+    <string name="title_geofence">Kytke Geo-aidat päälle</string>
+    <string name="description_geofence">Ota käyttöön ja määritä geo-aidat</string>
+    <string name="title_geofence_notifications">Kytke ilmoitukset päälle</string>
+    <string name="description_geofence_notifications">Kytke tapahtumailmoitukset päälle</string>
+    <string name="geofence_place">Paikka: %s</string>
+    <string name="geofence_location_entering">"Saavutaan: %1$s"</string>
+    <string name="geofence_location_leaving">Poistutaan: %1$s</string>
+    <string name="geofence_location_entering_text">Saavutaan määritettyyn sijaintiin</string>
+    <string name="geofence_location_leaving_text">Poistutaan määritetystä sijainnista</string>
+    <string name="geofence_error_recreateLocations">Geo-aitoihin on tehty muutoksia, määritä sijainnit uudelleen</string>
+    <string name="noSwitchSelected_title">Kytkintä ei valittu</string>
+    <string name="noSwitchSelected_explanation">Toimiakseen Geo-aita on liitettävä kytkimeen</string>
+    <string name="noSwitchSelected_connectOneNow">Yhdistä nyt?</string>
+    <string name="geofencing_disabled_no_enabled_fences">Geo-aidat on poistettu käytöstä, koska yksikään geo-aita ei ole käytössä</string>
+    <string name="geofence_not_available">Geoaita-palvelu ei ole saatavilla</string>
+    <string name="geofence_too_many_geofences">Sovellus on rekisteröinyt liian monta geoaitaa</string>
+    <string name="geofence_too_many_pending_intents">Liian monta pyyntöä syötetty</string>
+    <string name="unknown_geofence_error">Tuntematon virhe</string>
+    <!-- Logs -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_logs">Lokit</string>
+    <!-- Nfc -->
+    <string name="nfc_not_supported">Tämä laite ei tue NFC:tä</string>
+    <string name="nfc_register">Määritä NFC-tagi</string>
+    <string name="nfc_tag_found">Uusi NFC-tagi löydetty</string>
+    <string name="nfc_tag_edit">Muokkaa NFC-tagia</string>
+    <string name="nfc_tag_name">Anna NFC-tagille selkeä nimi. </string>
+    <string name="nfc_exists">NFC-tagi on jo määritetty. </string>
+    <string name="nfc_saved">Uusi NFC-tagi tallennettu. </string>
+    <string name="nfc">NFC</string>
+    <string name="noSwitchSelected_explanation_nfc">Toimiakseen NFC-tagi on liitettävä kytkimeen</string>
+    <!-- Notifications -->
+    <string name="priority">Prioriteetti</string>
+    <string name="emergency">Hätätila</string>
+    <string name="high">Korkea</string>
+    <string name="low">Alhainen</string>
+    <string name="verylow">Erittäin matala</string>
+    <string name="allsystems">Kaikki järjestelmät</string>
+    <string name="systems">Järjestelmät</string>
+    <string name="send_notification">Send notification</string>
+    <string name="notification_subject">Subject</string>
+    <string name="notification_message">Message</string>
+    <string name="notification_error_system">Please choose a system to send the notification to</string>
+    <string name="notification_error_message">Please fill in a message</string>
+    <string name="notification_error_subject">Please fill in a subject</string>
+    <string name="notification_error_send">Could not send the notification to Domoticz</string>
+    <string name="notification_send">Notification send to Domoticz</string>
+    <!-- Permissions -->
+    <string name="permission_title">Käyttöoikeudet evätty</string>
+    <string name="permission_prefs_title">Käyttöoikeudet</string>
+    <string name="permission_config">Määritä sovelluksen käyttöoikeudet</string>
+    <string name="permission_desc_storage">Tallennustilan käyttöoikeuksia tarvitaan välimuistia, asetuksia ja kameran kuvia varten.</string>
+    <string name="permission_desc_location">Sijainnin käyttöoikeuksia tarvitaan geoaitoja ja WLAN-verkkojen tunnistamista varten!</string>
+    <string name="permission_desc_phone">Puhelimen käyttöoikeuksia tarvitaan ilmoitusten näyttämistä varten!</string>
+    <string name="permission_desc_camera">Kameran käyttöoikeuksia tarvitaan QR-koodien skannaamista varten!</string>
+    <string name="permission_desc_audio">Äänien käyttöoikeuksia tarvitaan puheentunnistusta varten!</string>
+    <string name="permission_desc_finger">Sormenjälkilukijan käyttöoikeuksia tarvitaan sormenjälkitunnistusta varten!</string>
+    <!-- Plans -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_plans">Huoneet</string>
+    <plurals name="devices">
+        <item quantity="one">%1d laite</item>
+        <item quantity="other">%1d laitetta</item>
+    </plurals>
+    <!-- Qrcode -->
+    <string name="qrcode_not_supported">Tämä laite ei tue QR-koodia</string>
+    <string name="qrcode_register">Määritä QR-koodi </string>
+    <string name="qrcode_found">Uusi QR-koodi löydetty</string>
+    <string name="qrcode_edit">Muokkaa QR-koodia</string>
+    <string name="qrcode_name">Anna QR-koodille selkeä nimi. </string>
+    <string name="qrcode_desc">Lue QR-koodi. </string>
+    <string name="qrcode_exists">QR-koodi on jo määritetty. </string>
+    <string name="qrcode_saved">Uusi QR-koodi tallennettu. </string>
+    <string name="qrcode">QR-koodi</string>
+    <string name="qrcode_new_found">Uusi QR-koodi tunnistettu, määritä asetukset.</string>
+    <string name="qr_code_disabled">QR-koodi poistettu käytöstä, määritä asetukset.</string>
+    <string name="noSwitchSelected_explanation_qrcode">Toimiakseen QR-koodi on liitettävä kytkimeen</string>
+    <string name="permission_camera_rationale">Tunnistaminen vaatii käyttöoikeuden kameraan</string>
+    <string name="low_storage_error">QR-koodien riippuvuuksia ei voitu ladata, koska tallennustila on vähissä</string>
+    <string name="no_camera_permission">Sovellus ei voi käynnistyä, koska sillä ei ole käyttöoikeutta kameraan. Sovellus pysäytetään.</string>
+    <!-- Scenes -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_scenes">Tilat</string>
+    <!-- Security -->
+    <string name="title_security_panel">Turvapaneeli</string>
+    <string name="security_pin">PIN-koodi</string>
+    <string name="security_disarm">Kytke pois päältä</string>
+    <string name="security_arm_home">Aseta kotona</string>
+    <string name="security_arm_away">Aseta poissa</string>
+    <string name="security_wrong_code">Väärä koodi!</string>
+    <string name="security_no_rights">You do not have the rights for this action!</string>
+    <string name="security_generic_error">Tilaa ei voitu muuttaa</string>
+    <string name="security_wrong_password_fingerprint">Väärä salasana syötetty, sinun Domoticz-tilisi salasana on sormenjälkitunnistuksen varasalasana...!</string>
+    <string name="show_password">Näytä salasana</string>
+    <string name="fingerprint_make_sure">We need to make sure its you</string>
+    <string name="fingerprint_dialog_description">Touch your finger on the fingerprint sensor to authorise your account.</string>
+    <!-- Server -->
+    <string name="choose_server">Valitse palvelin</string>
+    <string name="dont_save_new_server">Älä tallenna uutta palvelinta?</string>
+    <string name="server_must_be_unique">Palvelimen nimen täytyy olla yksilöllinen</string>
+    <string name="switch_to_server">"Vaihdetaan palvelimeksi %1$s"</string>
+    <string name="cant_disable_default_server">Oletuspalvelinta ei voi poistaa käytöstä</string>
+    <!-- Settings -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="settingsActivity_name">Asetukset</string>
+    <string name="cameraActivity_name">Kamera</string>
+    <!--        Categories             -->
+    <string name="category_generic">Yleiset</string>
+    <string name="category_wear">Android Wear</string>
+    <string name="category_auto">Android Auto</string>
+    <string name="category_server">Palvelin</string>
+    <string name="category_geofencing">Geo-aidat</string>
+    <string name="category_info">Lisätietoja</string>
+    <string name="category_advanced">Lisäasetukset</string>
+    <string name="category_language">Kieli</string>
+    <string name="category_talk_back">Talk Back</string>
+    <string name="category_notification">Ilmoitukset</string>
+    <string name="category_debug">Virheenkorjaus</string>
+    <string name="category_export">Vie-/ tuo asetuksia</string>
+    <string name="category_theme">Teema</string>
+    <string name="category_clock">Clock</string>
+    <string name="category_nfc">NFC</string>
+    <string name="category_startup_security">Turvallisuus</string>
+    <string name="category_account">Tilit</string>
+    <string name="category_QRCode">QR-koodit</string>
+    <string name="category_bluetooth">Bluetooth</string>
+    <string name="category_wifi">Wifi</string>
+    <string name="category_Speech">Puhe</string>
+    <string name="category_Reset">Palauta asetukset</string>
+    <string name="category_help">Contribute</string>
+    <!--        Generic settings       -->
+    <string name="startup_screen">Aloitusnäyttö</string>
+    <string name="enable_items">Ota käyttöön/poista kohteita</string>
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Sorting</string>
+    <string name="sort_server_on">Sort devices like sorted on the server</string>
+    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
+    <string name="sort_lock_server_title">Lock</string>
+    <string name="sort_lock_custom_on">Lock the current custom sorting (disable drag/drop)</string>
+    <string name="sort_dashboardLikeServer_off">Järjestä työpöydän kuvakkeet aakkosjärjestykseen</string>
+    <string name="extra_data_title">Lisätiedot työpöydällä</string>
+    <string name="show_extra_data_on">Näytä lisätiedot työpöydällä</string>
+    <string name="show_extra_data_off">Piilota lisätiedot työpöydältä</string>
+    <string name="always_on_title">Näyttölukko</string>
+    <string name="always_on_on">Pakota näyttö päälle</string>
+    <string name="always_on_off">Älä pakota näyttöä päälle</string>
+    <string name="always_auto_refresh">Automaattinen päivitys</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
+    <string name="switch_buttons_title">Kytkimet</string>
+    <string name="switch_buttons_on">Näytä kytkimet on/off-tyyppisesti</string>
+    <string name="switch_buttons_off">Näytä kytkimet painikkeina</string>
+    <string name="dashboard_list_title">Työpöytäruudukko</string>
+    <string name="show_dashboard_list_on">Näytä työpöytä listana</string>
+    <string name="show_dashboard_list_off">Näytä työpöytä ruudukkona</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
+    <string name="dashboard_camera">Camera</string>
+    <string name="show_dashboard_camera">Load the camera for connected switches</string>
+    <!--        Wear settings       -->
+    <string name="enable_wear_select">Mukautetut Android Wear-kohteet</string>
+    <string name="custom_wear_select">Valitse Wear-kytkimet</string>
+    <string name="custom_wear_select_desc">Valitse kytkimet jotka haluat nähdä Android Wear-laitteessasi</string>
+    <string name="wear_custom_on">Kytke mukautetut Android Wear-kohteet päälle</string>
+    <string name="wear_custom_off">Kytke mukautetut Android Wear-kohteet pois</string>
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Aseta Android Auto -ilmoitukset päälle</string>
+    <string name="auto_custom_off">Aseta Android Auto -ilmoitukset pois</string>
+    <!--        Geofencing settings -->
+    <string name="geofencing_configure">Määritä Geo-aidat</string>
+    <!--        Theming settings -->
+    <string name="config_theme">Aseta teema</string>
+    <string name="set_dark_theme">Vaihda tummaan teemaan</string>
+    <string name="set_light_theme">Vaihda vaaleaan teemaan</string>
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">Anna Domoticzin puhua sinulle takaisin</string>
+    <string name="set_talk_back_off">Kytke Talk Back pois</string>
+    <!--        Import/Export settings  -->
+    <string name="settings_imported">Asetukset tuotu, käynnistä Domoticz uudelleen</string>
+    <string name="settings_import_failed">Asetusten tuominen epäonnistui</string>
+    <string name="settings_exported">Asetukset viety, käynnistä Domoticz uudelleen</string>
+    <string name="settings_export_failed">Asetusten tuominen epäonnistui</string>
+    <!--        Preference screens      -->
+    <string name="server_settings">Palvelimen yhteysasetukset</string>
+    <string name="server_force_fetch_config">Nouda palvelinasetukset</string>
+    <string name="nfc_settings">Määritä NFC</string>
+    <string name="speech_settings">Määritä puhekomennot</string>
+    <string name="title_activity_server_settings">Palvelimen asetukset</string>
+    <string name="multi_server">Monipalvelintuki</string>
+    <string name="enable_nfc">Ota NFC käyttöön</string>
+    <string name="enable_speech">Ota puheentunnistus käyttöön</string>
+    <string name="export_settings">Vie asetukset</string>
+    <string name="reset_settings">Palauta sovelluksen oletusasetukset (VAROITUS!)</string>
+    <string name="import_settings">Tuo asetukset</string>
+    <string name="multi_server_settings">Ota käyttöön usean palvelimen tuki</string>
+    <string name="nfc_enable_settings">Ota NFC käyttöön</string>
+    <string name="speech_enable_settings">Ota puheentunnistus käyttöön</string>
+    <string name="server">Palvelin</string>
+    <string name="qrcode_settings">Määritä QR-koodit</string>
+    <string name="enable_qrcode">Ota QR-koodit käyttöön</string>
+    <string name="qrcode_enable_settings">Kytke QR-koodien toiminnallisuudet päälle</string>
+    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+    <string name="beacon_settings">Setup Beacons</string>
+    <string name="enable_beacon">Enable Beacon functionality</string>
+    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
+    <string name="translate_title">Translations</string>
+    <string name="security_settings">Asetusten suojaus</string>
+    <string name="enable_security">Ota sormenjälkitunnistus käynnistyksessä käyttöön</string>
+    <string name="disable_security">Kytke sormenjälkitunnistus pois käynnistyksessä</string>
+    <string name="setup_fingerprints">Määritä sormenjäljet Androidin asetuksista</string>
+    <string name="fingerprint_not_supported">Tämä laite ei tue sormenjälkitunnistusta</string>
+    <string name="fingerprint_not_setup_in_android">Määritä ensin sormenjäljet tähän laitteeseen</string>
+    <string name="fingerprint_sure">Oletko varma? Varasalasana on Domoticz-tilisi salasana.</string>
+    <!--        Widgets     -->
+    <string name="category_widgets">Widgetit (BETA)</string>
+    <string name="widget_description">Ota käyttöön tai poista käytöstä widgetit tässä laitteessa</string>
+    <string name="widget_disabled">Widgetit ei ole päällä tässä laitteessa, tarkista asetukset</string>
+    <string name="widget_warning">Widgettien käyttö omalla vastuulla! Widgetit ovat tällä hetkellä beta-vaiheessa ja ne todennäköisesti sisältävät bugeja. Bugit voivat aiheuttaa suurta datan / akun kulutusta...</string>
+    <!--        GCM settings      -->
+    <string name="notification_settings_id">Google Cloud Messaging -tunnus</string>
+    <string name="notification_settings_push">Lähetä rekisteröintitunnuksesi Domoticziin</string>
+    <string name="notification_settings_pushed">Rekisteröintitunnuksesi on nyt tallennettu Domoticziin</string>
+    <string name="notification_settings_push_failed">Rekisteröintitunnuksen tallennus Domoticziin epäonnistui, yritä myöhemmin uudelleen.</string>
+    <string name="notification_show_title">Viimeisimmät ilmoitukset</string>
+    <string name="notification_show_nothing">Ei ilmoituksia</string>
+    <string name="notification_show">Näytä viimeisimmät ilmoitukset</string>
+    <!--        Notification settings      -->
+    <string name="overwrite_notifications_title">Korvaa ilmoitukset</string>
+    <string name="overwrite_notifications">Korvaa aiemmat ilmoitukset tässä laitteessa</string>
+    <string name="enable_notifications_title">Ota ilmoitukset käyttöön</string>
+    <string name="enable_notifications">Ota ilmoitukset käyttöön tässä laitteessa</string>
+    <string name="notification_screen_title">Ilmoitusasetukset</string>
+    <string name="notification_history">Notification history</string>
+    <string name="notification_inbox">Inbox</string>
+    <string name="notification_vibrate_title">Värinä</string>
+    <string name="notification_vibrate_on">Värise, kun ilmoitus saapuu</string>
+    <string name="notification_vibrate_off">Värinä pois</string>
+    <string name="notification_sound_title">Valitse merkkiääni</string>
+    <string name="notification_sound_summary">Soita merkkiääni ilmoituksen saapuessa</string>
+    <string name="suppress_notifications_select">Valitse vaiennettavat ilmoitukset</string>
+    <string name="suppress_notifications">Vaienna tietyt ilmoitukset tässä laitteessa</string>
+    <string name="suppress_notifications_title">Ilmoitusten vaiennus</string>
+    <string name="alarm_notifications_select">Valitse hälyttävät ilmoitukset</string>
+    <string name="alarm_notifications">Soita hälytysääni tietyille ilmoituksille</string>
+    <string name="clear_notifications">Tyhjennä ilmoituslokit</string>
+    <string name="alarm_notifications_title">Hälyttävät ilmoitukset</string>
+    <string name="alarm">Hälytykset</string>
+    <string name="alarmtimer_title">Hälytysajastin</string>
+    <string name="alarmtimer">Hälytyksen kesto sekunteina</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Default</string>
+    <string name="theme_daynight">Day/Night</string>
+    <string name="theme_orange">Orange</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_blue">Blue</string>
+    <string name="theme_green">Green</string>
+    <string name="theme_dark_blue">Dark blue</string>
+    <!-- Other -->
+    <string name="default_values">Oletusarvot</string>
+    <string name="default_values_min_error">Maksimiarvon pitää olla suurempi kuin minimiarvon</string>
+    <string name="default_values_max_error">Maksimiarvon pitää olla suurempi kuin minimiarvon</string>
+    <!--        Information category       -->
+    <string name="info_version">Versio</string>
+    <string name="info_domoticz_version">Domoticz versio</string>
+    <string name="info_about">Tietoja Domoticzista</string>
+    <string name="info_credits">Tekijät</string>
+    <string name="info_credits_text">Domoticzin Android-sovelluksen mahdollistavat useat avoimen lähdekoodin kirjastot</string>
+    <!--        Debug category       -->
+    <string name="debug_switch_title">Virheenkorjaus</string>
+    <string name="debug_switch_summary_on">Virheenkorjaus käytössä</string>
+    <string name="debug_switch_summary_off">Virheenkorjaus ei käytössä</string>
+    <!--        Geo settings activity       -->
+    <string name="error_atLeastOneItemInDrawer">Tarvitset vähintään yhden kohteen valikkoon</string>
+    <!--        Server update category       -->
+    <string name="title_activity_update">Päivitä palvelin</string>
+    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
+    <string name="error_couldNotCheckForUpdates">"Päivityksiä ei voitu tarkistaa: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"Domoticz-palvelimen asetuksia ei voitu hakea: %1$s"</string>
+    <string name="update_available_enhanced">Palvelimen päivitys saatavilla versiosta %1$s versioon %2$s</string>
+    <string name="check_for_update_title">Tarkista päivitykset</string>
+    <string name="check_for_update">Haluatko meidän tarkastavan päivitykset Domoticziin?</string>
+    <string name="update_server_warning">Tämä sovellus ei toimi oikein palvelimen päivityksen aikana.</string>
+    <string name="update_server_downloadNotReady1">Päivitystä ei ole ladattu (kokonaan).</string>
+    <string name="update_server_downloadNotReady2">Yritä myöhemmin uudelleen.</string>
+    <string name="server_update_available">Palvelinpäivitys saatavilla</string>
+    <string name="update_server">Päivitä palvelin</string>
+    <string name="server_update_revision">Palvelimen päivityksen revisio</string>
+    <string name="server_version">Palvelimen versio</string>
+    <string name="server_update">Palvelimen päivitys</string>
+    <string name="please_wait_while_we_check">Odota hetki. Tarkastamme onko palvelimesi valmis päivitykseen</string>
+    <string name="server_update_not_ready">Palvelimen päivitystä ei ole ladattu</string>
+    <string name="please_wait_while_server_updated">Odota, kunnes palvelin on päivitetty.</string>
+    <string name="server_update_done">Palvelimen päivitys on valmis</string>
+    <string name="update_not_started">Päivitystä ei aloitettu</string>
+    <string name="update_not_started_unknown_error">Päivitystä ei voitu aloittaa tuntemattomasta virheestä johtuen</string>
+    <string name="server_update_not_available">Palvelinpäivitystä ei ole saatavilla</string>
+    <string name="click_to_update_server">Paina tästä päivittääksesi palvelimen</string>
+    <string name="debug_test_text">Virheenkorjaustesti</string>
+    <string name="restart_required_title">Uudelleenkäynnistys tarvitaan</string>
+    <string name="restart_now">Käynnistä uudelleen nyt?</string>
+    <string name="check_settings">Check your settings</string>
+    <string name="report_error">Report an error</string>
+    <string name="support">Support</string>
+    <!-- Speech -->
+    <string name="Speech_not_supported">Tämä laite ei tue puheentunnistusta</string>
+    <string name="Speech_register">Määritä puhekomento</string>
+    <string name="Speech_found">Uusi puhekomento löydetty</string>
+    <string name="Speech_edit">Muokka puhekomentoa</string>
+    <string name="Speech_name">Anna puhekomennolle selkeä nimi. </string>
+    <string name="Speech_exists">Puhekomento on jo määritetty. </string>
+    <string name="Speech_saved">Uusi puhekomento tallennettu. </string>
+    <string name="Speech_desc">Luo uusi puhekomento. </string>
+    <string name="Speech">Puhe</string>
+    <string name="Speech_disabled">Puhekomento poistettu käytöstä, määritä asetukset.</string>
+    <string name="noSwitchSelected_explanation_Speech">Toimiakseen puhekomento täytyy yhdistää kytkimeen</string>
+    <!-- Switches -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_switches">Kytkimet</string>
+    <string name="txt_notAvailable">N/A</string>
+    <string name="idx">IDX</string>
+    <string name="placeholder_value">255</string>
+    <string name="color_set">Väriksi määritetty</string>
+    <string name="state_set">Tilaksi määritetty</string>
+    <string name="error_favorite">Suosikkia ei voitu asettaa</string>
+    <string name="error_logs">Näytettäviä lokeja ei löytynyt</string>
+    <string name="error_color">Väriä ei voitu muuttaa</string>
+    <string name="error_state">Tilaa ei voitu muuttaa</string>
+    <string name="error_timer">Ajastimia ei voitu näyttää</string>
+    <string name="error_notifications">Ilmoituksia ei voitu näyttää</string>
+    <string name="set_level_switch">"Asetetaan kytkimen taso: %1$s -&gt; %2$d"</string>
+    <!-- Temperature -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_temperature">Lämpötila</string>
+    <string name="cancel_override">Peruuta ohitus</string>
+    <string name="wind">Tuuli</string>
+    <string name="error_log">Lokitietoja ei saatu laitteelle</string>
+    <string name="follow_schedule">Seuraa aikataulua</string>
+    <!-- Timer -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="command">Komento</string>
+    <string name="type">Tyyppi</string>
+    <string name="notapplicable">Ei saatavilla</string>
+    <string name="timer_before_sunset">Ennen auringonlaskua</string>
+    <string name="timer_after_sunset">Auringonlaskun jälkeen</string>
+    <string name="timer_ontime">Tiettyyn aikaan</string>
+    <string name="timer_before_sunrise">Ennen auringonnousua</string>
+    <string name="timer_after_sunrise">Auringonnousun jälkeen</string>
+    <string name="timer_fixed">Tietty päivämäärä ja kellonaika</string>
+    <string name="odd_day_numbers">Parittomat päivät</string>
+    <string name="even_day_numbers">Parilliset päivät</string>
+    <string name="odd_week_numbers">Parittomat viikot</string>
+    <string name="even_week_numbers">Parilliset viikot</string>
+    <string name="monthly">Kuukausittain</string>
+    <string name="monthly_weekday">Kuukausittain (viikonpäivä)</string>
+    <string name="yearly">Vuosittain</string>
+    <string name="yearly_weekday">Vuosittain (viikonpäivä)</string>
+    <string name="before_sun_at_south">Before Sun at South</string>
+    <string name="after_sun_at_south">After Sun at South</string>
+    <string name="before_civil_twilight_start">Before Civil Twilight Start</string>
+    <string name="after_civil_twilight_start">After Civil Twilight Start</string>
+    <string name="before_civil_twilight_end">Before Civil Twilight End</string>
+    <string name="after_civil_twilight_end">After Civil Twilight End</string>
+    <string name="before_nautical_twilight_start">Before Nautical Twilight Start</string>
+    <string name="after_nautical_twilight_start">After Nautical Twilight Start</string>
+    <string name="before_nautical_twilight_end">Before Nautical Twilight End</string>
+    <string name="after_nautical_twilight_end">After Nautical Twilight End</string>
+    <string name="before_austronomical_twilight_start">Before Austronomical Twilight Start</string>
+    <string name="after_austronomical_twilight_start">After Austronomical Twilight Start</string>
+    <string name="before_austronomical_twilight_end">Before Austronomical Twilight End</string>
+    <string name="after_austronomical_twilight_end">After Austronomical Twilight End</string>
+    <string name="timer_every_days">Joka päivä</string>
+    <string name="timer_working_days">Työpäivisin</string>
+    <string name="timer_weekend">Viikonloppu</string>
+    <string name="timer_other">Muu</string>
+    <string name="timers">Ajastimet</string>
+    <string name="first">First</string>
+    <string name="second">Second</string>
+    <string name="third">Third</string>
+    <string name="fourth">Fourth</string>
+    <string name="last">Last</string>
+    <!-- Utilities -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_utilities">Mittarit</string>
+    <string name="set_temperature">Aseta</string>
+    <!-- Vars -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_vars">Käyttäjän muuttujat</string>
+    <string name="var_input">Syötetty arvo ei kelpaa</string>
+    <string name="var_input_error">Käyttäjän muuttujan päivitys epäonnistui</string>
+    <!-- Weather -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_weather">Sää</string>
+    <string name="dewPoint">Kastepiste</string>
+    <string name="temp">Lämpötila</string>
+    <string name="pressure">Paine</string>
+    <string name="chill">Pakkasen purevuus</string>
+    <string name="direction">Suunta</string>
+    <string name="humidity">Kosteus</string>
+    <string name="speed">Nopeus</string>
+    <string name="forecast">Ennuste</string>
+    <string name="rain">Sadetta</string>
+    <string name="rainrate">Sateen määrä</string>
+    <string name="co2">CO2</string>
+    <string name="co2min">CO2 Min</string>
+    <string name="co2max">CO2 Max</string>
+    <!-- Welcome -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="welcome_title_activity_welcome">Tervetuloa</string>
+    <string name="welcome_info_domoticz">Domoticz on kotiautomaatiojärjestelmä jonka avulla voit ohjata erilaisia laitteita, kuten valoja ja kytkimiä. Lisäksi voit kytkeä järjestelmään erilaisia antureita esimerkiksi lämpötilan, sateen, tuulen, sähkön-, kaasun- tai vedenkulutuksen mittaamiseen. Järjestelmästä on mahdollista saada ilmoituksia ja hälytyksiä mobiililaitteisiin.</string>
+    <string name="welcome_info_swipe">Pyyhkäise oikealle tai käytä siirtymispainikkeita alareunassa jatkaaksesi</string>
+    <string name="welcome_info_settings1">Seuraavalla sivulla määritetään Domoticz-asetukset.</string>
+    <string name="welcome_info_settings2">Voit määrittää paikallisen ja etäpalvelimen asetukset. Paikalliset asetukset ovat voimassa kun olet liittyneenä kotisi wifi-verkkoon. Etäpalvelinasetukset ovat käytössä kun et ole liittyneenä kotisi wifi-verkkoon tai käytät mobiilidataa (2G, 3G, 4G tmv.).</string>
+    <string name="welcome_info_checkingConnection">Vahvistetaan yhteysasetukset</string>
+    <string name="welcome_msg_connectionDataIncomplete">Yhteysasetukset ovat puutteelliset tai puuttuvat kokonaan</string>
+    <string name="welcome_msg_connectionDataInvalid">URL ei saa alkaa \"http\"</string>
+    <string name="welcome_msg_correctOnPreviousPage">Korjaa tiedot edellisellä sivulla</string>
+    <string name="welcome_msg_serverVersion">Domoticzin versio</string>
+    <string name="welcome_msg_numberOfDevices">%1$d laitetta löydetty</string>
+    <string name="welcome_msg_no_ssid_found">Yhtään SSID:tä ei löytynyt</string>
+    <string name="welcome_ssid_spinner_prompt">Valitse kotisi SSID</string>
+    <string name="welcome_ssid_button_prompt">Lisää kotisi SSID:t</string>
+    <string name="welcome_server_settings_title">Palvelimen asetukset</string>
+    <string name="welcome_server_startScreen">Aloitusnäyttö</string>
+    <string name="welcome_button_next">seuraava</string>
+    <string name="welcome_button_previous">edellinen</string>
+    <string name="welcome_button_finish">valmis</string>
+    <string name="welcome_remote_server_address">Palvelimen osoite</string>
+    <string name="welcome_remote_server_protocol">Protokolla</string>
+    <string name="welcome_remote_server_port">Portti</string>
+    <string name="welcome_remote_server_username">Käyttäjanimi</string>
+    <string name="welcome_remote_server_password">Salasana</string>
+    <string name="welcome_remote_server_directory">Hakemisto</string>
+    <string name="remote">Etä</string>
+    <string name="local">Paikallinen</string>
+    <string name="servername">Palvelimen nimi</string>
+    <string name="welcome_local_server_used_switch_title">Eri palvelimen osoite</string>
+    <string name="welcome_local_server_used_switch_summary">Käytä eri osoitetta paikallisverkossa</string>
+    <string name="welcome_advancedSettings">Palvelimen lisäasetukset</string>
+    <string name="welcome_advancedSettings_summary">Käytetään vain ei-standardeilla Domoticz-palvelimilla</string>
+    <string name="welcome_local_server_ssid">Paikalliset SSID:t</string>
+    <string name="welcome_local_server_address">Paikallisen palvelimen osoite</string>
+    <string name="welcome_local_server_protocol">Paikallinen protokolla</string>
+    <string name="welcome_local_server_port">Paikallinen portti</string>
+    <string name="welcome_local_server_directory">Paikallinen hakemisto (jätä tyhjäksi jos ei käytetä)</string>
+    <string name="welcome_local_server_username">Paikallinen käyttäjänimi (jätä tyhjäksi jos ei käytetä)</string>
+    <string name="welcome_local_server_password">Paikallinen salasana (jätä tyhjäksi jos ei käytetä)</string>
+    <string-array name="remote_server_protocols">
+        <item>HTTP</item>
+        <item>HTTPS</item>
+    </string-array>
+    <!-- Widgets -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="pick_device_title">Valitse laite</string>
+    <string name="choose_switch">Valitse laite</string>
+    <string name="failed_to_get_securitypanel">Kytkimien joukosta ei löytynyt yhtään turvapaneelia</string>
+    <string name="failed_to_get_switches">Laitteiden hakeminen epäonnistui</string>
+    <string name="failed_toggle_switch">Laitteen ohjaus epäonnistui</string>
+    <string name="switch_toggled">"Laitteen ohjaus"</string>
+    <string name="text_loading">Ladataan...</string>
+    <string name="text_go">JATKA</string>
+    <string name="widget_background">Tausta</string>
+    <string name="widget_dark">Tumma</string>
+    <string name="widget_light">Vaalea</string>
+    <string name="widget_transparent_dark">Tumma läpinäkyvä</string>
+    <string name="widget_transparent_light">Vaalea läpinäkyvä</string>
+    <!-- Wifi -->
+    <string name="wifi_not_supported">Wifi is not supported on this device</string>
+    <string name="wifi_register">Connect a wifi ssid</string>
+    <string name="wifi_found">New wifi access point found</string>
+    <string name="wifi_edit">Edit wifi access point</string>
+    <string name="wifi_name">Give this access point a proper name. </string>
+    <string name="wifi_desc">Check the list of paired access point. </string>
+    <string name="wifi_exists">This access point already configured on Domoticz. </string>
+    <string name="wifi_turned_off">Wifi needs to be turned on in your device settings. </string>
+    <string name="wifi_saved">Saved a new access point connection. </string>
+    <string name="wifi_settings">Setup access points</string>
+    <string name="enable_wifi">Enable Wifi functionality</string>
+    <string name="wifi_disabled">Wifi automation disabled, please setup via settings.</string>
+    <string name="noSwitchSelected_explanation_wifi">For an access point to automate something in Domoticz, a switch should be linked to an access point.</string>
+    <string name="title_notification_wifi">Enable Notifications</string>
+    <string name="description_notification_wifi">Show notifications when you connect or disconnect a wifi access point.</string>
+    <string name="wifi_connected_to">"Connected to %1$s"</string>
+    <string name="wifi_disconnected_to">Disconnected to  %1$s</string>
+    <string name="wifi_connected_to_text">Connected to one of the registed access points.</string>
+    <string name="wifi_disconnected_to_text">Disconnected to one of the registed access points.</string>
+    <!-- Wizard -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_wizard">Ohjattu käyttöönotto</string>
+    <string name="wizard_welcome">Tervetuloa</string>
+    <string name="wizard_welcome_description">Domoticz on erittäin kevyt kotiautomaatiojärjestelmä, jonka avulla voit seurata ja ohjata erilaisia antureita ja laitteita.</string>
+    <string name="wizard_favorites">Suosikit</string>
+    <string name="wizard_favorites_description">Voit lisätä laitteita työpöydälle tallentamalla ne suosikiksi. Pitkä painallus tallentaa suosikin!</string>
+    <string name="wizard_startup">Aloitusnäyttö</string>
+    <string name="wizard_startup_description">Voit valita aloitusnäytön asetuksista!</string>
+    <string name="wizard_notifications">Määritä ilmoitukset</string>
+    <string name="wizard_notifications_description">Voit nyt vastaanottaa ilmoituksia Android-laitteeseesi! Voit muuttaa ilmoitusten käyttäytymistä asetuksista</string>
+    <string name="wizard_multiserver">Käytössä useita palvelimia</string>
+    <string name="wizard_multiserver_description">Voit määrittää useita Domoticz-palvelimia asetuksista.</string>
+    <string name="wizard_geo">Geo-aidat</string>
+    <string name="wizard_geo_description">Voit valita aloitusnäytön asetuksista!</string>
+    <string name="wizard_wear">Android Wear</string>
+    <string name="wizard_wear_description">Voit määrittää ohjattavat kytkimet Android wear-laitteestasi!</string>
+    <string name="wizard_auto">Android Auto</string>
+    <string name="wizard_auto_description">Vastaanota Domoticz-ilmoitukset suoraan Android Auto-laitteeseesi!</string>
+    <string name="wizard_graph">Kuvaajat</string>
+    <string name="wizard_graph_description">Voit katsoa kuvaajia mittareista, säästä tai lämpötilasta!</string>
+    <string name="wizard_filter">Suodattimet</string>
+    <string name="wizard_filter_description">Voit suodattaa laitteita tilan mukaan (päällä/pois). Huomaa suodatuskuvake näytön oikeasta ylänurkasta!</string>
+    <string name="wizard_widgets">Widgetit!!</string>
+    <string name="wizard_widgets_description">Voit laittaa widgettejä kotinäytöllesi!</string>
+    <string name="wizard_menuitem">Lopeta ohjattu käyttöönotto</string>
+    <string name="wizard_menuitem_description">Voit nyt poistaa tämän ohjatun käyttöönoton navigaatiopalkista!</string>
+    <string name="wizard_nfc">NFC</string>
+    <string name="wizard_nfc_description">Voit ohjata kytkimiä NFC:n avulla!</string>
+    <string name="wizard_bluetooth_description">You are able to toggle switches via Bluetooth connections!</string>
+    <string name="wizard_qrcode">QR-koodi</string>
+    <string name="wizard_qrcode_description">Ohjaa kytkimiä skannaamalla QR-koodi (tai viivakoodi)!</string>
+    <string name="wizard_speech">Puhekomennot</string>
+    <string name="wizard_speech_description">Ohjaa kytkimiä äänelläsi! Määritä puhekomennot asetuksista ja yhdistä sitten kytkimet komentoihin.</string>
+    <string name="wizard_button_nice">Kiva</string>
+    <string name="wizard_button_switches">Kytkimet</string>
+    <string name="wizard_button_settings">Asetukset</string>
+    <string name="wizard_button_wizard">Poista</string>
+    <string name="wizard_button_utilities">Mittarit</string>
+    <string name="wizard_button_done">Valmis</string>
+    <string name="wizard_beacon_description">Toggle switches by scanning for beacons!</string>
 </resources>

@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2015 Domoticz - Mark Heinis
- *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- */
 
 package nl.hnogames.domoticz.adapters;
 
@@ -62,6 +42,8 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
     private boolean adLoaded = false;
 
     public PlansAdapter(ArrayList<PlanInfo> data, Context mContext) {
+        super();
+        setHasStableIds(true);
         this.mContext = mContext;
         mSharedPrefs = new SharedPrefUtil(mContext);
 
@@ -256,7 +238,15 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.DataObjectHo
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return mDataset != null ? mDataset.size() : 0;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        if (mDataset != null && position < mDataset.size()) {
+            return mDataset.get(position).getIdx();
+        }
+        return RecyclerView.NO_ID;
     }
 
     public interface onClickListener {

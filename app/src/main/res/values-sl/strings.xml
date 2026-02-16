@@ -1,24 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (C) 2015 Domoticz - Mark Heinis
-  ~
-  ~  Licensed to the Apache Software Foundation (ASF) under one
-  ~  or more contributor license agreements.  See the NOTICE file
-  ~  distributed with this work for additional information
-  ~  regarding copyright ownership.  The ASF licenses this file
-  ~  to you under the Apache License, Version 2.0 (the
-  ~  "License"); you may not use this file except in compliance
-  ~  with the License.  You may obtain a copy of the License at
-  ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~  Unless required by applicable law or agreed to in writing,
-  ~  software distributed under the License is distributed on an
-  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~  KIND, either express or implied.  See the License for the
-  ~  specific language governing permissions and limitations
-  ~  under the License.
-  -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="premium_category">Nakup Premium naročnine!</string>
@@ -29,7 +9,7 @@
     <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
     <string name="drawer_open">Odpri navigacijsko okno</string>
     <string name="drawer_close">Zapri navigacijsko okno</string>
-    <string name="msg_please_wait">Prosimo počakajte&#8230;</string>
+    <string name="msg_please_wait">Prosimo počakajte…</string>
     <string name="changelog">Dnevnik sprememb</string>
     <string name="button_state_on">Vklopljeno</string>
     <string name="button_state_off">Izklopljeno</string>
@@ -144,4 +124,640 @@
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
     <string name="background_location_warning">This app collects location data to enable for geofencing services within this app, even when the app is closed or not in use.</string>
+    <!-- Actions -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="action_switch_server">Preklopi na drug strežnik</string>
+    <string name="action_settings">Nastavitve</string>
+    <string name="action_filter">Filter</string>
+    <string name="action_camera_play">Predvajaj</string>
+    <string name="action_camera_pause">Premor</string>
+    <string name="action_qrcode_scan">Skeniraj QR kodo</string>
+    <string name="action_bluetooth_show">Show paired devices</string>
+    <string name="action_speech">Prepoznavanje govora</string>
+    <string name="send">Send</string>
+    <!-- Beacon -->
+    <string name="beacon_not_supported">Beacons are not supported on this device</string>
+    <string name="beacon_register">Connect a beacon</string>
+    <string name="beacon_found">New beacon found</string>
+    <string name="beacon_edit">Edit beacon</string>
+    <string name="beacon_name">Give this beacon a proper name. </string>
+    <string name="beacon_desc">Check the list of paired beacon devices. </string>
+    <string name="beacon_exists">Beacon already configured on Domoticz. </string>
+    <string name="beacon_turned_off">Bluetooth needs to be turned on in your device settings. </string>
+    <string name="beacon_saved">Saved a new beacon connection. </string>
+    <string name="action_beacon_show">Add new beacon</string>
+    <string name="beacon">Beacon</string>
+    <string name="beacon_disabled">Beacon automation disabled, please setup via settings. </string>
+    <string name="noSwitchSelected_explanation_beacon">For a Beacon device to automate something in Domoticz, a switch should be linked to an beacon. </string>
+    <string name="beacon_UUID">UUID</string>
+    <string name="beacon_major">Major (optional)</string>
+    <string name="beacon_minor">Minor (optional)</string>
+    <string name="beacon_scan">Beacon</string>
+    <string name="beacon_scan_desc">Scanning for beacons</string>
+    <string name="beacon_notifications">Enable notifications for entering and leaving a beacon region.</string>
+    <string name="beacon_entering">"Entering %1$s"</string>
+    <string name="beacon_leaving">Leaving  %1$s</string>
+    <string name="beacon_entering_text">Entering one of the beacons</string>
+    <string name="beacon_leaving_text">Leaving one of the beacons</string>
+    <!-- Bluetooth -->
+    <string name="bluetooth_not_supported">Bluetooth is not supported on this device</string>
+    <string name="bluetooth_register">Connect a bluetooth device</string>
+    <string name="bluetooth_found">New bluetooth device found</string>
+    <string name="bluetooth_edit">Edit bluetooth device</string>
+    <string name="bluetooth_name">Give this bluetooth device a proper name. </string>
+    <string name="bluetooth_desc">Check the list of paired bluetooth devices. </string>
+    <string name="bluetooth_exists">Bluetooth already configured on Domoticz. </string>
+    <string name="bluetooth_turned_off">Bluetooth needs to be turned on in your device settings. </string>
+    <string name="bluetooth_saved">Saved a new bluetooth device connection. </string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="title_notification_bluetooth">Enable Notifications for Bluetooth</string>
+    <string name="description_notification_bluetooth">Show notifications when you connect or disconnect a bluetooth device.</string>
+    <string name="bluetooth_event_triggered">"Bluetooth event triggered for %1$s"</string>
+    <string name="bluetooth_disabled">Bluetooth automation disabled, please setup via settings.</string>
+    <string name="noSwitchSelected_explanation_bluetooth">For a bluetooth device to automate something in Domoticz, a switch should be linked to an bluetooth</string>
+    <!-- Cameras -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_cameras">Kamera</string>
+    <!-- Dashboard -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_dashboard">Nadzorna plošča</string>
+    <string name="delivery">Delivery</string>
+    <string name="usage">Poraba</string>
+    <string name="today">Danes</string>
+    <string name="total">Skupno</string>
+    <string name="favorite_added">dodano v nadzorno ploščo.</string>
+    <string name="favorite_removed">odstranjeno iz nadzorne plošče.</string>
+    <!-- Errors -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="error_authentication">Neveljavni podatki uporabnika</string>
+    <string name="error_timeout">Časovna omejitev je potekla ali pa je brez povezave</string>
+    <string name="error_server">Napaka strežnika</string>
+    <string name="error_network">Omrežna napaka, šifra stanja %1$d</string>
+    <string name="error_parse">Razčlenitvena napaka</string>
+    <string name="error_notConnected">Napaka: ni povezave z omrežjem</string>
+    <!-- Events -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_events">Dogodki</string>
+    <string name="action_not_supported_yet">To dejanje še ni podprto!</string>
+    <!-- Locations -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_add_location">Dodaj lokacijo</string>
+    <string name="title_edit_location">Uredi lokacijo</string>
+    <string name="longitude">Geog. dolžina</string>
+    <string name="latitude">Geog. širina</string>
+    <string name="radius">Polmer (m)</string>
+    <string name="connectedSwitch">Povezano stikalo</string>
+    <string name="unable_to_get_switches">Ne morem dobiti vseh stikal, poskusite znova</string>
+    <string name="delete_short">DEL</string>
+    <string name="delete">Izbriši</string>
+    <string name="Location_name">Ime lokacije</string>
+    <string name="currentLocation">Trenutna lokacija</string>
+    <string name="manual">Ročno</string>
+    <string name="getLocation">Zahtevaj</string>
+    <string name="locationAddress">Domača stran</string>
+    <string name="unknown">Neznano</string>
+    <string name="not_available">Ni na voljo</string>
+    <string name="no_valid_latLong">Neveljavna zemljepisna širina ali dolžina</string>
+    <string name="starting_geofence_service">Zagon storitve Geofence</string>
+    <string name="could_not_find_location">Ne najdem lokacije, poskusite znova.</string>
+    <string name="google_play_services_unavailable">Google Play storitev ni na voljo.</string>
+    <string name="location_not_found">Ne najdem lokacije.</string>
+    <string name="geofence">GeoFencing</string>
+    <string name="title_geofence">Aktiviraj Zemljepisno ogrado</string>
+    <string name="description_geofence">Aktiviraj in nastavi Zemljepisno ogrado</string>
+    <string name="title_geofence_notifications">Omogoči obvestila</string>
+    <string name="description_geofence_notifications">Omogoči obvestila za sprožitev dogodkov</string>
+    <string name="geofence_place">Mesto: %s</string>
+    <string name="geofence_location_entering">"Vstop %1$s"</string>
+    <string name="geofence_location_leaving">Izstop  %1$s</string>
+    <string name="geofence_location_entering_text">Vstop v eno od lokacij</string>
+    <string name="geofence_location_leaving_text">Izhod iz ene od lokacij</string>
+    <string name="geofence_error_recreateLocations">Zaradi sprememb pri geoinformaciji, ponovno ustvarite svoje lokacije</string>
+    <string name="noSwitchSelected_title">Nobeno stikalo ni bilo izbrano</string>
+    <string name="noSwitchSelected_explanation">Za delovanje GeoFencing mora biti stikalo povezano z GeoFence storitvijo</string>
+    <string name="noSwitchSelected_connectOneNow">Priključiti eno zdaj?</string>
+    <string name="geofencing_disabled_no_enabled_fences">GeoFencing onemogočen, saj nobeno GeoFencing ni omogočene</string>
+    <string name="geofence_not_available">Geofence strežnik ni na voljo</string>
+    <string name="geofence_too_many_geofences">Preveč registracij Geofencing-a</string>
+    <string name="geofence_too_many_pending_intents">Preveč vnesenih PendingIntent</string>
+    <string name="unknown_geofence_error">Neznana napaka</string>
+    <!-- Logs -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_logs">Dnevnik</string>
+    <!-- Nfc -->
+    <string name="nfc_not_supported">NFC ni podprt na tej napravi</string>
+    <string name="nfc_register">Registriraj NFC oznako</string>
+    <string name="nfc_tag_found">NFC oznaka najdena</string>
+    <string name="nfc_tag_edit">Uredi NFC oznako</string>
+    <string name="nfc_tag_name">Poimenuj NFC oznako. </string>
+    <string name="nfc_exists">Oznaka NFC že registrirana. </string>
+    <string name="nfc_saved">Shrani novo NFC oznako. </string>
+    <string name="nfc">NFC</string>
+    <string name="noSwitchSelected_explanation_nfc">Za delovanje NFC, mora biti povezano stikalo na NFC oznako</string>
+    <!-- Notifications -->
+    <string name="priority">Prioritetno</string>
+    <string name="emergency">Nujni primeri</string>
+    <string name="high">Visoko</string>
+    <string name="low">Nizko</string>
+    <string name="verylow">Zelo nizko</string>
+    <string name="allsystems">Vsi sistemi</string>
+    <string name="systems">Sistem</string>
+    <string name="send_notification">Send notification</string>
+    <string name="notification_subject">Subject</string>
+    <string name="notification_message">Message</string>
+    <string name="notification_error_system">Please choose a system to send the notification to</string>
+    <string name="notification_error_message">Please fill in a message</string>
+    <string name="notification_error_subject">Please fill in a subject</string>
+    <string name="notification_error_send">Could not send the notification to Domoticz</string>
+    <string name="notification_send">Notification send to Domoticz</string>
+    <!-- Permissions -->
+    <string name="permission_title">Onemogočen dostop</string>
+    <string name="permission_prefs_title">Dovoljenja</string>
+    <string name="permission_config">Nastavite dovoljenja Aplikacije</string>
+    <string name="permission_desc_storage">Za shranjevanje medpomnilnika, nastavitev ali posnetkov s fotoaparata potrebujem te poverilnice.</string>
+    <string name="permission_desc_location">Za uporabo Geofencing in vidljivost WiFi SSID v okolici, poteebujem ta lokacijska dovoljenja!</string>
+    <string name="permission_desc_phone">Za omogočanje sporočil, potrebujem za dovoljenja o stanju telefona!</string>
+    <string name="permission_desc_camera">Za skeniranje QR kod potrebujem ta dovoljenja za fotoaparat!</string>
+    <string name="permission_desc_audio">Za perpoznavo zvoka potrebujem za audio dovoljenja!</string>
+    <string name="permission_desc_finger">Za branje prstnih odtisov potrebujem ta dovoljenja čitalca prstnih odtisov!</string>
+    <!-- Plans -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_plans">Načrti</string>
+    <plurals name="devices">
+        <item quantity="one">%1d naprave</item>
+        <item quantity="two">%1d napravi</item>
+        <item quantity="few">%1d naprav</item>
+        <item quantity="other">%1d naprav</item>
+    </plurals>
+    <!-- Qrcode -->
+    <string name="qrcode_not_supported">QR ni podprt na tej napravi</string>
+    <string name="qrcode_register">Registriraj Qr kodo </string>
+    <string name="qrcode_found">Najdena nova QR koda</string>
+    <string name="qrcode_edit">Uredi QR kodo</string>
+    <string name="qrcode_name">Poimenuj QR kodo. </string>
+    <string name="qrcode_desc">Skeniraj QR kodo. </string>
+    <string name="qrcode_exists">QR koda že registrirana. </string>
+    <string name="qrcode_saved">Nova QR koda shranjena. </string>
+    <string name="qrcode">Qr koda</string>
+    <string name="qrcode_new_found">Zaznana nova QR koda, dodajte jo v nastavitvah.</string>
+    <string name="qr_code_disabled">QR koda onemogočena, omogočite v nastavitvah.</string>
+    <string name="noSwitchSelected_explanation_qrcode">Da bi zajem QR kode uspel, mora biti s QR kodo povezano stikalo</string>
+    <string name="permission_camera_rationale">Dostop do kamere je potreben za zaznavo</string>
+    <string name="low_storage_error">Odvisnosti QR kode ne morejo biti prenesene zaradi pomanjkanja prostora na napravi</string>
+    <string name="no_camera_permission">Aplikacija ne more delovati ker nima dostopa do kamere. Izhod iz aplikacije.</string>
+    <!-- Scenes -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_scenes">Scene</string>
+    <!-- Security -->
+    <string name="title_security_panel">Varnostna plošča</string>
+    <string name="security_pin">Pin Koda</string>
+    <string name="security_disarm">Izklop</string>
+    <string name="security_arm_home">Vklop prisoten</string>
+    <string name="security_arm_away">Vklop Odsoten</string>
+    <string name="security_wrong_code">Napačna koda!</string>
+    <string name="security_no_rights">You do not have the rights for this action!</string>
+    <string name="security_generic_error">Ne morem spremeniti stanja zaščite</string>
+    <string name="security_wrong_password_fingerprint">Vnesli ste napačno geslo, vaše domoticz geslo je nadomestno geslo, pri nedelovanju prstnega odtisa...!</string>
+    <string name="show_password">Pokaži geslo</string>
+    <string name="fingerprint_make_sure">We need to make sure its you</string>
+    <string name="fingerprint_dialog_description">Touch your finger on the fingerprint sensor to authorise your account.</string>
+    <!-- Server -->
+    <string name="choose_server">Izberite strežnik</string>
+    <string name="dont_save_new_server">Ne želite shraniti novega strežnika?</string>
+    <string name="server_must_be_unique">Ime strežnika mora biti unikatno</string>
+    <string name="switch_to_server">"Povezujem se na %1$s"</string>
+    <string name="cant_disable_default_server">Privzetega strežnika ni mogoče izklopiti</string>
+    <!-- Settings -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="settingsActivity_name">Nastavitve</string>
+    <string name="cameraActivity_name">Fotoaparat</string>
+    <!--        Categories             -->
+    <string name="category_generic">Splošno</string>
+    <string name="category_wear">Android Wear</string>
+    <string name="category_auto">Android avtomobil</string>
+    <string name="category_server">Strežnik</string>
+    <string name="category_geofencing">Geolokacija</string>
+    <string name="category_info">Informacija</string>
+    <string name="category_advanced">Napredno</string>
+    <string name="category_language">Jezik</string>
+    <string name="category_talk_back">Talk Back</string>
+    <string name="category_notification">Obvestila</string>
+    <string name="category_debug">Razhroščevanje</string>
+    <string name="category_export">Izvozi/uvozi nastavitve</string>
+    <string name="category_theme">Tema</string>
+    <string name="category_clock">Clock</string>
+    <string name="category_nfc">NFC povezave</string>
+    <string name="category_startup_security">Varnost</string>
+    <string name="category_account">Računi</string>
+    <string name="category_QRCode">QR koda</string>
+    <string name="category_bluetooth">Bluetooth</string>
+    <string name="category_wifi">Wifi</string>
+    <string name="category_Speech">Govor</string>
+    <string name="category_Reset">Ponastavitev</string>
+    <string name="category_help">Contribute</string>
+    <!--        Generic settings       -->
+    <string name="startup_screen">Začetno okno</string>
+    <string name="enable_items">Omogoči/onemogoči predmete</string>
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Sorting</string>
+    <string name="sort_server_on">Sort devices like sorted on the server</string>
+    <string name="sort_custom_on">Custom sorting, drag and drop devices to sort them</string>
+    <string name="sort_lock_server_title">Lock</string>
+    <string name="sort_lock_custom_on">Lock the current custom sorting (disable drag/drop)</string>
+    <string name="sort_dashboardLikeServer_off">Razvrsti namizje po abecednem redu</string>
+    <string name="extra_data_title">Dodatne informacije namizja</string>
+    <string name="show_extra_data_on">Na namizju pokaži dodatne informacije</string>
+    <string name="show_extra_data_off">Skrij dodatne informacije namizja</string>
+    <string name="always_on_title">Preprečevanje zaklepanja</string>
+    <string name="always_on_on">Prečevanje zaklepanja zaslona</string>
+    <string name="always_on_off">Izklop preprečevanja zaklepanja</string>
+    <string name="always_auto_refresh">Samodejna osvežitev</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
+    <string name="switch_buttons_title">Stikala</string>
+    <string name="switch_buttons_on">Pokaži stikala z on/off stikali</string>
+    <string name="switch_buttons_off">Pokaži stikala z on/off gumbi</string>
+    <string name="dashboard_list_title">Mreža na nadzorni plošči</string>
+    <string name="show_dashboard_list_on">Pokaži nadzorno ploščo kot seznam</string>
+    <string name="show_dashboard_list_off">Pokaži nadzorno ploščo kot mrežo</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
+    <string name="dashboard_camera">Camera</string>
+    <string name="show_dashboard_camera">Load the camera for connected switches</string>
+    <!--        Wear settings       -->
+    <string name="enable_wear_select">Android Wear pripomočki po meri</string>
+    <string name="custom_wear_select">Izberi Android Wear stikala</string>
+    <string name="custom_wear_select_desc">Izberite stikala, katera naj bodo vidna na Android Wear napravi</string>
+    <string name="wear_custom_on">Omogoči Andorid Wear pripomočke po meri</string>
+    <string name="wear_custom_off">Onemogoči Andorid Wear pripomočke po meri</string>
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Omogoči Android Wear avtomatska obvestila</string>
+    <string name="auto_custom_off">Onemogoči Android Wear avtomatska obvestila</string>
+    <!--        Geofencing settings -->
+    <string name="geofencing_configure">Nastavi Geolokacijo</string>
+    <!--        Theming settings -->
+    <string name="config_theme">Nastavi temo</string>
+    <string name="set_dark_theme">Nastavi temno temo</string>
+    <string name="set_light_theme">Nastavi svetlo temo</string>
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">Naj Domoticz govori z vami</string>
+    <string name="set_talk_back_off">Izključi govorna obvestila</string>
+    <!--        Import/Export settings  -->
+    <string name="settings_imported">Nastavitve uvožene, znova zaženite Domoticz</string>
+    <string name="settings_import_failed">Neuspešen uvoz nastavitev</string>
+    <string name="settings_exported">Nastavitve izvožene, znova zaženite Domoticz</string>
+    <string name="settings_export_failed">Neuspešen izvoz nastavitev</string>
+    <!--        Preference screens      -->
+    <string name="server_settings">Nastavitve povezave strežnika</string>
+    <string name="server_force_fetch_config">Pridobi nastavitev strežnika</string>
+    <string name="nfc_settings">Nastavitev NFC povezave</string>
+    <string name="speech_settings">Nastavi govorne ukaze</string>
+    <string name="title_activity_server_settings">Nastavitve strežnika</string>
+    <string name="multi_server">Več strežnikov</string>
+    <string name="enable_nfc">Omogoči NFC</string>
+    <string name="enable_speech">Omogoči prepoznavo govora</string>
+    <string name="export_settings">Izvoz nastavitev</string>
+    <string name="reset_settings">Ponastavite vse nastavitve aplikacije (OPOZORILO!)</string>
+    <string name="import_settings">Uvoz nastavitev</string>
+    <string name="multi_server_settings">Omogči podporo več strežnikom</string>
+    <string name="nfc_enable_settings">Omogoči NFC povezave</string>
+    <string name="speech_enable_settings">Omogoči prepoznavo govora</string>
+    <string name="server">Strežnik</string>
+    <string name="qrcode_settings">Nastavitev QR kod</string>
+    <string name="enable_qrcode">Omogoči QR kode</string>
+    <string name="qrcode_enable_settings">Omogoči funkcionalnost QR kod</string>
+    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+    <string name="beacon_settings">Setup Beacons</string>
+    <string name="enable_beacon">Enable Beacon functionality</string>
+    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
+    <string name="translate_title">Translations</string>
+    <string name="security_settings">Nastavitev varnosti</string>
+    <string name="enable_security">Omogoči prstni odtis ob zagonu</string>
+    <string name="disable_security">Onemogoči prstni odtis ob zagonu</string>
+    <string name="setup_fingerprints">Nastavi prstni odtise prako nastavitev v Android-u</string>
+    <string name="fingerprint_not_supported">Prstni odtis ni podprt v tej napravi</string>
+    <string name="fingerprint_not_setup_in_android">Najprej nastavite/povežite prstni odtis s to napravo</string>
+    <string name="fingerprint_sure">Ste prepričani? Rezervno geslo je geslo vašega Domoticz računa.</string>
+    <!--        Widgets     -->
+    <string name="category_widgets">Vtičniki (BETA)</string>
+    <string name="widget_description">Omogoči ali onemogoči vtičnike na tej napravi</string>
+    <string name="widget_disabled">Vtičniki na tej napravi niso omogočene, preverite nastavitve Domoticz-a</string>
+    <string name="widget_warning">Pripomočki so trenutno v testnem obdobju in verjetno vsebujejo nekatere napake. Uporaba na lastno odgovornost! To lahko povzroči povečano porabo podatkov / akumulatorja...</string>
+    <!--        GCM settings      -->
+    <string name="notification_settings_id">ID sporočil Google oblačnih storitev</string>
+    <string name="notification_settings_push">Potisnite svoj registracijski ID na Domoticz</string>
+    <string name="notification_settings_pushed">Vaša registracijski ID je sedaj shranjen v Domoticz</string>
+    <string name="notification_settings_push_failed">Vašega registracijskega ID ni bilo mogoče shraniti v Domoticz. Prosim poskusite znova pozneje.</string>
+    <string name="notification_show_title">Zadnja obvestila</string>
+    <string name="notification_show_nothing">Brez obvestil</string>
+    <string name="notification_show">Prikaži zadnjih nekaj obvestil</string>
+    <!--        Notification settings      -->
+    <string name="overwrite_notifications_title">Prepiši obvestila</string>
+    <string name="overwrite_notifications">Prepiši prejšnjega obvestila na tej napravi</string>
+    <string name="enable_notifications_title">Omogoči obvestila</string>
+    <string name="enable_notifications">Omogoči obvestila na tej napravi</string>
+    <string name="notification_screen_title">Nastavitve obvestil</string>
+    <string name="notification_history">Notification history</string>
+    <string name="notification_inbox">Inbox</string>
+    <string name="notification_vibrate_title">Vibriraj</string>
+    <string name="notification_vibrate_on">Vibriraj, ko prejmeš obvestilo</string>
+    <string name="notification_vibrate_off">Ne vibriraj</string>
+    <string name="notification_sound_title">Zvok</string>
+    <string name="notification_sound_summary">Ko prispe obvestilo, uporabi zvok obvestila</string>
+    <string name="suppress_notifications_select">Izberi katera obvestila naj bodo utišana</string>
+    <string name="suppress_notifications">Utiša izbrana obvestila na tej napravi</string>
+    <string name="suppress_notifications_title">Utišaj obvestila</string>
+    <string name="alarm_notifications_select">Izberite obvestila za alarmiranje</string>
+    <string name="alarm_notifications">Zvočni alarm ob določenih obvestilih</string>
+    <string name="clear_notifications">Pobriši dnevnik obvestil</string>
+    <string name="alarm_notifications_title">Alarmna sporočila</string>
+    <string name="alarm">Alarm</string>
+    <string name="alarmtimer_title">Časovnik alarma</string>
+    <string name="alarmtimer">Število sekund pred sproženjem alarma</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Default</string>
+    <string name="theme_daynight">Day/Night</string>
+    <string name="theme_orange">Orange</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_blue">Blue</string>
+    <string name="theme_green">Green</string>
+    <string name="theme_dark_blue">Dark blue</string>
+    <!-- Other -->
+    <string name="default_values">Privzete vrednosti</string>
+    <string name="default_values_min_error">Maksimalna vrednost naj bo višja kot minimalna vrednost</string>
+    <string name="default_values_max_error">Maksimalna vrednost naj bo višja kot minimalna vrednost</string>
+    <!--        Information category       -->
+    <string name="info_version">Različica</string>
+    <string name="info_domoticz_version">Različica Domoticz</string>
+    <string name="info_about">O Domoticz</string>
+    <string name="info_credits">Zasluge</string>
+    <string name="info_credits_text">Domoticz za Android je mogoč z uporabo odprtih knjižnic</string>
+    <!--        Debug category       -->
+    <string name="debug_switch_title">Razhroščevanje</string>
+    <string name="debug_switch_summary_on">Razhroščevanje vključeno</string>
+    <string name="debug_switch_summary_off">Razhroščevanje izključeno</string>
+    <!--        Geo settings activity       -->
+    <string name="error_atLeastOneItemInDrawer">Vsa en predmet mora biti v predalniku</string>
+    <!--        Server update category       -->
+    <string name="title_activity_update">Posodobi strežnik</string>
+    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
+    <string name="error_couldNotCheckForUpdates">"Ni bilo mogoče preveriti posodobitve: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"Ne morem naložiti nastavitev Domoticz strežnika: %1$s"</string>
+    <string name="update_available_enhanced">Mogoča nadgradnja strežnika: %1$s na %2$s</string>
+    <string name="check_for_update_title">Preveri posodobitve</string>
+    <string name="check_for_update">Bi radi preverili ali obstajajo posodobitve sistema Domoticz?</string>
+    <string name="update_server_warning">Medtem ko se strežnik posodablja, aplikacija ne bo delovala pravilno.</string>
+    <string name="update_server_downloadNotReady1">Posodobitev še ni (popolnoma) prenesena.</string>
+    <string name="update_server_downloadNotReady2">Prosimo poizkusite pozneje.</string>
+    <string name="server_update_available">Posodobitev strežnika na voljo</string>
+    <string name="update_server">Posodobi strežnik</string>
+    <string name="server_update_revision">Revizija posodobitve strežnika</string>
+    <string name="server_version">Različica strežnika</string>
+    <string name="server_update">Posodobitev strežnika</string>
+    <string name="please_wait_while_we_check">Počakajte dokler preverjamo, če je vaš strežnik pripravljen za posodobitev</string>
+    <string name="server_update_not_ready">Posodobitev strežnika ni prenesena</string>
+    <string name="please_wait_while_server_updated">Prosimo počakajte, dokler se strežnik posodablja.</string>
+    <string name="server_update_done">Posodobitev strežnika je končana</string>
+    <string name="update_not_started">Posodobitev se ni začela</string>
+    <string name="update_not_started_unknown_error">Posodobitev se ni začela zaradi neznane napake</string>
+    <string name="server_update_not_available">Posodobitev strežnika ni na voljo</string>
+    <string name="click_to_update_server">Kliknite tukaj, če želite posodobiti strežnik</string>
+    <string name="debug_test_text">Razhroščevalni test</string>
+    <string name="restart_required_title">Potreben je vnovičen zagon</string>
+    <string name="restart_now">Ponovni zagon zdaj?</string>
+    <string name="check_settings">Check your settings</string>
+    <string name="report_error">Report an error</string>
+    <string name="support">Support</string>
+    <!-- Speech -->
+    <string name="Speech_not_supported">Govor v tej napravi ni podprt</string>
+    <string name="Speech_register">Regisrirajte govorni ukaz</string>
+    <string name="Speech_found">Najden nov govorni ukaz</string>
+    <string name="Speech_edit">Urejanje govornih ukazov</string>
+    <string name="Speech_name">Poimenuj govorni ukaz s primernim imenom.</string>
+    <string name="Speech_exists">Govorni ukaz je že registriran. </string>
+    <string name="Speech_saved">Shranite nov govorni ukaz.</string>
+    <string name="Speech_desc">Ustvarite nov govorni ukaz.</string>
+    <string name="Speech">Govor</string>
+    <string name="Speech_disabled">Govorni ukaz onemogočen, prosim nastavite v nastavitvah.</string>
+    <string name="noSwitchSelected_explanation_Speech">Da bi govorni ukaz imel učinek, mora biti povezan s stikalom</string>
+    <!-- Switches -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_switches">Stikala</string>
+    <string name="txt_notAvailable">Ni na voljo</string>
+    <string name="idx">IDX, ident naprave</string>
+    <string name="placeholder_value">255</string>
+    <string name="color_set">Barva za</string>
+    <string name="state_set">Stanje za</string>
+    <string name="error_favorite">Ni bilo mogoče nastaviti priljubljenih</string>
+    <string name="error_logs">Ni dnevnikov za prikaz</string>
+    <string name="error_color">Ne morem spremeniti barve</string>
+    <string name="error_state">Ne morem spremeniti stanja</string>
+    <string name="error_timer">Ne morem prikazati časovnikov</string>
+    <string name="error_notifications">Ne morem prikazati obvestil</string>
+    <string name="set_level_switch">"Nastavitev ravni za stikalo: %1$s %2$d"</string>
+    <!-- Temperature -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_temperature">Temperatura</string>
+    <string name="cancel_override">Prekliči zaobhajanje</string>
+    <string name="wind">Veter</string>
+    <string name="error_log">Ne morem dobiti zapis dnevnika za</string>
+    <string name="follow_schedule">Sledi urniku</string>
+    <!-- Timer -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="command">Ukaz</string>
+    <string name="type">Vrsta</string>
+    <string name="notapplicable">Ni na voljo</string>
+    <string name="timer_before_sunset">Pred sončnim zahodom</string>
+    <string name="timer_after_sunset">Po sončnem zahodu</string>
+    <string name="timer_ontime">Točno</string>
+    <string name="timer_before_sunrise">Pred sončnim vzhodom</string>
+    <string name="timer_after_sunrise">Po sončnem vzhodu</string>
+    <string name="timer_fixed">Določen datum/čas</string>
+    <string name="odd_day_numbers">Sodi dnevi</string>
+    <string name="even_day_numbers">Lihi dnevi</string>
+    <string name="odd_week_numbers">Sodi tedni</string>
+    <string name="even_week_numbers">Lihi tedni</string>
+    <string name="monthly">Mesečno</string>
+    <string name="monthly_weekday">Mesečno (dan tedna)</string>
+    <string name="yearly">Letno</string>
+    <string name="yearly_weekday">Letno (ob delovnikih)</string>
+    <string name="before_sun_at_south">Before Sun at South</string>
+    <string name="after_sun_at_south">After Sun at South</string>
+    <string name="before_civil_twilight_start">Before Civil Twilight Start</string>
+    <string name="after_civil_twilight_start">After Civil Twilight Start</string>
+    <string name="before_civil_twilight_end">Before Civil Twilight End</string>
+    <string name="after_civil_twilight_end">After Civil Twilight End</string>
+    <string name="before_nautical_twilight_start">Before Nautical Twilight Start</string>
+    <string name="after_nautical_twilight_start">After Nautical Twilight Start</string>
+    <string name="before_nautical_twilight_end">Before Nautical Twilight End</string>
+    <string name="after_nautical_twilight_end">After Nautical Twilight End</string>
+    <string name="before_austronomical_twilight_start">Before Austronomical Twilight Start</string>
+    <string name="after_austronomical_twilight_start">After Austronomical Twilight Start</string>
+    <string name="before_austronomical_twilight_end">Before Austronomical Twilight End</string>
+    <string name="after_austronomical_twilight_end">After Austronomical Twilight End</string>
+    <string name="timer_every_days">Vsak dan</string>
+    <string name="timer_working_days">Delovni dnevi</string>
+    <string name="timer_weekend">Vikend</string>
+    <string name="timer_other">Drugo</string>
+    <string name="timers">Časovniki</string>
+    <string name="first">First</string>
+    <string name="second">Second</string>
+    <string name="third">Third</string>
+    <string name="fourth">Fourth</string>
+    <string name="last">Last</string>
+    <!-- Utilities -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_utilities">Pripomočki</string>
+    <string name="set_temperature">Nastavi</string>
+    <!-- Vars -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_vars">Uporabniške spremenljivke</string>
+    <string name="var_input">Vhodno vrednost ni veljavna</string>
+    <string name="var_input_error">Ni bilo mogoče posodobiti uporabniške spremenljivke</string>
+    <!-- Weather -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_weather">Vreme</string>
+    <string name="dewPoint">Rosišče</string>
+    <string name="temp">Temperatura</string>
+    <string name="pressure">Tlak</string>
+    <string name="chill">Mraz</string>
+    <string name="direction">Smer</string>
+    <string name="humidity">Vlažnost</string>
+    <string name="speed">Hitrost</string>
+    <string name="forecast">Vremenska napoved</string>
+    <string name="rain">Dež</string>
+    <string name="rainrate">Stopnja padavin</string>
+    <string name="co2">CO2</string>
+    <string name="co2min">Najnižja stopnja CO2</string>
+    <string name="co2max">Najvišja stopnja CO2</string>
+    <!-- Welcome -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="welcome_title_activity_welcome">Dobrodošli</string>
+    <string name="welcome_info_domoticz">Domoticz je sistem za avtomatizacijo doma, ki vam omogoča
+        spremljanje in konfiguriranje različnih naprav, kot so
+        luči, stikala, različni senzorji/merilniki kot npr. temperatura, padavine, veter, UV sevanje, elektrika, plin, voda in še veliko več.
+        Obvestila/opozorila lahko pošlje na vseh mobilne naprave.</string>
+    <string name="welcome_info_swipe">Potegnite desno ali uporabite navigacijski gumb na dnu za nadaljevanje</string>
+    <string name="welcome_info_settings1">Na naslednji strani so Domoticz nastavitve.</string>
+    <string name="welcome_info_settings2">        Določite lahko lokalne ali oddaljene strežniške nastavitve.
+        Lokalne nastavitve so namenjene uporabi v domačem omrežju.
+        Oddaljene nastavitve so namenjene uporabi izven domačega omrežja ali
+        v mobilnem podatkovnem omrežju (2G, 3G, 4G itd).</string>
+    <string name="welcome_info_checkingConnection">Preverjam nastavitve povezave</string>
+    <string name="welcome_msg_connectionDataIncomplete">Podatki povezave, nepopolni ali prazni</string>
+    <string name="welcome_msg_connectionDataInvalid">URL ni treba začeti s http</string>
+    <string name="welcome_msg_correctOnPreviousPage">Popravite podatke na prejšnji strani</string>
+    <string name="welcome_msg_serverVersion">Različica Domoticz</string>
+    <string name="welcome_msg_numberOfDevices">najdene naprave %1$d</string>
+    <string name="welcome_msg_no_ssid_found">WiFi SSID ni na voljo</string>
+    <string name="welcome_ssid_spinner_prompt">Izberite domači SSID</string>
+    <string name="welcome_ssid_button_prompt">Dodajte domači SSID</string>
+    <string name="welcome_server_settings_title">Nastavitve strežnika</string>
+    <string name="welcome_server_startScreen">Začetno okno</string>
+    <string name="welcome_button_next">naprej</string>
+    <string name="welcome_button_previous">nazaj</string>
+    <string name="welcome_button_finish">končaj</string>
+    <string name="welcome_remote_server_address">Naslov strežnika</string>
+    <string name="welcome_remote_server_protocol">Protokol</string>
+    <string name="welcome_remote_server_port">Vrata</string>
+    <string name="welcome_remote_server_username">Uporabniško ime</string>
+    <string name="welcome_remote_server_password">Geslo</string>
+    <string name="welcome_remote_server_directory">Mapa</string>
+    <string name="remote">Oddaljeno</string>
+    <string name="local">Lokalno</string>
+    <string name="servername">Ime strežnika</string>
+    <string name="welcome_local_server_used_switch_title">Drug naslov strežnika</string>
+    <string name="welcome_local_server_used_switch_summary">Uporabite drug naslov za lokalno povezavo</string>
+    <string name="welcome_advancedSettings">Napredne nastavitve strežnika</string>
+    <string name="welcome_advancedSettings_summary">Uporabljeno samo ob nestandardnih nastavitvah strežnika Domoticz</string>
+    <string name="welcome_local_server_ssid">Lokalni WiFi SSID</string>
+    <string name="welcome_local_server_address">Naslov lokalnega strežnika</string>
+    <string name="welcome_local_server_protocol">Lokalni protokol</string>
+    <string name="welcome_local_server_port">Lokalna vrata</string>
+    <string name="welcome_local_server_directory">Lokalna mapa (pustite prazno, če ni v uporabi)</string>
+    <string name="welcome_local_server_username">Lokalno uporabniško ime (pustite prazno, če ni v uporabi)</string>
+    <string name="welcome_local_server_password">Lokalni geslo (pustite prazno, če ni v uporabi)</string>
+    <string-array name="remote_server_protocols">
+        <item>HTTP</item>
+        <item>HTTPS</item>
+    </string-array>
+    <!-- Widgets -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="pick_device_title">Označite napravo</string>
+    <string name="choose_switch">Izberite napravo</string>
+    <string name="failed_to_get_securitypanel">Stikalo nima varnostne nastavitve</string>
+    <string name="failed_to_get_switches">Ni uspelo pridobiti naprave</string>
+    <string name="failed_toggle_switch">Ni uspelo preklopiti naprave</string>
+    <string name="switch_toggled">"Preklopi napravo"</string>
+    <string name="text_loading">Nalagam...</string>
+    <string name="text_go">POJDI</string>
+    <string name="widget_background">Ozadje</string>
+    <string name="widget_dark">Temno</string>
+    <string name="widget_light">Svetlo</string>
+    <string name="widget_transparent_dark">Prosojno temno</string>
+    <string name="widget_transparent_light">Prosojno svetlo</string>
+    <!-- Wifi -->
+    <string name="wifi_not_supported">Wifi is not supported on this device</string>
+    <string name="wifi_register">Connect a wifi ssid</string>
+    <string name="wifi_found">New wifi access point found</string>
+    <string name="wifi_edit">Edit wifi access point</string>
+    <string name="wifi_name">Give this access point a proper name. </string>
+    <string name="wifi_desc">Check the list of paired access point. </string>
+    <string name="wifi_exists">This access point already configured on Domoticz. </string>
+    <string name="wifi_turned_off">Wifi needs to be turned on in your device settings. </string>
+    <string name="wifi_saved">Saved a new access point connection. </string>
+    <string name="wifi_settings">Setup access points</string>
+    <string name="enable_wifi">Enable Wifi functionality</string>
+    <string name="wifi_disabled">Wifi automation disabled, please setup via settings.</string>
+    <string name="noSwitchSelected_explanation_wifi">For an access point to automate something in Domoticz, a switch should be linked to an access point.</string>
+    <string name="title_notification_wifi">Enable Notifications</string>
+    <string name="description_notification_wifi">Show notifications when you connect or disconnect a wifi access point.</string>
+    <string name="wifi_connected_to">"Connected to %1$s"</string>
+    <string name="wifi_disconnected_to">Disconnected to  %1$s</string>
+    <string name="wifi_connected_to_text">Connected to one of the registed access points.</string>
+    <string name="wifi_disconnected_to_text">Disconnected to one of the registed access points.</string>
+    <!-- Wizard -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_wizard">Čarovnik ob dobrodošlici</string>
+    <string name="wizard_welcome">Dobrodošli</string>
+    <string name="wizard_welcome_description">Domoticz je zelo lahek sistem za avtomatizacijo doma, ki vam omogoča spremljanje in konfiguriranje različnih naprav.</string>
+    <string name="wizard_favorites">Priljubljene</string>
+    <string name="wizard_favorites_description">Naprave lahko dodate na nadzorno ploščo tako, da jih shranite kot priljubljene. Dolgo kliknite element in ga shranite kot priljubljenega!</string>
+    <string name="wizard_startup">Začetno okno</string>
+    <string name="wizard_startup_description">V nastavitvah lahko nastavite vaš začenti zaslon!</string>
+    <string name="wizard_notifications">Nastavitev obvestil</string>
+    <string name="wizard_notifications_description">V vaši Android napravi lahko zdaj prejemate obvestila! V nastavitvah spremenite obnašanje obvestil</string>
+    <string name="wizard_multiserver">Z uporabo več strežnikov</string>
+    <string name="wizard_multiserver_description">V nastavitvah lahko nastavite več Domoticz strežnikov.</string>
+    <string name="wizard_geo">Geolokacija</string>
+    <string name="wizard_geo_description">V nastavitvah lahko nastavite vaš začenti zaslon!</string>
+    <string name="wizard_wear">Android Wear</string>
+    <string name="wizard_wear_description">Določite lahko, katera stikala bi radi preklapljali, na vaši Android Wear napravi!</string>
+    <string name="wizard_auto">Android avtomobil</string>
+    <string name="wizard_auto_description">Prejmite Domoticz obvestila na vaši Android Wear napravo!</string>
+    <string name="wizard_graph">Grafi</string>
+    <string name="wizard_graph_description">Na orodja, vreme ali temperaturo lahko nastavite graf zgodovine!</string>
+    <string name="wizard_filter">Filtri</string>
+    <string name="wizard_filter_description">Naprave lahko razvrščate po statusu (on/off). Izberite primerni filter desno zgoraj!</string>
+    <string name="wizard_widgets">Vtičniki!!</string>
+    <string name="wizard_widgets_description">Vtičnike lahko dodate na domači zaslon!</string>
+    <string name="wizard_menuitem">Onemogočite čarovnika</string>
+    <string name="wizard_menuitem_description">Čarovnika lahko sedaj umaknete iz navigacijskega menija!</string>
+    <string name="wizard_nfc">NFC</string>
+    <string name="wizard_nfc_description">Preko NFC lahko preklapljate stikala!</string>
+    <string name="wizard_bluetooth_description">You are able to toggle switches via Bluetooth connections!</string>
+    <string name="wizard_qrcode">Qr koda</string>
+    <string name="wizard_qrcode_description">Preklopite stikalo s posnetkom QR koda (ali črtne kode)!</string>
+    <string name="wizard_speech">Govorni ukazi</string>
+    <string name="wizard_speech_description">Preklapljajte stikala z glasom! Nastavite govorne ukaze preko nastavitev in priključite stikala.</string>
+    <string name="wizard_button_nice">Lepo</string>
+    <string name="wizard_button_switches">Stikala</string>
+    <string name="wizard_button_settings">Nastavitve</string>
+    <string name="wizard_button_wizard">Remove</string>
+    <string name="wizard_button_utilities">Pripomočki</string>
+    <string name="wizard_button_done">Končano</string>
+    <string name="wizard_beacon_description">Toggle switches by scanning for beacons!</string>
 </resources>

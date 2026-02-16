@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2015 Domoticz - Mark Heinis
- *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- */
 
 package nl.hnogames.domoticz.app;
 
@@ -87,6 +67,7 @@ import nl.hnogames.domoticz.containers.BeaconInfo;
 import nl.hnogames.domoticz.containers.NotificationInfo;
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.interfaces.SubscriptionsListener;
+import nl.hnogames.domoticz.utils.FirebaseConfigHelper;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
@@ -152,10 +133,14 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
     public void onCreate() {
         super.onCreate();
 
-        registerActivityLifecycleCallbacks(new AppLifecycleTracker());
-
+        // CRITICAL: Initialize Firebase FIRST before anything else
+        // This must happen before FirebaseInstanceIdService tries to get the default instance
         mInstance = this;
         mSharedPrefs = new SharedPrefUtil(this);
+        initializeUserFirebase();
+
+        registerActivityLifecycleCallbacks(new AppLifecycleTracker());
+
         Scoop.waffleCone()
                 .addFlavor(getString(R.string.theme_default), R.style.AppThemeDefault, true)
                 .addDayNightFlavor(getString(R.string.theme_daynight), R.style.AppThemeMain)
@@ -492,6 +477,30 @@ public class AppController extends MultiDexApplication implements BootstrapNotif
             jsonValue = counter;
         }
         return jsonValue;
+    }
+
+    /**
+     * Initialize Firebase with user configuration if available
+     * MUST be called as the first thing in onCreate() to prevent crashes
+     */
+    private void initializeUserFirebase() {
+        if (mSharedPrefs.hasFirebaseConfig()) {
+            Log.d(TAG, "Initializing Firebase with user configuration");
+            FirebaseConfigHelper.initializeFirebase(this, mSharedPrefs);
+        } else {
+            Log.w(TAG, "No Firebase configuration found - push notifications will not work");
+            Log.w(TAG, "Please configure Firebase in Settings -> Notifications -> Firebase Settings");
+        }
+    }
+
+    /**
+     * Restart the app
+     */
+    public void restartApp() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     public class AppLifecycleTracker implements Application.ActivityLifecycleCallbacks {
