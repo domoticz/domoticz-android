@@ -27,8 +27,9 @@
         <item>@string/title_scenes</item>
         <item>@string/title_temperature</item>
         <item>@string/title_weather</item>
-        <item>@string/title_plans</item>
         <item>@string/title_utilities</item>
+        <item>@string/title_energy</item>
+        <item>@string/title_plans</item>
         <item>@string/title_cameras</item>
     </string-array>
 
@@ -65,6 +66,7 @@
         <item>@string/title_temperature</item>
         <item>@string/title_weather</item>
         <item>@string/title_utilities</item>
+        <item>@string/title_energy</item>
         <item>@string/title_plans</item>
         <item>@string/title_cameras</item>
     </string-array>
@@ -77,6 +79,7 @@
         <item>nl.hnogames.domoticz.fragments.Temperature</item>
         <item>nl.hnogames.domoticz.fragments.Weather</item>
         <item>nl.hnogames.domoticz.fragments.Utilities</item>
+        <item>nl.hnogames.domoticz.fragments.Energy</item>
         <item>nl.hnogames.domoticz.fragments.Plans</item>
         <item>nl.hnogames.domoticz.fragments.Cameras</item>
     </string-array>
@@ -89,6 +92,7 @@
         <item>gmd_opacity</item>
         <item>gmd_wb_sunny</item>
         <item>gmd_dvr</item>
+        <item>gmd_flash_on</item>
         <item>gmd_location_city</item>
         <item>gmd_camera</item>
         <item>gmd_bug_report</item>

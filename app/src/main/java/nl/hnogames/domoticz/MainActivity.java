@@ -1000,7 +1000,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
         for (int i = 0; i < drawerActions.length; i++) {
             if ((fragments[i].contains("fragments.Plans")) ||
-                    (fragments[i].contains("fragments.Utilities") && (mConfigInfo != null && mConfigInfo.isEnableTabUtility())))
+                    (fragments[i].contains("fragments.Utilities") && (mConfigInfo != null && mConfigInfo.isEnableTabUtility())) ||
+                    (fragments[i].contains("fragments.Energy")))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         }
 
