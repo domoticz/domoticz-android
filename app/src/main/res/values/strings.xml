@@ -150,6 +150,7 @@
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
     <string name="background_location_warning">This app collects location data to enable for geofencing services within this app, even when the app is closed or not in use.</string>
+
     <!-- Firebase Configuration -->
     <string name="firebase_settings_title">Firebase Configuration</string>
     <string name="firebase_settings">Firebase Settings</string>
@@ -314,6 +315,15 @@
     <!-- Dashboard -->
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="title_dashboard">Dashboard</string>
+    <string name="title_energy">Energy</string>
+    <string name="energy_flow">Energy Flow</string>
+    <string name="energy_p1">P1 Smart Meter</string>
+    <string name="energy_solar">Solar Panels</string>
+    <string name="energy_battery">Battery</string>
+    <string name="energy_gas">Gas</string>
+    <string name="energy_water">Water</string>
+    <string name="energy_outside_temp">Outside Temperature</string>
+    <string name="energy_coming_soon">Energy dashboard coming soon</string>
     <string name="delivery">Delivery</string>
     <string name="usage">Usage</string>
     <string name="today">Today</string>
