@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -49,6 +50,9 @@ public class Energy extends DomoticzCardFragment implements DomoticzFragmentList
     private TextView txtExtra1Value, txtExtra2Value, txtExtra3Value;
     private EnergyFlowView energyFlowView;
 
+    // ImageViews for dynamic extra icons
+    private ImageView imgGasIcon, imgWaterIcon, imgExtra1Icon, imgExtra2Icon, imgExtra3Icon;
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -90,6 +94,13 @@ public class Energy extends DomoticzCardFragment implements DomoticzFragmentList
         txtExtra1Value = view.findViewById(R.id.txt_extra1_value);
         txtExtra2Value = view.findViewById(R.id.txt_extra2_value);
         txtExtra3Value = view.findViewById(R.id.txt_extra3_value);
+
+        // ImageViews
+        imgGasIcon = view.findViewById(R.id.img_gas_icon);
+        imgWaterIcon = view.findViewById(R.id.img_water_icon);
+        imgExtra1Icon = view.findViewById(R.id.img_extra1_icon);
+        imgExtra2Icon = view.findViewById(R.id.img_extra2_icon);
+        imgExtra3Icon = view.findViewById(R.id.img_extra3_icon);
 
         setTheme();
         return view;
@@ -150,6 +161,8 @@ public class Energy extends DomoticzCardFragment implements DomoticzFragmentList
                     if (getActivity() != null) {
                         getActivity().runOnUiThread(() -> {
                             Log.d(TAG, "Energy dashboard loaded: " + dashboard.toString());
+                            // Apply icons for extras based on API settings
+                            applyExtraIcons();
                             loadDeviceData();
                         });
                     }
@@ -173,6 +186,113 @@ public class Energy extends DomoticzCardFragment implements DomoticzFragmentList
         } catch (Exception ex) {
             Log.e(TAG, "Exception getting energy dashboard: " + ex.getMessage());
         }
+    }
+
+    private void applyExtraIcons() {
+        if (energyDashboard == null || !isAdded()) return;
+
+        // Gas icon (idGas) - use extra icon mapping if set, otherwise keep mode_heat as default
+        try {
+            String gasIcon = null;
+            // Domoticz ESettings may not include a separate icon for gas; keep default
+            if (gasIcon != null && imgGasIcon != null) {
+                int res = getDrawableIdForIcon(gasIcon);
+                if (res != 0) imgGasIcon.setImageResource(res);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "applyExtraIcons gas: " + e.getMessage());
+        }
+
+        // Water icon remains drop by default, but allow override if API supplies icon for extras
+        try {
+            if (imgWaterIcon != null) {
+                // keep default (drop) - no API icon for water in ESettings
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "applyExtraIcons water: " + e.getMessage());
+        }
+
+        // Extra1
+        try {
+            if (imgExtra1Icon != null) {
+                String icon = energyDashboard.getExtra1Icon();
+                int res = getDrawableIdForIcon(icon);
+                if (res != 0) imgExtra1Icon.setImageResource(res);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "applyExtraIcons extra1: " + e.getMessage());
+        }
+
+        // Extra3 (extra2 currently unused in layout)
+        try {
+            if (imgExtra3Icon != null) {
+                String icon = energyDashboard.getExtra3Icon();
+                int res = getDrawableIdForIcon(icon);
+                if (res != 0) imgExtra3Icon.setImageResource(res);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "applyExtraIcons extra3: " + e.getMessage());
+        }
+
+        // Extra2
+        try {
+            if (imgExtra2Icon != null) {
+                String icon = energyDashboard.getExtra2Icon();
+                int res = getDrawableIdForIcon(icon);
+                if (res != 0) imgExtra2Icon.setImageResource(res);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "applyExtraIcons extra2: " + e.getMessage());
+        }
+    }
+
+    private int getDrawableIdForIcon(String iconName) {
+        if (iconName == null || iconName.trim().isEmpty()) {
+            // fallback icon (use a small built-in or app drawable)
+            int fallback = getResources().getIdentifier("factory_24px", "drawable", mContext.getPackageName());
+            return fallback != 0 ? fallback : android.R.drawable.ic_menu_help;
+        }
+
+        String icon = iconName.trim().toLowerCase(Locale.getDefault());
+
+        // First try direct resource lookup (some icons may be present in domoticzapi or app)
+        int resId = getResources().getIdentifier(icon, "drawable", mContext.getPackageName());
+        if (resId != 0) return resId;
+
+        // Map known API names to local drawable names
+        switch (icon) {
+            case "heater":
+            case "heat":
+            case "wave": // treat wave like heater (radiator)
+                resId = getResources().getIdentifier("mode_heat_24px", "drawable", mContext.getPackageName());
+                break;
+            case "car":
+                resId = getResources().getIdentifier("car", "drawable", mContext.getPackageName());
+                break;
+            case "power":
+            case "solar":
+                // prefer solar_power icon for production/power
+                resId = getResources().getIdentifier("solar_power_24px", "drawable", mContext.getPackageName());
+                if (resId == 0)
+                    resId = getResources().getIdentifier("power", "drawable", mContext.getPackageName());
+                break;
+            case "battery":
+                resId = getResources().getIdentifier("battery_charging_90_24px", "drawable", mContext.getPackageName());
+                break;
+            default:
+                // Try to find with common prefixes/suffixes
+                resId = getResources().getIdentifier(icon + "_24px", "drawable", mContext.getPackageName());
+                if (resId == 0) {
+                    resId = getResources().getIdentifier(icon + "_24", "drawable", mContext.getPackageName());
+                }
+                break;
+        }
+
+        if (resId != 0) return resId;
+
+        // final fallback
+        int fallback = getResources().getIdentifier("factory_24px", "drawable", mContext.getPackageName());
+        return fallback != 0 ? fallback : android.R.drawable.ic_menu_help;
     }
 
     private void loadDeviceData() {
@@ -527,14 +647,4 @@ public class Energy extends DomoticzCardFragment implements DomoticzFragmentList
         void onDeviceLoaded(DevicesInfo device);
     }
 }
-
-
-
-
-
-
-
-
-
-
 

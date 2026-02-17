@@ -74,7 +74,7 @@
             <ImageView
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:src="@drawable/electric_range"
+                android:src="@drawable/factory_24px"
                 app:tint="@android:color/black" />
 
             <TextView
@@ -151,7 +151,7 @@
             <ImageView
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:src="@drawable/solar_panel"
+                android:src="@drawable/solar_power_24px"
                 app:tint="@android:color/black" />
 
             <TextView
@@ -192,7 +192,7 @@
             <ImageView
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:src="@drawable/power"
+                android:src="@drawable/battery_charging_90_24px"
                 app:tint="@android:color/black" />
 
             <TextView
@@ -233,7 +233,7 @@
             <ImageView
                 android:layout_width="22dp"
                 android:layout_height="22dp"
-                android:src="@drawable/flame"
+                android:src="@drawable/mode_heat_24px"
                 app:tint="@android:color/black" />
 
             <TextView
