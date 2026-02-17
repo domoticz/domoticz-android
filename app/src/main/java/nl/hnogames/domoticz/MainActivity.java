@@ -1473,6 +1473,10 @@ public class MainActivity extends AppCompatPermissionsActivity {
             startRecognition();
         }
         setupAutoRefresh();
+
+        // Ensure widgets are reloaded when the app is opened/resumed so they reflect
+        // the current server/network selection and latest device states.
+        nl.hnogames.domoticz.widgets.WidgetUpdateHelper.requestImmediateReload(this);
     }
 
     @Override
