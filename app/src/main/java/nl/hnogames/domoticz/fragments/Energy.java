@@ -587,16 +587,12 @@ public class Energy extends DomoticzCardFragment implements DomoticzFragmentList
         cardExtra1.setVisibility(View.VISIBLE);
 
         if (txtExtra1Value != null) {
-            String data = device.getData();
-            if (data != null && !data.isEmpty()) {
-                txtExtra1Value.setText(data);
-            } else {
-                String counterToday = device.getCounterToday();
-                if (counterToday != null && !counterToday.isEmpty()) {
-                    txtExtra1Value.setText(counterToday);
-                } else {
-                    txtExtra1Value.setText("--");
-                }
+            try {
+                String configuredField = energyDashboard != null ? energyDashboard.getExtra1Field() : null;
+                String value = getDeviceFieldValue(device, configuredField);
+                txtExtra1Value.setText(value != null && !value.isEmpty() ? value : "--");
+            } catch (Exception e) {
+                txtExtra1Value.setText("--");
             }
         }
     }
@@ -606,16 +602,12 @@ public class Energy extends DomoticzCardFragment implements DomoticzFragmentList
         cardExtra2.setVisibility(View.VISIBLE);
 
         if (txtExtra2Value != null) {
-            String data = device.getData();
-            if (data != null && !data.isEmpty()) {
-                txtExtra2Value.setText(data);
-            } else {
-                String counterToday = device.getCounterToday();
-                if (counterToday != null && !counterToday.isEmpty()) {
-                    txtExtra2Value.setText(counterToday);
-                } else {
-                    txtExtra2Value.setText("--");
-                }
+            try {
+                String configuredField = energyDashboard != null ? energyDashboard.getExtra2Field() : null;
+                String value = getDeviceFieldValue(device, configuredField);
+                txtExtra2Value.setText(value != null && !value.isEmpty() ? value : "--");
+            } catch (Exception e) {
+                txtExtra2Value.setText("--");
             }
         }
     }
@@ -625,17 +617,41 @@ public class Energy extends DomoticzCardFragment implements DomoticzFragmentList
         cardExtra3.setVisibility(View.VISIBLE);
 
         if (txtExtra3Value != null) {
-            String data = device.getData();
-            if (data != null && !data.isEmpty()) {
-                txtExtra3Value.setText(data);
-            } else {
-                String counterToday = device.getCounterToday();
-                if (counterToday != null && !counterToday.isEmpty()) {
-                    txtExtra3Value.setText(counterToday);
-                } else {
-                    txtExtra3Value.setText("--");
-                }
+            try {
+                String configuredField = energyDashboard != null ? energyDashboard.getExtra3Field() : null;
+                String value = getDeviceFieldValue(device, configuredField);
+                txtExtra3Value.setText(value != null && !value.isEmpty() ? value : "--");
+            } catch (Exception e) {
+                txtExtra3Value.setText("--");
             }
+        }
+    }
+
+    // Helper to return the requested field from a device for extra displays
+    private String getDeviceFieldValue(DevicesInfo device, String field) {
+        if (device == null) return null;
+        if (field == null) field = "";
+        String f = field.trim().toLowerCase(Locale.getDefault());
+
+        switch (f) {
+            case "data":
+                return device.getData();
+            case "usage":
+                // usage usually contains a string like "123 Watt" or "-456 W"
+                if (device.getUsage() != null && !device.getUsage().isEmpty()) return device.getUsage().replace(" Watt", "W");
+                return device.getData();
+            case "counter":
+                if (device.getCounter() != null && !device.getCounter().isEmpty()) return device.getCounter();
+                return device.getCounterToday();
+            case "countertoday":
+                if (device.getCounterToday() != null && !device.getCounterToday().isEmpty()) return device.getCounterToday();
+                return device.getCounter();
+            default:
+                // fallback: prefer Data, then CounterToday, then Usage
+                if (device.getData() != null && !device.getData().isEmpty()) return device.getData();
+                if (device.getCounterToday() != null && !device.getCounterToday().isEmpty()) return device.getCounterToday();
+                if (device.getUsage() != null && !device.getUsage().isEmpty()) return device.getUsage();
+                return "--";
         }
     }
 
