@@ -23,6 +23,7 @@ import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticz.utils.NotificationUtil;
 import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
+import nl.hnogames.domoticz.widgets.WidgetUpdateHelper;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
 import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
@@ -174,10 +175,22 @@ public class WifiReceiver extends Worker {
                 StaticHelper.getDomoticz(context).setAction(idx, jsonUrl, jsonAction, jsonValue, password, new setCommandReceiver() {
                     @Override
                     public void onReceiveResult(String result) {
+                        // Request a widget reload so widgets reflect the changed device state after a Wifi-triggered toggle
+                        try {
+                            WidgetUpdateHelper.requestImmediateReload(context);
+                        } catch (Exception e) {
+                            Log.w(TAG, "Failed requesting widget reload from WifiReceiver", e);
+                        }
                     }
 
                     @Override
                     public void onError(Exception error) {
+                        // Even on error, request a reload: server might still have changed or widgets were stale
+                        try {
+                            WidgetUpdateHelper.requestImmediateReload(context);
+                        } catch (Exception e) {
+                            Log.w(TAG, "Failed requesting widget reload from WifiReceiver (error path)", e);
+                        }
                     }
                 });
             }

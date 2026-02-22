@@ -1,4 +1,3 @@
-
 package nl.hnogames.domoticz;
 
 import android.content.Intent;
@@ -94,6 +93,7 @@ import nl.hnogames.domoticz.utils.SharedPrefUtil;
 import nl.hnogames.domoticz.utils.TalkBackUtil;
 import nl.hnogames.domoticz.utils.UsefulBits;
 import nl.hnogames.domoticz.utils.WidgetUtils;
+import nl.hnogames.domoticz.widgets.WidgetUpdateHelper;
 import nl.hnogames.domoticz.onboarding.OnboardingActivity;
 import nl.hnogames.domoticzapi.Containers.ConfigInfo;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
@@ -498,6 +498,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
             addFragment(false);
         setupMobileDevice();
         setScheduledTasks();
+
+        // Ensure widgets reflect the newly loaded server/config selection and latest state
+        try {
+            WidgetUpdateHelper.requestImmediateReload(this);
+        } catch (Exception e) {
+            Log.w(TAG, "Failed requesting widget reload in FinishedGettingConfig", e);
+        }
     }
 
     private void GetServerConfig(LoginInfo mLoginInfo) {
