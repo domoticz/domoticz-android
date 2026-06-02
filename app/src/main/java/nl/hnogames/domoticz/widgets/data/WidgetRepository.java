@@ -11,9 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 
 /**
@@ -78,13 +80,12 @@ public class WidgetRepository {
             Log.d(TAG, "Widget entity found - ID: " + widgetId + ", entityIdx: " + widget.entityIdx +
                   ", isScene: " + widget.isScene);
 
-            // Fetch data on main thread since it's a network call
-            // Note: We always use getDevice API because scenes and groups are in the devices list
-            // The isScene flag is only used for UI behavior (toggle vs scene activation)
+            // Fetch data on main thread since it's a network call.
+            // Use the saved scene/group flag so widgets for scenes and groups resolve correctly.
             mainHandler.post(() -> {
                 Log.d(TAG, "Fetching device data for idx: " + widget.entityIdx +
                       (widget.isScene ? " (Scene/Group)" : " (Device)"));
-                getDevice(widget.entityIdx, device -> {
+                getDevice(widget.entityIdx, widget.isScene, device -> {
                     Log.d(TAG, "Device data received: " + (device != null ? device.getName() : "null"));
                     WidgetData data = new WidgetData(widget, device);
                     callback.onResult(data);
@@ -111,7 +112,7 @@ public class WidgetRepository {
         return widgetDao.getAllWidgets();
     }
 
-    private void getDevice(int idx, DeviceCallback callback) {
+    private void getDevice(int idx, boolean sceneOrGroup, DeviceCallback callback) {
         try {
             Log.d(TAG, "Calling API to get device with idx: " + idx);
 
@@ -135,53 +136,126 @@ public class WidgetRepository {
             Log.d(TAG, "Active server: " + activeServer.getServerName() +
                   ", URL: " + activeServer.getRemoteServerUrl());
 
-            // Track if callback was called
-            final boolean[] callbackCalled = {false};
+            AtomicBoolean callbackCalled = new AtomicBoolean(false);
 
             // Set timeout - if no response in 10 seconds, assume failure
             mainHandler.postDelayed(() -> {
-                if (!callbackCalled[0]) {
+                if (callbackCalled.compareAndSet(false, true)) {
                     Log.e(TAG, "API timeout - no response received for device idx " + idx);
                     callback.onDevice(null);
-                    callbackCalled[0] = true;
                 }
             }, 10000);
 
-            Log.d(TAG, "Executing getDevice API call for idx: " + idx);
-            domoticz.getDevice(new DevicesReceiver() {
-                @Override
-                public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
-                    // Not used
-                    Log.d(TAG, "onReceiveDevices called (not used)");
-                }
-
-                @Override
-                public void onReceiveDevice(DevicesInfo device) {
-                    if (!callbackCalled[0]) {
-                        if (device != null) {
-                            Log.d(TAG, "API returned device: " + device.getName() + " (idx: " + device.getIdx() + ", type: " + device.getType() + ")");
-                        } else {
-                            Log.e(TAG, "API returned null device for idx " + idx + " - Device may not exist or may be disabled (Used=0). Check if device exists in main app!");
-                        }
-                        callback.onDevice(device);
-                        callbackCalled[0] = true;
-                    }
-                }
-
-                @Override
-                public void onError(Exception error) {
-                    if (!callbackCalled[0]) {
-                        Log.e(TAG, "Error fetching device idx " + idx, error);
-                        callback.onDevice(null);
-                        callbackCalled[0] = true;
-                    }
-                }
-            }, idx, true); // Changed to true to include groups and scenes!
+            fetchDeviceByIdx(
+                domoticz,
+                idx,
+                sceneOrGroup,
+                callbackCalled,
+                callback
+            );
 
             Log.d(TAG, "getDevice API call initiated successfully");
         } catch (Exception e) {
             Log.e(TAG, "Exception calling getDevice for idx " + idx, e);
             callback.onDevice(null);
+        }
+    }
+
+    private void fetchDeviceByIdx(nl.hnogames.domoticzapi.Domoticz domoticz,
+                                  int idx,
+                                  boolean sceneOrGroup,
+                                  AtomicBoolean callbackCalled,
+                                  DeviceCallback callback) {
+        Log.d(TAG, "Executing fast getDevice API call for idx: " + idx +
+            (sceneOrGroup ? " (Scene/Group)" : " (Device)"));
+        domoticz.getDevice(new DevicesReceiver() {
+            @Override
+            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+                // Not used for single-device request
+            }
+
+            @Override
+            public void onReceiveDevice(DevicesInfo device) {
+                if (device != null) {
+                    Log.d(TAG, "Fast lookup returned: " + device.getName() + " (idx: " +
+                        device.getIdx() + ", type: " + device.getType() + ")");
+                    deliverDevice(callbackCalled, callback, device);
+                    return;
+                }
+
+                Log.w(TAG, "Fast lookup returned null for idx " + idx +
+                    ". Falling back to full device list lookup.");
+                fetchDeviceFromAll(domoticz, idx, sceneOrGroup, callbackCalled, callback);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Log.e(TAG, "Fast lookup failed for idx " + idx + ". Trying full list fallback.", error);
+                fetchDeviceFromAll(domoticz, idx, sceneOrGroup, callbackCalled, callback);
+            }
+        }, idx, sceneOrGroup);
+    }
+
+    private void fetchDeviceFromAll(nl.hnogames.domoticzapi.Domoticz domoticz,
+                                    int idx,
+                                    boolean sceneOrGroup,
+                                    AtomicBoolean callbackCalled,
+                                    DeviceCallback callback) {
+        domoticz.getDevices(new DevicesReceiver() {
+            @Override
+            public void onReceiveDevices(ArrayList<DevicesInfo> mDevicesInfo) {
+                DevicesInfo matchedDevice = findDeviceByIdx(mDevicesInfo, idx, sceneOrGroup);
+                if (matchedDevice != null) {
+                    Log.d(TAG, "Fallback lookup returned: " + matchedDevice.getName() +
+                        " (idx: " + matchedDevice.getIdx() + ", type: " + matchedDevice.getType() + ")");
+                } else {
+                    Log.e(TAG, "Fallback lookup could not find idx " + idx + " in device list");
+                }
+                deliverDevice(callbackCalled, callback, matchedDevice);
+            }
+
+            @Override
+            public void onReceiveDevice(DevicesInfo device) {
+                // Not used for list request
+            }
+
+            @Override
+            public void onError(Exception error) {
+                Log.e(TAG, "Fallback full list lookup failed for idx " + idx, error);
+                deliverDevice(callbackCalled, callback, null);
+            }
+        }, 0, null);
+    }
+
+    private DevicesInfo findDeviceByIdx(ArrayList<DevicesInfo> devices, int idx, boolean sceneOrGroup) {
+        if (devices == null || devices.isEmpty()) {
+            return null;
+        }
+
+        DevicesInfo anyTypeMatch = null;
+        for (DevicesInfo device : devices) {
+            if (device == null || device.getIdx() != idx) {
+                continue;
+            }
+
+            if (anyTypeMatch == null) {
+                anyTypeMatch = device;
+            }
+
+            boolean isSceneType = DomoticzValues.Scene.Type.GROUP.equals(device.getType()) ||
+                DomoticzValues.Scene.Type.SCENE.equals(device.getType());
+            if (sceneOrGroup == isSceneType) {
+                return device;
+            }
+        }
+
+        // Keep a best-effort fallback for legacy servers returning unexpected type values.
+        return anyTypeMatch;
+    }
+
+    private void deliverDevice(AtomicBoolean callbackCalled, DeviceCallback callback, DevicesInfo device) {
+        if (callbackCalled.compareAndSet(false, true)) {
+            callback.onDevice(device);
         }
     }
 

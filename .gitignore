@@ -50,3 +50,4 @@ libs/MemorizingTrustManager/build/
 # Android Studio build files
 ajcore.*
 *.hprof
+play-store-release-notes.txt
