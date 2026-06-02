@@ -151,33 +151,31 @@ public class NotificationHistory extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (getActivity() != null)
-                    getActivity().finish();
-                return true;
-            case R.id.delete:
-                mSharedPrefs.clearPreviousNotification();
-                CreateList(null);
-                return true;
-            case R.id.action_add:
-                SendNotificationDialog dialog = new SendNotificationDialog(context, mNotificationTypes);
-                dialog.onDismissListener(message -> StaticHelper.getDomoticz(context).SendNotification(message.getTitle(), message.getText(), message.getSystems(), new SendNotificationReceiver() {
-                    @Override
-                    public void onSuccess() {
-                        adapter.addToStart(message, true);
-                        Snackbar.make(coordinatorLayout, R.string.notification_send, Snackbar.LENGTH_LONG).show();
-                    }
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            if (getActivity() != null)
+                getActivity().finish();
+            return true;
+        } else if (itemId == R.id.delete) {
+            mSharedPrefs.clearPreviousNotification();
+            CreateList(null);
+            return true;
+        } else if (itemId == R.id.action_add) {
+            SendNotificationDialog dialog = new SendNotificationDialog(context, mNotificationTypes);
+            dialog.onDismissListener(message -> StaticHelper.getDomoticz(context).SendNotification(message.getTitle(), message.getText(), message.getSystems(), new SendNotificationReceiver() {
+                @Override
+                public void onSuccess() {
+                    adapter.addToStart(message, true);
+                    Snackbar.make(coordinatorLayout, R.string.notification_send, Snackbar.LENGTH_LONG).show();
+                }
 
-                    @Override
-                    public void onError(Exception error) {
-                        Snackbar.make(coordinatorLayout, R.string.notification_error_send, Snackbar.LENGTH_LONG).show();
-                    }
-                }));
-                dialog.show();
-                return true;
-            default:
-                break;
+                @Override
+                public void onError(Exception error) {
+                    Snackbar.make(coordinatorLayout, R.string.notification_error_send, Snackbar.LENGTH_LONG).show();
+                }
+            }));
+            dialog.show();
+            return true;
         }
         return false;
     }

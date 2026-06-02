@@ -311,23 +311,23 @@ public class QRCodeSettingsActivity extends AppCompatPermissionsActivity impleme
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.action_scan_qrcode:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (PermissionsUtil.canAccessCamera(this)) {
-                        Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
-                        startActivityForResult(iQRCodeScannerActivity, 998);
-                    } else {
-                        permissionHelper.request(PermissionsUtil.INITIAL_CAMERA_PERMS);
-                    }
-                } else {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
+            return true;
+        } else if (itemId == R.id.action_scan_qrcode) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (PermissionsUtil.canAccessCamera(this)) {
                     Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
                     startActivityForResult(iQRCodeScannerActivity, 998);
+                } else {
+                    permissionHelper.request(PermissionsUtil.INITIAL_CAMERA_PERMS);
                 }
-                return true;
+            } else {
+                Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
+                startActivityForResult(iQRCodeScannerActivity, 998);
+            }
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

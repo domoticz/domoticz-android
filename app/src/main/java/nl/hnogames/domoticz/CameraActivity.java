@@ -73,15 +73,15 @@ public class CameraActivity extends AppCompatAssistActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-            case R.id.action_camera_pause:
-                stopCameraTimer();
-                invalidateOptionsMenu();
-                return true;
-            case R.id.action_camera_play:
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            this.finish();
+            return true;
+        } else if (itemId == R.id.action_camera_pause) {
+            stopCameraTimer();
+            invalidateOptionsMenu();
+            return true;
+        } else if (itemId == R.id.action_camera_play) {
                 if (cameraRefreshTimer == null) {
                     cameraRefreshTimer = new Timer("camera", true);
                     cameraRefreshTimer.scheduleAtFixedRate(new TimerTask() {
@@ -95,9 +95,9 @@ public class CameraActivity extends AppCompatAssistActivity {
                             });
                         }
                     }, 0, 1000);//schedule in 2 seconds
-                }
-                invalidateOptionsMenu();//set pause button
-                return true;
+            }
+            invalidateOptionsMenu();//set pause button
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

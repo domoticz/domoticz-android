@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Landscape energy dashboard — Diamond + extras below (mirrors portrait).
+    Diamond (420dp wide ConstraintLayout, full screen height):
+        [Grid]    top-center
+        [Bat]     mid-left     [Solar]  mid-right
+              [Home]  bottom-center
+    Extras as 2-col card grid below the diamond (scrollable).
+-->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,325 +24,291 @@
         android:textSize="16sp"
         android:visibility="visible" />
 
-    <RelativeLayout
-        android:id="@+id/energy_layout"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/energy_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"
         android:visibility="gone">
 
-        <!-- Temperature display top right -->
         <LinearLayout
-            android:id="@+id/temp_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="8dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/temperature"
-                app:tint="?attr/colorAccent" />
-
-            <TextView
-                android:id="@+id/txt_temperature_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="0.5° C" />
-        </LinearLayout>
-
-        <!-- Energy Flow Custom View -->
-        <nl.hnogames.domoticz.ui.EnergyFlowView
-            android:id="@+id/energy_flow_view"
+            android:id="@+id/energy_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
-        <!-- Grid/P1 Circle - LEFT -->
-        <LinearLayout
-            android:id="@+id/card_p1"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/energy_circle_cyan"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:visibility="gone">
+            <!-- Left: diamond node area (fixed width so lines stay correct) -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/node_area"
+                android:layout_width="0dp"
+                android:layout_height="320dp"
+                android:layout_weight="1">
 
-            <ImageView
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:src="@drawable/electric_range"
-                app:tint="@android:color/black" />
+                <!-- ① Flow lines — FIRST so they render BELOW circles -->
+                <nl.hnogames.domoticz.ui.EnergyFlowView
+                    android:id="@+id/energy_flow_view"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:clickable="false"
+                    android:focusable="false"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-            <TextView
-                android:id="@+id/txt_p1_value"
+                <!-- Grid — top-center -->
+                <LinearLayout
+                    android:id="@+id/card_p1"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:background="@drawable/energy_circle_cyan"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0">
+                    <ImageView android:layout_width="22dp" android:layout_height="22dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/factory_24px" app:tint="@android:color/white" />
+                    <TextView android:id="@+id/txt_p1_value"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:textColor="@android:color/white" android:textSize="12sp" android:textStyle="bold"
+                        tools:text="4762 Watt" />
+                    <TextView android:id="@+id/txt_p1_info"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:textColor="@android:color/white" android:textSize="9sp"
+                        tools:text="→ 15535 kWh" />
+                </LinearLayout>
+
+                <!-- Battery — middle-left -->
+                <LinearLayout
+                    android:id="@+id/card_battery"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:background="@drawable/energy_circle_green"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.40">
+                    <ImageView android:layout_width="22dp" android:layout_height="22dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/battery_charging_90_24px" app:tint="@android:color/white" />
+                    <TextView android:id="@+id/txt_battery_soc"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:textColor="@android:color/white" android:textSize="14sp" android:textStyle="bold"
+                        tools:text="99%" />
+                    <TextView android:id="@+id/txt_battery_value"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:textColor="@android:color/white" android:textSize="10sp" android:textStyle="bold"
+                        tools:text="0 Watt" />
+                </LinearLayout>
+
+                <!-- Solar — middle-right -->
+                <LinearLayout
+                    android:id="@+id/card_solar"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:background="@drawable/energy_circle_yellow"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.40">
+                    <ImageView android:layout_width="22dp" android:layout_height="22dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/solar_power_24px" app:tint="@android:color/white" />
+                    <TextView android:id="@+id/txt_solar_value"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:textColor="@android:color/white" android:textSize="12sp" android:textStyle="bold"
+                        tools:text="289 Watt" />
+                    <TextView android:id="@+id/txt_solar_info"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:textColor="@android:color/white" android:textSize="9sp"
+                        tools:text="0.000 kWh" />
+                </LinearLayout>
+
+                <!-- Home — bottom-center -->
+                <LinearLayout
+                    android:id="@+id/card_home"
+                    android:layout_width="108dp"
+                    android:layout_height="108dp"
+                    android:background="@drawable/energy_circle_pink"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintVertical_bias="1.0">
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/house" app:tint="@android:color/white" />
+                    <TextView android:id="@+id/txt_home_power"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:textColor="@android:color/white" android:textSize="14sp" android:textStyle="bold"
+                        tools:text="5051 Watt" />
+                    <TextView android:id="@+id/txt_home_total"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:textColor="@android:color/white" android:textSize="9sp"
+                        tools:text="15535 kWh" />
+                </LinearLayout>
+
+                <!-- Temperature — top-right corner of diamond -->
+                <LinearLayout
+                    android:id="@+id/temp_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+                    <ImageView android:layout_width="18dp" android:layout_height="18dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/temperature" app:tint="?attr/colorAccent" />
+                    <TextView android:id="@+id/txt_temperature_value"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:textSize="12sp" android:textStyle="bold"
+                        tools:text="7.3 °C" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Right: extras as a vertical card stack -->
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="@android:color/black"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                tools:text="69 Watt" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp"
+                android:gravity="top">
 
-            <TextView
-                android:id="@+id/txt_p1_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:textColor="@android:color/black"
-                android:textSize="9sp"
-                tools:text="→ 56.477 kWh" />
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_gas_wrapper"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp">
+                    <LinearLayout android:id="@+id/card_gas"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:padding="12dp" android:gravity="center_vertical">
+                        <ImageView android:id="@+id/img_gas_icon"
+                            android:layout_width="24dp" android:layout_height="24dp"
+                            android:contentDescription="@null" android:src="@drawable/mode_heat_24px" />
+                        <TextView android:id="@+id/txt_gas_value"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:textSize="13sp" android:textStyle="bold" tools:text="0.457 m3" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_water_wrapper"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp">
+                    <LinearLayout android:id="@+id/card_water"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:padding="12dp" android:gravity="center_vertical">
+                        <ImageView android:id="@+id/img_water_icon"
+                            android:layout_width="24dp" android:layout_height="24dp"
+                            android:contentDescription="@null" android:src="@drawable/drop" />
+                        <TextView android:id="@+id/txt_water_value"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:textSize="13sp" android:textStyle="bold" tools:text="150 Liter" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_extra1_wrapper"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp">
+                    <LinearLayout android:id="@+id/card_extra1"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:padding="12dp" android:gravity="center_vertical">
+                        <ImageView android:id="@+id/img_extra1_icon"
+                            android:layout_width="24dp" android:layout_height="24dp"
+                            android:contentDescription="@null" android:src="@drawable/heater" />
+                        <TextView android:id="@+id/txt_extra1_value"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:textSize="13sp" android:textStyle="bold" tools:text="503 Watt" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_extra2_wrapper"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp">
+                    <LinearLayout android:id="@+id/card_extra2"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:padding="12dp" android:gravity="center_vertical">
+                        <ImageView android:id="@+id/img_extra2_icon"
+                            android:layout_width="24dp" android:layout_height="24dp"
+                            android:contentDescription="@null" android:src="@drawable/car" />
+                        <TextView android:id="@+id/txt_extra2_value"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:textSize="13sp" android:textStyle="bold" tools:text="4124 Watt" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_extra3_wrapper"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp">
+                    <LinearLayout android:id="@+id/card_extra3"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:padding="12dp" android:gravity="center_vertical">
+                        <ImageView android:id="@+id/img_extra3_icon"
+                            android:layout_width="24dp" android:layout_height="24dp"
+                            android:contentDescription="@null" android:src="@drawable/factory_24px" />
+                        <TextView android:id="@+id/txt_extra3_value"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:textSize="13sp" android:textStyle="bold" tools:text="--" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
         </LinearLayout>
-
-        <!-- Home Circle - CENTER -->
-        <LinearLayout
-            android:id="@+id/card_home"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            android:layout_centerInParent="true"
-            android:background="@drawable/energy_circle_pink"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="12dp">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/house"
-                app:tint="@android:color/black" />
-
-            <TextView
-                android:id="@+id/txt_home_power"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                tools:text="949 Watt" />
-
-            <TextView
-                android:id="@+id/txt_home_total"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:textColor="@android:color/black"
-                android:textSize="10sp"
-                tools:text="56.418 kWh" />
-        </LinearLayout>
-
-        <!-- Solar Panel Circle - TOP RIGHT -->
-        <LinearLayout
-            android:id="@+id/card_solar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="80dp"
-            android:background="@drawable/energy_circle_yellow"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:src="@drawable/solar_panel"
-                app:tint="@android:color/black" />
-
-            <TextView
-                android:id="@+id/txt_solar_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="@android:color/black"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                tools:text="83 W" />
-
-            <TextView
-                android:id="@+id/txt_solar_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:textColor="@android:color/black"
-                android:textSize="9sp"
-                tools:text="0.004 kWh" />
-        </LinearLayout>
-
-        <!-- Battery Circle - BOTTOM RIGHT -->
-        <LinearLayout
-            android:id="@+id/card_battery"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="80dp"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/energy_circle_green"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:src="@drawable/power"
-                app:tint="@android:color/black" />
-
-            <TextView
-                android:id="@+id/txt_battery_soc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="99%" />
-
-            <TextView
-                android:id="@+id/txt_battery_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:textColor="@android:color/black"
-                android:textSize="11sp"
-                android:textStyle="bold"
-                tools:text="-797 W" />
-        </LinearLayout>
-
-        <!-- Gas Circle (smaller, right side - top) -->
-        <LinearLayout
-            android:id="@+id/card_gas"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/energy_circle_red"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="6dp"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:src="@drawable/flame"
-                app:tint="@android:color/black" />
-
-            <TextView
-                android:id="@+id/txt_gas_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="@android:color/black"
-                android:textSize="10sp"
-                android:textStyle="bold"
-                tools:text="1.36 m3" />
-        </LinearLayout>
-
-        <!-- Water Circle (smaller, right side - middle) -->
-        <LinearLayout
-            android:id="@+id/card_water"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/energy_circle_blue"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="6dp"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:src="@drawable/drop"
-                app:tint="@android:color/black" />
-
-            <TextView
-                android:id="@+id/txt_water_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="@android:color/black"
-                android:textSize="10sp"
-                android:textStyle="bold"
-                tools:text="200 L" />
-        </LinearLayout>
-
-        <!-- Extra utility circle (right side - bottom) -->
-        <LinearLayout
-            android:id="@+id/card_extra1"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/energy_circle_grey"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="6dp"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:src="@drawable/heater"
-                app:tint="@android:color/black" />
-
-            <TextView
-                android:id="@+id/txt_extra1_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="@android:color/black"
-                android:textSize="10sp"
-                android:textStyle="bold"
-                tools:text="14.15 W" />
-        </LinearLayout>
-
-        <!-- Placeholder for Extra2 (not shown in landscape) -->
-        <LinearLayout
-            android:id="@+id/card_extra2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="gone">
-            <TextView
-                android:id="@+id/txt_extra2_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <!-- Placeholder for Extra3 (not shown in landscape) -->
-        <LinearLayout
-            android:id="@+id/card_extra3"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="gone">
-            <TextView
-                android:id="@+id/txt_extra3_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-    </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>
 

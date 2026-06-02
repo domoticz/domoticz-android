@@ -312,21 +312,21 @@ public class BluetoothSettingsActivity extends AppCompatPermissionsActivity impl
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.action_bluetooth_show:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (PermissionsUtil.canAccessBluetooth(this)) {
-                        showPairedDevices();
-                    } else {
-                        permissionHelper.request(PermissionsUtil.INITIAL_BLUETOOTH_PERMS);
-                    }
-                } else {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
+            return true;
+        } else if (itemId == R.id.action_bluetooth_show) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (PermissionsUtil.canAccessBluetooth(this)) {
                     showPairedDevices();
+                } else {
+                    permissionHelper.request(PermissionsUtil.INITIAL_BLUETOOTH_PERMS);
                 }
-                return true;
+            } else {
+                showPairedDevices();
+            }
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

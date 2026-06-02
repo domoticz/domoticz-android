@@ -155,13 +155,13 @@ public class ServerListSettingsActivity extends AppCompatAssistActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.action_add:
-                showAddServerActivity();
-                return true;
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
+            return true;
+        } else if (itemId == R.id.action_add) {
+            showAddServerActivity();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

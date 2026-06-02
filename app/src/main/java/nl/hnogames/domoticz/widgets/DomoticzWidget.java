@@ -27,6 +27,21 @@ public class DomoticzWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
+        // Trigger widget reload on network/connectivity changes so switching between
+        // local and remote networks doesn't leave widgets without data.
+        try {
+            String action = intent != null ? intent.getAction() : null;
+            if (action != null && (action.equals("android.net.conn.CONNECTIVITY_CHANGE") ||
+                                   action.equals("android.net.wifi.STATE_CHANGE") ||
+                                   action.equals("android.net.wifi.WIFI_STATE_CHANGED"))) {
+                Log.d(TAG, "Connectivity change detected (" + action + ") - reloading widgets");
+                WidgetUpdateHelper.requestImmediateReload(context);
+                return; // handled
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "Failed handling connectivity change in widget onReceive", e);
+        }
+
         if (ACTION_TOGGLE.equals(intent.getAction())) {
             int widgetId = intent.getIntExtra(EXTRA_WIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
             if (widgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {

@@ -318,11 +318,11 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.action_speech:
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
+            return true;
+        } else if (itemId == R.id.action_speech) {
                 if (speechRecognizer == null)
                     speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
                 if (recognitionProgressView == null)
@@ -354,7 +354,7 @@ public class SpeechSettingsActivity extends AppCompatPermissionsActivity impleme
                     }
                 }, 50);
 
-                return true;
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

@@ -116,7 +116,8 @@ public class WidgetRepository {
             Log.d(TAG, "Calling API to get device with idx: " + idx);
 
             // Validate that Domoticz is properly configured
-            nl.hnogames.domoticzapi.Domoticz domoticz = StaticHelper.getDomoticz(context);
+            // Use refresh=true to ensure we pick up current network (local/remote) settings
+            nl.hnogames.domoticzapi.Domoticz domoticz = StaticHelper.getDomoticz(context, true);
             if (domoticz == null) {
                 Log.e(TAG, "Domoticz instance is null!");
                 callback.onDevice(null);

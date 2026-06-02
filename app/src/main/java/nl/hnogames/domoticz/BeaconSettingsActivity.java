@@ -322,25 +322,25 @@ public class BeaconSettingsActivity extends AppCompatPermissionsActivity impleme
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.action_beacon_show:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (PermissionsUtil.canAccessBluetooth(this) && PermissionsUtil.canAccessLocation(this)) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            if (PermissionsUtil.canAccessBackgroundLocation(this))
-                                showBeacons();
-                            else
-                                permissionHelper.request(PermissionsUtil.BACKGROUND_LOCATION_PERMS);
-                        } else
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
+            return true;
+        } else if (itemId == R.id.action_beacon_show) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (PermissionsUtil.canAccessBluetooth(this) && PermissionsUtil.canAccessLocation(this)) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        if (PermissionsUtil.canAccessBackgroundLocation(this))
                             showBeacons();
+                        else
+                            permissionHelper.request(PermissionsUtil.BACKGROUND_LOCATION_PERMS);
                     } else
-                        permissionHelper.request(PermissionsUtil.INITIAL_BEACON_PERMS);
+                        showBeacons();
                 } else
-                    showBeacons();
-                return true;
+                    permissionHelper.request(PermissionsUtil.INITIAL_BEACON_PERMS);
+            } else
+                showBeacons();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
