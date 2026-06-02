@@ -1,24 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (C) 2015 Domoticz - Mark Heinis
-  ~
-  ~  Licensed to the Apache Software Foundation (ASF) under one
-  ~  or more contributor license agreements.  See the NOTICE file
-  ~  distributed with this work for additional information
-  ~  regarding copyright ownership.  The ASF licenses this file
-  ~  to you under the Apache License, Version 2.0 (the
-  ~  "License"); you may not use this file except in compliance
-  ~  with the License.  You may obtain a copy of the License at
-  ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~  Unless required by applicable law or agreed to in writing,
-  ~  software distributed under the License is distributed on an
-  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~  KIND, either express or implied.  See the License for the
-  ~  specific language governing permissions and limitations
-  ~  under the License.
-  -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="premium_category">Compra premium!</string>
@@ -29,7 +9,7 @@
     <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
     <string name="drawer_open">Obre el calaix de navegació</string>
     <string name="drawer_close">Tanca el calaix de navegació</string>
-    <string name="msg_please_wait">Espereu&#8230;</string>
+    <string name="msg_please_wait">Espereu…</string>
     <string name="changelog">Registre de canvis</string>
     <string name="button_state_on">Encén</string>
     <string name="button_state_off">Apaga</string>
@@ -144,4 +124,635 @@
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
     <string name="background_location_warning">This app collects location data to enable for geofencing services within this app, even when the app is closed or not in use.</string>
+    <!-- Actions -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="action_switch_server">Canvia de servidor</string>
+    <string name="action_settings">Configuració</string>
+    <string name="action_filter">Filtra</string>
+    <string name="action_camera_play">Reprodueix</string>
+    <string name="action_camera_pause">Pausa</string>
+    <string name="action_qrcode_scan">Escanejar codi QR</string>
+    <string name="action_bluetooth_show">Show paired devices</string>
+    <string name="action_speech">Reconeixement de veu</string>
+    <string name="send">Send</string>
+    <!-- Beacon -->
+    <string name="beacon_not_supported">Beacons are not supported on this device</string>
+    <string name="beacon_register">Connect a beacon</string>
+    <string name="beacon_found">New beacon found</string>
+    <string name="beacon_edit">Edit beacon</string>
+    <string name="beacon_name">Give this beacon a proper name. </string>
+    <string name="beacon_desc">Check the list of paired beacon devices. </string>
+    <string name="beacon_exists">Beacon already configured on Domoticz. </string>
+    <string name="beacon_turned_off">Bluetooth needs to be turned on in your device settings. </string>
+    <string name="beacon_saved">Saved a new beacon connection. </string>
+    <string name="action_beacon_show">Add new beacon</string>
+    <string name="beacon">Beacon</string>
+    <string name="beacon_disabled">Beacon automation disabled, please setup via settings. </string>
+    <string name="noSwitchSelected_explanation_beacon">For a Beacon device to automate something in Domoticz, a switch should be linked to an beacon. </string>
+    <string name="beacon_UUID">UUID</string>
+    <string name="beacon_major">Major (optional)</string>
+    <string name="beacon_minor">Minor (optional)</string>
+    <string name="beacon_scan">Beacon</string>
+    <string name="beacon_scan_desc">Scanning for beacons</string>
+    <string name="beacon_notifications">Enable notifications for entering and leaving a beacon region.</string>
+    <string name="beacon_entering">"Entering %1$s"</string>
+    <string name="beacon_leaving">Leaving  %1$s</string>
+    <string name="beacon_entering_text">Entering one of the beacons</string>
+    <string name="beacon_leaving_text">Leaving one of the beacons</string>
+    <!-- Bluetooth -->
+    <string name="bluetooth_not_supported">Bluetooth is not supported on this device</string>
+    <string name="bluetooth_register">Connect a bluetooth device</string>
+    <string name="bluetooth_found">New bluetooth device found</string>
+    <string name="bluetooth_edit">Edit bluetooth device</string>
+    <string name="bluetooth_name">Give this bluetooth device a proper name. </string>
+    <string name="bluetooth_desc">Check the list of paired bluetooth devices. </string>
+    <string name="bluetooth_exists">Bluetooth already configured on Domoticz. </string>
+    <string name="bluetooth_turned_off">Bluetooth needs to be turned on in your device settings. </string>
+    <string name="bluetooth_saved">Saved a new bluetooth device connection. </string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="title_notification_bluetooth">Enable Notifications for Bluetooth</string>
+    <string name="description_notification_bluetooth">Show notifications when you connect or disconnect a bluetooth device.</string>
+    <string name="bluetooth_event_triggered">"Bluetooth event triggered for %1$s"</string>
+    <string name="bluetooth_disabled">Bluetooth automation disabled, please setup via settings.</string>
+    <string name="noSwitchSelected_explanation_bluetooth">For a bluetooth device to automate something in Domoticz, a switch should be linked to an bluetooth</string>
+    <!-- Cameras -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_cameras">Càmeres</string>
+    <!-- Dashboard -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_dashboard">Panell de contol</string>
+    <string name="delivery">Delivery</string>
+    <string name="usage">Ús</string>
+    <string name="today">Avui</string>
+    <string name="total">Total</string>
+    <string name="favorite_added">afegit al panell.</string>
+    <string name="favorite_removed">eliminat del panell.</string>
+    <!-- Errors -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="error_authentication">Les credencials no són vàlides</string>
+    <string name="error_timeout">Temps d\'espera esgotat o no hi ha connexió</string>
+    <string name="error_server">Error del servidor</string>
+    <string name="error_network">Error de xarxa, codi d\'estat %1$d</string>
+    <string name="error_parse">Error de parseig</string>
+    <string name="error_notConnected">Error: no esteu connectats a cap xarxa</string>
+    <!-- Events -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_events">Esdeveniments</string>
+    <string name="action_not_supported_yet">Aquesta acció encara no està suportada!</string>
+    <!-- Locations -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_add_location">Afegeix ubicació</string>
+    <string name="title_edit_location">Edita la ubicació</string>
+    <string name="longitude">Longitud</string>
+    <string name="latitude">Latitud</string>
+    <string name="radius">Radi (metre)</string>
+    <string name="connectedSwitch">Interruptor connectat</string>
+    <string name="unable_to_get_switches">No s\'ha pogut obtenir tots els interruptors, torneu-ho a provar</string>
+    <string name="delete_short">ELI</string>
+    <string name="delete">Elimina</string>
+    <string name="Location_name">Nom de la ubicació</string>
+    <string name="currentLocation">Ubicació actual</string>
+    <string name="manual">Manual</string>
+    <string name="getLocation">GET</string>
+    <string name="locationAddress">Adreça</string>
+    <string name="unknown">Desconeguda</string>
+    <string name="not_available">N/D</string>
+    <string name="no_valid_latLong">No és una latitud o longitud vàlida</string>
+    <string name="starting_geofence_service">Iniciant el servei de Geofencing</string>
+    <string name="could_not_find_location">No s\'ha pogut trobar la ubicació, torneu-ho a provar.</string>
+    <string name="google_play_services_unavailable">Els serveis de Google Play no estan disponibles.</string>
+    <string name="location_not_found">No s\'ha trobat cap ubicació.</string>
+    <string name="geofence">Geofencing</string>
+    <string name="title_geofence">Activa Geofencing</string>
+    <string name="description_geofence">Activa i configura geofences</string>
+    <string name="title_geofence_notifications">Activa les notificacions</string>
+    <string name="description_geofence_notifications">Activa les notificacions per disparar esdeveniments</string>
+    <string name="geofence_place">Lloc: %s</string>
+    <string name="geofence_location_entering">"Entrant a %1$s"</string>
+    <string name="geofence_location_leaving">Sortint de %1$s</string>
+    <string name="geofence_location_entering_text">Esteu entrant a una de les ubicacions</string>
+    <string name="geofence_location_leaving_text">Esteu sortint d\'una de les ubicacions</string>
+    <string name="geofence_error_recreateLocations">Degut a canvis fets a Geofencing, creeu les ubicacions de nou</string>
+    <string name="noSwitchSelected_title">No s\'ha seleccionat cap interruptor</string>
+    <string name="noSwitchSelected_explanation">Cal connectar un interruptor a una GeoFence per que GeoFencing funcioni</string>
+    <string name="noSwitchSelected_connectOneNow">En voleu connectar un ara?</string>
+    <string name="geofencing_disabled_no_enabled_fences">GeoFencing està desactivat perquè no hi ha cap geofence activa</string>
+    <string name="geofence_not_available">Geolocalització no disponible ara</string>
+    <string name="geofence_too_many_geofences">Aplicació registrada a masses geolocalitzacions</string>
+    <string name="geofence_too_many_pending_intents">Masses IntentsPendents a resoldre</string>
+    <string name="unknown_geofence_error">Errada desconeguda</string>
+    <!-- Logs -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_logs">Registres</string>
+    <!-- Nfc -->
+    <string name="nfc_not_supported">NFC no és compatible amb aquest dispositiu</string>
+    <string name="nfc_register">Registrar una etiqueta NFC</string>
+    <string name="nfc_tag_found">S\'ha trobat una nova etiqueta NFC</string>
+    <string name="nfc_tag_edit">Edita la etiqueta NFC</string>
+    <string name="nfc_tag_name">Dona-li un nom a aquesta NFC. </string>
+    <string name="nfc_exists">L\'etiqueta NFC ja està registrada.</string>
+    <string name="nfc_saved">S\'ha guardat una nova etiqueta NFC.</string>
+    <string name="nfc">NFC</string>
+    <string name="noSwitchSelected_explanation_nfc">Per que tingui llóc NFC, un interruptor s\'ha de enllaçar a una etiqueta NFC</string>
+    <!-- Notifications -->
+    <string name="priority">Prioritat</string>
+    <string name="emergency">Emergència</string>
+    <string name="high">Alta</string>
+    <string name="low">Baixa</string>
+    <string name="verylow">Molt baixa</string>
+    <string name="allsystems">Tots els sistemes</string>
+    <string name="systems">Sistemes</string>
+    <string name="send_notification">Send notification</string>
+    <string name="notification_subject">Subject</string>
+    <string name="notification_message">Message</string>
+    <string name="notification_error_system">Please choose a system to send the notification to</string>
+    <string name="notification_error_message">Please fill in a message</string>
+    <string name="notification_error_subject">Please fill in a subject</string>
+    <string name="notification_error_send">Could not send the notification to Domoticz</string>
+    <string name="notification_send">Notification send to Domoticz</string>
+    <!-- Permissions -->
+    <string name="permission_title">Permisos denegats</string>
+    <string name="permission_prefs_title">Permisos</string>
+    <string name="permission_config">Configura els permisos per aquesta aplicació</string>
+    <string name="permission_desc_storage">Aquests permisos d\'enmagatzematge son necesaris per desar el fitxer cahe, ajusts i tomes de la cámera.</string>
+    <string name="permission_desc_location">Aquests permisos de localització son necesaris per a la Geolocalització i per obtindre els SSID de les Wifi que t\'envolten!</string>
+    <string name="permission_desc_phone">Aquests permisos de l\'estat del telèfon son necesaris per habilitar les notificacions!</string>
+    <string name="permission_desc_camera">Aquests prmisos de la cámera son necesaris per escanejar codis QR!</string>
+    <string name="permission_desc_audio">Aquests permisos d\'audio son necesaris per a el Reconeixement de Veu!</string>
+    <string name="permission_desc_finger">Akquests permisos de petjada dactilar son necesaris per habilitar la Seguretat de Emprenta dactilar!</string>
+    <!-- Plans -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_plans">Plans</string>
+    <plurals name="devices">
+        <item quantity="one">%1d dispositiu</item>
+        <item quantity="other">%1d dispositius</item>
+    </plurals>
+    <!-- Qrcode -->
+    <string name="qrcode_not_supported">QR codis no és compatible amb aquest dispositiu</string>
+    <string name="qrcode_register">Registra un codi QR </string>
+    <string name="qrcode_found">Codi QR nou trobat</string>
+    <string name="qrcode_edit">Edita el codi QR</string>
+    <string name="qrcode_name">Dona-li un nom a aquest codi QR. </string>
+    <string name="qrcode_desc">Escaneja un codi QR. </string>
+    <string name="qrcode_exists">Codi QR ja registrat.</string>
+    <string name="qrcode_saved">Guardat nou codi QR. </string>
+    <string name="qrcode">Codi QR</string>
+    <string name="qrcode_new_found">Nou codi QR detectat, configura a tavés de Ajustaments.</string>
+    <string name="qr_code_disabled">Codi QR deshabilitat, configura a tavés de Ajustaments.</string>
+    <string name="noSwitchSelected_explanation_qrcode">Per que tingui llóc QR, un interruptor s\'ha de enllaçar a un codi QR</string>
+    <string name="permission_camera_rationale">Es necessita accès a la cámara per la detecció</string>
+    <string name="low_storage_error">No es poden descarregar les depèndencies del codi QR degut al baix espai d\'emmatzegament del dispositiu</string>
+    <string name="no_camera_permission">Aquesta aplicació no es pot executar per que no tè permis de la cámera. La aplicació finalitzará tot seguit.</string>
+    <!-- Scenes -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_scenes">Escenes</string>
+    <!-- Security -->
+    <string name="title_security_panel">Panell de seguretat</string>
+    <string name="security_pin">Codi PIN</string>
+    <string name="security_disarm">Desactivar</string>
+    <string name="security_arm_home">Activa (dins de casa)</string>
+    <string name="security_arm_away">Activa (fora de casa)</string>
+    <string name="security_wrong_code">El codi entrat és erroni!</string>
+    <string name="security_no_rights">You do not have the rights for this action!</string>
+    <string name="security_generic_error">No s\'ha pogut canviar l\'estat de seguretat</string>
+    <string name="security_wrong_password_fingerprint">Contrasenya errònia, la contrasenya de la teva compte domoticz es per defecte la petjada dactilar...!</string>
+    <string name="show_password">Mostra la contrasenya</string>
+    <string name="fingerprint_make_sure">We need to make sure its you</string>
+    <string name="fingerprint_dialog_description">Touch your finger on the fingerprint sensor to authorise your account.</string>
+    <!-- Server -->
+    <string name="choose_server">Trieu servidor</string>
+    <string name="dont_save_new_server">No voleu guardar el nou servidor?</string>
+    <string name="server_must_be_unique">El nom del servidor ha de ser únic</string>
+    <string name="switch_to_server">"Canviant al servidor %1$s"</string>
+    <string name="cant_disable_default_server">No es pot desactivar el servidor per defecte</string>
+    <!-- Settings -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="settingsActivity_name">Configuració</string>
+    <string name="cameraActivity_name">Càmera</string>
+    <!--        Categories             -->
+    <string name="category_generic">Genèric</string>
+    <string name="category_wear">Android Wear</string>
+    <string name="category_auto">Android Auto</string>
+    <string name="category_server">Servidor</string>
+    <string name="category_geofencing">Geofencing</string>
+    <string name="category_info">Informació</string>
+    <string name="category_advanced">Avançat</string>
+    <string name="category_language">Idioma</string>
+    <string name="category_talk_back">Conversa de Resposta</string>
+    <string name="category_notification">Notificacions</string>
+    <string name="category_debug">Depuració</string>
+    <string name="category_export">Exporta/importa la configuració</string>
+    <string name="category_theme">Tema</string>
+    <string name="category_clock">Clock</string>
+    <string name="category_nfc">Connexions NFC</string>
+    <string name="category_startup_security">Seguretat</string>
+    <string name="category_account">Comptes</string>
+    <string name="category_QRCode">Codi QR</string>
+    <string name="category_bluetooth">Bluetooth</string>
+    <string name="category_wifi">Wifi</string>
+    <string name="category_Speech">Veu</string>
+    <string name="category_Reset">Reinici</string>
+    <string name="category_help">Contribute</string>
+    <!--        Generic settings       -->
+    <string name="startup_screen">Pantalla d\'inici</string>
+    <string name="enable_items">Activa/desactiva elements</string>
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Ordenació</string>
+    <string name="sort_server_on">Ordena dispositius tal com estan ordenats al servidor</string>
+    <string name="sort_custom_on">Ordenació individualitzada, arrosega els dispositius per ordenar-los</string>
+    <string name="sort_lock_server_title">Bloquejar</string>
+    <string name="sort_lock_custom_on">Bloqueja la ordenació actual (deshabilita arrosegar/deixar)</string>
+    <string name="sort_dashboardLikeServer_off">Ordena el panell alfabèticament</string>
+    <string name="extra_data_title">Dades extres al panell</string>
+    <string name="show_extra_data_on">Mostra dades extra al panell</string>
+    <string name="show_extra_data_off">Amaga dades extra al panell</string>
+    <string name="always_on_title">Bloqueja Despertar</string>
+    <string name="always_on_on">Bloqueja pantalla sempre Actiu</string>
+    <string name="always_on_off">No Bloquegis pantalla sempre Actiu</string>
+    <string name="always_auto_refresh">Auto-actualitza</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
+    <string name="switch_buttons_title">Interruptors</string>
+    <string name="switch_buttons_on">Mostra interruptors com a interruptor encès/apagat</string>
+    <string name="switch_buttons_off">Mostra interruptors com a botò encès/apagat</string>
+    <string name="dashboard_list_title">Tauler de control | Graella</string>
+    <string name="show_dashboard_list_on">Mostra el panel de control com a llista</string>
+    <string name="show_dashboard_list_off">Mostra panel de control com a graella</string>
+    <string name="dashboard_clock">Clock</string>
+    <string name="show_dashboard_clock">Show a clock on the dashboard</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
+    <string name="dashboard_camera">Camera</string>
+    <string name="show_dashboard_camera">Load the camera for connected switches</string>
+    <!--        Wear settings       -->
+    <string name="enable_wear_select">Elements personalitzats per Android Wear</string>
+    <string name="custom_wear_select">Seleccioneu interruptors per Wear</string>
+    <string name="custom_wear_select_desc">Seleccioneu quins interruptors voleu veure al dispositiu Android Wear</string>
+    <string name="wear_custom_on">Activa elements personalitzats per Android Wear</string>
+    <string name="wear_custom_off">Desactiva elements personalitzats per Android Wear</string>
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Habilita Android Auto Notificacions</string>
+    <string name="auto_custom_off">Deshabilita Android Auto Notificacions</string>
+    <!--        Geofencing settings -->
+    <string name="geofencing_configure">Configura Geofencing</string>
+    <!--        Theming settings -->
+    <string name="config_theme">Estableix un tema</string>
+    <string name="set_dark_theme">Canvia el tema de l\'app a Fosc</string>
+    <string name="set_light_theme">Canvia el tema de l\'app a Clar</string>
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">Deixa Domoticz que et respongui</string>
+    <string name="set_talk_back_off">Desconecta respondre</string>
+    <!--        Import/Export settings  -->
+    <string name="settings_imported">Configuració importada, reinicieu Domoticz</string>
+    <string name="settings_import_failed">No s\'ha pogut importar la configuració</string>
+    <string name="settings_exported">Configuració exportada</string>
+    <string name="settings_export_failed">No s\'ha pogut exportar la configuració</string>
+    <!--        Preference screens      -->
+    <string name="server_settings">Configuració de connexió al servidor</string>
+    <string name="server_force_fetch_config">Trobar la configuració del servidor</string>
+    <string name="nfc_settings">Configura les connexions NFC</string>
+    <string name="speech_settings">Habilita comandaments de veu</string>
+    <string name="title_activity_server_settings">Configuració del servidor</string>
+    <string name="multi_server">Multi Servidor</string>
+    <string name="enable_nfc">Activa NFC</string>
+    <string name="enable_speech">Permet el Reconeixement de Veu</string>
+    <string name="export_settings">Exporta la configuració</string>
+    <string name="reset_settings">Reinicia tots els ajustos de la aplicació (CURA!!)</string>
+    <string name="import_settings">Importa configuració</string>
+    <string name="multi_server_settings">Habilita suport servidors múltiples</string>
+    <string name="nfc_enable_settings">Habilita les connexions NFC</string>
+    <string name="speech_enable_settings">Habilita el Reconeixement de Veu</string>
+    <string name="server">Servidor</string>
+    <string name="qrcode_settings">Configura els codis QR</string>
+    <string name="enable_qrcode">Habilita codis QR</string>
+    <string name="qrcode_enable_settings">Habilita la funcionalitat de codis QR</string>
+    <string name="bluetooth_settings">Setup Bluetooth devices</string>
+    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+    <string name="beacon_settings">Setup Beacons</string>
+    <string name="enable_beacon">Enable Beacon functionality</string>
+    <string name="translate_description">You can help make our translations better, and even add new languages to this app via our Crowdin project</string>
+    <string name="translate_title">Translations</string>
+    <string name="security_settings">Configura Seguretat</string>
+    <string name="enable_security">Habilita petjada dactilar al arrencar</string>
+    <string name="disable_security">Deshabilita petjada dactilar al arrencar</string>
+    <string name="setup_fingerprints">Configura petjada dactilar via pantalles configuració d\'Android</string>
+    <string name="fingerprint_not_supported">Seguretat de petjada dactilar no suportada en aquest dispositiu</string>
+    <string name="fingerprint_not_setup_in_android">Configura/conecta aquest dispositiu per primera vegada</string>
+    <string name="fingerprint_sure">Estas segur? La contrasenya per defecte es la contrasenya de la teva compte Domoticz.</string>
+    <!--        Widgets     -->
+    <string name="category_widgets">Widgets (BETA)</string>
+    <string name="widget_description">Habilita/deshabilita Widgets en aquest dispositiu</string>
+    <string name="widget_disabled">Widgets no estan habilitats en aquest dispositiu, comprova els ajustaments de Domoticz</string>
+    <string name="widget_warning">Please use widgets on your own risk!! Widgets are currently in Beta stage and probably contain certain bugs. It can cause large data / battery usage...</string>
+    <!--        GCM settings      -->
+    <string name="notification_settings_id">ID de Google Cloud Messaging</string>
+    <string name="notification_settings_push">Push your registration id to Domoticz</string>
+    <string name="notification_settings_pushed">Your registration id is now saved in Domoticz</string>
+    <string name="notification_settings_push_failed">Could not save your registration id in Domoticz, please try again later.</string>
+    <string name="notification_show_title">Last Notifications</string>
+    <string name="notification_show_nothing">No notifications found</string>
+    <string name="notification_show">Show last couple of Notifications</string>
+    <!--        Notification settings      -->
+    <string name="overwrite_notifications_title">Sobreescriu les notificacions</string>
+    <string name="overwrite_notifications">Sobreescriure les notificacions anteriors en aquest dispositiu</string>
+    <string name="enable_notifications_title">Activa les notificacions</string>
+    <string name="enable_notifications">Activa les notificacions en aquest dispositiu</string>
+    <string name="notification_screen_title">Configuració de les notificacions</string>
+    <string name="notification_history">Notification history</string>
+    <string name="notification_inbox">Inbox</string>
+    <string name="notification_vibrate_title">Vibració</string>
+    <string name="notification_vibrate_on">Vibra quan es rebi una notificació</string>
+    <string name="notification_vibrate_off">Sense vibració</string>
+    <string name="notification_sound_title">So</string>
+    <string name="notification_sound_summary">Utilitzar el so de notificació quan arribi una notificació</string>
+    <string name="suppress_notifications_select">Seleccioneu les notificacions que voleu suprimir</string>
+    <string name="suppress_notifications">Suppress specific Notifications on this device</string>
+    <string name="suppress_notifications_title">Elimina les notificacions</string>
+    <string name="alarm_notifications_select">Select Notifications to Alarm</string>
+    <string name="alarm_notifications">Sound an Alarm for specific Notifications</string>
+    <string name="clear_notifications">Clean notification logs</string>
+    <string name="alarm_notifications_title">Alarm Notifications</string>
+    <string name="alarm">Alarm</string>
+    <string name="alarmtimer_title">Alarm Timer</string>
+    <string name="alarmtimer">Number of seconds to time the alarm</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Default</string>
+    <string name="theme_daynight">Day/Night</string>
+    <string name="theme_orange">Orange</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_blue">Blue</string>
+    <string name="theme_green">Green</string>
+    <string name="theme_dark_blue">Dark blue</string>
+    <!-- Other -->
+    <string name="default_values">Default values</string>
+    <string name="default_values_min_error">Max value should be higher than Min value</string>
+    <string name="default_values_max_error">Max value should be higher than Min value</string>
+    <!--        Information category       -->
+    <string name="info_version">Versió</string>
+    <string name="info_domoticz_version">Versió de Domoticz</string>
+    <string name="info_about">Quant a Domoticz</string>
+    <string name="info_credits">Crèdits</string>
+    <string name="info_credits_text">Domoticz per Android ha estat possible amb varies llibreries de codi lliure</string>
+    <!--        Debug category       -->
+    <string name="debug_switch_title">Depuració</string>
+    <string name="debug_switch_summary_on">Depuració activada</string>
+    <string name="debug_switch_summary_off">Depuració desactivada</string>
+    <!--        Geo settings activity       -->
+    <string name="error_atLeastOneItemInDrawer">Heu de tenir com a mínim un element al calaix</string>
+    <!--        Server update category       -->
+    <string name="title_activity_update">Servidor d\'actualització</string>
+    <string name="error_couldNotCheckForVersion">"Could not check for version: %1$s"</string>
+    <string name="error_couldNotCheckForUpdates">"Could not check for updates: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"Could not get Domoticz server configuration: %1$s"</string>
+    <string name="update_available_enhanced">Server update available: %1$s to version: %2$s</string>
+    <string name="check_for_update_title">Cerca actualitzacions</string>
+    <string name="check_for_update">Would you like us to check for Domoticz system updates?</string>
+    <string name="update_server_warning">Mentre el servidor s\'està actualitzant aquesta app no funcionarà correctament.</string>
+    <string name="update_server_downloadNotReady1">L\'actualització no s\'ha descarregat (completament) encara.</string>
+    <string name="update_server_downloadNotReady2">Torneu-ho a provar més tard.</string>
+    <string name="server_update_available">Hi ha una actualització del servidor disponible</string>
+    <string name="update_server">Update server</string>
+    <string name="server_update_revision">Server update revision</string>
+    <string name="server_version">Versió del servidor</string>
+    <string name="server_update">Actualització del servidor</string>
+    <string name="please_wait_while_we_check">Please wait while we check if your server is ready to update</string>
+    <string name="server_update_not_ready">L\'actualització del servidor no s\'ha descarregat</string>
+    <string name="please_wait_while_server_updated">Please wait while the server is being updated.</string>
+    <string name="server_update_done">Actualització del servidor acabada</string>
+    <string name="update_not_started">L\'actualització no ha començat</string>
+    <string name="update_not_started_unknown_error">L\'actualització no ha començat per un error desconegut</string>
+    <string name="server_update_not_available">Actualització del servidor no disponible</string>
+    <string name="click_to_update_server">Feu clic aquí per actualitzar el vostre servidor</string>
+    <string name="debug_test_text">Prova de depuració</string>
+    <string name="restart_required_title">Cal reiniciar</string>
+    <string name="restart_now">Reiniciar ara?</string>
+    <string name="check_settings">Check your settings</string>
+    <string name="report_error">Report an error</string>
+    <string name="support">Support</string>
+    <!-- Speech -->
+    <string name="Speech_not_supported">Funció de veu no suportada en aquest dispositiu</string>
+    <string name="Speech_register">Registra comandament de veu</string>
+    <string name="Speech_found">Nou comandament de veu trobat</string>
+    <string name="Speech_edit">Edita comandament de veu</string>
+    <string name="Speech_name">Dona-li nom a aquest comandament de veu. </string>
+    <string name="Speech_exists">Comandament de veu ja registrat. </string>
+    <string name="Speech_saved">Nou comandament de veu desat. </string>
+    <string name="Speech_desc">Fés un nou comandament de veu. </string>
+    <string name="Speech">Parla</string>
+    <string name="Speech_disabled">Comandament de veu deshabilitat, canvie-ho a la configuració.</string>
+    <string name="noSwitchSelected_explanation_Speech">Per fer efectiu un comandament de veu, enllaça\'l amb un interruptor</string>
+    <!-- Switches -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_switches">Interruptors</string>
+    <string name="txt_notAvailable">N/D</string>
+    <string name="idx">IDX</string>
+    <string name="placeholder_value">255</string>
+    <string name="color_set">Color definit per</string>
+    <string name="state_set">Estat definit per</string>
+    <string name="error_favorite">No s\'ha pogut definit el preferit</string>
+    <string name="error_logs">No s\'ha trobat cap registre per mostrar</string>
+    <string name="error_color">No s\'ha pogut canviar el color</string>
+    <string name="error_state">No s\'ha pogut canviar l\'estat</string>
+    <string name="error_timer">No s\'ha pogut mostrar els temporitzadors</string>
+    <string name="error_notifications">Could not show the notifications</string>
+    <string name="set_level_switch">"Canviant el nivell de l'interruptor: de %1$s a %2$d"</string>
+    <!-- Temperature -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_temperature">Temperatura</string>
+    <string name="cancel_override">Cancel·la el control manual</string>
+    <string name="wind">Vent</string>
+    <string name="error_log">No s\'ha pogut obtenir el registre de dades per</string>
+    <string name="follow_schedule">Segueix l\'horari</string>
+    <!-- Timer -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="command">Ordre</string>
+    <string name="type">Tipus</string>
+    <string name="notapplicable">N/A</string>
+    <string name="timer_before_sunset">Abans de la posta de sol</string>
+    <string name="timer_after_sunset">Després de la posta de sol</string>
+    <string name="timer_ontime">A l\'hora</string>
+    <string name="timer_before_sunrise">Abans de la sortida del sol</string>
+    <string name="timer_after_sunrise">Després de la sortida del sol</string>
+    <string name="timer_fixed">Data i hora fixades</string>
+    <string name="odd_day_numbers">Números de dia imparells</string>
+    <string name="even_day_numbers">Números de dia parells</string>
+    <string name="odd_week_numbers">Números de setmana imparells</string>
+    <string name="even_week_numbers">Números de setmana parells</string>
+    <string name="monthly">Mensualment</string>
+    <string name="monthly_weekday">Mensual (dies laborables)</string>
+    <string name="yearly">Anualment</string>
+    <string name="yearly_weekday">Anualment (dies laborables)</string>
+    <string name="before_sun_at_south">Before Sun at South</string>
+    <string name="after_sun_at_south">After Sun at South</string>
+    <string name="before_civil_twilight_start">Before Civil Twilight Start</string>
+    <string name="after_civil_twilight_start">After Civil Twilight Start</string>
+    <string name="before_civil_twilight_end">Before Civil Twilight End</string>
+    <string name="after_civil_twilight_end">After Civil Twilight End</string>
+    <string name="before_nautical_twilight_start">Before Nautical Twilight Start</string>
+    <string name="after_nautical_twilight_start">After Nautical Twilight Start</string>
+    <string name="before_nautical_twilight_end">Before Nautical Twilight End</string>
+    <string name="after_nautical_twilight_end">After Nautical Twilight End</string>
+    <string name="before_austronomical_twilight_start">Before Austronomical Twilight Start</string>
+    <string name="after_austronomical_twilight_start">After Austronomical Twilight Start</string>
+    <string name="before_austronomical_twilight_end">Before Austronomical Twilight End</string>
+    <string name="after_austronomical_twilight_end">After Austronomical Twilight End</string>
+    <string name="timer_every_days">Cada dia</string>
+    <string name="timer_working_days">Dies laborables</string>
+    <string name="timer_weekend">Cap de setmana</string>
+    <string name="timer_other">Altre</string>
+    <string name="timers">Temporitzadors</string>
+    <string name="first">First</string>
+    <string name="second">Second</string>
+    <string name="third">Third</string>
+    <string name="fourth">Fourth</string>
+    <string name="last">Last</string>
+    <!-- Utilities -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_utilities">Utilitats</string>
+    <string name="set_temperature">Estableix</string>
+    <!-- Vars -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_vars">Variables d\'usuari</string>
+    <string name="var_input">Input value is not valid</string>
+    <string name="var_input_error">Failed to update user variable</string>
+    <!-- Weather -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_weather">Temps</string>
+    <string name="dewPoint">Punt de rosada</string>
+    <string name="temp">Temp</string>
+    <string name="pressure">Pressió</string>
+    <string name="chill">Sensació</string>
+    <string name="direction">Direcció</string>
+    <string name="humidity">Humitat</string>
+    <string name="speed">Velocitat</string>
+    <string name="forecast">Previsió del temps</string>
+    <string name="rain">Pluja</string>
+    <string name="rainrate">Rati de pluja</string>
+    <string name="co2">CO2</string>
+    <string name="co2min">CO2 Min</string>
+    <string name="co2max">CO2 Max</string>
+    <!-- Welcome -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="welcome_title_activity_welcome">Benvinguts</string>
+    <string name="welcome_info_domoticz">Domoticz és un sistema d\'automatització domèstic que us permet monitoritzar i configurar dispositius com: llums, interruptors, diferents sensors/comptadors de temperatura, pluja, vent, UV, electricitat, gas, aigua i molts més. Podeu enviar notificacions i alertes a qualsevol dispositiu mòbil.</string>
+    <string name="welcome_info_swipe">Llisqueu cap a la dreta o utilitzeu els botons de navegació de sota per continuar</string>
+    <string name="welcome_info_settings1">La pàgina següent és per a la configuració de Domoticz.</string>
+    <string name="welcome_info_settings2">        Podeu especificar una configuració local i remota de servidor.
+        La configuració local és per quan esteu connectats a la xarxa wifi de casa.
+        La configuració remota s\'utilitza quan no esteu connectat a la xarxa wifi de casa o connecteu
+        a traves de xarxes mòbils (2G, 3G, 4G etc).</string>
+    <string name="welcome_info_checkingConnection">Verificant la configuració de connexió</string>
+    <string name="welcome_msg_connectionDataIncomplete">Dades de connexió incomplets o buits</string>
+    <string name="welcome_msg_connectionDataInvalid">La URL no ha de començar amb http</string>
+    <string name="welcome_msg_correctOnPreviousPage">Corregiu les dades a la pàgina anterior</string>
+    <string name="welcome_msg_serverVersion">Versió de Domoticz</string>
+    <string name="welcome_msg_numberOfDevices">S\'han trobat %1$d dispositius</string>
+    <string name="welcome_msg_no_ssid_found">No s\'ha trobat SSID de wifi</string>
+    <string name="welcome_ssid_spinner_prompt">Seleccioneu SSID de casa</string>
+    <string name="welcome_ssid_button_prompt">Add home SSID\'s</string>
+    <string name="welcome_server_settings_title">Configuració del servidor</string>
+    <string name="welcome_server_startScreen">Pantalla d\'inici</string>
+    <string name="welcome_button_next">següent</string>
+    <string name="welcome_button_previous">anterior</string>
+    <string name="welcome_button_finish">acaba</string>
+    <string name="welcome_remote_server_address">Adreça del servidor</string>
+    <string name="welcome_remote_server_protocol">Protocol</string>
+    <string name="welcome_remote_server_port">Port</string>
+    <string name="welcome_remote_server_username">Nom d’usuari</string>
+    <string name="welcome_remote_server_password">Contrasenya</string>
+    <string name="welcome_remote_server_directory">Carpeta</string>
+    <string name="remote">Remot</string>
+    <string name="local">Local</string>
+    <string name="servername">Nom del servidor</string>
+    <string name="welcome_local_server_used_switch_title">Adreça de servidor alternativa</string>
+    <string name="welcome_local_server_used_switch_summary">Utilitza l\'adreça alternativa per connexions locals</string>
+    <string name="welcome_advancedSettings">Configuració avançada del servidor</string>
+    <string name="welcome_advancedSettings_summary">Només s\'utilitza per a servidors de Domoticz no estàndards</string>
+    <string name="welcome_local_server_ssid">SSID del wifi local</string>
+    <string name="welcome_local_server_address">Adreça de servidor local</string>
+    <string name="welcome_local_server_protocol">Protocol local</string>
+    <string name="welcome_local_server_port">Port local</string>
+    <string name="welcome_local_server_directory">Carpeta local (deixeu-ho buit si no cal)</string>
+    <string name="welcome_local_server_username">Nom d\'usuari local (deixeu-ho buit si no és necessari)</string>
+    <string name="welcome_local_server_password">Contrasenya local (deixeu-ho buit si no és necessari)</string>
+    <string-array name="remote_server_protocols">
+        <item>HTTP</item>
+        <item>HTTPS</item>
+    </string-array>
+    <!-- Widgets -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="pick_device_title">Pick a device</string>
+    <string name="choose_switch">Escull_interruptor</string>
+    <string name="failed_to_get_securitypanel">Error_en_el_panell_de_seguretat</string>
+    <string name="failed_to_get_switches">Failed to get devices</string>
+    <string name="failed_toggle_switch">Failed to toggle device</string>
+    <string name="switch_toggled">"Switch device"</string>
+    <string name="text_loading">Loading...</string>
+    <string name="text_go">GO</string>
+    <string name="widget_background">Background</string>
+    <string name="widget_dark">Dark</string>
+    <string name="widget_light">Light</string>
+    <string name="widget_transparent_dark">Dark Transparent</string>
+    <string name="widget_transparent_light">Light Transparent</string>
+    <!-- Wifi -->
+    <string name="wifi_not_supported">Wifi is not supported on this device</string>
+    <string name="wifi_register">Connect a wifi ssid</string>
+    <string name="wifi_found">New wifi access point found</string>
+    <string name="wifi_edit">Edit wifi access point</string>
+    <string name="wifi_name">Give this access point a proper name. </string>
+    <string name="wifi_desc">Check the list of paired access point. </string>
+    <string name="wifi_exists">This access point already configured on Domoticz. </string>
+    <string name="wifi_turned_off">Wifi needs to be turned on in your device settings. </string>
+    <string name="wifi_saved">Saved a new access point connection. </string>
+    <string name="wifi_settings">Setup access points</string>
+    <string name="enable_wifi">Enable Wifi functionality</string>
+    <string name="wifi_disabled">Wifi automation disabled, please setup via settings.</string>
+    <string name="noSwitchSelected_explanation_wifi">For an access point to automate something in Domoticz, a switch should be linked to an access point.</string>
+    <string name="title_notification_wifi">Enable Notifications</string>
+    <string name="description_notification_wifi">Show notifications when you connect or disconnect a wifi access point.</string>
+    <string name="wifi_connected_to">"Connected to %1$s"</string>
+    <string name="wifi_disconnected_to">Disconnected to  %1$s</string>
+    <string name="wifi_connected_to_text">Connected to one of the registed access points.</string>
+    <string name="wifi_disconnected_to_text">Disconnected to one of the registed access points.</string>
+    <!-- Wizard -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_wizard">Auxiliar de benvinguda</string>
+    <string name="wizard_welcome">Benvinguts</string>
+    <string name="wizard_welcome_description">Domoticz és un sistema domòtic molt lleuger que permet monitoritzar i configurar diversos dispositius.</string>
+    <string name="wizard_favorites">Preferits</string>
+    <string name="wizard_favorites_description">Podeu afegir dispositius al panell marcant-los com a preferits. Mantingueu premut un element per guardar-lo com a preferit!</string>
+    <string name="wizard_startup">Pantalla d\'inici</string>
+    <string name="wizard_startup_description">Podeu definir la pantalla d\'inici a la configuració!</string>
+    <string name="wizard_notifications">Configureu les notificacions</string>
+    <string name="wizard_notifications_description">Ara podeu rebre notificacions al vostre dispositiu Android! Canvieu les opcions de notificació des de la configuració</string>
+    <string name="wizard_multiserver">Configureu varis servidors</string>
+    <string name="wizard_multiserver_description">Podeu definit varis servidors Domoticz a la configuració.</string>
+    <string name="wizard_geo">Geofencing</string>
+    <string name="wizard_geo_description">You can set your startup screen in the settings!</string>
+    <string name="wizard_wear">Android Wear</string>
+    <string name="wizard_wear_description">Podeu definir quins interruptors voleu controlar des del vostre dispositiu Android Wear!</string>
+    <string name="wizard_auto">Android Auto</string>
+    <string name="wizard_auto_description">Receive the Domoticz notifications right on your Android Auto device!</string>
+    <string name="wizard_graph">Gràfics</string>
+    <string name="wizard_graph_description">Podeu veure el gràfic històric d\'una utilitat, del temps o de la temperatura!</string>
+    <string name="wizard_filter">Filtres</string>
+    <string name="wizard_filter_description">Podeu filtrar dispositius per estat (encès/apagat). Toqueu la icona de menú de dalt a la dreta per filtrar!</string>
+    <string name="wizard_widgets">Ginys!!</string>
+    <string name="wizard_widgets_description">Podeu posar alguns ginys a la pantalla principal!</string>
+    <string name="wizard_menuitem">Desactiva l\'auxiliar</string>
+    <string name="wizard_menuitem_description">Ara podeu treure l\'auxiliar des del menú de navegació!</string>
+    <string name="wizard_nfc">NFC</string>
+    <string name="wizard_nfc_description">Podeu canviar els interrruptors via NFC!</string>
+    <string name="wizard_bluetooth_description">You are able to toggle switches via Bluetooth connections!</string>
+    <string name="wizard_qrcode">Codi QR</string>
+    <string name="wizard_qrcode_description">Canvieu els interruptors escanejant un codi QR (o de barres)!</string>
+    <string name="wizard_speech">Speech Commands</string>
+    <string name="wizard_speech_description">Commuta els interruptors amb la veu! Configura els comandaments de veu a través de les pantalles de configuració i els interruptors de conexió.</string>
+    <string name="wizard_button_nice">D\'acord</string>
+    <string name="wizard_button_switches">Interruptors</string>
+    <string name="wizard_button_settings">Configuració</string>
+    <string name="wizard_button_wizard">Elimina</string>
+    <string name="wizard_button_utilities">Utilitats</string>
+    <string name="wizard_button_done">Fet</string>
+    <string name="wizard_beacon_description">Toggle switches by scanning for beacons!</string>
 </resources>

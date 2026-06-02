@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2015 Domoticz - Mark Heinis
- *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- */
 
 package nl.hnogames.domoticzapi;
 
@@ -50,6 +30,7 @@ import nl.hnogames.domoticzapi.Interfaces.CameraReceiver;
 import nl.hnogames.domoticzapi.Interfaces.ConfigReceiver;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.DownloadUpdateServerReceiver;
+import nl.hnogames.domoticzapi.Interfaces.EnergyDashboardReceiver;
 import nl.hnogames.domoticzapi.Interfaces.EventReceiver;
 import nl.hnogames.domoticzapi.Interfaces.GraphDataReceiver;
 import nl.hnogames.domoticzapi.Interfaces.JSONParserInterface;
@@ -82,6 +63,7 @@ import nl.hnogames.domoticzapi.Parsers.CameraParser;
 import nl.hnogames.domoticzapi.Parsers.ConfigParser;
 import nl.hnogames.domoticzapi.Parsers.DevicesParser;
 import nl.hnogames.domoticzapi.Parsers.DownloadUpdateParser;
+import nl.hnogames.domoticzapi.Parsers.EnergyDashboardParser;
 import nl.hnogames.domoticzapi.Parsers.EventsParser;
 import nl.hnogames.domoticzapi.Parsers.GraphDataParser;
 import nl.hnogames.domoticzapi.Parsers.LanguageParser;
@@ -783,6 +765,13 @@ public class Domoticz {
         GetRequest(parser, url, true);
     }
 
+    public void getEnergyDashboard(EnergyDashboardReceiver receiver) {
+        EnergyDashboardParser parser = new EnergyDashboardParser(receiver);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.ENERGY_DASHBOARD);
+        Log.v(TAG, url);
+        GetRequest(parser, url, true);
+    }
+
     public void getLanguageStringsFromServer(String language, LanguageReceiver receiver) {
         LanguageParser parser = new LanguageParser(receiver);
         String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.LANGUAGE);
@@ -837,11 +826,30 @@ public class Domoticz {
 
     public void getDevice(DevicesReceiver receiver, int idx, boolean scene_or_group) {
         DevicesParser parser = new DevicesParser(receiver, idx, scene_or_group);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.DEVICES);
-
+        // Use rid= to fetch only the single device — much faster than fetching all devices
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Get.STATUS) + idx;
         Log.i("DEVICE", "url: " + url);
-        GetResultRequest(parser,
-                url, true);
+        GetResultRequest(parser, url, true);
+    }
+
+    /**
+     * Fetches multiple devices in a single HTTP request using a comma-separated rid list.
+     * Calls {@link DevicesReceiver#onReceiveDevices} with all found devices.
+     */
+    public void getDevicesByIds(DevicesReceiver receiver, List<Integer> ids) {
+        if (ids == null || ids.isEmpty()) {
+            receiver.onReceiveDevices(new ArrayList<>());
+            return;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < ids.size(); i++) {
+            if (i > 0) sb.append(',');
+            sb.append(ids.get(i));
+        }
+        DevicesParser parser = new DevicesParser(receiver);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Get.STATUS) + sb.toString();
+        Log.i("DEVICES_BULK", "url: " + url);
+        GetResultRequest(parser, url, true);
     }
 
     public void getLogs(LogsReceiver receiver, int logLevel) {

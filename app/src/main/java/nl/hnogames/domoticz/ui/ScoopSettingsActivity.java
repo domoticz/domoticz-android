@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2015 Domoticz - Mark Heinis
- *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- */
 
 package nl.hnogames.domoticz.ui;
 
@@ -30,8 +10,12 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,6 +32,7 @@ public class ScoopSettingsActivity extends AppCompatActivity implements FlavorRe
     private RecyclerView mRecyclerView;
     private FlavorRecyclerAdapter mAdapter;
     private String mTitle;
+    private Flavor mInitialFlavor;
 
     public static Intent createIntent(Context ctx) {
         return createIntent(ctx, null);
@@ -65,7 +50,12 @@ public class ScoopSettingsActivity extends AppCompatActivity implements FlavorRe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Enable edge-to-edge display
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
+
+        // Store the initial flavor to detect changes
+        mInitialFlavor = Scoop.getInstance().getCurrentFlavor();
 
         // Apply the current flavor of ice cream
         Scoop.getInstance().apply(this);
@@ -73,10 +63,33 @@ public class ScoopSettingsActivity extends AppCompatActivity implements FlavorRe
         // Set the activity content
         setContentView(R.layout.activity_theme_settings);
 
+        // Apply window insets
+        applyWindowInsets();
+
         // Setup UI
         parseExtras(savedInstanceState);
         setupActionBar();
         setupRecyclerView();
+    }
+
+    private void applyWindowInsets() {
+        View appBar = findViewById(R.id.appBar);
+        if (appBar != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(appBar, (v, windowInsets) -> {
+                Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(insets.left, insets.top, insets.right, 0);
+                return windowInsets;
+            });
+        }
+
+        View recycler = findViewById(R.id.recycler);
+        if (recycler != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(recycler, (v, windowInsets) -> {
+                Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), insets.bottom);
+                return WindowInsetsCompat.CONSUMED;
+            });
+        }
     }
 
     @Override
@@ -139,6 +152,9 @@ public class ScoopSettingsActivity extends AppCompatActivity implements FlavorRe
 
     @Override
     public void onItemClicked(View view, Flavor item, int position) {
+        // Check if the theme actually changed
+        boolean themeChanged = !item.equals(mInitialFlavor);
+
         // Update Scoops
         Scoop.getInstance().choose(item);
 
@@ -147,7 +163,11 @@ public class ScoopSettingsActivity extends AppCompatActivity implements FlavorRe
 
         // Restart this activity
         Intent restart = new Intent(this, ScoopSettingsActivity.class);
-        setResult(RESULT_OK);
+        if (themeChanged) {
+            setResult(RESULT_OK);
+        } else {
+            setResult(RESULT_CANCELED);
+        }
         finish();
         startActivity(restart);
         overridePendingTransition(0, 0);

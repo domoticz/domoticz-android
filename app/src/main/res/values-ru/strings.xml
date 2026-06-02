@@ -1,24 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (C) 2015 Domoticz - Mark Heinis
-  ~
-  ~  Licensed to the Apache Software Foundation (ASF) under one
-  ~  or more contributor license agreements.  See the NOTICE file
-  ~  distributed with this work for additional information
-  ~  regarding copyright ownership.  The ASF licenses this file
-  ~  to you under the Apache License, Version 2.0 (the
-  ~  "License"); you may not use this file except in compliance
-  ~  with the License.  You may obtain a copy of the License at
-  ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~  Unless required by applicable law or agreed to in writing,
-  ~  software distributed under the License is distributed on an
-  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~  KIND, either express or implied.  See the License for the
-  ~  specific language governing permissions and limitations
-  ~  under the License.
-  -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="premium_category">Купить премиум!</string>
@@ -29,7 +9,7 @@
     <string name="old_version_description">We are migrating to only one Domoticz Android app.\n\nThis version can still be used with all the premium features, but wil not receive any updates anymore in the future.\n\nYou can export and import your settings via the settings menu.</string>
     <string name="drawer_open">Открыть панель управления</string>
     <string name="drawer_close">Закрыть панель управления</string>
-    <string name="msg_please_wait">Пожалуйста подождите&#8230;</string>
+    <string name="msg_please_wait">Пожалуйста подождите…</string>
     <string name="changelog">История Изменений</string>
     <string name="button_state_on">ВКЛ</string>
     <string name="button_state_off">Выключен</string>
@@ -144,4 +124,636 @@
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Setup automation rules within Tasker for Domoticz!</string>
     <string name="background_location_warning">This app collects location data to enable for geofencing services within this app, even when the app is closed or not in use.</string>
+    <!-- Actions -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="action_switch_server">Переключить сервер</string>
+    <string name="action_settings">Настройки</string>
+    <string name="action_filter">Фильтр</string>
+    <string name="action_camera_play">Старт</string>
+    <string name="action_camera_pause">Пауза</string>
+    <string name="action_qrcode_scan">Отсканировать QR-код</string>
+    <string name="action_bluetooth_show">Показать подключенные устройства</string>
+    <string name="action_speech">Распознавание речи</string>
+    <string name="send">Send</string>
+    <!-- Beacon -->
+    <string name="beacon_not_supported">Beacons are not supported on this device</string>
+    <string name="beacon_register">Connect a beacon</string>
+    <string name="beacon_found">New beacon found</string>
+    <string name="beacon_edit">Edit beacon</string>
+    <string name="beacon_name">Give this beacon a proper name. </string>
+    <string name="beacon_desc">Check the list of paired beacon devices. </string>
+    <string name="beacon_exists">Beacon already configured on Domoticz. </string>
+    <string name="beacon_turned_off">Bluetooth needs to be turned on in your device settings. </string>
+    <string name="beacon_saved">Saved a new beacon connection. </string>
+    <string name="action_beacon_show">Add new beacon</string>
+    <string name="beacon">Beacon</string>
+    <string name="beacon_disabled">Beacon automation disabled, please setup via settings. </string>
+    <string name="noSwitchSelected_explanation_beacon">For a Beacon device to automate something in Domoticz, a switch should be linked to an beacon. </string>
+    <string name="beacon_UUID">UUID</string>
+    <string name="beacon_major">Major (optional)</string>
+    <string name="beacon_minor">Minor (optional)</string>
+    <string name="beacon_scan">Beacon</string>
+    <string name="beacon_scan_desc">Scanning for beacons</string>
+    <string name="beacon_notifications">Enable notifications for entering and leaving a beacon region.</string>
+    <string name="beacon_entering">"Entering %1$s"</string>
+    <string name="beacon_leaving">Leaving  %1$s</string>
+    <string name="beacon_entering_text">Entering one of the beacons</string>
+    <string name="beacon_leaving_text">Leaving one of the beacons</string>
+    <!-- Bluetooth -->
+    <string name="bluetooth_not_supported">Bluetooth не поддерживается на этом устройстве</string>
+    <string name="bluetooth_register">Подключить Bluetooth устройство</string>
+    <string name="bluetooth_found">Новое Bluetooth устройство найдено</string>
+    <string name="bluetooth_edit">Редактировать Bluetooth устройство</string>
+    <string name="bluetooth_name">Присвойте правильное имя Bluetooth устройству. </string>
+    <string name="bluetooth_desc">Проверьте список подключенных Bluetooth устройств. </string>
+    <string name="bluetooth_exists">Bluetooth устройство уже настроено в Domoticz. </string>
+    <string name="bluetooth_turned_off">Включите Bluetooth в настройках вашего устройства. </string>
+    <string name="bluetooth_saved">Bluetooth соединение сохранено. </string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="title_notification_bluetooth">Enable Notifications for Bluetooth</string>
+    <string name="description_notification_bluetooth">Show notifications when you connect or disconnect a bluetooth device.</string>
+    <string name="bluetooth_event_triggered">"Bluetooth event triggered for %1$s"</string>
+    <string name="bluetooth_disabled">Bluetooth автоматизация отключена, пожалуйста включите в настройках.</string>
+    <string name="noSwitchSelected_explanation_bluetooth">Для автоматизации Bluetooth устройств в Domoticz, переключатель должен привязан к Bluetooth</string>
+    <!-- Cameras -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_cameras">Камеры</string>
+    <!-- Dashboard -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_dashboard">Панель управления</string>
+    <string name="delivery">Delivery</string>
+    <string name="usage">Использование</string>
+    <string name="today">Сегодня</string>
+    <string name="total">Всего</string>
+    <string name="favorite_added">Добавлено в панель инструментов.</string>
+    <string name="favorite_removed">удалено из панели инструментов.</string>
+    <!-- Errors -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="error_authentication">Неверные учетные данные</string>
+    <string name="error_timeout">Превышено время ожидания или нет соединения</string>
+    <string name="error_server">Ошибка сервера</string>
+    <string name="error_network">Ошибка сети, код статуса %1$d</string>
+    <string name="error_parse">Ошибка анализа</string>
+    <string name="error_notConnected">Ошибка: не подключен к сети</string>
+    <!-- Events -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_events">События</string>
+    <string name="action_not_supported_yet">Это действие пока не поддерживается!</string>
+    <!-- Locations -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_add_location">Добавить местоположение</string>
+    <string name="title_edit_location">Изменить местоположение</string>
+    <string name="longitude">Долгота</string>
+    <string name="latitude">Широта</string>
+    <string name="radius">Радиус (в метрах)</string>
+    <string name="connectedSwitch">Подключенный переключатель</string>
+    <string name="unable_to_get_switches">Не удалось получить все переключатели, пожалуйста, попробуйте снова</string>
+    <string name="delete_short">DEL</string>
+    <string name="delete">Удалить</string>
+    <string name="Location_name">Имя местоположения</string>
+    <string name="currentLocation">Текущее местоположение</string>
+    <string name="manual">Вручную</string>
+    <string name="getLocation">GET</string>
+    <string name="locationAddress">Адрес</string>
+    <string name="unknown">Неизвестно</string>
+    <string name="not_available">Недоступно</string>
+    <string name="no_valid_latLong">Недопустимые широта и долгота</string>
+    <string name="starting_geofence_service">Запуск службы Geofence</string>
+    <string name="could_not_find_location">Местоположение не найдено, пожалуйста, попробуйте снова.</string>
+    <string name="google_play_services_unavailable">Услуги Google Play недоступны.</string>
+    <string name="location_not_found">Местоположение не найдено.</string>
+    <string name="geofence">Geofencing</string>
+    <string name="title_geofence">Включить Geofencing</string>
+    <string name="description_geofence">Включить и настроить Geofencing</string>
+    <string name="title_geofence_notifications">Включить уведомления</string>
+    <string name="description_geofence_notifications">Включить уведомления для инициирования событий</string>
+    <string name="geofence_place">Место: %s</string>
+    <string name="geofence_location_entering">"Ввод %1$s"</string>
+    <string name="geofence_location_leaving">Оставляя %1$s</string>
+    <string name="geofence_location_entering_text">Ввод одного из мест</string>
+    <string name="geofence_location_leaving_text">Оставляя одно место</string>
+    <string name="geofence_error_recreateLocations">Из-за изменений на Geofencing пожалуйста восстановите ваши места</string>
+    <string name="noSwitchSelected_title">Переключатель не выбран</string>
+    <string name="noSwitchSelected_explanation">Чтобы GeoFencing функционировал необходимо подключение к GeoFence</string>
+    <string name="noSwitchSelected_connectOneNow">Подключить?</string>
+    <string name="geofencing_disabled_no_enabled_fences">Geofencing отключено</string>
+    <string name="geofence_not_available">Услуга геозонирования сейчас не доступна</string>
+    <string name="geofence_too_many_geofences">Приложение зарегистрировало слишком много геозон</string>
+    <string name="geofence_too_many_pending_intents">Получено слишком много PendingIntents</string>
+    <string name="unknown_geofence_error">Неизвестная ошибка</string>
+    <!-- Logs -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_logs">Журналы</string>
+    <!-- Nfc -->
+    <string name="nfc_not_supported">NFC не поддерживается на этом устройстве</string>
+    <string name="nfc_register">Зарегистрируйте тег NFC</string>
+    <string name="nfc_tag_found">Найден новый тег NFC</string>
+    <string name="nfc_tag_edit">Редактирование тега NFC</string>
+    <string name="nfc_tag_name">Присвойте имя NFC. </string>
+    <string name="nfc_exists">NFC тег уже зарегистрирован. </string>
+    <string name="nfc_saved">Новый тег NFC сохранен. </string>
+    <string name="nfc">NFC</string>
+    <string name="noSwitchSelected_explanation_nfc">Для принятия NFC необходимо увязать переключатель с NFC тегом</string>
+    <!-- Notifications -->
+    <string name="priority">Приоритет</string>
+    <string name="emergency">Аварийный режим</string>
+    <string name="high">Высокий</string>
+    <string name="low">Низкий</string>
+    <string name="verylow">Очень низкий</string>
+    <string name="allsystems">Все системы</string>
+    <string name="systems">Системы</string>
+    <string name="send_notification">Настройка уведомлений</string>
+    <string name="notification_subject">Subject</string>
+    <string name="notification_message">Message</string>
+    <string name="notification_error_system">Please choose a system to send the notification to</string>
+    <string name="notification_error_message">Please fill in a message</string>
+    <string name="notification_error_subject">Please fill in a subject</string>
+    <string name="notification_error_send">Could not send the notification to Domoticz</string>
+    <string name="notification_send">Notification send to Domoticz</string>
+    <!-- Permissions -->
+    <string name="permission_title">Доступ запрещен</string>
+    <string name="permission_prefs_title">Права доступа</string>
+    <string name="permission_config">Настройте установки доступа для этого приложения</string>
+    <string name="permission_desc_storage">Эти установки доступа к хранению нужны для сохранения файла кэша, параметров и хранения снимков с камеры.</string>
+    <string name="permission_desc_location">Эти разрешения на позиционирование необходимы для геозонирования и для доступа к Wifi SSID вокруг вас!</string>
+    <string name="permission_desc_phone">Для включения уведомлений необходим доступ к состоянию телефона!</string>
+    <string name="permission_desc_camera">Для сканирования QR-кодов необходим доступ к камере!</string>
+    <string name="permission_desc_audio">Для распознавания голоса необходим доступ к аудио устройствам!</string>
+    <string name="permission_desc_finger">Доступ к распознаванию отпечатков пальцев необходим для обеспечения безопасности входа в приложение!</string>
+    <!-- Plans -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_plans">Планы</string>
+    <plurals name="devices">
+        <item quantity="one">%d устройство</item>
+        <item quantity="few">%d устройство</item>
+        <item quantity="many">%d устройства</item>
+        <item quantity="other">%1d устройство</item>
+    </plurals>
+    <!-- Qrcode -->
+    <string name="qrcode_not_supported">QR-код не поддерживается на этом устройстве</string>
+    <string name="qrcode_register">Зарегистрировать QR-код </string>
+    <string name="qrcode_found">Найден новый QR-код</string>
+    <string name="qrcode_edit">Редактировать QR код</string>
+    <string name="qrcode_name">Дайте имя этому QR коду. </string>
+    <string name="qrcode_desc">Сканировать QR-код. </string>
+    <string name="qrcode_exists">QR-код, уже зарегистрирован. </string>
+    <string name="qrcode_saved">Новый QR-код сохранен. </string>
+    <string name="qrcode">QR-код</string>
+    <string name="qrcode_new_found">Обнаружен новый QR-код, пожалуйста настройте его.</string>
+    <string name="qr_code_disabled">QR-код отключен, пожалуйста настройте его.</string>
+    <string name="noSwitchSelected_explanation_qrcode">Для применения QR Code Scan переключатель должен быть увязан с QR-кодом</string>
+    <string name="permission_camera_rationale">Необходим доступ к камере для считывания штрих-кода</string>
+    <string name="low_storage_error">QR-код зависимости не могут быть загружены из-за нехватки памяти</string>
+    <string name="no_camera_permission">Это приложение невозможно запустить, поскольку оно не имеет доступа к камере.  Приложение завершит работу.</string>
+    <!-- Scenes -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_scenes">Заставки</string>
+    <!-- Security -->
+    <string name="title_security_panel">Панель безопасности</string>
+    <string name="security_pin">Пин код</string>
+    <string name="security_disarm">Отключить</string>
+    <string name="security_arm_home">Вкл дома</string>
+    <string name="security_arm_away">Вкл не дома</string>
+    <string name="security_wrong_code">Введен неверный код!</string>
+    <string name="security_no_rights">У вас нет прав для данного действия!</string>
+    <string name="security_generic_error">Не удалось изменить статус панели безопасности</string>
+    <string name="security_wrong_password_fingerprint">Неправильно введен пароль, пароль учетной записи domoticz является дублирующей системой при отказе распознавания ваших отпечатков пальцев...!</string>
+    <string name="show_password">Показать пароль</string>
+    <string name="fingerprint_make_sure">Нам необходимо убедиться, что это Вы</string>
+    <string name="fingerprint_dialog_description">Прикоснитесь к сканеру отпечатка пальца, для входа в аккаунт.</string>
+    <!-- Server -->
+    <string name="choose_server">Выбрать сервер</string>
+    <string name="dont_save_new_server">Не сохранять новый сервер?</string>
+    <string name="server_must_be_unique">Имя сервера должно быть уникальным</string>
+    <string name="switch_to_server">"Переключение сервера на %1$s"</string>
+    <string name="cant_disable_default_server">Не удается отключить сервер по умолчанию</string>
+    <!-- Settings -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="settingsActivity_name">Настройки</string>
+    <string name="cameraActivity_name">Камера</string>
+    <!--        Categories             -->
+    <string name="category_generic">Общие</string>
+    <string name="category_wear">Android Wear</string>
+    <string name="category_auto">Android Auto</string>
+    <string name="category_server">Сервер</string>
+    <string name="category_geofencing">Местоположение</string>
+    <string name="category_info">Информация</string>
+    <string name="category_advanced">Дополнительные опции</string>
+    <string name="category_language">Язык</string>
+    <string name="category_talk_back">Talk Back</string>
+    <string name="category_notification">Уведомления</string>
+    <string name="category_debug">Отладка</string>
+    <string name="category_export">Экспорт/импорт параметров</string>
+    <string name="category_theme">Оформление</string>
+    <string name="category_clock">Часы</string>
+    <string name="category_nfc">NFC соединения</string>
+    <string name="category_startup_security">Безопасность</string>
+    <string name="category_account">Учётные записи</string>
+    <string name="category_QRCode">QR-код</string>
+    <string name="category_bluetooth">Bluetooth</string>
+    <string name="category_wifi">Wifi</string>
+    <string name="category_Speech">Голосовое управление</string>
+    <string name="category_Reset">Сброс</string>
+    <string name="category_help">Сотрудничество</string>
+    <!--        Generic settings       -->
+    <string name="startup_screen">Экран запуска</string>
+    <string name="enable_items">Включить/отключить элементы</string>
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Сортировка</string>
+    <string name="sort_server_on">Сортировка устройств как на сервере</string>
+    <string name="sort_custom_on">Ручная сортировка, перемещайте для построения собственного списка</string>
+    <string name="sort_lock_server_title">Заблокировать</string>
+    <string name="sort_lock_custom_on">Заблокировать ручную сортировку (выключить перемещение)</string>
+    <string name="sort_dashboardLikeServer_off">Сортировать панель в алфавитном порядке</string>
+    <string name="extra_data_title">Дополнительные данные на панели мониторинга</string>
+    <string name="show_extra_data_on">Показать дополнительные данные на панели мониторинга</string>
+    <string name="show_extra_data_off">Скрыть дополнительные данные на панели мониторинга</string>
+    <string name="always_on_title">Блокировка</string>
+    <string name="always_on_on">Блокировка экрана всегда ВКЛ</string>
+    <string name="always_on_off">Не блокировать экран всегда ВКЛ</string>
+    <string name="always_auto_refresh">Авто-обновление</string>
+    <string name="always_auto_refresh_on">Refresh the device state every couple of seconds</string>
+    <string name="always_auto_refresh_off">Don\'t refresh the device state every couple of seconds</string>
+    <string name="switch_buttons_title">Переключатели</string>
+    <string name="switch_buttons_on">Показать выключатели с вкл/выкл переключателем</string>
+    <string name="switch_buttons_off">Показать выключатели с Вкл/Выкл кнопкой</string>
+    <string name="dashboard_list_title">Сетка панели</string>
+    <string name="show_dashboard_list_on">Показать панель как список</string>
+    <string name="show_dashboard_list_off">Показать панель как сетку</string>
+    <string name="dashboard_clock">Часы</string>
+    <string name="show_dashboard_clock">Показывать часы на панели устройств</string>
+    <string name="dashboard_plans">Plans</string>
+    <string name="show_dashboard_plans">Show the plans on the dashboard</string>
+    <string name="dashboard_camera">Camera</string>
+    <string name="show_dashboard_camera">Load the camera for connected switches</string>
+    <!--        Wear settings       -->
+    <string name="enable_wear_select">Android Wear элементы</string>
+    <string name="custom_wear_select">Выбрать Wear переключатель</string>
+    <string name="custom_wear_select_desc">Выберите какие переключатели Вы хотите видеть на Вашем устройстве Android Wear</string>
+    <string name="wear_custom_on">Включение пользовательских элементов Android Wear </string>
+    <string name="wear_custom_off">Выключение пользовательских элементов Android Wear</string>
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Включить автоматические уведомления Android</string>
+    <string name="auto_custom_off">Включить автоматические уведомления Android</string>
+    <!--        Geofencing settings -->
+    <string name="geofencing_configure">Настройки Geofencing</string>
+    <!--        Theming settings -->
+    <string name="config_theme">Установить тему</string>
+    <string name="set_dark_theme">Переключить тему в темный режим</string>
+    <string name="set_light_theme">Переключить тему в светлый режим</string>
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">Разрешить Domoticz отвечать вам</string>
+    <string name="set_talk_back_off">Отключить функцию Talk back</string>
+    <!--        Import/Export settings  -->
+    <string name="settings_imported">Параметры загружены, пожалуйста перезапустите Domoticz</string>
+    <string name="settings_import_failed">Не удалось импортировать настройки</string>
+    <string name="settings_exported">Параметры экспортированы, пожалуйста перезапустите Domoticz</string>
+    <string name="settings_export_failed">Не удалось экспортировать настройки</string>
+    <!--        Preference screens      -->
+    <string name="server_settings">Настройки подключения к серверу</string>
+    <string name="server_force_fetch_config">Получить конфигурацию сервера</string>
+    <string name="nfc_settings">Настройка соединения NFC</string>
+    <string name="speech_settings">Настройка голосовых команд</string>
+    <string name="title_activity_server_settings">Параметры сервера</string>
+    <string name="multi_server">Multi-сервер</string>
+    <string name="enable_nfc">Включить NFC</string>
+    <string name="enable_speech">Включение распознавания речи</string>
+    <string name="export_settings">Экспортировать настройки</string>
+    <string name="reset_settings">Сброс всех параметров приложения (Осторожно!)</string>
+    <string name="import_settings">Импортировать настройки</string>
+    <string name="multi_server_settings">Включить поддержку нескольких серверов</string>
+    <string name="nfc_enable_settings">Включение подключений NFC</string>
+    <string name="speech_enable_settings">Включение распознавания речи</string>
+    <string name="server">Сервер</string>
+    <string name="qrcode_settings">Настройка кодов QR</string>
+    <string name="enable_qrcode">Включить QR коды</string>
+    <string name="qrcode_enable_settings">Включение функции QR-кодов</string>
+    <string name="bluetooth_settings">Настройка Bluetooth устройств</string>
+    <string name="enable_bluetooth">Enable Bluetooth functionality</string>
+    <string name="beacon_settings">Setup Beacons</string>
+    <string name="enable_beacon">Enable Beacon functionality</string>
+    <string name="translate_description">Вы можете помочь улучшить перевод и добавить новые Языки в приложение с помощью Crowdin project</string>
+    <string name="translate_title">Переводы</string>
+    <string name="security_settings">Настройка безопасности</string>
+    <string name="enable_security">Ввод отпечатков пальцев на старте</string>
+    <string name="disable_security">Отключить ввод отпечатков пальцев на старте</string>
+    <string name="setup_fingerprints">Установка распознавания отпечатков пальцев через экраны настройки Android</string>
+    <string name="fingerprint_not_supported">Ввод отпечатков пальцев не поддерживается на этом устройстве</string>
+    <string name="fingerprint_not_setup_in_android">Сначала настройте/подключите распознавание отпечатков пальцев для этого устройства</string>
+    <string name="fingerprint_sure">Вы уверены? Пароль вашей учетной записи Domoticz это пароль отказа.</string>
+    <!--        Widgets     -->
+    <string name="category_widgets">Виджеты не включены на этом предмете, пожалуйста, проверьте свои настройки Domoticz</string>
+    <string name="widget_description">Включить или отключить виджет на этом устройстве</string>
+    <string name="widget_disabled">Виджеты не включены на этом предмете, пожалуйста, проверьте свои настройки Domoticz6</string>
+    <string name="widget_warning">Использование виджетов только на свой страх и риск! В настоящее время виджеты находятся в стадии бета-тестирования и могут содержать ошибки. Это может привести к чрезмерному использованию данных и быстрому разряду батареи...</string>
+    <!--        GCM settings      -->
+    <string name="notification_settings_id">ID сообщений Google Cloud</string>
+    <string name="notification_settings_push">Использовать Ваш регистрационный идентификатор для Domoticz</string>
+    <string name="notification_settings_pushed">Ваш регистрационный идентификатор сохранен в Domoticz</string>
+    <string name="notification_settings_push_failed">Невозможно сохранить Ваш регистрационный код в Domoticz, повторите попытку позже.</string>
+    <string name="notification_show_title">Последние уведомления</string>
+    <string name="notification_show_nothing">Уведомления не найдены</string>
+    <string name="notification_show">Показать последние несколько уведомлений</string>
+    <!--        Notification settings      -->
+    <string name="overwrite_notifications_title">Перезаписать уведомления</string>
+    <string name="overwrite_notifications">Перезаписать предыдущие уведомления на этом устройстве</string>
+    <string name="enable_notifications_title">Включить уведомления</string>
+    <string name="enable_notifications">Включить уведомления на этом устройстве</string>
+    <string name="notification_screen_title">Настройки уведомлений</string>
+    <string name="notification_history">Notification history</string>
+    <string name="notification_inbox">Inbox</string>
+    <string name="notification_vibrate_title">Вибросигнал</string>
+    <string name="notification_vibrate_on">Вибросигнал при получении уведомления</string>
+    <string name="notification_vibrate_off">Выкл вибросигнала</string>
+    <string name="notification_sound_title">Звук</string>
+    <string name="notification_sound_summary">Вкл звуковой сигнал при поступлении уведомления</string>
+    <string name="suppress_notifications_select">Выберите уведомления для подавления</string>
+    <string name="suppress_notifications">Подавлять определенные уведомления на этом устройстве</string>
+    <string name="suppress_notifications_title">Подавлять уведомления</string>
+    <string name="alarm_notifications_select">Выберите уведомления для оповещений</string>
+    <string name="alarm_notifications">Звуковой сигнал для конкретных уведомлений</string>
+    <string name="clear_notifications">Очистить журнал уведомлений</string>
+    <string name="alarm_notifications_title">Специальные уведомления</string>
+    <string name="alarm">Будильник</string>
+    <string name="alarmtimer_title">Таймер будильника</string>
+    <string name="alarmtimer">Количество секунд действия будильника</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Default</string>
+    <string name="theme_daynight">Day/Night</string>
+    <string name="theme_orange">Orange</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_blue">Blue</string>
+    <string name="theme_green">Green</string>
+    <string name="theme_dark_blue">Dark blue</string>
+    <!-- Other -->
+    <string name="default_values">Значения по умолчанию</string>
+    <string name="default_values_min_error">Макс значение должно быть больше, чем минимальное значение</string>
+    <string name="default_values_max_error">Макс значение должно быть больше, чем минимальное значение</string>
+    <!--        Information category       -->
+    <string name="info_version">Версия</string>
+    <string name="info_domoticz_version">Версия Domoticz</string>
+    <string name="info_about">О Domoticz</string>
+    <string name="info_credits">Создатели</string>
+    <string name="info_credits_text">Domoticz для Android создано с использованием нескольких библиотек с открытым исходным кодом</string>
+    <!--        Debug category       -->
+    <string name="debug_switch_title">Отладка</string>
+    <string name="debug_switch_summary_on">Включена отладка</string>
+    <string name="debug_switch_summary_off">Отладки отключена</string>
+    <!--        Geo settings activity       -->
+    <string name="error_atLeastOneItemInDrawer">Необходимо выбрать хотя бы один элемент</string>
+    <!--        Server update category       -->
+    <string name="title_activity_update">Обновить сервер</string>
+    <string name="error_couldNotCheckForVersion">"Невозможно проверить версию: %1$s"</string>
+    <string name="error_couldNotCheckForUpdates">"Невозможно проверить наличие обновлений: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"Не удалось получить конфигурацию сервера Domoticz: %1$s"</string>
+    <string name="update_available_enhanced">Доступно обновление сервера: %1$s до версии: %2$s</string>
+    <string name="check_for_update_title">Проверить обновления</string>
+    <string name="check_for_update">Вы хотели бы проверить наличие обновлений системы Domoticz?</string>
+    <string name="update_server_warning">Во время обновления сервера приложение не будет работать оптимально.</string>
+    <string name="update_server_downloadNotReady1">Обновление не загружено (полностью).</string>
+    <string name="update_server_downloadNotReady2">Повторите попытку позднее.</string>
+    <string name="server_update_available">Доступно обновление сервера</string>
+    <string name="update_server">Обновить сервер</string>
+    <string name="server_update_revision">Проверка обновления сервера</string>
+    <string name="server_version">Версия сервера</string>
+    <string name="server_update">Обновление сервера</string>
+    <string name="please_wait_while_we_check">Пожалуйста, подождите, пока мы проверяем, готов ли сервер к обновлению</string>
+    <string name="server_update_not_ready">Обновление сервера не загружено</string>
+    <string name="please_wait_while_server_updated">Пожалуйста, подождите, пока выполняется обновление сервера.</string>
+    <string name="server_update_done">Обновление сервера завершено</string>
+    <string name="update_not_started">Обновление не начато</string>
+    <string name="update_not_started_unknown_error">Обновление не запущено из-за неизвестной ошибки</string>
+    <string name="server_update_not_available">Обновление сервера недоступно</string>
+    <string name="click_to_update_server">Нажмите здесь, чтобы обновить Ваш сервер</string>
+    <string name="debug_test_text">Отладочный тест</string>
+    <string name="restart_required_title">Требуется перезапуск</string>
+    <string name="restart_now">Перезапустить?</string>
+    <string name="check_settings">Check your settings</string>
+    <string name="report_error">Report an error</string>
+    <string name="support">Support</string>
+    <!-- Speech -->
+    <string name="Speech_not_supported">Голосовые команды не поддерживаются на этом устройстве</string>
+    <string name="Speech_register">Зарегистрировать голосовую команду</string>
+    <string name="Speech_found">Найдена новая голосовая команда</string>
+    <string name="Speech_edit">Редактирование голосовой команды</string>
+    <string name="Speech_name">Присвойте голосовой команде соответствующее название. </string>
+    <string name="Speech_exists">Голосовая команда уже зарегистрирована. </string>
+    <string name="Speech_saved">Новая голосовая команда записана. </string>
+    <string name="Speech_desc">Создать новую голосовую команду. </string>
+    <string name="Speech">Голосовое управление</string>
+    <string name="Speech_disabled">Голосовые команды отключены, пожалуйста настройте через меню установок.</string>
+    <string name="noSwitchSelected_explanation_Speech">Чтобы речевая команда сработала должен быть привязан переключатель</string>
+    <!-- Switches -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_switches">Переключатели</string>
+    <string name="txt_notAvailable">Недоступно</string>
+    <string name="idx">IDX</string>
+    <string name="placeholder_value">255</string>
+    <string name="color_set">Цвета для</string>
+    <string name="state_set">Состояние включено для</string>
+    <string name="error_favorite">Не удалось установить любимые</string>
+    <string name="error_logs">Не удалось найти какие-либо журналы</string>
+    <string name="error_color">Не удалось изменить цвет</string>
+    <string name="error_state">Не удалось изменить состояние</string>
+    <string name="error_timer">Не удалось показать таймеры</string>
+    <string name="error_notifications">Не удаётся показать уведомления</string>
+    <string name="set_level_switch">"Установка уровня переключателя: %1$s для %2$d"</string>
+    <!-- Temperature -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_temperature">Температура</string>
+    <string name="cancel_override">Отменить перезапись</string>
+    <string name="wind">Ветер</string>
+    <string name="error_log">Не удалось получить данные журнала для</string>
+    <string name="follow_schedule">Следовать расписанию</string>
+    <!-- Timer -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="command">Команда</string>
+    <string name="type">Тип</string>
+    <string name="notapplicable">Недоступно</string>
+    <string name="timer_before_sunset">Перед закатом</string>
+    <string name="timer_after_sunset">После заката</string>
+    <string name="timer_ontime">Вовремя</string>
+    <string name="timer_before_sunrise">Перед восходом</string>
+    <string name="timer_after_sunrise">После восхода</string>
+    <string name="timer_fixed">Фиксированная дата/время</string>
+    <string name="odd_day_numbers">Нечетные числа</string>
+    <string name="even_day_numbers">Четные числа</string>
+    <string name="odd_week_numbers">Нечетные недели</string>
+    <string name="even_week_numbers">Четные недели</string>
+    <string name="monthly">Ежемесячно</string>
+    <string name="monthly_weekday">Ежемесячно (по будням)</string>
+    <string name="yearly">Ежегодно</string>
+    <string name="yearly_weekday">Ежегодно (по будням)</string>
+    <string name="before_sun_at_south">До солнца на Юге</string>
+    <string name="after_sun_at_south">После солнца на Юге</string>
+    <string name="before_civil_twilight_start">До начала сумерек</string>
+    <string name="after_civil_twilight_start">После начала сумерек</string>
+    <string name="before_civil_twilight_end">До окончания сумерек</string>
+    <string name="after_civil_twilight_end">После окончания сумерек</string>
+    <string name="before_nautical_twilight_start">До начала морских сумерек</string>
+    <string name="after_nautical_twilight_start">После начала морских сумерек</string>
+    <string name="before_nautical_twilight_end">До окончания морских сумерек</string>
+    <string name="after_nautical_twilight_end">После окончания морских сумерек</string>
+    <string name="before_austronomical_twilight_start">До начала астрономических сумерек</string>
+    <string name="after_austronomical_twilight_start">После начала астрономических сумерек</string>
+    <string name="before_austronomical_twilight_end">До окончания астрономических сумерек</string>
+    <string name="after_austronomical_twilight_end">После окончания астрономических сумерек</string>
+    <string name="timer_every_days">Ежедневно</string>
+    <string name="timer_working_days">Рабочие дни</string>
+    <string name="timer_weekend">Выходные</string>
+    <string name="timer_other">Другое</string>
+    <string name="timers">Таймеры</string>
+    <string name="first">Первый</string>
+    <string name="second">Второй</string>
+    <string name="third">Третий</string>
+    <string name="fourth">Четвертый</string>
+    <string name="last">Последний</string>
+    <!-- Utilities -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_utilities">Утилиты</string>
+    <string name="set_temperature">Установить</string>
+    <!-- Vars -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_vars">Пользовательские переменные</string>
+    <string name="var_input">Введено недопустимое значение</string>
+    <string name="var_input_error">Не удалось обновить пользовательскую переменную</string>
+    <!-- Weather -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_weather">Погода</string>
+    <string name="dewPoint">Точка росы</string>
+    <string name="temp">Температура</string>
+    <string name="pressure">Давление</string>
+    <string name="chill">Холод</string>
+    <string name="direction">Направление</string>
+    <string name="humidity">Влажность</string>
+    <string name="speed">Скорость</string>
+    <string name="forecast">Прогноз</string>
+    <string name="rain">Дождь</string>
+    <string name="rainrate">Сила дождя</string>
+    <string name="co2">CO2</string>
+    <string name="co2min">CO2 мин</string>
+    <string name="co2max">CO2 макс</string>
+    <!-- Welcome -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="welcome_title_activity_welcome">Добро пожаловать</string>
+    <string name="welcome_info_domoticz">Domoticz это домашняя система автоматизации, которая позволяет контролировать и настраивать различные устройства, такие как: свет, переключатели, различные датчики такие как температуры, дождя, ветера, электричества, газа, воды и многое другое. Предупреждения/уведомления могут быть отправлены на любое мобильное устройство.</string>
+    <string name="welcome_info_swipe">Проведите пальцем вправо или используйте кнопки перехода внизу для продолжения</string>
+    <string name="welcome_info_settings1">Следующая страница предназначена для настройки Domoticz.</string>
+    <string name="welcome_info_settings2">        Вы можете указать установки для локального и удаленного сервера.
+        Локальные параметры предназначены для подключения через домашней wifi сеть.
+        Параметры удаленного сервера используются, когда нет подключения через Вашу домашнюю wifi сеть или при подключении к сотовой сети (2G, 3G, 4G и т.д.).</string>
+    <string name="welcome_info_checkingConnection">Проверка настроек подключения</string>
+    <string name="welcome_msg_connectionDataIncomplete">Данные подключения, неполные или пустые</string>
+    <string name="welcome_msg_connectionDataInvalid">URL-адрес не должен начинаться с http</string>
+    <string name="welcome_msg_correctOnPreviousPage">Пожалуйста, исправьте данные на предыдущей странице</string>
+    <string name="welcome_msg_serverVersion">Версия Domoticz</string>
+    <string name="welcome_msg_numberOfDevices">Устройство %1$d не найдено</string>
+    <string name="welcome_msg_no_ssid_found">Не нейдено SSID wifi</string>
+    <string name="welcome_ssid_spinner_prompt">Выберите домашний SSID</string>
+    <string name="welcome_ssid_button_prompt">Добавьте домашние SSID</string>
+    <string name="welcome_server_settings_title">Параметры сервера</string>
+    <string name="welcome_server_startScreen">Начальный экран</string>
+    <string name="welcome_button_next">следующий</string>
+    <string name="welcome_button_previous">предыдущий</string>
+    <string name="welcome_button_finish">Готово</string>
+    <string name="welcome_remote_server_address">Адрес сервера</string>
+    <string name="welcome_remote_server_protocol">Протокол</string>
+    <string name="welcome_remote_server_port">Порт</string>
+    <string name="welcome_remote_server_username">Имя пользователя</string>
+    <string name="welcome_remote_server_password">Пароль</string>
+    <string name="welcome_remote_server_directory">Каталог</string>
+    <string name="remote">Удаленный</string>
+    <string name="local">Локальный</string>
+    <string name="servername">Имя сервера</string>
+    <string name="welcome_local_server_used_switch_title">Адрес другого сервера</string>
+    <string name="welcome_local_server_used_switch_summary">Используйте другой адрес для локального подключения</string>
+    <string name="welcome_advancedSettings">Дополнительные установки сервера</string>
+    <string name="welcome_advancedSettings_summary">Используется только для нестандартных серверов Domoticz</string>
+    <string name="welcome_local_server_ssid">Местные SSID wifi</string>
+    <string name="welcome_local_server_address">Адрес локального сервера</string>
+    <string name="welcome_local_server_protocol">Локальный протокол</string>
+    <string name="welcome_local_server_port">Локальный порт</string>
+    <string name="welcome_local_server_directory">Локальный каталог (оставить пустым, если не используется)</string>
+    <string name="welcome_local_server_username">Локальное имя пользователя (оставьте пустым если не используется)</string>
+    <string name="welcome_local_server_password">Локальный пароль (оставить пустым если не используется)</string>
+    <string-array name="remote_server_protocols">
+        <item>HTTP</item>
+        <item>HTTPS</item>
+    </string-array>
+    <!-- Widgets -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="pick_device_title">Выбрать устройство</string>
+    <string name="choose_switch">Выбрать устройство</string>
+    <string name="failed_to_get_securitypanel">Не найдена панель безопасности</string>
+    <string name="failed_to_get_switches">Не удалось получить устройства</string>
+    <string name="failed_toggle_switch">Не удалось переключить устройство</string>
+    <string name="switch_toggled">"Переключить устройство"</string>
+    <string name="text_loading">Загрузка...</string>
+    <string name="text_go">ПЕРЕЙТИ</string>
+    <string name="widget_background">Фон</string>
+    <string name="widget_dark">Темно</string>
+    <string name="widget_light">Светло</string>
+    <string name="widget_transparent_dark">Темный прозрачный</string>
+    <string name="widget_transparent_light">Светлый прозрачный</string>
+    <!-- Wifi -->
+    <string name="wifi_not_supported">Wifi is not supported on this device</string>
+    <string name="wifi_register">Connect a wifi ssid</string>
+    <string name="wifi_found">New wifi access point found</string>
+    <string name="wifi_edit">Edit wifi access point</string>
+    <string name="wifi_name">Give this access point a proper name. </string>
+    <string name="wifi_desc">Check the list of paired access point. </string>
+    <string name="wifi_exists">This access point already configured on Domoticz. </string>
+    <string name="wifi_turned_off">Wifi needs to be turned on in your device settings. </string>
+    <string name="wifi_saved">Saved a new access point connection. </string>
+    <string name="wifi_settings">Setup access points</string>
+    <string name="enable_wifi">Enable Wifi functionality</string>
+    <string name="wifi_disabled">Wifi automation disabled, please setup via settings.</string>
+    <string name="noSwitchSelected_explanation_wifi">For an access point to automate something in Domoticz, a switch should be linked to an access point.</string>
+    <string name="title_notification_wifi">Enable Notifications</string>
+    <string name="description_notification_wifi">Show notifications when you connect or disconnect a wifi access point.</string>
+    <string name="wifi_connected_to">"Connected to %1$s"</string>
+    <string name="wifi_disconnected_to">Disconnected to  %1$s</string>
+    <string name="wifi_connected_to_text">Connected to one of the registed access points.</string>
+    <string name="wifi_disconnected_to_text">Disconnected to one of the registed access points.</string>
+    <!-- Wizard -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_wizard">Установщик приветствия</string>
+    <string name="wizard_welcome">Добро пожаловать</string>
+    <string name="wizard_welcome_description">Domoticz является легковесной системой домашней автоматизации, которая позволяет контролировать и настраивать различные устройства.</string>
+    <string name="wizard_favorites">Избранные</string>
+    <string name="wizard_favorites_description">Устройства можно добавить на панель мониторинга, сохранив их как избранные. Долго нажмите на элемент, чтобы сохранить его как любимый!</string>
+    <string name="wizard_startup">Начальный экран</string>
+    <string name="wizard_startup_description">Вы можете установить начальный экран в настройках!</string>
+    <string name="wizard_notifications">Настройка уведомлений</string>
+    <string name="wizard_notifications_description">Теперь вы можете получать уведомления на Вашем устройстве! Изменить настройки уведомлений</string>
+    <string name="wizard_multiserver">Использование нескольких серверов</string>
+    <string name="wizard_multiserver_description">В настройках можно настроить несколько серверов Domoticz.</string>
+    <string name="wizard_geo">Geofencing</string>
+    <string name="wizard_geo_description">Вы можете установить начальный экран в настройках!</string>
+    <string name="wizard_wear">Android Wear</string>
+    <string name="wizard_wear_description">Вы можете указать, какие переключатели Вы хотите контроллировать через Android wear!</string>
+    <string name="wizard_auto">Android Auto</string>
+    <string name="wizard_auto_description">Получаете уведомления от Domoticz прямо на вашем устройстве Android авто!</string>
+    <string name="wizard_graph">Графики</string>
+    <string name="wizard_graph_description">Доступен график истории Утилит. Погоды или температуры!</string>
+    <string name="wizard_filter">Фильтры</string>
+    <string name="wizard_filter_description">Вы можете фильтровать устройства по состоянию (вкл. / выкл.). Для этого есть специальный значок в правом верхнем меню!</string>
+    <string name="wizard_widgets">Виджеты!!</string>
+    <string name="wizard_widgets_description">Вы можете поместить некоторые виджеты на Ваш стартовый экран!</string>
+    <string name="wizard_menuitem">Отключить мастер</string>
+    <string name="wizard_menuitem_description">Теперь вы можете удалить этот Мастер из меню навигации!</string>
+    <string name="wizard_nfc">NFC</string>
+    <string name="wizard_nfc_description">Вы можете изменить переключения через NFC!</string>
+    <string name="wizard_bluetooth_description">You are able to toggle switches via Bluetooth connections!</string>
+    <string name="wizard_qrcode">QR-код</string>
+    <string name="wizard_qrcode_description">Переключите тумблеры сканируя QR-код (или штрихкод)!</string>
+    <string name="wizard_speech">Голосовые команды</string>
+    <string name="wizard_speech_description">Активируйте переключатели вашим голосом! Сконфигурируйте речевые команды через экраны настройки и подключите переключатели.</string>
+    <string name="wizard_button_nice">Отлично!</string>
+    <string name="wizard_button_switches">Переключатели</string>
+    <string name="wizard_button_settings">Настройки</string>
+    <string name="wizard_button_wizard">Удалить</string>
+    <string name="wizard_button_utilities">Утилиты</string>
+    <string name="wizard_button_done">Готово</string>
+    <string name="wizard_beacon_description">Toggle switches by scanning for beacons!</string>
 </resources>

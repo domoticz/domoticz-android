@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/widget_background">
+
+    <LinearLayout
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:padding="10dp"
+        android:background="@drawable/widget_icon_background"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/widget_icon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@mipmap/ic_launcher"
+            android:contentDescription="Device Icon" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/widget_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Device Name"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:maxLines="1"
+        android:ellipsize="end" />
+
+    <TextView
+        android:id="@+id/widget_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Status"
+        android:textSize="13sp"
+        android:textColor="#B3FFFFFF"
+        android:gravity="center"
+        android:maxLines="1"
+        android:ellipsize="end" />
+
+    <TextView
+        android:id="@+id/widget_extra_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text=""
+        android:textSize="11sp"
+        android:textColor="#99FFFFFF"
+        android:gravity="center"
+        android:maxLines="1"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/widget_toggle_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:padding="12dp"
+        android:background="@drawable/widget_icon_background"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:scaleType="fitCenter"
+        android:contentDescription="Toggle"
+        android:visibility="gone" />
+
+</LinearLayout>

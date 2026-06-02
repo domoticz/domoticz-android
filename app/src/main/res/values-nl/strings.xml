@@ -1,24 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (C) 2015 Domoticz - Mark Heinis
-  ~
-  ~  Licensed to the Apache Software Foundation (ASF) under one
-  ~  or more contributor license agreements.  See the NOTICE file
-  ~  distributed with this work for additional information
-  ~  regarding copyright ownership.  The ASF licenses this file
-  ~  to you under the Apache License, Version 2.0 (the
-  ~  "License"); you may not use this file except in compliance
-  ~  with the License.  You may obtain a copy of the License at
-  ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~  Unless required by applicable law or agreed to in writing,
-  ~  software distributed under the License is distributed on an
-  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~  KIND, either express or implied.  See the License for the
-  ~  specific language governing permissions and limitations
-  ~  under the License.
-  -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- only temporarily to suppress the missing translations errors for now!! -->
     <string name="premium_category">Premium kopen!</string>
@@ -29,7 +9,7 @@
     <string name="old_version_description">We migreren naar slechts één Domoticz Android app.\n\nDeze versie kan nog steeds worden gebruikt met alle premium-functies, maar zal in de toekomst geen updates meer ontvangen.\n\nU kunt uw instellingen exporteren en importeren via het instellingenmenu.</string>
     <string name="drawer_open">Menu openen</string>
     <string name="drawer_close">Menu sluiten</string>
-    <string name="msg_please_wait">Even geduld&#8230;</string>
+    <string name="msg_please_wait">Even geduld…</string>
     <string name="changelog">Changelog</string>
     <string name="button_state_on">Aan</string>
     <string name="button_state_off">Uit</string>
@@ -144,4 +124,694 @@
     <string name="category_tasker">Tasker</string>
     <string name="wizard_widgets_tasker">Automatiseringsregels instellen binnen Tasker voor Domoticz!</string>
     <string name="background_location_warning">Deze app verzamelt locatiegegevens zodat u geofencing kunt gebruiken om apparaten aan/uit te zetten, zelfs wanneer de app is gesloten of niet in gebruik is.</string>
+    <!-- Modern Onboarding Strings -->
+    <string name="back">Terug</string>
+    <string name="get_started">Aan de slag</string>
+    <string name="restore_backup">Herstel van backup</string>
+    <string name="setup_method_title">Kies installatiemethode</string>
+    <string name="setup_method_subtitle">Hoe wilt u uw Domoticz server instellen?</string>
+    <string name="demo_server">Probeer demoserver</string>
+    <string name="demo_server_description">Test de app met onze demoserver</string>
+    <string name="scan_qr_code">Scan QR-code</string>
+    <string name="scan_qr_description">Snelle setup vanuit uw Domoticz webinterface</string>
+    <string name="manual_setup">Handmatige installatie</string>
+    <string name="manual_setup_description">Configureer serverinstellingen handmatig</string>
+    <string name="qr_scanner_instruction">Richt uw camera op de QR-code van uw Domoticz webinterface</string>
+    <string name="enter_manually">Handmatig invoeren</string>
+    <string name="camera_permission_required">Cameratoegang is vereist om QR-codes te scannen</string>
+    <string name="camera_init_failed">Camera initialisatie mislukt</string>
+    <string name="qr_code_detected">QR-code gedetecteerd!</string>
+    <!-- Configuration Steps -->
+    <string name="step_1_of_3">Stap 1 van 3</string>
+    <string name="step_2_of_3">Stap 2 van 3</string>
+    <string name="step_3_of_3">Stap 3 van 3</string>
+    <string name="server_information">Serverinformatie</string>
+    <string name="server_info_description">Voer uw Domoticz servergegevens in</string>
+    <string name="server_name_helper">Een beschrijvende naam voor deze server</string>
+    <string name="server_address">Serveradres</string>
+    <string name="server_address_helper">bijv. 192.168.1.100 of mydomoticz.com</string>
+    <string name="protocol">Protocol</string>
+    <string name="port">Poort</string>
+    <string name="directory_optional">Map (optioneel)</string>
+    <string name="directory_helper">Laat leeg indien niet nodig</string>
+    <string name="next">Volgende</string>
+    <!-- Authentication -->
+    <string name="authentication">Authenticatie</string>
+    <string name="authentication_description">Voer inloggegevens in als uw server authenticatie vereist</string>
+    <string name="username_optional">Gebruikersnaam (optioneel)</string>
+    <string name="username_helper">Laat leeg indien niet vereist</string>
+    <string name="password_optional">Wachtwoord (optioneel)</string>
+    <string name="password_helper">Laat leeg indien niet vereist</string>
+    <string name="skip_no_auth">Overslaan - Geen authenticatie</string>
+    <!-- Advanced Settings -->
+    <string name="advanced_settings">Geavanceerde instellingen</string>
+    <string name="advanced_settings_description">Optioneel: Configureer andere instellingen voor lokaal netwerk</string>
+    <string name="use_different_local_settings">Gebruik andere lokale netwerkinstellingen</string>
+    <string name="different_local_description">Gebruik een ander adres bij verbinding met lokale WiFi</string>
+    <string name="local_network_settings">Lokale netwerkinstellingen</string>
+    <string name="advanced_settings_info">Configureer deze instellingen als uw server andere inloggegevens of adressen gebruikt op uw lokale netwerk</string>
+    <string name="local_wifi_networks">Lokale WiFi-netwerken</string>
+    <string name="local_server_address">Lokaal serveradres</string>
+    <string name="test_connection">Test verbinding</string>
+    <string name="skip_advanced">Overslaan - Gebruik zelfde instellingen</string>
+    <!-- Connection Test -->
+    <string name="testing_connection">Verbinding testen</string>
+    <string name="please_wait">Even geduld terwijl we uw instellingen verifiëren…</string>
+    <string name="connection_successful">Verbinding geslaagd!</string>
+    <string name="connection_failed">Verbinding mislukt</string>
+    <string name="finish_setup">Setup voltooien</string>
+    <string name="edit_settings">Instellingen bewerken</string>
+    <!-- Import Settings -->
+    <string name="import_settings_description">Herstel uw instellingen van een eerder geëxporteerd backupbestand</string>
+    <string name="select_backup_file">Selecteer backupbestand</string>
+    <!-- Actions -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="action_switch_server">Verander Server</string>
+    <string name="action_settings">Instellingen</string>
+    <string name="action_filter">Filter</string>
+    <string name="action_camera_play">Afspelen</string>
+    <string name="action_camera_pause">Pauze</string>
+    <string name="action_qrcode_scan">QR Code scannen</string>
+    <string name="action_bluetooth_show">Toon gekoppelde apparaten</string>
+    <string name="action_speech">Spraakherkenning</string>
+    <string name="send">Verstuur</string>
+    <!-- Beacon -->
+    <string name="beacon_not_supported">Beacons worden niet ondersteund op dit apparaat</string>
+    <string name="beacon_register">Verbinding maken met een beacon</string>
+    <string name="beacon_found">Nieuwe beacon gevonden</string>
+    <string name="beacon_edit">Beacon aanpassen</string>
+    <string name="beacon_name">Geef deze beacon een juiste naam</string>
+    <string name="beacon_desc">Controleer de lijst van gekoppelde beacons. </string>
+    <string name="beacon_exists">Deze beacon is al geconfigureerd op Domoticz. </string>
+    <string name="beacon_turned_off">Bluetooth moet worden ingeschakeld in uw telefoon instellingen. </string>
+    <string name="beacon_saved">Er is een nieuwe beacon opgeslagen</string>
+    <string name="action_beacon_show">Voeg nieuwe beacon toe</string>
+    <string name="beacon">Beacon</string>
+    <string name="beacon_disabled">Beacon automatisering uitgeschakeld, controleer uw instellingen.</string>
+    <string name="noSwitchSelected_explanation_beacon">Er moet eerst een schakelaar worden gekoppeld aan deze beacon</string>
+    <string name="beacon_UUID">UUID</string>
+    <string name="beacon_major">Major (optioneel)</string>
+    <string name="beacon_minor">Minor (optioneel)</string>
+    <string name="beacon_scan">Beacon</string>
+    <string name="beacon_scan_desc">Scannen naar beacons.</string>
+    <string name="beacon_notifications">Meldingen inschakelen voor het binnenkomen en verlaten van een beacon regio</string>
+    <string name="beacon_entering">"Betreed %1$s"</string>
+    <string name="beacon_leaving">Verlaat %1$s</string>
+    <string name="beacon_entering_text">Betreedt een van de beacon regios</string>
+    <string name="beacon_leaving_text">Verlaat een van de beacon regios</string>
+    <!-- Bluetooth -->
+    <string name="bluetooth_not_supported">Bluetooth wordt niet ondersteund door dit apparaat</string>
+    <string name="bluetooth_register">Verbinding maken met bluetooth apparaat</string>
+    <string name="bluetooth_found">Nieuw bluetooth apparaat gevonden</string>
+    <string name="bluetooth_edit">Bewerk bluetooth apparaat</string>
+    <string name="bluetooth_name">Geef dit bluetooth apparaat een juiste naam. </string>
+    <string name="bluetooth_desc">Controleer de lijst van gekoppelde bluetooth apparaten. </string>
+    <string name="bluetooth_exists">Dit bluetooth apparaat is al geconfigureerd op Domoticz. </string>
+    <string name="bluetooth_turned_off">Bluetooth moet worden ingeschakeld in uw telefoon instellingen. </string>
+    <string name="bluetooth_saved">Een nieuw bluetooth apparaat opgeslagen. </string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="title_notification_bluetooth">Meldingen voor Bluetooth inschakelen</string>
+    <string name="description_notification_bluetooth">Toon meldingen wanneer je een bluetooth apparaat verbindt of verbreekt.</string>
+    <string name="bluetooth_event_triggered">"Bluetooth event ontvangen voor %1$s"</string>
+    <string name="bluetooth_disabled">Bluetooth automatisering uitgeschakeld, controleer uw instellingen.</string>
+    <string name="noSwitchSelected_explanation_bluetooth">Er moet eerst een schakelaar worden gekoppeld aan dit bluetooth apparaat</string>
+    <!-- Cameras -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_cameras">Camera\'s</string>
+    <!-- Dashboard -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_dashboard">Dashboard</string>
+    <string name="delivery">Levering</string>
+    <string name="usage">Verbruik</string>
+    <string name="today">Vandaag</string>
+    <string name="total">Totaal</string>
+    <string name="favorite_added">toegevoegd aan het dashboard.</string>
+    <string name="favorite_removed">verwijderd van het dashboard.</string>
+    <!-- Errors -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="error_authentication">Ongeldige inlog-gegevens</string>
+    <string name="error_timeout">Time-out of geen verbinding</string>
+    <string name="error_server">Serverfout</string>
+    <string name="error_network">Netwerkfout, status code %1$d</string>
+    <string name="error_parse">Parseerfout</string>
+    <string name="error_notConnected">Fout: geen verbinding met netwerk</string>
+    <!-- Events -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_events">Gebeurtenissen</string>
+    <string name="action_not_supported_yet">Deze actie wordt nog niet ondersteund!</string>
+    <!-- Locations -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_add_location">Locatie toevoegen</string>
+    <string name="title_edit_location">Locatie bewerken</string>
+    <string name="longitude">Lengtegraad</string>
+    <string name="latitude">Breedtegraad</string>
+    <string name="radius">Straal (meter)</string>
+    <string name="connectedSwitch">Verbonden schakelaar</string>
+    <string name="unable_to_get_switches">Kan niet alle schakelaars ophalen, probeer opnieuw</string>
+    <string name="delete_short">DEL</string>
+    <string name="delete">Verwijderen</string>
+    <string name="Location_name">Locatienaam</string>
+    <string name="currentLocation">Huidige locatie</string>
+    <string name="manual">Handmatig</string>
+    <string name="getLocation">LAAD</string>
+    <string name="locationAddress">Adres</string>
+    <string name="unknown">Onbekend</string>
+    <string name="not_available">NB</string>
+    <string name="no_valid_latLong">Niet een geldige breedte of lengtegraad</string>
+    <string name="starting_geofence_service">Geofencing service starten</string>
+    <string name="could_not_find_location">Kan de locatie niet vinden, probeer opnieuw.</string>
+    <string name="google_play_services_unavailable">Google Play diensten niet beschikbaar.</string>
+    <string name="location_not_found">Geen locatie gevonden.</string>
+    <string name="geofence">Geofencing</string>
+    <string name="title_geofence">Geofencing inschakelen</string>
+    <string name="description_geofence">Inschakelen en Geofences configureren</string>
+    <string name="title_geofence_notifications">Meldingen inschakelen</string>
+    <string name="description_geofence_notifications">Meldingen inschakelen voor gebeurtenissen rondom de locaties</string>
+    <string name="geofence_place">Plaats: %s</string>
+    <string name="geofence_location_entering">"Betreed %1$s"</string>
+    <string name="geofence_location_leaving">Verlaat %1$s</string>
+    <string name="geofence_location_entering_text">Betreedt een van de locaties</string>
+    <string name="geofence_location_leaving_text">Verlaat een van de locaties</string>
+    <string name="geofence_error_recreateLocations">Gelieve uw locaties opnieuw aanmaken wegens veranderingen aan Geofencing</string>
+    <string name="noSwitchSelected_title">Geen schakelaar geselecteerd</string>
+    <string name="noSwitchSelected_explanation">Om Geofencing te laten werken, moet een switch gekoppeld worden aan een locatie.</string>
+    <string name="noSwitchSelected_connectOneNow">Meteen een koppelen?</string>
+    <string name="geofencing_disabled_no_enabled_fences">Geofencing uitgeschakeld omdat er geen locaties zijn ingeschakeld</string>
+    <string name="geofence_not_available">Geofencing service is nu niet beschikbaar</string>
+    <string name="geofence_too_many_geofences">Teveel locaties geregistreerd</string>
+    <string name="geofence_too_many_pending_intents">Teveel PendingIntents aktief</string>
+    <string name="unknown_geofence_error">Onbekende fout.</string>
+    <!-- Logs -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_logs">Logboeken</string>
+    <!-- Nfc -->
+    <string name="nfc_not_supported">NFC wordt niet ondersteund op dit apparaat</string>
+    <string name="nfc_register">Registreer een NFC Tag</string>
+    <string name="nfc_tag_found">Nieuwe NFC Tag gevonden</string>
+    <string name="nfc_tag_edit">NFC Tag bewerken</string>
+    <string name="nfc_tag_name">Geef deze NFC Tag een eigen naam. </string>
+    <string name="nfc_exists">NFC tag is al geregistreerd. </string>
+    <string name="nfc_saved">Een nieuwe NFC Tag opgeslagen. </string>
+    <string name="nfc">NFC</string>
+    <string name="noSwitchSelected_explanation_nfc">NFC werkt pas wanneer een schakelaar aan de Tag gekoppeld wordt</string>
+    <!-- Notifications -->
+    <string name="priority">Prioriteit</string>
+    <string name="emergency">Noodgeval</string>
+    <string name="high">Hoog</string>
+    <string name="low">Matig</string>
+    <string name="verylow">Zeer Laag</string>
+    <string name="allsystems">Alle systemen</string>
+    <string name="systems">Systemen</string>
+    <string name="send_notification">Notificatie versturen</string>
+    <string name="notification_subject">Onderwerp</string>
+    <string name="notification_message">Bericht</string>
+    <string name="notification_error_system">Kies een systeem om de notificatie naar te sturen</string>
+    <string name="notification_error_message">Vul een bericht in</string>
+    <string name="notification_error_subject">Vul de titel in</string>
+    <string name="notification_error_send">De notificatie kon niet naar Domoticz verzonden worden</string>
+    <string name="notification_send">Notificatie verstuurd naar Domoticz</string>
+    <!-- Permissions -->
+    <string name="permission_title">Permissie geweigerd</string>
+    <string name="permission_prefs_title">Machtigingen</string>
+    <string name="permission_config">Bekijk de machtigingen van deze toepassing.</string>
+    <string name="permission_desc_storage">Deze opslag machtigingen zijn nodig voor het opslaan van cachebestand, instellingen en voor het opslaan van screenshots van de camera\'s.</string>
+    <string name="permission_desc_location">De locatie machtigingen zijn nodig voor Geofencing en om de Wifi SSID\'s te scannen!</string>
+    <string name="permission_desc_phone">Deze telefoon machtigingen zijn nodig voor het inschakelen van notificaties!</string>
+    <string name="permission_desc_camera">De camera machtigingen zijn nodig voor het scannen van de QR-Codes!</string>
+    <string name="permission_desc_audio">Deze audio machtigingen zijn nodig voor het herkennen van je stem en het uitvoeren van de stem-opdrachten!</string>
+    <string name="permission_desc_finger">Deze vingerafdruk machtigingen zijn nodig voor het inschakelen van de beveiliging met vingerafdruklezer!</string>
+    <!-- Plans -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_plans">Ruimtes</string>
+    <plurals name="devices">
+        <item quantity="one">%1d apparaat</item>
+        <item quantity="other">%1d apparaten</item>
+    </plurals>
+    <!-- Qrcode -->
+    <string name="qrcode_not_supported">De QR-Code scanner wordt niet ondersteund op dit apparaat.</string>
+    <string name="qrcode_register">Registreren van een QR-Code </string>
+    <string name="qrcode_found">Nieuwe QR-Code gevonden</string>
+    <string name="qrcode_edit">QR-Code bewerken</string>
+    <string name="qrcode_name">Geef deze QR-Code een naam. </string>
+    <string name="qrcode_desc">Scan een QR-Code. </string>
+    <string name="qrcode_exists">Deze QR-Code is al geregistreerd. </string>
+    <string name="qrcode_saved">Nieuwe QR-Code opgeslagen. </string>
+    <string name="qrcode">QR-Code</string>
+    <string name="qrcode_new_found">Nieuwe QR-Code gedetecteerd! Stel deze in via het instellingen menu.</string>
+    <string name="qr_code_disabled">QR-Code functionaliteit uitgeschakeld. Activeer deze functie via het instellingen menu.</string>
+    <string name="noSwitchSelected_explanation_qrcode">Om QR-Codes te laten werken, moet er een schakelaar worden gekoppeld aan een code.</string>
+    <string name="permission_camera_rationale">Er is toegang nodig tot de camera om te kunnen scannen!</string>
+    <string name="low_storage_error">Hulpbronnen voor de QR-Code functionaliteit kunnen niet worden gedownload wegens te weinig opslag capaciteit.</string>
+    <string name="no_camera_permission">Deze toepassing kan niet worden uitgevoerd omdat het niet over de machtiging van de camera beschikt. De toepassing wordt nu afgesloten.</string>
+    <!-- Scenes -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_scenes">Scènes</string>
+    <!-- Security -->
+    <string name="title_security_panel">Beveiligingspaneel</string>
+    <string name="security_pin">Pincode</string>
+    <string name="security_disarm">Uitschakelen</string>
+    <string name="security_arm_home">Deels inschakelen</string>
+    <string name="security_arm_away">Volledig inschakelen</string>
+    <string name="security_wrong_code">Verkeerde pincode ingevoerd!</string>
+    <string name="security_no_rights">U heeft niet de juiste rechten voor deze actie!</string>
+    <string name="security_generic_error">Kan de beveiligings-status niet aanpassen</string>
+    <string name="security_wrong_password_fingerprint">Verkeerd wachtwoord ingevoerd, uw wachtwoord het domoticz account is de failover voor uw vingerafdruk...!</string>
+    <string name="show_password">Toon wachtwoord</string>
+    <string name="fingerprint_make_sure">Ben u het echt?</string>
+    <string name="fingerprint_dialog_description">Log in met je vingerafdruk.</string>
+    <!-- Server -->
+    <string name="choose_server">Kies een server</string>
+    <string name="dont_save_new_server">Nieuwe server niet opslaan?</string>
+    <string name="server_must_be_unique">Servernaam moet uniek zijn</string>
+    <string name="switch_to_server">"Verander van server naar %1$s"</string>
+    <string name="cant_disable_default_server">We kunnen de standaard server niet uitschakelen</string>
+    <!-- Settings -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="settingsActivity_name">Instellingen</string>
+    <string name="cameraActivity_name">Camera</string>
+    <!--        Categories             -->
+    <string name="category_generic">Algemeen</string>
+    <string name="category_wear">Android Wear</string>
+    <string name="category_auto">Android Auto</string>
+    <string name="category_server">Servers</string>
+    <string name="category_geofencing">Geofencing</string>
+    <string name="category_info">Informatie</string>
+    <string name="category_advanced">Geavanceerd</string>
+    <string name="category_language">Taal</string>
+    <string name="category_talk_back">Terug praten</string>
+    <string name="category_notification">Notificaties</string>
+    <string name="category_debug">Foutopsporing</string>
+    <string name="category_export">Instellingen beheren</string>
+    <string name="category_theme">Thema</string>
+    <string name="category_clock">Klok</string>
+    <string name="category_nfc">NFC verbindingen</string>
+    <string name="category_startup_security">Beveiliging</string>
+    <string name="category_account">Accounts</string>
+    <string name="category_QRCode">QR-Code</string>
+    <string name="category_bluetooth">Bluetooth</string>
+    <string name="category_wifi">Wifi</string>
+    <string name="category_Speech">Spraak</string>
+    <string name="category_Reset">Opnieuw instellen</string>
+    <string name="category_help">Help mee</string>
+    <!--        Generic settings       -->
+    <string name="startup_screen">Beginscherm</string>
+    <string name="enable_items">Items in-/ uitschakelen</string>
+    <!--        Generic sorting settings       -->
+    <string name="sort_server_title">Sorteren</string>
+    <string name="sort_server_on">Sorteer de apparaten zoals ze gesorteerd zijn op de server</string>
+    <string name="sort_custom_on">Sorteer de apparaten zelf voor dit toestel, drag &amp; drop de apparaten om ze te sorteren</string>
+    <string name="sort_lock_server_title">Vergrendel</string>
+    <string name="sort_lock_custom_on">Vergrendel het aangepast sorteren (drag &amp; drop)</string>
+    <string name="sort_dashboardLikeServer_off">Op alfabetische volgorde sorteren</string>
+    <string name="extra_data_title">Uitgebreide gegevens op dashboard</string>
+    <string name="show_extra_data_on">Uitgebreide gegevens op dashboard tegels</string>
+    <string name="show_extra_data_off">Basis gegevens op dashboard tegels</string>
+    <string name="always_on_title">Scherm aanhouden</string>
+    <string name="always_on_on">Houd het scherm altijd aan</string>
+    <string name="always_on_off">Scherm gaat automatisch uit volgens systeem instelling</string>
+    <string name="always_auto_refresh">Automatisch verversen</string>
+    <string name="always_auto_refresh_on">Ververs de status van alle apparaten elke X seconden</string>
+    <string name="always_auto_refresh_off">Ververs de status van alle apparaten niet automatisch</string>
+    <string name="switch_buttons_title">Schakelaar weergave</string>
+    <string name="switch_buttons_on">Aan/uit knoppen weergeven</string>
+    <string name="switch_buttons_off">Aan/uit schakelaar weergeven</string>
+    <string name="dashboard_list_title">Dashboard indeling</string>
+    <string name="show_dashboard_list_on">Dashboard weergeven als lijst</string>
+    <string name="show_dashboard_list_off">Dashboard weergeven als raster</string>
+    <string name="dashboard_clock">Klok</string>
+    <string name="show_dashboard_clock">Een klok weergeven op het dashboard</string>
+    <string name="dashboard_plans">Ruimtes</string>
+    <string name="show_dashboard_plans">Kamers weergeven op het dashboard</string>
+    <string name="dashboard_camera">Camera</string>
+    <string name="show_dashboard_camera">Laad de camera achter verbonden schakelaars</string>
+    <!--        Wear settings       -->
+    <string name="enable_wear_select">Aangepaste lijst</string>
+    <string name="custom_wear_select">Selecteer schakelaars</string>
+    <string name="custom_wear_select_desc">Selecteer welke schakelaars u graag wilt zien op uw apparaat</string>
+    <string name="wear_custom_on">Aangepaste lijst activeren</string>
+    <string name="wear_custom_off">Aangepaste lijst uitzetten</string>
+    <!--        Auto settings       -->
+    <string name="auto_custom_on">Android Auto meldingen inschakelen</string>
+    <string name="auto_custom_off">Android Auto meldingen uitschakelen</string>
+    <!--        Geofencing settings -->
+    <string name="geofencing_configure">Geofencing instellen</string>
+    <!--        Theming settings -->
+    <string name="config_theme">Thema gebruiken</string>
+    <string name="set_dark_theme">Donker thema gebruiken</string>
+    <string name="set_light_theme">Licht thema gebruiken</string>
+    <!--        Talk Back Settings   -->
+    <string name="set_talk_back_on">Laat Domoticz tegen u praten</string>
+    <string name="set_talk_back_off">Terug praten uitzetten</string>
+    <!--        Import/Export settings  -->
+    <string name="settings_imported">Instellingen zijn geïmporteerd. Herstart van Domoticz is benodigd.</string>
+    <string name="settings_import_failed">Kan de instellingen niet importeren, probeer het opnieuw.</string>
+    <string name="settings_exported">Instellingen zijn geëxporteerd. Herstart van Domoticz is benodigd.</string>
+    <string name="settings_export_failed">Kan de instellingen niet exporteren, probeer het opnieuw</string>
+    <!--        Preference screens      -->
+    <string name="server_settings">Verbindingsinstellingen</string>
+    <string name="server_force_fetch_config">Serverconfiguratie ophalen</string>
+    <string name="nfc_settings">NFC tags instellen</string>
+    <string name="speech_settings">Spraakopdrachten instellen</string>
+    <string name="title_activity_server_settings">Server instellingen</string>
+    <string name="multi_server">Meerdere servers</string>
+    <string name="enable_nfc">NFC Inschakelen</string>
+    <string name="enable_speech">Spraakherkenning inschakelen</string>
+    <string name="export_settings">Exporteer instellingen</string>
+    <string name="reset_settings">Reset alle app instellingen (LET OP!)</string>
+    <string name="import_settings">Importeer instellingen</string>
+    <string name="multi_server_settings">Ondersteuning voor meerdere servers activeren</string>
+    <string name="nfc_enable_settings">NFC verbindingen toestaan</string>
+    <string name="speech_enable_settings">Spraakherkennings opdrachten activeren</string>
+    <string name="server">Server</string>
+    <string name="qrcode_settings">QR-Codes instellen</string>
+    <string name="enable_qrcode">QR-Code scanner</string>
+    <string name="qrcode_enable_settings">QR-Code scanner inschakelen</string>
+    <string name="bluetooth_settings">Stel bluetooth apparaten in</string>
+    <string name="enable_bluetooth">Inschakelen van de bluetooth functionaliteit</string>
+    <string name="beacon_settings">Beacons configureren</string>
+    <string name="enable_beacon">Beacon scanner/functionaliteit inschakelen</string>
+    <string name="translate_description">U kunt onze vertalingen beter maken, of zelfs nieuwe talen toe voegen aan deze applicatie via ons Crowdin project</string>
+    <string name="translate_title">Vertalingen</string>
+    <string name="security_settings">Beveiligingsinstellingen</string>
+    <string name="enable_security">Vingerafdruk nodig bij opstarten van de app</string>
+    <string name="disable_security">Vingerafdruk controle uitschakelen</string>
+    <string name="setup_fingerprints">Vingerafdrukken instellen via Android systeem instellingen</string>
+    <string name="fingerprint_not_supported">Beveiliging met vingerafdruk is niet mogelijk op dit toestel</string>
+    <string name="fingerprint_not_setup_in_android">Eerst een vingerafdruk instellen via systeem instellingen menu</string>
+    <string name="fingerprint_sure">Weet u dit zeker? Mocht uw vingerafdruk niet worden herkend dan kunt u altijd nog inloggen met het wachtwoord van uw Domoticz account.</string>
+    <!--        Widgets     -->
+    <string name="category_widgets">Widgets (BETA)</string>
+    <string name="widget_description">Zet de widget functionaliteit aan of uit op dit toestel</string>
+    <string name="widget_disabled">Widgets zijn qua functionaliteit nog niet aangezet op dit toestel, bekijk de settings in de Domoticz app</string>
+    <string name="widget_warning">De Widgets zijn op dit moment nog niet 100% werkend en kunnen leiden tot ongewenst gedrag. Denk aan mogelijk meer data of batterij gebruik!!</string>
+    <!--        GCM settings      -->
+    <string name="notification_settings_id">Google Cloud Messaging-ID</string>
+    <string name="notification_settings_push">Uw registratienummer naar Domoticz versturen</string>
+    <string name="notification_settings_pushed">Uw registratie id is nu opgeslagen in Domoticz</string>
+    <string name="notification_settings_push_failed">Kan uw registratienummer niet opslaan in Domoticz, probeer het later opnieuw.</string>
+    <string name="notification_show_title">Recente notificaties</string>
+    <string name="notification_show_nothing">Geen notificaties gevonden</string>
+    <string name="notification_show">De laatste ontvangen notificaties weergeven</string>
+    <!--        Notification settings      -->
+    <string name="overwrite_notifications_title">Notificaties overschrijven</string>
+    <string name="overwrite_notifications">Overschrijf eerder ontvangen notificaties op dit apparaat</string>
+    <string name="enable_notifications_title">Notificaties activeren</string>
+    <string name="enable_notifications">Notificaties op dit apparaat inschakelen</string>
+    <string name="notification_screen_title">Notificatie instellingen</string>
+    <string name="notification_history">Notificatie geschiedenis</string>
+    <string name="notification_inbox">Inbox</string>
+    <string name="notification_vibrate_title">Trillen</string>
+    <string name="notification_vibrate_on">Trillen bij het ontvangen van een notificatie</string>
+    <string name="notification_vibrate_off">Niet trillen bij het ontvangen van een notificatie</string>
+    <string name="notification_sound_title">Geluid</string>
+    <string name="notification_sound_summary">Er klinkt een geluid bij melding het ontvangen van een notificatie</string>
+    <string name="suppress_notifications_select">Selecteer een notificatie om deze te onderdrukken</string>
+    <string name="suppress_notifications">Onderdruk specifieke notificaties</string>
+    <string name="suppress_notifications_title">Notificaties onderdrukken</string>
+    <string name="alarm_notifications_select">Welke notificaties dienen als alarm?</string>
+    <string name="alarm_notifications">Laat het alarm klinken voor specifieke notificaties</string>
+    <string name="clear_notifications">Verwijder oude notificaties</string>
+    <string name="alarm_notifications_title">Alarm notificaties</string>
+    <string name="alarm">Alarm</string>
+    <string name="alarmtimer_title">Alarmtijd</string>
+    <string name="alarmtimer">Aantal seconden voor het alarm automatisch stopt</string>
+    <!-- Theme properties -->
+    <string name="theme_default">Standaard</string>
+    <string name="theme_daynight">Dag &amp; Nacht</string>
+    <string name="theme_orange">Oranje</string>
+    <string name="theme_pink">Roze</string>
+    <string name="theme_blue">Blauw</string>
+    <string name="theme_green">Groen</string>
+    <string name="theme_dark_blue">Donkerblauw</string>
+    <!-- Other -->
+    <string name="default_values">Standaardwaarden</string>
+    <string name="default_values_min_error">Maximale waarde moet hoger zijn dan minimale waarde</string>
+    <string name="default_values_max_error">Minimale waarde moet lager zijn dan maximale waarde</string>
+    <!--        Information category       -->
+    <string name="info_version">Versie</string>
+    <string name="info_domoticz_version">Domoticz versie</string>
+    <string name="info_about">Over Domoticz</string>
+    <string name="info_credits">Credits</string>
+    <string name="info_credits_text">Domoticz voor Android is mogelijk gemaakt met behulp van verschillende open source libraries</string>
+    <!--        Debug category       -->
+    <string name="debug_switch_title">Debugmodus</string>
+    <string name="debug_switch_summary_on">Foutopsporing ingeschakeld</string>
+    <string name="debug_switch_summary_off">Foutopsporing uitgeschakeld</string>
+    <!--        Geo settings activity       -->
+    <string name="error_atLeastOneItemInDrawer">U moet minstens één item geladen hebben</string>
+    <!--        Server update category       -->
+    <string name="title_activity_update">Server updaten</string>
+    <string name="error_couldNotCheckForVersion">"Kan versie niet controleren: %1$s"</string>
+    <string name="error_couldNotCheckForUpdates">"Kan niet controleren op updates: %1$s"</string>
+    <string name="error_couldNotCheckForConfig">"De Domoticz server configuratie kan niet worden opgehaald: %1$s"</string>
+    <string name="update_available_enhanced">Server update beschikbaar: %1$s naar versie: %2$s</string>
+    <string name="check_for_update_title">Controleren op Updates</string>
+    <string name="check_for_update">Wilt u dat uw Domoticz systeem wordt gecontroleerd op updates?</string>
+    <string name="update_server_warning">Tijdens het updaten van uw server werkt de app mogelijk niet correct.</string>
+    <string name="update_server_downloadNotReady1">De update is nog niet (volledig) gedownload.</string>
+    <string name="update_server_downloadNotReady2">Probeer het later nog eens.</string>
+    <string name="server_update_available">Er is een server update beschikbaar</string>
+    <string name="update_server">Server updaten</string>
+    <string name="server_update_revision">Server update revisie</string>
+    <string name="server_version">Serverversie</string>
+    <string name="server_update">Server update</string>
+    <string name="please_wait_while_we_check">Een moment geduld, uw server wordt gecontroleerd voor de update</string>
+    <string name="server_update_not_ready">Server update niet gedownload</string>
+    <string name="please_wait_while_server_updated">Een moment geduld, de server wordt bijgewerkt.</string>
+    <string name="server_update_done">De server is succesvol bijgewerkt</string>
+    <string name="update_not_started">Update niet gestart</string>
+    <string name="update_not_started_unknown_error">Update is niet gestart vanwege een onbekende fout</string>
+    <string name="server_update_not_available">Server update is niet beschikbaar</string>
+    <string name="click_to_update_server">De server bijwerken</string>
+    <string name="debug_test_text">Debugging test</string>
+    <string name="restart_required_title">Opnieuw opstarten vereist</string>
+    <string name="restart_now">Nu opnieuw opstarten?</string>
+    <string name="check_settings">Controleer je instellingen</string>
+    <string name="report_error">Fout rapporteren</string>
+    <string name="support">Ondersteuning</string>
+    <!-- Speech -->
+    <string name="Speech_not_supported">Spraakherkenning wordt niet ondersteund op dit apparaat</string>
+    <string name="Speech_register">Registreer een spraak opdracht</string>
+    <string name="Speech_found">Nieuwe spraak opdracht gevonden</string>
+    <string name="Speech_edit">Spraak opdracht bewerken</string>
+    <string name="Speech_name">Geef deze opdracht een naam. </string>
+    <string name="Speech_exists">Spraak opdracht is al geregistreerd. </string>
+    <string name="Speech_saved">Spraak opdracht opgeslagen. </string>
+    <string name="Speech_desc">Geef een spraakopdracht. </string>
+    <string name="Speech">Spraak</string>
+    <string name="Speech_disabled">Spraak opdrachten uitgeschakeld, inschakelen via de systeem instellingen.</string>
+    <string name="noSwitchSelected_explanation_Speech">Een spraak opdracht moet gekoppeld worden aan een schakelaar</string>
+    <!-- Switches -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_switches">Schakelaar weergave</string>
+    <string name="txt_notAvailable">Niet beschikbaar</string>
+    <string name="idx">IDX</string>
+    <string name="placeholder_value">255</string>
+    <string name="color_set">Kleur ingesteld voor</string>
+    <string name="state_set">Ingesteld voor</string>
+    <string name="error_favorite">Kan niet als favoriet instellen</string>
+    <string name="error_logs">Kan geen logs ophalen</string>
+    <string name="error_color">Kan de kleur niet wijzigen</string>
+    <string name="error_state">Kan de status niet wijzigen</string>
+    <string name="error_timer">Kan de timers niet ophalen</string>
+    <string name="error_notifications">Kan geen notificaties weergeven</string>
+    <string name="set_level_switch">"Waarde voor schakelaar: %1$s naar %2$d"</string>
+    <!-- Temperature -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_temperature">Temperatuur</string>
+    <string name="cancel_override">Annuleer aanpassing</string>
+    <string name="wind">Wind</string>
+    <string name="error_log">Kan geen log data vinden voor</string>
+    <string name="follow_schedule">Volg schema</string>
+    <!-- Timer -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="command">Commando</string>
+    <string name="type">Type</string>
+    <string name="notapplicable">N.v.t</string>
+    <string name="timer_before_sunset">Vóór zonsondergang</string>
+    <string name="timer_after_sunset">Na zonsondergang</string>
+    <string name="timer_ontime">Op tijd</string>
+    <string name="timer_before_sunrise">Voor zonsopgang</string>
+    <string name="timer_after_sunrise">Na zonsopgang</string>
+    <string name="timer_fixed">Vaste datum/tijd</string>
+    <string name="odd_day_numbers">Oneven dagen</string>
+    <string name="even_day_numbers">Even dagen</string>
+    <string name="odd_week_numbers">Oneven weeknummers</string>
+    <string name="even_week_numbers">Even weeknummers</string>
+    <string name="monthly">Maandelijks</string>
+    <string name="monthly_weekday">Maandelijks (weekdag)</string>
+    <string name="yearly">Jaarlijks</string>
+    <string name="yearly_weekday">Jaarlijks (weekdag)</string>
+    <string name="before_sun_at_south">Voor zon op zuiden</string>
+    <string name="after_sun_at_south">Na zon op zuiden</string>
+    <string name="before_civil_twilight_start">Voor civiele schemering begint</string>
+    <string name="after_civil_twilight_start">Na civiele schemering begint</string>
+    <string name="before_civil_twilight_end">Voor civiele schemering eindigt</string>
+    <string name="after_civil_twilight_end">Na civiele schemering eindigt</string>
+    <string name="before_nautical_twilight_start">Voor nautische schemering begint</string>
+    <string name="after_nautical_twilight_start">Na nautische schemering begint</string>
+    <string name="before_nautical_twilight_end">Voor nautische schemering eindigt</string>
+    <string name="after_nautical_twilight_end">Na nautische schemering eindigt</string>
+    <string name="before_austronomical_twilight_start">Voor astronomische schemering begint</string>
+    <string name="after_austronomical_twilight_start">Na astronomische schemering begint</string>
+    <string name="before_austronomical_twilight_end">Voor astronomische schemering eindigt</string>
+    <string name="after_austronomical_twilight_end">Na astronomische schemering eindigt</string>
+    <string name="timer_every_days">Elke dag</string>
+    <string name="timer_working_days">Werkdagen</string>
+    <string name="timer_weekend">Weekend</string>
+    <string name="timer_other">Overige</string>
+    <string name="timers">Timers</string>
+    <string name="first">Eerste</string>
+    <string name="second">Tweede</string>
+    <string name="third">Derde</string>
+    <string name="fourth">Vierde</string>
+    <string name="last">Laatste</string>
+    <!-- Utilities -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_utilities">Overige</string>
+    <string name="set_temperature">Zet</string>
+    <!-- Vars -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_vars">Gebruikersvariabelen</string>
+    <string name="var_input">Input waarde is niet geldig</string>
+    <string name="var_input_error">Bijwerken van de gebruikersvariabele mislukt</string>
+    <!-- Weather -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_weather">Weer</string>
+    <string name="dewPoint">Dauwpunt</string>
+    <string name="temp">Temperatuur</string>
+    <string name="pressure">Luchtdruk</string>
+    <string name="chill">Fris</string>
+    <string name="direction">Richting</string>
+    <string name="humidity">Vochtigheid</string>
+    <string name="speed">Snelheid</string>
+    <string name="forecast">Voorspelling</string>
+    <string name="rain">Regen</string>
+    <string name="rainrate">Regen Hoeveelheid</string>
+    <string name="co2">CO2</string>
+    <string name="co2min">CO2 Min</string>
+    <string name="co2max">CO2 Max</string>
+    <!-- Welcome -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="welcome_title_activity_welcome">Welkom</string>
+    <string name="welcome_info_domoticz">Domoticz is een huisautomatisering systeem welke tal van apparaten centraal beheert. Denk hier bij aan Verlichting, Schakelaars en Sensoren. Maar ook meters voor bijvoorbeeld temperatuur, neerslag, wind, UV, stroom, gas, water en nog veel meer. Notificaties en andere meldingen kunnen naar elk mobiel apparaat gestuurd worden.</string>
+    <string name="welcome_info_swipe">Veeg naar rechts of gebruik de knoppen onderaan om verder te gaan</string>
+    <string name="welcome_info_settings1">De volgende pagina is voor uw Domoticz instellingen</string>
+    <string name="welcome_info_settings2">        U kunt lokale en externe verbindingsgegevens instellen.
+        De lokale instellingen zijn voor wanneer u met uw thuisnetwerk verbonden bent.
+        Instellingen voor externe verbindingen worden gebruikt wanneer niet verbonden met uw thuisnetwerk. Via 4G bijvoorbeeld.</string>
+    <string name="welcome_info_checkingConnection">Verbindingsgegevens controleren</string>
+    <string name="welcome_msg_connectionDataIncomplete">Verbindingsgegevens niet volledig ingevuld</string>
+    <string name="welcome_msg_connectionDataInvalid">De URL mag niet beginnen met http</string>
+    <string name="welcome_msg_correctOnPreviousPage">Graag de gegevens op de vorige pagina aanpassen</string>
+    <string name="welcome_msg_serverVersion">Domoticz versie</string>
+    <string name="welcome_msg_numberOfDevices">%1$d apparaten gevonden</string>
+    <string name="welcome_msg_no_ssid_found">Geen toegangspunten gevonden</string>
+    <string name="welcome_ssid_spinner_prompt">Selecteer uw Wi-Fi toegangspunt</string>
+    <string name="welcome_ssid_button_prompt">Voeg SSID\'s toe</string>
+    <string name="welcome_server_settings_title">Server instellingen</string>
+    <string name="welcome_server_startScreen">Startscherm</string>
+    <string name="welcome_button_next">volgende</string>
+    <string name="welcome_button_previous">vorige</string>
+    <string name="welcome_button_finish">klaar</string>
+    <string name="welcome_remote_server_address">Serveradres</string>
+    <string name="welcome_remote_server_protocol">Protocol</string>
+    <string name="welcome_remote_server_port">Poort</string>
+    <string name="welcome_remote_server_username">Gebruikersnaam</string>
+    <string name="welcome_remote_server_password">Wachtwoord</string>
+    <string name="welcome_remote_server_directory">Map</string>
+    <string name="remote">Extern</string>
+    <string name="local">Lokaal</string>
+    <string name="servername">Servernaam</string>
+    <string name="welcome_local_server_used_switch_title">Ander serveradres</string>
+    <string name="welcome_local_server_used_switch_summary">Gebruik verschillende serveradressen voor uw thuisnetwerk</string>
+    <string name="welcome_advancedSettings">Geavanceerde serverinstellingen</string>
+    <string name="welcome_advancedSettings_summary">Wordt alleen gebruikt voor niet-standaard Domoticz servers</string>
+    <string name="welcome_local_server_ssid">Uw lokale toegangspunten</string>
+    <string name="welcome_local_server_address">Lokaal serveradres</string>
+    <string name="welcome_local_server_protocol">Lokaal protocol</string>
+    <string name="welcome_local_server_port">Lokale poort</string>
+    <string name="welcome_local_server_directory">Lokale map (optioneel)</string>
+    <string name="welcome_local_server_username">Lokale gebruikersnaam (optioneel)</string>
+    <string name="welcome_local_server_password">Lokaal wachtwoord (optioneel)</string>
+    <string-array name="remote_server_protocols">
+        <item>HTTP</item>
+        <item>HTTPS</item>
+    </string-array>
+    <!-- Widgets -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="pick_device_title">Kies een apparaat</string>
+    <string name="choose_switch">Kies apparaat</string>
+    <string name="failed_to_get_securitypanel">Geen beveiliging paneel als apparaat gevonden</string>
+    <string name="failed_to_get_switches">Fout bij het ophalen van apparaten</string>
+    <string name="failed_toggle_switch">Mislukt apparaat in of uit te schakelen</string>
+    <string name="switch_toggled">"Schakelaar apparaat"</string>
+    <string name="text_loading">Laden ...</string>
+    <string name="text_go">GO</string>
+    <string name="widget_background">Achtergrond</string>
+    <string name="widget_dark">Donker</string>
+    <string name="widget_light">Licht</string>
+    <string name="widget_transparent_dark">Transparant voor donkere achtergrond</string>
+    <string name="widget_transparent_light">Transparant voor lichte achtergrond</string>
+    <!-- Wifi -->
+    <string name="wifi_not_supported">Wifi wordt niet ondersteund op dit apparaat</string>
+    <string name="wifi_register">Maak een verbinding met een wifi access point</string>
+    <string name="wifi_found">Nieuw wifi access point gevonden</string>
+    <string name="wifi_edit">Wifi access point verbinding aanpassen</string>
+    <string name="wifi_name">Geef deze Wifi Access Point een naam. </string>
+    <string name="wifi_desc">Controleer de lijst van gekoppelde wifi access points. </string>
+    <string name="wifi_exists">Deze wifi access point is al geconfigureerd op Domoticz. </string>
+    <string name="wifi_turned_off">Wifi moet worden ingeschakeld in uw telefoon instellingen. </string>
+    <string name="wifi_saved">Er is een nieuwe wifi access point opgeslagen</string>
+    <string name="wifi_settings">Configureer wifi access point verbindingen</string>
+    <string name="enable_wifi">Inschakelen van de wifi functionaliteit</string>
+    <string name="wifi_disabled">Wifi automatisering uitgeschakeld, controleer uw instellingen.</string>
+    <string name="noSwitchSelected_explanation_wifi">Er moet eerst een schakelaar worden gekoppeld aan deze wifi access point.</string>
+    <string name="title_notification_wifi">Notificaties activeren</string>
+    <string name="description_notification_wifi">Toon een melding wanneer u een verbinding maakt of een verbinding verliest met een wifi access point.</string>
+    <string name="wifi_connected_to">"Verbonden met %1$s"</string>
+    <string name="wifi_disconnected_to">Verbinding verbroken met %1$s</string>
+    <string name="wifi_connected_to_text">Verbonden met een van de geregistreerde wifi access points.</string>
+    <string name="wifi_disconnected_to_text">Verbinding met een van de geregistreerde wifi access points verbroken.</string>
+    <!-- Wizard -->
+    <!-- only temporarily to suppress the missing translations errors for now!! -->
+    <string name="title_wizard">Welkom Wizard</string>
+    <string name="wizard_welcome">Welkom</string>
+    <string name="wizard_welcome_description">Domoticz is een lichtgewicht huisautomatiserings systeem welke tal van apparaten centraal kan beheren.</string>
+    <string name="wizard_favorites">Favorieten</string>
+    <string name="wizard_favorites_description">U kunt apparaten toevoegen aan het Dashboard door ze op te slaan als favorieten. Hou een item lang ingedrukt om deze op te slaan als favoriet!</string>
+    <string name="wizard_startup">Beginscherm</string>
+    <string name="wizard_startup_description">U kunt uw opstartscherm veranderen in het instellingen menu!</string>
+    <string name="wizard_notifications">Notificaties ontvangen</string>
+    <string name="wizard_notifications_description">U kunt nu notificaties ontvangen op uw Android toestel! Bepaal zelf welke notificaties worden verstuurd via het instellingen menu.</string>
+    <string name="wizard_multiserver">Meerdere servers</string>
+    <string name="wizard_multiserver_description">U kunt meerdere Domoticz servers configureren in het instellingen menu.</string>
+    <string name="wizard_geo">Geofencing</string>
+    <string name="wizard_geo_description">Activeer geofencing in het instellingen menu en stel hier de gewenste gebieden in.</string>
+    <string name="wizard_wear">Android Wear</string>
+    <string name="wizard_wear_description">Specificeer welke schakelaars u graag wilt bedienen vanaf uw Android Wear apparaat!</string>
+    <string name="wizard_auto">Android Auto</string>
+    <string name="wizard_auto_description">Ontvang de notificaties van Domoticz direct op uw Android Auto-apparaat!</string>
+    <string name="wizard_graph">Grafieken</string>
+    <string name="wizard_graph_description">Bekijk historische grafieken van een toepassing, het weer of de temperatuur!</string>
+    <string name="wizard_filter">Filters</string>
+    <string name="wizard_filter_description">Filter schakelaars per status (aan/uit) via de sorteer knop rechts bovenin</string>
+    <string name="wizard_widgets">Widgets!!</string>
+    <string name="wizard_widgets_description">Stel widgets in op uw home-scherm!</string>
+    <string name="wizard_menuitem">Wizard uitschakelen</string>
+    <string name="wizard_menuitem_description">U kunt nu deze Wizard uit het menu verwijderen!</string>
+    <string name="wizard_nfc">NFC</string>
+    <string name="wizard_nfc_description">Schakel uw apparatuur aan of uit via NFC!</string>
+    <string name="wizard_bluetooth_description">Schakel schakelaars uit via het scannen van beacons!</string>
+    <string name="wizard_qrcode">QR-Code</string>
+    <string name="wizard_qrcode_description">Bedien schakelaars door middel van het scannen van een QR-Code!</string>
+    <string name="wizard_speech">Spraakopdrachten</string>
+    <string name="wizard_speech_description">Zet apparaten aan (of uit) met uw stem! Configureer gesproken commando\'s aan specifieke knoppen om deze later te kunnen gebruiken in de app.</string>
+    <string name="wizard_button_nice">Mooi</string>
+    <string name="wizard_button_switches">Schakelaars</string>
+    <string name="wizard_button_settings">Instellingen</string>
+    <string name="wizard_button_wizard">Verwijder</string>
+    <string name="wizard_button_utilities">Overige</string>
+    <string name="wizard_button_done">Klaar!</string>
+    <string name="wizard_beacon_description">Bedien schakelaars door middel van het scannen van beacons!</string>
 </resources>

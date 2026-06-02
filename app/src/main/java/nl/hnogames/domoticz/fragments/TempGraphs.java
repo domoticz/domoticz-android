@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2015 Domoticz - Mark Heinis
- *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- */
 
 package nl.hnogames.domoticz.fragments;
 
@@ -469,41 +449,39 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_sort:
-                GetTypes();
-                return true;
-            case R.id.action_set_chart_devices:
-                GetTempDevices();
-                return true;
-            case R.id.action_set_range:
-                MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.dateRangePicker();
-                CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
-                builder.setCalendarConstraints(constraintsBuilder.build());
-                if (selectionDates != null)
-                    builder.setSelection(selectionDates);
-                final MaterialDatePicker<Pair<Long, Long>> picker = builder.build();
-                picker.addOnPositiveButtonClickListener(selection -> {
-                    long firstDateLong = selection.first;
-                    Date firstDate = new Date(firstDateLong);
-                    long endDateLong = selection.second;
-                    Date endDate = new Date(endDateLong);
-                    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                    firstDateStr = sdf2.format(firstDate);
-                    endDateStr = sdf2.format(endDate);
-                    if (firstDateStr.equals(endDateStr))
-                        range = "minute";
-                    else
-                        range = "day";
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_sort) {
+            GetTypes();
+            return true;
+        } else if (itemId == R.id.action_set_chart_devices) {
+            GetTempDevices();
+            return true;
+        } else if (itemId == R.id.action_set_range) {
+            MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.dateRangePicker();
+            CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
+            builder.setCalendarConstraints(constraintsBuilder.build());
+            if (selectionDates != null)
+                builder.setSelection(selectionDates);
+            final MaterialDatePicker<Pair<Long, Long>> picker = builder.build();
+            picker.addOnPositiveButtonClickListener(selection -> {
+                long firstDateLong = selection.first;
+                Date firstDate = new Date(firstDateLong);
+                long endDateLong = selection.second;
+                Date endDate = new Date(endDateLong);
+                SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                firstDateStr = sdf2.format(firstDate);
+                endDateStr = sdf2.format(endDate);
+                if (firstDateStr.equals(endDateStr))
+                    range = "minute";
+                else
+                    range = "day";
 
-                    selectionDates = selection;
-                    picker.dismiss();
-                    LoadData();
-                });
-                picker.show(getActivity().getSupportFragmentManager(), picker.toString());
-                return true;
-            default:
-                break;
+                selectionDates = selection;
+                picker.dismiss();
+                LoadData();
+            });
+            picker.show(getActivity().getSupportFragmentManager(), picker.toString());
+            return true;
         }
         return false;
     }

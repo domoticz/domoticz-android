@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2015 Domoticz - Mark Heinis
- *
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- */
 
 package nl.hnogames.domoticz.fragments;
 
@@ -171,33 +151,31 @@ public class NotificationHistory extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (getActivity() != null)
-                    getActivity().finish();
-                return true;
-            case R.id.delete:
-                mSharedPrefs.clearPreviousNotification();
-                CreateList(null);
-                return true;
-            case R.id.action_add:
-                SendNotificationDialog dialog = new SendNotificationDialog(context, mNotificationTypes);
-                dialog.onDismissListener(message -> StaticHelper.getDomoticz(context).SendNotification(message.getTitle(), message.getText(), message.getSystems(), new SendNotificationReceiver() {
-                    @Override
-                    public void onSuccess() {
-                        adapter.addToStart(message, true);
-                        Snackbar.make(coordinatorLayout, R.string.notification_send, Snackbar.LENGTH_LONG).show();
-                    }
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            if (getActivity() != null)
+                getActivity().finish();
+            return true;
+        } else if (itemId == R.id.delete) {
+            mSharedPrefs.clearPreviousNotification();
+            CreateList(null);
+            return true;
+        } else if (itemId == R.id.action_add) {
+            SendNotificationDialog dialog = new SendNotificationDialog(context, mNotificationTypes);
+            dialog.onDismissListener(message -> StaticHelper.getDomoticz(context).SendNotification(message.getTitle(), message.getText(), message.getSystems(), new SendNotificationReceiver() {
+                @Override
+                public void onSuccess() {
+                    adapter.addToStart(message, true);
+                    Snackbar.make(coordinatorLayout, R.string.notification_send, Snackbar.LENGTH_LONG).show();
+                }
 
-                    @Override
-                    public void onError(Exception error) {
-                        Snackbar.make(coordinatorLayout, R.string.notification_error_send, Snackbar.LENGTH_LONG).show();
-                    }
-                }));
-                dialog.show();
-                return true;
-            default:
-                break;
+                @Override
+                public void onError(Exception error) {
+                    Snackbar.make(coordinatorLayout, R.string.notification_error_send, Snackbar.LENGTH_LONG).show();
+                }
+            }));
+            dialog.show();
+            return true;
         }
         return false;
     }
