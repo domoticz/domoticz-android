@@ -327,21 +327,21 @@ public class WifiSettingsActivity extends AppCompatPermissionsActivity implement
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.action_bluetooth_show:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (PermissionsUtil.canAccessLocation(this)) {
-                        showWifiList();
-                    } else {
-                        permissionHelper.request(PermissionsUtil.INITIAL_LOCATION_PERMS);
-                    }
-                } else {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            finish();
+            return true;
+        } else if (itemId == R.id.action_bluetooth_show) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (PermissionsUtil.canAccessLocation(this)) {
                     showWifiList();
+                } else {
+                    permissionHelper.request(PermissionsUtil.INITIAL_LOCATION_PERMS);
                 }
-                return true;
+            } else {
+                showWifiList();
+            }
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

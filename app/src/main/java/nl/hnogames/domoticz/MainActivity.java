@@ -1082,8 +1082,7 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
         for (int i = 0; i < drawerActions.length; i++) {
             if ((fragments[i].contains("fragments.Plans")) ||
-                    (fragments[i].contains("fragments.Utilities") && (mConfigInfo != null && mConfigInfo.isEnableTabUtility())) ||
-                    (fragments[i].contains("fragments.Energy")))
+                    (fragments[i].contains("fragments.Utilities") && (mConfigInfo != null && mConfigInfo.isEnableTabUtility())))
                 drawerItems.add(createPrimaryDrawerItem(drawerActions[i], ICONS[i], fragments[i]));
         }
 
@@ -1198,11 +1197,11 @@ public class MainActivity extends AppCompatPermissionsActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         try {
-            switch (item.getItemId()) {
-                case R.id.action_refresh:
-                    refreshFragment();
-                    return true;
-                case R.id.action_speech:
+            int itemId = item.getItemId();
+            if (itemId == R.id.action_refresh) {
+                refreshFragment();
+                return true;
+            } else if (itemId == R.id.action_speech) {
                     if (speechRecognizer == null)
                         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
                     if (recognitionProgressView == null)
@@ -1228,8 +1227,8 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     recognitionProgressView.setRecognitionListener(recognitionListener);
                     recognitionProgressView.postDelayed(() -> startRecognition(), 50);
 
-                    return true;
-                case R.id.action_camera_play:
+                return true;
+            } else if (itemId == R.id.action_camera_play) {
                     if (cameraRefreshTimer == null) {
                         cameraRefreshTimer = new Timer("camera", true);
                         cameraRefreshTimer.scheduleAtFixedRate(new TimerTask() {
@@ -1249,9 +1248,9 @@ public class MainActivity extends AppCompatPermissionsActivity {
                             }
                         }, 0, 10000);//schedule in 10 seconds
                     }
-                    invalidateOptionsMenu();//set pause button
-                    return true;
-                case R.id.action_scan_qrcode:
+                invalidateOptionsMenu();//set pause button
+                return true;
+            } else if (itemId == R.id.action_scan_qrcode) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (PermissionsUtil.canAccessCamera(this)) {
                             Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
@@ -1262,13 +1261,13 @@ public class MainActivity extends AppCompatPermissionsActivity {
                     } else {
                         Intent iQRCodeScannerActivity = new Intent(this, QRCodeCaptureActivity.class);
                         startActivityForResult(iQRCodeScannerActivity, iQRResultCode);
-                    }
-                    return true;
-                case R.id.action_camera_pause:
-                    stopCameraTimer();
-                    invalidateOptionsMenu();//set pause button
-                    return true;
-                case R.id.action_sort:
+                }
+                return true;
+            } else if (itemId == R.id.action_camera_pause) {
+                stopCameraTimer();
+                invalidateOptionsMenu();//set pause button
+                return true;
+            } else if (itemId == R.id.action_sort) {
                     SortDialog infoDialog = (latestFragment instanceof Logs) ?
                             new SortDialog(
                                     this,
@@ -1288,15 +1287,15 @@ public class MainActivity extends AppCompatPermissionsActivity {
                             ((RefreshFragment) f).sortFragment(selectedSort);
                         }
                     });
-                    infoDialog.show();
-                    return true;
-                case R.id.action_switch_server:
-                    showServerDialog();
-                    return true;
-                case R.id.action_graph:
-                    Intent tempGraphs = new Intent(this, TempGraphsActivity.class);
-                    startActivity(tempGraphs);
-                    return true;
+                infoDialog.show();
+                return true;
+            } else if (itemId == R.id.action_switch_server) {
+                showServerDialog();
+                return true;
+            } else if (itemId == R.id.action_graph) {
+                Intent tempGraphs = new Intent(this, TempGraphsActivity.class);
+                startActivity(tempGraphs);
+                return true;
             }
         } catch (Exception ex) {
             ex.printStackTrace();

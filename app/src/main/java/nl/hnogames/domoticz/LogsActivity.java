@@ -55,22 +55,20 @@ public class LogsActivity extends AppCompatPermissionsActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         try {
-            switch (item.getItemId()) {
-                case R.id.action_sort:
-                    SortDialog infoDialog = new SortDialog(
-                            this,
-                            R.layout.dialog_switch_logs,
-                            new String[]{getString(R.string.filter_all), getString(R.string.filter_normal), getString(R.string.filter_status), getString(R.string.filter_error)});
+            int itemId = item.getItemId();
+            if (itemId == R.id.action_sort) {
+                SortDialog infoDialog = new SortDialog(
+                        this,
+                        R.layout.dialog_switch_logs,
+                        new String[]{getString(R.string.filter_all), getString(R.string.filter_normal), getString(R.string.filter_status), getString(R.string.filter_error)});
 
-                    infoDialog.onDismissListener(selectedSort -> {
-                        Log.i("Logs", "Sorting: " + selectedSort);
-                        fragment.sortFragment(selectedSort);
-                    });
+                infoDialog.onDismissListener(selectedSort -> {
+                    Log.i("Logs", "Sorting: " + selectedSort);
+                    fragment.sortFragment(selectedSort);
+                });
 
-                    infoDialog.show();
-                    return true;
-                default:
-                    break;
+                infoDialog.show();
+                return true;
             }
         } catch (Exception ex) {
             ex.printStackTrace();

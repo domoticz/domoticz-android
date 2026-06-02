@@ -826,11 +826,30 @@ public class Domoticz {
 
     public void getDevice(DevicesReceiver receiver, int idx, boolean scene_or_group) {
         DevicesParser parser = new DevicesParser(receiver, idx, scene_or_group);
-        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Url.Request.DEVICES);
-
+        // Use rid= to fetch only the single device — much faster than fetching all devices
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Get.STATUS) + idx;
         Log.i("DEVICE", "url: " + url);
-        GetResultRequest(parser,
-                url, true);
+        GetResultRequest(parser, url, true);
+    }
+
+    /**
+     * Fetches multiple devices in a single HTTP request using a comma-separated rid list.
+     * Calls {@link DevicesReceiver#onReceiveDevices} with all found devices.
+     */
+    public void getDevicesByIds(DevicesReceiver receiver, List<Integer> ids) {
+        if (ids == null || ids.isEmpty()) {
+            receiver.onReceiveDevices(new ArrayList<>());
+            return;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < ids.size(); i++) {
+            if (i > 0) sb.append(',');
+            sb.append(ids.get(i));
+        }
+        DevicesParser parser = new DevicesParser(receiver);
+        String url = mDomoticzUrls.constructGetUrl(DomoticzValues.Json.Get.STATUS) + sb.toString();
+        Log.i("DEVICES_BULK", "url: " + url);
+        GetResultRequest(parser, url, true);
     }
 
     public void getLogs(LogsReceiver receiver, int logLevel) {

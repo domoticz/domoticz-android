@@ -449,41 +449,39 @@ public class TempGraphs extends Fragment implements DomoticzFragmentListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_sort:
-                GetTypes();
-                return true;
-            case R.id.action_set_chart_devices:
-                GetTempDevices();
-                return true;
-            case R.id.action_set_range:
-                MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.dateRangePicker();
-                CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
-                builder.setCalendarConstraints(constraintsBuilder.build());
-                if (selectionDates != null)
-                    builder.setSelection(selectionDates);
-                final MaterialDatePicker<Pair<Long, Long>> picker = builder.build();
-                picker.addOnPositiveButtonClickListener(selection -> {
-                    long firstDateLong = selection.first;
-                    Date firstDate = new Date(firstDateLong);
-                    long endDateLong = selection.second;
-                    Date endDate = new Date(endDateLong);
-                    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                    firstDateStr = sdf2.format(firstDate);
-                    endDateStr = sdf2.format(endDate);
-                    if (firstDateStr.equals(endDateStr))
-                        range = "minute";
-                    else
-                        range = "day";
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_sort) {
+            GetTypes();
+            return true;
+        } else if (itemId == R.id.action_set_chart_devices) {
+            GetTempDevices();
+            return true;
+        } else if (itemId == R.id.action_set_range) {
+            MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.dateRangePicker();
+            CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
+            builder.setCalendarConstraints(constraintsBuilder.build());
+            if (selectionDates != null)
+                builder.setSelection(selectionDates);
+            final MaterialDatePicker<Pair<Long, Long>> picker = builder.build();
+            picker.addOnPositiveButtonClickListener(selection -> {
+                long firstDateLong = selection.first;
+                Date firstDate = new Date(firstDateLong);
+                long endDateLong = selection.second;
+                Date endDate = new Date(endDateLong);
+                SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                firstDateStr = sdf2.format(firstDate);
+                endDateStr = sdf2.format(endDate);
+                if (firstDateStr.equals(endDateStr))
+                    range = "minute";
+                else
+                    range = "day";
 
-                    selectionDates = selection;
-                    picker.dismiss();
-                    LoadData();
-                });
-                picker.show(getActivity().getSupportFragmentManager(), picker.toString());
-                return true;
-            default:
-                break;
+                selectionDates = selection;
+                picker.dismiss();
+                LoadData();
+            });
+            picker.show(getActivity().getSupportFragmentManager(), picker.toString());
+            return true;
         }
         return false;
     }

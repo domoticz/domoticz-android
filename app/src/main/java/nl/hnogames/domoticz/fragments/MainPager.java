@@ -137,19 +137,16 @@ public class MainPager extends RefreshFragment implements DomoticzFragmentListen
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.bbn_dashboard:
-                        vpPager.setCurrentItem(0);
-                        SetTitle(GetTitle(0));
-                        break;
-                    case R.id.bbn_switches:
-                        vpPager.setCurrentItem(1);
-                        SetTitle(GetTitle(1));
-                        break;
-                    case R.id.bbn_scenes:
-                        vpPager.setCurrentItem(2);
-                        SetTitle(GetTitle(2));
-                        break;
+                int itemId = item.getItemId();
+                if (itemId == R.id.bbn_dashboard) {
+                    vpPager.setCurrentItem(0);
+                    SetTitle(GetTitle(0));
+                } else if (itemId == R.id.bbn_switches) {
+                    vpPager.setCurrentItem(1);
+                    SetTitle(GetTitle(1));
+                } else if (itemId == R.id.bbn_scenes) {
+                    vpPager.setCurrentItem(2);
+                    SetTitle(GetTitle(2));
                 }
                 if (getActivity() instanceof MainActivity)
                     ((MainActivity) getActivity()).clearSearch();

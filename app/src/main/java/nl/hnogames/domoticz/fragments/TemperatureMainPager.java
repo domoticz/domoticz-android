@@ -137,15 +137,13 @@ public class TemperatureMainPager extends RefreshFragment implements DomoticzFra
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.bbn_temperature:
-                        vpPager.setCurrentItem(0);
-                        SetTitle(GetTitle(0));
-                        break;
-                    case R.id.bbn_weather:
-                        vpPager.setCurrentItem(1);
-                        SetTitle(GetTitle(1));
-                        break;
+                int itemId = item.getItemId();
+                if (itemId == R.id.bbn_temperature) {
+                    vpPager.setCurrentItem(0);
+                    SetTitle(GetTitle(0));
+                } else if (itemId == R.id.bbn_weather) {
+                    vpPager.setCurrentItem(1);
+                    SetTitle(GetTitle(1));
                 }
                 if (getActivity() instanceof MainActivity)
                     ((MainActivity) getActivity()).clearSearch();
