@@ -30,6 +30,7 @@ public abstract class WidgetDatabase extends RoomDatabase {
                         DATABASE_NAME
                     )
                     .fallbackToDestructiveMigration()
+                    .fallbackToDestructiveMigrationOnDowngrade()
                     .build();
                 }
             }
