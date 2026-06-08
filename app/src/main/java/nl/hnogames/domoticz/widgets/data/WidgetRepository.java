@@ -14,7 +14,10 @@ import java.util.concurrent.Executors;
 
 import nl.hnogames.domoticz.helpers.StaticHelper;
 import nl.hnogames.domoticzapi.Containers.DevicesInfo;
+import nl.hnogames.domoticzapi.Containers.SceneInfo;
+import nl.hnogames.domoticzapi.DomoticzValues;
 import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
+import nl.hnogames.domoticzapi.Interfaces.ScenesReceiver;
 
 /**
  * Repository for widget data management
@@ -84,16 +87,24 @@ public class WidgetRepository {
                   ", isScene: " + widget.isScene);
 
             // Fetch data on main thread since it's a network call
-            // Note: We always use getDevice API because scenes and groups are in the devices list
-            // The isScene flag is only used for UI behavior (toggle vs scene activation)
             mainHandler.post(() -> {
-                Log.d(TAG, "Fetching device data for idx: " + widget.entityIdx +
-                      (widget.isScene ? " (Scene/Group)" : " (Device)"));
-                getDevice(widget.entityIdx, device -> {
-                    Log.d(TAG, "Device data received: " + (device != null ? device.getName() : "null"));
-                    WidgetData data = new WidgetData(widget, device);
-                    callback.onResult(data);
-                });
+                if (widget.isScene) {
+                    // Scenes/Groups live on a separate Domoticz endpoint (/json.htm?type=scenes)
+                    // getDevice() only covers regular devices; using it for scenes returns null.
+                    Log.d(TAG, "Fetching scene/group data for idx: " + widget.entityIdx);
+                    getSceneAsDevice(widget.entityIdx, device -> {
+                        Log.d(TAG, "Scene data received: " + (device != null ? device.getName() : "null"));
+                        WidgetData data = new WidgetData(widget, device);
+                        callback.onResult(data);
+                    });
+                } else {
+                    Log.d(TAG, "Fetching device data for idx: " + widget.entityIdx);
+                    getDevice(widget.entityIdx, device -> {
+                        Log.d(TAG, "Device data received: " + (device != null ? device.getName() : "null"));
+                        WidgetData data = new WidgetData(widget, device);
+                        callback.onResult(data);
+                    });
+                }
             });
         });
     }
@@ -181,11 +192,85 @@ public class WidgetRepository {
                         callbackCalled[0] = true;
                     }
                 }
-            }, idx, true); // Changed to true to include groups and scenes!
+            }, idx, false);
 
             Log.d(TAG, "getDevice API call initiated successfully");
         } catch (Exception e) {
             Log.e(TAG, "Exception calling getDevice for idx " + idx, e);
+            callback.onDevice(null);
+        }
+    }
+
+    /**
+     * Fetches a scene or group by idx via the /json.htm?type=scenes endpoint and converts it
+     * to a DevicesInfo object so the rest of the widget code can handle it uniformly.
+     */
+    private void getSceneAsDevice(int idx, DeviceCallback callback) {
+        try {
+            nl.hnogames.domoticzapi.Domoticz domoticz = StaticHelper.getDomoticz(context, true);
+            if (domoticz == null) {
+                Log.e(TAG, "Domoticz instance is null for getSceneAsDevice!");
+                callback.onDevice(null);
+                return;
+            }
+
+            final boolean[] callbackCalled = {false};
+
+            // Timeout safety – mirror the same guard used in getDevice()
+            mainHandler.postDelayed(() -> {
+                if (!callbackCalled[0]) {
+                    Log.e(TAG, "Scene API timeout for idx " + idx);
+                    callback.onDevice(null);
+                    callbackCalled[0] = true;
+                }
+            }, 10000);
+
+            Log.d(TAG, "Calling getScene API for idx: " + idx);
+            domoticz.getScene(new ScenesReceiver() {
+                @Override
+                public void onReceiveScenes(java.util.ArrayList<SceneInfo> scenes) {
+                    // Not used – we requested a single scene via idx
+                }
+
+                @Override
+                public void onReceiveScene(SceneInfo scene) {
+                    if (!callbackCalled[0]) {
+                        callbackCalled[0] = true;
+                        if (scene == null) {
+                            Log.e(TAG, "getScene returned null for idx " + idx);
+                            callback.onDevice(null);
+                            return;
+                        }
+                        Log.d(TAG, "Scene data received: " + scene.getName()
+                                + " (idx: " + scene.getIdx() + ", type: " + scene.getType()
+                                + ", status: " + scene.getStatusInString() + ")");
+
+                        // Convert SceneInfo → DevicesInfo so widget code is uniform
+                        DevicesInfo deviceInfo = new DevicesInfo();
+                        deviceInfo.setIdx(scene.getIdx());
+                        deviceInfo.setName(scene.getName());
+                        deviceInfo.setStatus(scene.getStatusInString()); // "On" / "Off"
+                        deviceInfo.setType(scene.getType());             // "Scene" or "Group"
+                        deviceInfo.setLastUpdate(scene.getLastUpdate());
+                        // TypeImg drives the icon lookup in DomoticzIcons ("scene" / "group")
+                        deviceInfo.setTypeImg(scene.getType() != null ? scene.getType().toLowerCase() : "scene");
+                        callback.onDevice(deviceInfo);
+                    }
+                }
+
+                @Override
+                public void onError(Exception error) {
+                    if (!callbackCalled[0]) {
+                        callbackCalled[0] = true;
+                        Log.e(TAG, "Error fetching scene idx " + idx, error);
+                        callback.onDevice(null);
+                    }
+                }
+            }, idx);
+
+            Log.d(TAG, "getScene API call initiated for idx: " + idx);
+        } catch (Exception e) {
+            Log.e(TAG, "Exception calling getScene for idx " + idx, e);
             callback.onDevice(null);
         }
     }

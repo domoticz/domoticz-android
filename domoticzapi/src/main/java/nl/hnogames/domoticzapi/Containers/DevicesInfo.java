@@ -578,6 +578,10 @@ public class DevicesInfo implements Comparable, Serializable {
         return TypeImg;
     }
 
+    public void setTypeImg(String typeImg) {
+        TypeImg = typeImg;
+    }
+
     public String getType() {
         return Type;
     }

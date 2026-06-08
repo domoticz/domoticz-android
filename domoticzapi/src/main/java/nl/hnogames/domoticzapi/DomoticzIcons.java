@@ -74,6 +74,7 @@ public class DomoticzIcons {
     @SuppressWarnings("SpellCheckingInspection")
     public static int getDrawableIcon(String imgType, String Type, String switchType, boolean State) {
         int test = R.drawable.defaultimage;
+        if (imgType == null) imgType = "";
         switch (imgType.toLowerCase()) {
             case "scene":
             case "push":
