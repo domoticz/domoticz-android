@@ -219,11 +219,18 @@ public class WidgetConfigActivity extends AppCompatActivity {
             "auto",
             null,
             () -> {
-                // Update the widget after save is complete
-                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-                DomoticzWidget.updateAppWidget(this, appWidgetManager, widgetId);
+                // Trigger widget update; wrap in try-catch so setResult/finish always run
+                // even if something goes wrong with the async update kick-off
+                try {
+                    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+                    if (appWidgetManager != null) {
+                        DomoticzWidget.updateAppWidget(this, appWidgetManager, widgetId);
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "Error triggering widget update after save (widget will refresh on next cycle)", e);
+                }
 
-                // Return success
+                // Return success to the launcher so the widget is placed on the home screen
                 Intent resultValue = new Intent();
                 resultValue.putExtra(EXTRA_APPWIDGET_ID, widgetId);
                 setResult(RESULT_OK, resultValue);

@@ -53,12 +53,17 @@ public class WidgetRepository {
         Log.d(TAG, "Saving widget config - ID: " + widgetId + ", entityIdx: " + entityIdx +
               ", name: " + entityName + ", isScene: " + isScene);
         executorService.execute(() -> {
-            WidgetEntity entity = new WidgetEntity(
-                widgetId, entityIdx, entityName, entityType, isScene,
-                layoutStyle, themeStyle, System.currentTimeMillis(), password, null
-            );
-            widgetDao.insertWidget(entity);
-            Log.d(TAG, "Widget config saved successfully for ID: " + widgetId);
+            try {
+                WidgetEntity entity = new WidgetEntity(
+                    widgetId, entityIdx, entityName, entityType, isScene,
+                    layoutStyle, themeStyle, System.currentTimeMillis(), password, null
+                );
+                widgetDao.insertWidget(entity);
+                Log.d(TAG, "Widget config saved successfully for ID: " + widgetId);
+            } catch (Exception e) {
+                Log.e(TAG, "Error saving widget config for ID: " + widgetId + " - " + e.getMessage(), e);
+            }
+            // Always invoke onComplete so the config activity can finish and place the widget
             if (onComplete != null) {
                 mainHandler.post(onComplete);
             }

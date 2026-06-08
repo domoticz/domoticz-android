@@ -29,6 +29,7 @@ public abstract class WidgetDatabase extends RoomDatabase {
                         WidgetDatabase.class,
                         DATABASE_NAME
                     )
+                    .fallbackToDestructiveMigration()
                     .build();
                 }
             }
