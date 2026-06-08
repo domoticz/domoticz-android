@@ -61,8 +61,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
 
     @Override
     public void refreshFragment() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        startSwipeRefreshing();
         processWeather();
     }
 
@@ -150,8 +149,7 @@ public class Weather extends DomoticzRecyclerFragment implements DomoticzFragmen
 
     private void processWeather() {
         try {
-            if (mSwipeRefreshLayout != null)
-                mSwipeRefreshLayout.setRefreshing(true);
+            startSwipeRefreshing();
 
             GetWeather();
         } catch (Exception ex) {

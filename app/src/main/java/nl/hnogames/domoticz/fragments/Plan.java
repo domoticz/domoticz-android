@@ -113,8 +113,7 @@ public class Plan extends DomoticzPlansFragment implements DomoticzFragmentListe
 
     @Override
     public void refreshFragment() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        startSwipeRefreshing();
         //setGridViewLayout();
         processDashboard();
     }
@@ -179,8 +178,7 @@ public class Plan extends DomoticzPlansFragment implements DomoticzFragmentListe
             if (extendedStatusSwitches != null && extendedStatusSwitches.size() > 0) {
                 state = gridView.getLayoutManager().onSaveInstanceState();
             }
-            if (mSwipeRefreshLayout != null)
-                mSwipeRefreshLayout.setRefreshing(true);
+            startSwipeRefreshing();
             GetDevices();
         } catch (Exception ex) {
         }

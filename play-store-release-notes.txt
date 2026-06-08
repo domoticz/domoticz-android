@@ -1,0 +1,93 @@
+<en-GB>
+- New modern onboarding for easier setup
+- Better Android 15 support and edge-to-edge layouts
+- Improved notifications, widgets, and stability
+</en-GB>
+<ca>
+- Nou onboarding modern per facilitar la configuracio inicial
+- Millor compatibilitat amb Android 15 i dissenys edge-to-edge
+- Millores en notificacions, widgets i estabilitat general
+</ca>
+<cs-CZ>
+- Novy moderni onboarding pro snazsi prvni nastaveni
+- Lepsi kompatibilita s Android 15 a edge-to-edge rozvrzeni
+- Vylepsena oznameni, widgety a celkova stabilita
+</cs-CZ>
+<de-DE>
+- Neuer moderner Onboarding-Ablauf fur einfachere Einrichtung
+- Bessere Android-15-Kompatibilitat und Edge-to-Edge-Layouts
+- Verbesserte Benachrichtigungen, Widgets und Stabilitat
+</de-DE>
+<es-ES>
+- Nuevo onboarding moderno para una configuracion inicial mas facil
+- Mejor compatibilidad con Android 15 y disenos edge-to-edge
+- Mejoras en notificaciones, widgets y estabilidad general
+</es-ES>
+<fi-FI>
+- Uusi moderni onboarding helpottaa ensiasennusta
+- Parempi Android 15 -tuki ja edge-to-edge-asettelut
+- Parannetut ilmoitukset, widgetit ja vakaus
+</fi-FI>
+<fr-FR>
+- Nouveau parcours d'onboarding pour une configuration plus simple
+- Meilleure compatibilite Android 15 et layouts edge-to-edge
+- Ameliorations des notifications, widgets et stabilite
+</fr-FR>
+<hu-HU>
+- Uj modern onboarding az egyszerubb elso beallitashoz
+- Jobb Android 15 kompatibilitas es edge-to-edge elrendezes
+- Fejlettebb ertesitesek, widgetek es stabilitas
+</hu-HU>
+<it-IT>
+- Nuovo onboarding moderno per una configurazione iniziale piu semplice
+- Migliore compatibilita con Android 15 e layout edge-to-edge
+- Notifiche, widget e stabilita generale migliorati
+</it-IT>
+<nl-NL>
+- Nieuwe moderne onboarding voor eenvoudiger eerste gebruik
+- Betere Android 15-compatibiliteit en edge-to-edge layouts
+- Verbeterde meldingen, widgets en algemene stabiliteit
+</nl-NL>
+<pl-PL>
+- Nowy, nowoczesny onboarding ulatwiajacy pierwsza konfiguracje
+- Lepsza zgodnosc z Androidem 15 i uklady edge-to-edge
+- Ulepszone powiadomienia, widzety i stabilnosc
+</pl-PL>
+<pt-PT>
+- Novo onboarding moderno para facilitar a primeira configuracao
+- Compatibilidade melhorada com Android 15 e layouts edge-to-edge
+- Melhorias em notificacoes, widgets e estabilidade geral
+</pt-PT>
+<ru-RU>
+- Novyi sovremennyi onboarding dlia bolee prostoi nastroiki
+- Uluchshena sovmestimost s Android 15 i edge-to-edge makety
+- Uluchsheny uvedomleniia, vidzhety i stabilnost
+</ru-RU>
+<sk>
+- Novy moderny onboarding pre jednoduchsie prve nastavenie
+- Lepsia kompatibilita s Android 15 a edge-to-edge rozlozenia
+- Vylepsene notifikacie, widgety a stabilita
+</sk>
+<sv-SE>
+- Nytt modernt onboardingflode for enklare forstagangsinstallation
+- Forbattrad Android 15-kompatibilitet och edge-to-edge-layouter
+- Forbattrade notiser, widgetar och stabilitet
+</sv-SE>
+<tr-TR>
+- Ilk kurulumu kolaylastiran yeni ve modern onboarding akisi
+- Android 15 uyumlulugu ve edge-to-edge duzenler iyilestirildi
+- Bildirimler, widget'lar ve stabilite gelistirildi
+</tr-TR>
+<uk>
+- Novyi suchasnyi onboarding dlia prostishoho pershoho nastroiuvannia
+- Polipshena sumisnist z Android 15 i edge-to-edge makety
+- Pokrashcheni spovishchennia, vidzhety ta stabilnist
+</uk>
+<zh-CN>
+- 全新现代引导流程，首次配置更简单
+- 提升 Android 15 兼容性和全面屏布局
+- 改进通知、小组件与整体稳定性
+</zh-CN>
+
+
+

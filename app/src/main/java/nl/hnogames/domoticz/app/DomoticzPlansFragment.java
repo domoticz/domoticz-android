@@ -58,6 +58,7 @@ public class DomoticzPlansFragment extends Fragment {
     public MaterialButton sortAll, sortOn, sortOff, sortStatic, btnCheckSettings;
     public boolean isTablet = false;
     public boolean isPortrait = false;
+    public boolean isAutoRefresh = false;
     public GridLayoutManager mLayoutManager;
     private DomoticzFragmentListener listener;
     private String fragmentName;
@@ -442,5 +443,10 @@ public class DomoticzPlansFragment extends Fragment {
     }
 
     public void refreshFragment() {
+    }
+
+    protected void startSwipeRefreshing() {
+        if (!isAutoRefresh && mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
     }
 }

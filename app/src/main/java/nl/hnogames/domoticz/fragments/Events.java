@@ -33,8 +33,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
     @Override
 
     public void refreshFragment() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        startSwipeRefreshing();
         processEvents();
     }
 
@@ -81,8 +80,7 @@ public class Events extends DomoticzRecyclerFragment implements DomoticzFragment
 
     private void processEvents() {
         try {
-            if (mSwipeRefreshLayout != null)
-                mSwipeRefreshLayout.setRefreshing(true);
+            startSwipeRefreshing();
             GetEvents();
         } catch (Exception ex) {
         }

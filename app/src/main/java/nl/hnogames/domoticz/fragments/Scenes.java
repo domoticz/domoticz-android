@@ -156,8 +156,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
     @Override
 
     public void refreshFragment() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        startSwipeRefreshing();
         processScenes();
     }
 
@@ -170,8 +169,7 @@ public class Scenes extends DomoticzRecyclerFragment implements DomoticzFragment
 
     private void processScenes() {
         try {
-            if (mSwipeRefreshLayout != null)
-                mSwipeRefreshLayout.setRefreshing(true);
+            startSwipeRefreshing();
 
             state = gridView.getLayoutManager().onSaveInstanceState();
             GetScenes();

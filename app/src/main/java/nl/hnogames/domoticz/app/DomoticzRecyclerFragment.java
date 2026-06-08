@@ -58,6 +58,7 @@ public class DomoticzRecyclerFragment extends Fragment {
     public MaterialButton btnCheckSettings;
     public boolean isTablet = false;
     public boolean isPortrait = false;
+    public boolean isAutoRefresh = false;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private TextView debugText;
@@ -435,5 +436,10 @@ public class DomoticzRecyclerFragment extends Fragment {
     }
 
     public void refreshFragment() {
+    }
+
+    protected void startSwipeRefreshing() {
+        if (!isAutoRefresh && mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
     }
 }

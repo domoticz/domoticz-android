@@ -71,14 +71,12 @@ public class Plans extends DomoticzCardFragment implements DomoticzFragmentListe
 
     @Override
     public void refreshFragment() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        startSwipeRefreshing();
         processPlans();
     }
 
     public void processPlans() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        startSwipeRefreshing();
         GetPlans();
     }
 

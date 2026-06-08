@@ -865,9 +865,28 @@ public class MainActivity extends AppCompatPermissionsActivity {
                 @Override
 
                 public void run() {
-                    runOnUiThread(() -> refreshFragment());
+                    runOnUiThread(() -> autoRefreshFragment());
                 }
             }, 0, (mSharedPrefs.getAutoRefreshTimer() * 1000L));
+        }
+    }
+
+    private void autoRefreshFragment() {
+        Fragment f = latestFragment;
+        if (f instanceof DomoticzRecyclerFragment) {
+            ((DomoticzRecyclerFragment) f).isAutoRefresh = true;
+            ((DomoticzRecyclerFragment) f).refreshFragment();
+            ((DomoticzRecyclerFragment) f).isAutoRefresh = false;
+        } else if (f instanceof DomoticzCardFragment) {
+            ((DomoticzCardFragment) f).isAutoRefresh = true;
+            ((DomoticzCardFragment) f).refreshFragment();
+            ((DomoticzCardFragment) f).isAutoRefresh = false;
+        } else if (f instanceof DomoticzDashboardFragment) {
+            ((DomoticzDashboardFragment) f).isAutoRefresh = true;
+            ((DomoticzDashboardFragment) f).refreshFragment();
+            ((DomoticzDashboardFragment) f).isAutoRefresh = false;
+        } else if (f instanceof RefreshFragment) {
+            ((RefreshFragment) f).RefreshFragment();
         }
     }
 

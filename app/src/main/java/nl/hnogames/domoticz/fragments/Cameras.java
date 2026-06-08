@@ -75,8 +75,7 @@ public class Cameras extends DomoticzCardFragment implements DomoticzFragmentLis
     @Override
     public void refreshFragment() {
         refreshTimer = true;
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        startSwipeRefreshing();
 
         getCameras();
     }

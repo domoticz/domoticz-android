@@ -43,8 +43,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     @Override
 
     public void refreshFragment() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        startSwipeRefreshing();
         processUserVariables();
     }
 
@@ -85,8 +84,7 @@ public class UserVariables extends DomoticzRecyclerFragment implements DomoticzF
     }
 
     private void processUserVariables() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        startSwipeRefreshing();
         GetVars();
     }
 

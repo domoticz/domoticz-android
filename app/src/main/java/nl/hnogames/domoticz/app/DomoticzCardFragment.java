@@ -38,6 +38,7 @@ public class DomoticzCardFragment extends Fragment {
     public PhoneConnectionUtil mPhoneConnectionUtil;
     public SwipeRefreshLayout mSwipeRefreshLayout;
     public MaterialButton btnCheckSettings;
+    public boolean isAutoRefresh = false;
     private DomoticzFragmentListener listener;
     private String fragmentName;
     private SharedPrefUtil mSharedPrefs;
@@ -49,6 +50,11 @@ public class DomoticzCardFragment extends Fragment {
     }
 
     public void refreshFragment() {
+    }
+
+    protected void startSwipeRefreshing() {
+        if (!isAutoRefresh && mSwipeRefreshLayout != null)
+            mSwipeRefreshLayout.setRefreshing(true);
     }
 
     public void setActionbar(String title) {

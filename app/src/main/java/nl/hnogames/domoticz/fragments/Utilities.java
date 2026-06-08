@@ -63,8 +63,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
 
     @Override
     public void refreshFragment() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        startSwipeRefreshing();
         processUtilities();
     }
 
@@ -153,8 +152,7 @@ public class Utilities extends DomoticzRecyclerFragment implements DomoticzFragm
 
     private void processUtilities() {
         try {
-            if (mSwipeRefreshLayout != null)
-                mSwipeRefreshLayout.setRefreshing(true);
+            startSwipeRefreshing();
 
             GetUtilities();
         } catch (Exception ex) {

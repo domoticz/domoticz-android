@@ -34,8 +34,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
 
     @Override
     public void refreshFragment() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        startSwipeRefreshing();
         processLogs();
     }
 
@@ -94,8 +93,7 @@ public class Logs extends DomoticzRecyclerFragment implements DomoticzFragmentLi
     }
 
     private void processLogs() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        startSwipeRefreshing();
         GetLogs();
     }
 

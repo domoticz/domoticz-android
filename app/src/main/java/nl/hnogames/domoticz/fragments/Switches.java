@@ -92,8 +92,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
 
     @Override
     public void refreshFragment() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        startSwipeRefreshing();
         getSwitchesData();
     }
 
@@ -173,8 +172,7 @@ public class Switches extends DomoticzRecyclerFragment implements DomoticzFragme
                 state = gridView.getLayoutManager().onSaveInstanceState();
             }
             //switch toggled, refresh listview
-            if (mSwipeRefreshLayout != null)
-                mSwipeRefreshLayout.setRefreshing(true);
+            startSwipeRefreshing();
             GetSwitches();
         } catch (Exception ex) {
         }

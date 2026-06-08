@@ -62,8 +62,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
 
     @Override
     public void refreshFragment() {
-        if (mSwipeRefreshLayout != null)
-            mSwipeRefreshLayout.setRefreshing(true);
+        startSwipeRefreshing();
         processTemperature();
     }
 
@@ -154,8 +153,7 @@ public class Temperature extends DomoticzRecyclerFragment implements DomoticzFra
 
     private void processTemperature() {
         try {
-            if (mSwipeRefreshLayout != null)
-                mSwipeRefreshLayout.setRefreshing(true);
+            startSwipeRefreshing();
 
             GetTemperatures();
         } catch (Exception ex) {
