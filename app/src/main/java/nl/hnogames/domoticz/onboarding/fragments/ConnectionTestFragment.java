@@ -1,7 +1,10 @@
 
 package nl.hnogames.domoticz.onboarding.fragments;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
@@ -27,6 +31,9 @@ import nl.hnogames.domoticzapi.Interfaces.DevicesReceiver;
 import nl.hnogames.domoticzapi.Interfaces.VersionReceiver;
 
 public class ConnectionTestFragment extends Fragment {
+
+    private static final int REQUEST_LOCAL_NETWORK_PERMISSION = 4017;
+    private static final String LOCAL_NETWORK_PERMISSION = "android.permission.ACCESS_LOCAL_NETWORK";
 
     private OnboardingViewModel viewModel;
     private View progressLayout;
@@ -63,13 +70,13 @@ public class ConnectionTestFragment extends Fragment {
         btnEditSettings = view.findViewById(R.id.btn_edit_settings);
 
         btnFinish.setOnClickListener(v -> finishOnboarding(true));
-        btnRetry.setOnClickListener(v -> testConnection());
+        btnRetry.setOnClickListener(v -> startConnectionTest());
         btnEditSettings.setOnClickListener(v -> requireActivity().onBackPressed());
 
         observeViewModel();
 
         // Auto-start test
-        testConnection();
+        startConnectionTest();
     }
 
     private void observeViewModel() {
@@ -91,6 +98,17 @@ public class ConnectionTestFragment extends Fragment {
                     break;
             }
         });
+    }
+
+    private void startConnectionTest() {
+        if (Build.VERSION.SDK_INT >= 37
+                && ContextCompat.checkSelfPermission(requireContext(), LOCAL_NETWORK_PERMISSION)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{LOCAL_NETWORK_PERMISSION}, REQUEST_LOCAL_NETWORK_PERMISSION);
+            return;
+        }
+
+        testConnection();
     }
 
     private void testConnection() {
@@ -216,5 +234,23 @@ public class ConnectionTestFragment extends Fragment {
     private void finishOnboarding(boolean success) {
         ((OnboardingActivity) requireActivity()).finishOnboarding(success);
     }
-}
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode != REQUEST_LOCAL_NETWORK_PERMISSION) {
+            return;
+        }
+
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            testConnection();
+            return;
+        }
+
+        viewModel.setValidationMessage(getString(R.string.permission_desc_local_network));
+        viewModel.setValidationState(OnboardingViewModel.ValidationState.ERROR);
+        sharedPrefs.setWelcomeWizardSuccess(false);
+    }
+}
